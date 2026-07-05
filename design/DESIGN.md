@@ -139,6 +139,11 @@ Dodatkowo: bardzo subtelny, nieruchomy gradient tła (radialne poświaty w kolor
 
 Charakter komponentów: rzemieślniczy i spokojny — pełne, wyraźne kształty (nie same-obrysowe jako domyślne), zero zagnieżdżonych kart, zero dekoracyjnych ikon-w-kółkach nad nagłówkami.
 
+### Niche Badge (signature element)
+- **Styl:** cienka kołowa obwódka (nie wypełniona), wyśrodkowana pojedyncza ikona liniowa reprezentująca usługę/niszę klienta — NIE na sztywno nożyczki, ikona dobierana per klient (np. nożyczki dla barbera, dłonie dla masażu, jabłko dla dietetyka, hantla dla trenera).
+- **Pozycja:** obok/w obrębie sekcji hero, jako subtelny akcent wizualny, nie dominujący element.
+- **Kolor:** obwódka i ikona w kolorze akcentu klienta, cienka linia (stroke, nie fill).
+
 ### Buttons
 - **Shape:** w pełni zaokrąglone, pigułkowe (`border-radius: 9999px`).
 - **Primary:** wypełnienie akcentem (`bg-accent`), tekst w kolorze tła (`text-bg`), `font-semibold`, padding `14px 28px` (`px-7 py-3.5`), min. wysokość 44px (dotyk). Hover: `brightness-110`.
