@@ -1,8 +1,56 @@
-<!-- SEED: re-run /impeccable document once pierwsza strona klienta istnieje w kodzie, żeby wyciągnąć realne tokeny i komponenty. -->
-
 ---
 name: AI Web Agency — Design System
 description: Stały fundament wizualny dla stron lokalnych firm usługowych — jeden akcent zmienny per klient, reszta stała.
+colors:
+  bg-dark: "#0B0906"
+  surface-dark: "#232323"
+  ink-dark: "#F3EEE3"
+  ink-muted-dark: "#CBC3B3"
+  border-dark: "rgba(243,238,227,0.12)"
+  accent-warm-amber: "#C79A4B"
+typography:
+  display:
+    fontFamily: "Fraunces, serif"
+    fontSize: "clamp(2.1rem, 3.2vw + 1.4rem, 3.75rem)"
+    fontWeight: 500
+    lineHeight: 1.1
+  headline:
+    fontFamily: "Fraunces, serif"
+    fontSize: "clamp(1.75rem, 2.5vw + 1.1rem, 2.75rem)"
+    fontWeight: 500
+    lineHeight: 1.15
+  body:
+    fontFamily: "Work Sans, sans-serif"
+    fontSize: "1rem"
+    fontWeight: 400
+    lineHeight: 1.6
+  label:
+    fontFamily: "Work Sans, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 500
+rounded:
+  pill: "9999px"
+  lg: "1rem"
+  xl: "1.5rem"
+spacing:
+  container-max: "64rem"
+  section-y: "4rem"
+  section-y-lg: "6rem"
+components:
+  button-primary:
+    backgroundColor: "{colors.accent-warm-amber}"
+    textColor: "{colors.bg-dark}"
+    rounded: "{rounded.pill}"
+    padding: "14px 28px"
+  button-primary-hover:
+    backgroundColor: "{colors.accent-warm-amber}"
+  button-ghost:
+    backgroundColor: "transparent"
+    textColor: "{colors.ink-muted-dark}"
+    rounded: "{rounded.pill}"
+    padding: "14px 28px"
+  button-ghost-hover:
+    textColor: "{colors.ink-dark}"
 ---
 
 # Design System: AI Web Agency
@@ -14,8 +62,8 @@ description: Stały fundament wizualny dla stron lokalnych firm usługowych — 
 Strona ma czuć się jak dobrze zrobiony, rzemieślniczy szyld lokalnego sklepu — nie jak wygenerowany software'owy landing page. Ktoś szuka fryzjera albo dietetyczki w świetle dziennym na ulicy, albo wieczorem w domu przeglądając opinie przed telefonem — musi błyskawicznie odczytać cennik, godziny i dane kontaktowe niezależnie od warunków.
 
 Motyw (jasny albo ciemny) jest zmienny per nisza klienta, nie ustalony sztywno dla całej agencji — dobierany do konwencji branży, nie do gustu projektanta:
-- **Nisze rzemieślnicze/warsztatowe** (barber, detailing i podobne) → domyślnie **ciemny** motyw. Kojarzy się z warsztatem, skórą, metalem, wieczornym neonem szyldu — to jest ich naturalny rejestr wizualny.
-- **Nisze wellness/higieniczne** (dietetyk, trener personalny, korepetycje i podobne) → domyślnie **jasny** motyw. Kojarzy się z czystością, spokojem, klarownością.
+- **Nisze rzemieślnicze/warsztatowe** (barber, detailing i podobne) → domyślnie **ciemny** motyw. Kojarzy się z warsztatem, skórą, metalem, wieczornym neonem szyldu — to jest ich naturalny rejestr wizualny. Potwierdzone w kodzie: M.E.N. (fryzjer, Piotrków Trybunalski).
+- **Nisze wellness/higieniczne** (dietetyk, trener personalny, korepetycje i podobne) → domyślnie **jasny** motyw. Kojarzy się z czystością, spokojem, klarownością. Jeszcze niepotwierdzone w realnym kodzie — pierwszy klient tej grupy nisz odblokuje realne tokeny jasnego motywu.
 
 Niezależnie od wybranego motywu: kontrast tekstu podstawowego musi spełniać WCAG AA (≥4.5:1), a ciepło marki nie pochodzi z kremowego tła (to jest wypalony AI-domyślny wybór 2026 roku), tylko z akcentu i typografii — tło (jasne lub ciemne) zostaje neutralne i czyste, żeby cennik, zdjęcia i opinie były łatwe do skanowania wzrokiem w kilka sekund.
 
@@ -27,27 +75,32 @@ System odrzuca explicite: estetykę SaaS/startupową (gradientowe hero z abstrak
 - Neutralne tło bez kremowego/piaskowego domyślnego AI-tła — prawdziwa biel (motyw jasny) albo bardzo ciemny stonowany neutral (motyw ciemny), nigdy pastelowy sand.
 - Typografia: jeden elegancki szeryf display (Fraunces) do nagłówków hero/sekcji + jeden sans body (Work Sans) do reszty tekstu — nigdy więcej niż te dwa kroje, bez chłodu geometrycznego korpo-sansu.
 - Motion: responsywny, nie choreografowany — subtelny feedback, żadnego "pokazu".
+- Głębia przez warstwowanie tonalne: naprzemienne sekcje na dwóch odcieniach tła (bazowy vs. jaśniejszy/ciemniejszy neutral sekcji), zamiast cieni.
 
 ## 2. Colors
 
 Paleta restrained: neutralne tło i tekst niosą 90%+ powierzchni, jeden akcent prowadzi wzrok tylko tam, gdzie trzeba (CTA, cena, aktywny stan).
 
 ### Primary
-- **Ciepły ziemisty akcent** (`[do ustalenia przy implementacji]`): jeden kolor z rodziny terakota / rdza / ochra-musztarda / głęboki bursztyn / spalona sjena / glina, wybierany per klient z ustalonej puli 4-6 odcieni. Używany na CTA, aktywnych stanach, akcentach cenowych — nigdy jako duża powierzchnia tła.
+- **Ciepły bursztynowy akcent** (`#C79A4B`): pierwszy potwierdzony w kodzie odcień z puli ziemistej (rodzina terakota / rdza / ochra-musztarda / głęboki bursztyn / spalona sjena / glina). Używany na CTA, gwiazdkach ocen, aktywnych stanach, dekoracyjnych akcentach (nigdy jako duża powierzchnia tła). Pozostałe 3-5 odcieni puli wciąż `[do ustalenia]` — każdy kolejny klient/nisza odblokowuje następny potwierdzony odcień.
 
 ### Neutral
 
 Wybór jasnej albo ciemnej bazy jest decyzją per nisza klienta (patrz Overview), nie wariantem awaryjnym/nocnym jasnego motywu — to dwa równorzędne tryby tego samego systemu, każdy z kompletnym własnym zestawem neutrali.
 
-- **Baza (tło), motyw jasny** (`[do ustalenia przy implementacji]`): prawdziwa biel przy chroma ≈0 — świadomie NIE kremowy/piaskowy/paper-tint (OKLCH L 0.84-0.97, C<0.06, hue 40-100 to zakazane pasmo — patrz Named Rule niżej).
-- **Baza (tło), motyw ciemny** (`[do ustalenia przy implementacji]`): bardzo ciemny stonowany neutral (nie czysty #000) — chroma niska, ewentualnie lekko przechylona w stronę akcentu, nigdy w stronę mulistej zieleni/niebieskości typowej dla dashboardów SaaS.
-- **Ink (tekst)** (`[do ustalenia przy implementacji]`): w motywie jasnym — ciemny, prawie-czarny neutral (nie czysty #000); w motywie ciemnym — jasny, prawie-biały neutral (nie czysty #FFF). W obu przypadkach kontrast tekstu podstawowego ≥4.5:1 wobec tła (WCAG AA).
-- **Granica / divider** (`[do ustalenia przy implementacji]`): subtelny neutral o niskim kontraście względem tła danego motywu, bez wyraźnego odcienia.
+- **Baza (tło), motyw ciemny** (`#0B0906`): bardzo ciemny, ledwo ciepły neutral (nie czysty #000) — potwierdzone w kodzie (M.E.N.). Chroma bliska zeru, z śladowym ciepłym odchyleniem w stronę akcentu.
+- **Tło sekcji, motyw ciemny** (`#232323`): osobny, achromatyczny szary — naprzemienne sekcje (Cennik, Galeria) używają go do warstwowania tonalnego względem bazy `#0B0906`, bez cienia.
+- **Baza (tło), motyw jasny** (`[do ustalenia przy implementacji]`): prawdziwa biel przy chroma ≈0 — świadomie NIE kremowy/piaskowy/paper-tint (OKLCH L 0.84-0.97, C<0.06, hue 40-100 to zakazane pasmo — patrz Named Rule niżej). Jeszcze niepotwierdzone w kodzie.
+- **Ink (tekst), motyw ciemny** (`#F3EEE3`): jasny, prawie-biały ciepły neutral — potwierdzone w kodzie. Kontrast wobec `#0B0906` znacznie przekracza WCAG AA.
+- **Ink muted (tekst drugorzędny), motyw ciemny** (`#CBC3B3`): przyciemniony, cieplejszy neutral dla etykiet, dat, opisów drugorzędnych — potwierdzone w kodzie.
+- **Ink (tekst), motyw jasny** (`[do ustalenia przy implementacji]`): ciemny, prawie-czarny neutral (nie czysty #000). Jeszcze niepotwierdzone w kodzie.
+- **Granica / divider, motyw ciemny** (`rgba(243,238,227,0.12)`): ink przy 12% krycia — subtelny podział list, kart, sekcji. Potwierdzone w kodzie.
+- **Granica / divider, motyw jasny** (`[do ustalenia przy implementacji]`): analogicznie, ink jasnego motywu przy niskim kryciu.
 
 ### Named Rules
 **The No-Cream Rule.** W motywie jasnym tło bazowe nigdy nie ląduje w paśmie kremu/piasku/paper (L 0.84-0.97, C<0.06, H 40-100) — to jest saturowany domyślny wybór AI z 2026 roku i zabija poczucie, że stronę robił człowiek dla konkretnej lokalnej firmy. Ciepło marki niesie akcent i typografia, nie tło.
 
-**The One Accent Rule.** Tylko jeden kolor akcentu na stronę, wybrany z ustalonej puli 4-6 odcieni ziemistych, używany na ≤10% powierzchni. Różne nisze (barber, salon, masaż, dietetyk...) dostają różny odcień z tej samej puli — nigdy własną, niezależną paletę. Zasada obowiązuje identycznie w obu motywach.
+**The One Accent Rule.** Tylko jeden kolor akcentu na stronę, wybrany z ustalonej puli 4-6 odcieni ziemistych, używany na ≤10% powierzchni. Różne nisze (barber, salon, masaż, dietetyk...) dostają różny odcień z tej samej puli — nigdy własną, niezależną paletę. Zasada obowiązuje identycznie w obu motywach. Uwaga z praktyki (M.E.N.): pilnować, żeby akcent był JEDNYM zdefiniowanym tokenem używanym wszędzie (`accent`) — nie osobnym zbliżonym hexem wpisanym ręcznie przy jednym komponencie (np. gwiazdki ocen), bo dwa prawie-identyczne złote odcienie obok siebie łamią regułę ciszej niż jeden rażący błąd.
 
 **The Niche-Driven Theme Rule.** Jasny/ciemny to wybór wynikający z konwencji branży klienta (patrz Overview), nie z domyślnego ustawienia agencji ani z estetycznej mody. Raz wybrany motyw dla danej niszy zostaje spójny między klientami tej samej niszy — nie zmienia się per projekt bez uzasadnienia.
 
@@ -58,11 +111,13 @@ Wybór jasnej albo ciemnej bazy jest decyzją per nisza klienta (patrz Overview)
 
 **Character:** Display (Fraunces) niesie ciepło i charakter rzemieślniczy — kontrast wobec neutralnego, funkcjonalnego Body (Work Sans), które ma być czytelne i przyjazne na małym ekranie. Bez chłodu geometrycznego sansu korporacyjnego w roli body (Inter i podobne są zakazane — patrz Do's and Don'ts).
 
+> **Uwaga o rozjeździe w kodzie:** M.E.N. (jedyny wdrożony klient na dziś) aktualnie renderuje display jako `Playfair Display`, nie `Fraunces` — to świadomy, jednorazowy wyjątek uzgodniony z użytkownikiem dla tego konkretnego klienta, nie zmiana stałego standardu agencji. Fraunces pozostaje udokumentowanym domyślnym display fontem dla WSZYSTKICH kolejnych klientów, chyba że użytkownik wprost poprosi o kolejny wyjątek. Nie kopiuj Playfair Display do nowych projektów bez pytania.
+
 ### Hierarchy
-- **Display** (Fraunces, waga 500-600, `clamp()` do ustalenia): nagłówek hero, nazwa firmy/usługi — max jeden na stronę.
-- **Headline** (Fraunces, waga 500-600): nagłówki sekcji (cennik, opinie, o nas).
-- **Body** (Work Sans, waga do ustalenia, max 65-75ch): opisy usług, treść sekcji.
-- **Label** (Work Sans, waga do ustalenia): godziny otwarcia, etykiety cen, przyciski.
+- **Display** (Fraunces, waga 500, `clamp(2.1rem, 3.2vw + 1.4rem, 3.75rem)`, line-height 1.1): nagłówek hero, nazwa firmy/usługi — max jeden na stronę.
+- **Headline** (Fraunces, waga 500, `clamp(1.75rem, 2.5vw + 1.1rem, 2.75rem)`, line-height 1.15): nagłówki sekcji (Godziny, Cennik, Opinie, Galeria, Kontakt).
+- **Body** (Work Sans, waga 400, max 65-75ch): opisy usług, treść sekcji, cytaty opinii (`text-lg`, `leading-relaxed`).
+- **Label** (Work Sans, waga 500, `text-sm`): godziny otwarcia, etykiety cen, przyciski, stopka.
 
 ### Named Rules
 **The Two-Typeface Rule.** Jeden szeryf display (Fraunces) + jeden sans body (Work Sans), nigdy więcej niż te dwa kroje. Display tylko w głównych nagłówkach sekcji i hero — nigdy w body, cenniku czy przyciskach.
@@ -73,26 +128,54 @@ Wybór jasnej albo ciemnej bazy jest decyzją per nisza klienta (patrz Overview)
 
 System responsywny, nie choreografowany — domyślnie płaski. Głębia budowana przez warstwowanie tonalne (delikatnie inny neutral tła sekcji), nie przez cienie. Cień pojawia się wyłącznie jako reakcja na stan (hover na CTA, focus na formularzu), nigdy jako stały element karty czy sekcji.
 
+Potwierdzony w kodzie wzorzec (M.E.N.): sekcje na przemian używają `bg-dark` (#0B0906) i `surface-dark` (#232323) — np. Godziny/Opinie/Kontakt na bazie, Cennik/Galeria na `surface-dark` — zamiast obwódek czy cieni do oddzielenia bloków treści.
+
+Dodatkowo: bardzo subtelny, nieruchomy gradient tła (radialne poświaty w kolorze akcentu przy 5-10% krycia, rozproszone w kilku punktach strony) dodaje optyczną głębię pustym, płaskim obszarom — to nie jest "gradientowe hero z kształtami" (zakazane), tylko ambientowe, prawie niewidoczne oświetlenie tła, spójne z całą stroną, nie ograniczone do hero.
+
 ### Named Rules
 **The Flat-By-Default Rule.** Powierzchnie są płaskie w spoczynku. Cień to odpowiedź na interakcję, nie dekoracja spoczynkowa.
 
 ## 5. Components
 
-*(Brak komponentów do udokumentowania — projekt jest przed-implementacyjny. Ta sekcja wypełni się realnymi wzorcami przy pierwszym `/impeccable document` w trybie skanowania, po zbudowaniu pierwszej strony klienta.)*
+Charakter komponentów: rzemieślniczy i spokojny — pełne, wyraźne kształty (nie same-obrysowe jako domyślne), zero zagnieżdżonych kart, zero dekoracyjnych ikon-w-kółkach nad nagłówkami.
 
-Kierunki na start (do potwierdzenia w Scan mode):
-- **Przyciski**: pełne (nie same-obrysowe) dla CTA głównego, oszczędny akcent-fill; brak `border-left`/`border-right` jako kolorowej belki.
-- **Nawigacja**: prosta, mobile-first — numer telefonu klikalny (`tel:`) zawsze widoczny w headerze.
-- **Cennik / listy usług**: bez zagnieżdżonych kart w kartach — pełne wiersze albo lekkie tło sekcji, nie karta-w-karcie.
+### Buttons
+- **Shape:** w pełni zaokrąglone, pigułkowe (`border-radius: 9999px`).
+- **Primary:** wypełnienie akcentem (`bg-accent`), tekst w kolorze tła (`text-bg`), `font-semibold`, padding `14px 28px` (`px-7 py-3.5`), min. wysokość 44px (dotyk). Hover: `brightness-110`.
+- **Ghost (secondary):** przezroczyste tło, cienka obwódka `border-border`, tekst `ink-muted`. Hover: obwódka i tekst przechodzą na pełny `ink`.
+- **Motion:** `transition` na kolor/jasność, z `motion-reduce:transition-none` zawsze obecnym.
+
+### Lists / Cennik / Godziny
+- **Styl:** płaskie wiersze w `<dl>`, oddzielone `divide-y` + `border-y` w kolorze `border` — bez kart w kartach, bez tła per wiersz.
+- **Układ:** etykieta po lewej (`ink-muted`), wartość po prawej (`font-medium`, pełny `ink`), `justify-between`.
+
+### Reviews / Opinie
+- **Styl:** `<blockquote>` bez tła i bez obwódki dookoła — tylko górna krawędź (`border-t border-border`) jako separator w siatce 2 kolumn.
+- **Wzorzec:** 5 gwiazdek w kolorze akcentu nad cytatem, cytat w `text-lg leading-relaxed`, autor + źródło + ocena w `text-sm text-inkmuted` pod spodem.
+
+### Galeria (placeholder tiles)
+- **Styl:** kwadratowe kafle `aspect-square`, `rounded-2xl`, `border border-dashed border-border` — świadomie oznaczone jako "miejsce na przyszłe zdjęcia", nie fałszywe zdjęcia zastępcze.
+- **Sygnał braku treści:** dashed border + ikona linii (nie solidne wypełnienie), żeby nie udawać gotowego zdjęcia.
+
+### Navigation
+- **Styl:** sticky header, "frosted glass" (półprzezroczyste ciemne tło + `backdrop-filter: blur`), subtelna dolna krawędź (`border-bottom: 1px solid rgba(255,255,255,0.08)`) zamiast pełnej nieprzezroczystości.
+- **Typografia:** wordmark w Body foncie (nie Display) — nawet gdy Display jest kursywowy/ozdobny, mały wordmark w headerze zostaje w sansie dla czytelności przy małym rozmiarze.
+- **Zawartość:** logo/nazwa po lewej, linki sekcji na środku (ukryte na mobile), telefon jako wypełniony przycisk-CTA po prawej, zawsze widoczny, `tel:` link.
+- **Mobile:** linki nawigacyjne chowane (`hidden sm:flex`), zostaje tylko logo + telefon-CTA.
+
+### Map embed
+- **Styl:** `rounded-2xl overflow-hidden border border-border`, pełnowymiarowy iframe (Google Maps `output=embed`), bez filtrów koloru — mapa zostaje w natywnych barwach Google.
+- **Fallback bez iframe:** link "Wyznacz trasę" (`button-ghost`) obok/pod embedem, otwierany w nowej karcie — działa nawet gdyby embed nie wczytał się u odbiorcy.
 
 ## 6. Do's and Don'ts
 
 ### Do:
 - **Do** trzymaj tło neutralne (prawdziwa biel lub ciemny stonowany neutral), ciepło przenieś do akcentu i typografii.
-- **Do** używaj jednego akcentu z ustalonej puli ziemistych odcieni, oszczędnie (≤10% powierzchni).
+- **Do** używaj jednego akcentu z ustalonej puli ziemistych odcieni, oszczędnie (≤10% powierzchni) — jeden token, nie kilka zbliżonych hexów.
 - **Do** zapewnij numer telefonu klikalny (`tel:`) widoczny w headerze na każdej stronie klienta.
 - **Do** projektuj i testuj od najmniejszego ekranu w górę (mobile-first).
 - **Do** trzymaj motion responsywny — subtelny hover/fade, żadnej choreografii.
+- **Do** buduj głębię przez naprzemienne tło sekcji (`bg` / `surface`), nie przez cienie czy obwódki.
 
 ### Don't:
 - **Don't** używaj tła w paśmie kremu/piasku/paper (L 0.84-0.97, C<0.06, H 40-100) — to jest wypalony AI-domyślny wybór.
@@ -101,3 +184,4 @@ Kierunki na start (do potwierdzenia w Scan mode):
 - **Don't** stosuj kart w kartach (nested cards), `border-left`/`border-right` jako kolorowej belki, gradient text, ani animacji bounce/elastic.
 - **Don't** dodawaj małych uppercase-trackowanych "eyebrow" nad każdą sekcją ani numerowanych markerów sekcji (01/02/03) jako domyślnego rusztowania.
 - **Don't** wchodź w ton sprzedażowy/korporacyjny w treści strony klienta.
+- **Don't** kopiuj jednorazowe wyjątki klienta (np. Playfair Display, gradient tła) do nowych projektów jako nowy standard bez wyraźnej prośby użytkownika.
