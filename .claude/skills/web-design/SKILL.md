@@ -54,6 +54,14 @@ Sprawdź w `brief.md` klienta odpowiedzi na dwa pytania: **czy klient używa Boo
 
 ## Krok 2: pętla budowa → sprawdzenie → poprawa
 
+Ta pętla dotyczy nie tylko pierwszej budowy strony, ale KAŻDEJ zmiany w istniejącym `index.html` klienta — różni się tylko zakresem (patrz "Skala reakcji" poniżej).
+
+### Skala reakcji na zmianę
+
+- **Drobna poprawka** (zmiana fontu, koloru, pojedynczego tekstu, drobny layout jednej sekcji): zrób zmianę, zrób nowy zrzut ekranu żeby wizualnie potwierdzić że działa poprawnie, i na tym koniec. Nie odpalaj pełnego audytu ani reviewera dla tak małej zmiany.
+- **Większa zmiana** (nowa sekcja, zmiana wariantu strony, przebudowa struktury/układu, redesign): przejdź przez pełną pętlę poniżej, łącznie z `/impeccable audit`/`critique` i subagentem `reviewer` na końcu.
+- W razie wątpliwości którą kategorię wybrać — zapytaj użytkownika, zamiast zgadywać.
+
 1. Wczytaj `/design/DESIGN.md` + `/design/PRODUCT.md` oraz `brief.md` klienta.
 2. Sprawdź folder `photos/` klienta. Jeśli są tam zdjęcia — to PRAWDZIWA treść, wstaw je bezpośrednio na stronę (galeria, tło hero itd.), nie traktuj ich jako inspiracji. Jeśli folder jest pusty — użyj placeholderów z placehold.co.
 3. Sprawdź folder `inspo/`. Jeśli są tam screeny — to LUŹNA inspiracja stylu z cudzych stron, NIE wzór do skopiowania 1:1 i NIE treść do wstawienia. Nie przejmuj układu, treści ani unikalnych elementów tych stron, tylko ogólny nastrój, przefiltrowany przez DESIGN.md.
