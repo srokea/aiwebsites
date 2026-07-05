@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
 <title>M.E.N. — Fryzjer w Piotrkowie Trybunalskim</title>
 <meta name="description" content="M.E.N. — fryzjer przy Wojska Polskiego 147 w Piotrkowie Trybunalskim. Zadzwoń i umów wizytę: 577 127 999.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,10 +15,10 @@
     theme: {
       extend: {
         colors: {
-          ink: '#18181B',
-          base: '#FFFFFF',
-          surface: '#FAFAFA',
-          line: '#E4E4E7',
+          ink: '#F2EDE6',
+          base: '#17130F',
+          surface: '#1F1912',
+          line: '#332921',
           accent: '#B8472A',
           'accent-dark': '#9A3A21',
         },
@@ -46,6 +47,9 @@
     transition: background-color 150ms ease-out;
   }
   .btn-cta:hover { background-color: #9A3A21; }
+  .map-dark {
+    filter: invert(92%) hue-rotate(180deg) contrast(85%) brightness(90%);
+  }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     * { transition: none !important; animation: none !important; }
@@ -99,7 +103,7 @@
           </div>
         </div>
         <img
-          src="https://placehold.co/640x480/e4e4e7/18181b?text=Wn%C4%99trze+M.E.N."
+          src="https://placehold.co/640x480/1F1912/F2EDE6?text=Wn%C4%99trze+M.E.N."
           alt="Wnętrze zakładu fryzjerskiego M.E.N. przy Wojska Polskiego w Piotrkowie Trybunalskim"
           class="w-full rounded-xl object-cover aspect-[4/3]"
           width="640" height="480" loading="eager"
@@ -111,7 +115,7 @@
     <section id="o-nas" class="bg-surface border-y border-line">
       <div class="max-w-5xl mx-auto px-5 sm:px-8 py-14 sm:py-20 grid md:grid-cols-2 gap-10 items-center">
         <img
-          src="https://placehold.co/640x480/e4e4e7/18181b?text=M.E.N."
+          src="https://placehold.co/640x480/17130F/F2EDE6?text=M.E.N."
           alt="Fryzjer M.E.N. przy pracy w salonie w Piotrkowie Trybunalskim"
           class="w-full rounded-xl object-cover aspect-[4/3] md:order-2"
           width="640" height="480" loading="lazy"
@@ -222,8 +226,7 @@
         <div class="w-full h-72 md:h-full min-h-[280px] rounded-xl border border-line overflow-hidden relative bg-surface">
           <iframe
             src="https://www.google.com/maps?q=Wojska+Polskiego+147,+97-320+Piotrk%C3%B3w+Trybunalski&output=embed"
-            class="w-full h-full"
-            style="filter: grayscale(0.15);"
+            class="w-full h-full map-dark"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
             title="Mapa dojazdu do M.E.N., Wojska Polskiego 147, Piotrków Trybunalski"
