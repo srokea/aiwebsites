@@ -31,6 +31,7 @@ Ten projekt korzysta z open-source'owego systemu projektowego **Impeccable** (gi
 /clients/<nazwa-klienta>/
   brief.md                  <- dane klienta (patrz niżej)
   inspo/                    <- screeny CUDZYCH stron internetowych, tylko styl/kierunek do zainspirowania się
+  anty-inspo/               <- screeny tego, czego UNIKAĆ — złe przykłady, w tym własne poprzednie próby
   photos/                   <- PRAWDZIWE zdjęcia TEGO klienta (lokal, fryzury, praca) — do wstawienia na stronę
   index.html
 ```
@@ -56,17 +57,18 @@ Sprawdź w `brief.md` klienta odpowiedzi na dwa pytania: **czy klient używa Boo
 1. Wczytaj `/design/DESIGN.md` + `/design/PRODUCT.md` oraz `brief.md` klienta.
 2. Sprawdź folder `photos/` klienta. Jeśli są tam zdjęcia — to PRAWDZIWA treść, wstaw je bezpośrednio na stronę (galeria, tło hero itd.), nie traktuj ich jako inspiracji. Jeśli folder jest pusty — użyj placeholderów z placehold.co.
 3. Sprawdź folder `inspo/`. Jeśli są tam screeny — to LUŹNA inspiracja stylu z cudzych stron, NIE wzór do skopiowania 1:1 i NIE treść do wstawienia. Nie przejmuj układu, treści ani unikalnych elementów tych stron, tylko ogólny nastrój, przefiltrowany przez DESIGN.md.
-4. Wygeneruj `index.html` (Tailwind CSS przez CDN, jeden plik) zgodnie z tokenami z DESIGN.md i wariantem z Kroku 1.
-5. Zrób zrzut ekranu całej strony + osobno każdej sekcji (Puppeteer).
-6. Sprawdź każdy punkt:
+4. Sprawdź folder `anty-inspo/`. Jeśli są tam screeny — to przykłady tego, czego NIE robić dla tego klienta (może być np. poprzednia, odrzucona wersja tej samej strony). Świadomie odróżnij finalny projekt od tych przykładów — jeśli nie jesteś pewien czy jakiś element jest zbyt podobny do anty-inspo, zmień go.
+5. Wygeneruj `index.html` (Tailwind CSS przez CDN, jeden plik) zgodnie z tokenami z DESIGN.md i wariantem z Kroku 1.
+6. Zrób zrzut ekranu całej strony + osobno każdej sekcji (Puppeteer).
+7. Sprawdź każdy punkt:
    - Zgodność kolorów/fontów/odstępów z DESIGN.md — żadnych przypadkowych wartości.
    - `/impeccable audit` — automatyczne wykrywanie typowych błędów AI.
    - `/impeccable critique` — ogólna ocena jakości designu.
    - Checklistę konwersji poniżej.
-7. Popraw każdą znalezioną niezgodność w kodzie.
-8. Zrzut ekranu ponownie, porównaj od nowa. Minimum 2 pełne rundy zanim strona jest gotowa.
-9. Stop dopiero, gdy nie ma już niezgodności albo użytkownik powie, że wystarczy.
-10. Gdy strona jest gotowa (nie w trakcie, tylko RAZ na koniec) — uruchom subagenta `reviewer`, żeby ocenił gotowy kod świeżym okiem, bez znajomości procesu budowy. Popraw jego uwagi, jeśli są zasadne, zanim pokażesz stronę klientowi.
+8. Popraw każdą znalezioną niezgodność w kodzie.
+9. Zrzut ekranu ponownie, porównaj od nowa. Minimum 2 pełne rundy zanim strona jest gotowa.
+10. Stop dopiero, gdy nie ma już niezgodności albo użytkownik powie, że wystarczy.
+11. Gdy strona jest gotowa (nie w trakcie, tylko RAZ na koniec) — uruchom subagenta `reviewer`, żeby ocenił gotowy kod świeżym okiem, bez znajomości procesu budowy. Popraw jego uwagi, jeśli są zasadne, zanim pokażesz stronę klientowi.
 
 ## Checklist konwersji (obowiązkowa)
 
@@ -84,6 +86,7 @@ Dodatkowo w Pro+: formularz rezerwacji/zapytania widoczny i prosty w użyciu.
 ## Czego NIE robić
 
 - Nie kopiuj 1:1 przesłanych screenów z `inspo/` — to inspiracja stylu, nie treść.
+- Nie ignoruj `anty-inspo/`, jeśli jest obecny — traktuj go jako konkretny, wizualny przykład błędu do uniknięcia, nie tylko jako ciekawostkę.
 - Nie traktuj zdjęć z `photos/` jako inspiracji do "przemalowania" — to gotowa treść klienta, wstaw je wprost.
 - Nie zmieniaj `DESIGN.md` / `PRODUCT.md` per projekt bez wyraźnej prośby.
 - Unikaj estetyki SaaS/startupowej (gradientowe hero z abstrakcyjnymi kształtami, loga "trusted by", dashboardowy UI) — to lokalny biznes, nie aplikacja.
