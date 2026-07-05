@@ -4,6 +4,13 @@
       "single-font"
     ],
     "ignoreFiles": [],
-    "ignoreValues": []
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "fraunces",
+        "reason": "Agency design system standard (DESIGN.md) — Fraunces is the fixed display serif, not an ad-hoc choice",
+        "createdAt": "2026-07-05T12:38:36.623Z"
+      }
+    ]
   }
 }

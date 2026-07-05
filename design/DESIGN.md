@@ -25,7 +25,7 @@ System odrzuca explicite: estetykę SaaS/startupową (gradientowe hero z abstrak
 - Motyw dobierany per nisza klienta (rzemiosło/warsztat → ciemny, wellness/higiena → jasny), zawsze wysokokontrastowy — czytelność ponad nastrojowość, nigdy ciemny "bo wygląda cool" bez uzasadnienia niszą.
 - Jeden ciepły ziemisty akcent, używany oszczędnie (≤10% powierzchni), zmienny per nisza klienta.
 - Neutralne tło bez kremowego/piaskowego domyślnego AI-tła — prawdziwa biel (motyw jasny) albo bardzo ciemny stonowany neutral (motyw ciemny), nigdy pastelowy sand.
-- Typografia: pojedynczy ciepły humanistyczny sans, bez chłodu geometrycznego korpo-sansu.
+- Typografia: jeden elegancki szeryf display (Fraunces) do nagłówków hero/sekcji + jeden sans body (Work Sans) do reszty tekstu — nigdy więcej niż te dwa kroje, bez chłodu geometrycznego korpo-sansu.
 - Motion: responsywny, nie choreografowany — subtelny feedback, żadnego "pokazu".
 
 ## 2. Colors
@@ -53,18 +53,20 @@ Wybór jasnej albo ciemnej bazy jest decyzją per nisza klienta (patrz Overview)
 
 ## 3. Typography
 
-**Display Font:** `[font do wyboru przy implementacji — pojedynczy ciepły humanistyczny sans, wykluczony Inter]`
-**Body Font:** `[ten sam krój co Display, inna waga]`
+**Display Font:** `Fraunces` — elegancki szeryf, waga 500-600, używany wyłącznie w głównych nagłówkach sekcji i hero. Kursywa dozwolona jako akcent (np. jedno słowo w nagłówku), nigdy na całym nagłówku.
+**Body Font:** `Work Sans` — cała reszta tekstu: opisy usług, cennik, opinie, przyciski, etykiety.
 
-**Character:** Ciepły, humanistyczny, zaokrąglone kształty liter — czytelny i przyjazny na małym ekranie, bez chłodu geometrycznego sansu korporacyjnego (Inter i podobne są zakazane — patrz Do's and Don'ts).
+**Character:** Display (Fraunces) niesie ciepło i charakter rzemieślniczy — kontrast wobec neutralnego, funkcjonalnego Body (Work Sans), które ma być czytelne i przyjazne na małym ekranie. Bez chłodu geometrycznego sansu korporacyjnego w roli body (Inter i podobne są zakazane — patrz Do's and Don'ts).
 
 ### Hierarchy
-- **Display** (waga do ustalenia, `clamp()` do ustalenia): nagłówek hero, nazwa firmy/usługi — max jeden na stronę.
-- **Headline** (waga do ustalenia): nagłówki sekcji (cennik, opinie, o nas).
-- **Body** (waga do ustalenia, max 65-75ch): opisy usług, treść sekcji.
-- **Label** (waga do ustalenia): godziny otwarcia, etykiety cen, przyciski.
+- **Display** (Fraunces, waga 500-600, `clamp()` do ustalenia): nagłówek hero, nazwa firmy/usługi — max jeden na stronę.
+- **Headline** (Fraunces, waga 500-600): nagłówki sekcji (cennik, opinie, o nas).
+- **Body** (Work Sans, waga do ustalenia, max 65-75ch): opisy usług, treść sekcji.
+- **Label** (Work Sans, waga do ustalenia): godziny otwarcia, etykiety cen, przyciski.
 
 ### Named Rules
+**The Two-Typeface Rule.** Jeden szeryf display (Fraunces) + jeden sans body (Work Sans), nigdy więcej niż te dwa kroje. Display tylko w głównych nagłówkach sekcji i hero — nigdy w body, cenniku czy przyciskach.
+
 **The No-Eyebrow Rule.** Żadnych małych uppercase-trackowanych "kickerów" (ABOUT / PROCESS / PRICING) nad każdą sekcją — to saturowany AI-tell z 2023-25. Nagłówki sekcji stoją same, bez dekoracyjnego poprzedzenia.
 
 ## 4. Elevation
