@@ -11,14 +11,20 @@ description: Stały fundament wizualny dla stron lokalnych firm usługowych — 
 
 **Creative North Star: "The Handwritten Storefront"**
 
-Strona ma czuć się jak dobrze zrobiony, rzemieślniczy szyld lokalnego sklepu — nie jak wygenerowany software'owy landing page. Ktoś szuka fryzjera albo masażysty w świetle dziennym na ulicy, albo wieczorem w domu przeglądając opinie przed telefonem — musi błyskawicznie odczytać cennik, godziny i dane kontaktowe niezależnie od warunków. Dlatego motyw jest jasny i wysokokontrastowy, nie ciemny "bo wygląda cool". Ciepło marki nie pochodzi z kremowego tła (to jest wypalony AI-domyślny wybór 2026 roku), tylko z akcentu i typografii — tło zostaje neutralne i czyste, żeby cennik, zdjęcia i opinie były łatwe do skanowania wzrokiem w kilka sekund.
+Strona ma czuć się jak dobrze zrobiony, rzemieślniczy szyld lokalnego sklepu — nie jak wygenerowany software'owy landing page. Ktoś szuka fryzjera albo dietetyczki w świetle dziennym na ulicy, albo wieczorem w domu przeglądając opinie przed telefonem — musi błyskawicznie odczytać cennik, godziny i dane kontaktowe niezależnie od warunków.
+
+Motyw (jasny albo ciemny) jest zmienny per nisza klienta, nie ustalony sztywno dla całej agencji — dobierany do konwencji branży, nie do gustu projektanta:
+- **Nisze rzemieślnicze/warsztatowe** (barber, detailing i podobne) → domyślnie **ciemny** motyw. Kojarzy się z warsztatem, skórą, metalem, wieczornym neonem szyldu — to jest ich naturalny rejestr wizualny.
+- **Nisze wellness/higieniczne** (dietetyk, trener personalny, korepetycje i podobne) → domyślnie **jasny** motyw. Kojarzy się z czystością, spokojem, klarownością.
+
+Niezależnie od wybranego motywu: kontrast tekstu podstawowego musi spełniać WCAG AA (≥4.5:1), a ciepło marki nie pochodzi z kremowego tła (to jest wypalony AI-domyślny wybór 2026 roku), tylko z akcentu i typografii — tło (jasne lub ciemne) zostaje neutralne i czyste, żeby cennik, zdjęcia i opinie były łatwe do skanowania wzrokiem w kilka sekund.
 
 System odrzuca explicite: estetykę SaaS/startupową (gradientowe hero z abstrakcyjnymi kształtami, loga "trusted by", dashboardowy UI), typowe AI tells (font Inter, fioletowo-niebieskie gradienty, karty w kartach, szary tekst na kolorowym tle, czysty czarny #000, bounce/elastic animacje) i wszelki ton korporacyjno-sprzedażowy w treści.
 
 **Key Characteristics:**
-- Jasny, wysokokontrastowy motyw — czytelność ponad nastrojowość.
+- Motyw dobierany per nisza klienta (rzemiosło/warsztat → ciemny, wellness/higiena → jasny), zawsze wysokokontrastowy — czytelność ponad nastrojowość, nigdy ciemny "bo wygląda cool" bez uzasadnienia niszą.
 - Jeden ciepły ziemisty akcent, używany oszczędnie (≤10% powierzchni), zmienny per nisza klienta.
-- Neutralne tło bez kremowego/piaskowego domyślnego AI-tła — prawdziwa biel lub bardzo ciemny stonowany neutral, nigdy pastelowy sand.
+- Neutralne tło bez kremowego/piaskowego domyślnego AI-tła — prawdziwa biel (motyw jasny) albo bardzo ciemny stonowany neutral (motyw ciemny), nigdy pastelowy sand.
 - Typografia: pojedynczy ciepły humanistyczny sans, bez chłodu geometrycznego korpo-sansu.
 - Motion: responsywny, nie choreografowany — subtelny feedback, żadnego "pokazu".
 
@@ -30,14 +36,20 @@ Paleta restrained: neutralne tło i tekst niosą 90%+ powierzchni, jeden akcent 
 - **Ciepły ziemisty akcent** (`[do ustalenia przy implementacji]`): jeden kolor z rodziny terakota / rdza / ochra-musztarda / głęboki bursztyn / spalona sjena / glina, wybierany per klient z ustalonej puli 4-6 odcieni. Używany na CTA, aktywnych stanach, akcentach cenowych — nigdy jako duża powierzchnia tła.
 
 ### Neutral
-- **Baza (tło)** (`[do ustalenia przy implementacji]`): prawdziwa biel przy chroma ≈0, albo bardzo ciemny stonowany neutral przy motywach nocnych wariantów — świadomie NIE kremowy/piaskowy/paper-tint (OKLCH L 0.84-0.97, C<0.06, hue 40-100 to zakazane pasmo — patrz Named Rule niżej).
-- **Ink (tekst)** (`[do ustalenia przy implementacji]`): ciemny, prawie-czarny neutral (nie czysty #000) — kontrast tekstu podstawowego ≥4.5:1 wobec tła.
-- **Granica / divider** (`[do ustalenia przy implementacji]`): subtelny jasny/ciemny neutral, bez wyraźnego odcienia.
+
+Wybór jasnej albo ciemnej bazy jest decyzją per nisza klienta (patrz Overview), nie wariantem awaryjnym/nocnym jasnego motywu — to dwa równorzędne tryby tego samego systemu, każdy z kompletnym własnym zestawem neutrali.
+
+- **Baza (tło), motyw jasny** (`[do ustalenia przy implementacji]`): prawdziwa biel przy chroma ≈0 — świadomie NIE kremowy/piaskowy/paper-tint (OKLCH L 0.84-0.97, C<0.06, hue 40-100 to zakazane pasmo — patrz Named Rule niżej).
+- **Baza (tło), motyw ciemny** (`[do ustalenia przy implementacji]`): bardzo ciemny stonowany neutral (nie czysty #000) — chroma niska, ewentualnie lekko przechylona w stronę akcentu, nigdy w stronę mulistej zieleni/niebieskości typowej dla dashboardów SaaS.
+- **Ink (tekst)** (`[do ustalenia przy implementacji]`): w motywie jasnym — ciemny, prawie-czarny neutral (nie czysty #000); w motywie ciemnym — jasny, prawie-biały neutral (nie czysty #FFF). W obu przypadkach kontrast tekstu podstawowego ≥4.5:1 wobec tła (WCAG AA).
+- **Granica / divider** (`[do ustalenia przy implementacji]`): subtelny neutral o niskim kontraście względem tła danego motywu, bez wyraźnego odcienia.
 
 ### Named Rules
-**The No-Cream Rule.** Tło bazowe nigdy nie ląduje w paśmie kremu/piasku/paper (L 0.84-0.97, C<0.06, H 40-100) — to jest saturowany domyślny wybór AI z 2026 roku i zabija poczucie, że stronę robił człowiek dla konkretnej lokalnej firmy. Ciepło marki niesie akcent i typografia, nie tło.
+**The No-Cream Rule.** W motywie jasnym tło bazowe nigdy nie ląduje w paśmie kremu/piasku/paper (L 0.84-0.97, C<0.06, H 40-100) — to jest saturowany domyślny wybór AI z 2026 roku i zabija poczucie, że stronę robił człowiek dla konkretnej lokalnej firmy. Ciepło marki niesie akcent i typografia, nie tło.
 
-**The One Accent Rule.** Tylko jeden kolor akcentu na stronę, wybrany z ustalonej puli 4-6 odcieni ziemistych, używany na ≤10% powierzchni. Różne nisze (barber, salon, masaż, dietetyk...) dostają różny odcień z tej samej puli — nigdy własną, niezależną paletę.
+**The One Accent Rule.** Tylko jeden kolor akcentu na stronę, wybrany z ustalonej puli 4-6 odcieni ziemistych, używany na ≤10% powierzchni. Różne nisze (barber, salon, masaż, dietetyk...) dostają różny odcień z tej samej puli — nigdy własną, niezależną paletę. Zasada obowiązuje identycznie w obu motywach.
+
+**The Niche-Driven Theme Rule.** Jasny/ciemny to wybór wynikający z konwencji branży klienta (patrz Overview), nie z domyślnego ustawienia agencji ani z estetycznej mody. Raz wybrany motyw dla danej niszy zostaje spójny między klientami tej samej niszy — nie zmienia się per projekt bez uzasadnienia.
 
 ## 3. Typography
 
