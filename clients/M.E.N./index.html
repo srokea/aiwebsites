@@ -7,7 +7,7 @@
 <meta name="description" content="M.E.N. — fryzjer przy Wojska Polskiego 147 w Piotrkowie Trybunalskim. Zadzwoń: 577 127 999.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Italianno&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500;1,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -22,7 +22,7 @@
           accent: '#C79A4B',
         },
         fontFamily: {
-          display: ['Italianno', 'cursive'],
+          display: ['Fraunces', 'serif'],
           body: ['"Work Sans"', 'sans-serif'],
         },
       },
@@ -31,8 +31,8 @@
 </script>
 <style>
   html { scroll-behavior: smooth; }
-  .fluid-hero { font-size: clamp(4.5rem, 8vw + 2rem, 8.5rem); line-height: 0.9; }
-  .fluid-section { font-size: clamp(3rem, 5vw + 1.5rem, 5rem); line-height: 1; }
+  .fluid-hero { font-size: clamp(2.1rem, 3.2vw + 1.4rem, 3.75rem); line-height: 1.1; }
+  .fluid-section { font-size: clamp(1.75rem, 2.5vw + 1.1rem, 2.75rem); line-height: 1.15; }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
@@ -42,9 +42,9 @@
 <body class="bg-bg text-ink font-body antialiased">
 
   <!-- Header -->
-  <header class="sticky top-0 z-30 bg-bg/35 backdrop-blur-xl border-b border-white/10">
+  <header class="sticky top-0 z-30 bg-bg/95 backdrop-blur border-b border-border">
     <div class="mx-auto max-w-5xl px-5 sm:px-8 h-16 flex items-center justify-between">
-      <a href="#top" class="font-body font-semibold text-lg tracking-wide">M.E.N.</a>
+      <a href="#top" class="font-display font-semibold text-xl tracking-wide">M.E.N.</a>
       <nav class="hidden sm:flex items-center gap-6 text-sm text-inkmuted">
         <a href="#godziny" class="hover:text-ink transition-colors motion-reduce:transition-none">Godziny</a>
         <a href="#cennik" class="hover:text-ink transition-colors motion-reduce:transition-none">Cennik</a>
@@ -62,75 +62,77 @@
   <!-- Hero -->
   <section id="top" class="mx-auto max-w-5xl px-5 sm:px-8 pt-14 sm:pt-20 pb-16 sm:pb-24">
     <div class="max-w-2xl">
-      <h1 class="font-display text-accent fluid-hero break-words">M.E.N.</h1>
-      <p class="mt-1 text-lg sm:text-xl">Fryzjer w Piotrkowie Trybunalskim</p>
+      <h1 class="font-display font-medium fluid-hero break-words">
+        Fryzjer w Piotrkowie <span class="italic text-accent">Trybunalskim</span>
+      </h1>
       <p class="mt-6 text-inkmuted text-lg max-w-md">
-        Wojska Polskiego 147. Zadzwoń i umów termin — bez rezerwacji online, po prostu telefon.
+        M.E.N., Wojska Polskiego 147. Zadzwoń i umów termin — bez rezerwacji online, po prostu telefon.
       </p>
     </div>
   </section>
 
-  <!-- Godziny i Cennik -->
-  <section class="border-t border-border">
-    <div class="mx-auto max-w-5xl px-5 sm:px-8 py-16 sm:py-24">
-      <div class="grid sm:grid-cols-2 gap-16 sm:gap-8">
-        <div id="godziny" class="text-center">
-          <h2 class="font-display fluid-section mb-8">Godziny</h2>
-          <dl class="max-w-xs mx-auto divide-y divide-border border-y border-border text-base">
-            <div class="flex items-center justify-between py-3">
-              <dt class="text-inkmuted">Poniedziałek</dt>
-              <dd class="font-medium">10:00–18:00</dd>
-            </div>
-            <div class="flex items-center justify-between py-3">
-              <dt class="text-inkmuted">Wtorek</dt>
-              <dd class="font-medium">10:00–18:00</dd>
-            </div>
-            <div class="flex items-center justify-between py-3">
-              <dt class="text-inkmuted">Środa</dt>
-              <dd class="font-medium">10:00–18:00</dd>
-            </div>
-            <div class="flex items-center justify-between py-3">
-              <dt class="text-inkmuted">Czwartek</dt>
-              <dd class="font-medium">10:00–18:00</dd>
-            </div>
-            <div class="flex items-center justify-between py-3">
-              <dt class="text-inkmuted">Piątek</dt>
-              <dd class="font-medium">10:00–18:00</dd>
-            </div>
-            <div class="flex items-center justify-between py-3">
-              <dt class="text-inkmuted">Sobota</dt>
-              <dd class="font-medium">9:00–14:00</dd>
-            </div>
-            <div class="flex items-center justify-between py-3">
-              <dt class="text-inkmuted">Niedziela</dt>
-              <dd class="font-medium">Nieczynne</dd>
-            </div>
-          </dl>
-        </div>
+  <!-- Godziny -->
+  <section id="godziny" class="border-t border-border">
+    <div class="mx-auto max-w-5xl px-5 sm:px-8 py-16 sm:py-24 text-center">
+      <h2 class="font-display font-medium fluid-section mb-12">Godziny</h2>
 
-        <div id="cennik" class="text-center">
-          <h2 class="font-display fluid-section mb-2">Cennik</h2>
-          <p class="text-inkmuted mb-6 max-w-xs mx-auto text-sm">Ceny w trakcie ustalania — wkrótce zaktualizujemy.</p>
-          <dl class="max-w-xs mx-auto divide-y divide-border border-y border-border text-base">
-            <div class="flex items-center justify-between py-3">
-              <dt class="text-inkmuted">Strzyżenie</dt>
-              <dd class="font-medium text-inkmuted">—</dd>
-            </div>
-            <div class="flex items-center justify-between py-3">
-              <dt class="text-inkmuted">Strzyżenie + broda</dt>
-              <dd class="font-medium text-inkmuted">—</dd>
-            </div>
-            <div class="flex items-center justify-between py-3">
-              <dt class="text-inkmuted">Golenie</dt>
-              <dd class="font-medium text-inkmuted">—</dd>
-            </div>
-            <div class="flex items-center justify-between py-3">
-              <dt class="text-inkmuted">Strzyżenie dziecięce</dt>
-              <dd class="font-medium text-inkmuted">—</dd>
-            </div>
-          </dl>
+      <dl class="max-w-md mx-auto divide-y divide-border border-y border-border text-base">
+        <div class="flex items-center justify-between py-3">
+          <dt class="text-inkmuted">Poniedziałek</dt>
+          <dd class="font-medium">10:00–18:00</dd>
         </div>
-      </div>
+        <div class="flex items-center justify-between py-3">
+          <dt class="text-inkmuted">Wtorek</dt>
+          <dd class="font-medium">10:00–18:00</dd>
+        </div>
+        <div class="flex items-center justify-between py-3">
+          <dt class="text-inkmuted">Środa</dt>
+          <dd class="font-medium">10:00–18:00</dd>
+        </div>
+        <div class="flex items-center justify-between py-3">
+          <dt class="text-inkmuted">Czwartek</dt>
+          <dd class="font-medium">10:00–18:00</dd>
+        </div>
+        <div class="flex items-center justify-between py-3">
+          <dt class="text-inkmuted">Piątek</dt>
+          <dd class="font-medium">10:00–18:00</dd>
+        </div>
+        <div class="flex items-center justify-between py-3">
+          <dt class="text-inkmuted">Sobota</dt>
+          <dd class="font-medium">9:00–14:00</dd>
+        </div>
+        <div class="flex items-center justify-between py-3">
+          <dt class="text-inkmuted">Niedziela</dt>
+          <dd class="font-medium">Nieczynne</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Cennik -->
+  <section id="cennik" class="border-t border-border">
+    <div class="mx-auto max-w-5xl px-5 sm:px-8 py-16 sm:py-24 text-center">
+      <h2 class="font-display font-medium fluid-section mb-4">Cennik</h2>
+      <p class="text-inkmuted mb-10 max-w-md mx-auto">Ceny w trakcie ustalania — wkrótce zaktualizujemy.</p>
+
+      <dl class="max-w-md mx-auto divide-y divide-border border-y border-border text-base">
+        <div class="flex items-center justify-between py-3">
+          <dt class="text-inkmuted">Strzyżenie</dt>
+          <dd class="font-medium text-inkmuted">—</dd>
+        </div>
+        <div class="flex items-center justify-between py-3">
+          <dt class="text-inkmuted">Strzyżenie + broda</dt>
+          <dd class="font-medium text-inkmuted">—</dd>
+        </div>
+        <div class="flex items-center justify-between py-3">
+          <dt class="text-inkmuted">Golenie</dt>
+          <dd class="font-medium text-inkmuted">—</dd>
+        </div>
+        <div class="flex items-center justify-between py-3">
+          <dt class="text-inkmuted">Strzyżenie dziecięce</dt>
+          <dd class="font-medium text-inkmuted">—</dd>
+        </div>
+      </dl>
     </div>
   </section>
 
@@ -138,7 +140,7 @@
   <section id="opinie" class="border-t border-border">
     <div class="mx-auto max-w-5xl px-5 sm:px-8 py-16 sm:py-24">
       <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
-        <h2 class="font-display fluid-section">Co mówią <span class="text-accent">klienci</span></h2>
+        <h2 class="font-display font-medium fluid-section">Co mówią <span class="italic text-accent">klienci</span></h2>
         <div class="flex items-center gap-2 text-sm">
           <span class="text-accent" aria-hidden="true">★★★★★</span>
           <span class="text-inkmuted">4,8/5 · 24 opinie na Google</span>
@@ -169,7 +171,7 @@
   <!-- Galeria -->
   <section id="galeria" class="border-t border-border">
     <div class="mx-auto max-w-5xl px-5 sm:px-8 py-16 sm:py-24">
-      <h2 class="font-display fluid-section mb-4">Galeria</h2>
+      <h2 class="font-display font-medium fluid-section mb-4">Galeria</h2>
       <p class="text-inkmuted mb-10 max-w-md">Zdjęcia salonu i strzyżeń — wkrótce.</p>
 
       <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -190,7 +192,7 @@
   <!-- Kontakt -->
   <section id="kontakt" class="border-t border-border">
     <div class="mx-auto max-w-5xl px-5 sm:px-8 py-16 sm:py-24">
-      <h2 class="font-display fluid-section mb-12">Kontakt</h2>
+      <h2 class="font-display font-medium fluid-section mb-12">Kontakt</h2>
 
       <div class="grid sm:grid-cols-2 gap-10 sm:gap-16">
         <div>
