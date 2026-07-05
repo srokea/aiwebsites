@@ -33,6 +33,7 @@
   html { scroll-behavior: smooth; }
   h1, h2 { text-wrap: balance; }
   p { text-wrap: pretty; }
+
   .btn-cta {
     display: inline-flex;
     align-items: center;
@@ -47,9 +48,16 @@
     transition: background-color 150ms ease-out;
   }
   .btn-cta:hover { background-color: #9A3A21; }
+
+  /* Signature texture: fine diagonal pinstripe, echoes a barber cape / worked leather without being literal. */
+  .texture-stripe {
+    background-image: repeating-linear-gradient(135deg, rgba(184,71,42,0.07) 0px, rgba(184,71,42,0.07) 1px, transparent 1px, transparent 15px);
+  }
+
   .map-dark {
     filter: invert(92%) hue-rotate(180deg) contrast(85%) brightness(90%);
   }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     * { transition: none !important; animation: none !important; }
@@ -59,9 +67,17 @@
 <body class="bg-base text-ink font-sans antialiased">
 
   <!-- Header -->
-  <header class="sticky top-0 z-50 bg-base/95 backdrop-blur border-b border-line">
+  <header class="sticky top-0 z-50 bg-base/95 backdrop-blur border-b border-accent/20">
     <div class="max-w-5xl mx-auto px-5 sm:px-8 py-3.5 flex items-center justify-between gap-4">
-      <a href="#top" class="text-xl font-extrabold tracking-tight">M.E.N.</a>
+      <a href="#top" class="flex items-center gap-2.5 text-xl font-extrabold tracking-tight">
+        <svg viewBox="0 0 48 48" class="w-6 h-6 text-accent" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="14" cy="34" r="5"/>
+          <circle cx="34" cy="34" r="5"/>
+          <path d="M17.5 30.5 40 10"/>
+          <path d="M30.5 30.5 8 10"/>
+        </svg>
+        M.E.N.
+      </a>
       <nav class="hidden md:flex items-center gap-6 text-[15px] font-medium text-ink/70">
         <a href="#o-nas" class="hover:text-ink transition-colors">O nas</a>
         <a href="#cennik" class="hover:text-ink transition-colors">Cennik</a>
@@ -83,16 +99,35 @@
 
   <main id="top">
 
-    <!-- Hero -->
-    <section class="max-w-5xl mx-auto px-5 sm:px-8 pt-10 sm:pt-16 pb-12 sm:pb-20">
-      <div class="grid md:grid-cols-2 gap-10 items-center">
-        <div>
-          <h1 class="text-[2.1rem] leading-[1.15] sm:text-5xl sm:leading-[1.1] font-extrabold tracking-tight">
+    <!-- Hero: typographic, no image dependency. Large headline + trust line carry the section. -->
+    <!-- TODO: kiedy klient dostarczy zdjęcia (wnętrze, praca), rozważyć dodanie osobnej sekcji galerii — patrz clients/M.E.N./photos/. Nie trzeba przebudowywać hero pod zdjęcie. -->
+    <section class="relative overflow-hidden texture-stripe">
+      <svg viewBox="0 0 48 48" class="absolute -right-16 -top-10 w-[26rem] h-[26rem] text-ink/[0.05] pointer-events-none hidden sm:block" fill="none" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="14" cy="34" r="5"/>
+        <circle cx="34" cy="34" r="5"/>
+        <path d="M17.5 30.5 40 10"/>
+        <path d="M30.5 30.5 8 10"/>
+      </svg>
+      <div class="relative max-w-5xl mx-auto px-5 sm:px-8 pt-14 sm:pt-20 pb-16 sm:pb-24">
+        <div class="max-w-2xl">
+          <h1 class="text-[2.3rem] leading-[1.12] sm:text-6xl sm:leading-[1.05] font-extrabold tracking-tight">
             Strzyżenie, po którym naprawdę czujesz się dobrze
           </h1>
           <p class="mt-5 text-lg text-ink/70 max-w-md">
             M.E.N. przy Wojska Polskiego w Piotrkowie Trybunalskim. Zadzwoń, umów termin i przyjdź — bez zbędnych formalności.
           </p>
+
+          <div class="mt-6 flex items-center gap-2 text-ink/70">
+            <div class="flex text-accent" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"><path d="M10 1.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L10 15.1l-5.5 3 1.4-6.1-4.7-4.2 6.2-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"><path d="M10 1.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L10 15.1l-5.5 3 1.4-6.1-4.7-4.2 6.2-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"><path d="M10 1.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L10 15.1l-5.5 3 1.4-6.1-4.7-4.2 6.2-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"><path d="M10 1.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L10 15.1l-5.5 3 1.4-6.1-4.7-4.2 6.2-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"><path d="M10 1.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L10 15.1l-5.5 3 1.4-6.1-4.7-4.2 6.2-.6z"/></svg>
+            </div>
+            <span class="text-sm font-medium">4,8/5 · 24 opinie na Google</span>
+          </div>
+
           <div class="mt-8 flex flex-wrap items-center gap-4">
             <a href="tel:+48577127999" class="btn-cta">
               Zadzwoń: 577 127 999
@@ -102,142 +137,149 @@
             </p>
           </div>
         </div>
-        <img
-          src="https://placehold.co/640x480/1F1912/F2EDE6?text=Wn%C4%99trze+M.E.N."
-          alt="Wnętrze zakładu fryzjerskiego M.E.N. przy Wojska Polskiego w Piotrkowie Trybunalskim"
-          class="w-full rounded-xl object-cover aspect-[4/3]"
-          width="640" height="480" loading="eager"
-        >
       </div>
     </section>
 
-    <!-- O nas -->
-    <section id="o-nas" class="bg-surface border-y border-line">
-      <div class="max-w-5xl mx-auto px-5 sm:px-8 py-14 sm:py-20 grid md:grid-cols-2 gap-10 items-center">
-        <img
-          src="https://placehold.co/640x480/17130F/F2EDE6?text=M.E.N."
-          alt="Fryzjer M.E.N. przy pracy w salonie w Piotrkowie Trybunalskim"
-          class="w-full rounded-xl object-cover aspect-[4/3] md:order-2"
-          width="640" height="480" loading="lazy"
-        >
-        <div class="md:order-1">
+    <!-- O nas: prose + framed plaque (signature component), no photo slot. -->
+    <section id="o-nas" class="border-t border-line">
+      <div class="max-w-5xl mx-auto px-5 sm:px-8 py-14 sm:py-20 grid md:grid-cols-[1.3fr_1fr] gap-10 items-start">
+        <div>
           <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">O nas</h2>
           <p class="mt-4 text-ink/70 max-w-md leading-relaxed">
             Strzyżemy mieszkańców Piotrkowa Trybunalskiego od lat — bez pośpiechu i bez traktowania nikogo jak numerka w kolejce. Zapraszamy też najmłodszych klientów: pierwsza wizyta u fryzjera nie musi być stresem, ani dla dziecka, ani dla rodzica.
           </p>
         </div>
-      </div>
-    </section>
 
-    <!-- Cennik -->
-    <section id="cennik" class="max-w-5xl mx-auto px-5 sm:px-8 py-14 sm:py-20">
-      <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Cennik</h2>
-      <!-- TODO: uzupełnić rzeczywisty cennik usług klienta (brak danych w brief.md) -->
-      <div class="mt-6 border border-line rounded-xl px-6 py-8 sm:px-8 sm:py-10">
-        <p class="text-ink/70 leading-relaxed max-w-md">
-          Cennik jest właśnie aktualizowany. Zadzwoń, a od razu powiemy dokładnie, ile będzie kosztować twoja wizyta.
-        </p>
-        <a href="tel:+48577127999" class="btn-cta mt-5">
-          Zapytaj o cenę: 577 127 999
-        </a>
-      </div>
-    </section>
-
-    <!-- Opinie -->
-    <section id="opinie" class="bg-surface border-y border-line">
-      <div class="max-w-5xl mx-auto px-5 sm:px-8 py-14 sm:py-20">
-        <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Opinie</h2>
-        <div class="mt-3 flex items-center gap-2 text-ink/70">
-          <div class="flex text-accent" aria-hidden="true">
-            <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 1.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L10 15.1l-5.5 3 1.4-6.1-4.7-4.2 6.2-.6z"/></svg>
-            <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 1.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L10 15.1l-5.5 3 1.4-6.1-4.7-4.2 6.2-.6z"/></svg>
-            <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 1.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L10 15.1l-5.5 3 1.4-6.1-4.7-4.2 6.2-.6z"/></svg>
-            <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 1.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L10 15.1l-5.5 3 1.4-6.1-4.7-4.2 6.2-.6z"/></svg>
-            <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 1.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L10 15.1l-5.5 3 1.4-6.1-4.7-4.2 6.2-.6z"/></svg>
+        <div class="border border-line rounded-xl p-1.5">
+          <div class="border border-accent/25 rounded-lg px-6 py-8 text-center">
+            <svg viewBox="0 0 48 48" class="w-9 h-9 mx-auto text-accent" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="14" cy="34" r="5"/>
+              <circle cx="34" cy="34" r="5"/>
+              <path d="M17.5 30.5 40 10"/>
+              <path d="M30.5 30.5 8 10"/>
+            </svg>
+            <p class="mt-4 font-extrabold text-lg tracking-tight">M.E.N.</p>
+            <p class="mt-1 text-sm text-ink/60">Wojska Polskiego 147<br>Piotrków Trybunalski</p>
           </div>
-          <span class="text-sm font-medium">4,8/5 · 24 opinie na Google</span>
-        </div>
-
-        <div class="mt-8 divide-y divide-line border-t border-b border-line">
-          <figure class="py-6">
-            <blockquote class="text-ink/90 leading-relaxed">
-              „Szczerze polecam — nigdzie w Piotrkowie nie spotkałem się z tak profesjonalną obsługą.”
-            </blockquote>
-            <figcaption class="mt-3 text-sm text-ink/70">Henryk Haladaj · Google, 5/5</figcaption>
-          </figure>
-          <figure class="py-6">
-            <blockquote class="text-ink/90 leading-relaxed">
-              „Super obsługa i podejście, nawet do najmłodszych klientów 😊”
-            </blockquote>
-            <figcaption class="mt-3 text-sm text-ink/70">Justyna Skrobek · Google, 5/5</figcaption>
-          </figure>
-          <figure class="py-6">
-            <blockquote class="text-ink/90 leading-relaxed">
-              „Polecam, najlepszy fryzjer w mieście.”
-            </blockquote>
-            <figcaption class="mt-3 text-sm text-ink/70">Suchy · Google, 5/5</figcaption>
-          </figure>
-          <figure class="py-6">
-            <blockquote class="text-ink/90 leading-relaxed">
-              „Wszystko w jak najlepszym porządku. Polecam!”
-            </blockquote>
-            <figcaption class="mt-3 text-sm text-ink/70">Łukasz Kozdęba · Google, 5/5</figcaption>
-          </figure>
         </div>
       </div>
     </section>
 
-    <!-- Godziny i kontakt -->
-    <section id="kontakt" class="max-w-5xl mx-auto px-5 sm:px-8 py-14 sm:py-20">
-      <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Godziny i kontakt</h2>
-      <div class="mt-8 grid md:grid-cols-2 gap-10">
-        <div>
-          <dl class="space-y-3 text-[17px]">
-            <div class="flex justify-between gap-4 border-b border-line pb-3">
-              <dt class="text-ink/70">Poniedziałek–Piątek</dt>
-              <dd class="font-semibold">10:00–18:00</dd>
-            </div>
-            <div class="flex justify-between gap-4 border-b border-line pb-3">
-              <dt class="text-ink/70">Sobota</dt>
-              <dd class="font-semibold">9:00–14:00</dd>
-            </div>
-            <div class="flex justify-between gap-4 border-b border-line pb-3">
-              <dt class="text-ink/70">Niedziela</dt>
-              <dd class="font-semibold">Nieczynne</dd>
-            </div>
-          </dl>
+    <!-- Cennik + Opinie: grouped side by side instead of two stacked identical blocks. -->
+    <section class="bg-surface border-y border-line">
+      <div class="max-w-5xl mx-auto px-5 sm:px-8 py-14 sm:py-20 grid md:grid-cols-2 gap-12">
 
-          <div class="mt-8 space-y-4">
-            <a href="tel:+48577127999" class="flex items-center gap-3 font-semibold text-lg hover:text-accent transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 shrink-0 text-accent"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.2 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.5 21 3 13.5 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.2 1.1L6.6 10.8z"/></svg>
-              577 127 999
-            </a>
-            <p class="flex items-start gap-3 text-ink/80">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 shrink-0 text-accent mt-0.5"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.7 7 11.5 7.3 11.7.2.2.5.3.7.3s.5-.1.7-.3C13 21.5 20 15.7 20 10c0-4.4-3.6-8-8-8zm0 11c-1.7 0-3-1.3-3-3s1.3-3 3-3 3 1.3 3 3-1.3 3-3 3z"/></svg>
-              Wojska Polskiego 147<br>97-320 Piotrków Trybunalski
+        <div id="cennik">
+          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Cennik</h2>
+          <!-- TODO: uzupełnić rzeczywisty cennik usług klienta (brak danych w brief.md) -->
+          <div class="mt-6 border border-line rounded-xl px-6 py-8">
+            <p class="text-ink/70 leading-relaxed">
+              Cennik jest właśnie aktualizowany. Zadzwoń, a od razu powiemy dokładnie, ile będzie kosztować twoja wizyta.
             </p>
+            <a href="tel:+48577127999" class="btn-cta mt-5">
+              Zapytaj o cenę: 577 127 999
+            </a>
           </div>
-
-          <a href="tel:+48577127999" class="btn-cta mt-8">
-            Zadzwoń teraz
-          </a>
         </div>
 
-        <div class="w-full h-72 md:h-full min-h-[280px] rounded-xl border border-line overflow-hidden relative bg-surface">
-          <iframe
-            src="https://www.google.com/maps?q=Wojska+Polskiego+147,+97-320+Piotrk%C3%B3w+Trybunalski&output=embed"
-            class="w-full h-full map-dark"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            title="Mapa dojazdu do M.E.N., Wojska Polskiego 147, Piotrków Trybunalski"
-          ></iframe>
-          <a
-            href="https://www.google.com/maps/dir/?api=1&destination=Wojska+Polskiego+147,+97-320+Piotrk%C3%B3w+Trybunalski"
-            target="_blank" rel="noopener"
-            class="absolute bottom-3 right-3 bg-base border border-line text-sm font-semibold px-3.5 py-2 rounded-lg shadow-sm hover:text-accent transition-colors"
-          >
-            Wyznacz trasę ↗
-          </a>
+        <div id="opinie">
+          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Opinie</h2>
+          <div class="mt-3 flex items-center gap-2 text-ink/70">
+            <div class="flex text-accent" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 1.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L10 15.1l-5.5 3 1.4-6.1-4.7-4.2 6.2-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 1.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L10 15.1l-5.5 3 1.4-6.1-4.7-4.2 6.2-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 1.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L10 15.1l-5.5 3 1.4-6.1-4.7-4.2 6.2-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 1.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L10 15.1l-5.5 3 1.4-6.1-4.7-4.2 6.2-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 1.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L10 15.1l-5.5 3 1.4-6.1-4.7-4.2 6.2-.6z"/></svg>
+            </div>
+            <span class="text-sm font-medium">4,8/5 · 24 opinie</span>
+          </div>
+
+          <div class="mt-6 divide-y divide-line border-t border-b border-line">
+            <figure class="py-5">
+              <blockquote class="text-ink/90 leading-relaxed">
+                „Szczerze polecam — nigdzie w Piotrkowie nie spotkałem się z tak profesjonalną obsługą.”
+              </blockquote>
+              <figcaption class="mt-2 text-sm text-ink/60">Henryk Haladaj · Google, 5/5</figcaption>
+            </figure>
+            <figure class="py-5">
+              <blockquote class="text-ink/90 leading-relaxed">
+                „Super obsługa i podejście, nawet do najmłodszych klientów 😊”
+              </blockquote>
+              <figcaption class="mt-2 text-sm text-ink/60">Justyna Skrobek · Google, 5/5</figcaption>
+            </figure>
+            <figure class="py-5">
+              <blockquote class="text-ink/90 leading-relaxed">
+                „Polecam, najlepszy fryzjer w mieście.”
+              </blockquote>
+              <figcaption class="mt-2 text-sm text-ink/60">Suchy · Google, 5/5</figcaption>
+            </figure>
+            <figure class="py-5">
+              <blockquote class="text-ink/90 leading-relaxed">
+                „Wszystko w jak najlepszym porządku. Polecam!”
+              </blockquote>
+              <figcaption class="mt-2 text-sm text-ink/60">Łukasz Kozdęba · Google, 5/5</figcaption>
+            </figure>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Godziny i kontakt: closing plaque, bookends the textured hero. -->
+    <section id="kontakt" class="relative overflow-hidden texture-stripe">
+      <div class="relative max-w-3xl mx-auto px-5 sm:px-8 py-14 sm:py-20">
+        <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-center">Godziny i kontakt</h2>
+
+        <div class="mt-8 border border-line rounded-xl p-1.5">
+          <div class="border border-accent/25 rounded-lg px-6 py-8 sm:px-10 sm:py-10 grid sm:grid-cols-2 gap-10">
+            <div>
+              <dl class="space-y-3 text-[17px]">
+                <div class="flex justify-between gap-4 border-b border-line pb-3">
+                  <dt class="text-ink/70">Poniedziałek–Piątek</dt>
+                  <dd class="font-semibold">10:00–18:00</dd>
+                </div>
+                <div class="flex justify-between gap-4 border-b border-line pb-3">
+                  <dt class="text-ink/70">Sobota</dt>
+                  <dd class="font-semibold">9:00–14:00</dd>
+                </div>
+                <div class="flex justify-between gap-4 border-b border-line pb-3">
+                  <dt class="text-ink/70">Niedziela</dt>
+                  <dd class="font-semibold">Nieczynne</dd>
+                </div>
+              </dl>
+
+              <a href="tel:+48577127999" class="mt-6 flex items-center gap-3 font-semibold text-lg hover:text-accent transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 shrink-0 text-accent"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.2 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.5 21 3 13.5 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.2 1.1L6.6 10.8z"/></svg>
+                577 127 999
+              </a>
+              <p class="mt-3 flex items-start gap-3 text-ink/80">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 shrink-0 text-accent mt-0.5"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.7 7 11.5 7.3 11.7.2.2.5.3.7.3s.5-.1.7-.3C13 21.5 20 15.7 20 10c0-4.4-3.6-8-8-8zm0 11c-1.7 0-3-1.3-3-3s1.3-3 3-3 3 1.3 3 3-1.3 3-3 3z"/></svg>
+                Wojska Polskiego 147<br>97-320 Piotrków Trybunalski
+              </p>
+
+              <a href="tel:+48577127999" class="btn-cta mt-6 w-full sm:w-auto">
+                Zadzwoń teraz
+              </a>
+            </div>
+
+            <div class="w-full h-56 sm:h-full min-h-[220px] rounded-lg border border-line overflow-hidden relative bg-base">
+              <iframe
+                src="https://www.google.com/maps?q=Wojska+Polskiego+147,+97-320+Piotrk%C3%B3w+Trybunalski&output=embed"
+                class="w-full h-full map-dark"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                title="Mapa dojazdu do M.E.N., Wojska Polskiego 147, Piotrków Trybunalski"
+              ></iframe>
+              <a
+                href="https://www.google.com/maps/dir/?api=1&destination=Wojska+Polskiego+147,+97-320+Piotrk%C3%B3w+Trybunalski"
+                target="_blank" rel="noopener"
+                class="absolute bottom-2.5 right-2.5 bg-base border border-line text-xs font-semibold px-3 py-1.5 rounded-md hover:text-accent transition-colors"
+              >
+                Wyznacz trasę ↗
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
