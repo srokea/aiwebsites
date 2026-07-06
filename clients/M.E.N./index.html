@@ -162,7 +162,7 @@
   </section>
 
   <!-- Cennik -->
-  <section id="cennik" class="border-t border-border">
+  <section id="cennik" class="relative border-t border-border overflow-hidden">
     <div class="mx-auto max-w-5xl px-5 sm:px-8 py-16 sm:py-24">
       <h2 class="font-display font-medium fluid-section mb-4">Cennik</h2>
       <p class="text-inkmuted mb-10 max-w-md">Ceny w trakcie ustalania — wkrótce zaktualizujemy.</p>
@@ -185,6 +185,18 @@
           <dd class="font-medium text-inkmuted">—</dd>
         </div>
       </dl>
+    </div>
+
+    <div class="hidden lg:block absolute top-1/2 right-[15%] -translate-y-1/2 text-accent/40 blur-[1px]" aria-hidden="true">
+      <svg width="300" height="300" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+        <circle cx="50" cy="50" r="48" stroke-width="0.35"/>
+        <circle cx="50" cy="50" r="44" stroke-width="0.35"/>
+        <g transform="translate(50,50) scale(2.3) translate(-12,-12)" stroke-width="0.6">
+          <circle cx="6" cy="6" r="2.6"/>
+          <circle cx="6" cy="18" r="2.6"/>
+          <path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/>
+        </g>
+      </svg>
     </div>
   </section>
 
@@ -329,7 +341,7 @@
   </script>
 
   <!-- Godziny -->
-  <section id="godziny" class="relative border-t border-border overflow-hidden">
+  <section id="godziny" class="border-t border-border">
     <div class="mx-auto max-w-5xl px-5 sm:px-8 py-16 sm:py-24">
       <h2 class="font-display font-medium fluid-section mb-12">Godziny</h2>
 
@@ -363,18 +375,6 @@
           <dd class="font-medium">Nieczynne</dd>
         </div>
       </dl>
-    </div>
-
-    <div class="hidden lg:block absolute top-1/2 right-[15%] -translate-y-1/2 text-accent/40 blur-[1px]" aria-hidden="true">
-      <svg width="300" height="300" viewBox="0 0 100 100" fill="none" stroke="currentColor">
-        <circle cx="50" cy="50" r="48" stroke-width="0.35"/>
-        <circle cx="50" cy="50" r="44" stroke-width="0.35"/>
-        <g transform="translate(50,50) scale(2.3) translate(-12,-12)" stroke-width="0.6">
-          <circle cx="6" cy="6" r="2.6"/>
-          <circle cx="6" cy="18" r="2.6"/>
-          <path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/>
-        </g>
-      </svg>
     </div>
   </section>
 
