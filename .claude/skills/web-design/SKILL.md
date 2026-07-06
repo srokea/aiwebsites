@@ -91,6 +91,13 @@ Zawsze, niezależnie od wariantu:
 Dodatkowo w Website+: link/widget Booksy musi być widoczny, nie ukryty.
 Dodatkowo w Pro+: formularz rezerwacji/zapytania widoczny i prosty w użyciu.
 
+## RODO i prywatność (obowiązkowe na każdej stronie)
+
+- Stopka zawiera link "Polityka prywatności" prowadzący do osobnej podstrony/sekcji z podstawową informacją: jakie dane zbiera formularz kontaktowy (jeśli jest), po co, i że dane trafiają do właściciela firmy (nie do agencji).
+- **Fonty Google:** nie ładuj ich z `fonts.googleapis.com` w locie — pobierz pliki raz i hostuj lokalnie w projekcie klienta. Ładowanie na żywo z serwerów Google wysyła IP odwiedzającego bez zgody, co jest problematyczne pod RODO.
+- **Mapa Google Maps:** jeśli osadzona jako iframe, wspomnij o tym w polityce prywatności (przekazywanie danych do Google). Alternatywa: link "Wyznacz trasę" zamiast pełnego embedu, jeśli klient/agencja chce tego unikać całkowicie.
+- To nie jest porada prawna — przy realnym kliencie warto, żeby ktoś (Ty albo klient) zerknął na treść polityki prywatności, zwłaszcza że ten sam szablon trafia do wielu klientów.
+
 ## Czego NIE robić
 
 - Nie kopiuj 1:1 przesłanych screenów z `inspo/` — to inspiracja stylu, nie treść.
@@ -104,6 +111,7 @@ Dodatkowo w Pro+: formularz rezerwacji/zapytania widoczny i prosty w użyciu.
 ## Domyślne ustawienia techniczne
 
 - Tailwind CSS przez CDN (`<script src="https://cdn.tailwindcss.com"></script>`)
+- Fonty Google pobrane i hostowane lokalnie w projekcie klienta, nie ładowane z `fonts.googleapis.com` (patrz RODO powyżej)
 - Jeden plik `index.html`, chyba że projekt wyraźnie wymaga inaczej
 - Placeholdery z `https://placehold.co/`, jeśli klient nie dostarczył zdjęć
 - Mobile-first
