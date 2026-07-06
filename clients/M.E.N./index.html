@@ -183,7 +183,7 @@
       <h2 class="font-display font-medium fluid-section mb-4">Galeria</h2>
       <p class="text-inkmuted mb-10 max-w-md">Zdjęcia salonu i strzyżeń — wkrótce.</p>
 
-      <div class="relative">
+      <div>
         <div id="galeria-track" class="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-pl-5 sm:scroll-pl-0 -mx-5 sm:mx-0 px-5 sm:px-0 pb-2" style="scrollbar-width: none;">
           <div class="snap-center shrink-0 w-[78%] sm:w-[45%] lg:w-[31%] aspect-square rounded-2xl border border-dashed border-border flex items-center justify-center text-inkmuted">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -197,13 +197,59 @@
           <div class="snap-center shrink-0 w-[78%] sm:w-[45%] lg:w-[31%] aspect-square rounded-2xl border border-dashed border-border"></div>
         </div>
 
-        <button type="button" aria-label="Poprzednie zdjęcie" onclick="document.getElementById('galeria-track').scrollBy({left: -320, behavior: 'smooth'})" class="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 items-center justify-center w-11 h-11 rounded-full bg-bg border border-border text-ink hover:border-ink transition motion-reduce:transition-none">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <button type="button" aria-label="Następne zdjęcie" onclick="document.getElementById('galeria-track').scrollBy({left: 320, behavior: 'smooth'})" class="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 items-center justify-center w-11 h-11 rounded-full bg-bg border border-border text-ink hover:border-ink transition motion-reduce:transition-none">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-        </button>
+        <div class="mt-6 flex items-center justify-center gap-6">
+          <button type="button" aria-label="Poprzednie zdjęcie" onclick="document.getElementById('galeria-track').scrollBy({left: -320, behavior: 'smooth'})" class="flex items-center justify-center w-11 h-11 rounded-full bg-bg border border-border text-ink hover:border-ink transition motion-reduce:transition-none">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+
+          <div id="galeria-dots" class="flex items-center gap-2">
+            <button type="button" aria-label="Przejdź do zdjęcia 1" data-index="0" class="galeria-dot w-2 h-2 rounded-full bg-accent transition motion-reduce:transition-none"></button>
+            <button type="button" aria-label="Przejdź do zdjęcia 2" data-index="1" class="galeria-dot w-2 h-2 rounded-full bg-border transition motion-reduce:transition-none"></button>
+            <button type="button" aria-label="Przejdź do zdjęcia 3" data-index="2" class="galeria-dot w-2 h-2 rounded-full bg-border transition motion-reduce:transition-none"></button>
+            <button type="button" aria-label="Przejdź do zdjęcia 4" data-index="3" class="galeria-dot w-2 h-2 rounded-full bg-border transition motion-reduce:transition-none"></button>
+            <button type="button" aria-label="Przejdź do zdjęcia 5" data-index="4" class="galeria-dot w-2 h-2 rounded-full bg-border transition motion-reduce:transition-none"></button>
+            <button type="button" aria-label="Przejdź do zdjęcia 6" data-index="5" class="galeria-dot w-2 h-2 rounded-full bg-border transition motion-reduce:transition-none"></button>
+          </div>
+
+          <button type="button" aria-label="Następne zdjęcie" onclick="document.getElementById('galeria-track').scrollBy({left: 320, behavior: 'smooth'})" class="flex items-center justify-center w-11 h-11 rounded-full bg-bg border border-border text-ink hover:border-ink transition motion-reduce:transition-none">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
       </div>
+
+      <script>
+        (function () {
+          var track = document.getElementById('galeria-track');
+          var dots = Array.prototype.slice.call(document.querySelectorAll('.galeria-dot'));
+          if (!track || !dots.length) return;
+          var slides = Array.prototype.slice.call(track.children);
+
+          dots.forEach(function (dot) {
+            dot.addEventListener('click', function () {
+              var slide = slides[Number(dot.dataset.index)];
+              if (slide) track.scrollTo({ left: slide.offsetLeft - track.offsetLeft, behavior: 'smooth' });
+            });
+          });
+
+          var updateActiveDot = function () {
+            var trackCenter = track.scrollLeft + track.clientWidth / 2;
+            var closest = 0;
+            var closestDist = Infinity;
+            slides.forEach(function (slide, i) {
+              var dist = Math.abs((slide.offsetLeft + slide.clientWidth / 2) - trackCenter);
+              if (dist < closestDist) { closestDist = dist; closest = i; }
+            });
+            dots.forEach(function (dot, i) {
+              dot.classList.toggle('bg-accent', i === closest);
+              dot.classList.toggle('bg-border', i !== closest);
+            });
+          };
+
+          track.addEventListener('scroll', function () {
+            window.requestAnimationFrame(updateActiveDot);
+          }, { passive: true });
+        })();
+      </script>
     </div>
   </section>
 
@@ -258,7 +304,7 @@
   </section>
 
   <!-- Kontakt -->
-  <section id="kontakt" class="border-t border-border bg-surface">
+  <section id="kontakt" class="border-t border-border">
     <div class="mx-auto max-w-5xl px-5 sm:px-8 py-16 sm:py-24">
       <h2 class="font-display font-medium fluid-section mb-12">Kontakt</h2>
 
