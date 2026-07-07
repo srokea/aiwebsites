@@ -19,9 +19,21 @@ Ten projekt korzysta z open-source'owego systemu projektowego **Impeccable** (gi
 
 ### Jeden system, mała zmienna
 
-`DESIGN.md` powinien mieć:
-- **STAŁE:** typografia, odstępy, promienie zaokrągleń, styl przycisków/kart/nawigacji, jeden rozpoznawalny motyw wizualny agencji ("signature element").
-- **ZMIENNE w granicach:** jeden kolor akcentu wybierany z góry ustalonej palety 4-6 kolorów, dobrany do charakteru niszy klienta (np. inny dla barbera, inny dla dietetyczki).
+`DESIGN.md` dzieli się na DWA rodzaje informacji — traktuj je zupełnie inaczej:
+
+**STAŁE — nigdy nie zmieniaj per klient:**
+- Kolory (tokeny: bg, surface, ink, accent, border)
+- Typografia (Playfair Display dla nagłówków, Work Sans dla reszty, skale clamp())
+- Spacing, border-radius, motion
+- Named Rules (No-Cream Rule, One Accent Rule itd.)
+
+**ZMIENNE per klient — DESIGN.md to tylko punkt startowy, nie szablon:**
+- Układ sekcji (kolejność, proporcje, ile kolumn, jak hero wygląda)
+- Które komponenty z sekcji 5 użyć — i czy w ogóle
+- Struktura nawigacji
+- Sposób prezentacji galerii, cennika, opinii
+
+Sekcja 5 (Components) w DESIGN.md opisuje **możliwe wzorce** — nie obowiązkowy układ każdej strony. Dla każdego klienta buduj układ od zera, wychodząc od jego zdjęć i briefa — nie od komponentów z DESIGN.md. Komponenty to narzędzia w skrzynce, nie instrukcja montażu.
 
 ## Struktura repo
 
@@ -62,8 +74,9 @@ Ta pętla dotyczy nie tylko pierwszej budowy strony, ale KAŻDEJ zmiany w istnie
 - **Większa zmiana** (nowa sekcja, zmiana wariantu strony, przebudowa struktury/układu, redesign): przejdź przez pełną pętlę poniżej, łącznie z `/impeccable audit`/`critique` i subagentem `reviewer` na końcu.
 - W razie wątpliwości którą kategorię wybrać — zapytaj użytkownika, zamiast zgadywać.
 
-1. Wczytaj `/design/DESIGN.md` + `/design/PRODUCT.md` oraz `brief.md` klienta.
-2. Sprawdź folder `photos/` klienta. Jeśli są tam zdjęcia — to PRAWDZIWA treść, wstaw je bezpośrednio na stronę (galeria, tło hero itd.), nie traktuj ich jako inspiracji. Jeśli folder jest pusty — użyj placeholderów z placehold.co.
+1. Przejrzyj folder `photos/` i `brief.md` klienta — zanim otworzysz DESIGN.md. Na podstawie zdjęć i briefa zdecyduj: jaki układ strony pasuje do TEGO klienta? Czy hero ma być pełnoekranowe ze zdjęciem? Czy dwukolumnowe? Czy cennik ma być tabelą czy kartami? Zapisz sobie te decyzje layoutu ZANIM sięgniesz po tokeny z DESIGN.md.
+2. Wczytaj `/design/DESIGN.md` + `/design/PRODUCT.md` — ale tylko po tokeny (kolory, fonty, spacing). Nie kopiuj układu komponentów z sekcji 5 jako gotowej struktury strony.
+3. Sprawdź folder `photos/` klienta. Jeśli są tam zdjęcia — to PRAWDZIWA treść, wstaw je bezpośrednio na stronę (galeria, tło hero itd.), nie traktuj ich jako inspiracji. Jeśli folder jest pusty — użyj placeholderów z placehold.co.
 3. Sprawdź folder `inspo/`. Jeśli są tam screeny — to LUŹNA inspiracja stylu z cudzych stron, NIE wzór do skopiowania 1:1 i NIE treść do wstawienia. Nie przejmuj układu, treści ani unikalnych elementów tych stron, tylko ogólny nastrój, przefiltrowany przez DESIGN.md.
 4. Sprawdź folder `anty-inspo/`. Jeśli są tam screeny — to przykłady tego, czego NIE robić dla tego klienta (może być np. poprzednia, odrzucona wersja tej samej strony). Świadomie odróżnij finalny projekt od tych przykładów — jeśli nie jesteś pewien czy jakiś element jest zbyt podobny do anty-inspo, zmień go.
 5. Wygeneruj `index.html` (Tailwind CSS przez CDN, jeden plik) zgodnie z tokenami z DESIGN.md i wariantem z Kroku 1.
@@ -100,13 +113,15 @@ Dodatkowo w Pro+: formularz rezerwacji/zapytania widoczny i prosty w użyciu.
 
 ## Czego NIE robić
 
-- Nie kopiuj 1:1 przesłanych screenów z `inspo/` — to inspiracja stylu, nie treść.
+- Nie używaj sekcji 5 (Components) z DESIGN.md jako szablonu układu strony — to wzorce do użycia gdy pasują, nie obowiązkowa struktura każdej strony.
+- Nie buduj każdej strony w tej samej kolejności sekcji — kolejność i układ wynikają ze zdjęć i briefa klienta, nie z poprzednich projektów.
 - Nie ignoruj `anty-inspo/`, jeśli jest obecny — traktuj go jako konkretny, wizualny przykład błędu do uniknięcia, nie tylko jako ciekawostkę.
 - Nie traktuj zdjęć z `photos/` jako inspiracji do "przemalowania" — to gotowa treść klienta, wstaw je wprost.
 - Nie zmieniaj `DESIGN.md` / `PRODUCT.md` per projekt bez wyraźnej prośby.
 - Unikaj estetyki SaaS/startupowej (gradientowe hero z abstrakcyjnymi kształtami, loga "trusted by", dashboardowy UI) — to lokalny biznes, nie aplikacja.
 - Unikaj typowych "AI tells": font Inter, fioletowo-niebieskie gradienty, karty w kartach, szary tekst na kolorowym tle, czysty czarny #000, duże zaokrąglone ikonki nad nagłówkami, animacje "bounce".
 - Nie przechodź w ton sprzedażowy/korporacyjny w treści strony.
+- Nie wstawiaj żadnej treści pochodzącej od użytkownika (np. z formularza) na stronę przez `innerHTML`, `document.write` ani atrybuty typu `onerror`/`onload` z dynamiczną wartością — to otwiera na XSS. Jeśli formularz (wariant Pro+) ma kiedyś wyświetlać zgłoszenia, użyj gotowego zewnętrznego serwisu (np. Formspree, Netlify Forms) zamiast własnego kodu do tego celu.
 
 ## Domyślne ustawienia techniczne
 
