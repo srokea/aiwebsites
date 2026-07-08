@@ -462,24 +462,19 @@
   <!-- Galeria: bento -->
   <section id="galeria" class="border-b border-border">
     <div class="mx-auto max-w-6xl px-5 sm:px-8 py-16 sm:py-24">
-      <div class="flex items-end justify-between gap-4 mb-10">
-        <h2 class="font-display font-medium fluid-section">Galeria</h2>
-        <a href="galeria.html" class="hidden sm:inline text-sm font-semibold text-accent hover:underline">Zobacz całą galerię →</a>
-      </div>
+      <h2 class="font-display font-medium fluid-section mb-10">Galeria</h2>
 
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-[2fr_1fr] sm:grid-rows-2 sm:h-[560px]">
-        <button type="button" aria-label="Powiększ zdjęcie: upięcie z lokami" class="col-span-2 sm:col-span-1 sm:row-span-2 aspect-square sm:aspect-auto block group js-lightbox-trigger">
+        <a href="galeria.html" aria-label="Zobacz całą galerię: upięcie z lokami" class="col-span-2 sm:col-span-1 sm:row-span-2 aspect-square sm:aspect-auto block group">
           <img src="photos/galeria/3-glowne/490262468_1246177464175394_2878870259952439594_n.jpg" alt="Fryzura okolicznościowa z lokami wykonana w Studio Fryzur Lidia" loading="lazy" decoding="async" class="w-full h-full object-cover rounded-2xl border border-border transition motion-reduce:transition-none group-hover:brightness-90">
-        </button>
-        <button type="button" aria-label="Powiększ zdjęcie: wianek z gipsówki" class="aspect-square sm:aspect-auto block group js-lightbox-trigger">
+        </a>
+        <a href="galeria.html" aria-label="Zobacz całą galerię: wianek z gipsówki" class="aspect-square sm:aspect-auto block group">
           <img src="photos/galeria/3-glowne/485166594_2979691072195501_6412779168989102018_n-cropped.jpg" alt="Wianek z gipsówki na fryzurze dziecięcej — Studio Fryzur Lidia" loading="lazy" decoding="async" class="w-full h-full object-cover rounded-2xl border border-border transition motion-reduce:transition-none group-hover:brightness-90">
-        </button>
-        <button type="button" aria-label="Powiększ zdjęcie: proste włosy z balayage" class="aspect-square sm:aspect-auto block group js-lightbox-trigger">
+        </a>
+        <a href="galeria.html" aria-label="Zobacz całą galerię: proste włosy z balayage" class="aspect-square sm:aspect-auto block group">
           <img src="photos/galeria/3-glowne/487241679_1233678752091932_149745426349080983_n.jpg" alt="Proste, długie włosy z balayage — Studio Fryzur Lidia" loading="lazy" decoding="async" class="w-full h-full object-cover rounded-2xl border border-border transition motion-reduce:transition-none group-hover:brightness-90">
-        </button>
+        </a>
       </div>
-
-      <a href="galeria.html" class="sm:hidden mt-6 inline-block text-sm font-semibold text-accent hover:underline">Zobacz całą galerię →</a>
     </div>
   </section>
 
@@ -611,69 +606,6 @@
       }, { passive: true });
 
       window.addEventListener('resize', recompute);
-    })();
-  </script>
-
-  <!-- Lightbox -->
-  <div id="lightbox" class="hidden fixed inset-0 z-50 items-center justify-center p-4 sm:p-8 bg-ink/90" role="dialog" aria-modal="true" aria-label="Powiększone zdjęcie">
-    <button type="button" id="lightbox-close" aria-label="Zamknij podgląd" class="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center justify-center w-11 h-11 rounded-full bg-bg/10 text-bg hover:bg-bg/20 transition motion-reduce:transition-none">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-    <button type="button" id="lightbox-prev" aria-label="Poprzednie zdjęcie" class="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 flex items-center justify-center w-11 h-11 rounded-full bg-bg/10 text-bg hover:bg-bg/20 transition motion-reduce:transition-none">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
-    <button type="button" id="lightbox-next" aria-label="Następne zdjęcie" class="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 flex items-center justify-center w-11 h-11 rounded-full bg-bg/10 text-bg hover:bg-bg/20 transition motion-reduce:transition-none">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-    </button>
-    <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg">
-  </div>
-
-  <script>
-    (function () {
-      var triggers = Array.prototype.slice.call(document.querySelectorAll('.js-lightbox-trigger'));
-      if (!triggers.length) return;
-
-      var images = triggers.map(function (trigger) {
-        var img = trigger.querySelector('img');
-        return { src: img.src, alt: img.alt };
-      });
-
-      var modal = document.getElementById('lightbox');
-      var modalImg = document.getElementById('lightbox-img');
-      var index = 0;
-
-      function show(i) {
-        index = (i + images.length) % images.length;
-        modalImg.src = images[index].src;
-        modalImg.alt = images[index].alt;
-      }
-      function open(i) {
-        show(i);
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        document.body.style.overflow = 'hidden';
-      }
-      function close() {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-        document.body.style.overflow = '';
-      }
-
-      triggers.forEach(function (trigger, i) {
-        trigger.addEventListener('click', function () { open(i); });
-      });
-
-      document.getElementById('lightbox-close').addEventListener('click', close);
-      document.getElementById('lightbox-prev').addEventListener('click', function () { show(index - 1); });
-      document.getElementById('lightbox-next').addEventListener('click', function () { show(index + 1); });
-      modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
-
-      document.addEventListener('keydown', function (e) {
-        if (modal.classList.contains('hidden')) return;
-        if (e.key === 'Escape') close();
-        if (e.key === 'ArrowLeft') show(index - 1);
-        if (e.key === 'ArrowRight') show(index + 1);
-      });
     })();
   </script>
 
