@@ -144,6 +144,7 @@
       <a href="#top" class="font-body font-semibold text-lg tracking-wide">Studio Fryzur Lidia</a>
       <nav class="hidden sm:flex items-center gap-6 text-sm text-inkmuted">
         <a href="#uslugi" class="hover:text-ink transition-colors motion-reduce:transition-none">Usługi</a>
+        <a href="o-nas.html" class="hover:text-ink transition-colors motion-reduce:transition-none">O nas</a>
         <a href="#opinie" class="hover:text-ink transition-colors motion-reduce:transition-none">Opinie</a>
         <a href="#galeria" class="hover:text-ink transition-colors motion-reduce:transition-none">Galeria</a>
         <a href="#kontakt" class="hover:text-ink transition-colors motion-reduce:transition-none">Kontakt</a>
@@ -230,6 +231,24 @@
         <div class="border-t border-border pt-4">
           <h3 class="font-semibold text-lg mb-1">Upięcia i stylizacje</h3>
           <p class="text-inkmuted leading-relaxed">Na wesele, bal i każdą ważną okazję.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- O nas: teaser -->
+  <section id="o-nas" class="border-b border-border">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8 py-16 sm:py-24">
+      <div class="grid sm:grid-cols-2 gap-8 sm:gap-12 items-center">
+        <img src="https://placehold.co/800x600/EFF8F7/0F6F66?text=Zesp%C3%B3%C5%82+Studio+Fryzur+Lidia" alt="Zespół Studio Fryzur Lidia — zdjęcie wkrótce" loading="lazy" decoding="async" class="w-full aspect-[4/3] object-cover rounded-2xl border border-border">
+        <div>
+          <h2 class="font-display font-medium fluid-section mb-4">O nas</h2>
+          <p class="text-inkmuted text-lg leading-relaxed mb-6">
+            Tu pojawi się kilka zdań o tym, kim jesteśmy i jak pracujemy — tekst tymczasowy, uzupełnimy go razem z Tobą w kolejnym kroku. Zależy nam na tym, żeby każda klientka czuła się u nas swobodnie i wychodziła zadowolona.
+          </p>
+          <a href="o-nas.html" class="inline-flex items-center justify-center rounded-full border border-border text-inkmuted font-semibold px-7 py-3.5 min-h-[44px] hover:text-ink hover:border-ink transition motion-reduce:transition-none">
+            Przeczytaj więcej o nas
+          </a>
         </div>
       </div>
     </div>
@@ -449,15 +468,15 @@
       </div>
 
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-[2fr_1fr] sm:grid-rows-2 sm:h-[560px]">
-        <a href="galeria.html" aria-label="Zobacz całą galerię: eleganckie upięcie z perełkami" class="col-span-2 sm:col-span-1 sm:row-span-2 aspect-square sm:aspect-auto block group">
+        <button type="button" aria-label="Powiększ zdjęcie: eleganckie upięcie z perełkami" class="col-span-2 sm:col-span-1 sm:row-span-2 aspect-square sm:aspect-auto block group js-lightbox-trigger">
           <img src="photos/509566649_1307353111391162_8923489126334518565_n.jpg" alt="Eleganckie niskie upięcie z perełkami wykonane w Studio Fryzur Lidia" loading="lazy" decoding="async" style="object-position: center 25%;" class="w-full h-full object-cover rounded-2xl border border-border transition motion-reduce:transition-none group-hover:brightness-90">
-        </a>
-        <a href="galeria.html" aria-label="Zobacz całą galerię: długie włosy przed koloryzacją" class="aspect-square sm:aspect-auto block group">
+        </button>
+        <button type="button" aria-label="Powiększ zdjęcie: długie włosy przed koloryzacją" class="aspect-square sm:aspect-auto block group js-lightbox-trigger">
           <img src="photos/490855783_1249615490498258_4888390733772262864_n-cropped.jpg" alt="Bardzo długie włosy klientki przed koloryzacją w Studio Fryzur Lidia" loading="lazy" decoding="async" class="w-full h-full object-cover rounded-2xl border border-border transition motion-reduce:transition-none group-hover:brightness-90">
-        </a>
-        <a href="galeria.html" aria-label="Zobacz całą galerię: wnętrze salonu" class="aspect-square sm:aspect-auto block group">
+        </button>
+        <button type="button" aria-label="Powiększ zdjęcie: wnętrze salonu" class="aspect-square sm:aspect-auto block group js-lightbox-trigger">
           <img src="photos/494601487_1263077512485389_6187381550725215920_n.jpg" alt="Wnętrze salonu Studio Fryzur Lidia udekorowane na rocznicę salonu" loading="lazy" decoding="async" class="w-full h-full object-cover rounded-2xl border border-border transition motion-reduce:transition-none group-hover:brightness-90">
-        </a>
+        </button>
       </div>
 
       <a href="galeria.html" class="sm:hidden mt-6 inline-block text-sm font-semibold text-accent hover:underline">Zobacz całą galerię →</a>
@@ -592,6 +611,69 @@
       }, { passive: true });
 
       window.addEventListener('resize', recompute);
+    })();
+  </script>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="hidden fixed inset-0 z-50 items-center justify-center p-4 sm:p-8 bg-ink/90" role="dialog" aria-modal="true" aria-label="Powiększone zdjęcie">
+    <button type="button" id="lightbox-close" aria-label="Zamknij podgląd" class="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center justify-center w-11 h-11 rounded-full bg-bg/10 text-bg hover:bg-bg/20 transition motion-reduce:transition-none">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <button type="button" id="lightbox-prev" aria-label="Poprzednie zdjęcie" class="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 flex items-center justify-center w-11 h-11 rounded-full bg-bg/10 text-bg hover:bg-bg/20 transition motion-reduce:transition-none">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button type="button" id="lightbox-next" aria-label="Następne zdjęcie" class="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 flex items-center justify-center w-11 h-11 rounded-full bg-bg/10 text-bg hover:bg-bg/20 transition motion-reduce:transition-none">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg">
+  </div>
+
+  <script>
+    (function () {
+      var triggers = Array.prototype.slice.call(document.querySelectorAll('.js-lightbox-trigger'));
+      if (!triggers.length) return;
+
+      var images = triggers.map(function (trigger) {
+        var img = trigger.querySelector('img');
+        return { src: img.src, alt: img.alt };
+      });
+
+      var modal = document.getElementById('lightbox');
+      var modalImg = document.getElementById('lightbox-img');
+      var index = 0;
+
+      function show(i) {
+        index = (i + images.length) % images.length;
+        modalImg.src = images[index].src;
+        modalImg.alt = images[index].alt;
+      }
+      function open(i) {
+        show(i);
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = '';
+      }
+
+      triggers.forEach(function (trigger, i) {
+        trigger.addEventListener('click', function () { open(i); });
+      });
+
+      document.getElementById('lightbox-close').addEventListener('click', close);
+      document.getElementById('lightbox-prev').addEventListener('click', function () { show(index - 1); });
+      document.getElementById('lightbox-next').addEventListener('click', function () { show(index + 1); });
+      modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+
+      document.addEventListener('keydown', function (e) {
+        if (modal.classList.contains('hidden')) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowLeft') show(index - 1);
+        if (e.key === 'ArrowRight') show(index + 1);
+      });
     })();
   </script>
 
