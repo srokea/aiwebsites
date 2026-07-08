@@ -95,6 +95,8 @@
     background: rgba(255, 255, 255, 0.85);
     border-bottom-color: rgba(21,33,31,0.1);
   }
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
   body {
     background-repeat: no-repeat;
     background-image:
@@ -117,18 +119,26 @@
         <a href="#galeria" class="hover:text-ink transition-colors motion-reduce:transition-none">Galeria</a>
         <a href="#kontakt" class="hover:text-ink transition-colors motion-reduce:transition-none">Kontakt</a>
       </nav>
-      <a href="tel:+48510474782" class="inline-flex items-center gap-2 rounded-full bg-accent text-bg font-semibold text-sm px-4 py-2.5 min-h-[44px] hover:brightness-110 transition motion-reduce:transition-none">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        510 474 782
-      </a>
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- TODO: wstaw docelowy link do Facebooka klienta -->
+        <a href="#" aria-label="Studio Fryzur Lidia na Facebooku" class="flex items-center justify-center w-9 h-9 rounded-full border border-border text-inkmuted hover:text-ink hover:border-ink transition motion-reduce:transition-none">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <!-- TODO: wstaw docelowy link do Instagrama klienta -->
+        <a href="#" aria-label="Studio Fryzur Lidia na Instagramie" class="flex items-center justify-center w-9 h-9 rounded-full border border-border text-inkmuted hover:text-ink hover:border-ink transition motion-reduce:transition-none">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+        </a>
+        <a href="tel:+48510474782" class="inline-flex items-center gap-2 rounded-full bg-accent text-bg font-semibold text-sm px-4 py-2.5 min-h-[44px] hover:brightness-110 transition motion-reduce:transition-none">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span class="hidden sm:inline">510 474 782</span>
+        </a>
+      </div>
     </div>
   </header>
 
   <!-- Hero: split, full-bleed photo, no card -->
   <section id="top" class="grid lg:grid-cols-2">
-    <div class="relative h-[52vh] sm:h-[60vh] lg:h-auto lg:min-h-[680px] order-1 lg:order-2">
-      <img src="photos/509566649_1307353111391162_8923489126334518565_n.jpg" alt="Eleganckie niskie upięcie z perełkami wykonane w Studio Fryzur Lidia" class="absolute inset-0 w-full h-full object-cover" style="object-position: center 22%;">
-    </div>
+    <div class="h-40 sm:h-56 lg:h-auto lg:min-h-[680px] order-1 lg:order-2 bg-accent" aria-hidden="true"></div>
     <div class="order-2 lg:order-1 flex flex-col justify-center px-5 sm:px-8 lg:pl-16 lg:pr-12 py-10 lg:py-0">
       <div class="mb-5 inline-flex items-center justify-center w-11 h-11 rounded-full border border-accent/40 text-accent" aria-hidden="true">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6c3 2 3 5 3 8s-1 5-3 6"/><path d="M9 5c3 2 3 6 3 9s-1 5-3 6"/><path d="M14 4c3 2 3 7 3 10s-1 5-3 6"/><path d="M19 6c2 2 2 5 2 8"/></svg>
@@ -198,22 +208,21 @@
           <p class="text-inkmuted leading-relaxed">Na wesele, bal i każdą ważną okazję.</p>
         </div>
       </div>
-
-      <div class="flex flex-wrap items-center gap-5">
-        <p class="text-inkmuted max-w-sm">Cena zależy od długości i stanu włosów. Zadzwoń, a chętnie doradzimy i wycenimy.</p>
-        <a href="tel:+48510474782" class="inline-flex items-center justify-center gap-2 rounded-full bg-accent text-bg font-semibold px-7 py-3.5 min-h-[44px] hover:brightness-110 transition motion-reduce:transition-none shrink-0">
-          Zapytaj o wycenę
-        </a>
-      </div>
     </div>
   </section>
 
-  <!-- Opinie -->
+  <!-- Opinie: karuzela -->
   <section id="opinie" class="border-b border-border bg-surface">
     <div class="mx-auto max-w-6xl px-5 sm:px-8 py-16 sm:py-24">
-      <h2 class="font-display font-medium fluid-section mb-8">Opinie</h2>
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10 px-5 sm:px-0">
+        <h2 class="font-display font-medium fluid-section">Opinie</h2>
+        <div class="flex items-center gap-2 text-sm">
+          <span class="text-accent" aria-hidden="true">★★★★★</span>
+          <span class="text-inkmuted">4,8/5 · 34 opinie na Google</span>
+        </div>
+      </div>
 
-      <blockquote class="max-w-2xl mb-14">
+      <blockquote class="max-w-2xl mb-12 px-5 sm:px-0">
         <p class="font-display font-medium text-2xl sm:text-3xl leading-snug">
           „Fryzura na studniówkę wyszła dokładnie tak, jak chciałam, i trzymała się całą noc, nawet po intensywnym tańcu. Miła atmosfera i pełen profesjonalizm.”
         </p>
@@ -223,22 +232,184 @@
         </footer>
       </blockquote>
 
-      <div class="grid sm:grid-cols-3 gap-x-8 gap-y-8 border-t border-border pt-8">
-        <blockquote>
-          <p class="text-accent tracking-wide mb-2" aria-hidden="true">★★★★★</p>
-          <p class="leading-relaxed">„Miałam wykonaną fryzurę ślubną, w której czułam się bardzo dobrze. Polecam serdecznie!”</p>
-          <footer class="mt-3 text-sm text-inkmuted">Natalia Rudecka · Google</footer>
+      <div id="opinie-track" class="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-pl-5 sm:scroll-pl-8 px-5 sm:px-8 -mx-5 sm:-mx-8 pb-2 no-scrollbar">
+        <!-- clone (start) for infinite loop -->
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Pani Lidia zrobiła mi dzień! Moje włosy dostały drugie życie. Wychodzę z salonu zadowolona i tak jest za każdym razem, czuć pełen profesjonalizm.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Optyk Kujawińska · Google</footer>
         </blockquote>
-        <blockquote>
-          <p class="text-accent tracking-wide mb-2" aria-hidden="true">★★★★★</p>
-          <p class="leading-relaxed">„Bardzo profesjonalna obsługa pani Justyny, Joanny oraz szefowej Lidii. Bardzo dobrze dobrane kolory farb, super strzyżenie.”</p>
-          <footer class="mt-3 text-sm text-inkmuted">Katarzyna Roll · Google</footer>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Miałam wykonaną fryzurę ślubną, w której czułam się bardzo dobrze. Polecam serdecznie!”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Natalia Rudecka · Google</footer>
         </blockquote>
-        <blockquote>
-          <p class="text-accent tracking-wide mb-2" aria-hidden="true">★★★★★</p>
-          <p class="leading-relaxed">„Byłam kilka razy na czesaniu na różne okazje, fryzura zawsze nienaganna, dokładna i trwała. Obie Panie są przemiłe.”</p>
-          <footer class="mt-3 text-sm text-inkmuted">Kasia Lenarcik · Google</footer>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Bardzo profesjonalna obsługa pani Justyny, Joanny oraz szefowej Lidii. Bardzo dobrze dobrane kolory farb, super strzyżenie.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Katarzyna Roll · Google</footer>
         </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Byłam kilka razy na czesaniu na różne okazje, fryzura zawsze nienaganna, dokładna i trwała. Obie Panie są przemiłe.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Kasia Lenarcik · Google</footer>
+        </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Świetne miejsce, bardzo klimatyczne. Fryzura próbna trzymała się cały dzień, każdy był zachwycony. Przemiła pani, potrafiąca doradzić.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Maja · Google</footer>
+        </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Bardzo polecam! Fryzura ślubna wykonana przez Panią Lidię super trzymała się całą noc. Wymarzone upięcie zachwyciło również gości.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Daria Plich · Google</footer>
+        </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Fryzura ślubna wykonana przez Panią Lidię piękna, trzymała się nienaruszona przez całą noc!”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Martyna Dymus · Google</footer>
+        </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Fryzury okolicznościowe, strzyżenie i farbowanie, wszystko na najwyższym poziomie.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Eliza Śmiechowicz · Google</footer>
+        </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Dziewczyny robią świetną robotę! Upięcia przepiękne, trzymają się bez zarzutów.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Martyna Brzezińska · Google</footer>
+        </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Usługi na najwyższym poziomie, miła atmosfera oraz pełen profesjonalizm.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">martyna banaszczyk · Google</footer>
+        </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Korzystałam z usług już po raz drugi, fryzura okolicznościowa. Mam długie włosy, ciężkie w stylizacji.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Marta Łągwa · Google</footer>
+        </blockquote>
+        <!-- original -->
+        <blockquote id="opinie-first" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Pani Lidia zrobiła mi dzień! Moje włosy dostały drugie życie. Wychodzę z salonu zadowolona i tak jest za każdym razem, czuć pełen profesjonalizm.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Optyk Kujawińska · Google</footer>
+        </blockquote>
+        <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Miałam wykonaną fryzurę ślubną, w której czułam się bardzo dobrze. Polecam serdecznie!”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Natalia Rudecka · Google</footer>
+        </blockquote>
+        <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Bardzo profesjonalna obsługa pani Justyny, Joanny oraz szefowej Lidii. Bardzo dobrze dobrane kolory farb, super strzyżenie.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Katarzyna Roll · Google</footer>
+        </blockquote>
+        <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Byłam kilka razy na czesaniu na różne okazje, fryzura zawsze nienaganna, dokładna i trwała. Obie Panie są przemiłe.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Kasia Lenarcik · Google</footer>
+        </blockquote>
+        <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Świetne miejsce, bardzo klimatyczne. Fryzura próbna trzymała się cały dzień, każdy był zachwycony. Przemiła pani, potrafiąca doradzić.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Maja · Google</footer>
+        </blockquote>
+        <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Bardzo polecam! Fryzura ślubna wykonana przez Panią Lidię super trzymała się całą noc. Wymarzone upięcie zachwyciło również gości.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Daria Plich · Google</footer>
+        </blockquote>
+        <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Fryzura ślubna wykonana przez Panią Lidię piękna, trzymała się nienaruszona przez całą noc!”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Martyna Dymus · Google</footer>
+        </blockquote>
+        <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Fryzury okolicznościowe, strzyżenie i farbowanie, wszystko na najwyższym poziomie.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Eliza Śmiechowicz · Google</footer>
+        </blockquote>
+        <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Dziewczyny robią świetną robotę! Upięcia przepiękne, trzymają się bez zarzutów.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Martyna Brzezińska · Google</footer>
+        </blockquote>
+        <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Usługi na najwyższym poziomie, miła atmosfera oraz pełen profesjonalizm.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">martyna banaszczyk · Google</footer>
+        </blockquote>
+        <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Korzystałam z usług już po raz drugi, fryzura okolicznościowa. Mam długie włosy, ciężkie w stylizacji.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Marta Łągwa · Google</footer>
+        </blockquote>
+        <!-- clone (end) for infinite loop -->
+        <blockquote id="opinie-clone-end-first" aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Pani Lidia zrobiła mi dzień! Moje włosy dostały drugie życie. Wychodzę z salonu zadowolona i tak jest za każdym razem, czuć pełen profesjonalizm.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Optyk Kujawińska · Google</footer>
+        </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Miałam wykonaną fryzurę ślubną, w której czułam się bardzo dobrze. Polecam serdecznie!”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Natalia Rudecka · Google</footer>
+        </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Bardzo profesjonalna obsługa pani Justyny, Joanny oraz szefowej Lidii. Bardzo dobrze dobrane kolory farb, super strzyżenie.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Katarzyna Roll · Google</footer>
+        </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Byłam kilka razy na czesaniu na różne okazje, fryzura zawsze nienaganna, dokładna i trwała. Obie Panie są przemiłe.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Kasia Lenarcik · Google</footer>
+        </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Świetne miejsce, bardzo klimatyczne. Fryzura próbna trzymała się cały dzień, każdy był zachwycony. Przemiła pani, potrafiąca doradzić.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Maja · Google</footer>
+        </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Bardzo polecam! Fryzura ślubna wykonana przez Panią Lidię super trzymała się całą noc. Wymarzone upięcie zachwyciło również gości.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Daria Plich · Google</footer>
+        </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Fryzura ślubna wykonana przez Panią Lidię piękna, trzymała się nienaruszona przez całą noc!”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Martyna Dymus · Google</footer>
+        </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Fryzury okolicznościowe, strzyżenie i farbowanie, wszystko na najwyższym poziomie.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Eliza Śmiechowicz · Google</footer>
+        </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Dziewczyny robią świetną robotę! Upięcia przepiękne, trzymają się bez zarzutów.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Martyna Brzezińska · Google</footer>
+        </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Usługi na najwyższym poziomie, miła atmosfera oraz pełen profesjonalizm.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">martyna banaszczyk · Google</footer>
+        </blockquote>
+        <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
+          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="leading-relaxed flex-1">„Korzystałam z usług już po raz drugi, fryzura okolicznościowa. Mam długie włosy, ciężkie w stylizacji.”</p>
+          <footer class="mt-4 text-sm text-inkmuted">Marta Łągwa · Google</footer>
+        </blockquote>
+      </div>
+
+      <div class="mt-6 flex items-center justify-center gap-4">
+        <button type="button" aria-label="Poprzednie opinie" onclick="document.getElementById('opinie-track').scrollBy({left: -340, behavior: 'smooth'})" class="flex items-center justify-center w-11 h-11 rounded-full bg-bg border border-border text-ink hover:border-ink transition motion-reduce:transition-none">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button type="button" aria-label="Następne opinie" onclick="document.getElementById('opinie-track').scrollBy({left: 340, behavior: 'smooth'})" class="flex items-center justify-center w-11 h-11 rounded-full bg-bg border border-border text-ink hover:border-ink transition motion-reduce:transition-none">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
       </div>
     </div>
   </section>
@@ -249,19 +420,92 @@
       <h2 class="font-display font-medium fluid-section mb-10">Galeria</h2>
 
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-[2fr_1fr] sm:grid-rows-2 sm:h-[560px]">
-        <img src="photos/509566649_1307353111391162_8923489126334518565_n.jpg" alt="Eleganckie niskie upięcie z perełkami wykonane w Studio Fryzur Lidia" loading="lazy" decoding="async" style="object-position: center 25%;" class="col-span-2 sm:col-span-1 sm:row-span-2 aspect-square sm:aspect-auto w-full h-full object-cover rounded-2xl border border-border">
-        <img src="photos/490855783_1249615490498258_4888390733772262864_n-cropped.jpg" alt="Bardzo długie włosy klientki przed koloryzacją w Studio Fryzur Lidia" loading="lazy" decoding="async" class="aspect-square sm:aspect-auto w-full h-full object-cover rounded-2xl border border-border">
-        <img src="photos/494601487_1263077512485389_6187381550725215920_n.jpg" alt="Wnętrze salonu Studio Fryzur Lidia udekorowane na rocznicę salonu" loading="lazy" decoding="async" class="aspect-square sm:aspect-auto w-full h-full object-cover rounded-2xl border border-border">
+        <div class="col-span-2 sm:col-span-1 sm:row-span-2 aspect-square sm:aspect-auto cursor-pointer" onclick="openLightbox(0)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(0);}" role="button" tabindex="0" aria-label="Powiększ zdjęcie: eleganckie upięcie z perełkami">
+          <img src="photos/509566649_1307353111391162_8923489126334518565_n.jpg" alt="Eleganckie niskie upięcie z perełkami wykonane w Studio Fryzur Lidia" loading="lazy" decoding="async" style="object-position: center 25%;" class="w-full h-full object-cover rounded-2xl border border-border">
+        </div>
+        <div class="aspect-square sm:aspect-auto cursor-pointer" onclick="openLightbox(1)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(1);}" role="button" tabindex="0" aria-label="Powiększ zdjęcie: długie włosy przed koloryzacją">
+          <img src="photos/490855783_1249615490498258_4888390733772262864_n-cropped.jpg" alt="Bardzo długie włosy klientki przed koloryzacją w Studio Fryzur Lidia" loading="lazy" decoding="async" class="w-full h-full object-cover rounded-2xl border border-border">
+        </div>
+        <div class="aspect-square sm:aspect-auto cursor-pointer" onclick="openLightbox(2)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(2);}" role="button" tabindex="0" aria-label="Powiększ zdjęcie: wnętrze salonu">
+          <img src="photos/494601487_1263077512485389_6187381550725215920_n.jpg" alt="Wnętrze salonu Studio Fryzur Lidia udekorowane na rocznicę salonu" loading="lazy" decoding="async" class="w-full h-full object-cover rounded-2xl border border-border">
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Odwiedź nas: godziny + kontakt + mapa razem -->
+  <!-- Lightbox galerii -->
+  <div id="lightbox" class="hidden fixed inset-0 z-50 items-center justify-center p-5" onclick="if(event.target===this) closeLightbox()">
+    <div class="absolute inset-0 bg-ink/80 backdrop-blur-sm"></div>
+    <div class="relative w-full max-w-2xl">
+      <button type="button" aria-label="Zamknij podgląd" onclick="closeLightbox()" class="absolute -top-14 right-0 flex items-center justify-center w-11 h-11 rounded-full bg-bg border border-border text-ink hover:border-ink transition motion-reduce:transition-none">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+
+      <div class="rounded-2xl overflow-hidden border border-border aspect-square sm:aspect-[4/3]">
+        <img id="lightbox-img" src="" alt="" class="w-full h-full object-contain bg-bg">
+      </div>
+
+      <div class="mt-6 flex items-center justify-center gap-6">
+        <button type="button" aria-label="Poprzednie zdjęcie" onclick="lightboxNav(-1)" class="flex items-center justify-center w-11 h-11 rounded-full bg-bg border border-border text-ink hover:border-ink transition motion-reduce:transition-none">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button type="button" aria-label="Następne zdjęcie" onclick="lightboxNav(1)" class="flex items-center justify-center w-11 h-11 rounded-full bg-bg border border-border text-ink hover:border-ink transition motion-reduce:transition-none">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var lightboxImages = [
+      { src: 'photos/509566649_1307353111391162_8923489126334518565_n.jpg', alt: 'Eleganckie niskie upięcie z perełkami wykonane w Studio Fryzur Lidia' },
+      { src: 'photos/490855783_1249615490498258_4888390733772262864_n-cropped.jpg', alt: 'Bardzo długie włosy klientki przed koloryzacją w Studio Fryzur Lidia' },
+      { src: 'photos/494601487_1263077512485389_6187381550725215920_n.jpg', alt: 'Wnętrze salonu Studio Fryzur Lidia udekorowane na rocznicę salonu' }
+    ];
+    var lightboxIndex = 0;
+
+    function updateLightboxImage() {
+      var img = document.getElementById('lightbox-img');
+      img.src = lightboxImages[lightboxIndex].src;
+      img.alt = lightboxImages[lightboxIndex].alt;
+    }
+
+    function openLightbox(index) {
+      lightboxIndex = index;
+      updateLightboxImage();
+      var lb = document.getElementById('lightbox');
+      lb.classList.remove('hidden');
+      lb.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      var lb = document.getElementById('lightbox');
+      lb.classList.add('hidden');
+      lb.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    function lightboxNav(direction) {
+      lightboxIndex = (lightboxIndex + direction + lightboxImages.length) % lightboxImages.length;
+      updateLightboxImage();
+    }
+
+    document.addEventListener('keydown', function (e) {
+      var lb = document.getElementById('lightbox');
+      if (lb.classList.contains('hidden')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') lightboxNav(-1);
+      if (e.key === 'ArrowRight') lightboxNav(1);
+    });
+  </script>
+
+  <!-- Odwiedź nas: godziny + kontakt -->
   <section id="kontakt" class="bg-surface">
     <div class="mx-auto max-w-6xl px-5 sm:px-8 py-16 sm:py-24">
       <h2 class="font-display font-medium fluid-section mb-12">Odwiedź nas</h2>
 
-      <div class="grid lg:grid-cols-[0.9fr_0.9fr_1.2fr] gap-10 lg:gap-10">
+      <div class="grid sm:grid-cols-2 gap-16 sm:gap-32 max-w-4xl">
         <div>
           <h3 class="font-semibold text-lg mb-4">Godziny</h3>
           <dl class="divide-y divide-border border-y border-border text-sm">
@@ -309,35 +553,27 @@
             </div>
           </div>
 
-          <div class="mt-5 flex items-center gap-3">
-            <!-- TODO: wstaw docelowy link do Facebooka klienta -->
-            <a href="#" aria-label="Studio Fryzur Lidia na Facebooku" class="flex items-center justify-center w-11 h-11 rounded-full border border-border text-inkmuted hover:text-ink hover:border-ink transition motion-reduce:transition-none">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-            </a>
-            <!-- TODO: wstaw docelowy link do Instagrama klienta -->
-            <a href="#" aria-label="Studio Fryzur Lidia na Instagramie" class="flex items-center justify-center w-11 h-11 rounded-full border border-border text-inkmuted hover:text-ink hover:border-ink transition motion-reduce:transition-none">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
-            </a>
-          </div>
-
           <div class="mt-6">
             <a href="https://www.google.com/maps/search/?api=1&query=%C5%81%C3%B3dzka+50%2C+97-300+Piotrk%C3%B3w+Trybunalski" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-full bg-accent text-bg font-semibold px-7 py-3.5 min-h-[44px] hover:brightness-110 transition motion-reduce:transition-none">
               Wyznacz trasę ↗
             </a>
           </div>
         </div>
-
-        <div class="rounded-2xl overflow-hidden border border-border min-h-[280px] lg:min-h-full">
-          <iframe
-            title="Mapa: Studio Fryzur Lidia, Łódzka 50, Piotrków Trybunalski"
-            class="w-full h-full"
-            style="border:0;"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            src="https://www.google.com/maps?q=%C5%81%C3%B3dzka+50,+97-300+Piotrk%C3%B3w+Trybunalski&output=embed">
-          </iframe>
-        </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Mapa: pełna szerokość -->
+  <section class="border-t border-border">
+    <div class="h-[420px] sm:h-[480px]">
+      <iframe
+        title="Mapa: Studio Fryzur Lidia, Łódzka 50, Piotrków Trybunalski"
+        class="w-full h-full"
+        style="border:0;"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps?q=%C5%81%C3%B3dzka+50,+97-300+Piotrk%C3%B3w+Trybunalski&output=embed">
+      </iframe>
     </div>
   </section>
 
@@ -360,6 +596,37 @@
       };
       window.addEventListener('scroll', onScroll, { passive: true });
       onScroll();
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var track = document.getElementById('opinie-track');
+      var first = document.getElementById('opinie-first');
+      var cloneEndFirst = document.getElementById('opinie-clone-end-first');
+      if (!track || !first || !cloneEndFirst) return;
+
+      var setWidth = 0;
+      var recompute = function () {
+        setWidth = cloneEndFirst.offsetLeft - first.offsetLeft;
+        track.scrollLeft = first.offsetLeft;
+      };
+      recompute();
+
+      var scrollTimer;
+      track.addEventListener('scroll', function () {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(function () {
+          if (!setWidth) return;
+          if (track.scrollLeft >= cloneEndFirst.offsetLeft) {
+            track.scrollLeft -= setWidth;
+          } else if (track.scrollLeft < first.offsetLeft) {
+            track.scrollLeft += setWidth;
+          }
+        }, 120);
+      }, { passive: true });
+
+      window.addEventListener('resize', recompute);
     })();
   </script>
 
