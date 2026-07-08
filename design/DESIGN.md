@@ -8,6 +8,11 @@ colors:
   ink-muted-dark: "#CBC3B3"
   border-dark: "rgba(243,238,227,0.12)"
   accent-warm-amber: "#C79A4B"
+  bg-light: "#FFFFFF"
+  surface-light: "#F2F2F2"
+  ink-light: "#1A1A1A"
+  ink-muted-light: "#5A5A5A"
+  border-light: "rgba(26,26,26,0.12)"
 typography:
   display:
     fontFamily: "Fraunces, serif"
@@ -62,8 +67,14 @@ components:
 Strona ma czuć się jak dobrze zrobiony, rzemieślniczy szyld lokalnego sklepu — nie jak wygenerowany software'owy landing page. Ktoś szuka fryzjera albo dietetyczki w świetle dziennym na ulicy, albo wieczorem w domu przeglądając opinie przed telefonem — musi błyskawicznie odczytać cennik, godziny i dane kontaktowe niezależnie od warunków.
 
 Motyw (jasny albo ciemny) jest zmienny per nisza klienta, nie ustalony sztywno dla całej agencji — dobierany do konwencji branży, nie do gustu projektanta:
-- **Nisze rzemieślnicze/warsztatowe** (barber, detailing i podobne) → domyślnie **ciemny** motyw. Kojarzy się z warsztatem, skórą, metalem, wieczornym neonem szyldu — to jest ich naturalny rejestr wizualny. Potwierdzone w kodzie: M.E.N. (fryzjer, Piotrków Trybunalski).
-- **Nisze wellness/higieniczne** (dietetyk, trener personalny, korepetycje i podobne) → domyślnie **jasny** motyw. Kojarzy się z czystością, spokojem, klarownością. Jeszcze niepotwierdzone w realnym kodzie — pierwszy klient tej grupy nisz odblokuje realne tokeny jasnego motywu.
+- **Nisze rzemieślnicze/warsztatowe** (barber męski, detailing i podobne) → domyślnie **ciemny** motyw. Kojarzy się z warsztatem, skórą, metalem, wieczornym neonem szyldu — to jest ich naturalny rejestr wizualny.
+- **Nisze wellness/higieniczne** (dietetyk, trener personalny, korepetycje i podobne) → domyślnie **jasny** motyw. Kojarzy się z czystością, spokojem, klarownością.
+- **Salony fryzjerskie damskie/uniseks** (stylizacja, koloryzacja, fryzury okolicznościowe/ślubne) → domyślnie **jasny** motyw, bliżej rejestru wellness niż warsztatu — rzemiosło tu jest precyzyjne i estetyczne, nie "brudnorobocze". Potwierdzone w kodzie: M.E.N.-for-real i Studio Fryzur Lidia.
+- **Barber męski** pozostaje przy domyślnym ciemnym motywie z rejestru rzemieślniczego powyżej.
+
+**Override per fizyczny lokal.** Niezależnie od domyślnego motywu niszy, gdy brief klienta wprost wskazuje kolorystykę/nastrój jego rzeczywistego lokalu (np. dominujący kolor ścian widoczny na zdjęciach), ten sygnał wygrywa z domyślną regułą niszy — strona ma odzwierciedlać KONKRETNY salon, nie tylko branżę. Potwierdzone w kodzie: M.E.N.-for-real (jasny + czerwony, dopasowany do fizycznego wnętrza salonu, brief wprost: "motyw: jasny i akcent: czerwony — dominujący kolor fizycznego salonu") oraz Studio Fryzur Lidia (jasny + turkus, ze zdjęć turkusowej ściany salonu). Każdy taki override jest udokumentowanym wyjątkiem tego klienta, nie zmianą domyślnej reguły niszy — chyba że wzorzec potwierdzi się u kolejnych klientów tej samej niszy i użytkownik zdecyduje inaczej.
+
+> **Uwaga o starszej wersji w kodzie:** folder `clients/M.E.N.` (ciemny, Playfair Display, akcent bursztynowy) to WCZEŚNIEJSZA, zastąpiona wersja tego klienta. Aktualna, obowiązująca wersja to `clients/M.E.N.-for-real` (jasny, Fraunces, akcent czerwony). Nie traktuj starego folderu jako potwierdzonego wzorca.
 
 Niezależnie od wybranego motywu: kontrast tekstu podstawowego musi spełniać WCAG AA (≥4.5:1), a ciepło marki nie pochodzi z kremowego tła (to jest wypalony AI-domyślny wybór 2026 roku), tylko z akcentu i typografii — tło (jasne lub ciemne) zostaje neutralne i czyste, żeby cennik, zdjęcia i opinie były łatwe do skanowania wzrokiem w kilka sekund.
 
@@ -90,19 +101,23 @@ Wybór jasnej albo ciemnej bazy jest decyzją per nisza klienta (patrz Overview)
 
 - **Baza (tło), motyw ciemny** (`#0B0906`): bardzo ciemny, ledwo ciepły neutral (nie czysty #000) — potwierdzone w kodzie (M.E.N.). Chroma bliska zeru, z śladowym ciepłym odchyleniem w stronę akcentu.
 - **Tło sekcji, motyw ciemny** (`#232323`): osobny, achromatyczny szary — naprzemienne sekcje (Cennik, Galeria) używają go do warstwowania tonalnego względem bazy `#0B0906`, bez cienia.
-- **Baza (tło), motyw jasny** (`[do ustalenia przy implementacji]`): prawdziwa biel przy chroma ≈0 — świadomie NIE kremowy/piaskowy/paper-tint (OKLCH L 0.84-0.97, C<0.06, hue 40-100 to zakazane pasmo — patrz Named Rule niżej). Jeszcze niepotwierdzone w kodzie.
+- **Baza (tło), motyw jasny** (`#FFFFFF`): prawdziwa biel przy chroma ≈0 — świadomie NIE kremowy/piaskowy/paper-tint (OKLCH L 0.84-0.97, C<0.06, hue 40-100 to zakazane pasmo — patrz Named Rule niżej). Potwierdzone w kodzie: M.E.N.-for-real, Studio Fryzur Lidia.
+- **Tło sekcji, motyw jasny** (`#F2F2F2`): osobny, achromatyczny jasny szary do naprzemiennego warstwowania sekcji na tle `#FFFFFF` (analogicznie do `surface-dark` w motywie ciemnym). Potwierdzone w kodzie: M.E.N.-for-real. Dla klientów z akcentem chłodnym (np. turkus) dopuszczalny bardzo lekki chromatyczny odcień tej samej jasności zamiast czystego szarego (np. `#EFF8F7` u Studio Fryzur Lidia) — to nadal "surface", nie nowy token stały.
 - **Ink (tekst), motyw ciemny** (`#F3EEE3`): jasny, prawie-biały ciepły neutral — potwierdzone w kodzie. Kontrast wobec `#0B0906` znacznie przekracza WCAG AA.
 - **Ink muted (tekst drugorzędny), motyw ciemny** (`#CBC3B3`): przyciemniony, cieplejszy neutral dla etykiet, dat, opisów drugorzędnych — potwierdzone w kodzie.
-- **Ink (tekst), motyw jasny** (`[do ustalenia przy implementacji]`): ciemny, prawie-czarny neutral (nie czysty #000). Jeszcze niepotwierdzone w kodzie.
+- **Ink (tekst), motyw jasny** (`#1A1A1A`): ciemny, prawie-czarny neutral (nie czysty #000). Potwierdzone w kodzie: M.E.N.-for-real, Studio Fryzur Lidia.
+- **Ink muted (tekst drugorzędny), motyw jasny** (`#5A5A5A`): przyciemniony szary dla etykiet, dat, opisów drugorzędnych. Potwierdzone w kodzie: M.E.N.-for-real.
 - **Granica / divider, motyw ciemny** (`rgba(243,238,227,0.12)`): ink przy 12% krycia — subtelny podział list, kart, sekcji. Potwierdzone w kodzie.
-- **Granica / divider, motyw jasny** (`[do ustalenia przy implementacji]`): analogicznie, ink jasnego motywu przy niskim kryciu.
+- **Granica / divider, motyw jasny** (`rgba(26,26,26,0.12)`): ink jasnego motywu przy 12% krycia. Potwierdzone w kodzie: M.E.N.-for-real.
 
 ### Named Rules
 **The No-Cream Rule.** W motywie jasnym tło bazowe nigdy nie ląduje w paśmie kremu/piasku/paper (L 0.84-0.97, C<0.06, H 40-100) — to jest saturowany domyślny wybór AI z 2026 roku i zabija poczucie, że stronę robił człowiek dla konkretnej lokalnej firmy. Ciepło marki niesie akcent i typografia, nie tło.
 
 **The One Accent Rule.** Tylko jeden kolor akcentu na stronę, wybrany z ustalonej puli 4-6 odcieni ziemistych, używany na ≤10% powierzchni. Różne nisze (barber, salon, masaż, dietetyk...) dostają różny odcień z tej samej puli — nigdy własną, niezależną paletę. Zasada obowiązuje identycznie w obu motywach. Uwaga z praktyki (M.E.N.): pilnować, żeby akcent był JEDNYM zdefiniowanym tokenem używanym wszędzie (`accent`) — nie osobnym zbliżonym hexem wpisanym ręcznie przy jednym komponencie (np. gwiazdki ocen), bo dwa prawie-identyczne złote odcienie obok siebie łamią regułę ciszej niż jeden rażący błąd.
 
-**The Niche-Driven Theme Rule.** Jasny/ciemny to wybór wynikający z konwencji branży klienta (patrz Overview), nie z domyślnego ustawienia agencji ani z estetycznej mody. Raz wybrany motyw dla danej niszy zostaje spójny między klientami tej samej niszy — nie zmienia się per projekt bez uzasadnienia.
+> **Wyjątki poza pulą ziemistą (nie kopiować bez pytania):** M.E.N.-for-real używa czerwieni `#B3261E` dopasowanej do fizycznego salonu klienta, a Studio Fryzur Lidia używa turkusu ze zdjęć swojej turkusowej ściany — oba to udokumentowane, jednorazowe wyjątki uzgodnione z użytkownikiem dla KONKRETNEGO klienta (fizyczny lokal wygrywa z pulą, patrz Overview → "Override per fizyczny lokal"), nie rozszerzenie stałej puli agencji. Kolejny klient nie dostaje automatycznie chłodnego/nieziemistego akcentu bez analogicznego uzasadnienia i pytania do użytkownika.
+
+**The Niche-Driven Theme Rule.** Jasny/ciemny to wybór wynikający z konwencji branży klienta (patrz Overview), nie z domyślnego ustawienia agencji ani z estetycznej mody. Raz wybrany motyw dla danej niszy zostaje spójny między klientami tej samej niszy — nie zmienia się per projekt bez uzasadnienia. Wyjątek: gdy brief klienta wprost opisuje kolorystykę/nastrój jego fizycznego lokalu, ten sygnał wygrywa z domyślną regułą niszy (patrz Overview → "Override per fizyczny lokal") — to nadal wymaga jawnego uzgodnienia z użytkownikiem, nie automatycznego odstępstwa.
 
 ## 3. Typography
 
@@ -111,7 +126,9 @@ Wybór jasnej albo ciemnej bazy jest decyzją per nisza klienta (patrz Overview)
 
 **Character:** Display (Fraunces) niesie ciepło i charakter rzemieślniczy — kontrast wobec neutralnego, funkcjonalnego Body (Work Sans), które ma być czytelne i przyjazne na małym ekranie. Bez chłodu geometrycznego sansu korporacyjnego w roli body (Inter i podobne są zakazane — patrz Do's and Don'ts).
 
-> **Uwaga o rozjeździe w kodzie:** M.E.N. (jedyny wdrożony klient na dziś) aktualnie renderuje display jako `Playfair Display`, nie `Fraunces` — to świadomy, jednorazowy wyjątek uzgodniony z użytkownikiem dla tego konkretnego klienta, nie zmiana stałego standardu agencji. Fraunces pozostaje udokumentowanym domyślnym display fontem dla WSZYSTKICH kolejnych klientów, chyba że użytkownik wprost poprosi o kolejny wyjątek. Nie kopiuj Playfair Display do nowych projektów bez pytania.
+> **Uwaga o rozjeździe w kodzie:** M.E.N. (folder `clients/M.E.N.`, wersja zastąpiona przez `clients/M.E.N.-for-real`) renderował display jako `Playfair Display`, nie `Fraunces` — świadomy, jednorazowy wyjątek uzgodniony z użytkownikiem dla tego konkretnego klienta. `M.E.N.-for-real`, czyli aktualna wersja tego klienta, używa już `Fraunces` zgodnie ze standardem. Fraunces pozostaje udokumentowanym domyślnym display fontem dla WSZYSTKICH kolejnych klientów, chyba że użytkownik wprost poprosi o kolejny wyjątek. Nie kopiuj Playfair Display do nowych projektów bez pytania.
+>
+> **Drugi wyjątek: Studio Fryzur Lidia.** Ten klient też renderuje display jako `Playfair Display`, nie `Fraunces`. Użytkownik wskazał folder `inspo/` tego klienta (zrzut ekranu starej, ciemnej wersji M.E.N. z Playfair Display) jako inspirację stylu/fontu; po jawnym pytaniu o ten konflikt z domyślnym Fraunces, użytkownik potwierdził Playfair Display. Traktuj to jako drugi, odrębny, jednorazowy wyjątek tego klienta — nie jako sygnał, że Playfair Display zastępuje Fraunces jako nowy standard. Kolejny klient nadal dostaje Fraunces domyślnie, chyba że wystąpi analogiczna, jawnie uzgodniona sytuacja.
 
 ### Hierarchy
 - **Display** (Fraunces, waga 500, `clamp(2.1rem, 3.2vw + 1.4rem, 3.75rem)`, line-height 1.1): nagłówek hero, nazwa firmy/usługi — max jeden na stronę.
