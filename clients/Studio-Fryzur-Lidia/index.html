@@ -97,6 +97,19 @@
   }
   .no-scrollbar { scrollbar-width: none; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+  .opinie-bg {
+    background-image:
+      linear-gradient(rgba(15,111,102,0.87), rgba(15,111,102,0.87)),
+      url('photos/liscie-rotated.jpg');
+    background-size: cover;
+    background-position: center;
+  }
   .map-tint iframe { filter: grayscale(55%) contrast(1.05) brightness(1.08); }
   .map-tint-overlay {
     position: absolute;
@@ -216,192 +229,194 @@
   </section>
 
   <!-- Opinie: karuzela -->
-  <section id="opinie" class="border-b border-border bg-surface">
+  <section id="opinie" class="opinie-bg">
     <div class="mx-auto max-w-6xl px-5 sm:px-8 py-16 sm:py-24">
-      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10 px-5 sm:px-0">
-        <h2 class="font-display font-medium fluid-section">Opinie</h2>
-        <div class="flex items-center gap-2 text-sm">
-          <span class="text-accent" aria-hidden="true">★★★★★</span>
-          <span class="text-inkmuted">4,8/5 · 34 opinie na Google</span>
+      <div class="glass-panel rounded-3xl p-6 sm:p-10 mb-12 mx-5 sm:mx-0">
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+          <h2 class="font-display font-medium fluid-section">Opinie</h2>
+          <div class="flex items-center gap-2 text-sm">
+            <span class="text-[#EAB854]" aria-hidden="true">★★★★★</span>
+            <span class="text-inkmuted">4,8/5 · 34 opinie na Google</span>
+          </div>
         </div>
-      </div>
 
-      <blockquote class="max-w-2xl mb-12 px-5 sm:px-0">
-        <p class="font-display font-medium text-2xl sm:text-3xl leading-snug">
-          „Fryzura na studniówkę wyszła dokładnie tak, jak chciałam, i trzymała się całą noc, nawet po intensywnym tańcu. Miła atmosfera i pełen profesjonalizm.”
-        </p>
-        <footer class="mt-4 flex items-center gap-3 text-sm text-inkmuted">
-          <span class="text-accent" aria-hidden="true">★★★★★</span>
-          Zuzanna Zaborowska · Google
-        </footer>
-      </blockquote>
+        <blockquote class="max-w-2xl">
+          <p class="font-display font-medium text-2xl sm:text-3xl leading-snug">
+            „Fryzura na studniówkę wyszła dokładnie tak, jak chciałam, i trzymała się całą noc, nawet po intensywnym tańcu. Miła atmosfera i pełen profesjonalizm.”
+          </p>
+          <footer class="mt-4 flex items-center gap-3 text-sm text-inkmuted">
+            <span class="text-[#EAB854]" aria-hidden="true">★★★★★</span>
+            Zuzanna Zaborowska · Google
+          </footer>
+        </blockquote>
+      </div>
 
       <div id="opinie-track" class="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-pl-5 sm:scroll-pl-8 px-5 sm:px-8 -mx-5 sm:-mx-8 pb-2 no-scrollbar">
         <!-- clone (start) for infinite loop -->
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Pani Lidia zrobiła mi dzień! Moje włosy dostały drugie życie. Wychodzę z salonu zadowolona i tak jest za każdym razem, czuć pełen profesjonalizm.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Optyk Kujawińska · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Miałam wykonaną fryzurę ślubną, w której czułam się bardzo dobrze. Polecam serdecznie!”</p>
           <footer class="mt-4 text-sm text-inkmuted">Natalia Rudecka · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Bardzo profesjonalna obsługa pani Justyny, Joanny oraz szefowej Lidii. Bardzo dobrze dobrane kolory farb, super strzyżenie.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Katarzyna Roll · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Byłam kilka razy na czesaniu na różne okazje, fryzura zawsze nienaganna, dokładna i trwała. Obie Panie są przemiłe.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Kasia Lenarcik · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Świetne miejsce, bardzo klimatyczne. Fryzura próbna trzymała się cały dzień, każdy był zachwycony. Przemiła pani, potrafiąca doradzić.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Maja · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Bardzo polecam! Fryzura ślubna wykonana przez Panią Lidię super trzymała się całą noc. Wymarzone upięcie zachwyciło również gości.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Daria Plich · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Fryzura ślubna wykonana przez Panią Lidię piękna, trzymała się nienaruszona przez całą noc!”</p>
           <footer class="mt-4 text-sm text-inkmuted">Martyna Dymus · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Fryzury okolicznościowe, strzyżenie i farbowanie, wszystko na najwyższym poziomie.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Eliza Śmiechowicz · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Dziewczyny robią świetną robotę! Upięcia przepiękne, trzymają się bez zarzutów.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Martyna Brzezińska · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Usługi na najwyższym poziomie, miła atmosfera oraz pełen profesjonalizm.”</p>
           <footer class="mt-4 text-sm text-inkmuted">martyna banaszczyk · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Korzystałam z usług już po raz drugi, fryzura okolicznościowa. Mam długie włosy, ciężkie w stylizacji.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Marta Łągwa · Google</footer>
         </blockquote>
         <!-- original -->
         <blockquote id="opinie-first" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Pani Lidia zrobiła mi dzień! Moje włosy dostały drugie życie. Wychodzę z salonu zadowolona i tak jest za każdym razem, czuć pełen profesjonalizm.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Optyk Kujawińska · Google</footer>
         </blockquote>
         <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Miałam wykonaną fryzurę ślubną, w której czułam się bardzo dobrze. Polecam serdecznie!”</p>
           <footer class="mt-4 text-sm text-inkmuted">Natalia Rudecka · Google</footer>
         </blockquote>
         <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Bardzo profesjonalna obsługa pani Justyny, Joanny oraz szefowej Lidii. Bardzo dobrze dobrane kolory farb, super strzyżenie.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Katarzyna Roll · Google</footer>
         </blockquote>
         <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Byłam kilka razy na czesaniu na różne okazje, fryzura zawsze nienaganna, dokładna i trwała. Obie Panie są przemiłe.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Kasia Lenarcik · Google</footer>
         </blockquote>
         <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Świetne miejsce, bardzo klimatyczne. Fryzura próbna trzymała się cały dzień, każdy był zachwycony. Przemiła pani, potrafiąca doradzić.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Maja · Google</footer>
         </blockquote>
         <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Bardzo polecam! Fryzura ślubna wykonana przez Panią Lidię super trzymała się całą noc. Wymarzone upięcie zachwyciło również gości.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Daria Plich · Google</footer>
         </blockquote>
         <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Fryzura ślubna wykonana przez Panią Lidię piękna, trzymała się nienaruszona przez całą noc!”</p>
           <footer class="mt-4 text-sm text-inkmuted">Martyna Dymus · Google</footer>
         </blockquote>
         <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Fryzury okolicznościowe, strzyżenie i farbowanie, wszystko na najwyższym poziomie.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Eliza Śmiechowicz · Google</footer>
         </blockquote>
         <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Dziewczyny robią świetną robotę! Upięcia przepiękne, trzymają się bez zarzutów.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Martyna Brzezińska · Google</footer>
         </blockquote>
         <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Usługi na najwyższym poziomie, miła atmosfera oraz pełen profesjonalizm.”</p>
           <footer class="mt-4 text-sm text-inkmuted">martyna banaszczyk · Google</footer>
         </blockquote>
         <blockquote class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Korzystałam z usług już po raz drugi, fryzura okolicznościowa. Mam długie włosy, ciężkie w stylizacji.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Marta Łągwa · Google</footer>
         </blockquote>
         <!-- clone (end) for infinite loop -->
         <blockquote id="opinie-clone-end-first" aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Pani Lidia zrobiła mi dzień! Moje włosy dostały drugie życie. Wychodzę z salonu zadowolona i tak jest za każdym razem, czuć pełen profesjonalizm.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Optyk Kujawińska · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Miałam wykonaną fryzurę ślubną, w której czułam się bardzo dobrze. Polecam serdecznie!”</p>
           <footer class="mt-4 text-sm text-inkmuted">Natalia Rudecka · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Bardzo profesjonalna obsługa pani Justyny, Joanny oraz szefowej Lidii. Bardzo dobrze dobrane kolory farb, super strzyżenie.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Katarzyna Roll · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Byłam kilka razy na czesaniu na różne okazje, fryzura zawsze nienaganna, dokładna i trwała. Obie Panie są przemiłe.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Kasia Lenarcik · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Świetne miejsce, bardzo klimatyczne. Fryzura próbna trzymała się cały dzień, każdy był zachwycony. Przemiła pani, potrafiąca doradzić.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Maja · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Bardzo polecam! Fryzura ślubna wykonana przez Panią Lidię super trzymała się całą noc. Wymarzone upięcie zachwyciło również gości.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Daria Plich · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Fryzura ślubna wykonana przez Panią Lidię piękna, trzymała się nienaruszona przez całą noc!”</p>
           <footer class="mt-4 text-sm text-inkmuted">Martyna Dymus · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Fryzury okolicznościowe, strzyżenie i farbowanie, wszystko na najwyższym poziomie.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Eliza Śmiechowicz · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Dziewczyny robią świetną robotę! Upięcia przepiękne, trzymają się bez zarzutów.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Martyna Brzezińska · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Usługi na najwyższym poziomie, miła atmosfera oraz pełen profesjonalizm.”</p>
           <footer class="mt-4 text-sm text-inkmuted">martyna banaszczyk · Google</footer>
         </blockquote>
         <blockquote aria-hidden="true" class="snap-start shrink-0 w-[82%] sm:w-[46%] lg:w-[29%] flex flex-col rounded-2xl border border-border bg-bg p-6">
-          <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+          <p class="text-[#EAB854] tracking-wide mb-3" aria-hidden="true">★★★★★</p>
           <p class="leading-relaxed flex-1">„Korzystałam z usług już po raz drugi, fryzura okolicznościowa. Mam długie włosy, ciężkie w stylizacji.”</p>
           <footer class="mt-4 text-sm text-inkmuted">Marta Łągwa · Google</footer>
         </blockquote>
