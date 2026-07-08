@@ -202,21 +202,21 @@
 
       <div class="space-y-10 sm:space-y-12">
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          <button type="button" aria-label="Powiększ zdjęcie" class="block group js-lightbox-trigger">
+          <button type="button" aria-label="Powiększ zdjęcie" data-full="photos/490855783_1249615490498258_4888390733772262864_n.jpg" class="block group js-lightbox-trigger">
             <img src="photos/490855783_1249615490498258_4888390733772262864_n-cropped.jpg" alt="Bardzo długie włosy przed koloryzacją — Studio Fryzur Lidia" loading="lazy" decoding="async" class="w-full aspect-square object-cover rounded-2xl border border-border transition motion-reduce:transition-none group-hover:brightness-90">
           </button>
           <button type="button" aria-label="Powiększ zdjęcie" class="block group js-lightbox-trigger">
             <img src="photos/przed-i-po/1/491086161_1249615407164933_4927138104831982251_n.jpg" alt="Efekt koloryzacji po zabiegu — Studio Fryzur Lidia" loading="lazy" decoding="async" class="w-full aspect-square object-cover rounded-2xl border border-border transition motion-reduce:transition-none group-hover:brightness-90">
           </button>
-          <button type="button" aria-label="Powiększ zdjęcie" class="block group js-lightbox-trigger">
+          <button type="button" aria-label="Powiększ zdjęcie" data-full="photos/przed-i-po/1/491138250_1249615437164930_7041899841417060015_n.jpg" class="block group js-lightbox-trigger">
             <img src="photos/przed-i-po/1/491138250_1249615437164930_7041899841417060015_n-cropped.jpg" alt="Włosy przed zabiegiem koloryzacji — Studio Fryzur Lidia" loading="lazy" decoding="async" class="w-full aspect-square object-cover rounded-2xl border border-border transition motion-reduce:transition-none group-hover:brightness-90">
           </button>
         </div>
         <div class="grid grid-cols-2 gap-4">
-          <button type="button" aria-label="Powiększ zdjęcie" class="block group js-lightbox-trigger">
+          <button type="button" aria-label="Powiększ zdjęcie" data-full="photos/przed-i-po/2/490985207_1249599657166508_2468295072275095437_n.jpg" class="block group js-lightbox-trigger">
             <img src="photos/przed-i-po/2/490985207_1249599657166508_2468295072275095437_n-cropped.jpg" alt="Efekt koloryzacji po zabiegu — Studio Fryzur Lidia" loading="lazy" decoding="async" class="w-full aspect-square object-cover rounded-2xl border border-border transition motion-reduce:transition-none group-hover:brightness-90">
           </button>
-          <button type="button" aria-label="Powiększ zdjęcie" class="block group js-lightbox-trigger">
+          <button type="button" aria-label="Powiększ zdjęcie" data-full="photos/przed-i-po/2/491757065_1249599683833172_6064078482824460571_n.jpg" class="block group js-lightbox-trigger">
             <img src="photos/przed-i-po/2/491757065_1249599683833172_6064078482824460571_n-cropped.jpg" alt="Metamorfoza koloru włosów — Studio Fryzur Lidia" loading="lazy" decoding="async" class="w-full aspect-square object-cover rounded-2xl border border-border transition motion-reduce:transition-none group-hover:brightness-90">
           </button>
         </div>
@@ -277,7 +277,7 @@
 
       var images = triggers.map(function (trigger) {
         var img = trigger.querySelector('img');
-        return { src: img.src, alt: img.alt };
+        return { src: trigger.dataset.full || img.src, alt: img.alt };
       });
 
       var modal = document.getElementById('lightbox');
