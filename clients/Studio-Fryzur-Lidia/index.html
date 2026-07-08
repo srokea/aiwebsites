@@ -110,6 +110,13 @@
     background-size: cover;
     background-position: center;
   }
+  .hero-bg {
+    background-image:
+      linear-gradient(rgba(15,111,102,0.55), rgba(15,111,102,0.55)),
+      url('photos/liscie2-web.jpg');
+    background-size: cover;
+    background-position: center;
+  }
   .map-tint iframe { filter: grayscale(55%) contrast(1.05) brightness(1.08); }
   .map-tint-overlay {
     position: absolute;
@@ -158,7 +165,7 @@
 
   <!-- Hero: split, full-bleed photo, no card -->
   <section id="top" class="grid lg:grid-cols-2">
-    <div class="h-40 sm:h-56 lg:h-auto lg:min-h-[680px] order-1 lg:order-2 bg-accent" aria-hidden="true"></div>
+    <div class="h-40 sm:h-56 lg:h-auto lg:min-h-[680px] order-1 lg:order-2 hero-bg" aria-hidden="true"></div>
     <div class="order-2 lg:order-1 flex flex-col justify-center px-5 sm:px-8 lg:pl-16 lg:pr-12 py-10 lg:py-0">
       <h1 class="font-display font-medium fluid-hero break-words max-w-md">
         Fryzury na każdą ważną <span class="italic text-accent">chwilę</span>
@@ -583,7 +590,7 @@
   </section>
 
   <!-- Mapa: pełna szerokość -->
-  <section class="border-t border-accent">
+  <section class="border-t-[2px] border-b-[10px] border-accent">
     <div class="relative h-[420px] sm:h-[480px] map-tint">
       <iframe
         title="Mapa: Studio Fryzur Lidia, Łódzka 50, Piotrków Trybunalski"
