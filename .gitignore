@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# node
+node_modules/
+
+# Impeccable cache (stan sesji, nie kod)
+.impeccable/hook.cache.json
+**/.impeccable/hook.cache.json
+
+# zrzuty ekranu robocze
+screenshots/

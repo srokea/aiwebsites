@@ -156,10 +156,9 @@ Dodatkowo: bardzo subtelny, nieruchomy gradient tła (radialne poświaty w kolor
 
 Charakter komponentów: rzemieślniczy i spokojny — pełne, wyraźne kształty (nie same-obrysowe jako domyślne), zero zagnieżdżonych kart, zero dekoracyjnych ikon-w-kółkach nad nagłówkami.
 
-### Niche Badge (signature element)
-- **Styl:** cienka kołowa obwódka (nie wypełniona), wyśrodkowana pojedyncza ikona liniowa reprezentująca usługę/niszę klienta — NIE na sztywno nożyczki, ikona dobierana per klient (np. nożyczki dla barbera, dłonie dla masażu, jabłko dla dietetyka, hantla dla trenera).
-- **Pozycja:** obok/w obrębie sekcji hero, jako subtelny akcent wizualny, nie dominujący element.
-- **Kolor:** obwódka i ikona w kolorze akcentu klienta, cienka linia (stroke, nie fill).
+### Niche Badge (element wycofany z hero)
+- **Status: NIE dodawaj domyślnie.** Badge (kołowa obwódka + ikona niszy przy hero) został usunięty na prośbę użytkownika u obu klientów, u których go wstawiono (M.E.N. — zrzut "hero-nobadge", Lidia — commit "znak z headlinu"). Praktyka pokazała, że przy nagłówku wygląda jak dekoracyjna ikonka-nad-nagłówkiem (anty-wzorzec z Do's and Don'ts).
+- Jeśli kiedyś wróci, to wyłącznie na wyraźną prośbę użytkownika i raczej poza hero (np. stopka, favicon) — cienka linia w kolorze akcentu, ikona dobrana per nisza.
 
 ### Buttons
 - **Shape:** w pełni zaokrąglone, pigułkowe (`border-radius: 9999px`).
@@ -186,7 +185,8 @@ Charakter komponentów: rzemieślniczy i spokojny — pełne, wyraźne kształty
 - **Mobile:** linki nawigacyjne chowane (`hidden sm:flex`), zostaje tylko logo + telefon-CTA.
 
 ### Map embed
-- **Styl:** `rounded-2xl overflow-hidden border border-border`, pełnowymiarowy iframe (Google Maps `output=embed`), bez filtrów koloru — mapa zostaje w natywnych barwach Google.
+- **Styl:** pełnowymiarowy iframe (Google Maps `output=embed`); na stronach jednosekcyjnych `rounded-2xl overflow-hidden border border-border`, na pełnoszerokościowych bez ramki.
+- **Filtr dopasowany do motywu — potwierdzona praktyka (zmiana reguły).** Pierwotna reguła "bez filtrów koloru" została obalona w praktyce u OBU klientów: M.E.N. dostał `filter: invert(92%) hue-rotate(180deg)...` (mapa dociemniona pod ciemny motyw), Lidia `grayscale(55%)` + overlay `mix-blend-mode: color` w kolorze akcentu. Surowa, kolorowa mapa Google gryzie się z resztą strony. Domyślnie: delikatny filtr spinający mapę z motywem (desaturacja + tint akcentu w jasnym motywie, invert w ciemnym), czytelność ulic zachowana.
 - **Fallback bez iframe:** link "Wyznacz trasę" (`button-ghost`) obok/pod embedem, otwierany w nowej karcie — działa nawet gdyby embed nie wczytał się u odbiorcy.
 
 ## 6. Do's and Don'ts

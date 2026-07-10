@@ -23,7 +23,7 @@ Ten projekt korzysta z open-source'owego systemu projektowego **Impeccable** (gi
 
 **STAŁE — nigdy nie zmieniaj per klient:**
 - Kolory (tokeny: bg, surface, ink, accent, border)
-- Typografia (Playfair Display dla nagłówków, Work Sans dla reszty, skale clamp())
+- Typografia (Fraunces dla nagłówków, Work Sans dla reszty, skale clamp()) — Playfair Display u M.E.N. i Lidii to udokumentowane, jednorazowe wyjątki (patrz DESIGN.md), nie standard
 - Spacing, border-radius, motion
 - Named Rules (No-Cream Rule, One Accent Rule itd.)
 
@@ -40,12 +40,15 @@ Sekcja 5 (Components) w DESIGN.md opisuje **możliwe wzorce** — nie obowiązko
 ```
 /design/PRODUCT.md          <- z /impeccable init, stałe dla całej agencji
 /design/DESIGN.md           <- z /impeccable init, stałe dla całej agencji
+/scripts/screenshot.mjs     <- kanoniczny skrypt zrzutów ekranu (mobile+desktop) — używaj jego, nie pisz ad-hoc Puppeteera
 /clients/<nazwa-klienta>/
   brief.md                  <- dane klienta (patrz niżej)
   inspo/                    <- screeny CUDZYCH stron internetowych, tylko styl/kierunek do zainspirowania się
   anty-inspo/               <- screeny tego, czego UNIKAĆ — złe przykłady, w tym własne poprzednie próby
   photos/                   <- PRAWDZIWE zdjęcia TEGO klienta (lokal, fryzury, praca) — do wstawienia na stronę
   index.html
+  privacy.html              <- polityka prywatności (obowiązkowa, patrz sekcja RODO)
+  galeria.html, o-nas.html  <- ewentualne podstrony, gdy treści za dużo na jedną stronę (wzorzec z Lidii)
 ```
 
 ## Krok 1: wybierz wariant strony
@@ -80,7 +83,7 @@ Ta pętla dotyczy nie tylko pierwszej budowy strony, ale KAŻDEJ zmiany w istnie
 3. Sprawdź folder `inspo/`. Jeśli są tam screeny — to LUŹNA inspiracja stylu z cudzych stron, NIE wzór do skopiowania 1:1 i NIE treść do wstawienia. Nie przejmuj układu, treści ani unikalnych elementów tych stron, tylko ogólny nastrój, przefiltrowany przez DESIGN.md.
 4. Sprawdź folder `anty-inspo/`. Jeśli są tam screeny — to przykłady tego, czego NIE robić dla tego klienta (może być np. poprzednia, odrzucona wersja tej samej strony). Świadomie odróżnij finalny projekt od tych przykładów — jeśli nie jesteś pewien czy jakiś element jest zbyt podobny do anty-inspo, zmień go.
 5. Wygeneruj `index.html` (Tailwind CSS przez CDN, jeden plik) zgodnie z tokenami z DESIGN.md i wariantem z Kroku 1.
-6. Zrób zrzut ekranu całej strony + osobno każdej sekcji (Puppeteer).
+6. Zrób zrzuty ekranu: `node scripts/screenshot.mjs clients/<klient>` — robi automatycznie wersję mobilną I desktopową każdej podstrony (z przescrollowaniem, żeby lazy-loading zdążył wczytać zdjęcia). Nie pisz własnych skryptów Puppeteer do zrzutów.
 7. Sprawdź każdy punkt:
    - Zgodność kolorów/fontów/odstępów z DESIGN.md — żadnych przypadkowych wartości.
    - `/impeccable audit` — automatyczne wykrywanie typowych błędów AI.
@@ -97,9 +100,18 @@ Zawsze, niezależnie od wariantu:
 - Numer telefonu widoczny w headerze, klikalny na telefonie (`tel:`).
 - Jasne CTA ("Umów wizytę" / "Zadzwoń"), nie ogólnikowe "Dowiedz się więcej".
 - Godziny otwarcia i adres/mapa.
-- Ikony social media, jeśli klient je ma.
+- Ikony social media, jeśli klient je ma — z PRAWDZIWYMI linkami. Nigdy nie zostawiaj `href="#"` z komentarzem TODO na stronie pokazywanej klientowi: znajdź profil sam (Google: "<nazwa> <miasto> facebook/instagram") albo zapytaj, zanim uznasz stronę za gotową.
 - Liczba opinii / gwiazdki, jeśli dane dostępne.
 - Zero żargonu technicznego (bez wzmianek o hostingu, stacku itd.).
+
+## Powtarzalne błędy z praktyki (sprawdź ZAWSZE przed oddaniem)
+
+Rzeczy, które użytkownik musiał poprawiać u więcej niż jednego klienta — sprawdzaj je z automatu:
+
+1. **Kadry zdjęć.** Po wstawieniu prawdziwych zdjęć obejrzyj je na zrzutach mobile I desktop — twarz/fryzura nie może być ucięta przez `object-fit: cover`. Dobierz `object-position` świadomie (u M.E.N. hero wymagał `center 20%`, u Lidii kafel galerii dwóch rund poprawek). Zdjęcia pionowe w poziomych kadrach to główny winowajca.
+2. **Lightbox = pełne zdjęcie.** Jeśli miniatura w galerii jest przycięta (`-cropped.jpg`), lightbox musi otwierać ORYGINAŁ (`data-full`), nie tę samą przyciętą miniaturę.
+3. **Myślniki (—).** Impeccable wielokrotnie flagował "em-dash-overuse" u każdego klienta. W tekstach na stronę klienta pisz krótkie zdania z kropkami; maksymalnie 2-3 myślniki na całą stronę.
+4. **Funkcje spoza briefu.** Lightbox na stronie głównej Lidii został zbudowany i potem usunięty na prośbę użytkownika — to koszt podwójnej pracy. Zanim dodasz interaktywny bajer (lightbox, karuzela, animacja), sprawdź brief; jak go tam nie ma, nie dodawaj (twarda zasada z CLAUDE.md).
 
 Dodatkowo w Website+: link/widget Booksy musi być widoczny, nie ukryty.
 Dodatkowo w Pro+: formularz rezerwacji/zapytania widoczny i prosty w użyciu.
