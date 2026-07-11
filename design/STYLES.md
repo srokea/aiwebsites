@@ -15,10 +15,57 @@ Podgląd wszystkich naraz: https://fable5-portfolio.netlify.app
 - jasny (Lidia): `#FFFFFF` tło · `#EFF8F7` surface sekcji · `#15211F` tekst · `#0F6F66` akcent (u Lidii turkus ze ściany salonu)
 - ciemny (M.E.N.): `#0B0906` tło · `#232323` surface sekcji · `#F3EEE3` tekst · `#C79A4B` akcent (bursztyn)
 - akcent ≤10% powierzchni (CTA, gwiazdki, aktywne stany), granice = ink na 12% krycia
-**Fonty:** Playfair Display (display; wg DESIGN.md domyślnie Fraunces — Playfair to udokumentowane wyjątki tych dwóch klientów) / Work Sans (body). Fonty hostowane lokalnie (RODO).
+**Fonty:** Playfair Display (display; w tych dwóch dostarczonych stronach — dla NOWEJ produkcji standardem jest Bodoni Moda, patrz DESIGN.md i warianty 00-A…00-E) / Work Sans (body). Fonty hostowane lokalnie (RODO).
 **Layout:** jedna strona pionowa: sticky frosted-glass navbar z klikalnym telefonem → hero (display + kursywa na jednym słowie) → usługi/cennik jako płaskie `<dl>` z `divide-y` → galeria/zdjęcia klienta → opinie jako `<blockquote>` z gwiazdkami w akcencie → godziny + kontakt + mapa → stopka z polityką prywatności. Podstrony (galeria, o-nas) tylko gdy treści za dużo.
 **Techniki:** warstwowanie tonalne bg/surface zamiast cieni (Flat-By-Default), przyciski-pigułki (pill), glass-panel na zdjęciowym tle (Lidia), sekcje ze zdjęciem lokalu pod overlay'em w akcencie, mapa Google z delikatnym filtrem pod motyw, `prefers-reduced-motion` wszędzie, mobile-first, min. 44px dotyk.
 **Kiedy używać:** domyślnie dla KAŻDEGO płacącego klienta agencji — bezpieczny, konwersyjny, zgodny z systemem. Motyw jasny/ciemny wg konwencji niszy albo koloru fizycznego lokalu (patrz DESIGN.md).
+
+---
+
+## Styl 00-A — Default: wariant glass-hero (Egoist)
+**Link:** lokalny: `portfolio/site-00a/` (po deployu portfolio: /site-00a/)
+**Vibe:** Default w wydaniu miękkim i kobiecym — pełnoekranowe zdjęcie włosów pod szklanym panelem, reszta oddycha.
+**Paleta:** `#FFFFFF` tło · `#F5F1EE` surface · `#221C19` tekst · `#B0563B` terakota (akcent z puli ziemistej)
+**Fonty:** Bodoni Moda (display, kursywa na "egoistką") / Work Sans — standard Fundamentu
+**Layout:** hero = zdjęcie na cały ekran + wyśrodkowany glass-panel z CTA i oceną → cennik jako TRZY KARTY na surface (mini-dl w każdej) → galeria siatka 4 kwadratów → opinie: jedna duża kursywą + dwie mniejsze z border-t → kontakt dwukolumnowy z mapą w ramce.
+**Techniki:** glass-panel (blur+saturate) jako scena hero, karty cennika zamiast jednej listy, mapa z sepiowym tintem pod terakotę.
+**Kiedy używać:** salon damski/beauty z dobrym zdjęciem "bohaterem"; klientka ma poczuć jakość od pierwszego ekranu.
+
+## Styl 00-B — Default: wariant ciemny typograficzny (Salon Brodaczy)
+**Link:** lokalny: `portfolio/site-00b/` (po deployu portfolio: /site-00b/)
+**Vibe:** Default w rejestrze barberskim — ciemno, gęsto, bez zdjęć; charakter niesie sama typografia i poświaty.
+**Paleta:** `#0C0A08` tło · `#1E1B18` surface · `#F2EDE6` tekst · `#C2703E` spalona sjena (akcent)
+**Fonty:** Bodoni Moda (hero z kursywą na "brodaczy") / Work Sans
+**Layout:** hero czysto typograficzne (bez obrazu, radialne poświaty akcentu w tle) → cennik dwukolumnowy Włosy|Broda (dwa dl z kursywnymi nagłówkami) → sekcja "Zasady domu" z numeracją kursywą + galeria dashed-placeholder (wzorzec DESIGN.md) → opinie siatka 3 → kontakt + mapa z invert-filtrem.
+**Techniki:** radial-gradient glow na body, kursywa display jako podtytuły kolumn cennika, mapa odwrócona pod ciemny motyw, dashed kafle jako uczciwy brak zdjęć.
+**Kiedy używać:** barber/warsztat bez materiałów foto; ciemny motyw niszy wg DESIGN.md, mocny charakter bez jednego zdjęcia.
+
+## Styl 00-C — Default: wariant social-proof (J.Ostrowski)
+**Link:** lokalny: `portfolio/site-00c/` (po deployu portfolio: /site-00c/)
+**Vibe:** Default zbudowany wokół liczby — 261 opinii jako główny bohater hero, reszta spokojnie z tyłu.
+**Paleta:** `#FFFFFF` tło · `#F4F2EC` surface · `#1E1B14` tekst · `#A8842C` ochra-musztarda (akcent)
+**Fonty:** Bodoni Moda (gigantyczna cyfra 261 w display) / Work Sans
+**Layout:** hero dwukolumnowe: nagłówek z kursywą + KARTA-STATYSTYKA (wielka liczba, średnia, jedno zdanie) → cennik jako wiersze Z OPISAMI pod nazwą usługi (grid 1fr/auto) → opinie jako pozioma karuzela scroll-snap z kartami na surface → kontakt/godziny dwie kolumny → mapa PEŁNA SZEROKOŚĆ na dole.
+**Techniki:** big-stat clamp do 9rem, scroll-snap + no-scrollbar (wzorzec karuzeli Lidii bez photo-bg), dot "przesuń →" jako afordancja.
+**Kiedy używać:** firma z imponującą liczbą opinii/stażem — dowód społeczny robi sprzedaż, projekt tylko go podaje.
+
+## Styl 00-D — Default: wariant sticky-kolumna (KREATOR)
+**Link:** lokalny: `portfolio/site-00d/` (po deployu portfolio: /site-00d/)
+**Vibe:** Default jak wizytówka autorskiego studia — lewa kolumna stoi, treść płynie; kameralnie i osobiście.
+**Paleta:** `#FFFFFF` tło · `#F6F1EF` surface · `#201A18` tekst · `#A65E4E` glina (akcent)
+**Fonty:** Bodoni Moda (logotyp "Kre*a*tor" z kursywnym a w akcencie) / Work Sans
+**Layout:** desktop: dwie kolumny — lewa STICKY (nazwa, nav, telefon-pigułka, ocena) + prawa przewijana (manifest-cytat → cennik na surface → opinie: duży cytat + dwa mniejsze → kontakt z mapą); mobile: klasyczny navbar-glass i pion.
+**Techniki:** sticky aside h-screen z flex space-between, kursywna pojedyncza litera w logotypie jako sygnatura, punktory-kropki w akcencie, naprzemienne surface tylko w prawej kolumnie.
+**Kiedy używać:** jednoosobowe studio z marką osobistą właściciela; strona ma brzmieć jak rozmowa z konkretnym człowiekiem.
+
+## Styl 00-E — Default: wariant dwudzielny (KAROLINA)
+**Link:** lokalny: `portfolio/site-00e/` (po deployu portfolio: /site-00e/)
+**Vibe:** Default rozcięty na pół — Ona|On od progu, salon damsko-męski widoczny w samej strukturze strony.
+**Paleta:** `#FFFFFF` tło · `#F4F1EA` surface · `#1F1B12` tekst · `#9C7A35` głęboki bursztyn (akcent)
+**Fonty:** Bodoni Moda (kursywa na "niej"/"niego") / Work Sans
+**Layout:** hero = nagłówek centralny + DWIE KLIKALNE POŁOWY (Dla niej | Dla niego, pionowa granica, hover podbarwia połowę) → cennik lustrzany w dwóch kolumnach z kursywnymi nagłówkami → opinie: dwa równorzędne cytaty "ona/on" → kontakt z mapą w ramce.
+**Techniki:** grid 2-kolumnowy jako oś całej narracji, hover-tint połówek (bg akcentu na 6%), kursywa display jako etykiety płci, copy parami.
+**Kiedy używać:** salon damsko-męski/rodzinny z dwiema równorzędnymi ofertami; struktura strony sama tłumaczy model biznesu.
 
 ---
 

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="dark">
+<title>Salon Brodaczy — Barber Shop, Tomaszów Mazowiecki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#0C0A08',
+          surface: '#1E1B18',
+          ink: '#F2EDE6',
+          inkmuted: '#B9AFA3',
+          border: 'rgba(242,237,230,0.12)',
+          accent: '#C2703E',
+        },
+        fontFamily: {
+          display: ['"Bodoni Moda"', 'serif'],
+          body: ['"Work Sans"', 'sans-serif'],
+        },
+      },
+    },
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Work Sans', sans-serif;
+    background-repeat: no-repeat;
+    background-image:
+      radial-gradient(ellipse 55% 38% at 18% 6%, rgba(194,112,62,0.09), transparent 70%),
+      radial-gradient(ellipse 46% 34% at 88% 58%, rgba(194,112,62,0.06), transparent 70%);
+  }
+  .fluid-hero { font-size: clamp(2.6rem, 5.2vw + 1.6rem, 5.2rem); line-height: 1.04; }
+  .fluid-section { font-size: clamp(1.75rem, 2.5vw + 1.1rem, 2.75rem); line-height: 1.15; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  }
+  .navbar-glass {
+    background: rgba(12,10,8,0.66);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(242,237,230,0.08);
+  }
+  .map-tint iframe { filter: invert(90%) hue-rotate(180deg) grayscale(25%) contrast(0.9) brightness(0.92); }
+</style>
+</head>
+<body class="bg-bg text-ink">
+
+<!-- Nawigacja -->
+<header class="fixed top-0 inset-x-0 z-50 navbar-glass">
+  <div class="mx-auto max-w-5xl px-5 sm:px-8 h-16 flex items-center justify-between">
+    <a href="#top" class="font-body font-semibold tracking-[0.18em] uppercase text-sm">Salon Brodaczy</a>
+    <nav class="hidden sm:flex items-center gap-7 text-sm text-inkmuted">
+      <a href="#cennik" class="hover:text-ink transition-colors motion-reduce:transition-none">Cennik</a>
+      <a href="#zasady" class="hover:text-ink transition-colors motion-reduce:transition-none">Zasady</a>
+      <a href="#opinie" class="hover:text-ink transition-colors motion-reduce:transition-none">Opinie</a>
+      <a href="#kontakt" class="hover:text-ink transition-colors motion-reduce:transition-none">Kontakt</a>
+    </nav>
+    <a href="tel:+48502555743" class="inline-flex items-center gap-2 rounded-full bg-accent text-bg font-semibold text-sm px-5 py-2.5 min-h-[44px] hover:brightness-110 transition motion-reduce:transition-none">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      502 555 743
+    </a>
+  </div>
+</header>
+
+<!-- Hero: typograficzne, bez zdjęcia -->
+<section id="top" class="min-h-[88svh] flex items-center">
+  <div class="mx-auto max-w-5xl px-5 sm:px-8 pt-28 pb-16">
+    <p class="text-sm uppercase tracking-[0.25em] text-inkmuted mb-6">Barber Shop · Tomaszów Mazowiecki</p>
+    <h1 class="font-display font-medium fluid-hero max-w-3xl">
+      Miejsce dla <span class="italic text-accent">brodaczy</span>.<br>I tych, którzy dopiero zapuszczają.
+    </h1>
+    <p class="mt-7 text-inkmuted text-lg max-w-lg">
+      Strzyżenie, broda i brzytwa w męskim wydaniu. Bez pośpiechu, bez zbędnych ceregieli — umawiasz się, siadasz, wychodzisz lepszy.
+    </p>
+    <div class="mt-9 flex flex-wrap gap-3">
+      <a href="tel:+48502555743" class="inline-flex items-center rounded-full bg-accent text-bg font-semibold px-7 py-3.5 min-h-[44px] hover:brightness-110 transition motion-reduce:transition-none">Zadzwoń i umów się</a>
+      <a href="#cennik" class="inline-flex items-center rounded-full border border-border text-inkmuted font-medium px-7 py-3.5 min-h-[44px] hover:text-ink hover:border-ink transition motion-reduce:transition-none">Cennik</a>
+    </div>
+    <p class="mt-8 text-sm text-inkmuted"><span class="text-accent">★★★★★</span> 4.9 / 5 · 138 opinii w Google</p>
+  </div>
+</section>
+
+<!-- Cennik: dwie kolumny dl -->
+<section id="cennik" class="bg-surface">
+  <div class="mx-auto max-w-5xl px-5 sm:px-8 py-16 sm:py-24">
+    <h2 class="font-display font-medium fluid-section mb-12">Cennik</h2>
+    <div class="grid gap-12 sm:grid-cols-2">
+      <div>
+        <h3 class="font-display italic text-xl text-accent mb-4">Włosy</h3>
+        <dl class="divide-y divide-border border-y border-border">
+          <div class="flex justify-between gap-4 py-4"><dt class="text-inkmuted">Strzyżenie klasyczne</dt><dd class="font-medium whitespace-nowrap">60 zł</dd></div>
+          <div class="flex justify-between gap-4 py-4"><dt class="text-inkmuted">Fade / skin fade</dt><dd class="font-medium whitespace-nowrap">70 zł</dd></div>
+          <div class="flex justify-between gap-4 py-4"><dt class="text-inkmuted">Strzyżenie maszynką</dt><dd class="font-medium whitespace-nowrap">45 zł</dd></div>
+          <div class="flex justify-between gap-4 py-4"><dt class="text-inkmuted">Junior (do 12 lat)</dt><dd class="font-medium whitespace-nowrap">45 zł</dd></div>
+        </dl>
+      </div>
+      <div>
+        <h3 class="font-display italic text-xl text-accent mb-4">Broda</h3>
+        <dl class="divide-y divide-border border-y border-border">
+          <div class="flex justify-between gap-4 py-4"><dt class="text-inkmuted">Trymowanie + kontur</dt><dd class="font-medium whitespace-nowrap">45 zł</dd></div>
+          <div class="flex justify-between gap-4 py-4"><dt class="text-inkmuted">Golenie brzytwą</dt><dd class="font-medium whitespace-nowrap">75 zł</dd></div>
+          <div class="flex justify-between gap-4 py-4"><dt class="text-inkmuted">Combo: włosy + broda</dt><dd class="font-medium whitespace-nowrap">100 zł</dd></div>
+          <div class="flex justify-between gap-4 py-4"><dt class="text-inkmuted">Pielęgnacja brody + olejek</dt><dd class="font-medium whitespace-nowrap">35 zł</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Zasady + placeholder galerii -->
+<section id="zasady">
+  <div class="mx-auto max-w-5xl px-5 sm:px-8 py-16 sm:py-24 grid gap-12 lg:grid-cols-2 items-start">
+    <div>
+      <h2 class="font-display font-medium fluid-section mb-8">Zasady domu</h2>
+      <ul class="space-y-5 max-w-md text-lg">
+        <li class="flex gap-4"><span class="text-accent font-display italic">1.</span> Umawiamy się telefonicznie. Kolejka z ulicy, jeśli akurat jest fotel.</li>
+        <li class="flex gap-4"><span class="text-accent font-display italic">2.</span> Spóźnienie powyżej 15 minut oddaje termin następnemu.</li>
+        <li class="flex gap-4"><span class="text-accent font-display italic">3.</span> Kawę dostajesz bez pytania. O rozmowę pytamy.</li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="font-display font-medium fluid-section mb-8">Galeria</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="aspect-square rounded-2xl border border-dashed border-border flex items-center justify-center text-inkmuted text-sm">wkrótce</div>
+        <div class="aspect-square rounded-2xl border border-dashed border-border flex items-center justify-center text-inkmuted text-sm">wkrótce</div>
+      </div>
+      <p class="mt-4 text-sm text-inkmuted">Zdjęcia naszych cięć dojadą tu razem z nowym gramofonem do poczekalni.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Opinie: siatka 3 -->
+<section id="opinie" class="bg-surface">
+  <div class="mx-auto max-w-5xl px-5 sm:px-8 py-16 sm:py-24">
+    <h2 class="font-display font-medium fluid-section mb-12">Co mówią brodacze</h2>
+    <div class="grid gap-10 sm:grid-cols-3">
+      <blockquote class="border-t border-border pt-5">
+        <div class="text-accent tracking-[0.25em] text-sm">★★★★★</div>
+        <p class="mt-3 text-lg leading-relaxed">„Najlepsze golenie brzytwą, jakie miałem. Gorący ręcznik robi robotę."</p>
+        <footer class="mt-3 text-sm text-inkmuted">Opinia z Google</footer>
+      </blockquote>
+      <blockquote class="border-t border-border pt-5">
+        <div class="text-accent tracking-[0.25em] text-sm">★★★★★</div>
+        <p class="mt-3 text-lg leading-relaxed">„Broda w końcu ma kształt, a nie tylko długość. Fachowcy."</p>
+        <footer class="mt-3 text-sm text-inkmuted">Opinia z Google</footer>
+      </blockquote>
+      <blockquote class="border-t border-border pt-5">
+        <div class="text-accent tracking-[0.25em] text-sm">★★★★★</div>
+        <p class="mt-3 text-lg leading-relaxed">„Syn wychodzi ostrzyżony, ja z ogarniętą brodą, żona zadowolona. Komplet."</p>
+        <footer class="mt-3 text-sm text-inkmuted">Opinia z Google</footer>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- Kontakt -->
+<section id="kontakt">
+  <div class="mx-auto max-w-5xl px-5 sm:px-8 py-16 sm:py-24 grid gap-12 lg:grid-cols-2 items-start">
+    <div>
+      <h2 class="font-display font-medium fluid-section mb-8">Kontakt</h2>
+      <dl class="space-y-6 max-w-sm">
+        <div>
+          <dt class="text-sm font-medium text-inkmuted uppercase tracking-wider mb-1">Telefon</dt>
+          <dd><a href="tel:+48502555743" class="text-xl font-medium hover:text-accent transition-colors motion-reduce:transition-none">502 555 743</a></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-inkmuted uppercase tracking-wider mb-1">Adres</dt>
+          <dd>Tomaszów Mazowiecki</dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-inkmuted uppercase tracking-wider mb-2">Godziny</dt>
+          <dd>
+            <dl class="divide-y divide-border border-y border-border text-sm">
+              <div class="flex justify-between py-2.5"><dt class="text-inkmuted">Poniedziałek–Piątek</dt><dd class="font-medium">10:00–19:00</dd></div>
+              <div class="flex justify-between py-2.5"><dt class="text-inkmuted">Sobota</dt><dd class="font-medium">9:00–15:00</dd></div>
+              <div class="flex justify-between py-2.5"><dt class="text-inkmuted">Niedziela</dt><dd class="font-medium">Nieczynne</dd></div>
+            </dl>
+          </dd>
+        </div>
+      </dl>
+    </div>
+    <div class="map-tint rounded-2xl overflow-hidden border border-border h-[360px] lg:h-[420px]">
+      <iframe
+        title="Mapa: Salon Brodaczy Barber Shop, Tomaszów Mazowiecki"
+        class="w-full h-full"
+        loading="lazy"
+        allowfullscreen
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps?q=Salon+Brodaczy+Barber+Shop+Tomasz%C3%B3w+Mazowiecki&output=embed">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-border">
+  <div class="mx-auto max-w-5xl px-5 sm:px-8 py-8 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-sm text-inkmuted">
+    <span>© Salon Brodaczy Barber Shop, Tomaszów Mazowiecki</span>
+    <span class="hidden sm:inline">·</span>
+    <a href="#" class="hover:text-ink transition-colors motion-reduce:transition-none">Polityka prywatności</a>
+  </div>
+</footer>
+
+</body>
+</html>

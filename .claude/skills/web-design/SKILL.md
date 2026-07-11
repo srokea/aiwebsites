@@ -23,7 +23,7 @@ Ten projekt korzysta z open-source'owego systemu projektowego **Impeccable** (gi
 
 **STAŁE — nigdy nie zmieniaj per klient:**
 - Kolory (tokeny: bg, surface, ink, accent, border)
-- Typografia (Fraunces dla nagłówków, Work Sans dla reszty, skale clamp()) — Playfair Display u M.E.N. i Lidii to udokumentowane, jednorazowe wyjątki (patrz DESIGN.md), nie standard
+- Typografia (Bodoni Moda dla nagłówków, Work Sans dla reszty, skale clamp()) — Playfair Display u M.E.N. i Lidii oraz Fraunces u M.E.N.-for-real to strony dostarczone przed zmianą standardu, zostają bez zmian (patrz DESIGN.md)
 - Spacing, border-radius, motion
 - Named Rules (No-Cream Rule, One Accent Rule itd.)
 

@@ -15,12 +15,12 @@ colors:
   border-light: "rgba(26,26,26,0.12)"
 typography:
   display:
-    fontFamily: "Fraunces, serif"
+    fontFamily: "Bodoni Moda, serif"
     fontSize: "clamp(2.1rem, 3.2vw + 1.4rem, 3.75rem)"
     fontWeight: 500
     lineHeight: 1.1
   headline:
-    fontFamily: "Fraunces, serif"
+    fontFamily: "Bodoni Moda, serif"
     fontSize: "clamp(1.75rem, 2.5vw + 1.1rem, 2.75rem)"
     fontWeight: 500
     lineHeight: 1.15
@@ -74,7 +74,7 @@ Motyw (jasny albo ciemny) jest zmienny per nisza klienta, nie ustalony sztywno d
 
 **Override per fizyczny lokal.** Niezależnie od domyślnego motywu niszy, gdy brief klienta wprost wskazuje kolorystykę/nastrój jego rzeczywistego lokalu (np. dominujący kolor ścian widoczny na zdjęciach), ten sygnał wygrywa z domyślną regułą niszy — strona ma odzwierciedlać KONKRETNY salon, nie tylko branżę. Potwierdzone w kodzie: M.E.N.-for-real (jasny + czerwony, dopasowany do fizycznego wnętrza salonu, brief wprost: "motyw: jasny i akcent: czerwony — dominujący kolor fizycznego salonu") oraz Studio Fryzur Lidia (jasny + turkus, ze zdjęć turkusowej ściany salonu). Każdy taki override jest udokumentowanym wyjątkiem tego klienta, nie zmianą domyślnej reguły niszy — chyba że wzorzec potwierdzi się u kolejnych klientów tej samej niszy i użytkownik zdecyduje inaczej.
 
-> **Uwaga o starszej wersji w kodzie:** folder `clients/M.E.N.` (ciemny, Playfair Display, akcent bursztynowy) to WCZEŚNIEJSZA, zastąpiona wersja tego klienta. Aktualna, obowiązująca wersja to `clients/M.E.N.-for-real` (jasny, Fraunces, akcent czerwony). Nie traktuj starego folderu jako potwierdzonego wzorca.
+> **Uwaga o starszej wersji w kodzie:** folder `clients/M.E.N.` (ciemny, Playfair Display, akcent bursztynowy) to WCZEŚNIEJSZA, zastąpiona wersja tego klienta. Aktualna, obowiązująca wersja to `clients/M.E.N.-for-real` (jasny, akcent czerwony). Nie traktuj starego folderu jako potwierdzonego wzorca.
 
 Niezależnie od wybranego motywu: kontrast tekstu podstawowego musi spełniać WCAG AA (≥4.5:1), a ciepło marki nie pochodzi z kremowego tła (to jest wypalony AI-domyślny wybór 2026 roku), tylko z akcentu i typografii — tło (jasne lub ciemne) zostaje neutralne i czyste, żeby cennik, zdjęcia i opinie były łatwe do skanowania wzrokiem w kilka sekund.
 
@@ -84,7 +84,7 @@ System odrzuca explicite: estetykę SaaS/startupową (gradientowe hero z abstrak
 - Motyw dobierany per nisza klienta (rzemiosło/warsztat → ciemny, wellness/higiena → jasny), zawsze wysokokontrastowy — czytelność ponad nastrojowość, nigdy ciemny "bo wygląda cool" bez uzasadnienia niszą.
 - Jeden ciepły ziemisty akcent, używany oszczędnie (≤10% powierzchni), zmienny per nisza klienta.
 - Neutralne tło bez kremowego/piaskowego domyślnego AI-tła — prawdziwa biel (motyw jasny) albo bardzo ciemny stonowany neutral (motyw ciemny), nigdy pastelowy sand.
-- Typografia: jeden elegancki szeryf display (Fraunces) do nagłówków hero/sekcji + jeden sans body (Work Sans) do reszty tekstu — nigdy więcej niż te dwa kroje, bez chłodu geometrycznego korpo-sansu.
+- Typografia: jeden elegancki szeryf display (Bodoni Moda) do nagłówków hero/sekcji + jeden sans body (Work Sans) do reszty tekstu — nigdy więcej niż te dwa kroje, bez chłodu geometrycznego korpo-sansu.
 - Motion: responsywny, nie choreografowany — subtelny feedback, żadnego "pokazu".
 - Głębia przez warstwowanie tonalne: naprzemienne sekcje na dwóch odcieniach tła (bazowy vs. jaśniejszy/ciemniejszy neutral sekcji), zamiast cieni.
 
@@ -121,23 +121,21 @@ Wybór jasnej albo ciemnej bazy jest decyzją per nisza klienta (patrz Overview)
 
 ## 3. Typography
 
-**Display Font:** `Fraunces` — elegancki szeryf, waga 500-600, używany wyłącznie w głównych nagłówkach sekcji i hero. Kursywa dozwolona jako akcent (np. jedno słowo w nagłówku), nigdy na całym nagłówku.
+**Display Font:** `Bodoni Moda` — elegancki, kontrastowy didone (variable, wagi 400-900), używany wyłącznie w głównych nagłówkach sekcji i hero; w hero wagi 500-600, opsz dobierany automatycznie. Kursywa dozwolona jako akcent (np. jedno słowo w nagłówku), nigdy na całym nagłówku. Standard zatwierdzony 2026-07-11, zastępuje wcześniejszy standard Fraunces.
 **Body Font:** `Work Sans` — cała reszta tekstu: opisy usług, cennik, opinie, przyciski, etykiety.
 
-**Character:** Display (Fraunces) niesie ciepło i charakter rzemieślniczy — kontrast wobec neutralnego, funkcjonalnego Body (Work Sans), które ma być czytelne i przyjazne na małym ekranie. Bez chłodu geometrycznego sansu korporacyjnego w roli body (Inter i podobne są zakazane — patrz Do's and Don'ts).
+**Character:** Display (Bodoni Moda) niesie elegancję i kontrast kresek — kontrast wobec neutralnego, funkcjonalnego Body (Work Sans), które ma być czytelne i przyjazne na małym ekranie. Bez chłodu geometrycznego sansu korporacyjnego w roli body (Inter i podobne są zakazane — patrz Do's and Don'ts).
 
-> **Uwaga o rozjeździe w kodzie:** M.E.N. (folder `clients/M.E.N.`, wersja zastąpiona przez `clients/M.E.N.-for-real`) renderował display jako `Playfair Display`, nie `Fraunces` — świadomy, jednorazowy wyjątek uzgodniony z użytkownikiem dla tego konkretnego klienta. `M.E.N.-for-real`, czyli aktualna wersja tego klienta, używa już `Fraunces` zgodnie ze standardem. Fraunces pozostaje udokumentowanym domyślnym display fontem dla WSZYSTKICH kolejnych klientów, chyba że użytkownik wprost poprosi o kolejny wyjątek. Nie kopiuj Playfair Display do nowych projektów bez pytania.
->
-> **Drugi wyjątek: Studio Fryzur Lidia.** Ten klient też renderuje display jako `Playfair Display`, nie `Fraunces`. Użytkownik wskazał folder `inspo/` tego klienta (zrzut ekranu starej, ciemnej wersji M.E.N. z Playfair Display) jako inspirację stylu/fontu; po jawnym pytaniu o ten konflikt z domyślnym Fraunces, użytkownik potwierdził Playfair Display. Traktuj to jako drugi, odrębny, jednorazowy wyjątek tego klienta — nie jako sygnał, że Playfair Display zastępuje Fraunces jako nowy standard. Kolejny klient nadal dostaje Fraunces domyślnie, chyba że wystąpi analogiczna, jawnie uzgodniona sytuacja.
+> **Strony dostarczone przed zmianą standardu (nie ruszać):** `clients/M.E.N.`, `clients/M.E.N.-for-real` i `clients/Studio-Fryzur-Lidia` renderują display starszymi krojami (Playfair Display / Fraunces) — to żywe, dostarczone strony klientów i ZOSTAJĄ bez zmian. Bodoni Moda obowiązuje wyłącznie dla NOWEJ produkcji od 2026-07-11. Nie kopiuj Playfair Display ani Fraunces do nowych projektów bez wyraźnej prośby użytkownika.
 
 ### Hierarchy
-- **Display** (Fraunces, waga 500, `clamp(2.1rem, 3.2vw + 1.4rem, 3.75rem)`, line-height 1.1): nagłówek hero, nazwa firmy/usługi — max jeden na stronę.
-- **Headline** (Fraunces, waga 500, `clamp(1.75rem, 2.5vw + 1.1rem, 2.75rem)`, line-height 1.15): nagłówki sekcji (Godziny, Cennik, Opinie, Galeria, Kontakt).
+- **Display** (Bodoni Moda, waga 500, `clamp(2.1rem, 3.2vw + 1.4rem, 3.75rem)`, line-height 1.1): nagłówek hero, nazwa firmy/usługi — max jeden na stronę.
+- **Headline** (Bodoni Moda, waga 500, `clamp(1.75rem, 2.5vw + 1.1rem, 2.75rem)`, line-height 1.15): nagłówki sekcji (Godziny, Cennik, Opinie, Galeria, Kontakt).
 - **Body** (Work Sans, waga 400, max 65-75ch): opisy usług, treść sekcji, cytaty opinii (`text-lg`, `leading-relaxed`).
 - **Label** (Work Sans, waga 500, `text-sm`): godziny otwarcia, etykiety cen, przyciski, stopka.
 
 ### Named Rules
-**The Two-Typeface Rule.** Jeden szeryf display (Fraunces) + jeden sans body (Work Sans), nigdy więcej niż te dwa kroje. Display tylko w głównych nagłówkach sekcji i hero — nigdy w body, cenniku czy przyciskach.
+**The Two-Typeface Rule.** Jeden szeryf display (Bodoni Moda) + jeden sans body (Work Sans), nigdy więcej niż te dwa kroje. Display tylko w głównych nagłówkach sekcji i hero — nigdy w body, cenniku czy przyciskach.
 
 **The No-Eyebrow Rule.** Żadnych małych uppercase-trackowanych "kickerów" (ABOUT / PROCESS / PRICING) nad każdą sekcją — to saturowany AI-tell z 2023-25. Nagłówki sekcji stoją same, bez dekoracyjnego poprzedzenia.
 
