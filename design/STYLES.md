@@ -24,47 +24,47 @@ Podgląd wszystkich naraz: https://fable5-portfolio.netlify.app
 
 ## Styl 00-A — Default: wariant glass-hero (Egoist)
 **Link:** lokalny: `portfolio/site-00a/` (po deployu portfolio: /site-00a/)
-**Vibe:** Default w wydaniu miękkim i kobiecym — pełnoekranowe zdjęcie włosów pod szklanym panelem, reszta oddycha.
-**Paleta:** `#FFFFFF` tło · `#F5F1EE` surface · `#221C19` tekst · `#B0563B` terakota (akcent z puli ziemistej)
-**Fonty:** Bodoni Moda (display, kursywa na "egoistką") / Work Sans — standard Fundamentu
-**Layout:** hero = zdjęcie na cały ekran + wyśrodkowany glass-panel z CTA i oceną → cennik jako TRZY KARTY na surface (mini-dl w każdej) → galeria siatka 4 kwadratów → opinie: jedna duża kursywą + dwie mniejsze z border-t → kontakt dwukolumnowy z mapą w ramce.
-**Techniki:** glass-panel (blur+saturate) jako scena hero, karty cennika zamiast jednej listy, mapa z sepiowym tintem pod terakotę.
-**Kiedy używać:** salon damski/beauty z dobrym zdjęciem "bohaterem"; klientka ma poczuć jakość od pierwszego ekranu.
+**Vibe:** Default w wydaniu miękkim i eleganckim — pełnoekranowe zdjęcie włosów pod szklanym panelem, głęboka śliwka zamiast krzyku.
+**Paleta:** `#FFFFFF` tło · `#F6F0F3` surface (chłodny róż) · `#221C19` tekst · `#7E2C47` śliwka/burgund (akcent)
+**Fonty:** Bodoni Moda (didone — reprezentant standardu produkcji) / Work Sans
+**Layout:** hero = zdjęcie na cały ekran + wyśrodkowany glass-panel z CTA i oceną → cennik jako TRZY KARTY na surface (mini-dl w każdej) → galeria siatka 4 kwadratów (prawdziwe zdjęcia z salon-egoist.pl) → opinie: jedna duża kursywą + dwie mniejsze → kontakt dwukolumnowy z mapą.
+**Techniki:** glass-panel (blur+saturate) jako scena hero, karty cennika zamiast jednej listy, mapa z lekkim sepiowym tintem.
+**Kiedy używać:** salon damski/beauty z dobrym zdjęciem "bohaterem"; jakość i spokój od pierwszego ekranu.
 
-## Styl 00-B — Default: wariant ciemny typograficzny (Salon Brodaczy)
+## Styl 00-B — Default: wariant ciemny slab (Salon Brodaczy)
 **Link:** lokalny: `portfolio/site-00b/` (po deployu portfolio: /site-00b/)
-**Vibe:** Default w rejestrze barberskim — ciemno, gęsto, bez zdjęć; charakter niesie sama typografia i poświaty.
-**Paleta:** `#0C0A08` tło · `#1E1B18` surface · `#F2EDE6` tekst · `#C2703E` spalona sjena (akcent)
-**Fonty:** Bodoni Moda (hero z kursywą na "brodaczy") / Work Sans
-**Layout:** hero czysto typograficzne (bez obrazu, radialne poświaty akcentu w tle) → cennik dwukolumnowy Włosy|Broda (dwa dl z kursywnymi nagłówkami) → sekcja "Zasady domu" z numeracją kursywą + galeria dashed-placeholder (wzorzec DESIGN.md) → opinie siatka 3 → kontakt + mapa z invert-filtrem.
-**Techniki:** radial-gradient glow na body, kursywa display jako podtytuły kolumn cennika, mapa odwrócona pod ciemny motyw, dashed kafle jako uczciwy brak zdjęć.
+**Vibe:** Default w rejestrze barberskim — ciemno, gęsto, bez zdjęć; charakter niesie slab serif i poświaty rdzy.
+**Paleta:** `#0C0A08` tło · `#1E1B18` surface · `#F2EDE6` tekst · `#C2703E` rdza/spalona sjena (JEDYNY ciepły akcent w rodzinie wariantów)
+**Fonty:** Zilla Slab (slab serif, kursywa na "brodaczy") / Work Sans
+**Layout:** hero czysto typograficzne (radialne poświaty akcentu w tle) → cennik dwukolumnowy Włosy|Broda → "Zasady domu" z numeracją kursywą + galeria dashed-placeholder (wzorzec DESIGN.md) → opinie siatka 3 → kontakt + mapa z invert-filtrem.
+**Techniki:** radial-gradient glow na body, slab-kursywa jako podtytuły kolumn, mapa odwrócona pod ciemny motyw, dashed kafle jako uczciwy brak zdjęć.
 **Kiedy używać:** barber/warsztat bez materiałów foto; ciemny motyw niszy wg DESIGN.md, mocny charakter bez jednego zdjęcia.
 
-## Styl 00-C — Default: wariant social-proof (J.Ostrowski)
+## Styl 00-C — Default: wariant cennik-od-progu (J.Ostrowski)
 **Link:** lokalny: `portfolio/site-00c/` (po deployu portfolio: /site-00c/)
-**Vibe:** Default zbudowany wokół liczby — 261 opinii jako główny bohater hero, reszta spokojnie z tyłu.
-**Paleta:** `#FFFFFF` tło · `#F4F2EC` surface · `#1E1B14` tekst · `#A8842C` ochra-musztarda (akcent)
-**Fonty:** Bodoni Moda (gigantyczna cyfra 261 w display) / Work Sans
-**Layout:** hero dwukolumnowe: nagłówek z kursywą + KARTA-STATYSTYKA (wielka liczba, średnia, jedno zdanie) → cennik jako wiersze Z OPISAMI pod nazwą usługi (grid 1fr/auto) → opinie jako pozioma karuzela scroll-snap z kartami na surface → kontakt/godziny dwie kolumny → mapa PEŁNA SZEROKOŚĆ na dole.
-**Techniki:** big-stat clamp do 9rem, scroll-snap + no-scrollbar (wzorzec karuzeli Lidii bez photo-bg), dot "przesuń →" jako afordancja.
-**Kiedy używać:** firma z imponującą liczbą opinii/stażem — dowód społeczny robi sprzedaż, projekt tylko go podaje.
+**Vibe:** Default postawiony na głowie — ciemna zieleń, geometryczny display i ceny jako pierwsza rzecz, którą widzisz; nawigacja zadokowana NA DOLE.
+**Paleta:** `#0A0F0C` tło (ciemna butelka) · `#15201A` surface · `#EDF3EE` tekst · `#57B586` zieleń (akcent)
+**Fonty:** Unbounded (geometryczny display — ceny i nazwy usług) / Work Sans
+**Layout:** BEZ klasycznego hero i BEZ navbara u góry: mini-nagłówek z oceną → cennik natychmiast, wielkimi wierszami (nazwa w display + cena w akcencie) → opinie WPLECIONE między bloki cennika jako pełnoszerokie pasma na surface (raz z lewej, raz z prawej) → sekcja liczb (261 / 15:30 / 0 zł) → godziny + mapa → dokowany pasek na dole ekranu (nav + telefon-pigułka, frosted).
+**Techniki:** odwrócona hierarchia (cennik jako hero), bottom dock bar zamiast headera, pasma-cytaty full-bleed (-mx), statystyki zamiast marketingu, mapa z zielonym invert-tintem.
+**Kiedy używać:** firma "bez ściemy" z mocnym dowodem społecznym; klient chce, żeby cena i konkret pracowały od pierwszej sekundy.
 
 ## Styl 00-D — Default: wariant sticky-kolumna (KREATOR)
 **Link:** lokalny: `portfolio/site-00d/` (po deployu portfolio: /site-00d/)
-**Vibe:** Default jak wizytówka autorskiego studia — lewa kolumna stoi, treść płynie; kameralnie i osobiście.
-**Paleta:** `#FFFFFF` tło · `#F6F1EF` surface · `#201A18` tekst · `#A65E4E` glina (akcent)
-**Fonty:** Bodoni Moda (logotyp "Kre*a*tor" z kursywnym a w akcencie) / Work Sans
+**Vibe:** Default jak wizytówka autorskiego studia — lewa kolumna stoi, treść płynie; indygo i humanistyczny serif dodają "autorskości".
+**Paleta:** `#FFFFFF` tło · `#F1F2F8` surface (chłodny) · `#191B24` tekst · `#3A4A9F` indygo (akcent)
+**Fonty:** Alegreya (humanistyczny serif o kaligraficznym rytmie, kursywne "a" w logotypie) / Work Sans
 **Layout:** desktop: dwie kolumny — lewa STICKY (nazwa, nav, telefon-pigułka, ocena) + prawa przewijana (manifest-cytat → cennik na surface → opinie: duży cytat + dwa mniejsze → kontakt z mapą); mobile: klasyczny navbar-glass i pion.
-**Techniki:** sticky aside h-screen z flex space-between, kursywna pojedyncza litera w logotypie jako sygnatura, punktory-kropki w akcencie, naprzemienne surface tylko w prawej kolumnie.
+**Techniki:** sticky aside h-screen z flex space-between, kursywna litera w logotypie jako sygnatura, punktory-kropki w akcencie.
 **Kiedy używać:** jednoosobowe studio z marką osobistą właściciela; strona ma brzmieć jak rozmowa z konkretnym człowiekiem.
 
-## Styl 00-E — Default: wariant dwudzielny (KAROLINA)
+## Styl 00-E — Default: wariant dwugłos (KAROLINA)
 **Link:** lokalny: `portfolio/site-00e/` (po deployu portfolio: /site-00e/)
-**Vibe:** Default rozcięty na pół — Ona|On od progu, salon damsko-męski widoczny w samej strukturze strony.
-**Paleta:** `#FFFFFF` tło · `#F4F1EA` surface · `#1F1B12` tekst · `#9C7A35` głęboki bursztyn (akcent)
-**Fonty:** Bodoni Moda (kursywa na "niej"/"niego") / Work Sans
-**Layout:** hero = nagłówek centralny + DWIE KLIKALNE POŁOWY (Dla niej | Dla niego, pionowa granica, hover podbarwia połowę) → cennik lustrzany w dwóch kolumnach z kursywnymi nagłówkami → opinie: dwa równorzędne cytaty "ona/on" → kontakt z mapą w ramce.
-**Techniki:** grid 2-kolumnowy jako oś całej narracji, hover-tint połówek (bg akcentu na 6%), kursywa display jako etykiety płci, copy parami.
+**Vibe:** Default rozpisany na dwa równoległe głosy — kolumny Ona|On biegną przez CAŁĄ stronę, grotesk i teal robią nowoczesny, czysty ton.
+**Paleta:** `#FFFFFF` tło · `#EEF6F4` surface (miętowy) · `#132220` tekst · `#0E6B67` głęboki teal (akcent)
+**Fonty:** Bricolage Grotesque (grotesk display, gruby i charakterny) / Work Sans
+**Layout:** nawigacja jako PŁYWAJĄCA PIGUŁKA na środku góry (nie pełny pasek) → krótkie centralne hero "Jeden salon. Dwa światy." → dalej DWIE RÓWNOLEGŁE KOLUMNY przez całą stronę (Ona | On), każda z własną kartą intro, cennikiem i cytatem, prawa przesunięta w dół (stagger) i rozdzielone pionową kreską → wspólna karta "Przychodzicie razem?" → kontakt + mapa.
+**Techniki:** page-level split grid z translate-y stagger, gradientowa pionowa linia-separator, pill-nav z cieniem zamiast navbar-glass full-width, copy pisane parami ona/on.
 **Kiedy używać:** salon damsko-męski/rodzinny z dwiema równorzędnymi ofertami; struktura strony sama tłumaczy model biznesu.
 
 ---

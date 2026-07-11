@@ -4,25 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="dark">
 <title>Salon Fryzjerski J.Ostrowski — Tomaszów Mazowiecki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
     theme: {
       extend: {
         colors: {
-          bg: '#FFFFFF',
-          surface: '#F4F2EC',
-          ink: '#1E1B14',
-          inkmuted: '#6A6458',
-          border: 'rgba(30,27,20,0.12)',
-          accent: '#A8842C',
+          bg: '#0A0F0C',
+          surface: '#15201A',
+          ink: '#EDF3EE',
+          inkmuted: '#A7B5AB',
+          border: 'rgba(237,243,238,0.12)',
+          accent: '#57B586',
         },
         fontFamily: {
-          display: ['"Bodoni Moda"', 'serif'],
+          display: ['"Unbounded"', 'sans-serif'],
           body: ['"Work Sans"', 'sans-serif'],
         },
       },
@@ -31,178 +32,167 @@
 </script>
 <style>
   html { scroll-behavior: smooth; }
-  body { font-family: 'Work Sans', sans-serif; }
-  .fluid-hero { font-size: clamp(2.3rem, 3.6vw + 1.4rem, 4rem); line-height: 1.08; }
-  .fluid-section { font-size: clamp(1.75rem, 2.5vw + 1.1rem, 2.75rem); line-height: 1.15; }
-  .big-stat { font-size: clamp(4.5rem, 9vw + 2rem, 9rem); line-height: 0.95; }
+  body {
+    font-family: 'Work Sans', sans-serif;
+    background-repeat: no-repeat;
+    background-image:
+      radial-gradient(ellipse 50% 34% at 82% 4%, rgba(87,181,134,0.10), transparent 70%),
+      radial-gradient(ellipse 44% 30% at 8% 70%, rgba(87,181,134,0.06), transparent 70%);
+  }
+  .fluid-title { font-size: clamp(1.9rem, 2.8vw + 1rem, 3rem); line-height: 1.12; }
+  .price-display { font-size: clamp(1.4rem, 2vw + 0.7rem, 2.1rem); }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
   }
-  .navbar-glass {
-    background: rgba(255,255,255,0.62);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(30,27,20,0.08);
+  .dockbar {
+    background: rgba(10,15,12,0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid rgba(237,243,238,0.1);
   }
-  .snap-row { scroll-snap-type: x mandatory; }
-  .snap-row > * { scroll-snap-align: start; }
-  .no-scrollbar { scrollbar-width: none; }
-  .no-scrollbar::-webkit-scrollbar { display: none; }
-  .map-tint iframe { filter: grayscale(50%) sepia(10%) contrast(1.04) brightness(1.05); }
+  .map-tint iframe { filter: invert(90%) hue-rotate(150deg) grayscale(30%) contrast(0.9) brightness(0.9); }
 </style>
 </head>
-<body class="bg-bg text-ink">
+<body class="bg-bg text-ink pb-24">
 
-<!-- Nawigacja -->
-<header class="fixed top-0 inset-x-0 z-50 navbar-glass">
-  <div class="mx-auto max-w-6xl px-5 sm:px-8 h-16 flex items-center justify-between">
-    <a href="#top" class="font-body font-semibold tracking-[0.18em] uppercase text-sm">J.Ostrowski</a>
-    <nav class="hidden sm:flex items-center gap-7 text-sm text-inkmuted">
-      <a href="#cennik" class="hover:text-ink transition-colors motion-reduce:transition-none">Cennik</a>
-      <a href="#opinie" class="hover:text-ink transition-colors motion-reduce:transition-none">Opinie</a>
-      <a href="#kontakt" class="hover:text-ink transition-colors motion-reduce:transition-none">Kontakt</a>
-    </nav>
-    <a href="tel:+48513255258" class="inline-flex items-center gap-2 rounded-full bg-accent text-bg font-semibold text-sm px-5 py-2.5 min-h-[44px] hover:brightness-110 transition motion-reduce:transition-none">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-      513 255 258
-    </a>
-  </div>
-</header>
+<!-- Cennik jako hero: wchodzisz i widzisz ceny -->
+<main class="mx-auto max-w-4xl px-5 sm:px-8 pt-14 sm:pt-20">
 
-<!-- Hero: social proof jako bohater -->
-<section id="top" class="pt-28 pb-16 sm:pb-24">
-  <div class="mx-auto max-w-6xl px-5 sm:px-8 grid gap-12 lg:grid-cols-[1.1fr_0.9fr] items-center">
+  <header class="flex flex-wrap items-baseline justify-between gap-3 pb-10 border-b border-border">
     <div>
-      <h1 class="font-display font-medium fluid-hero max-w-xl">
-        Fryzjer, do którego <span class="italic text-accent">wraca</span> pół Tomaszowa.
-      </h1>
-      <p class="mt-6 text-inkmuted text-lg max-w-md">
-        Salon J.Ostrowski. Strzyżenia damskie i męskie bez udziwnień: solidne rzemiosło, uczciwe ceny i termin, który naprawdę jest terminem.
-      </p>
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a href="tel:+48513255258" class="inline-flex items-center rounded-full bg-accent text-bg font-semibold px-7 py-3.5 min-h-[44px] hover:brightness-110 transition motion-reduce:transition-none">Umów wizytę</a>
-        <a href="#cennik" class="inline-flex items-center rounded-full border border-border text-inkmuted font-medium px-7 py-3.5 min-h-[44px] hover:text-ink hover:border-ink transition motion-reduce:transition-none">Cennik</a>
-      </div>
+      <h1 class="font-display font-medium text-xl sm:text-2xl tracking-tight">J.OSTROWSKI</h1>
+      <p class="text-sm text-inkmuted mt-1">salon fryzjerski · Tomaszów Mazowiecki</p>
     </div>
-    <div class="bg-surface rounded-2xl p-8 sm:p-10 text-center">
-      <p class="font-display font-medium big-stat text-accent">261</p>
-      <p class="mt-2 text-lg font-medium">opinii w Google</p>
-      <p class="mt-1 text-inkmuted">średnia <span class="font-medium text-ink">4.8 / 5</span> <span class="text-accent">★★★★★</span></p>
-      <p class="mt-6 text-sm text-inkmuted border-t border-border pt-5 max-w-xs mx-auto">Tylu klientów nie zbiera się reklamą. Zbiera się nożyczkami, rok po roku.</p>
-    </div>
-  </div>
-</section>
+    <p class="text-sm text-inkmuted"><span class="text-accent">★★★★★</span> 4.8 / 5 · 261 opinii</p>
+  </header>
 
-<!-- Cennik: wiersze z opisami -->
-<section id="cennik" class="bg-surface">
-  <div class="mx-auto max-w-6xl px-5 sm:px-8 py-20 sm:py-24">
-    <h2 class="font-display font-medium fluid-section mb-12">Cennik</h2>
-    <dl class="max-w-3xl divide-y divide-border border-y border-border">
-      <div class="py-5 grid gap-1 sm:grid-cols-[1fr_auto] sm:gap-6 items-baseline">
-        <div><dt class="font-medium text-lg">Strzyżenie męskie</dt><p class="text-sm text-inkmuted mt-0.5">maszynka i nożyczki, mycie w cenie</p></div>
-        <dd class="font-display text-xl text-accent whitespace-nowrap">45 zł</dd>
+  <section id="cennik" class="pt-12">
+    <p class="text-sm uppercase tracking-[0.25em] text-inkmuted mb-10">Bez owijania: cennik od progu</p>
+
+    <dl>
+      <div class="flex flex-wrap justify-between items-baseline gap-x-6 gap-y-1 py-6 border-b border-border">
+        <dt>
+          <span class="font-display fluid-title">Strzyżenie męskie</span>
+          <p class="text-sm text-inkmuted mt-2">maszynka i nożyczki, mycie w cenie</p>
+        </dt>
+        <dd class="font-display price-display text-accent whitespace-nowrap">45 zł</dd>
       </div>
-      <div class="py-5 grid gap-1 sm:grid-cols-[1fr_auto] sm:gap-6 items-baseline">
-        <div><dt class="font-medium text-lg">Strzyżenie damskie</dt><p class="text-sm text-inkmuted mt-0.5">konsultacja, mycie, cięcie, modelowanie</p></div>
-        <dd class="font-display text-xl text-accent whitespace-nowrap">od 80 zł</dd>
+      <div class="flex flex-wrap justify-between items-baseline gap-x-6 gap-y-1 py-6 border-b border-border">
+        <dt>
+          <span class="font-display fluid-title">Strzyżenie damskie</span>
+          <p class="text-sm text-inkmuted mt-2">konsultacja, mycie, cięcie, modelowanie</p>
+        </dt>
+        <dd class="font-display price-display text-accent whitespace-nowrap">od 80 zł</dd>
       </div>
-      <div class="py-5 grid gap-1 sm:grid-cols-[1fr_auto] sm:gap-6 items-baseline">
-        <div><dt class="font-medium text-lg">Strzyżenie dziecięce</dt><p class="text-sm text-inkmuted mt-0.5">do 10. roku życia, na spokojnie</p></div>
-        <dd class="font-display text-xl text-accent whitespace-nowrap">35 zł</dd>
-      </div>
-      <div class="py-5 grid gap-1 sm:grid-cols-[1fr_auto] sm:gap-6 items-baseline">
-        <div><dt class="font-medium text-lg">Koloryzacja</dt><p class="text-sm text-inkmuted mt-0.5">wycena po konsultacji przy fotelu</p></div>
-        <dd class="font-display text-xl text-accent whitespace-nowrap">od 150 zł</dd>
-      </div>
-      <div class="py-5 grid gap-1 sm:grid-cols-[1fr_auto] sm:gap-6 items-baseline">
-        <div><dt class="font-medium text-lg">Modelowanie / upięcie</dt><p class="text-sm text-inkmuted mt-0.5">na szczotkę, prostownicę albo wielkie wyjście</p></div>
-        <dd class="font-display text-xl text-accent whitespace-nowrap">od 60 zł</dd>
+      <div class="flex flex-wrap justify-between items-baseline gap-x-6 gap-y-1 py-6 border-b border-border">
+        <dt>
+          <span class="font-display fluid-title">Strzyżenie dziecięce</span>
+          <p class="text-sm text-inkmuted mt-2">do 10. roku życia, na spokojnie</p>
+        </dt>
+        <dd class="font-display price-display text-accent whitespace-nowrap">35 zł</dd>
       </div>
     </dl>
-  </div>
-</section>
+  </section>
 
-<!-- Opinie: karuzela scroll-snap -->
-<section id="opinie">
-  <div class="mx-auto max-w-6xl px-5 sm:px-8 py-20 sm:py-24">
-    <div class="flex items-end justify-between gap-4 mb-10">
-      <h2 class="font-display font-medium fluid-section">Opinie</h2>
-      <p class="hidden sm:block text-sm text-inkmuted">przesuń, żeby zobaczyć więcej →</p>
-    </div>
-    <div class="snap-row no-scrollbar flex gap-5 overflow-x-auto pb-2 -mx-5 px-5 sm:mx-0 sm:px-0">
-      <blockquote class="shrink-0 w-[85%] sm:w-[46%] lg:w-[31%] bg-surface rounded-2xl p-7">
-        <div class="text-accent tracking-[0.25em] text-sm">★★★★★</div>
-        <p class="mt-3 text-lg leading-relaxed">„Chodzę od pięciu lat i zawsze wychodzę zadowolony. Stała jakość, stała cena."</p>
-        <footer class="mt-4 text-sm text-inkmuted">Opinia z Google</footer>
-      </blockquote>
-      <blockquote class="shrink-0 w-[85%] sm:w-[46%] lg:w-[31%] bg-surface rounded-2xl p-7">
-        <div class="text-accent tracking-[0.25em] text-sm">★★★★★</div>
-        <p class="mt-3 text-lg leading-relaxed">„Pan Ostrowski pamięta, jak strzygł mnie ostatnio. Tego nie da się kupić."</p>
-        <footer class="mt-4 text-sm text-inkmuted">Opinia z Google</footer>
-      </blockquote>
-      <blockquote class="shrink-0 w-[85%] sm:w-[46%] lg:w-[31%] bg-surface rounded-2xl p-7">
-        <div class="text-accent tracking-[0.25em] text-sm">★★★★★</div>
-        <p class="mt-3 text-lg leading-relaxed">„Umówiona 15:30, o 15:30 siedziałam na fotelu. Szacunek do czasu klienta."</p>
-        <footer class="mt-4 text-sm text-inkmuted">Opinia z Google</footer>
-      </blockquote>
-      <blockquote class="shrink-0 w-[85%] sm:w-[46%] lg:w-[31%] bg-surface rounded-2xl p-7">
-        <div class="text-accent tracking-[0.25em] text-sm">★★★★★</div>
-        <p class="mt-3 text-lg leading-relaxed">„Całą rodzinę tu przyprowadziłam i nikt nie chce zmieniać fryzjera."</p>
-        <footer class="mt-4 text-sm text-inkmuted">Opinia z Google</footer>
-      </blockquote>
-    </div>
-  </div>
-</section>
+  <!-- Opinia jako pasmo między cennikami -->
+  <aside class="my-14 -mx-5 sm:-mx-8 bg-surface">
+    <blockquote class="px-5 sm:px-8 py-10 max-w-2xl">
+      <div class="text-accent tracking-[0.3em] text-sm">★★★★★</div>
+      <p class="mt-3 text-xl sm:text-2xl leading-relaxed">„Chodzę od pięciu lat i zawsze wychodzę zadowolony. Stała jakość, stała cena."</p>
+      <footer class="mt-3 text-sm text-inkmuted">jedna z 261 opinii w Google</footer>
+    </blockquote>
+  </aside>
 
-<!-- Kontakt + godziny -->
-<section id="kontakt" class="bg-surface">
-  <div class="mx-auto max-w-6xl px-5 sm:px-8 py-20 sm:py-24 grid gap-12 sm:grid-cols-2">
+  <section aria-label="Cennik: koloryzacja i stylizacja">
+    <dl>
+      <div class="flex flex-wrap justify-between items-baseline gap-x-6 gap-y-1 py-6 border-b border-border">
+        <dt>
+          <span class="font-display fluid-title">Koloryzacja</span>
+          <p class="text-sm text-inkmuted mt-2">wycena po konsultacji przy fotelu</p>
+        </dt>
+        <dd class="font-display price-display text-accent whitespace-nowrap">od 150 zł</dd>
+      </div>
+      <div class="flex flex-wrap justify-between items-baseline gap-x-6 gap-y-1 py-6 border-b border-border">
+        <dt>
+          <span class="font-display fluid-title">Modelowanie / upięcie</span>
+          <p class="text-sm text-inkmuted mt-2">na szczotkę, prostownicę albo wielkie wyjście</p>
+        </dt>
+        <dd class="font-display price-display text-accent whitespace-nowrap">od 60 zł</dd>
+      </div>
+    </dl>
+  </section>
+
+  <aside class="my-14 -mx-5 sm:-mx-8 bg-surface">
+    <blockquote class="px-5 sm:px-8 py-10 max-w-2xl sm:ml-auto sm:text-right">
+      <div class="text-accent tracking-[0.3em] text-sm">★★★★★</div>
+      <p class="mt-3 text-xl sm:text-2xl leading-relaxed">„Umówiona 15:30, o 15:30 siedziałam na fotelu. Szacunek do czasu klienta."</p>
+      <footer class="mt-3 text-sm text-inkmuted">opinia z Google</footer>
+    </blockquote>
+  </aside>
+
+  <!-- Liczby zamiast marketingu -->
+  <section id="opinie" class="py-4 grid gap-8 sm:grid-cols-3 text-center sm:text-left">
     <div>
-      <h2 class="font-display font-medium fluid-section mb-8">Kontakt</h2>
-      <dl class="space-y-6 max-w-sm">
-        <div>
-          <dt class="text-sm font-medium text-inkmuted uppercase tracking-wider mb-1">Telefon</dt>
-          <dd><a href="tel:+48513255258" class="text-xl font-medium hover:text-accent transition-colors motion-reduce:transition-none">513 255 258</a></dd>
-        </div>
-        <div>
-          <dt class="text-sm font-medium text-inkmuted uppercase tracking-wider mb-1">Adres</dt>
-          <dd>Tomaszów Mazowiecki</dd>
-        </div>
-      </dl>
+      <p class="font-display text-4xl sm:text-5xl text-accent">261</p>
+      <p class="mt-2 text-sm text-inkmuted">opinii w Google, średnia 4.8 / 5</p>
     </div>
     <div>
-      <h2 class="font-display font-medium fluid-section mb-8">Godziny</h2>
-      <dl class="divide-y divide-border border-y border-border max-w-sm">
-        <div class="flex justify-between py-3.5"><dt class="text-inkmuted">Poniedziałek–Piątek</dt><dd class="font-medium">9:00–18:00</dd></div>
-        <div class="flex justify-between py-3.5"><dt class="text-inkmuted">Sobota</dt><dd class="font-medium">8:00–14:00</dd></div>
-        <div class="flex justify-between py-3.5"><dt class="text-inkmuted">Niedziela</dt><dd class="font-medium">Nieczynne</dd></div>
-      </dl>
+      <p class="font-display text-4xl sm:text-5xl text-accent">15:30</p>
+      <p class="mt-2 text-sm text-inkmuted">znaczy 15:30 — terminy bez poślizgów</p>
     </div>
-  </div>
-</section>
+    <div>
+      <p class="font-display text-4xl sm:text-5xl text-accent">0 zł</p>
+      <p class="mt-2 text-sm text-inkmuted">za dolewkę kawy i doradzenie przy fotelu</p>
+    </div>
+  </section>
 
-<!-- Mapa: pełna szerokość -->
-<section aria-label="Mapa dojazdu">
-  <div class="map-tint h-[380px] sm:h-[440px]">
-    <iframe
-      title="Mapa: Salon Fryzjerski J.Ostrowski, Tomaszów Mazowiecki"
-      class="w-full h-full"
-      loading="lazy"
-      allowfullscreen
-      referrerpolicy="no-referrer-when-downgrade"
-      src="https://www.google.com/maps?q=Salon+fryzjerski+J.Ostrowski+Tomasz%C3%B3w+Mazowiecki&output=embed">
-    </iframe>
-  </div>
-</section>
+  <!-- Godziny + mapa -->
+  <section id="kontakt" class="mt-14 grid gap-10 sm:grid-cols-[0.9fr_1.1fr] items-start pb-10">
+    <div>
+      <h2 class="font-display font-medium text-lg mb-6">Godziny</h2>
+      <dl class="divide-y divide-border border-y border-border text-sm">
+        <div class="flex justify-between py-3"><dt class="text-inkmuted">Poniedziałek–Piątek</dt><dd class="font-medium">9:00–18:00</dd></div>
+        <div class="flex justify-between py-3"><dt class="text-inkmuted">Sobota</dt><dd class="font-medium">8:00–14:00</dd></div>
+        <div class="flex justify-between py-3"><dt class="text-inkmuted">Niedziela</dt><dd class="font-medium">Nieczynne</dd></div>
+      </dl>
+      <p class="mt-6 text-sm text-inkmuted">Salon Fryzjerski J.Ostrowski<br>Tomaszów Mazowiecki</p>
+    </div>
+    <div class="map-tint rounded-2xl overflow-hidden border border-border h-[300px] sm:h-[340px]">
+      <iframe
+        title="Mapa: Salon Fryzjerski J.Ostrowski, Tomaszów Mazowiecki"
+        class="w-full h-full"
+        loading="lazy"
+        allowfullscreen
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps?q=Salon+fryzjerski+J.Ostrowski+Tomasz%C3%B3w+Mazowiecki&output=embed">
+      </iframe>
+    </div>
+  </section>
 
-<footer class="border-t border-border">
-  <div class="mx-auto max-w-6xl px-5 sm:px-8 py-8 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-sm text-inkmuted">
-    <span>© Salon Fryzjerski J.Ostrowski, Tomaszów Mazowiecki</span>
+  <footer class="border-t border-border py-8 text-sm text-inkmuted flex flex-wrap gap-2 sm:gap-4">
+    <span>© Salon Fryzjerski J.Ostrowski</span>
     <span class="hidden sm:inline">·</span>
     <a href="#" class="hover:text-ink transition-colors motion-reduce:transition-none">Polityka prywatności</a>
+  </footer>
+
+</main>
+
+<!-- Nawigacja: pasek dokowany NA DOLE -->
+<nav class="dockbar fixed bottom-0 inset-x-0 z-50">
+  <div class="mx-auto max-w-4xl px-5 sm:px-8 h-20 flex items-center justify-between gap-4">
+    <div class="hidden sm:flex items-center gap-6 text-sm text-inkmuted">
+      <a href="#cennik" class="hover:text-ink transition-colors motion-reduce:transition-none">Cennik</a>
+      <a href="#opinie" class="hover:text-ink transition-colors motion-reduce:transition-none">Liczby</a>
+      <a href="#kontakt" class="hover:text-ink transition-colors motion-reduce:transition-none">Dojazd</a>
+    </div>
+    <p class="sm:hidden text-sm text-inkmuted">J.Ostrowski</p>
+    <a href="tel:+48513255258" class="inline-flex items-center gap-2 rounded-full bg-accent text-bg font-semibold px-6 py-3 min-h-[48px] hover:brightness-110 transition motion-reduce:transition-none">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      513 255 258 — umów się
+    </a>
   </div>
-</footer>
+</nav>
 
 </body>
 </html>
