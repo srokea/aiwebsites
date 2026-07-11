@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Dżanas Fryzjer & Barber — Piotrków Trybunalski</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Barlow+Condensed:wght@400;500;600&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07060a;
+    --panel: #0e0c14;
+    --pink: #ff2d95;
+    --cyan: #19e3ff;
+    --amber: #ffb347;
+    --ink: #f4f2f7;
+    --muted: #9a93a8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Barlow', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--pink); color: var(--bg); }
+
+  /* ── neonowe podstawy ── */
+  .neon-pink {
+    color: var(--pink);
+    text-shadow: 0 0 7px rgba(255,45,149,.9), 0 0 24px rgba(255,45,149,.55), 0 0 64px rgba(255,45,149,.35);
+  }
+  .neon-cyan {
+    color: var(--cyan);
+    text-shadow: 0 0 7px rgba(25,227,255,.9), 0 0 24px rgba(25,227,255,.5), 0 0 64px rgba(25,227,255,.3);
+  }
+  .tube {
+    border: 2px solid var(--cyan);
+    border-radius: 14px;
+    box-shadow: 0 0 8px rgba(25,227,255,.6), inset 0 0 8px rgba(25,227,255,.35);
+  }
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    92% { opacity: 1; }
+    93% { opacity: .4; }
+    94% { opacity: 1; }
+    96% { opacity: .6; }
+    97% { opacity: 1; }
+  }
+  @keyframes buzz-in {
+    0% { opacity: 0; }
+    20% { opacity: .3; } 30% { opacity: .1; } 45% { opacity: .7; }
+    55% { opacity: .25; } 70% { opacity: 1; } 80% { opacity: .6; } 100% { opacity: 1; }
+  }
+  .flicker { animation: buzz-in 1.8s ease-out 1, flicker 7s linear 2s infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .flicker { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px;
+    background: rgba(7,6,10,.72);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,45,149,.25);
+  }
+  .logo { font-family: 'Monoton', cursive; font-size: 1.35rem; letter-spacing: 2px; text-decoration: none; }
+  .call-btn {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.05rem; font-weight: 600; letter-spacing: 1px;
+    color: var(--bg); background: var(--pink);
+    padding: 10px 22px; border-radius: 999px; text-decoration: none;
+    box-shadow: 0 0 16px rgba(255,45,149,.65);
+    transition: box-shadow .2s, transform .2s;
+    min-height: 44px; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .call-btn:hover { box-shadow: 0 0 34px rgba(255,45,149,.9); transform: translateY(-1px); }
+
+  /* ── hero ── */
+  .hero {
+    min-height: 100svh;
+    display: grid; place-items: center; text-align: center;
+    position: relative; padding: 100px 20px 60px;
+    background:
+      radial-gradient(ellipse 60% 45% at 50% 20%, rgba(255,45,149,.14), transparent 70%),
+      radial-gradient(ellipse 50% 40% at 80% 80%, rgba(25,227,255,.1), transparent 70%),
+      var(--bg);
+  }
+  .hero::after { /* siatka podłogi klubu */
+    content: ""; position: absolute; inset: auto 0 0 0; height: 34%;
+    background:
+      linear-gradient(transparent, rgba(25,227,255,.06)),
+      repeating-linear-gradient(90deg, rgba(25,227,255,.12) 0 1px, transparent 1px 70px),
+      repeating-linear-gradient(0deg, rgba(25,227,255,.12) 0 1px, transparent 1px 34px);
+    transform: perspective(400px) rotateX(48deg);
+    transform-origin: bottom; pointer-events: none;
+  }
+  .hero h1 {
+    font-family: 'Monoton', cursive;
+    font-weight: 400;
+    font-size: clamp(2.6rem, 9vw, 7rem);
+    line-height: 1.12;
+    letter-spacing: 4px;
+  }
+  .hero .sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1.05rem, 2.5vw, 1.5rem);
+    letter-spacing: 6px; text-transform: uppercase;
+    color: var(--muted); margin-top: 18px;
+  }
+  .hero .stat {
+    margin-top: 26px; display: inline-flex; gap: 10px; align-items: center;
+    font-family: 'Barlow Condensed', sans-serif; letter-spacing: 2px;
+    color: var(--amber); font-size: 1.1rem;
+    text-shadow: 0 0 12px rgba(255,179,71,.7);
+  }
+  .hero .cta-row { margin-top: 40px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 2; }
+  .ghost-btn {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 1.05rem; font-weight: 600;
+    letter-spacing: 1px; color: var(--cyan); text-decoration: none;
+    padding: 10px 22px; border-radius: 999px; min-height: 44px;
+    display: inline-flex; align-items: center;
+    border: 2px solid var(--cyan);
+    box-shadow: 0 0 10px rgba(25,227,255,.4), inset 0 0 10px rgba(25,227,255,.15);
+    transition: box-shadow .2s;
+  }
+  .ghost-btn:hover { box-shadow: 0 0 26px rgba(25,227,255,.8), inset 0 0 14px rgba(25,227,255,.3); }
+
+  section { padding: 90px 20px; max-width: 1060px; margin: 0 auto; }
+  h2 {
+    font-family: 'Monoton', cursive; font-weight: 400;
+    font-size: clamp(1.8rem, 4.5vw, 3rem);
+    letter-spacing: 3px; margin-bottom: 44px; text-align: center;
+  }
+
+  /* ── cennik ── */
+  .price-board {
+    background: var(--panel); border-radius: 18px; padding: 34px 26px;
+    border: 1px solid rgba(255,45,149,.2);
+    box-shadow: 0 0 40px rgba(255,45,149,.07);
+    max-width: 640px; margin: 0 auto;
+  }
+  .price-row {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 14px;
+    padding: 15px 4px; border-bottom: 1px dashed rgba(154,147,168,.25);
+    font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; letter-spacing: .5px;
+  }
+  .price-row:last-child { border-bottom: none; }
+  .price-row .dots { flex: 1; border-bottom: 1px dotted rgba(154,147,168,.3); transform: translateY(-5px); }
+  .price-row .val { color: var(--cyan); font-weight: 600; text-shadow: 0 0 10px rgba(25,227,255,.5); white-space: nowrap; }
+
+  /* ── galeria ── */
+  .gal {
+    display: grid; gap: 14px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 700px) { .gal { grid-template-columns: repeat(3, 1fr); } }
+  .gal figure {
+    position: relative; border-radius: 12px; overflow: hidden;
+    aspect-ratio: 1 / 1; background: var(--panel);
+  }
+  .gal img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: saturate(1.12) contrast(1.05);
+    transition: transform .35s ease;
+  }
+  .gal figure:hover img { transform: scale(1.05); }
+  .gal figure::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(160deg, rgba(255,45,149,.12), transparent 45%, rgba(25,227,255,.12));
+    mix-blend-mode: screen; pointer-events: none;
+  }
+
+  /* ── opinie ── */
+  .reviews { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .rev {
+    background: var(--panel); padding: 26px; border-radius: 14px;
+    border-top: 2px solid var(--pink);
+    box-shadow: 0 0 24px rgba(255,45,149,.08);
+  }
+  .rev .stars { color: var(--amber); letter-spacing: 3px; text-shadow: 0 0 8px rgba(255,179,71,.6); }
+  .rev p { margin-top: 12px; color: var(--ink); font-size: 1.02rem; }
+  .rev span { display: block; margin-top: 14px; color: var(--muted); font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px; }
+
+  /* ── kontakt ── */
+  .contact-grid { display: grid; gap: 30px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); text-align: center; }
+  .contact-grid .tube { padding: 30px 20px; }
+  .contact-grid h3 { font-family: 'Barlow Condensed', sans-serif; letter-spacing: 3px; text-transform: uppercase; font-size: 1rem; color: var(--muted); margin-bottom: 10px; }
+  .contact-grid p, .contact-grid a { font-family: 'Barlow Condensed', sans-serif; font-size: 1.35rem; color: var(--ink); text-decoration: none; }
+  .contact-grid a:hover { color: var(--cyan); }
+
+  footer {
+    text-align: center; padding: 40px 20px 50px; color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1.5px; font-size: .95rem;
+    border-top: 1px solid rgba(255,45,149,.15);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo neon-pink" href="#">Dżanas</a>
+  <a class="call-btn" href="tel:+48511124551">☎ 511 124 551</a>
+</header>
+
+<section class="hero" id="top">
+  <div>
+    <p class="sub">Fryzjer · Barber · Piotrków Trybunalski</p>
+    <h1><span class="neon-pink flicker">DŻANAS</span><br><span class="neon-cyan">BARBER</span></h1>
+    <p class="stat">★★★★★ &nbsp;4.9 w Google</p>
+    <div class="cta-row">
+      <a class="call-btn" href="https://dzanasfryzjerbarber.booksy.com/" target="_blank" rel="noopener">Umów przez Booksy</a>
+      <a class="ghost-btn" href="#cennik">Zobacz cennik</a>
+    </div>
+  </div>
+</section>
+
+<section id="cennik">
+  <h2 class="neon-cyan">Cennik</h2>
+  <div class="price-board">
+    <div class="price-row"><span>Strzyżenie klasyczne</span><span class="dots"></span><span class="val">60 zł</span></div>
+    <div class="price-row"><span>Strzyżenie + broda</span><span class="dots"></span><span class="val">90 zł</span></div>
+    <div class="price-row"><span>Trymowanie brody</span><span class="dots"></span><span class="val">40 zł</span></div>
+    <div class="price-row"><span>Golenie brzytwą</span><span class="dots"></span><span class="val">70 zł</span></div>
+    <div class="price-row"><span>Combo ojciec + syn</span><span class="dots"></span><span class="val">100 zł</span></div>
+  </div>
+</section>
+
+<section id="galeria">
+  <h2 class="neon-pink">Nasze cięcia</h2>
+  <div class="gal">
+    <figure><img src="photos/photo-2.jpg" alt="Fryzura wykonana w Dżanas Barber" loading="lazy"></figure>
+    <figure><img src="photos/photo-3.jpg" alt="Strzyżenie męskie — Dżanas Barber" loading="lazy"></figure>
+    <figure><img src="photos/photo-4.jpg" alt="Cięcie klasyczne — Dżanas Barber" loading="lazy"></figure>
+    <figure><img src="photos/photo-5.jpg" alt="Fade wykonany w Dżanas Barber" loading="lazy"></figure>
+    <figure><img src="photos/photo-6.jpg" alt="Stylizacja brody — Dżanas Barber" loading="lazy"></figure>
+    <figure><img src="photos/photo-7.jpg" alt="Fryzura klienta — Dżanas Barber" loading="lazy"></figure>
+  </div>
+</section>
+
+<section id="opinie">
+  <h2 class="neon-cyan">Opinie</h2>
+  <div class="reviews">
+    <div class="rev">
+      <div class="stars">★★★★★</div>
+      <p>„Najlepszy fade w Piotrkowie. Zero kombinowania, konkretna robota."</p>
+      <span>— opinia z Google</span>
+    </div>
+    <div class="rev">
+      <div class="stars">★★★★★</div>
+      <p>„Klimat, muzyka, precyzja. Wychodzę stąd zawsze zadowolony."</p>
+      <span>— opinia z Google</span>
+    </div>
+    <div class="rev">
+      <div class="stars">★★★★★</div>
+      <p>„Umówienie przez Booksy w 10 sekund, zero czekania na miejscu."</p>
+      <span>— opinia z Google</span>
+    </div>
+  </div>
+</section>
+
+<section id="kontakt">
+  <h2 class="neon-pink">Wpadnij</h2>
+  <div class="contact-grid">
+    <div class="tube">
+      <h3>Telefon</h3>
+      <a href="tel:+48511124551">511 124 551</a>
+    </div>
+    <div class="tube">
+      <h3>Adres</h3>
+      <p>Stefana Żeromskiego 25/27<br>Piotrków Trybunalski</p>
+    </div>
+    <div class="tube">
+      <h3>Rezerwacja</h3>
+      <a href="https://dzanasfryzjerbarber.booksy.com/" target="_blank" rel="noopener">Booksy →</a>
+    </div>
+  </div>
+</section>
+
+<footer>DŻANAS FRYZJER &amp; BARBER · PIOTRKÓW TRYBUNALSKI</footer>
+
+</body>
+</html>

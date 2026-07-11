@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Studio Fryzjerskie „Wiktoria" — Kurier Fryzjerski, Piotrków Trybunalski</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f7f4ec;
+    --ink: #191714;
+    --rule: #191714;
+    --red: #b3001b;
+    --grey: #6d675e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: 'PT Serif', serif; line-height: 1.55;
+  }
+  ::selection { background: var(--red); color: var(--paper); }
+  .sheet { max-width: 1040px; margin: 0 auto; padding: 0 20px 60px; }
+
+  /* ── masthead ── */
+  .topline {
+    display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+    font-family: 'Oswald', sans-serif; font-size: .8rem; letter-spacing: 2px;
+    text-transform: uppercase; padding: 12px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .masthead { text-align: center; padding: 34px 0 22px; border-bottom: 4px double var(--rule); }
+  .masthead h1 {
+    font-family: 'Playfair Display', serif; font-weight: 900;
+    font-size: clamp(3rem, 11vw, 7.5rem); line-height: .95; letter-spacing: -1px;
+  }
+  .masthead .sub {
+    margin-top: 14px; font-family: 'Oswald', sans-serif;
+    font-size: clamp(.75rem, 2vw, .95rem); letter-spacing: 4px; text-transform: uppercase;
+    display: flex; justify-content: center; gap: 18px; flex-wrap: wrap;
+  }
+  .masthead .sub em { font-style: normal; color: var(--red); }
+
+  /* ── breaking bar ── */
+  .breaking {
+    background: var(--ink); color: var(--paper);
+    font-family: 'Oswald', sans-serif; letter-spacing: 2px; text-transform: uppercase;
+    font-size: .85rem; padding: 9px 14px; text-align: center;
+  }
+  .breaking a { color: #ffd9de; text-decoration: underline; }
+  .breaking a:hover { color: #fff; }
+
+  /* ── lead article ── */
+  .lead { display: grid; gap: 32px; padding: 36px 0; border-bottom: 1px solid var(--rule); }
+  @media (min-width: 860px) { .lead { grid-template-columns: 1.15fr .85fr; align-items: start; } }
+  .headline {
+    font-family: 'Playfair Display', serif; font-weight: 700;
+    font-size: clamp(1.9rem, 4.6vw, 3.1rem); line-height: 1.08; letter-spacing: -.5px;
+  }
+  .kicker {
+    font-family: 'Oswald', sans-serif; color: var(--red); letter-spacing: 3px;
+    text-transform: uppercase; font-size: .85rem; margin-bottom: 10px;
+  }
+  .byline { font-style: italic; color: var(--grey); margin: 14px 0 20px; font-size: .95rem; }
+  .cols { column-gap: 30px; }
+  @media (min-width: 640px) { .cols { column-count: 2; } }
+  .cols p { margin-bottom: 14px; text-align: justify; hyphens: auto; }
+  .cols p:first-child::first-letter {
+    font-family: 'Playfair Display', serif; font-weight: 900; float: left;
+    font-size: 3.6em; line-height: .82; padding: 4px 8px 0 0; color: var(--red);
+  }
+  .lead figure { border: 1px solid var(--rule); padding: 8px; background: #fff; }
+  .lead img { width: 100%; display: block; filter: grayscale(28%) contrast(1.04); }
+  .lead figcaption { font-size: .8rem; font-style: italic; color: var(--grey); padding-top: 8px; }
+
+  .pull {
+    border-top: 4px solid var(--red); border-bottom: 1px solid var(--rule);
+    margin: 20px 0; padding: 16px 4px;
+    font-family: 'Playfair Display', serif; font-style: italic; font-weight: 500;
+    font-size: 1.35rem; line-height: 1.3;
+  }
+  .pull span { display: block; font-family: 'Oswald', sans-serif; font-style: normal; font-size: .75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--grey); margin-top: 8px; }
+
+  /* ── sekcje ── */
+  .section-head {
+    display: flex; align-items: center; gap: 14px; margin: 40px 0 22px;
+    font-family: 'Oswald', sans-serif; letter-spacing: 4px; text-transform: uppercase; font-size: 1rem;
+  }
+  .section-head::before, .section-head::after { content: ""; flex: 1; border-top: 1px solid var(--rule); }
+
+  /* cennik jako "ogłoszenia drobne" */
+  .classifieds { display: grid; gap: 0; border: 1px solid var(--rule); background: #fff; }
+  @media (min-width: 720px) { .classifieds { grid-template-columns: 1fr 1fr; } }
+  .ad {
+    padding: 20px 22px; border-bottom: 1px solid var(--rule);
+    display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  }
+  @media (min-width: 720px) {
+    .ad:nth-child(odd) { border-right: 1px solid var(--rule); }
+    .ad:nth-last-child(-n+1) { border-bottom: none; }
+  }
+  .ad:last-child { border-bottom: none; }
+  .ad b { font-family: 'Playfair Display', serif; font-size: 1.05rem; }
+  .ad small { display: block; color: var(--grey); font-style: italic; font-size: .85rem; }
+  .ad .price { font-family: 'Oswald', sans-serif; font-size: 1.15rem; color: var(--red); white-space: nowrap; }
+
+  /* opinie jako listy do redakcji */
+  .letters { display: grid; gap: 22px; }
+  @media (min-width: 720px) { .letters { grid-template-columns: repeat(3, 1fr); } }
+  .letter { border-top: 1px solid var(--rule); padding-top: 14px; }
+  .letter .stars { color: var(--red); letter-spacing: 2px; font-size: .9rem; }
+  .letter p { font-style: italic; margin: 8px 0 10px; }
+  .letter span { font-family: 'Oswald', sans-serif; font-size: .78rem; letter-spacing: 2px; text-transform: uppercase; color: var(--grey); }
+
+  /* stopka-kontakt */
+  .contact-strip {
+    margin-top: 44px; border: 4px double var(--rule); background: #fff;
+    padding: 30px 24px; display: grid; gap: 22px; text-align: center;
+  }
+  @media (min-width: 720px) { .contact-strip { grid-template-columns: repeat(3, 1fr); } }
+  .contact-strip h4 { font-family: 'Oswald', sans-serif; letter-spacing: 3px; text-transform: uppercase; font-size: .8rem; color: var(--grey); margin-bottom: 6px; }
+  .contact-strip p, .contact-strip a { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.25rem; color: var(--ink); text-decoration: none; }
+  .contact-strip a:hover { color: var(--red); }
+
+  .colophon {
+    text-align: center; font-size: .8rem; color: var(--grey); font-style: italic;
+    padding: 26px 0 0;
+  }
+
+  .call-float {
+    position: fixed; right: 18px; bottom: 18px; z-index: 40;
+    background: var(--red); color: #fff; text-decoration: none;
+    font-family: 'Oswald', sans-serif; letter-spacing: 1.5px;
+    padding: 13px 22px; min-height: 44px; display: inline-flex; align-items: center; gap: 8px;
+    box-shadow: 4px 4px 0 var(--ink);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .call-float:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <div class="topline">
+    <span>Piotrków Trybunalski</span>
+    <span>Wydanie salonowe · Nr 290</span>
+    <span>Cena: uśmiech</span>
+  </div>
+
+  <header class="masthead">
+    <h1>WIKTORIA</h1>
+    <div class="sub">
+      <span>Studio Fryzjerskie</span>
+      <em>★ 4.7 / 290 opinii Google ★</em>
+      <span>Błażej Adamus</span>
+    </div>
+  </header>
+
+  <div class="breaking">
+    Z ostatniej chwili: wolne terminy w tym tygodniu. <a href="tel:+48570450506">Dzwoń: 570 450 506</a>
+  </div>
+
+  <article class="lead">
+    <div>
+      <p class="kicker">Temat numeru</p>
+      <h2 class="headline">Fryzura, o której mówi całe miasto</h2>
+      <p class="byline">Od naszego korespondenta z fotela nr 1</p>
+      <div class="cols">
+        <p>W studiu przy fotelu spotykają się dwa światy: rzemiosło, które pamięta czasy brzytwy i ręcznych maszynek, oraz nowoczesna koloryzacja, która nie wybacza błędów. „Wiktoria" od lat udowadnia, że jedno i drugie można robić bez kompromisów.</p>
+        <p>Klienci przychodzą tu na strzyżenie, a zostają na rozmowę. Wychodzą z fryzurą, która (jak donoszą nasi czytelnicy) „trzyma fason dłużej niż niejedna obietnica wyborcza". Redakcja potwierdza: 290 opinii w Google i średnia 4.7 nie bierze się znikąd.</p>
+        <p>Do usług: strzyżenia damskie i męskie, koloryzacja, baleyage oraz fryzury okolicznościowe. Redakcja poleca umawiać się telefonicznie, numer jak w stopce wydania.</p>
+      </div>
+      <div class="pull">
+        „Przychodzę tu od lat i jeszcze nigdy nie wyszłam bez komplementu tego samego dnia."
+        <span>— z listów do redakcji</span>
+      </div>
+    </div>
+    <figure>
+      <img src="photos/photo-1.jpg" alt="Wnętrze Studia Fryzjerskiego Wiktoria w Piotrkowie Trybunalskim">
+      <figcaption>Fot. 1. Wnętrze studia przy pracy, Piotrków Trybunalski.</figcaption>
+    </figure>
+  </article>
+
+  <h3 class="section-head" id="cennik">Ogłoszenia drobne — cennik</h3>
+  <div class="classifieds">
+    <div class="ad"><b>Strzyżenie damskie<small>mycie, cięcie, modelowanie</small></b><span class="price">od 80 zł</span></div>
+    <div class="ad"><b>Strzyżenie męskie<small>klasyczne lub maszynką</small></b><span class="price">od 50 zł</span></div>
+    <div class="ad"><b>Koloryzacja<small>jednolita, z pielęgnacją</small></b><span class="price">od 150 zł</span></div>
+    <div class="ad"><b>Balayage / sombre<small>z tonowaniem</small></b><span class="price">od 250 zł</span></div>
+    <div class="ad"><b>Fryzura okolicznościowa<small>ślub, studniówka, sesja</small></b><span class="price">od 120 zł</span></div>
+    <div class="ad"><b>Modelowanie<small>szczotka, lokówka, prostownica</small></b><span class="price">od 60 zł</span></div>
+  </div>
+
+  <h3 class="section-head">Fotoreportaż</h3>
+  <article class="lead" style="border-bottom: none; padding-top: 0;">
+    <figure>
+      <img src="photos/photo-2.jpg" alt="Stanowiska pracy w Studiu Fryzjerskim Wiktoria">
+      <figcaption>Fot. 2. Salon od zaplecza: każde stanowisko z lustrem w roli głównej.</figcaption>
+    </figure>
+    <div>
+      <p class="kicker">Kronika salonowa</p>
+      <h2 class="headline" style="font-size: clamp(1.5rem, 3.2vw, 2.2rem);">Miejsce, które zna Twoje włosy lepiej niż Ty</h2>
+      <div style="margin-top: 16px;">
+        <p style="margin-bottom: 14px;">Wnętrze bez zbędnych ozdób, za to z zapachem dobrej kawy i dźwiękiem nożyczek w tle. Nasi wysłannicy odnotowali: obsługa punktualna, fotel wygodny, rozmowa opcjonalna. Cisza również dostępna w cenniku, bez dopłat.</p>
+        <p>Do studia najłatwiej trafić kierując się na centrum Piotrkowa Trybunalskiego. Szczegóły dojazdu podaje mapa Google, link w stopce wydania.</p>
+      </div>
+    </div>
+  </article>
+
+  <h3 class="section-head" id="opinie">Listy do redakcji</h3>
+  <div class="letters">
+    <div class="letter">
+      <div class="stars">★★★★★</div>
+      <p>„Balayage wyszedł dokładnie tak, jak na zdjęciu, które przyniosłam. Rzadkość!"</p>
+      <span>Czytelniczka z Piotrkowa</span>
+    </div>
+    <div class="letter">
+      <div class="stars">★★★★★</div>
+      <p>„Pan Błażej to fachowiec starej daty w najlepszym znaczeniu. Polecam każdemu."</p>
+      <span>Czytelnik, lat 62</span>
+    </div>
+    <div class="letter">
+      <div class="stars">★★★★★</div>
+      <p>„Fryzura na wesele przetrwała 12 godzin tańca. Wnioski nasuwają się same."</p>
+      <span>Świadkowa, ocalona</span>
+    </div>
+  </div>
+
+  <div class="contact-strip" id="kontakt">
+    <div>
+      <h4>Telefon do redakcji</h4>
+      <a href="tel:+48570450506">570 450 506</a>
+    </div>
+    <div>
+      <h4>Adres wydawnictwa</h4>
+      <p>Piotrków Trybunalski</p>
+    </div>
+    <div>
+      <h4>Strona</h4>
+      <a href="http://adamus-studio.pl/" target="_blank" rel="noopener">adamus-studio.pl</a>
+    </div>
+  </div>
+
+  <p class="colophon">Kurier Fryzjerski · wydawca: Studio Fryzjerskie „Wiktoria" Błażej Adamus · wszystkie fryzury sprawdzone redakcyjnie</p>
+</div>
+
+<a class="call-float" href="tel:+48570450506">☎ Zadzwoń</a>
+
+</body>
+</html>

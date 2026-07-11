@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Barber Shop by Edyta — Piotrków Trybunalski</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --steel: #232528;
+    --concrete: #2e3134;
+    --plate: #3a3e42;
+    --yellow: #f5b301;
+    --ink: #e8e6e1;
+    --muted: #9aa0a6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.015) 0 2px, transparent 2px 4px),
+      linear-gradient(180deg, var(--steel), var(--concrete));
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    line-height: 1.6;
+  }
+  ::selection { background: var(--yellow); color: var(--steel); }
+
+  .hazard {
+    background: repeating-linear-gradient(-45deg, var(--yellow) 0 18px, var(--steel) 18px 36px);
+    height: 14px;
+  }
+
+  header {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 12px 18px;
+    background: rgba(28,30,33,.94);
+    border-bottom: 3px solid var(--yellow);
+  }
+  .brand {
+    font-family: 'Big Shoulders Display', sans-serif; font-weight: 800;
+    font-size: 1.35rem; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--ink); text-decoration: none;
+  }
+  .brand span { color: var(--yellow); }
+  .call {
+    font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: .95rem;
+    background: var(--yellow); color: var(--steel);
+    text-decoration: none; padding: 11px 18px; min-height: 44px;
+    display: inline-flex; align-items: center; gap: 8px;
+    clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+    transition: filter .15s;
+  }
+  .call:hover { filter: brightness(1.12); }
+
+  /* ── hero ── */
+  .hero { position: relative; overflow: hidden; }
+  .hero-inner {
+    max-width: 1080px; margin: 0 auto; padding: 80px 20px 70px;
+    display: grid; gap: 40px;
+  }
+  @media (min-width: 880px) { .hero-inner { grid-template-columns: 1.1fr .9fr; align-items: center; } }
+  .stencil {
+    font-family: 'Big Shoulders Display', sans-serif; font-weight: 800;
+    text-transform: uppercase; line-height: .92; letter-spacing: 1px;
+    font-size: clamp(3rem, 9vw, 6.4rem);
+  }
+  .stencil .row2 { color: transparent; -webkit-text-stroke: 2px var(--yellow); }
+  .spec {
+    margin-top: 26px; display: grid; gap: 8px; font-size: .85rem; color: var(--muted);
+  }
+  .spec span::before { content: "» "; color: var(--yellow); font-weight: 600; }
+  .spec b { color: var(--ink); }
+  .hero-cta { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-plate {
+    font-weight: 600; font-size: .95rem; text-transform: uppercase; letter-spacing: 1px;
+    background: var(--plate); color: var(--ink); text-decoration: none;
+    border: 1px solid rgba(255,255,255,.18);
+    padding: 12px 22px; min-height: 44px; display: inline-flex; align-items: center;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 3px 0 #101214;
+    transition: transform .12s, box-shadow .12s;
+  }
+  .btn-plate:hover { transform: translateY(2px); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 1px 0 #101214; }
+  .hero-photo {
+    position: relative; border: 1px solid rgba(255,255,255,.15);
+    box-shadow: 0 10px 40px rgba(0,0,0,.5);
+  }
+  .hero-photo img { width: 100%; display: block; aspect-ratio: 4/3; object-fit: cover; filter: contrast(1.08) saturate(.9); }
+  .hero-photo::after {
+    content: "OBIEKT: SALON / PIOTRKÓW TRYB.";
+    position: absolute; left: 0; bottom: 0; right: 0;
+    background: rgba(20,22,24,.85); color: var(--muted);
+    font-size: .7rem; letter-spacing: 2px; padding: 8px 12px;
+  }
+  .bolt { /* nity w rogach zdjęcia */
+    position: absolute; width: 10px; height: 10px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #cfd4da, #6b7076 60%, #3a3e42);
+    box-shadow: 0 1px 2px rgba(0,0,0,.6);
+  }
+  .bolt.tl { top: 6px; left: 6px; } .bolt.tr { top: 6px; right: 6px; }
+  .bolt.bl { bottom: 34px; left: 6px; } .bolt.br { bottom: 34px; right: 6px; }
+
+  section { max-width: 1080px; margin: 0 auto; padding: 70px 20px; }
+  h2 {
+    font-family: 'Big Shoulders Display', sans-serif; font-weight: 800;
+    font-size: clamp(1.9rem, 5vw, 3rem); text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .h-sub { color: var(--muted); font-size: .82rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 34px; }
+  .h-sub::before { content: "// "; color: var(--yellow); }
+
+  /* ── cennik: tabliczki znamionowe ── */
+  .plates { display: grid; gap: 16px; }
+  @media (min-width: 720px) { .plates { grid-template-columns: repeat(2, 1fr); } }
+  .plate-row {
+    background: var(--plate);
+    border: 1px solid rgba(255,255,255,.14);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 4px 0 #121416;
+    padding: 18px 20px;
+    display: flex; justify-content: space-between; align-items: center; gap: 14px;
+    position: relative;
+  }
+  .plate-row::before, .plate-row::after {
+    content: ""; position: absolute; top: 50%; width: 8px; height: 8px; border-radius: 50%;
+    transform: translateY(-50%);
+    background: radial-gradient(circle at 35% 35%, #cfd4da, #6b7076 60%, #2b2e31);
+  }
+  .plate-row::before { left: 7px; } .plate-row::after { right: 7px; }
+  .plate-row .name { font-size: .92rem; padding-left: 10px; }
+  .plate-row .name small { display: block; color: var(--muted); font-size: .74rem; }
+  .plate-row .price {
+    font-family: 'Big Shoulders Display', sans-serif; font-weight: 800; font-size: 1.5rem;
+    color: var(--yellow); white-space: nowrap; padding-right: 10px;
+  }
+
+  /* ── galeria ── */
+  .work { display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 760px) { .work { grid-template-columns: repeat(4, 1fr); } }
+  .work figure { position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,.14); aspect-ratio: 3/4; }
+  .work img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(35%) contrast(1.1); transition: filter .25s, transform .25s; }
+  .work figure:hover img { filter: grayscale(0%) contrast(1.05); transform: scale(1.04); }
+  .work figcaption {
+    position: absolute; top: 8px; left: 8px;
+    background: var(--yellow); color: var(--steel);
+    font-size: .68rem; font-weight: 600; letter-spacing: 1.5px; padding: 3px 8px;
+  }
+
+  /* ── opinie ── */
+  .logs { display: grid; gap: 14px; }
+  @media (min-width: 760px) { .logs { grid-template-columns: repeat(3, 1fr); } }
+  .log {
+    border: 1px dashed rgba(255,255,255,.25); padding: 20px;
+    font-size: .88rem; background: rgba(0,0,0,.18);
+  }
+  .log .head { color: var(--yellow); font-size: .74rem; letter-spacing: 1.5px; margin-bottom: 10px; }
+  .log .sig { color: var(--muted); font-size: .74rem; margin-top: 12px; }
+
+  /* ── kontakt ── */
+  .contact {
+    background: var(--plate); border: 1px solid rgba(255,255,255,.14);
+    box-shadow: 0 6px 0 #121416;
+    padding: 34px 26px; display: grid; gap: 26px;
+  }
+  @media (min-width: 760px) { .contact { grid-template-columns: repeat(3, 1fr); } }
+  .contact h3 { font-size: .74rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .contact h3::before { content: "[ "; color: var(--yellow); }
+  .contact h3::after { content: " ]"; color: var(--yellow); }
+  .contact p, .contact a { font-family: 'Big Shoulders Display', sans-serif; font-weight: 600; font-size: 1.4rem; letter-spacing: 1px; color: var(--ink); text-decoration: none; }
+  .contact a:hover { color: var(--yellow); }
+
+  footer { text-align: center; padding: 30px 20px; color: var(--muted); font-size: .74rem; letter-spacing: 2px; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<div class="hazard"></div>
+<header>
+  <a class="brand" href="#">Barber<span>_</span>Shop by Edyta</a>
+  <a class="call" href="tel:+48501955448">☎ 501 955 448</a>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <h1 class="stencil">
+        <span>Warsztat</span><br>
+        <span class="row2">Fryzur</span><br>
+        <span>Męskich</span>
+      </h1>
+      <div class="spec">
+        <span>LOKALIZACJA: <b>Belzacka 67, Piotrków Trybunalski</b></span>
+        <span>OCENA: <b>4.6 / 5 · 337 opinii Google</b></span>
+        <span>SPECJALIZACJA: <b>strzyżenie, broda, brzytwa</b></span>
+      </div>
+      <div class="hero-cta">
+        <a class="call" href="tel:+48501955448">Umów termin</a>
+        <a class="btn-plate" href="#cennik">Cennik robót</a>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <span class="bolt tl"></span><span class="bolt tr"></span>
+      <span class="bolt bl"></span><span class="bolt br"></span>
+      <img src="photos/photo-1.jpg" alt="Wnętrze Barber Shop by Edyta">
+    </div>
+  </div>
+</div>
+<div class="hazard"></div>
+
+<section id="cennik">
+  <h2>Cennik robót</h2>
+  <p class="h-sub">stawki podstawowe, bez ukrytych dopłat</p>
+  <div class="plates">
+    <div class="plate-row"><span class="name">Strzyżenie klasyczne<small>maszynka + nożyczki</small></span><span class="price">60 zł</span></div>
+    <div class="plate-row"><span class="name">Fade / skin fade<small>precyzyjne cieniowanie</small></span><span class="price">70 zł</span></div>
+    <div class="plate-row"><span class="name">Broda<small>trymowanie + kontur</small></span><span class="price">45 zł</span></div>
+    <div class="plate-row"><span class="name">Combo: włosy + broda<small>pełny serwis</small></span><span class="price">100 zł</span></div>
+    <div class="plate-row"><span class="name">Golenie brzytwą<small>gorący ręcznik w cenie</small></span><span class="price">75 zł</span></div>
+    <div class="plate-row"><span class="name">Junior (do 12 lat)<small>na spokojnie, bez stresu</small></span><span class="price">45 zł</span></div>
+  </div>
+</section>
+
+<section id="galeria">
+  <h2>Z warsztatu</h2>
+  <p class="h-sub">dokumentacja robót własnych</p>
+  <div class="work">
+    <figure><img src="photos/photo-1.jpg" alt="Wnętrze salonu Barber Shop by Edyta" loading="lazy"><figcaption>REJ. A-113</figcaption></figure>
+    <figure><img src="photos/photo-2.jpg" alt="Stanowisko barberskie" loading="lazy"><figcaption>REJ. B-207</figcaption></figure>
+    <figure><img src="photos/photo-3.jpg" alt="Strzyżenie w trakcie pracy" loading="lazy"><figcaption>REJ. C-58</figcaption></figure>
+    <figure><img src="photos/photo-4.jpg" alt="Efekt końcowy strzyżenia" loading="lazy"><figcaption>REJ. D-91</figcaption></figure>
+  </div>
+</section>
+
+<section id="opinie">
+  <h2>Protokół odbioru</h2>
+  <p class="h-sub">wpisy z dziennika klientów, ocena łączna 4.6/5</p>
+  <div class="logs">
+    <div class="log">
+      <div class="head">WPIS #0334 · ★★★★★</div>
+      „Fade zrobiony jak od linijki. Precyzja godna warsztatu mechanicznego."
+      <div class="sig">— klient, odbiór bez uwag</div>
+    </div>
+    <div class="log">
+      <div class="head">WPIS #0335 · ★★★★★</div>
+      „Brzytwa + gorący ręcznik. Wyszedłem odmłodzony o dekadę."
+      <div class="sig">— klient stały</div>
+    </div>
+    <div class="log">
+      <div class="head">WPIS #0336 · ★★★★★</div>
+      „Syn przestał bać się fryzjera. Pani Edyta ma podejście."
+      <div class="sig">— ojciec juniora</div>
+    </div>
+  </div>
+</section>
+
+<section id="kontakt">
+  <h2>Namiar na warsztat</h2>
+  <p class="h-sub">przyjęcia wg kolejki i umówień</p>
+  <div class="contact">
+    <div>
+      <h3>Telefon</h3>
+      <a href="tel:+48501955448">501 955 448</a>
+    </div>
+    <div>
+      <h3>Adres</h3>
+      <p>Belzacka 67<br>Piotrków Trybunalski</p>
+    </div>
+    <div>
+      <h3>WWW</h3>
+      <a href="http://www.barbershoppiotrkow.pl/" target="_blank" rel="noopener">barbershoppiotrkow.pl</a>
+    </div>
+  </div>
+</section>
+
+<div class="hazard"></div>
+<footer>Barber Shop by Edyta · Piotrków Trybunalski</footer>
+
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>STUDIO WYCZESANI — Salon Fryzjerski, Bełchatów</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fff8ef;
+    --ink: #241f2b;
+    --coral: #ff6b6b;
+    --teal: #23c9b6;
+    --sun: #ffd166;
+    --grape: #9b5de5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--cream); color: var(--ink);
+    font-family: 'Nunito', sans-serif; line-height: 1.65;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--sun); color: var(--ink); }
+  .fred { font-family: 'Fredoka', sans-serif; }
+
+  /* confetti tło */
+  .confetti { position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: .5; }
+  .confetti i { position: absolute; display: block; }
+  .confetti .dot { width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--ink); }
+  .confetti .tri { width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 17px solid var(--teal); }
+  .confetti .zig {
+    width: 40px; height: 12px;
+    background: repeating-linear-gradient(-45deg, var(--grape) 0 4px, transparent 4px 8px);
+  }
+  main, header, footer { position: relative; z-index: 1; }
+
+  header {
+    position: sticky; top: 0; z-index: 60;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 18px; background: var(--cream);
+    border-bottom: 3px solid var(--ink);
+  }
+  .logo { font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 1.2rem; color: var(--ink); text-decoration: none; }
+  .logo span { color: var(--coral); }
+  .btn {
+    font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: .95rem;
+    color: var(--ink); background: var(--sun); text-decoration: none;
+    border: 3px solid var(--ink); border-radius: 999px;
+    padding: 10px 22px; min-height: 44px; display: inline-flex; align-items: center; gap: 8px;
+    box-shadow: 4px 4px 0 var(--ink);
+    transition: transform .12s, box-shadow .12s;
+  }
+  .btn:hover { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+  .btn.coral { background: var(--coral); color: #fff; }
+  .btn.teal { background: var(--teal); }
+
+  .hero { max-width: 1080px; margin: 0 auto; padding: 70px 20px 80px; display: grid; gap: 44px; align-items: center; }
+  @media (min-width: 900px) { .hero { grid-template-columns: 1.05fr .95fr; } }
+  .hero h1 {
+    font-family: 'Fredoka', sans-serif; font-weight: 700;
+    font-size: clamp(2.6rem, 7.5vw, 5rem); line-height: 1.04; letter-spacing: -.5px;
+  }
+  .hero h1 .w1 { color: var(--coral); } .hero h1 .w2 { color: var(--grape); }
+  .hero h1 .und { position: relative; white-space: nowrap; }
+  .hero h1 .und::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 4px; height: 10px;
+    background: var(--sun); z-index: -1; border-radius: 6px; transform: rotate(-1deg);
+  }
+  .hero p.sub { margin-top: 20px; max-width: 46ch; font-size: 1.06rem; }
+  .hero .cta { margin-top: 30px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .hero .badge-row { margin-top: 26px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .pill { font-family: 'Fredoka', sans-serif; font-size: .85rem; border: 3px solid var(--ink); border-radius: 999px; padding: 5px 14px; background: #fff; }
+  .pill.b { background: var(--teal); }
+  .hero-photo { position: relative; }
+  .hero-photo .blob {
+    position: absolute; inset: -8% -6%; z-index: -1;
+    background: var(--teal); opacity: .9;
+    border-radius: 58% 42% 55% 45% / 45% 55% 42% 58%;
+    border: 3px solid var(--ink);
+    transform: rotate(-4deg);
+  }
+  .hero-photo img {
+    width: 100%; aspect-ratio: 4/4.1; object-fit: cover; display: block;
+    border: 3px solid var(--ink); border-radius: 30px;
+    box-shadow: 8px 8px 0 var(--ink);
+  }
+
+  section { max-width: 1080px; margin: 0 auto; padding: 76px 20px; }
+  h2 { font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: clamp(2rem, 5.5vw, 3.2rem); margin-bottom: 40px; }
+  h2 .hl { padding: 0 12px; border: 3px solid var(--ink); border-radius: 14px; display: inline-block; transform: rotate(-1.5deg); }
+  h2 .hl.sun { background: var(--sun); } h2 .hl.coral { background: var(--coral); color: #fff; } h2 .hl.grape { background: var(--grape); color: #fff; }
+
+  /* cennik: karty do gry */
+  .cards { display: grid; gap: 22px; }
+  @media (min-width: 780px) { .cards { grid-template-columns: repeat(3, 1fr); } }
+  .card {
+    border: 3px solid var(--ink); border-radius: 24px; background: #fff;
+    padding: 26px 22px; box-shadow: 7px 7px 0 var(--ink);
+    transition: transform .15s;
+  }
+  .card:hover { transform: translateY(-5px) rotate(-.6deg); }
+  .card:nth-child(1) { background: #ffe9e9; }
+  .card:nth-child(2) { background: #e6fbf8; }
+  .card:nth-child(3) { background: #f3eaff; }
+  .card h3 { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.3rem; margin-bottom: 14px; }
+  .card li { list-style: none; display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-bottom: 2px dashed rgba(36,31,43,.2); font-size: .98rem; }
+  .card li:last-child { border-bottom: none; }
+  .card li b { font-family: 'Fredoka', sans-serif; white-space: nowrap; }
+
+  /* galeria */
+  .snaps { display: grid; gap: 24px; grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 780px) { .snaps { grid-template-columns: repeat(3, 1fr); } }
+  .snap { position: relative; }
+  .snap img {
+    width: 100%; aspect-ratio: 1/1.05; object-fit: cover; display: block;
+    border: 3px solid var(--ink); border-radius: 22px;
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+  .snap:nth-child(1) { transform: rotate(-2deg); }
+  .snap:nth-child(2) { transform: rotate(1.5deg) translateY(12px); }
+  .snap:nth-child(3) { transform: rotate(-1deg); }
+  .snap .tag {
+    position: absolute; top: -12px; left: 14px;
+    font-family: 'Fredoka', sans-serif; font-size: .8rem;
+    background: var(--sun); border: 3px solid var(--ink); border-radius: 999px; padding: 3px 12px;
+  }
+
+  /* opinie: dymki */
+  .bubbles { display: grid; gap: 30px; }
+  @media (min-width: 780px) { .bubbles { grid-template-columns: repeat(3, 1fr); } }
+  .bub {
+    position: relative; border: 3px solid var(--ink); border-radius: 24px;
+    background: #fff; padding: 24px; box-shadow: 6px 6px 0 var(--ink);
+  }
+  .bub::after {
+    content: ""; position: absolute; bottom: -16px; left: 34px;
+    width: 22px; height: 22px; background: #fff;
+    border-bottom: 3px solid var(--ink); border-right: 3px solid var(--ink);
+    transform: rotate(45deg) skew(8deg, 8deg);
+  }
+  .bub .st { color: var(--coral); font-size: 1.05rem; letter-spacing: 2px; }
+  .bub p { margin-top: 8px; font-size: .98rem; }
+  .bub .who { margin-top: 22px; font-family: 'Fredoka', sans-serif; font-size: .85rem; }
+
+  /* kontakt */
+  .contact-card {
+    border: 3px solid var(--ink); border-radius: 30px;
+    background: var(--grape); color: #fff;
+    box-shadow: 10px 10px 0 var(--ink);
+    padding: 50px 30px; text-align: center;
+  }
+  .contact-card h2 { color: #fff; margin-bottom: 10px; }
+  .contact-card .tel {
+    font-family: 'Fredoka', sans-serif; font-weight: 700;
+    font-size: clamp(1.9rem, 6vw, 3rem); color: var(--sun); text-decoration: none;
+    display: inline-block; margin: 6px 0 14px;
+  }
+  .contact-card p { opacity: .92; }
+  .contact-card .btn { margin-top: 22px; }
+
+  footer { text-align: center; padding: 34px 20px; font-family: 'Fredoka', sans-serif; font-size: .9rem; }
+</style>
+</head>
+<body>
+
+<div class="confetti" aria-hidden="true">
+  <i class="dot" style="top:12%;left:5%;border-color:var(--coral)"></i>
+  <i class="tri" style="top:30%;right:7%"></i>
+  <i class="zig" style="top:58%;left:3%"></i>
+  <i class="dot" style="top:74%;right:4%;border-color:var(--grape)"></i>
+  <i class="tri" style="top:86%;left:9%;border-bottom-color:var(--sun)"></i>
+  <i class="zig" style="top:8%;right:16%"></i>
+</div>
+
+<header>
+  <a class="logo" href="#">STUDIO <span>WYCZESANI</span></a>
+  <a class="btn coral" href="tel:+48602563279">☎ 602 563 279</a>
+</header>
+
+<main>
+<div class="hero">
+  <div>
+    <h1 class="fred">Będziesz <span class="w1 und">wyczesany</span>.<br>Dosłownie <span class="w2">i&nbsp;w&nbsp;przenośni</span>.</h1>
+    <p class="sub">Salon fryzjerski w Bełchatowie, w którym nożyczki mają poczucie humoru, a kolor zawsze trafia w punkt. Damskie, męskie, dziecięce: czeszemy wszystkich.</p>
+    <div class="cta">
+      <a class="btn coral" href="tel:+48602563279">Umów wizytę</a>
+      <a class="btn teal" href="#cennik">Cennik</a>
+    </div>
+    <div class="badge-row">
+      <span class="pill b">★ 4.9 w Google</span>
+      <span class="pill">Bełchatów</span>
+      <span class="pill">Damsko-męski</span>
+    </div>
+  </div>
+  <div class="hero-photo">
+    <div class="blob" aria-hidden="true"></div>
+    <img src="photos/photo-1.jpg" alt="Studio Wyczesani — wnętrze salonu w Bełchatowie">
+  </div>
+</div>
+
+<section id="cennik">
+  <h2>Cennik <span class="hl sun">bez małych literek</span></h2>
+  <div class="cards">
+    <div class="card">
+      <h3>💇‍♀️ Ona</h3>
+      <ul>
+        <li>Strzyżenie + modelowanie <b>od 85 zł</b></li>
+        <li>Koloryzacja <b>od 160 zł</b></li>
+        <li>Balayage <b>od 270 zł</b></li>
+        <li>Upięcie na wyjście <b>od 120 zł</b></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>💇‍♂️ On</h3>
+      <ul>
+        <li>Strzyżenie klasyczne <b>od 50 zł</b></li>
+        <li>Fade <b>od 60 zł</b></li>
+        <li>Broda <b>od 40 zł</b></li>
+        <li>Combo włosy + broda <b>od 90 zł</b></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🧒 Junior</h3>
+      <ul>
+        <li>Strzyżenie do 7 lat <b>od 35 zł</b></li>
+        <li>Strzyżenie 8-14 lat <b>od 40 zł</b></li>
+        <li>Pierwsza wizyta <b>+ naklejka</b></li>
+        <li>Płacz <b>bez dopłat</b></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="galeria" style="padding-top: 30px;">
+  <h2>Nasze <span class="hl coral">klimaty</span></h2>
+  <div class="snaps">
+    <div class="snap"><span class="tag">przy pracy</span><img src="photos/photo-2.jpg" alt="Praca nad fryzurą w Studiu Wyczesani" loading="lazy"></div>
+    <div class="snap"><span class="tag">efekty</span><img src="photos/photo-3.webp" alt="Efekt strzyżenia — Studio Wyczesani" loading="lazy"></div>
+    <div class="snap"><span class="tag">kolej na Ciebie</span>
+      <div style="aspect-ratio: 1/1.05; border: 3px solid var(--ink); border-radius: 22px; box-shadow: 6px 6px 0 var(--ink); background: var(--sun); display: grid; place-items: center; text-align: center; padding: 20px;">
+        <span class="fred" style="font-size: 1.3rem; font-weight: 600;">Tu będzie<br>Twoja fryzura ✂</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="opinie" style="padding-top: 40px;">
+  <h2>Ludzie są <span class="hl grape">wyczesani</span> z nas</h2>
+  <div class="bubbles">
+    <div class="bub">
+      <div class="st">★★★★★</div>
+      <p>„Wyszłam z salonu lepsza niż z urlopu. Kolor: sztos. Humor obsługi: jeszcze lepszy."</p>
+      <div class="who">— opinia z Google</div>
+    </div>
+    <div class="bub">
+      <div class="st">★★★★★</div>
+      <p>„Syn pierwszy raz nie płakał u fryzjera. Ja pierwszy raz płakałam ze śmiechu."</p>
+      <div class="who">— opinia z Google</div>
+    </div>
+    <div class="bub">
+      <div class="st">★★★★★</div>
+      <p>„Przyszedłem po klasyka, wyszedłem z fade'em i nowym poczuciem własnej wartości."</p>
+      <div class="who">— opinia z Google</div>
+    </div>
+  </div>
+</section>
+
+<section id="kontakt" style="padding-top: 40px;">
+  <div class="contact-card">
+    <h2 class="fred">Wpadaj, wyczeszemy Cię!</h2>
+    <a class="tel" href="tel:+48602563279">602 563 279</a>
+    <p>STUDIO WYCZESANI · Bełchatów · studiowyczesani.com</p>
+    <a class="btn" href="http://www.studiowyczesani.com/" target="_blank" rel="noopener">Zobacz więcej naszych prac</a>
+  </div>
+</section>
+</main>
+
+<footer>STUDIO WYCZESANI © Bełchatów · czeszemy, nie ściemniamy</footer>
+
+</body>
+</html>

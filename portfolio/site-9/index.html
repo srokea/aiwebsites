@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>STYL · Katarzyna Winer — Studio Fryzjerskie, Radomsko</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&family=Karla:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wash: #fbfaf6;
+    --ink: #262420;
+    --matcha: #7d8471;
+    --line: rgba(38,36,32,.16);
+    --soft: #8b877e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--wash); color: var(--ink);
+    font-family: 'Karla', sans-serif; font-weight: 300;
+    line-height: 1.9; letter-spacing: .01em;
+  }
+  ::selection { background: var(--matcha); color: var(--wash); }
+  .serif { font-family: 'Shippori Mincho', serif; font-weight: 400; }
+
+  .page { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 26px 0; border-bottom: 1px solid var(--line);
+  }
+  .mark { font-family: 'Shippori Mincho', serif; font-size: 1.05rem; letter-spacing: 8px; text-transform: uppercase; color: var(--ink); text-decoration: none; }
+  header a.tel { color: var(--ink); text-decoration: none; font-size: .92rem; letter-spacing: 1px; padding: 10px 0 10px 20px; min-height: 44px; display: inline-flex; align-items: center; }
+  header a.tel:hover { color: var(--matcha); }
+
+  /* hero */
+  .hero { display: grid; gap: 50px; padding: 90px 0 100px; align-items: center; }
+  @media (min-width: 800px) { .hero { grid-template-columns: auto 1fr auto; } }
+  .vertical {
+    writing-mode: vertical-rl; text-orientation: mixed;
+    font-family: 'Shippori Mincho', serif; font-size: .82rem; letter-spacing: 8px;
+    color: var(--soft); height: 220px; margin: 0 auto;
+  }
+  .hero-core h1 {
+    font-family: 'Shippori Mincho', serif; font-weight: 400;
+    font-size: clamp(2.6rem, 7vw, 4.6rem); line-height: 1.25; letter-spacing: .04em;
+  }
+  .hero-core h1 em { font-style: normal; color: var(--matcha); }
+  .hero-core p { margin-top: 26px; max-width: 42ch; color: var(--soft); }
+  .hero-core .act { margin-top: 40px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+  .btn-line {
+    text-decoration: none; color: var(--ink); font-size: .9rem; letter-spacing: 3px; text-transform: uppercase;
+    padding: 12px 0; min-height: 44px; display: inline-flex; align-items: center; gap: 14px;
+    border-bottom: 1px solid var(--ink);
+    transition: color .25s, border-color .25s, gap .25s;
+  }
+  .btn-line:hover { color: var(--matcha); border-color: var(--matcha); gap: 22px; }
+  .btn-line::after { content: "→"; }
+  .enso {
+    width: 130px; height: 130px; border-radius: 50%;
+    border: 3.5px solid var(--ink);
+    border-left-color: transparent;
+    transform: rotate(-40deg);
+    opacity: .85; margin: 0 auto;
+  }
+  .enso-wrap { display: grid; gap: 12px; justify-items: center; }
+  .enso-wrap small { font-size: .72rem; letter-spacing: 4px; text-transform: uppercase; color: var(--soft); }
+
+  .rule-h { border: none; border-top: 1px solid var(--line); }
+
+  section { padding: 90px 0; }
+  .sec-mark { display: flex; align-items: baseline; gap: 18px; margin-bottom: 54px; }
+  .sec-mark .no { font-family: 'Shippori Mincho', serif; color: var(--matcha); font-size: .95rem; }
+  .sec-mark h2 { font-family: 'Shippori Mincho', serif; font-weight: 400; font-size: clamp(1.5rem, 4vw, 2.1rem); letter-spacing: .08em; }
+
+  /* cennik */
+  .zen-list { max-width: 560px; }
+  .zen-row { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding: 17px 0; border-bottom: 1px solid var(--line); }
+  .zen-row:first-child { border-top: 1px solid var(--line); }
+  .zen-row .nm { letter-spacing: .5px; }
+  .zen-row .nm small { display: block; color: var(--soft); font-size: .82rem; }
+  .zen-row .pr { font-family: 'Shippori Mincho', serif; white-space: nowrap; }
+
+  /* zdjęcia */
+  .photos { display: grid; gap: 28px; }
+  @media (min-width: 720px) { .photos { grid-template-columns: 1.2fr .8fr; align-items: end; } }
+  .photos figure { margin: 0; }
+  .photos img { width: 100%; display: block; filter: saturate(.86) contrast(.98); }
+  .photos figcaption { font-size: .78rem; letter-spacing: 2px; color: var(--soft); padding-top: 12px; text-transform: uppercase; }
+  .photos figure:nth-child(2) { transform: translateY(-34px); }
+  @media (max-width: 719px) { .photos figure:nth-child(2) { transform: none; } }
+
+  /* opinia */
+  .quote-zone { text-align: center; max-width: 620px; margin: 0 auto; }
+  .quote-zone .q {
+    font-family: 'Shippori Mincho', serif; font-size: clamp(1.3rem, 3.2vw, 1.8rem);
+    line-height: 1.7; letter-spacing: .03em;
+  }
+  .quote-zone .by { margin-top: 24px; font-size: .78rem; letter-spacing: 3px; text-transform: uppercase; color: var(--soft); }
+  .quote-zone .st { color: var(--matcha); letter-spacing: 8px; margin-top: 10px; }
+
+  /* kontakt */
+  .visit { display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 760px) { .visit { grid-template-columns: 1fr 1fr; } }
+  .visit .tel-big {
+    font-family: 'Shippori Mincho', serif; font-size: clamp(1.9rem, 5.5vw, 2.9rem);
+    color: var(--ink); text-decoration: none; letter-spacing: 2px;
+  }
+  .visit .tel-big:hover { color: var(--matcha); }
+  .visit dl { display: grid; gap: 12px; font-size: .95rem; }
+  .visit dt { color: var(--soft); font-size: .75rem; letter-spacing: 3px; text-transform: uppercase; }
+  .visit dd { margin-bottom: 8px; }
+  .visit dd a { color: var(--ink); }
+
+  footer { border-top: 1px solid var(--line); padding: 28px 0 40px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: .78rem; letter-spacing: 2px; color: var(--soft); text-transform: uppercase; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <a class="mark" href="#">Styl</a>
+    <a class="tel" href="tel:+48602275867">602 275 867</a>
+  </header>
+
+  <div class="hero">
+    <div class="vertical">studio fryzjerskie</div>
+    <div class="hero-core">
+      <h1 class="serif">Mniej pośpiechu.<br><em>Więcej stylu.</em></h1>
+      <p>Kameralne studio Katarzyny Winer w Radomsku. Strzyżenie i koloryzacja w rytmie, który szanuje włosy i Twój czas.</p>
+      <div class="act">
+        <a class="btn-line" href="tel:+48602275867">Umów wizytę</a>
+        <a class="btn-line" href="#cennik" style="border-bottom-color: transparent; color: var(--soft);">Cennik</a>
+      </div>
+    </div>
+    <div class="enso-wrap">
+      <div class="enso" aria-hidden="true"></div>
+      <small>5.0 · Google</small>
+    </div>
+  </div>
+
+  <hr class="rule-h">
+
+  <section id="cennik">
+    <div class="sec-mark"><span class="no">一</span><h2>Cennik</h2></div>
+    <div class="zen-list">
+      <div class="zen-row"><span class="nm">Strzyżenie damskie<small>konsultacja, mycie, cięcie, modelowanie</small></span><span class="pr">od 85 zł</span></div>
+      <div class="zen-row"><span class="nm">Strzyżenie męskie<small>spokojnie, bez kolejki</small></span><span class="pr">od 45 zł</span></div>
+      <div class="zen-row"><span class="nm">Koloryzacja<small>dobrana do skóry i światła</small></span><span class="pr">od 140 zł</span></div>
+      <div class="zen-row"><span class="nm">Pielęgnacja<small>rytuał regeneracyjny</small></span><span class="pr">od 90 zł</span></div>
+      <div class="zen-row"><span class="nm">Upięcie okolicznościowe<small>ślub, wieczór, sesja</small></span><span class="pr">od 120 zł</span></div>
+    </div>
+  </section>
+
+  <hr class="rule-h">
+
+  <section id="pracownia">
+    <div class="sec-mark"><span class="no">二</span><h2>Pracownia</h2></div>
+    <div class="photos" style="grid-template-columns: 1fr; max-width: 620px; margin: 0 auto;">
+      <figure>
+        <img src="photos/photo-2.jpg" alt="Efekt pracy nad fryzurą w Studiu STYL — długie fale" style="aspect-ratio: 4/4.6; object-fit: cover;">
+        <figcaption>Praca przy fotelu · efekt bez filtra</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <hr class="rule-h">
+
+  <section id="opinie">
+    <div class="sec-mark"><span class="no">三</span><h2>Głos klientek</h2></div>
+    <div class="quote-zone">
+      <p class="q">„Pani Kasia słucha uważniej niż niejeden lekarz. Fryzura zawsze dokładnie taka, jaką noszę w głowie."</p>
+      <p class="by">Opinia z Google · pełna ocena 5.0 przy 21 opiniach</p>
+      <p class="st">★ ★ ★ ★ ★</p>
+    </div>
+  </section>
+
+  <hr class="rule-h">
+
+  <section id="kontakt">
+    <div class="sec-mark"><span class="no">四</span><h2>Wizyta</h2></div>
+    <div class="visit">
+      <a class="tel-big" href="tel:+48602275867">602 275 867</a>
+      <dl>
+        <dt>Studio</dt>
+        <dd>STYL · Katarzyna Winer, Radomsko</dd>
+        <dt>Zapisy</dt>
+        <dd>telefonicznie, w godzinach pracy studia</dd>
+        <dt>Facebook</dt>
+        <dd><a href="https://www.facebook.com/p/Studio-fryzjerskie-Styl-Katarzyna-Winer-100063519580629/" target="_blank" rel="noopener">Studio fryzjerskie Styl</a></dd>
+      </dl>
+    </div>
+  </section>
+
+  <footer>
+    <span>Styl · Katarzyna Winer</span>
+    <span>Radomsko</span>
+  </footer>
+
+</div>
+</body>
+</html>

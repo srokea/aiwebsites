@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>FRYZ — Barber Shop, Tomaszów Mazowiecki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bone: #f4efe6;
+    --k: #1d1d1b;
+    --red: #d94f2b;
+    --blue: #2b5bd9;
+    --yellow: #f2b705;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bone); color: var(--k);
+    font-family: 'Josefin Sans', sans-serif; font-weight: 300; line-height: 1.6;
+  }
+  ::selection { background: var(--yellow); color: var(--k); }
+
+  header {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--bone); border-bottom: 2px solid var(--k);
+    padding: 12px 20px;
+  }
+  .mark { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--k); font-weight: 700; letter-spacing: 3px; font-size: 1.05rem; }
+  .mark i { width: 18px; height: 18px; border-radius: 50%; background: var(--red); }
+  .call {
+    font-weight: 600; letter-spacing: 1px; font-size: .92rem;
+    color: var(--bone); background: var(--k); text-decoration: none;
+    padding: 12px 22px; min-height: 44px; display: inline-flex; align-items: center;
+    transition: background .15s;
+  }
+  .call:hover { background: var(--blue); }
+
+  /* hero: kompozycja modularna */
+  .comp { max-width: 1100px; margin: 40px auto 0; padding: 0 20px; }
+  .comp-grid {
+    display: grid; gap: 0; border: 2px solid var(--k);
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 860px) { .comp-grid { grid-template-columns: 7fr 5fr; grid-template-rows: auto auto; } }
+  .cell { border: 2px solid var(--k); margin: -1px; padding: 40px 32px; position: relative; overflow: hidden; }
+  .cell-title { background: var(--bone); }
+  .cell-title h1 {
+    font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+    font-size: clamp(3.4rem, 12vw, 8.4rem); line-height: .92;
+  }
+  .cell-title h1 .r { color: var(--red); }
+  .cell-title p { margin-top: 18px; max-width: 40ch; font-size: 1.02rem; }
+  .cell-circle { background: var(--yellow); display: grid; place-items: center; min-height: 240px; }
+  .big-circle {
+    width: min(200px, 60%); aspect-ratio: 1; border-radius: 50%;
+    background: var(--blue); position: relative;
+  }
+  .big-circle::after {
+    content: ""; position: absolute; inset: 0;
+    background: conic-gradient(from 0deg, transparent 0 90deg, var(--red) 90deg 180deg, transparent 180deg);
+    border-radius: 50%;
+  }
+  .cell-meta { background: var(--bone); display: flex; flex-direction: column; justify-content: space-between; gap: 20px; }
+  .meta-row { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; border-bottom: 2px solid var(--k); padding-bottom: 10px; }
+  .meta-row:last-of-type { border-bottom: none; padding-bottom: 0; }
+  .meta-row .lbl { text-transform: uppercase; letter-spacing: 2px; font-size: .75rem; font-weight: 600; }
+  .meta-row .val { font-weight: 700; font-size: 1.3rem; }
+  .meta-row .val.red { color: var(--red); }
+  .cell-photo { padding: 0; min-height: 300px; background: var(--k); }
+  .cell-photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: contrast(1.05); }
+  @media (min-width: 860px) {
+    .cell-title { grid-column: 1; grid-row: 1; }
+    .cell-circle { grid-column: 2; grid-row: 1; }
+    .cell-photo { grid-column: 1; grid-row: 2; }
+    .cell-meta { grid-column: 2; grid-row: 2; }
+  }
+
+  section { max-width: 1100px; margin: 0 auto; padding: 84px 20px; }
+  .sec-title { display: flex; align-items: center; gap: 18px; margin-bottom: 44px; }
+  .sec-title .geo { width: 26px; height: 26px; flex-shrink: 0; }
+  .geo.sq { background: var(--red); }
+  .geo.ci { background: var(--blue); border-radius: 50%; }
+  .geo.tr { width: 0; height: 0; background: none; border-left: 15px solid transparent; border-right: 15px solid transparent; border-bottom: 26px solid var(--yellow); }
+  h2 { font-weight: 700; text-transform: uppercase; letter-spacing: 3px; font-size: clamp(1.6rem, 4.4vw, 2.5rem); }
+
+  /* cennik: bloki modularne */
+  .mods { display: grid; gap: 0; border: 2px solid var(--k); }
+  @media (min-width: 760px) { .mods { grid-template-columns: repeat(3, 1fr); } }
+  .mod { border: 2px solid var(--k); margin: -1px; padding: 30px 26px; background: var(--bone); position: relative; }
+  .mod:nth-child(2) { background: #fce9c8; }
+  .mod:nth-child(4) { background: #dbe4fb; }
+  .mod:nth-child(6) { background: #f7ded5; }
+  .mod .geo-tag { position: absolute; top: 16px; right: 16px; }
+  .mod h3 { font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 1rem; }
+  .mod .pr { font-weight: 700; font-size: 2.2rem; margin: 8px 0 6px; }
+  .mod p { font-size: .9rem; }
+
+  /* opinie: plakaty */
+  .posters { display: grid; gap: 26px; }
+  @media (min-width: 800px) { .posters { grid-template-columns: repeat(3, 1fr); } }
+  .poster { border: 2px solid var(--k); padding: 0; background: var(--bone); }
+  .poster .band { height: 14px; }
+  .poster:nth-child(1) .band { background: var(--red); }
+  .poster:nth-child(2) .band { background: var(--blue); }
+  .poster:nth-child(3) .band { background: var(--yellow); }
+  .poster .inner { padding: 24px 22px 26px; }
+  .poster .st { font-weight: 700; letter-spacing: 4px; }
+  .poster p { margin-top: 10px; font-size: .98rem; }
+  .poster .who { margin-top: 16px; text-transform: uppercase; letter-spacing: 2px; font-size: .72rem; font-weight: 600; }
+
+  /* kontakt */
+  .k-comp { display: grid; gap: 0; border: 2px solid var(--k); }
+  @media (min-width: 760px) { .k-comp { grid-template-columns: 5fr 7fr; } }
+  .k-cell { border: 2px solid var(--k); margin: -1px; padding: 44px 32px; }
+  .k-cell.paint { background: var(--red); color: var(--bone); display: grid; place-items: center; text-align: center; }
+  .k-cell.paint h2 { color: var(--bone); }
+  .k-cell .tel {
+    font-weight: 700; font-size: clamp(2rem, 6.5vw, 3.4rem); letter-spacing: 2px;
+    color: var(--k); text-decoration: none; display: inline-block; margin-bottom: 14px;
+  }
+  .k-cell .tel:hover { color: var(--blue); }
+  .k-list { display: grid; gap: 12px; font-size: 1rem; }
+  .k-list b { text-transform: uppercase; letter-spacing: 2px; font-size: .75rem; display: block; }
+  .k-list a { color: var(--k); }
+
+  footer { border-top: 2px solid var(--k); margin-top: 20px; }
+  .foot-in { max-width: 1100px; margin: 0 auto; padding: 22px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; font-size: .82rem; letter-spacing: 2px; text-transform: uppercase; }
+  .foot-in .geo-row { display: flex; gap: 8px; }
+  .foot-in .geo-row span { width: 14px; height: 14px; display: inline-block; }
+  .foot-in .geo-row .a { background: var(--red); border-radius: 50%; }
+  .foot-in .geo-row .b { background: var(--blue); }
+  .foot-in .geo-row .c { width: 0; height: 0; background: none; border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 14px solid var(--yellow); }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="mark" href="#"><i></i>FRYZ</a>
+  <a class="call" href="tel:+48720844420">720 844 420</a>
+</header>
+
+<div class="comp">
+  <div class="comp-grid">
+    <div class="cell cell-title">
+      <h1>Bar<span class="r">ber</span><br>Fryz.</h1>
+      <p>Barber shop w Tomaszowie Mazowieckim. Forma podąża za fryzurą: proste zasady, czyste cięcia, zero przypadku.</p>
+    </div>
+    <div class="cell cell-circle"><div class="big-circle" aria-hidden="true"></div></div>
+    <div class="cell cell-photo">
+      <img src="photos/photo-2.jpg" alt="Szyld Barber Shopu FRYZ w Tomaszowie Mazowieckim">
+    </div>
+    <div class="cell cell-meta">
+      <div class="meta-row"><span class="lbl">Ocena Google</span><span class="val red">4.8 / 5</span></div>
+      <div class="meta-row"><span class="lbl">Opinie</span><span class="val">340</span></div>
+      <div class="meta-row"><span class="lbl">Miasto</span><span class="val">Tomaszów Maz.</span></div>
+      <a class="call" href="tel:+48720844420" style="justify-content: center;">Umów wizytę</a>
+    </div>
+  </div>
+</div>
+
+<section id="cennik">
+  <div class="sec-title"><span class="geo sq"></span><h2>Cennik form</h2></div>
+  <div class="mods">
+    <div class="mod"><span class="geo-tag geo ci" style="width:18px;height:18px;"></span><h3>Strzyżenie</h3><div class="pr">60 zł</div><p>Klasyczne albo z konturem. Mycie i stylizacja w cenie.</p></div>
+    <div class="mod"><span class="geo-tag geo sq" style="width:18px;height:18px;"></span><h3>Fade</h3><div class="pr">70 zł</div><p>Low, mid albo high. Przejście czyste jak siatka modularna.</p></div>
+    <div class="mod"><span class="geo-tag geo tr" style="border-left-width:9px;border-right-width:9px;border-bottom-width:16px;"></span><h3>Broda</h3><div class="pr">45 zł</div><p>Trym i geometria zarostu pod linię szczęki.</p></div>
+    <div class="mod"><span class="geo-tag geo sq" style="width:18px;height:18px;background:var(--blue);"></span><h3>Combo</h3><div class="pr">100 zł</div><p>Włosy plus broda. Kompozycja kompletna.</p></div>
+    <div class="mod"><span class="geo-tag geo ci" style="width:18px;height:18px;background:var(--yellow);"></span><h3>Golenie</h3><div class="pr">75 zł</div><p>Brzytwa, gorący ręcznik, zero kompromisów.</p></div>
+    <div class="mod"><span class="geo-tag geo ci" style="width:18px;height:18px;background:var(--red);"></span><h3>Junior</h3><div class="pr">45 zł</div><p>Do lat 12. Prosta forma, spokojna funkcja.</p></div>
+  </div>
+</section>
+
+<section id="opinie" style="padding-top: 10px;">
+  <div class="sec-title"><span class="geo ci"></span><h2>Głosy z fotela</h2></div>
+  <div class="posters">
+    <div class="poster">
+      <div class="band"></div>
+      <div class="inner">
+        <div class="st">★★★★★</div>
+        <p>„Precyzja na poziomie projektanta. Linia włosów prosta jak od linijki."</p>
+        <div class="who">Opinia z Google</div>
+      </div>
+    </div>
+    <div class="poster">
+      <div class="band"></div>
+      <div class="inner">
+        <div class="st">★★★★★</div>
+        <p>„340 opinii i wszystkie się zgadzają: FRYZ to solidna robota za uczciwe pieniądze."</p>
+        <div class="who">Opinia z Google</div>
+      </div>
+    </div>
+    <div class="poster">
+      <div class="band"></div>
+      <div class="inner">
+        <div class="st">★★★★★</div>
+        <p>„Umówiłem się na 15:00, o 15:02 siedziałem na fotelu. Szwajcarska punktualność."</p>
+        <div class="who">Opinia z Google</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="kontakt" style="padding-top: 10px;">
+  <div class="sec-title"><span class="geo tr"></span><h2>Kontakt</h2></div>
+  <div class="k-comp">
+    <div class="k-cell paint">
+      <h2>Forma<br>czeka.</h2>
+    </div>
+    <div class="k-cell">
+      <a class="tel" href="tel:+48720844420">720 844 420</a>
+      <div class="k-list">
+        <div><b>Salon</b>Barber Shop FRYZ, Tomaszów Mazowiecki</div>
+        <div><b>Facebook</b><a href="https://www.facebook.com/salonfryzjerskifryz/" target="_blank" rel="noopener">fb.com/salonfryzjerskifryz</a></div>
+        <div><b>Zapisy</b>telefonicznie albo przez Facebooka</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-in">
+    <span>FRYZ © Tomaszów Mazowiecki</span>
+    <span class="geo-row"><span class="a"></span><span class="b"></span><span class="c"></span></span>
+  </div>
+</footer>
+
+</body>
+</html>

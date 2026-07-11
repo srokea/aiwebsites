@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Gentelman Barber — Piotrków Trybunalski</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --char: #101014;
+    --char2: #16161c;
+    --gold: #c9a35c;
+    --gold-lt: #e8cf9a;
+    --ivory: #f1ece2;
+    --muted: #8f8b83;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--char); color: var(--ivory);
+    font-family: 'Jost', sans-serif; font-weight: 300; line-height: 1.7;
+  }
+  ::selection { background: var(--gold); color: var(--char); }
+  a { color: inherit; }
+
+  .gold-text {
+    background: linear-gradient(105deg, #a5813f, var(--gold-lt) 40%, #a5813f 70%, var(--gold-lt));
+    background-size: 200% auto;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: shine 6s linear infinite;
+  }
+  @keyframes shine { to { background-position: 200% center; } }
+  @media (prefers-reduced-motion: reduce) { .gold-text { animation: none; } }
+
+  .rule {
+    display: flex; align-items: center; gap: 16px; justify-content: center;
+    color: var(--gold); margin: 0 auto;
+  }
+  .rule::before, .rule::after {
+    content: ""; width: 72px; border-top: 1px solid rgba(201,163,92,.5);
+  }
+
+  header {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px;
+    background: rgba(16,16,20,.85); backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(201,163,92,.25);
+  }
+  .wordmark {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; letter-spacing: 4px;
+    text-transform: uppercase; text-decoration: none;
+  }
+  .call {
+    font-size: .85rem; letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--char); background: linear-gradient(105deg, #b28a44, var(--gold-lt), #b28a44);
+    text-decoration: none; padding: 12px 26px; min-height: 44px;
+    display: inline-flex; align-items: center;
+    transition: filter .2s;
+  }
+  .call:hover { filter: brightness(1.1); }
+
+  /* ── hero ── */
+  .hero {
+    position: relative; min-height: 92svh;
+    display: grid; place-items: center; text-align: center;
+    padding: 90px 20px;
+    isolation: isolate; overflow: hidden;
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; z-index: -2;
+    background: url('photos/photo-1.jpg') center 30% / cover no-repeat;
+    filter: grayscale(45%) brightness(.42) contrast(1.05);
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: radial-gradient(ellipse 70% 60% at 50% 45%, rgba(16,16,20,.55) 0%, rgba(16,16,20,.93) 100%);
+  }
+  .hero > div { text-shadow: 0 2px 18px rgba(0,0,0,.7); }
+  .hero .crest { font-family: 'Cormorant Garamond', serif; font-size: .95rem; letter-spacing: 7px; text-transform: uppercase; color: var(--gold); }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: clamp(3rem, 9vw, 6.8rem); line-height: 1.02; letter-spacing: 2px;
+    margin: 18px 0 8px;
+  }
+  .hero h1 em { font-style: italic; font-weight: 400; }
+  .hero .loc { font-size: .9rem; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); margin-bottom: 26px; }
+  .hero .stars { color: var(--gold); letter-spacing: 6px; font-size: 1.05rem; }
+  .hero .score { font-size: .85rem; letter-spacing: 2px; color: var(--muted); margin-top: 6px; }
+  .hero .cta-row { margin-top: 44px; display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
+  .btn-outline {
+    font-size: .85rem; letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--gold-lt); text-decoration: none;
+    border: 1px solid rgba(201,163,92,.6); padding: 12px 26px; min-height: 44px;
+    display: inline-flex; align-items: center;
+    transition: background .25s, color .25s;
+  }
+  .btn-outline:hover { background: rgba(201,163,92,.12); }
+
+  section { max-width: 1020px; margin: 0 auto; padding: 96px 20px; }
+  .sec-label { text-align: center; font-size: .78rem; letter-spacing: 5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  h2 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: clamp(2rem, 5vw, 3.2rem); text-align: center; letter-spacing: 1px;
+    margin-bottom: 18px;
+  }
+  .sec-rule { margin-bottom: 50px; }
+  .sec-rule::before, .sec-rule::after { width: 54px; }
+
+  /* ── menu usług ── */
+  .menu { max-width: 640px; margin: 0 auto; }
+  .menu-row {
+    display: flex; align-items: baseline; gap: 12px; padding: 19px 0;
+    border-bottom: 1px solid rgba(201,163,92,.18);
+  }
+  .menu-row:last-child { border-bottom: none; }
+  .menu-row .nm { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; letter-spacing: .5px; }
+  .menu-row .nm small { display: block; font-family: 'Jost', sans-serif; font-size: .8rem; letter-spacing: 1px; color: var(--muted); }
+  .menu-row .fill { flex: 1; border-bottom: 1px dotted rgba(143,139,131,.4); transform: translateY(-6px); }
+  .menu-row .pr { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--gold-lt); white-space: nowrap; }
+
+  /* ── galeria ── */
+  .frames { display: grid; gap: 22px; grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 780px) { .frames { grid-template-columns: repeat(4, 1fr); } }
+  .frames figure {
+    border: 1px solid rgba(201,163,92,.45); padding: 8px; background: var(--char2);
+    aspect-ratio: 3/4; overflow: hidden;
+  }
+  .frames img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%) contrast(1.03); transition: transform .4s ease, filter .4s; }
+  .frames figure:hover img { transform: scale(1.05); filter: grayscale(0%); }
+
+  /* ── opinie ── */
+  .testimonial { max-width: 720px; margin: 0 auto; text-align: center; }
+  .testimonial blockquote {
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 400;
+    font-size: clamp(1.4rem, 3.4vw, 2rem); line-height: 1.4;
+  }
+  .testimonial .who { margin-top: 20px; font-size: .8rem; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
+  .t-grid { display: grid; gap: 40px; margin-top: 60px; }
+  @media (min-width: 780px) { .t-grid { grid-template-columns: 1fr 1fr; } }
+  .t-small { border-top: 1px solid rgba(201,163,92,.25); padding-top: 22px; text-align: center; }
+  .t-small .stars { color: var(--gold); letter-spacing: 4px; font-size: .9rem; }
+  .t-small p { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.15rem; margin-top: 10px; }
+
+  /* ── kontakt ── */
+  .visit { background: var(--char2); border-top: 1px solid rgba(201,163,92,.2); border-bottom: 1px solid rgba(201,163,92,.2); }
+  .visit-grid { display: grid; gap: 36px; text-align: center; }
+  @media (min-width: 780px) { .visit-grid { grid-template-columns: repeat(3, 1fr); } }
+  .visit h4 { font-size: .75rem; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .visit p, .visit a { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; text-decoration: none; }
+  .visit a:hover { color: var(--gold-lt); }
+
+  footer { text-align: center; padding: 36px 20px; font-size: .75rem; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="wordmark gold-text" href="#">Gentelman</a>
+  <a class="call" href="tel:+48603660949">603 660 949</a>
+</header>
+
+<div class="hero">
+  <div>
+    <p class="crest">Est. Piotrków Trybunalski</p>
+    <h1><span class="gold-text">Gentelman</span><br><em>Barber</em></h1>
+    <p class="loc">Galeria Focus · obok kina Helios</p>
+    <div class="stars">★ ★ ★ ★ ★</div>
+    <p class="score">4.9 / 5 — 347 opinii Google</p>
+    <div class="cta-row">
+      <a class="call" href="tel:+48603660949">Zarezerwuj wizytę</a>
+      <a class="btn-outline" href="#menu">Karta usług</a>
+    </div>
+  </div>
+</div>
+
+<section id="menu">
+  <p class="sec-label">Menu dżentelmena</p>
+  <h2>Karta usług</h2>
+  <div class="rule sec-rule">✦</div>
+  <div class="menu">
+    <div class="menu-row"><span class="nm">Strzyżenie klasyczne<small>konsultacja, mycie, stylizacja</small></span><span class="fill"></span><span class="pr">70 zł</span></div>
+    <div class="menu-row"><span class="nm">Fade Royale<small>cieniowanie na miarę</small></span><span class="fill"></span><span class="pr">80 zł</span></div>
+    <div class="menu-row"><span class="nm">Rytuał brody<small>gorący ręcznik, olejek, kontur</small></span><span class="fill"></span><span class="pr">60 zł</span></div>
+    <div class="menu-row"><span class="nm">Pełen serwis<small>włosy, broda, rytuał odświeżenia</small></span><span class="fill"></span><span class="pr">120 zł</span></div>
+    <div class="menu-row"><span class="nm">Golenie królewskie<small>brzytwa, kompres, balsam</small></span><span class="fill"></span><span class="pr">85 zł</span></div>
+  </div>
+</section>
+
+<section id="galeria" style="padding-top: 0;">
+  <p class="sec-label">Portfolio</p>
+  <h2>Rzemiosło w kadrze</h2>
+  <div class="rule sec-rule">✦</div>
+  <div class="frames">
+    <figure><img src="photos/photo-3.jpg" alt="Strzyżenie w Gentelman Barber" loading="lazy"></figure>
+    <figure><img src="photos/photo-4.jpg" alt="Fryzura męska — Gentelman Barber" loading="lazy"></figure>
+    <figure><img src="photos/photo-5.jpg" alt="Stylizacja brody — Gentelman Barber" loading="lazy"></figure>
+    <figure><img src="photos/photo-6.jpg" alt="Efekt strzyżenia — Gentelman Barber" loading="lazy"></figure>
+  </div>
+</section>
+
+<section id="opinie" style="padding-top: 0;">
+  <p class="sec-label">Słowo klientów</p>
+  <h2>Opinie</h2>
+  <div class="rule sec-rule">✦</div>
+  <div class="testimonial">
+    <blockquote>„Precyzja, spokój i klasa. Wychodzę stąd zawsze jak nowy człowiek, a wracam jak do dobrego znajomego."</blockquote>
+    <p class="who">Opinia z Google · ★★★★★</p>
+  </div>
+  <div class="t-grid">
+    <div class="t-small">
+      <div class="stars">★★★★★</div>
+      <p>„Najlepszy barber w Piotrkowie. Rezerwacja z wyprzedzeniem to konieczność, ale warto."</p>
+    </div>
+    <div class="t-small">
+      <div class="stars">★★★★★</div>
+      <p>„Rytuał brody z gorącym ręcznikiem to usługa, po której nie ma powrotu do zwykłego golenia."</p>
+    </div>
+  </div>
+</section>
+
+<section class="visit" id="kontakt" style="max-width: none;">
+  <div style="max-width: 1020px; margin: 0 auto;">
+    <p class="sec-label">Zapraszamy</p>
+    <h2>Wizyta</h2>
+    <div class="rule sec-rule">✦</div>
+    <div class="visit-grid">
+      <div>
+        <h4>Rezerwacje</h4>
+        <a href="tel:+48603660949">603 660 949</a>
+      </div>
+      <div>
+        <h4>Adres</h4>
+        <p>Galeria Focus<br>Piotrków Trybunalski</p>
+      </div>
+      <div>
+        <h4>Social</h4>
+        <a href="https://www.facebook.com/people/Gentelman-Barber-Piotrk%C3%B3w-Tryb/100042181486911/" target="_blank" rel="noopener">Facebook</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>Gentelman Barber · Piotrków Trybunalski</footer>
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Staromiejski Barbershop — Radomsko, est. tradycja</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Rye&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f1e7d3;
+    --paper-2: #e7dabf;
+    --ink: #2b2118;
+    --copper: #8c5a2b;
+    --copper-lt: #b07a3f;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image: radial-gradient(rgba(43,33,24,.05) 1px, transparent 1.5px);
+    background-size: 26px 26px;
+    color: var(--ink);
+    font-family: 'EB Garamond', serif; font-size: 1.06rem; line-height: 1.65;
+  }
+  ::selection { background: var(--copper); color: var(--paper); }
+
+  .frame { max-width: 1000px; margin: 26px auto; border: 3px double var(--ink); padding: 8px; }
+  .frame-inner { border: 1px solid var(--ink); padding: 0 22px 40px; }
+
+  .top-banner {
+    text-align: center; padding: 10px 0; font-size: .85rem; letter-spacing: 3px;
+    text-transform: uppercase; border-bottom: 1px solid var(--ink);
+    font-family: 'Cinzel', serif;
+  }
+  header.mast { text-align: center; padding: 44px 0 30px; border-bottom: 3px double var(--ink); }
+  .est { font-family: 'Cinzel', serif; letter-spacing: 5px; font-size: .85rem; color: var(--copper); text-transform: uppercase; }
+  h1 {
+    font-family: 'Rye', serif; font-weight: 400;
+    font-size: clamp(2.2rem, 7.5vw, 4.6rem); line-height: 1.08; margin: 14px 0 10px;
+  }
+  .mast .tag { font-style: italic; font-size: 1.15rem; }
+  .orn { font-size: 1.4rem; color: var(--copper); letter-spacing: 10px; margin-top: 16px; }
+
+  .notice {
+    display: flex; justify-content: center; gap: 26px; flex-wrap: wrap;
+    font-family: 'Cinzel', serif; font-size: .8rem; letter-spacing: 2px; text-transform: uppercase;
+    padding: 14px 0; border-bottom: 1px solid var(--ink);
+  }
+  .notice b { color: var(--copper); }
+  .notice a { color: var(--ink); }
+
+  .hero-fig { margin: 34px 0; }
+  .hero-fig .ph-frame {
+    border: 1px solid var(--ink); padding: 10px; background: var(--paper-2);
+    box-shadow: 6px 6px 0 rgba(43,33,24,.15);
+  }
+  .hero-fig img { width: 100%; display: block; filter: sepia(28%) contrast(1.02); aspect-ratio: 16/8.5; object-fit: cover; }
+  .hero-fig figcaption { text-align: center; font-style: italic; padding-top: 10px; font-size: .95rem; }
+
+  h2 {
+    font-family: 'Cinzel', serif; font-weight: 600; text-align: center;
+    font-size: clamp(1.5rem, 4vw, 2.2rem); letter-spacing: 2px; text-transform: uppercase;
+    margin: 54px 0 6px;
+  }
+  .h-orn { text-align: center; color: var(--copper); font-size: 1.15rem; margin-bottom: 30px; letter-spacing: 6px; }
+
+  /* cennik: apteczny rejestr */
+  .registry { max-width: 620px; margin: 0 auto; }
+  .reg-row { display: flex; align-items: baseline; gap: 10px; padding: 12px 0; }
+  .reg-row .no { font-family: 'Cinzel', serif; color: var(--copper); font-size: .85rem; min-width: 34px; }
+  .reg-row .nm { font-size: 1.12rem; }
+  .reg-row .nm i { display: block; font-size: .9rem; color: rgba(43,33,24,.65); }
+  .reg-row .lead-dots { flex: 1; border-bottom: 2px dotted rgba(43,33,24,.45); transform: translateY(-5px); }
+  .reg-row .pr { font-family: 'Cinzel', serif; font-weight: 600; white-space: nowrap; }
+  .reg-note { text-align: center; font-style: italic; margin-top: 18px; font-size: .95rem; }
+
+  /* dwie kolumny: zdjęcie + manifest */
+  .duo { display: grid; gap: 30px; margin-top: 10px; align-items: center; }
+  @media (min-width: 800px) { .duo { grid-template-columns: 1fr 1fr; } }
+  .duo .ph-frame { border: 1px solid var(--ink); padding: 8px; background: var(--paper-2); }
+  .duo img { width: 100%; display: block; filter: sepia(30%) contrast(1.02); aspect-ratio: 4/4.6; object-fit: cover; }
+  .duo .man p { margin-bottom: 14px; }
+  .duo .man p:first-child::first-letter {
+    font-family: 'Rye', serif; float: left; font-size: 3.1em; line-height: .85;
+    padding: 4px 8px 0 0; color: var(--copper);
+  }
+
+  /* opinie: telegramy */
+  .wires { display: grid; gap: 18px; margin-top: 6px; }
+  @media (min-width: 800px) { .wires { grid-template-columns: repeat(3, 1fr); } }
+  .wire {
+    border: 1px solid var(--ink); background: var(--paper-2); padding: 18px;
+    font-size: .98rem;
+  }
+  .wire .hd {
+    font-family: 'Cinzel', serif; font-size: .72rem; letter-spacing: 2px; text-transform: uppercase;
+    border-bottom: 1px solid var(--ink); padding-bottom: 8px; margin-bottom: 10px;
+    display: flex; justify-content: space-between;
+  }
+  .wire .st { color: var(--copper); }
+  .wire p { font-style: italic; }
+
+  /* kontakt: bilet */
+  .ticket {
+    max-width: 640px; margin: 10px auto 0; border: 3px double var(--ink);
+    padding: 30px 24px; text-align: center; background: var(--paper-2);
+    position: relative;
+  }
+  .ticket::before, .ticket::after {
+    content: "✂"; position: absolute; top: 50%; transform: translateY(-50%);
+    color: var(--copper); font-size: 1.2rem;
+  }
+  .ticket::before { left: 8px; } .ticket::after { right: 8px; }
+  .ticket h3 { font-family: 'Cinzel', serif; letter-spacing: 3px; text-transform: uppercase; font-size: 1rem; margin-bottom: 12px; }
+  .ticket .tel {
+    font-family: 'Cinzel', serif; font-weight: 700; font-size: clamp(1.6rem, 5vw, 2.2rem);
+    color: var(--ink); text-decoration: none; display: inline-block; margin-bottom: 8px;
+  }
+  .ticket .tel:hover { color: var(--copper); }
+  .ticket p { font-style: italic; }
+  .ticket .btn {
+    display: inline-flex; align-items: center; margin-top: 18px; min-height: 44px;
+    font-family: 'Cinzel', serif; letter-spacing: 2px; text-transform: uppercase; font-size: .85rem;
+    background: var(--ink); color: var(--paper); text-decoration: none; padding: 12px 28px;
+    transition: background .2s;
+  }
+  .ticket .btn:hover { background: var(--copper); }
+
+  footer.col { text-align: center; font-style: italic; padding: 30px 0 6px; font-size: .9rem; }
+</style>
+</head>
+<body>
+
+<div class="frame">
+  <div class="frame-inner">
+
+    <div class="top-banner">Radomsko · Stare Miasto · Rzemiosło od pokoleń</div>
+
+    <header class="mast">
+      <p class="est">· Est. Radomsko ·</p>
+      <h1>Staromiejski<br>Barbershop</h1>
+      <p class="tag">Strzyżenie i golenie wedle sztuki dawnych mistrzów</p>
+      <p class="orn">❦ ✂ ❦</p>
+    </header>
+
+    <div class="notice">
+      <span>Ocena: <b>4.7 / 5</b> · 194 opinie</span>
+      <span>Tel: <a href="tel:+48537278903">537 278 903</a></span>
+      <span><a href="https://staromiejski.com/" target="_blank" rel="noopener">staromiejski.com</a></span>
+    </div>
+
+    <figure class="hero-fig">
+      <div class="ph-frame">
+        <img src="photos/photo-1.jpg" alt="Wnętrze Staromiejskiego Barbershopu w Radomsku">
+      </div>
+      <figcaption>Salon nasz przy starym mieście, fotografia współczesna.</figcaption>
+    </figure>
+
+    <h2 id="cennik">Rejestr usług</h2>
+    <p class="h-orn">❧ ❦ ❧</p>
+    <div class="registry">
+      <div class="reg-row"><span class="no">I.</span><span class="nm">Strzyżenie klasyczne<i>nożyce, maszynka, tonik na zakończenie</i></span><span class="lead-dots"></span><span class="pr">70 zł</span></div>
+      <div class="reg-row"><span class="no">II.</span><span class="nm">Strzyżenie z brodą<i>pełna usługa dżentelmeńska</i></span><span class="lead-dots"></span><span class="pr">110 zł</span></div>
+      <div class="reg-row"><span class="no">III.</span><span class="nm">Broda tradycyjna<i>trymowanie, kontur, olejek</i></span><span class="lead-dots"></span><span class="pr">50 zł</span></div>
+      <div class="reg-row"><span class="no">IV.</span><span class="nm">Golenie brzytwą<i>gorący kompres, pianka, balsam</i></span><span class="lead-dots"></span><span class="pr">80 zł</span></div>
+      <div class="reg-row"><span class="no">V.</span><span class="nm">Kawaler do lat 12<i>pierwsza wizyta u barbera gratis wąsika</i></span><span class="lead-dots"></span><span class="pr">50 zł</span></div>
+    </div>
+    <p class="reg-note">Ceny uczciwe, rzemiosło pewne, rezerwacja telefoniczna wielce wskazana.</p>
+
+    <h2>Manifest zakładu</h2>
+    <p class="h-orn">❧ ✂ ❧</p>
+    <div class="duo">
+      <div class="ph-frame">
+        <img src="photos/photo-2.jpg" alt="Strzyżenie w Staromiejskim Barbershopie">
+      </div>
+      <div class="man">
+        <p>Wierzymy, że strzyżenie to nie usługa, lecz rytuał. Od chwili, gdy klient siada w fotelu, czas płynie wolniej: nożyce mierzą swoje, brzytwa czeka na swoją kolej, a rozmowa toczy się tylko wtedy, gdy jest mile widziana.</p>
+        <p>Pracujemy na kosmetykach, które szanują skórę, i na technikach, które szanują tradycję. Stare miasto zobowiązuje: tu się nie spieszy, tu się dba o fason.</p>
+        <p style="font-style: italic; color: var(--copper);">— Załoga Staromiejskiego</p>
+      </div>
+    </div>
+
+    <h2>Depesze od klientów</h2>
+    <p class="h-orn">❧ ❦ ❧</p>
+    <div class="wires">
+      <div class="wire">
+        <div class="hd"><span>Depesza № 194</span><span class="st">★★★★★</span></div>
+        <p>„Fason trzyma się tydzień po tygodniu. Mistrzowie brzytwy, polecam każdemu."</p>
+      </div>
+      <div class="wire">
+        <div class="hd"><span>Depesza № 187</span><span class="st">★★★★★</span></div>
+        <p>„Klimat starego zakładu, robota na najwyższym poziomie. Wracam co miesiąc."</p>
+      </div>
+      <div class="wire">
+        <div class="hd"><span>Depesza № 171</span><span class="st">★★★★★</span></div>
+        <p>„Golenie brzytwą z gorącym kompresem: ceremonia, nie usługa. Szacunek."</p>
+      </div>
+    </div>
+
+    <h2>Umów wizytę</h2>
+    <p class="h-orn">❧ ✂ ❧</p>
+    <div class="ticket">
+      <h3>Bilet wstępu do fotela</h3>
+      <a class="tel" href="tel:+48537278903">537 278 903</a>
+      <p>Staromiejski Barbershop · Radomsko, Stare Miasto</p>
+      <a class="btn" href="https://staromiejski.com/" target="_blank" rel="noopener">Pełna oferta: staromiejski.com</a>
+    </div>
+
+    <footer class="col">Staromiejski Barbershop · Radomsko · Rzetelność i fason od pierwszego strzyżenia</footer>
+
+  </div>
+</div>
+
+</body>
+</html>

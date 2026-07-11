@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Męska Strefa — Salon Fryzjerski, Tomaszów Mazowiecki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #0b0e14;
+    --panel: #131824;
+    --edge: #263048;
+    --ice: #7dd3fc;
+    --red: #e5484d;
+    --ink: #e8edf5;
+    --dim: #8a94a8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--void); color: var(--ink);
+    font-family: 'Sora', sans-serif; font-weight: 300; line-height: 1.65;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--ice); color: var(--void); }
+  .chakra { font-family: 'Chakra Petch', sans-serif; }
+
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 80;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 20px;
+    background: rgba(11,14,20,.72); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--edge);
+  }
+  .logo { font-family: 'Chakra Petch', sans-serif; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--ink); text-decoration: none; font-size: 1rem; }
+  .logo b { color: var(--ice); }
+  .call {
+    font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: .9rem; letter-spacing: 1px;
+    color: var(--void); background: var(--ice); text-decoration: none;
+    padding: 10px 20px; min-height: 44px; display: inline-flex; align-items: center; gap: 8px;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    transition: filter .15s;
+  }
+  .call:hover { filter: brightness(1.15); }
+
+  /* ── scena 3D ── */
+  .stage {
+    min-height: 100svh; display: grid; place-items: center;
+    perspective: 900px; position: relative; overflow: hidden;
+    padding: 90px 20px 60px;
+  }
+  .stage::before { /* podłoga */
+    content: ""; position: absolute; left: -20%; right: -20%; bottom: -12%; height: 55%;
+    background:
+      repeating-linear-gradient(90deg, rgba(125,211,252,.14) 0 1px, transparent 1px 90px),
+      repeating-linear-gradient(0deg, rgba(125,211,252,.14) 0 1px, transparent 1px 46px),
+      radial-gradient(ellipse 60% 90% at 50% 100%, rgba(125,211,252,.08), transparent 70%);
+    transform: perspective(600px) rotateX(62deg);
+    transform-origin: bottom; pointer-events: none;
+  }
+  .scene {
+    position: relative; text-align: center;
+    transform-style: preserve-3d;
+    transition: transform .25s ease-out;
+    will-change: transform;
+  }
+  .scene h1 {
+    font-family: 'Chakra Petch', sans-serif; font-weight: 700; text-transform: uppercase;
+    font-size: clamp(2.7rem, 9.5vw, 7rem); line-height: .98; letter-spacing: 2px;
+    text-shadow: 0 0 40px rgba(125,211,252,.25);
+    transform: translateZ(60px);
+  }
+  .scene h1 .l2 { color: transparent; -webkit-text-stroke: 2px var(--ice); display: block; }
+  .scene .tag {
+    margin-top: 18px; color: var(--dim); letter-spacing: 4px; text-transform: uppercase; font-size: .85rem;
+    transform: translateZ(35px);
+  }
+  .scene .score { margin-top: 10px; color: var(--ice); font-family: 'Chakra Petch', sans-serif; letter-spacing: 2px; transform: translateZ(35px); }
+  .scene .cta-row { margin-top: 38px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; transform: translateZ(80px); }
+  .ghost {
+    font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: .9rem; letter-spacing: 1px;
+    color: var(--ice); text-decoration: none; border: 1px solid var(--ice);
+    padding: 10px 20px; min-height: 44px; display: inline-flex; align-items: center;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    transition: background .2s;
+  }
+  .ghost:hover { background: rgba(125,211,252,.12); }
+
+  /* barber pole 3D */
+  .pole-wrap { position: absolute; right: 6%; top: 50%; transform: translateY(-50%) translateZ(20px); display: grid; justify-items: center; gap: 10px; }
+  @media (max-width: 900px) { .pole-wrap { display: none; } }
+  .pole-cap { width: 64px; height: 20px; border-radius: 50% / 100% 100% 0 0; background: linear-gradient(180deg, #d7dde8, #7c8798); }
+  .pole-cap.bot { border-radius: 50% / 0 0 100% 100%; background: linear-gradient(0deg, #d7dde8, #7c8798); }
+  .pole {
+    width: 56px; height: 240px; border-radius: 28px;
+    background:
+      linear-gradient(90deg, rgba(0,0,0,.42) 0%, transparent 22%, transparent 78%, rgba(0,0,0,.5) 100%),
+      repeating-linear-gradient(-32deg, #e5484d 0 16px, #f4f6fa 16px 32px, #3d63dd 32px 48px, #f4f6fa 48px 64px);
+    background-size: 100% 100%, 100% 136px;
+    animation: barber 2.6s linear infinite;
+    box-shadow: 0 0 34px rgba(125,211,252,.25);
+  }
+  @keyframes barber { to { background-position: 0 0, 0 136px; } }
+  @media (prefers-reduced-motion: reduce) { .pole { animation: none; } }
+  .pole-wrap small { color: var(--dim); font-size: .68rem; letter-spacing: 3px; text-transform: uppercase; }
+
+  section { max-width: 1040px; margin: 0 auto; padding: 90px 20px; }
+  h2 {
+    font-family: 'Chakra Petch', sans-serif; font-weight: 700; text-transform: uppercase;
+    font-size: clamp(1.7rem, 4.6vw, 2.7rem); letter-spacing: 2px; margin-bottom: 10px;
+  }
+  h2 span { color: var(--ice); }
+  .sub-h { color: var(--dim); font-size: .9rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 44px; }
+
+  /* usługi: panele 3D */
+  .decks { display: grid; gap: 22px; perspective: 1100px; }
+  @media (min-width: 800px) { .decks { grid-template-columns: repeat(3, 1fr); } }
+  .deck {
+    background: linear-gradient(160deg, var(--panel), #0e1220);
+    border: 1px solid var(--edge); border-radius: 14px; padding: 28px 24px;
+    transform-style: preserve-3d;
+    transition: transform .3s ease, border-color .3s, box-shadow .3s;
+  }
+  .deck:hover {
+    transform: rotateX(7deg) rotateY(-7deg) translateZ(14px);
+    border-color: rgba(125,211,252,.55);
+    box-shadow: 0 24px 60px rgba(0,0,0,.55), 0 0 30px rgba(125,211,252,.12);
+  }
+  .deck .ic { font-size: 1.5rem; color: var(--ice); }
+  .deck h3 { font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 1.15rem; margin: 12px 0 4px; letter-spacing: 1px; }
+  .deck .pr { color: var(--ice); font-family: 'Chakra Petch', sans-serif; font-weight: 700; font-size: 1.55rem; }
+  .deck p { color: var(--dim); font-size: .9rem; margin-top: 10px; }
+
+  /* opinie: hologramy */
+  .holo-row { display: grid; gap: 22px; }
+  @media (min-width: 800px) { .holo-row { grid-template-columns: repeat(2, 1fr); } }
+  .holo {
+    position: relative; border-radius: 14px; padding: 26px;
+    background: rgba(125,211,252,.05);
+    border: 1px solid rgba(125,211,252,.28);
+    overflow: hidden;
+  }
+  .holo::after {
+    content: ""; position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(125,211,252,.05) 0 1px, transparent 1px 4px);
+    pointer-events: none;
+  }
+  .holo .st { color: var(--ice); letter-spacing: 4px; font-size: .9rem; }
+  .holo p { margin-top: 10px; font-size: 1rem; }
+  .holo .who { margin-top: 14px; color: var(--dim); font-size: .78rem; letter-spacing: 2px; text-transform: uppercase; }
+
+  /* kontakt */
+  .dock {
+    border: 1px solid var(--edge); border-radius: 18px;
+    background: linear-gradient(160deg, var(--panel), #0e1220);
+    padding: 54px 30px; text-align: center;
+    box-shadow: 0 30px 80px rgba(0,0,0,.5);
+  }
+  .dock .tel {
+    font-family: 'Chakra Petch', sans-serif; font-weight: 700;
+    font-size: clamp(2rem, 7vw, 3.6rem); letter-spacing: 3px;
+    color: var(--ice); text-decoration: none; display: inline-block; margin: 12px 0;
+    text-shadow: 0 0 30px rgba(125,211,252,.4);
+  }
+  .dock p { color: var(--dim); }
+  .dock .ig { color: var(--ink); text-decoration: underline; }
+  .dock .ig:hover { color: var(--ice); }
+
+  footer { text-align: center; padding: 30px 20px; color: var(--dim); font-size: .78rem; letter-spacing: 3px; text-transform: uppercase; border-top: 1px solid var(--edge); }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">Męska <b>Strefa</b></a>
+  <a class="call" href="tel:+48733333286">733 333 286</a>
+</header>
+
+<div class="stage">
+  <div class="scene" id="scene">
+    <h1 class="chakra">Męska<span class="l2">Strefa</span></h1>
+    <p class="tag">Salon fryzjerski · Tomaszów Mazowiecki</p>
+    <p class="score">★ 5.0 / 98 OPINII GOOGLE</p>
+    <div class="cta-row">
+      <a class="call" href="tel:+48733333286">Umów strzyżenie</a>
+      <a class="ghost" href="#uslugi">Zobacz usługi</a>
+    </div>
+  </div>
+  <div class="pole-wrap" aria-hidden="true">
+    <div class="pole-cap"></div>
+    <div class="pole"></div>
+    <div class="pole-cap bot"></div>
+    <small>od 1898 symbol fachu</small>
+  </div>
+</div>
+
+<section id="uslugi">
+  <h2>Strefa <span>usług</span></h2>
+  <p class="sub-h">// wejdź, usiądź, wyjdź lepszy</p>
+  <div class="decks">
+    <div class="deck">
+      <div class="ic">▚</div>
+      <h3>Strzyżenie</h3>
+      <div class="pr">55 zł</div>
+      <p>Klasyka albo nowocześnie. Konsultacja przy fotelu, mycie i stylizacja w cenie.</p>
+    </div>
+    <div class="deck">
+      <div class="ic">◢</div>
+      <h3>Fade / Skin</h3>
+      <div class="pr">65 zł</div>
+      <p>Przejścia gładkie jak render. Kontur brzytwą na wykończenie.</p>
+    </div>
+    <div class="deck">
+      <div class="ic">▞</div>
+      <h3>Broda</h3>
+      <div class="pr">45 zł</div>
+      <p>Trymowanie, kontur, olejek. Geometria dopasowana do twarzy.</p>
+    </div>
+    <div class="deck">
+      <div class="ic">◣</div>
+      <h3>Combo</h3>
+      <div class="pr">95 zł</div>
+      <p>Włosy + broda w jednej sesji. Pełny serwis strefy.</p>
+    </div>
+    <div class="deck">
+      <div class="ic">▟</div>
+      <h3>Junior</h3>
+      <div class="pr">40 zł</div>
+      <p>Dla młodych ludzi z charakterem. Spokojnie i na luzie.</p>
+    </div>
+    <div class="deck">
+      <div class="ic">◆</div>
+      <h3>Stylizacja</h3>
+      <div class="pr">25 zł</div>
+      <p>Szybkie ogarnięcie przed wyjściem. Produkt + ręka mistrza.</p>
+    </div>
+  </div>
+</section>
+
+<section id="opinie" style="padding-top: 0;">
+  <h2>Transmisje <span>z fotela</span></h2>
+  <p class="sub-h">// ocena 5.0 przy 98 opiniach mówi sama za siebie</p>
+  <div class="holo-row">
+    <div class="holo">
+      <div class="st">★★★★★</div>
+      <p>„Pełen profesjonalizm i klimat. Najlepszy fade w Tomaszowie, nie ma dyskusji."</p>
+      <div class="who">opinia z Google</div>
+    </div>
+    <div class="holo">
+      <div class="st">★★★★★</div>
+      <p>„Facet wie, co robi. Wychodzę zawsze dokładnie z tym, po co przyszedłem."</p>
+      <div class="who">opinia z Google</div>
+    </div>
+  </div>
+</section>
+
+<section id="kontakt" style="padding-top: 0;">
+  <div class="dock">
+    <h2>Wejdź do <span>strefy</span></h2>
+    <a class="tel" href="tel:+48733333286">733 333 286</a>
+    <p>Męska Strefa · Tomaszów Mazowiecki</p>
+    <p style="margin-top: 10px;">Śledź nas: <a class="ig" href="https://www.instagram.com/meska_strefa_salon_fryzjerski/" target="_blank" rel="noopener">Instagram</a></p>
+  </div>
+</section>
+
+<footer>Męska Strefa · Tomaszów Mazowiecki</footer>
+
+<script>
+  // parallax 3D sceny za kursorem (desktop) — subtelny, wyłączany przy reduced motion
+  const scene = document.getElementById('scene');
+  const fine = window.matchMedia('(pointer: fine)').matches;
+  const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (scene && fine && !noMotion) {
+    document.addEventListener('pointermove', (e) => {
+      const rx = (e.clientY / window.innerHeight - 0.5) * -7;
+      const ry = (e.clientX / window.innerWidth - 0.5) * 9;
+      scene.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+    });
+  }
+</script>
+
+</body>
+</html>

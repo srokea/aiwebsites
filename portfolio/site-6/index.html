@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Happy Hair and Beauty — Radomsko</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prata&family=Quicksand:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blush: #fbe4ea;
+    --blush-2: #f5cdd9;
+    --lav: #e6dcf5;
+    --cream: #fffaf7;
+    --ink: #4d3f4b;
+    --rose: #c96f8d;
+    --muted: #9b8a99;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--cream); color: var(--ink);
+    font-family: 'Quicksand', sans-serif; line-height: 1.7;
+  }
+  ::selection { background: var(--rose); color: #fff; }
+
+  .script { font-family: 'Great Vibes', cursive; color: var(--rose); }
+
+  header {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 22px;
+    background: rgba(255,250,247,.88); backdrop-filter: blur(10px);
+  }
+  .brand { font-family: 'Prata', serif; font-size: 1.15rem; color: var(--ink); text-decoration: none; }
+  .brand em { font-family: 'Great Vibes', cursive; font-style: normal; color: var(--rose); font-size: 1.4rem; }
+  .call {
+    background: var(--rose); color: #fff; text-decoration: none;
+    font-weight: 600; font-size: .92rem;
+    padding: 11px 24px; border-radius: 999px; min-height: 44px;
+    display: inline-flex; align-items: center; gap: 8px;
+    box-shadow: 0 6px 18px rgba(201,111,141,.35);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .call:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(201,111,141,.45); }
+
+  /* ── hero ── */
+  .hero {
+    position: relative; overflow: hidden;
+    background: linear-gradient(160deg, var(--blush) 0%, var(--lav) 100%);
+    padding: 76px 22px 90px;
+  }
+  .hero::before, .hero::after { /* miękkie plamy */
+    content: ""; position: absolute; border-radius: 50%;
+    filter: blur(60px); opacity: .55; pointer-events: none;
+  }
+  .hero::before { width: 380px; height: 380px; background: #fff; top: -120px; right: -80px; }
+  .hero::after { width: 300px; height: 300px; background: var(--blush-2); bottom: -110px; left: -70px; }
+  .hero-in {
+    max-width: 1040px; margin: 0 auto; position: relative; z-index: 1;
+    display: grid; gap: 44px; align-items: center;
+  }
+  @media (min-width: 880px) { .hero-in { grid-template-columns: 1.05fr .95fr; } }
+  .hero .hi { font-family: 'Great Vibes', cursive; font-size: clamp(1.8rem, 4vw, 2.6rem); color: var(--rose); }
+  .hero h1 {
+    font-family: 'Prata', serif; font-weight: 400;
+    font-size: clamp(2.3rem, 6vw, 4rem); line-height: 1.12; margin: 8px 0 18px;
+  }
+  .hero p.sub { max-width: 44ch; color: var(--muted); font-size: 1.02rem; }
+  .hero .cta-row { margin-top: 30px; display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .ghost {
+    color: var(--rose); text-decoration: none; font-weight: 600; font-size: .92rem;
+    padding: 11px 24px; border-radius: 999px; border: 2px solid var(--rose);
+    min-height: 44px; display: inline-flex; align-items: center;
+    transition: background .2s, color .2s;
+  }
+  .ghost:hover { background: var(--rose); color: #fff; }
+  .arch-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .arch { border-radius: 200px 200px 18px 18px; overflow: hidden; aspect-ratio: 3/4.4; box-shadow: 0 18px 40px rgba(77,63,75,.16); }
+  .arch img { width: 100%; height: 100%; object-fit: cover; }
+  .arch:nth-child(2) { transform: translateY(26px); }
+
+  section { max-width: 1040px; margin: 0 auto; padding: 88px 22px; }
+  .eyeline { text-align: center; }
+  .eyeline .script { font-size: clamp(1.7rem, 3.5vw, 2.3rem); }
+  h2 { font-family: 'Prata', serif; font-weight: 400; font-size: clamp(1.9rem, 4.5vw, 2.9rem); text-align: center; margin: 4px 0 46px; }
+
+  /* usługi: miękkie karty */
+  .soft-grid { display: grid; gap: 20px; }
+  @media (min-width: 760px) { .soft-grid { grid-template-columns: repeat(3, 1fr); } }
+  .soft {
+    background: #fff; border-radius: 26px; padding: 30px 26px;
+    box-shadow: 0 12px 34px rgba(77,63,75,.08);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .soft.tint-a { background: var(--blush); }
+  .soft.tint-b { background: var(--lav); }
+  .soft h3 { font-family: 'Prata', serif; font-weight: 400; font-size: 1.25rem; margin-bottom: 8px; }
+  .soft ul { list-style: none; }
+  .soft li { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px dashed rgba(77,63,75,.14); font-size: .95rem; }
+  .soft li:last-child { border-bottom: none; }
+  .soft li b { font-weight: 600; color: var(--rose); white-space: nowrap; }
+
+  /* galeria */
+  .gal { display: grid; gap: 16px; grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 760px) { .gal { grid-template-columns: repeat(3, 1fr); } }
+  .gal .tile { border-radius: 22px; overflow: hidden; aspect-ratio: 1/1; }
+  .gal img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+  .gal .tile:hover img { transform: scale(1.06); }
+  .gal .tile:nth-child(1) { border-radius: 200px 22px 22px 22px; }
+  .gal .tile:nth-child(3) { border-radius: 22px 200px 22px 22px; }
+  .gal .tile:nth-child(4) { border-radius: 22px 22px 22px 200px; }
+  .gal .tile:nth-child(6) { border-radius: 22px 22px 200px 22px; }
+
+  /* opinie */
+  .ops { display: grid; gap: 20px; }
+  @media (min-width: 760px) { .ops { grid-template-columns: repeat(2, 1fr); } }
+  .op {
+    background: #fff; border-radius: 26px; padding: 30px;
+    box-shadow: 0 12px 34px rgba(77,63,75,.08); position: relative;
+  }
+  .op::before {
+    content: "“"; font-family: 'Prata', serif; font-size: 4rem; line-height: 1;
+    color: var(--blush-2); position: absolute; top: 14px; right: 22px;
+  }
+  .op .st { color: var(--rose); letter-spacing: 3px; font-size: .95rem; }
+  .op p { margin-top: 10px; }
+  .op span { display: block; margin-top: 12px; color: var(--muted); font-size: .85rem; font-weight: 600; }
+
+  /* kontakt */
+  .visit {
+    background: linear-gradient(160deg, var(--lav), var(--blush));
+    border-radius: 40px; max-width: 1040px; margin: 0 auto 90px; padding: 60px 30px;
+    text-align: center;
+  }
+  .visit h2 { margin-bottom: 12px; }
+  .visit .phone {
+    font-family: 'Prata', serif; font-size: clamp(1.7rem, 4.5vw, 2.6rem);
+    color: var(--ink); text-decoration: none; display: inline-block; margin: 8px 0 4px;
+  }
+  .visit .phone:hover { color: var(--rose); }
+  .visit p { color: var(--ink); opacity: .8; }
+  .visit .stars { color: var(--rose); letter-spacing: 4px; margin-top: 16px; }
+
+  footer { text-align: center; padding: 0 20px 40px; color: var(--muted); font-size: .85rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="#">Happy Hair <em>&amp; Beauty</em></a>
+  <a class="call" href="tel:+48574430261">574 430 261</a>
+</header>
+
+<div class="hero">
+  <div class="hero-in">
+    <div>
+      <p class="hi">Cześć, piękna!</p>
+      <h1>Włosy, które podnoszą Cię na duchu</h1>
+      <p class="sub">Salon fryzjersko-kosmetyczny w Radomsku. Koloryzacje, strzyżenia, pielęgnacja i chwila oddechu tylko dla Ciebie.</p>
+      <div class="cta-row">
+        <a class="call" href="tel:+48574430261">Umów wizytę</a>
+        <a class="ghost" href="#uslugi">Zobacz usługi</a>
+      </div>
+    </div>
+    <div class="arch-stack">
+      <div class="arch"><img src="photos/photo-1.webp" alt="Metamorfoza włosów w Happy Hair and Beauty"></div>
+      <div class="arch"><img src="photos/photo-2.webp" alt="Koloryzacja wykonana w Happy Hair and Beauty"></div>
+    </div>
+  </div>
+</div>
+
+<section id="uslugi">
+  <div class="eyeline"><span class="script">nasze specjalności</span></div>
+  <h2>Usługi i ceny</h2>
+  <div class="soft-grid">
+    <div class="soft tint-a">
+      <h3>Strzyżenie</h3>
+      <ul>
+        <li>Damskie z modelowaniem <b>od 90 zł</b></li>
+        <li>Męskie <b>od 50 zł</b></li>
+        <li>Grzywka / odświeżenie <b>od 30 zł</b></li>
+      </ul>
+    </div>
+    <div class="soft">
+      <h3>Koloryzacja</h3>
+      <ul>
+        <li>Jednolita <b>od 160 zł</b></li>
+        <li>Balayage / airtouch <b>od 280 zł</b></li>
+        <li>Tonowanie + olaplex <b>od 120 zł</b></li>
+      </ul>
+    </div>
+    <div class="soft tint-b">
+      <h3>Beauty</h3>
+      <ul>
+        <li>Regeneracja włosów <b>od 80 zł</b></li>
+        <li>Stylizacja brwi <b>od 40 zł</b></li>
+        <li>Fryzura okolicznościowa <b>od 130 zł</b></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="galeria" style="padding-top: 0;">
+  <div class="eyeline"><span class="script">to my!</span></div>
+  <h2>Poznajmy się</h2>
+  <div class="gal">
+    <div class="tile"><img src="photos/photo-3.webp" alt="Zespół Happy Hair and Beauty" loading="lazy"></div>
+    <div class="tile"><img src="photos/photo-5.webp" alt="Duet prowadzący Happy Hair and Beauty" loading="lazy"></div>
+    <div class="tile"><img src="photos/photo-6.webp" alt="Ekipa salonu Happy Hair and Beauty" loading="lazy"></div>
+  </div>
+  <p style="text-align:center; margin-top: 26px; color: var(--muted);">Duet, który zna Twoje włosy. Efekty naszych metamorfoz znajdziesz na <a href="https://happyhairbeauty.pl/" target="_blank" rel="noopener" style="color: var(--rose); font-weight: 600;">happyhairbeauty.pl</a></p>
+</section>
+
+<section id="opinie" style="padding-top: 0;">
+  <div class="eyeline"><span class="script">mówią o nas</span></div>
+  <h2>Opinie klientek</h2>
+  <div class="ops">
+    <div class="op">
+      <div class="st">★★★★★</div>
+      <p>„Pierwszy salon, w którym kolor wyszedł dokładnie taki, jak chciałam. Do tego cudowna atmosfera!"</p>
+      <span>opinia z Google · 5.0</span>
+    </div>
+    <div class="op">
+      <div class="st">★★★★★</div>
+      <p>„Włosy po regeneracji jak nowe. Czułam się zaopiekowana od wejścia do wyjścia."</p>
+      <span>opinia z Google · 5.0</span>
+    </div>
+  </div>
+</section>
+
+<div class="visit" id="kontakt">
+  <div class="eyeline"><span class="script">do zobaczenia!</span></div>
+  <h2>Umów swoją wizytę</h2>
+  <a class="phone" href="tel:+48574430261">574 430 261</a>
+  <p>Happy Hair and Beauty · Radomsko</p>
+  <p class="stars">★★★★★ &nbsp;5.0 w Google</p>
+</div>
+
+<footer>Happy Hair and Beauty · Radomsko · happyhairbeauty.pl</footer>
+
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>EuroFryz 2000 — Studio Fryzjerskie, Radomsko</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --space: #16102e;
+    --space-2: #241a4a;
+    --mag: #ff3dbb;
+    --cyanx: #4ce0ff;
+    --lime: #b8ff2e;
+    --ink: #f2efff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255,61,187,.18), transparent 40%),
+      radial-gradient(circle at 85% 30%, rgba(76,224,255,.15), transparent 45%),
+      linear-gradient(180deg, var(--space), var(--space-2) 60%, #1a1338);
+    color: var(--ink);
+    font-family: 'Exo 2', sans-serif; font-weight: 300; line-height: 1.65;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--mag); color: #fff; }
+
+  .chrome {
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(180deg, #ffffff 0%, #cfd6e6 30%, #7c8aa8 48%, #e8ecf5 52%, #9aa7c2 70%, #f4f7ff 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 2px 0 rgba(20,16,50,.9)) drop-shadow(0 0 18px rgba(76,224,255,.35));
+  }
+
+  header {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 18px;
+    background: rgba(22,16,46,.8); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(76,224,255,.35);
+  }
+  .logo { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1.05rem; letter-spacing: 2px; color: var(--ink); text-decoration: none; }
+  .logo b { color: var(--cyanx); }
+  .aqua-btn {
+    position: relative; text-decoration: none; color: #06202b;
+    font-family: 'Exo 2', sans-serif; font-weight: 600; font-size: .92rem;
+    padding: 11px 24px; border-radius: 999px; min-height: 44px;
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(180deg, #b9f2ff 0%, #4ce0ff 45%, #17a9d6 50%, #7fe9ff 100%);
+    box-shadow: 0 4px 14px rgba(76,224,255,.4), inset 0 1px 2px rgba(255,255,255,.9);
+    overflow: hidden;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .aqua-btn::after { /* połysk aqua */
+    content: ""; position: absolute; left: 8%; right: 8%; top: 6%; height: 40%;
+    background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.05));
+    border-radius: 999px; pointer-events: none;
+  }
+  .aqua-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(76,224,255,.55), inset 0 1px 2px rgba(255,255,255,.9); }
+  .aqua-btn.pink {
+    color: #33051f;
+    background: linear-gradient(180deg, #ffc4e8 0%, #ff3dbb 45%, #cc1687 50%, #ff8fd6 100%);
+    box-shadow: 0 4px 14px rgba(255,61,187,.4), inset 0 1px 2px rgba(255,255,255,.9);
+  }
+  .aqua-btn.pink:hover { box-shadow: 0 8px 22px rgba(255,61,187,.55), inset 0 1px 2px rgba(255,255,255,.9); }
+
+  /* ── hero ── */
+  .hero { position: relative; text-align: center; padding: 90px 20px 110px; }
+  .hero .y2k { font-family: 'Orbitron', sans-serif; font-size: .8rem; letter-spacing: 6px; color: var(--lime); text-transform: uppercase; }
+  .hero h1 { font-size: clamp(3rem, 11vw, 7.6rem); font-weight: 900; line-height: .98; letter-spacing: 1px; margin: 16px 0 6px; }
+  .hero .ver { font-family: 'Orbitron', sans-serif; color: var(--mag); font-size: clamp(1rem, 2.6vw, 1.5rem); letter-spacing: 4px; }
+  .hero p.sub { max-width: 52ch; margin: 22px auto 0; color: #c9c3e8; }
+  .hero .cta { margin-top: 38px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .orb {
+    position: absolute; border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle at 32% 28%, #ffffff 0%, #cfd6e6 18%, #64708c 45%, #2c3350 70%, #10142a 100%);
+    box-shadow: inset -6px -8px 18px rgba(0,0,0,.5), 0 0 30px rgba(76,224,255,.25);
+    animation: float 9s ease-in-out infinite;
+  }
+  .orb.o1 { width: 110px; height: 110px; left: 6%; top: 18%; }
+  .orb.o2 { width: 56px; height: 56px; right: 10%; top: 12%; animation-delay: -3s; }
+  .orb.o3 { width: 78px; height: 78px; right: 18%; bottom: 6%; animation-delay: -6s; }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-22px); } }
+  @media (prefers-reduced-motion: reduce) { .orb { animation: none; } }
+
+  section { max-width: 1020px; margin: 0 auto; padding: 76px 20px; position: relative; }
+  h2 { font-size: clamp(1.7rem, 5vw, 2.8rem); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; text-align: center; margin-bottom: 44px; }
+
+  /* panel metaliczny */
+  .panel {
+    border-radius: 22px; padding: 3px;
+    background: linear-gradient(180deg, #f4f7ff, #8b97b5 30%, #3e4763 50%, #aab5cf 70%, #f4f7ff);
+  }
+  .panel-in {
+    background: linear-gradient(180deg, rgba(22,16,46,.97), rgba(36,26,74,.97));
+    border-radius: 19px; padding: 30px 26px;
+  }
+  .p-list { max-width: 620px; margin: 0 auto; }
+  .p-row {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+    padding: 15px 2px; border-bottom: 1px solid rgba(76,224,255,.22);
+  }
+  .p-row:last-child { border-bottom: none; }
+  .p-row .nm { font-weight: 400; }
+  .p-row .nm small { display: block; color: #9a92c4; font-size: .82rem; }
+  .p-row .pr { font-family: 'Orbitron', sans-serif; font-weight: 700; color: var(--cyanx); white-space: nowrap; text-shadow: 0 0 12px rgba(76,224,255,.5); }
+
+  /* wizytówki CD */
+  .cds { display: grid; gap: 20px; grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 780px) { .cds { grid-template-columns: repeat(4, 1fr); } }
+  .cd {
+    aspect-ratio: 1/1; border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 50%, #241a4a 0 17%, transparent 17.5%),
+      conic-gradient(from 0deg, #ffd1f1, #c8f4ff, #fdffc7, #d9c8ff, #ffd1f1);
+    position: relative; display: grid; place-items: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4), inset 0 0 24px rgba(255,255,255,.35);
+  }
+  .cd::before { /* dziura */
+    content: ""; width: 17%; aspect-ratio: 1; border-radius: 50%;
+    background: var(--space); border: 3px solid rgba(255,255,255,.55);
+    position: absolute;
+  }
+  .cd span {
+    position: absolute; bottom: 12%;
+    font-family: 'Orbitron', sans-serif; font-size: .68rem; letter-spacing: 2px;
+    color: #241a4a; background: rgba(255,255,255,.82); padding: 4px 10px; border-radius: 999px;
+  }
+  .cd-note { text-align: center; color: #9a92c4; font-size: .88rem; margin-top: 20px; }
+
+  /* opinie: okna systemowe */
+  .wins { display: grid; gap: 20px; }
+  @media (min-width: 780px) { .wins { grid-template-columns: repeat(3, 1fr); } }
+  .win { border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,.3); box-shadow: 0 12px 30px rgba(0,0,0,.35); }
+  .win .bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 12px; font-family: 'Orbitron', sans-serif; font-size: .68rem; letter-spacing: 1.5px;
+    background: linear-gradient(180deg, #7fe9ff, #17a9d6); color: #06202b;
+  }
+  .win .bar .dots { display: flex; gap: 5px; }
+  .win .bar .dots i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.85); border: 1px solid rgba(6,32,43,.4); }
+  .win .body { padding: 20px; background: rgba(255,255,255,.06); font-size: .95rem; }
+  .win .body .st { color: var(--lime); letter-spacing: 3px; font-size: .85rem; }
+  .win .body p { margin-top: 10px; font-style: italic; }
+
+  /* kontakt */
+  .foot-panel { text-align: center; }
+  .tel-chrome {
+    font-family: 'Orbitron', sans-serif; font-weight: 900;
+    font-size: clamp(1.9rem, 6.5vw, 3.4rem); letter-spacing: 2px;
+    text-decoration: none; display: inline-block; margin: 14px 0;
+  }
+  .foot-panel p { color: #c9c3e8; }
+  footer { text-align: center; padding: 30px 20px 44px; color: #7d76a8; font-size: .8rem; letter-spacing: 2px; font-family: 'Orbitron', sans-serif; }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">EURO<b>FRYZ</b>.2K</a>
+  <a class="aqua-btn" href="tel:+48888735920">☎ 888 735 920</a>
+</header>
+
+<div class="hero">
+  <span class="orb o1" aria-hidden="true"></span>
+  <span class="orb o2" aria-hidden="true"></span>
+  <span class="orb o3" aria-hidden="true"></span>
+  <p class="y2k">≫ loading hairstyle.exe ≪</p>
+  <h1 class="chrome">EUROFRYZ</h1>
+  <p class="ver">STUDIO FRYZJERSKIE // RADOMSKO</p>
+  <p class="sub">Fryzury z przyszłości w cenach z przeszłości. Strzyżemy, koloryzujemy i modelujemy od czasów, gdy internet piszczał w słuchawce.</p>
+  <div class="cta">
+    <a class="aqua-btn pink" href="tel:+48888735920">Umów wizytę</a>
+    <a class="aqua-btn" href="#cennik">System cen</a>
+  </div>
+</div>
+
+<section id="cennik">
+  <h2 class="chrome">Cennik v4.8</h2>
+  <div class="panel"><div class="panel-in">
+    <div class="p-list">
+      <div class="p-row"><span class="nm">Strzyżenie damskie<small>mycie + modelowanie w pakiecie</small></span><span class="pr">od 85 zł</span></div>
+      <div class="p-row"><span class="nm">Strzyżenie męskie<small>klasyka albo total makeover</small></span><span class="pr">od 45 zł</span></div>
+      <div class="p-row"><span class="nm">Koloryzacja full color<small>paleta bez limitów</small></span><span class="pr">od 150 zł</span></div>
+      <div class="p-row"><span class="nm">Refleksy / baleyage<small>efekt sunshine.dll</small></span><span class="pr">od 240 zł</span></div>
+      <div class="p-row"><span class="nm">Modelowanie + upięcie<small>na wielkie wyjścia</small></span><span class="pr">od 70 zł</span></div>
+    </div>
+  </div></div>
+</section>
+
+<section id="hity" style="padding-top: 0;">
+  <h2 class="chrome">Hity zapisane na płytach</h2>
+  <div class="cds">
+    <div class="cd"><span>BOB 2000</span></div>
+    <div class="cd"><span>PIXIE.EXE</span></div>
+    <div class="cd"><span>BALEYAGE</span></div>
+    <div class="cd"><span>GRZYWKA Y2K</span></div>
+  </div>
+  <p class="cd-note">// kolekcja bestsellerów studia. Zdjęcia realizacji: wkrótce na tym kanale.</p>
+</section>
+
+<section id="opinie" style="padding-top: 0;">
+  <h2 class="chrome">Opinie użytkowników</h2>
+  <div class="wins">
+    <div class="win">
+      <div class="bar"><span>OPINIA_01.TXT</span><span class="dots"><i></i><i></i><i></i></span></div>
+      <div class="body">
+        <div class="st">★★★★★ 4.8/5</div>
+        <p>„Kolor wyszedł lepszy niż w telewizorze. Pełen profesjonalizm."</p>
+      </div>
+    </div>
+    <div class="win">
+      <div class="bar"><span>OPINIA_02.TXT</span><span class="dots"><i></i><i></i><i></i></span></div>
+      <div class="body">
+        <div class="st">★★★★★ 4.8/5</div>
+        <p>„Chodzę od lat i nigdy się nie zawiodłam. Studio pewne jak Nokia 3310."</p>
+      </div>
+    </div>
+    <div class="win">
+      <div class="bar"><span>OPINIA_03.TXT</span><span class="dots"><i></i><i></i><i></i></span></div>
+      <div class="body">
+        <div class="st">★★★★★ 4.8/5</div>
+        <p>„103 opinie w Google nie kłamią. Najlepszy fryzjer w Radomsku."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="kontakt" style="padding-top: 0;">
+  <div class="panel"><div class="panel-in foot-panel">
+    <h2 class="chrome" style="margin-bottom: 6px;">Połącz się</h2>
+    <a class="tel-chrome chrome" href="tel:+48888735920">888 735 920</a>
+    <p>Studio Fryzjerskie EuroFryz · Radomsko</p>
+    <p style="margin-top: 8px; color: var(--lime); font-family: 'Orbitron', sans-serif; font-size: .85rem; letter-spacing: 2px;">★ 4.8 / 103 OPINIE GOOGLE ★</p>
+  </div></div>
+</section>
+
+<footer>EUROFRYZ © 2000-∞ · RADOMSKO · BEST VIEWED IN 800×600</footer>
+
+</body>
+</html>

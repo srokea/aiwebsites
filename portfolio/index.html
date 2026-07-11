@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Poligon stylów — 15 stron dla fryzjerów</title>
+<style>
+  :root {
+    --bg: #101014;
+    --card: #17171d;
+    --ink: #ececf1;
+    --dim: #9a98a6;
+    --acc: #ffd166;
+    --line: #2a2a33;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: ui-sans-serif, -apple-system, 'Segoe UI', sans-serif;
+    line-height: 1.6;
+  }
+  ::selection { background: var(--acc); color: var(--bg); }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 22px; }
+
+  header { padding: 60px 0 30px; border-bottom: 1px solid var(--line); }
+  h1 { font-size: clamp(1.9rem, 5vw, 3.2rem); letter-spacing: -1px; line-height: 1.1; }
+  h1 span { color: var(--acc); }
+  .lead { margin-top: 14px; color: var(--dim); max-width: 70ch; }
+  .lead b { color: var(--ink); font-weight: 600; }
+  .legend { margin-top: 18px; font-size: .85rem; color: var(--dim); }
+  .legend code { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; color: var(--acc); }
+
+  .grid { display: grid; gap: 26px; padding: 40px 0 70px; }
+  @media (min-width: 700px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1040px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .site {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    overflow: hidden; text-decoration: none; color: var(--ink); display: flex; flex-direction: column;
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  .site:hover { transform: translateY(-4px); border-color: var(--acc); box-shadow: 0 18px 44px rgba(0,0,0,.45); }
+  .site .shot { aspect-ratio: 16/10; overflow: hidden; border-bottom: 1px solid var(--line); background: #000; }
+  .site img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .site .body { padding: 18px 18px 20px; display: grid; gap: 6px; }
+  .site .no {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-weight: 700; font-size: .95rem; letter-spacing: .5px;
+  }
+  .site .no b { color: var(--acc); font-variant-numeric: tabular-nums; }
+  .site .firm { color: var(--dim); font-size: .82rem; }
+  .site .style { font-size: .92rem; }
+
+  footer { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--dim); font-size: .82rem; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>Poligon stylów: <span>15 × fryzjer</span></h1>
+    <p class="lead">Prywatny materiał referencyjny (noindex). Każda strona to <b>inny kierunek projektowy</b> dla tej samej niszy, na danych prawdziwych salonów z okolicy. Do promptowania: <b>„zrób jak site-7"</b>.</p>
+    <p class="legend">Adresy: <code>/site-1/</code> … <code>/site-15/</code></p>
+  </header>
+
+  <div class="grid">
+    <a class="site" href="site-1/"><span class="shot"><img src="assets/thumbs/site-1.png" alt="Podgląd site-1" loading="lazy"></span>
+      <span class="body"><span class="no"><b>site-1</b> Ciemny neon</span><span class="firm">Dżanas Fryzjer&amp;Barber · Piotrków Tryb.</span><span class="style">Czarny klub, różowo-cyjanowe neony, flicker szyldu, siatka podłogi jak z klubu bilardowego.</span></span></a>
+    <a class="site" href="site-2/"><span class="shot"><img src="assets/thumbs/site-2.png" alt="Podgląd site-2" loading="lazy"></span>
+      <span class="body"><span class="no"><b>site-2</b> Gazeta / print</span><span class="firm">Studio „Wiktoria" B. Adamus · Piotrków Tryb.</span><span class="style">Winieta jak z dziennika, łamy, inicjał, cennik jako ogłoszenia drobne, czerń-kremowy-czerwień.</span></span></a>
+    <a class="site" href="site-3/"><span class="shot"><img src="assets/thumbs/site-3.png" alt="Podgląd site-3" loading="lazy"></span>
+      <span class="body"><span class="no"><b>site-3</b> Industrial / warsztat</span><span class="firm">Barber Shop by Edyta · Piotrków Tryb.</span><span class="style">Pasy ostrzegawcze, tabliczki znamionowe z nitami, mono-font, żółć bezpieczeństwa na graficie.</span></span></a>
+    <a class="site" href="site-4/"><span class="shot"><img src="assets/thumbs/site-4.png" alt="Podgląd site-4" loading="lazy"></span>
+      <span class="body"><span class="no"><b>site-4</b> Luksus / glamour</span><span class="firm">Gentelman Barber · Piotrków Tryb.</span><span class="style">Grafit + płynne złoto, serif Cormorant, karta usług z dot-leaderami, pełnoekranowe zdjęcie za winietą.</span></span></a>
+    <a class="site" href="site-5/"><span class="shot"><img src="assets/thumbs/site-5.png" alt="Podgląd site-5" loading="lazy"></span>
+      <span class="body"><span class="no"><b>site-5</b> Brutalizm</span><span class="firm">GRANDA BARBER SHOP · Piotrków Tryb.</span><span class="style">Żółć/czerń, twarde 4px ramki, marquee, tabela jak z PRL-owskiego cennika, zero zaokrągleń.</span></span></a>
+    <a class="site" href="site-6/"><span class="shot"><img src="assets/thumbs/site-6.png" alt="Podgląd site-6" loading="lazy"></span>
+      <span class="body"><span class="no"><b>site-6</b> Pastelowy feminine</span><span class="firm">Happy Hair and Beauty · Radomsko</span><span class="style">Róż + lawenda, łuki (arch) na zdjęciach, script font na akcentach, miękkie cienie i blob-y.</span></span></a>
+    <a class="site" href="site-7/"><span class="shot"><img src="assets/thumbs/site-7.png" alt="Podgląd site-7" loading="lazy"></span>
+      <span class="body"><span class="no"><b>site-7</b> Vintage / wiktoriański</span><span class="firm">Staromiejski Barbershop · Radomsko</span><span class="style">Podwójne ramki, papier z fakturą, ornamenty ❦✂, rejestr usług z numeracją rzymską, sepia na zdjęciach.</span></span></a>
+    <a class="site" href="site-8/"><span class="shot"><img src="assets/thumbs/site-8.png" alt="Podgląd site-8" loading="lazy"></span>
+      <span class="body"><span class="no"><b>site-8</b> Y2K chrome</span><span class="firm">Studio EuroFryz · Radomsko</span><span class="style">Chromowany logotyp, kule 3D, przyciski aqua, płyty CD jako "hity", okna systemowe z opiniami.</span></span></a>
+    <a class="site" href="site-9/"><span class="shot"><img src="assets/thumbs/site-9.png" alt="Podgląd site-9" loading="lazy"></span>
+      <span class="body"><span class="no"><b>site-9</b> Zen / japoński minimal</span><span class="firm">Studio STYL K. Winer · Radomsko</span><span class="style">Enso, pion tekstu, numeracja 一二三四, ogrom światła, cienkie linie, matcha na bieli.</span></span></a>
+    <a class="site" href="site-10/"><span class="shot"><img src="assets/thumbs/site-10.png" alt="Podgląd site-10" loading="lazy"></span>
+      <span class="body"><span class="no"><b>site-10</b> Kinetyczna typografia</span><span class="firm">Miejsce Obowiązkowe · Radomsko</span><span class="style">Wielkie Antony wjeżdżające z boków, pasek marquee, kręcący się badge, acid orange na czerni.</span></span></a>
+    <a class="site" href="site-11/"><span class="shot"><img src="assets/thumbs/site-11.png" alt="Podgląd site-11" loading="lazy"></span>
+      <span class="body"><span class="no"><b>site-11</b> Neo-Memphis</span><span class="firm">STUDIO WYCZESANI · Bełchatów</span><span class="style">Konfetti geometryczne, grube obrysy, hard-shadow, dymki komiksowe, kolory jak z lat 80/90.</span></span></a>
+    <a class="site" href="site-12/"><span class="shot"><img src="assets/thumbs/site-12.png" alt="Podgląd site-12" loading="lazy"></span>
+      <span class="body"><span class="no"><b>site-12</b> Szwajcarski minimal</span><span class="firm">Salon U Szymona · Bełchatów</span><span class="style">Siatka z liniami, gigantyczny grotesk, czerwona kropka, fakty w kolumnie, zero dekoracji.</span></span></a>
+    <a class="site" href="site-13/"><span class="shot"><img src="assets/thumbs/site-13.png" alt="Podgląd site-13" loading="lazy"></span>
+      <span class="body"><span class="no"><b>site-13</b> Botaniczny / organiczny</span><span class="firm">Salon „Subtil" J. Świerczyńska · Bełchatów</span><span class="style">Rysowane SVG bukiety kołyszące się na wietrze, szałwia + terakota, blob-cytat, listki przy cenniku.</span></span></a>
+    <a class="site" href="site-14/"><span class="shot"><img src="assets/thumbs/site-14.png" alt="Podgląd site-14" loading="lazy"></span>
+      <span class="body"><span class="no"><b>site-14</b> 3D immersive</span><span class="firm">Męska Strefa · Tomaszów Maz.</span><span class="style">Scena 3D z parallaxem za kursorem, animowany słupek barberski, panele odchylające się w hoverze.</span></span></a>
+    <a class="site" href="site-15/"><span class="shot"><img src="assets/thumbs/site-15.png" alt="Podgląd site-15" loading="lazy"></span>
+      <span class="body"><span class="no"><b>site-15</b> Bauhaus</span><span class="firm">Barber Shop FRYZ · Tomaszów Maz.</span><span class="style">Kompozycja modularna w ramach, kolory podstawowe, koło/kwadrat/trójkąt jako system oznaczeń.</span></span></a>
+  </div>
+
+  <footer>
+    Poligon inspiracji agencji · dane firm z leads.csv (Google Maps) · strony robocze, nie oferty · noindex
+  </footer>
+</div>
+
+</body>
+</html>

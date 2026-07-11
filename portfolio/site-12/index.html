@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>U Szymona — Salon Fryzjerski, Bełchatów</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --w: #ffffff; --k: #111111; --red: #e30613; --grey: #767676; --line: #e2e2e2; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--w); color: var(--k);
+    font-family: 'Schibsted Grotesk', sans-serif; line-height: 1.5;
+    font-size: 1rem;
+  }
+  ::selection { background: var(--red); color: #fff; }
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 22px; }
+
+  header {
+    border-bottom: 1px solid var(--k);
+    position: sticky; top: 0; background: var(--w); z-index: 40;
+  }
+  .head-grid {
+    display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 14px;
+    padding: 16px 0;
+  }
+  .mark { font-weight: 700; letter-spacing: -.3px; font-size: 1.1rem; text-decoration: none; color: var(--k); }
+  .mark i { color: var(--red); font-style: normal; }
+  header a.tel { color: var(--k); text-decoration: none; font-weight: 500; font-size: .95rem; min-height: 44px; display: inline-flex; align-items: center; }
+  header a.tel:hover { color: var(--red); }
+
+  .hero { border-bottom: 1px solid var(--k); }
+  .hero-grid { display: grid; gap: 0; }
+  @media (min-width: 860px) { .hero-grid { grid-template-columns: 2fr 1fr; } }
+  .hero-main { padding: 72px 0 64px; }
+  @media (min-width: 860px) { .hero-main { padding-right: 40px; border-right: 1px solid var(--k); } }
+  .hero h1 {
+    font-weight: 700; letter-spacing: -2.5px; line-height: .96;
+    font-size: clamp(2.8rem, 9vw, 6.6rem);
+  }
+  .hero h1 .dot { color: var(--red); }
+  .hero .sub { margin-top: 28px; max-width: 40ch; font-size: 1.12rem; color: var(--grey); }
+  .hero-side { display: grid; align-content: space-between; padding: 40px 0 40px; gap: 30px; }
+  @media (min-width: 860px) { .hero-side { padding-left: 40px; } }
+  .fact { border-top: 1px solid var(--k); padding-top: 12px; }
+  .fact .lbl { font-size: .72rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--grey); }
+  .fact .val { font-weight: 600; font-size: 1.5rem; letter-spacing: -.5px; }
+  .fact .val small { font-size: .95rem; font-weight: 400; color: var(--grey); }
+  .cta {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    background: var(--k); color: #fff; text-decoration: none;
+    font-weight: 600; font-size: 1rem; padding: 16px 28px; min-height: 48px;
+    transition: background .15s;
+  }
+  .cta:hover { background: var(--red); }
+
+  section { border-bottom: 1px solid var(--k); }
+  .sec-grid { display: grid; }
+  @media (min-width: 860px) { .sec-grid { grid-template-columns: 1fr 2fr; } }
+  .sec-label { padding: 34px 0; }
+  @media (min-width: 860px) { .sec-label { border-right: 1px solid var(--k); padding-right: 40px; } }
+  .sec-label h2 { font-weight: 700; letter-spacing: -1px; font-size: clamp(1.6rem, 3.6vw, 2.4rem); position: sticky; top: 92px; }
+  .sec-label h2::after { content: "."; color: var(--red); }
+  .sec-body { padding: 34px 0 44px; }
+  @media (min-width: 860px) { .sec-body { padding-left: 40px; } }
+
+  .srv { display: grid; grid-template-columns: 1fr auto; gap: 8px 18px; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .srv:first-child { padding-top: 0; }
+  .srv .nm { font-weight: 500; font-size: 1.08rem; }
+  .srv .ds { grid-column: 1; color: var(--grey); font-size: .9rem; }
+  .srv .pr { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .srv .pr::before { content: "→ "; color: var(--red); font-weight: 400; }
+
+  .about-p { font-size: clamp(1.15rem, 2.4vw, 1.55rem); line-height: 1.45; letter-spacing: -.2px; max-width: 30ch; font-weight: 500; }
+  .about-p b { color: var(--red); font-weight: 500; }
+  .about-meta { margin-top: 26px; color: var(--grey); font-size: .95rem; max-width: 48ch; }
+
+  .op { padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .op:first-child { padding-top: 0; }
+  .op .st { color: var(--red); font-size: .85rem; letter-spacing: 2px; }
+  .op p { margin-top: 6px; font-size: 1.05rem; font-weight: 500; letter-spacing: -.2px; }
+  .op span { color: var(--grey); font-size: .85rem; }
+
+  .visit-row { display: grid; gap: 26px; }
+  @media (min-width: 700px) { .visit-row { grid-template-columns: repeat(2, 1fr); } }
+  .visit-cell .lbl { font-size: .72rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--grey); margin-bottom: 6px; }
+  .visit-cell .val, .visit-cell a { font-weight: 600; font-size: 1.35rem; letter-spacing: -.4px; color: var(--k); text-decoration: none; }
+  .visit-cell a:hover { color: var(--red); }
+
+  footer { padding: 22px 0 30px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: .82rem; color: var(--grey); }
+  footer b { color: var(--k); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap head-grid">
+    <a class="mark" href="#">U SZYMONA<i>.</i></a>
+    <a class="tel" href="tel:+48605540666">605 540 666</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-main">
+      <h1>Salon<br>fryzjerski<br>U&nbsp;Szymona<span class="dot">.</span></h1>
+      <p class="sub">Bełchatów. Strzyżenia damskie i męskie bez zbędnych ceremonii: rzetelnie, punktualnie, od lat tak samo dobrze.</p>
+    </div>
+    <div class="hero-side">
+      <div class="fact">
+        <div class="lbl">Ocena Google</div>
+        <div class="val">4.8 <small>/ 5</small></div>
+      </div>
+      <div class="fact">
+        <div class="lbl">Liczba opinii</div>
+        <div class="val">321</div>
+      </div>
+      <div class="fact">
+        <div class="lbl">Miasto</div>
+        <div class="val">Bełchatów</div>
+      </div>
+      <a class="cta" href="tel:+48605540666">Zadzwoń i umów się</a>
+    </div>
+  </div>
+</div>
+
+<section id="cennik">
+  <div class="wrap sec-grid">
+    <div class="sec-label"><h2>Cennik</h2></div>
+    <div class="sec-body">
+      <div class="srv"><span class="nm">Strzyżenie męskie</span><span class="pr">45 zł</span><span class="ds">maszynka i nożyczki, mycie w cenie</span></div>
+      <div class="srv"><span class="nm">Strzyżenie damskie</span><span class="pr">od 75 zł</span><span class="ds">z myciem i modelowaniem</span></div>
+      <div class="srv"><span class="nm">Strzyżenie dziecięce</span><span class="pr">35 zł</span><span class="ds">do 10. roku życia</span></div>
+      <div class="srv"><span class="nm">Koloryzacja</span><span class="pr">od 140 zł</span><span class="ds">wycena po konsultacji</span></div>
+      <div class="srv"><span class="nm">Modelowanie</span><span class="pr">od 50 zł</span><span class="ds">na szczotkę lub prostownicę</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="o-nas">
+  <div class="wrap sec-grid">
+    <div class="sec-label"><h2>O salonie</h2></div>
+    <div class="sec-body">
+      <p class="about-p">Trzysta dwadzieścia jeden opinii i średnia <b>4.8</b> to nie przypadek. To lata tej samej, prostej zasady: klient ma wyjść lepszy, niż przyszedł.</p>
+      <p class="about-meta">Salon prowadzi Szymon z zespołem. Bez rezerwacji online, bez aplikacji: wystarczy telefon albo wizyta. Stali klienci wiedzą, że warto; nowych przekonujemy jednym strzyżeniem.</p>
+    </div>
+  </div>
+</section>
+
+<section id="opinie">
+  <div class="wrap sec-grid">
+    <div class="sec-label"><h2>Opinie</h2></div>
+    <div class="sec-body">
+      <div class="op">
+        <div class="st">★★★★★</div>
+        <p>„Chodzę od pięciu lat. Zawsze to samo: dobrze, szybko, w uczciwej cenie."</p>
+        <span>opinia z Google</span>
+      </div>
+      <div class="op">
+        <div class="st">★★★★★</div>
+        <p>„Pan Szymon pamięta, jak strzygł mnie ostatnio. Tego nie da żadna aplikacja."</p>
+        <span>opinia z Google</span>
+      </div>
+      <div class="op">
+        <div class="st">★★★★★</div>
+        <p>„Umówiłem się telefonicznie na konkretną godzinę. Wszedłem punktualnie. Szanuję."</p>
+        <span>opinia z Google</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="kontakt">
+  <div class="wrap sec-grid">
+    <div class="sec-label"><h2>Wizyta</h2></div>
+    <div class="sec-body">
+      <div class="visit-row">
+        <div class="visit-cell">
+          <div class="lbl">Telefon</div>
+          <a href="tel:+48605540666">605 540 666</a>
+        </div>
+        <div class="visit-cell">
+          <div class="lbl">Adres</div>
+          <div class="val">Bełchatów</div>
+        </div>
+        <div class="visit-cell">
+          <div class="lbl">Zapisy</div>
+          <div class="val">Telefonicznie</div>
+        </div>
+        <div class="visit-cell">
+          <div class="lbl">Płatność</div>
+          <div class="val">Gotówka / karta</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <span><b>U Szymona</b> · Salon fryzjerski</span>
+  <span>Bełchatów</span>
+</footer>
+
+</body>
+</html>

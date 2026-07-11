@@ -70,16 +70,20 @@ for (const file of pages) {
     const page = await browser.newPage();
     await page.setViewport(vp);
     await page.goto(`http://localhost:${port}/${file}`, { waitUntil: 'networkidle0', timeout: 60000 });
-    // przescrolluj stronę, żeby loading="lazy" zdążyło wczytać obrazy
+    // przescrolluj stronę, żeby lazy-loading i animacje scroll-reveal zdążyły zadziałać
+    // (scroll-behavior: smooth wyłączony, inaczej pętla nie nadąża dojechać do dołu)
     await page.evaluate(async () => {
+      document.documentElement.style.scrollBehavior = 'auto';
       for (let y = 0; y < document.body.scrollHeight; y += window.innerHeight) {
         window.scrollTo(0, y);
-        await new Promise((r) => setTimeout(r, 150));
+        await new Promise((r) => setTimeout(r, 180));
       }
+      window.scrollTo(0, document.body.scrollHeight);
+      await new Promise((r) => setTimeout(r, 300));
       window.scrollTo(0, 0);
     });
     await page.waitForNetworkIdle({ idleTime: 400, timeout: 15000 }).catch(() => {});
-    await new Promise((r) => setTimeout(r, 400));
+    await new Promise((r) => setTimeout(r, 900));
     await page.screenshot({ path: join(outDir, `${name}-${vp.name}.png`), fullPage: true });
     if (flag('viewport')) {
       await page.screenshot({ path: join(outDir, `${name}-${vp.name}-viewport.png`) });

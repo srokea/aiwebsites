@@ -10,3 +10,6 @@ node_modules/
 
 # zrzuty ekranu robocze
 screenshots/
+
+# Local Netlify folder
+.netlify

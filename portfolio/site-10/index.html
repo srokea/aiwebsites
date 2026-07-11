@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Miejsce Obowiązkowe — Barber, Radomsko</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Familjen+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --k: #121212; --w: #f4f1ea; --acid: #ff4d00; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--k); color: var(--w);
+    font-family: 'Familjen Grotesk', sans-serif; font-weight: 300; line-height: 1.6;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--acid); color: var(--k); }
+  .anton { font-family: 'Anton', sans-serif; text-transform: uppercase; font-weight: 400; }
+
+  header {
+    position: fixed; inset: 0 0 auto 0; z-index: 90;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 20px; mix-blend-mode: difference;
+  }
+  .logo { font-family: 'Anton', sans-serif; font-size: 1.05rem; letter-spacing: 1px; color: #fff; text-decoration: none; text-transform: uppercase; }
+  .tel-top { color: #fff; text-decoration: none; font-size: .95rem; letter-spacing: 1px; min-height: 44px; display: inline-flex; align-items: center; }
+
+  /* scroll-reveal */
+  .rv { opacity: 0; transform: translateY(40px); transition: opacity .7s ease, transform .7s ease; }
+  .rv.in { opacity: 1; transform: none; }
+  .slide-l { transform: translateX(-70px); }
+  .slide-r { transform: translateX(70px); }
+  .slide-l.in, .slide-r.in { transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .rv { opacity: 1 !important; transform: none !important; transition: none; }
+  }
+
+  /* hero */
+  .hero { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: 100px 4vw 40px; position: relative; }
+  .hero .l1, .hero .l2, .hero .l3 {
+    font-family: 'Anton', sans-serif; text-transform: uppercase;
+    line-height: .92; letter-spacing: -1px;
+  }
+  .hero .l1 { font-size: clamp(3rem, 12.5vw, 11rem); animation: in-l 1s cubic-bezier(.2,.8,.2,1) both; }
+  .hero .l2 { font-size: clamp(3rem, 12.5vw, 11rem); color: transparent; -webkit-text-stroke: 2px var(--w); animation: in-r 1s .15s cubic-bezier(.2,.8,.2,1) both; }
+  .hero .l3 { font-size: clamp(3rem, 12.5vw, 11rem); color: var(--acid); animation: in-l 1s .3s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes in-l { from { opacity: 0; transform: translateX(-9vw); } to { opacity: 1; transform: none; } }
+  @keyframes in-r { from { opacity: 0; transform: translateX(9vw); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .hero .l1, .hero .l2, .hero .l3 { animation: none; } }
+  .hero .meta { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 34px; font-size: .95rem; letter-spacing: 1px; }
+  .hero .meta b { color: var(--acid); }
+  .spin-badge {
+    position: absolute; right: 5vw; bottom: 6vh; width: 128px; height: 128px;
+  }
+  .spin-badge svg { width: 100%; height: 100%; animation: spin 14s linear infinite; }
+  .spin-badge text { fill: var(--w); font-size: 11.5px; letter-spacing: 2.5px; text-transform: uppercase; font-family: 'Familjen Grotesk', sans-serif; }
+  .spin-badge .core { position: absolute; inset: 0; display: grid; place-items: center; font-family: 'Anton', sans-serif; color: var(--acid); font-size: 1.6rem; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .spin-badge svg { animation: none; } }
+
+  /* pasek przewijany scrollem */
+  .belt { overflow: hidden; border-block: 1px solid rgba(244,241,234,.25); padding: 16px 0; }
+  .belt-in {
+    display: flex; gap: 3rem; white-space: nowrap; width: max-content;
+    font-family: 'Anton', sans-serif; text-transform: uppercase;
+    font-size: clamp(1.3rem, 3.4vw, 2.4rem);
+    animation: belt 22s linear infinite;
+  }
+  .belt-in span:nth-child(even) { color: transparent; -webkit-text-stroke: 1.5px var(--w); }
+  @keyframes belt { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .belt-in { animation: none; } }
+
+  section { padding: 110px 4vw; max-width: 1200px; margin: 0 auto; }
+  .big-h { font-size: clamp(2.4rem, 8vw, 6rem); line-height: .95; margin-bottom: 50px; }
+  .big-h .ghost { color: transparent; -webkit-text-stroke: 1.5px var(--w); }
+  .acid { color: var(--acid); }
+
+  /* cennik: wielkie wiersze */
+  .k-row {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 4vw;
+    padding: 26px 0; border-bottom: 1px solid rgba(244,241,234,.2);
+    transition: transform .3s ease;
+  }
+  .k-row:hover { transform: translateX(18px); }
+  .k-row .nm { font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: clamp(1.3rem, 4vw, 2.6rem); letter-spacing: .5px; }
+  .k-row .pr { font-size: clamp(1.2rem, 3.4vw, 2rem); color: var(--acid); font-weight: 500; white-space: nowrap; }
+  .k-note { margin-top: 22px; opacity: .65; font-size: .92rem; }
+
+  /* ściana typograficzna + zdjęcie */
+  .wordwall { display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 820px) { .wordwall { grid-template-columns: 1.2fr .8fr; } }
+  .ww {
+    display: block; font-family: 'Anton', sans-serif; text-transform: uppercase;
+    font-size: clamp(2rem, 6.4vw, 4.6rem); line-height: 1.08; letter-spacing: .5px;
+    transition: transform .25s ease, color .25s ease;
+  }
+  .ww:hover { transform: translateX(14px); color: var(--acid); }
+  .ww.ghosted { color: transparent; -webkit-text-stroke: 1.5px var(--w); }
+  .ww.ghosted:hover { color: transparent; -webkit-text-stroke: 1.5px var(--acid); }
+  .ww.acid-w { color: var(--acid); }
+  .ww-photo { position: relative; overflow: hidden; margin: 0; }
+  .ww-photo img { width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block; filter: grayscale(30%) contrast(1.06); }
+  .ww-photo figcaption {
+    position: absolute; bottom: 0; left: 0; background: var(--acid); color: var(--k);
+    font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: .8rem; letter-spacing: 1px;
+    padding: 6px 12px;
+  }
+
+  /* opinie */
+  .shout-quote {
+    font-family: 'Anton', sans-serif; text-transform: uppercase;
+    font-size: clamp(1.6rem, 5.2vw, 3.6rem); line-height: 1.06; letter-spacing: .5px;
+    max-width: 20ch;
+  }
+  .shout-quote em { font-style: normal; color: var(--acid); }
+  .q-by { margin-top: 26px; letter-spacing: 2px; text-transform: uppercase; font-size: .8rem; opacity: .7; }
+  .q-row { display: grid; gap: 40px; margin-top: 70px; }
+  @media (min-width: 800px) { .q-row { grid-template-columns: 1fr 1fr; } }
+  .q-cell { border-top: 2px solid var(--acid); padding-top: 18px; }
+  .q-cell .st { color: var(--acid); letter-spacing: 4px; }
+  .q-cell p { margin-top: 10px; font-size: 1.05rem; }
+
+  /* CTA final */
+  .finale { text-align: center; padding: 130px 4vw 120px; }
+  .finale .go {
+    font-family: 'Anton', sans-serif; text-transform: uppercase;
+    font-size: clamp(2.6rem, 10vw, 8rem); line-height: .95;
+    color: var(--k); background: var(--acid);
+    display: inline-block; padding: 1.5vw 3vw; text-decoration: none;
+    transform: rotate(-2deg);
+    transition: transform .2s ease, box-shadow .2s ease;
+    box-shadow: 0 0 0 rgba(255,77,0,.4);
+  }
+  .finale .go:hover { transform: rotate(0deg) scale(1.02); box-shadow: 0 14px 50px rgba(255,77,0,.35); }
+  .finale p { margin-top: 30px; letter-spacing: 2px; text-transform: uppercase; font-size: .85rem; opacity: .75; }
+  .finale a.bk { color: var(--acid); }
+
+  footer { border-top: 1px solid rgba(244,241,234,.2); padding: 26px 4vw; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: .8rem; letter-spacing: 2px; text-transform: uppercase; opacity: .7; }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">Miejsce Obowiązkowe</a>
+  <a class="tel-top" href="tel:+48518417116">518 417 116</a>
+</header>
+
+<div class="hero">
+  <div class="l1 anton">Miejsce</div>
+  <div class="l2 anton">Obowiąz—</div>
+  <div class="l3 anton">kowe.</div>
+  <div class="meta">
+    <span><b>Barber</b> · Radomsko</span>
+    <span><b>4.9</b> / 91 opinii Google</span>
+    <span>Booksy: <b>rezerwuj online</b></span>
+  </div>
+  <div class="spin-badge" aria-hidden="true">
+    <svg viewBox="0 0 100 100">
+      <defs><path id="circ" d="M 50,50 m -38,0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0"/></defs>
+      <text><textPath href="#circ">RADOMSKO · BARBER · RADOMSKO · BARBER ·</textPath></text>
+    </svg>
+    <span class="core">✂</span>
+  </div>
+</div>
+
+<div class="belt" aria-hidden="true">
+  <div class="belt-in">
+    <span>Strzyżenie</span><span>Broda</span><span>Fade</span><span>Brzytwa</span><span>Wjazd bez spiny</span>
+    <span>Strzyżenie</span><span>Broda</span><span>Fade</span><span>Brzytwa</span><span>Wjazd bez spiny</span>
+  </div>
+</div>
+
+<section id="cennik">
+  <h2 class="big-h anton rv">Cennik <span class="ghost">bez</span> <span class="acid">ściemy</span></h2>
+  <div class="k-row rv"><span class="nm">Strzyżenie</span><span class="pr">70 zł</span></div>
+  <div class="k-row rv"><span class="nm">Strzyżenie + broda</span><span class="pr">110 zł</span></div>
+  <div class="k-row rv"><span class="nm">Broda</span><span class="pr">50 zł</span></div>
+  <div class="k-row rv"><span class="nm">Golenie brzytwą</span><span class="pr">80 zł</span></div>
+  <div class="k-row rv"><span class="nm">Junior</span><span class="pr">50 zł</span></div>
+  <p class="k-note rv">Rezerwacje przez Booksy albo telefon. Spóźnienia powyżej 15 minut lecą z grafiku, szanujemy czas wszystkich.</p>
+</section>
+
+<section id="robota">
+  <h2 class="big-h anton rv"><span class="ghost">Nasza</span> robota</h2>
+  <div class="wordwall">
+    <div class="ww-col">
+      <span class="ww rv slide-l">Skin fade</span>
+      <span class="ww ghosted rv slide-l">Klasyk</span>
+      <span class="ww rv slide-l">Broda full</span>
+      <span class="ww ghosted rv slide-l">Kontur brzytwą</span>
+      <span class="ww acid-w rv slide-l">Twoja fryzura</span>
+    </div>
+    <figure class="ww-photo rv slide-r">
+      <img src="photos/photo-4.jpg" alt="Klient po strzyżeniu w Miejscu Obowiązkowym" loading="lazy">
+      <figcaption>Efekt</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="opinie">
+  <h2 class="big-h anton rv">Ludzie <span class="acid">mówią</span></h2>
+  <p class="shout-quote rv">„Jak sama nazwa: <em>obowiązkowe</em>. Raz wejdziesz, zostajesz na stałe."</p>
+  <p class="q-by rv">Opinia z Google · ★★★★★</p>
+  <div class="q-row">
+    <div class="q-cell rv slide-l">
+      <div class="st">★★★★★</div>
+      <p>„Umówiłem się przez Booksy w drodze na trening. Wszedłem, wyszedłem, wyglądam jak człowiek."</p>
+    </div>
+    <div class="q-cell rv slide-r">
+      <div class="st">★★★★★</div>
+      <p>„Precyzyjny fade i zero gadania o pogodzie, chyba że chcesz. Tak trzymać."</p>
+    </div>
+  </div>
+</section>
+
+<div class="finale">
+  <a class="go" href="https://booksy.com/pl-pl/105663_miejsce-obowiazkowe-barber-radomsko_barber-shop_25252_radomsko" target="_blank" rel="noopener">Rezerwuj</a>
+  <p>Booksy albo telefon: <a class="bk" href="tel:+48518417116">518 417 116</a> · Radomsko</p>
+</div>
+
+<footer>
+  <span>Miejsce Obowiązkowe</span>
+  <span>Barber · Radomsko</span>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.05, rootMargin: '0px 0px -5% 0px' });
+  document.querySelectorAll('.rv').forEach((el) => io.observe(el));
+  // awaryjnie: cokolwiek zostało nieodsłonięte po pełnym przescrollowaniu strony
+  window.addEventListener('scroll', () => {
+    if (window.scrollY + window.innerHeight >= document.body.scrollHeight - 40) {
+      document.querySelectorAll('.rv:not(.in)').forEach((el) => el.classList.add('in'));
+    }
+  }, { passive: true });
+</script>
+
+</body>
+</html>
