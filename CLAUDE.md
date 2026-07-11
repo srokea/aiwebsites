@@ -22,6 +22,8 @@ Budujesz strony internetowe dla lokalnych firm usługowych (kolejność: barberz
 
 Gdy tworzysz, poprawiasz lub oceniasz stronę klienta, użyj skilla `web-design` (znajduje się w `.claude/skills/web-design/SKILL.md`). Zawiera on cały proces: system projektowy Impeccable, wybór wariantu strony, pętlę budowa→sprawdzenie→poprawa, oraz listę obowiązkowych elementów.
 
+Przed budową nowej strony sprawdź `/design/STYLES.md`. Jeśli prompt nie wskazuje konkretnego stylu, użyj Stylu 00 (Default). Jeśli prompt wskazuje inny styl (np. "styl 07"), użyj go jako punkt startowy.
+
 ## Uczenie się na błędach
 
 Jeśli zauważysz, że powtarzasz ten sam błąd albo użytkownik poprawia Cię wielokrotnie w tej samej sprawie — zaproponuj konkretną poprawkę do odpowiedniego pliku (CLAUDE.md, SKILL.md albo pliku agenta) i zapytaj o zgodę, zanim ją wprowadzisz. Nigdy nie edytuj tych plików samodzielnie bez pytania.
