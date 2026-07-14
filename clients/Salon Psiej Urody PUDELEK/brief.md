@@ -1,4 +1,5 @@
-nazwa: Psia Łapka - Fryzjer dla zwierząt
+nazwa: Salon Psiej Urody Pudelek
+groomer: Karolina Ciszewska
 nisza: groomer (psi fryzjer)
 telefon: 605 590 963
 adres: ul. Jagiellońska 22, budynek POCZTY, Piotrków Trybunalski, Poland, 97-300
