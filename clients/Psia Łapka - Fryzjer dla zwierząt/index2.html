@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psia Łapka — Fryzjer dla zwierząt, Piotrków Trybunalski</title>
+<meta name="description" content="Psia Łapka — fryzjer dla psów i kotów w Piotrkowie Trybunalskim, ul. Jagiellońska 22 (przy Poczcie). Strzyżenie, kąpiel, pielęgnacja. Zadzwoń: 605 590 963.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='10' fill='%230a0713'/%3E%3Cellipse cx='16' cy='20.5' rx='6.4' ry='5.2' fill='%23ff2d95'/%3E%3Cellipse cx='8.2' cy='12.5' rx='2.6' ry='3.3' fill='%23ff2d95'/%3E%3Cellipse cx='14.7' cy='8.6' rx='2.6' ry='3.3' fill='%23ff2d95'/%3E%3Cellipse cx='21.3' cy='8.6' rx='2.6' ry='3.3' fill='%23ff2d95'/%3E%3Cellipse cx='24.8' cy='12.5' rx='2.6' ry='3.3' fill='%23ff2d95'/%3E%3C/svg%3E">
+<style>
+  /* Monoton (styl 1) · Chakra Petch (styl 14) · Exo 2 (styl 8) — wszystkie z latin-ext (polskie znaki) */
+  @font-face { font-family: 'Monoton'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/monoton-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: 'Monoton'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/monoton-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+  @font-face { font-family: 'Chakra Petch'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/chakra-600-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: 'Chakra Petch'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/chakra-600-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+  @font-face { font-family: 'Chakra Petch'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/chakra-700-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: 'Chakra Petch'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/chakra-700-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+  @font-face { font-family: 'Exo 2'; font-style: normal; font-weight: 300 700; font-display: swap; src: url('fonts/exo2-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: 'Exo 2'; font-style: normal; font-weight: 300 700; font-display: swap; src: url('fonts/exo2-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+  :root {
+    --void: #0a0713;        /* prawie czarny fiolet (1 + 8) */
+    --panel: #160e24;       /* panel (8) */
+    --panel-2: #1e1233;
+    --edge: #3a2450;
+    --pink: #ff2d95;        /* NEON RÓŻ — kolor wiodący (1) */
+    --hot: #ff3dbb;         /* magenta (8) — drugi róż do gradientów */
+    --cyan: #19e3ff;        /* cyjan (1/14) — drugi głos, oszczędnie */
+    --ink: #f7eef7;
+    --dim: #b9a4c6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background:
+      radial-gradient(ellipse 55% 40% at 50% 0%, rgba(255,45,149,.18), transparent 65%),
+      radial-gradient(ellipse 45% 35% at 88% 42%, rgba(255,61,187,.12), transparent 65%),
+      radial-gradient(ellipse 40% 30% at 8% 72%, rgba(25,227,255,.07), transparent 65%),
+      linear-gradient(180deg, var(--void), #120b1e 60%, var(--void));
+    color: var(--ink);
+    font-family: 'Exo 2', sans-serif; font-weight: 400; line-height: 1.65;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--pink); color: #fff; }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 20px; }
+  .chakra { font-family: 'Chakra Petch', sans-serif; }
+
+  /* ── neon (1) ── */
+  .neon-pink {
+    color: var(--pink);
+    text-shadow: 0 0 7px rgba(255,45,149,.9), 0 0 24px rgba(255,45,149,.55), 0 0 64px rgba(255,45,149,.35);
+  }
+  .neon-cyan {
+    color: var(--cyan);
+    text-shadow: 0 0 7px rgba(25,227,255,.85), 0 0 22px rgba(25,227,255,.45);
+  }
+  @keyframes flicker {
+    0%, 100% { opacity: 1; } 92% { opacity: 1; }
+    93% { opacity: .45; } 94% { opacity: 1; } 96% { opacity: .65; } 97% { opacity: 1; }
+  }
+  @keyframes buzz-in {
+    0% { opacity: 0; } 20% { opacity: .3; } 30% { opacity: .1; } 45% { opacity: .7; }
+    55% { opacity: .25; } 70% { opacity: 1; } 80% { opacity: .6; } 100% { opacity: 1; }
+  }
+  .flicker { animation: buzz-in 1.8s ease-out 1, flicker 8s linear 2s infinite; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .flicker, .orb, .scan { animation: none !important; }
+    * { transition-duration: .01ms !important; }
+  }
+
+  /* ── header (1/14) ── */
+  header.site {
+    position: sticky; top: 0; z-index: 80;
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    padding: 12px 20px;
+    background: rgba(10,7,19,.78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,45,149,.32);
+  }
+  .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+  .brand svg { width: 26px; height: 26px; fill: var(--pink); filter: drop-shadow(0 0 6px rgba(255,45,149,.8)); flex-shrink: 0; }
+  .brand b { font-family: 'Monoton', cursive; font-weight: 400; font-size: 1.16rem; letter-spacing: 1.5px; }
+
+  /* przycisk aqua (8) w różu (1) */
+  .aqua {
+    position: relative; overflow: hidden; text-decoration: none;
+    color: #2b0416; font-family: 'Chakra Petch', sans-serif; font-weight: 700;
+    font-size: .93rem; letter-spacing: .5px;
+    padding: 11px 22px; border-radius: 999px; min-height: 44px;
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(180deg, #ffc4e8 0%, #ff2d95 45%, #cc1370 50%, #ff8fd6 100%);
+    box-shadow: 0 4px 16px rgba(255,45,149,.45), inset 0 1px 2px rgba(255,255,255,.9), 0 0 22px rgba(255,45,149,.35);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .aqua::after { content: ""; position: absolute; left: 8%; right: 8%; top: 6%; height: 40%; background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.05)); border-radius: 999px; pointer-events: none; }
+  .aqua:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,45,149,.6), inset 0 1px 2px rgba(255,255,255,.9), 0 0 34px rgba(255,45,149,.5); }
+
+  /* przycisk-tuba (1) w cyjanie — drugi głos */
+  .tube-btn {
+    font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: .93rem; letter-spacing: .5px;
+    color: var(--cyan); text-decoration: none;
+    padding: 11px 22px; border-radius: 999px; min-height: 44px;
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 2px solid var(--cyan);
+    box-shadow: 0 0 10px rgba(25,227,255,.4), inset 0 0 10px rgba(25,227,255,.15);
+    transition: box-shadow .2s;
+  }
+  .tube-btn:hover { box-shadow: 0 0 26px rgba(25,227,255,.8), inset 0 0 14px rgba(25,227,255,.3); }
+
+  /* ── HERO: scena 3D (14) + neon (1) + bańki (8) ── */
+  .stage {
+    min-height: 92svh; display: grid; place-items: center; text-align: center;
+    perspective: 900px; position: relative; overflow: hidden;
+    padding: 70px 20px 80px;
+  }
+  .stage::before { /* podłoga w perspektywie — RÓŻOWA (14 w kolorze 1) */
+    content: ""; position: absolute; left: -20%; right: -20%; bottom: -10%; height: 50%;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,45,149,.16) 0 1px, transparent 1px 90px),
+      repeating-linear-gradient(0deg, rgba(255,45,149,.16) 0 1px, transparent 1px 46px),
+      radial-gradient(ellipse 60% 90% at 50% 100%, rgba(255,45,149,.10), transparent 70%);
+    transform: perspective(600px) rotateX(62deg);
+    transform-origin: bottom; pointer-events: none;
+  }
+  .scene { position: relative; z-index: 2; transform-style: preserve-3d; transition: transform .25s ease-out; will-change: transform; }
+  .scene .kicker { font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: .8rem; letter-spacing: 5px; text-transform: uppercase; color: var(--cyan); transform: translateZ(30px); }
+  .scene h1 {
+    font-family: 'Monoton', cursive; font-weight: 400;
+    font-size: clamp(1.6rem, 7.4vw, 6rem); line-height: 1.16; letter-spacing: 2px;
+    margin: 14px 0 4px; transform: translateZ(70px);
+  }
+  @media (min-width: 700px) { .scene h1 { letter-spacing: 3px; } }
+  .scene .tagline { font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: clamp(.95rem, 2.4vw, 1.35rem); letter-spacing: 3px; text-transform: uppercase; color: var(--dim); transform: translateZ(40px); }
+  .scene .score { margin-top: 14px; font-family: 'Chakra Petch', sans-serif; font-weight: 600; letter-spacing: 2px; color: var(--pink); text-shadow: 0 0 14px rgba(255,45,149,.7); transform: translateZ(40px); }
+  .scene .lead { max-width: 54ch; margin: 20px auto 0; color: var(--dim); transform: translateZ(30px); }
+  .scene .cta { margin-top: 34px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; transform: translateZ(90px); }
+
+  /* bańki mydlane zamiast chromowanych kul (8) */
+  .orb {
+    position: absolute; border-radius: 50%; pointer-events: none; z-index: 1;
+    background: radial-gradient(circle at 32% 28%, rgba(255,255,255,.95) 0%, rgba(255,192,230,.55) 16%, rgba(255,45,149,.30) 45%, rgba(25,227,255,.16) 70%, transparent 78%);
+    box-shadow: inset -6px -8px 20px rgba(255,45,149,.25), 0 0 26px rgba(255,45,149,.3);
+    border: 1px solid rgba(255,255,255,.22);
+    animation: float 9s ease-in-out infinite;
+  }
+  .orb.o1 { width: 104px; height: 104px; left: 5%; top: 20%; }
+  .orb.o2 { width: 54px; height: 54px; right: 9%; top: 14%; animation-delay: -3s; }
+  .orb.o3 { width: 74px; height: 74px; right: 16%; bottom: 12%; animation-delay: -6s; }
+  .orb.o4 { width: 40px; height: 40px; left: 12%; bottom: 18%; animation-delay: -4.5s; }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-22px); } }
+  @media (max-width: 760px) { .orb.o1, .orb.o3 { display: none; } }
+
+  section { padding: 84px 0; position: relative; }
+  h2 {
+    font-family: 'Chakra Petch', sans-serif; font-weight: 700; text-transform: uppercase;
+    font-size: clamp(1.7rem, 4.6vw, 2.7rem); letter-spacing: 2px; text-align: center;
+  }
+  .sub-h { text-align: center; color: var(--dim); font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: .84rem; letter-spacing: 3px; text-transform: uppercase; margin: 10px 0 44px; }
+
+  /* ── CENNIK: panel metaliczny (8) + wiersze z kropkami (1) ── */
+  .panel { border-radius: 22px; padding: 2px; background: linear-gradient(180deg, #ffd8ef, #ff2d95 28%, #6d1240 50%, #ff6cb8 72%, #ffd8ef); box-shadow: 0 0 44px rgba(255,45,149,.18); }
+  .panel-in { background: linear-gradient(180deg, rgba(22,14,36,.97), rgba(30,18,51,.97)); border-radius: 20px; padding: 32px 26px; }
+  .p-list { max-width: 660px; margin: 0 auto; }
+  .grp { font-family: 'Chakra Petch', sans-serif; font-weight: 700; font-size: .74rem; letter-spacing: 3px; text-transform: uppercase; color: var(--cyan); padding: 22px 0 4px; }
+  .grp:first-child { padding-top: 0; }
+  .p-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 13px 2px; border-bottom: 1px dashed rgba(185,164,198,.22); }
+  .p-row:last-child { border-bottom: none; }
+  .p-row .nm { font-weight: 400; }
+  .p-row .nm small { display: block; color: var(--dim); font-size: .82rem; font-weight: 300; }
+  .p-row .dots { flex: 1; border-bottom: 1px dotted rgba(185,164,198,.3); transform: translateY(-4px); min-width: 20px; }
+  .p-row .pr { font-family: 'Chakra Petch', sans-serif; font-weight: 700; color: var(--pink); white-space: nowrap; text-shadow: 0 0 12px rgba(255,45,149,.55); font-size: 1.1rem; }
+  .p-note { text-align: center; color: var(--dim); font-size: .9rem; margin-top: 24px; }
+
+  /* ── GALERIA: kafle 3D (14) + overlay neon (1) + scanline (14) ── */
+  .gal { display: grid; gap: 18px; grid-template-columns: repeat(2, 1fr); perspective: 1100px; }
+  @media (min-width: 720px) { .gal { grid-template-columns: repeat(3, 1fr); } }
+  .gal figure {
+    position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 1/1;
+    border: 1px solid var(--edge); background: var(--panel);
+    transform-style: preserve-3d;
+    transition: transform .35s ease, border-color .35s, box-shadow .35s;
+  }
+  .gal figure:hover {
+    transform: rotateX(6deg) rotateY(-6deg) translateZ(14px);
+    border-color: rgba(255,45,149,.6);
+    box-shadow: 0 24px 60px rgba(0,0,0,.6), 0 0 34px rgba(255,45,149,.28);
+  }
+  .gal img { width: 100%; height: 100%; object-fit: cover; filter: saturate(1.1) contrast(1.04); }
+  .gal figure::after { /* neon overlay + scanline */
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      repeating-linear-gradient(0deg, rgba(255,45,149,.05) 0 1px, transparent 1px 4px),
+      linear-gradient(160deg, rgba(255,45,149,.16), transparent 45%, rgba(25,227,255,.10));
+    mix-blend-mode: screen;
+  }
+  .gal figcaption {
+    position: absolute; left: 10px; bottom: 10px; z-index: 2;
+    font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: .7rem; letter-spacing: 1.5px; text-transform: uppercase;
+    background: rgba(10,7,19,.82); color: var(--pink);
+    border: 1px solid rgba(255,45,149,.45); border-radius: 999px; padding: 4px 11px;
+  }
+
+  /* ── OPINIE: okna systemowe (8) + hologram scanline (14) + neonowa krawędź (1) ── */
+  .wins { display: grid; gap: 20px; }
+  @media (min-width: 700px) { .wins { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1000px) { .wins { grid-template-columns: repeat(3, 1fr); } }
+  .win { border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,45,149,.35); box-shadow: 0 14px 34px rgba(0,0,0,.45), 0 0 22px rgba(255,45,149,.12); position: relative; }
+  .win .bar {
+    display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    padding: 8px 12px; font-family: 'Chakra Petch', sans-serif; font-weight: 700; font-size: .68rem; letter-spacing: 1.5px;
+    background: linear-gradient(180deg, #ff8fd6, #cc1370); color: #2b0416;
+  }
+  .win .bar i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.9); border: 1px solid rgba(43,4,22,.45); display: inline-block; }
+  .win .bar .dots { display: flex; gap: 5px; flex-shrink: 0; }
+  .win .body { padding: 20px; background: rgba(255,45,149,.045); position: relative; }
+  .win .body::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(255,45,149,.05) 0 1px, transparent 1px 4px); pointer-events: none; }
+  .win .st { color: var(--pink); letter-spacing: 3px; font-size: .88rem; text-shadow: 0 0 10px rgba(255,45,149,.55); }
+  .win p { margin-top: 9px; font-size: .97rem; position: relative; z-index: 1; }
+  .win .who { margin-top: 14px; color: var(--dim); font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: .72rem; letter-spacing: 1.5px; text-transform: uppercase; }
+
+  /* ── KONTAKT: dok (14) w panelu metalicznym (8) ── */
+  .dock-grid { display: grid; gap: 26px; }
+  @media (min-width: 860px) { .dock-grid { grid-template-columns: 1fr 1fr; align-items: center; } }
+  .dock-tel { font-family: 'Chakra Petch', sans-serif; font-weight: 700; font-size: clamp(1.9rem, 6vw, 3rem); letter-spacing: 2px; color: var(--pink); text-decoration: none; display: inline-block; margin: 10px 0 18px; text-shadow: 0 0 28px rgba(255,45,149,.55); }
+  .dock-tel:hover { color: var(--hot); }
+  .dock-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .k-list { display: grid; gap: 16px; }
+  .k-list .lbl { font-family: 'Chakra Petch', sans-serif; font-weight: 700; font-size: .7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--cyan); margin-bottom: 3px; }
+  .k-list a.plain { color: var(--pink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  .k-list a.plain:hover { color: var(--hot); }
+
+  /* mapa */
+  .map-frame { margin-top: 30px; position: relative; border: 1px solid rgba(255,45,149,.4); border-radius: 16px; overflow: hidden; box-shadow: 0 0 30px rgba(255,45,149,.14); }
+  .map-frame iframe { width: 100%; height: 300px; display: block; border: 0; filter: invert(92%) hue-rotate(190deg) saturate(1.15) contrast(.95); }
+  .map-tint { position: absolute; inset: 0; background: var(--pink); opacity: .12; mix-blend-mode: overlay; pointer-events: none; }
+
+  footer.site {
+    text-align: center; padding: 34px 20px 44px; color: var(--dim);
+    font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: .8rem; letter-spacing: 2px; text-transform: uppercase;
+    border-top: 1px solid rgba(255,45,149,.18);
+  }
+  footer.site a { color: var(--pink); text-decoration: underline; text-underline-offset: 2px; }
+  footer.site .fr { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 14px; align-items: center; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="paw" viewBox="0 0 32 32">
+    <ellipse cx="16" cy="20.5" rx="6.4" ry="5.2"/>
+    <ellipse cx="8.2" cy="12.5" rx="2.6" ry="3.3"/>
+    <ellipse cx="14.7" cy="8.6" rx="2.6" ry="3.3"/>
+    <ellipse cx="21.3" cy="8.6" rx="2.6" ry="3.3"/>
+    <ellipse cx="24.8" cy="12.5" rx="2.6" ry="3.3"/>
+  </symbol>
+</svg>
+
+<header class="site">
+  <a class="brand" href="#gora">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><use href="#paw"/></svg>
+    <b class="neon-pink">Psia Łapka</b>
+  </a>
+  <a class="aqua" href="tel:+48605590963">☎ 605 590 963</a>
+</header>
+
+<main id="gora">
+
+<!-- HERO: scena 3D + neon + bańki -->
+<div class="stage">
+  <span class="orb o1" aria-hidden="true"></span>
+  <span class="orb o2" aria-hidden="true"></span>
+  <span class="orb o3" aria-hidden="true"></span>
+  <span class="orb o4" aria-hidden="true"></span>
+
+  <div class="scene" id="scene">
+    <p class="kicker">Fryzjer dla zwierząt · Piotrków Trybunalski</p>
+    <h1><span class="neon-pink flicker">Psia Łapka</span></h1>
+    <p class="tagline">Strzyżenie · Kąpiel · Pielęgnacja</p>
+    <p class="score">★★★★★ &nbsp;35+ opinii w Google</p>
+    <p class="lead">Kącik tuż przy Poczcie na Jagiellońskiej. Twój pies albo kot dostaje tu tyle czasu i cierpliwości, ile akurat potrzebuje. Bez pośpiechu, bez stresu.</p>
+    <div class="cta">
+      <a class="aqua" href="tel:+48605590963">☎ Zadzwoń i umów wizytę</a>
+      <a class="tube-btn" href="https://www.facebook.com/profile.php?id=100063601718586&locale=pl_PL" target="_blank" rel="noopener">Napisz na Facebooku</a>
+    </div>
+  </div>
+</div>
+
+<!-- CENNIK -->
+<section id="cennik">
+  <div class="wrap">
+    <h2>Cennik</h2>
+    <p class="sub-h">// ceny orientacyjne, dokładną wycenę ustalimy przez telefon</p>
+    <div class="panel"><div class="panel-in">
+      <div class="p-list">
+        <!-- CENNIK: usługi i ceny to placeholder wymyślony na prośbę klienta — do potwierdzenia z Karoliną i podmiany na realne stawki -->
+        <div class="grp">Kąpiel i pielęgnacja</div>
+        <div class="p-row"><span class="nm">Kąpiel z suszeniem, mała rasa<small>szampon dobrany do sierści, suszenie i rozczesanie</small></span><span class="dots"></span><span class="pr">od 50 zł</span></div>
+        <div class="p-row"><span class="nm">Kąpiel z suszeniem, duża rasa<small>to samo w wersji XL, więcej futra do wysuszenia</small></span><span class="dots"></span><span class="pr">od 90 zł</span></div>
+        <div class="p-row"><span class="nm">Wyczesywanie podszerstka<small>dla ras, które gubią więcej sierści, niż chcą</small></span><span class="dots"></span><span class="pr">od 40 zł</span></div>
+
+        <div class="grp">Strzyżenie</div>
+        <div class="p-row"><span class="nm">Strzyżenie pełne, mała i średnia rasa<small>kąpiel, strzyżenie i modelowanie pod rasę lub życzenie</small></span><span class="dots"></span><span class="pr">od 90 zł</span></div>
+        <div class="p-row"><span class="nm">Strzyżenie pełne, rasa duża i włochata<small>więcej czasu i cierpliwości, ten sam efekt na końcu</small></span><span class="dots"></span><span class="pr">od 140 zł</span></div>
+
+        <div class="grp">Higiena</div>
+        <div class="p-row"><span class="nm">Pazurki, uszy i okolice oczu<small>szybki serwis higieniczny, można też osobno</small></span><span class="dots"></span><span class="pr">30 zł</span></div>
+      </div>
+    </div></div>
+    <p class="p-note">Nie wiesz, co wybrać? Zadzwoń, doradzimy przez telefon.</p>
+  </div>
+</section>
+
+<!-- GALERIA -->
+<section id="galeria" style="padding-top: 0;">
+  <div class="wrap">
+    <h2>Nasze <span class="neon-pink">metamorfozy</span></h2>
+    <p class="sub-h">// kto od nas wychodzi</p>
+    <div class="gal">
+      <figure><img src="photos/maltanczyk-kokardka.webp" alt="Maltańczyk z różową kokardką po pielęgnacji" loading="lazy"><figcaption>Maltańczyk</figcaption></figure>
+      <figure><img src="photos/mops-mix.webp" alt="Piesek typu mops mix po strzyżeniu" loading="lazy"><figcaption>Mops mix</figcaption></figure>
+      <figure><img src="photos/szpic-szczeniak.webp" alt="Szczeniak szpica miniaturowego po pierwszej wizycie" loading="lazy"><figcaption>Szpic, 1. wizyta</figcaption></figure>
+      <figure><img src="photos/szpic-usmiech.webp" alt="Uśmiechnięty szpic miniaturowy po zabiegu" loading="lazy"><figcaption>Szpic miniaturowy</figcaption></figure>
+      <figure><img src="photos/shih-tzu-muszka.webp" alt="Shih tzu z muszką po strzyżeniu" loading="lazy"><figcaption>Shih tzu</figcaption></figure>
+      <figure><img src="photos/chihuahua-trojka.webp" alt="Trzy chihuahua po wizycie w salonie" loading="lazy"><figcaption>Ekipa chihuahua</figcaption></figure>
+      <figure><img src="photos/cocker-spaniel.webp" alt="Cocker spaniel po pielęgnacji sierści" loading="lazy"><figcaption>Cocker spaniel</figcaption></figure>
+      <figure><img src="photos/pudel-rudy.webp" alt="Rudy pudel po strzyżeniu" loading="lazy"><figcaption>Pudel</figcaption></figure>
+      <figure><img src="photos/yorkshire.webp" alt="Yorkshire terrier po strzyżeniu uszu" loading="lazy"><figcaption>Yorkshire terrier</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- OPINIE -->
+<section id="opinie" style="padding-top: 0;">
+  <div class="wrap">
+    <h2>Opinie</h2>
+    <p class="sub-h">// ponad 35 opinii w Google, prawie same pozytywne</p>
+    <div class="wins">
+      <div class="win">
+        <div class="bar"><span>OPINIA_01.TXT</span><span class="dots"><i></i><i></i><i></i></span></div>
+        <div class="body">
+          <div class="st">★★★★★</div>
+          <p>„Przemiła obsługa! Pani z miłym podejściem do pupili! Kolejne strzyżenie i kolejna piękna fryzura.”</p>
+          <div class="who">Paula Wesołowska · Google</div>
+        </div>
+      </div>
+      <div class="win">
+        <div class="bar"><span>OPINIA_02.TXT</span><span class="dots"><i></i><i></i><i></i></span></div>
+        <div class="body">
+          <div class="st">★★★★★</div>
+          <p>„Wspaniałe miejsce pełne ciepła i prawdziwej miłości do zwierząt. Od wejścia czuć przyjazną atmosferę, a personel jest miły, cierpliwy i troskliwy.”</p>
+          <div class="who">Radziuuu · Google</div>
+        </div>
+      </div>
+      <div class="win">
+        <div class="bar"><span>OPINIA_03.TXT</span><span class="dots"><i></i><i></i><i></i></span></div>
+        <div class="body">
+          <div class="st">★★★★★</div>
+          <p>„Byłam w tym salonie i jestem mega zadowolona! Obsługa bardzo miła, profesjonalna i widać, że naprawdę kochają zwierzęta.”</p>
+          <div class="who">Natalia Morawska · Google</div>
+        </div>
+      </div>
+      <div class="win">
+        <div class="bar"><span>OPINIA_04.TXT</span><span class="dots"><i></i><i></i><i></i></span></div>
+        <div class="body">
+          <div class="st">★★★★★</div>
+          <p>„Najlepsze ręce, w które mógł trafić mój piesek. Zawsze jesteśmy zadowoleni, super podejście do czworonoga i duży profesjonalizm.”</p>
+          <div class="who">Kinga Krasoń · Google</div>
+        </div>
+      </div>
+      <div class="win">
+        <div class="bar"><span>OPINIA_05.TXT</span><span class="dots"><i></i><i></i><i></i></span></div>
+        <div class="body">
+          <div class="st">★★★★★</div>
+          <p>„Cudowne strzyżenie szpica miniaturowego, polecam w 100%!”</p>
+          <div class="who">voe anne · Google</div>
+        </div>
+      </div>
+      <div class="win">
+        <div class="bar"><span>OPINIA_06.TXT</span><span class="dots"><i></i><i></i><i></i></span></div>
+        <div class="body">
+          <div class="st">★★★★★</div>
+          <p>„Kolejne strzyżenie i, jak zwykle, przepięknie, punktualnie, bezstresowo. Jak najbardziej polecam.”</p>
+          <div class="who">Bożena M. · Google</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section id="kontakt" style="padding-top: 0;">
+  <div class="wrap">
+    <h2>Wpadnij do nas</h2>
+    <p class="sub-h">// zapisy telefonicznie albo przez Facebooka</p>
+    <div class="panel"><div class="panel-in">
+      <div class="dock-grid">
+        <div>
+          <div class="k-list" style="gap: 6px;">
+            <div class="lbl">Telefon</div>
+          </div>
+          <a class="dock-tel" href="tel:+48605590963">605 590 963</a>
+          <div class="dock-cta">
+            <a class="aqua" href="tel:+48605590963">☎ Zadzwoń teraz</a>
+            <a class="tube-btn" href="https://www.facebook.com/profile.php?id=100063601718586&locale=pl_PL" target="_blank" rel="noopener">Facebook</a>
+          </div>
+        </div>
+        <div class="k-list">
+          <div>
+            <div class="lbl">Adres</div>
+            ul. Jagiellońska 22 (budynek Poczty), 97-300 Piotrków Trybunalski
+          </div>
+          <div>
+            <div class="lbl">Godziny</div>
+            Poniedziałek–Piątek: 10:00–18:00<br>Sobota: 10:00–14:00
+          </div>
+          <div>
+            <div class="lbl">Wejście</div>
+            Od strony budynku Poczty Polskiej.
+          </div>
+          <div>
+            <a class="plain" href="https://www.google.com/maps/search/?api=1&query=Jagiello%C5%84ska+22%2C+97-300+Piotrk%C3%B3w+Trybunalski" target="_blank" rel="noopener">Wyznacz trasę ↗</a>
+          </div>
+        </div>
+      </div>
+    </div></div>
+
+    <div class="map-frame">
+      <iframe
+        title="Mapa: Psia Łapka, ul. Jagiellońska 22, Piotrków Trybunalski"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps?q=Jagiello%C5%84ska+22,+97-300+Piotrk%C3%B3w+Trybunalski&output=embed"></iframe>
+      <div class="map-tint" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site">
+  <div class="fr">
+    <span>Psia Łapka · Piotrków Trybunalski</span>
+    <a href="privacy.html">Polityka prywatności</a>
+  </div>
+</footer>
+
+<script>
+  // parallax sceny 3D za kursorem (14) — tylko desktop, wyłączony przy reduced-motion
+  const scene = document.getElementById('scene');
+  const fine = window.matchMedia('(pointer: fine)').matches;
+  const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (scene && fine && !noMotion) {
+    document.addEventListener('pointermove', (e) => {
+      const rx = (e.clientY / window.innerHeight - 0.5) * -6;
+      const ry = (e.clientX / window.innerWidth - 0.5) * 8;
+      scene.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+    });
+  }
+</script>
+
+</body>
+</html>
