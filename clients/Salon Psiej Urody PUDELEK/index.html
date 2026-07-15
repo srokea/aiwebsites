@@ -180,8 +180,9 @@
   .about-label h2 { text-align: left; }
   .about-body { }
   @media (min-width: 860px) { .about-body { padding-left: 42px; } }
-  .about-quote { font-family: 'Prata', serif; font-size: clamp(1.3rem, 3vw, 1.8rem); line-height: 1.4; color: var(--ink); padding-left: 0.62em; text-indent: -0.62em; }
-  .about-quote .qo, .about-quote .qc { color: var(--rose); font-size: 1.15em; }
+  .about-quote { font-family: 'Prata', serif; font-size: clamp(1.3rem, 3vw, 1.8rem); line-height: 1.4; color: var(--ink); position: relative; padding-top: 0.35em; }
+  .about-quote::before { content: "\201C"; position: absolute; top: -0.3em; left: -0.2em; z-index: 0; font-family: 'Prata', serif; font-size: 6em; line-height: 1; color: var(--rose); opacity: 0.32; pointer-events: none; }
+  .about-quote .qt { position: relative; z-index: 1; }
   .about-p { margin-top: 20px; max-width: 58ch; }
   .about-p b { color: var(--rose-deep); }
 
@@ -258,18 +259,16 @@
   }
   @keyframes lb-pop { from { transform: scale(.96); opacity: .4; } to { transform: scale(1); opacity: 1; } }
   .lb-cap { color: var(--ink); font-size: .95rem; text-align: center; max-width: 60ch; }
-  .lb-count { color: var(--muted); font-family: 'Prata', serif; font-size: .9rem; }
+  .lb-controls { display: flex; justify-content: center; gap: 16px; margin-top: 2px; }
   .lb-btn {
     border: 2px solid var(--rose-deep); background: rgba(11,7,16,.7); color: var(--rose);
     cursor: pointer; border-radius: 999px; display: grid; place-items: center;
     transition: background .18s, color .18s; line-height: 1;
   }
   .lb-btn:hover, .lb-btn:focus-visible { background: var(--rose-deep); color: var(--on-rose); outline: none; }
-  .lb-close { position: absolute; top: -6px; right: 0; width: 44px; height: 44px; font-size: 1.2rem; }
-  .lb-nav { position: absolute; top: 40%; width: 48px; height: 48px; font-size: 1.9rem; padding-bottom: 4px; }
-  .lb-prev { left: -6px; }
-  .lb-next { right: -6px; }
-  @media (min-width: 900px) { .lb-prev { left: -66px; } .lb-next { right: -66px; } .lb-close { top: -56px; } }
+  .lb-close { position: absolute; top: -6px; right: 0; width: 44px; height: 44px; font-size: 1.2rem; z-index: 2; }
+  .lb-nav { width: 44px; height: 44px; font-size: 1.5rem; padding-bottom: 3px; }
+  @media (min-width: 900px) { .lb-close { top: -52px; } }
   @media (prefers-reduced-motion: reduce) { .lb, .lb-img { animation: none; } }
 
   footer.site { text-align: center; padding: 34px 20px 44px; color: var(--muted); font-size: .86rem; }
@@ -307,7 +306,7 @@
   </a>
   <div class="head-actions">
     <a class="icon-btn" href="https://www.facebook.com/profile.php?id=100063601718586&locale=pl_PL" target="_blank" rel="noopener" aria-label="Facebook — Salon Psiej Urody Pudelek">
-      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15.2 8.2h1.9l.4-2.9h-2.3V3.7c0-.9.3-1.5 1.6-1.5h1.2V-0.4C18.7-.5 17.8-.6 16.8-.6c-2.2 0-3.7 1.3-3.7 3.8v2.1h-2.4v2.9h2.4V21h2.9V8.2z" transform="translate(0 1.6)"/></svg>
+      <svg viewBox="0 0 320 512" fill="currentColor" aria-hidden="true"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
     </a>
     <a class="call" href="tel:+48605590963">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.5 10.8a13.3 13.3 0 0 0 6.7 6.7l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1v3.5c0 .6-.4 1-1 1C10.5 21.2 2.8 13.5 2.8 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.2 2.2z"/></svg>
@@ -338,12 +337,12 @@
       <div class="fact stack">
         <span class="lbl">Godziny otwarcia</span>
         <div class="hours">
-          <div class="hrow"><span class="day">Poniedziałek</span><span class="hr">10–18</span></div>
-          <div class="hrow"><span class="day">Wtorek</span><span class="hr">10–18</span></div>
-          <div class="hrow"><span class="day">Środa</span><span class="hr">10–18</span></div>
-          <div class="hrow"><span class="day">Czwartek</span><span class="hr">10–18</span></div>
-          <div class="hrow"><span class="day">Piątek</span><span class="hr">10–18</span></div>
-          <div class="hrow"><span class="day">Sobota</span><span class="hr">10–14</span></div>
+          <div class="hrow"><span class="day">Poniedziałek</span><span class="hr">10:00–18:00</span></div>
+          <div class="hrow"><span class="day">Wtorek</span><span class="hr">10:00–18:00</span></div>
+          <div class="hrow"><span class="day">Środa</span><span class="hr">10:00–18:00</span></div>
+          <div class="hrow"><span class="day">Czwartek</span><span class="hr">10:00–18:00</span></div>
+          <div class="hrow"><span class="day">Piątek</span><span class="hr">10:00–18:00</span></div>
+          <div class="hrow"><span class="day">Sobota</span><span class="hr">10:00–14:00</span></div>
           <div class="hrow off"><span class="day">Niedziela</span><span class="hr">nieczynne</span></div>
         </div>
       </div>
@@ -387,7 +386,7 @@
       <h2>Karolina<br>Ciszewska<span class="dot">.</span></h2>
     </div>
     <div class="about-body">
-      <p class="about-quote"><span class="qo">„</span>Cierpliwości starcza jej na najbardziej stremowanego psa w mieście<span class="qc">”</span></p>
+      <p class="about-quote"><span class="qt">Cierpliwości starcza jej na najbardziej stremowanego psa w mieście.</span></p>
       <p class="about-p">Za nożyczkami w Pudelku stoi Karolina Ciszewska. Klienci wracają nie tylko po fryzurę, ale po spokojne podejście: do szczeniaka na pierwszej wizycie, do seniora, który już boi się suszarki, i do każdego pupila, który wolałby dziś być gdzie indziej. W opiniach najczęściej pada jedno słowo: <b>cierpliwa</b>.</p>
     </div>
   </div>
@@ -419,7 +418,7 @@
   <div class="wrap">
     <div class="op-head">
       <p class="eyeline">mówią o nas</p>
-      <h2>Co piszą właściciele<span class="dot">.</span></h2>
+      <h2>Co pisz<span class="pl-og">a</span> wła<span class="pl-ac">s</span>ciciele<span class="dot">.</span></h2>
     </div>
     <div class="op-strip">
       <span class="badge"><span class="st">★★★★★</span> ponad 35 opinii na Google</span>
@@ -506,13 +505,14 @@
 <div class="lb" id="lb" hidden>
   <div class="lb-stage" role="dialog" aria-modal="true" aria-label="Galeria zdjęć">
     <button type="button" class="lb-btn lb-close" data-close aria-label="Zamknij galerię">✕</button>
-    <button type="button" class="lb-btn lb-nav lb-prev" data-prev aria-label="Poprzednie zdjęcie">‹</button>
     <figure class="lb-fig">
       <img class="lb-img" src="" alt="">
       <figcaption class="lb-cap"></figcaption>
     </figure>
-    <button type="button" class="lb-btn lb-nav lb-next" data-next aria-label="Następne zdjęcie">›</button>
-    <div class="lb-count" aria-hidden="true"></div>
+    <div class="lb-controls">
+      <button type="button" class="lb-btn lb-nav lb-prev" data-prev aria-label="Poprzednie zdjęcie">‹</button>
+      <button type="button" class="lb-btn lb-nav lb-next" data-next aria-label="Następne zdjęcie">›</button>
+    </div>
   </div>
 </div>
 
@@ -536,7 +536,6 @@
     var lb = document.getElementById('lb');
     var lbImg = lb.querySelector('.lb-img');
     var lbCap = lb.querySelector('.lb-cap');
-    var lbCount = lb.querySelector('.lb-count');
     var focusables = lb.querySelectorAll('button');
     var idx = 0, lastFocus = null;
 
@@ -545,7 +544,6 @@
       lbImg.src = items[idx].src;
       lbImg.alt = items[idx].alt;
       lbCap.textContent = items[idx].alt;
-      lbCount.textContent = (idx + 1) + ' / ' + items.length;
     }
     function open(i) {
       lastFocus = document.activeElement;
