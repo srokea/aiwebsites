@@ -101,7 +101,9 @@
   h2 { font-family: 'Prata', serif; font-weight: 400; font-size: clamp(1.9rem, 4.6vw, 2.9rem); line-height: 1.16; letter-spacing: -.5px; }
   h2 .dot { color: var(--rose); }
 
-  /* Prata nie ma glifow ć / ę — skladamy je z litery + dorysowanego diakrytu (skaluje sie z em) */
+  /* Prata nie ma glifow ć / ę / ą / ś — skladamy je z litery + dorysowanego diakrytu (skaluje sie z em).
+     .nb owija cale slowo: inline-block tworzy okazje do lamania, bez tego slowo peka np. "merda" / "ć". */
+  .nb { white-space: nowrap; }
   .pl-ac, .pl-og { position: relative; display: inline-block; line-height: 1; }
   .pl-ac::after {
     content: ""; position: absolute; left: 50%; top: 0.06em;
@@ -123,7 +125,7 @@
     display: grid; gap: 0; border: 2px solid var(--frame); border-radius: 28px; overflow: hidden;
     grid-template-columns: 1fr;
   }
-  @media (min-width: 900px) { .hero-frame { grid-template-columns: 1.25fr 1fr; grid-template-rows: auto auto; } }
+  @media (min-width: 900px) { .hero-frame { grid-template-columns: 1fr 1.08fr; grid-template-rows: auto auto; } }
   .cell { border: 2px solid var(--frame); margin: -1px; padding: 36px 30px; position: relative; }
   .cell-title { background: linear-gradient(155deg, var(--blush), var(--lav)); overflow: hidden; }
   .cell-title::before { content: ""; position: absolute; width: 300px; height: 300px; border-radius: 50%; background: var(--rose); filter: blur(70px); opacity: .28; top: -120px; right: -70px; pointer-events: none; }
@@ -142,7 +144,9 @@
   .fact .val { font-family: 'Prata', serif; font-size: 1.05rem; text-align: right; color: var(--ink); }
   .fact .val .em { color: var(--rose-deep); }
   .fact.stack { flex-direction: column; align-items: stretch; gap: 12px; }
-  .hours { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+  /* mobile: 1 kolumna — pelne godziny (10:00–18:00) maja nowrap i w 2 kolumnach rozpychaly siatke hero */
+  .hours { display: grid; grid-template-columns: 1fr; gap: 8px 24px; }
+  @media (min-width: 560px) { .hours { grid-template-columns: 1fr 1fr; } }
   .hrow { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 5px; }
   .hrow .day { font-size: .82rem; color: var(--muted); }
   .hrow .hr { font-family: 'Prata', serif; font-size: .95rem; color: var(--ink); white-space: nowrap; }
@@ -181,7 +185,9 @@
   .about-body { }
   @media (min-width: 860px) { .about-body { padding-left: 42px; } }
   .about-quote { font-family: 'Prata', serif; font-size: clamp(1.3rem, 3vw, 1.8rem); line-height: 1.4; color: var(--ink); position: relative; padding-top: 0.35em; }
-  .about-quote::before { content: "\201C"; position: absolute; top: -0.3em; left: -0.2em; z-index: 0; font-family: 'Prata', serif; font-size: 6em; line-height: 1; color: var(--rose); opacity: 0.32; pointer-events: none; }
+  .about-quote::before, .about-quote::after { position: absolute; z-index: 0; font-family: 'Prata', serif; font-size: 4.2em; line-height: 1; color: var(--rose); opacity: 0.32; pointer-events: none; }
+  .about-quote::before { content: "\201C"; top: -0.22em; left: -0.16em; }
+  .about-quote::after { content: "\201D"; right: -0.06em; bottom: -1.35em; }
   .about-quote .qt { position: relative; z-index: 1; }
   .about-p { margin-top: 20px; max-width: 58ch; }
   .about-p b { color: var(--rose-deep); }
@@ -323,7 +329,7 @@
   <div class="frame hero-frame">
     <div class="cell cell-title">
       <p class="eyeline">u nas pupil czuje się jak u siebie</p>
-      <h1>Fryzura, po której ogon nie przestaje <span class="und">merda<span class="pl-ac">c</span></span>.</h1>
+      <h1>Fryzura, po której ogon nie przestaje <span class="und nb">merda<span class="pl-ac">c</span></span>.</h1>
       <p class="sub">Salon Psiej Urody Pudelek to kącik tuż przy Poczcie na Jagiellońskiej w Piotrkowie Trybunalskim. Twój pies albo kot dostaje tu tyle czasu i cierpliwości, ile akurat potrzebuje. Strzyżemy, kąpiemy i czeszemy bez pośpiechu.</p>
       <div class="cta">
         <a class="call" href="tel:+48605590963">☎ Zadzwoń i umów wizytę</a>
@@ -419,7 +425,7 @@
   <div class="wrap">
     <div class="op-head">
       <p class="eyeline">mówią o nas</p>
-      <h2>Co pisz<span class="pl-og">a</span> wła<span class="pl-ac">s</span>ciciele<span class="dot">.</span></h2>
+      <h2>Co <span class="nb">pisz<span class="pl-og">a</span></span> <span class="nb">wła<span class="pl-ac">s</span>ciciele<span class="dot">.</span></span></h2>
     </div>
     <div class="op-strip">
       <span class="badge"><span class="st">★★★★★</span> ponad 35 opinii na Google</span>
@@ -465,7 +471,7 @@
     <div class="k-frame">
       <div class="k-cell k-paint">
         <p class="eyeline">do zobaczenia!</p>
-        <h2>Umówmy wizyt<span class="pl-og">e</span><span class="dot">.</span></h2>
+        <h2>Umówmy <span class="nb">wizyt<span class="pl-og">e</span><span class="dot">.</span></span></h2>
         <a class="tel" href="tel:+48605590963">605 590 963</a>
         <a class="ghost" href="https://www.facebook.com/profile.php?id=100063601718586&locale=pl_PL" target="_blank" rel="noopener">Napisz na Facebooku</a>
       </div>
