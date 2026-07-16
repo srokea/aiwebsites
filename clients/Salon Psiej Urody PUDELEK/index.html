@@ -146,7 +146,10 @@
   .fact.stack { flex-direction: column; align-items: stretch; gap: 12px; }
   /* mobile: 1 kolumna — pelne godziny (10:00–18:00) maja nowrap i w 2 kolumnach rozpychaly siatke hero */
   .hours { display: grid; grid-template-columns: 1fr; gap: 8px 24px; }
-  @media (min-width: 560px) { .hours { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 560px) {
+    .hours { grid-template-columns: 1fr 1fr; }
+    .hours .hrow:last-child { grid-column: 2; }
+  }
   .hrow { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 5px; }
   .hrow .day { font-size: .82rem; color: var(--muted); }
   .hrow .hr { font-family: 'Prata', serif; font-size: .95rem; color: var(--ink); white-space: nowrap; }
@@ -330,7 +333,7 @@
     <div class="cell cell-title">
       <p class="eyeline">u nas pupil czuje się jak u siebie</p>
       <h1>Fryzura, po której ogon nie przestaje <span class="und nb">merda<span class="pl-ac">c</span></span>.</h1>
-      <p class="sub">Salon Psiej Urody Pudelek to kącik tuż przy Poczcie na Jagiellońskiej w Piotrkowie Trybunalskim. Twój pies albo kot dostaje tu tyle czasu i cierpliwości, ile akurat potrzebuje. Strzyżemy, kąpiemy i czeszemy bez pośpiechu.</p>
+      <p class="sub">Salon Psiej Urody Pudelek to kącik na Jagiellońskiej w Piotrkowie Trybunalskim. Twój pupil dostaje tu tyle czasu i cierpliwości, ile akurat potrzebuje. Strzyżemy, kąpiemy i czeszemy bez pośpiechu.</p>
       <div class="cta">
         <a class="call" href="tel:+48605590963">☎ Zadzwoń i umów wizytę</a>
         <a class="ghost" href="https://www.facebook.com/profile.php?id=100063601718586&locale=pl_PL" target="_blank" rel="noopener">Napisz na Facebooku</a>
@@ -349,7 +352,7 @@
           <div class="hrow"><span class="day">Środa</span><span class="hr">10:00–18:00</span></div>
           <div class="hrow"><span class="day">Czwartek</span><span class="hr">10:00–18:00</span></div>
           <div class="hrow"><span class="day">Piątek</span><span class="hr">10:00–18:00</span></div>
-          <div class="hrow"><span class="day">Sobota</span><span class="hr">10:00–14:00</span></div>
+          <div class="hrow off"><span class="day">Sobota</span><span class="hr">nieczynne</span></div>
           <div class="hrow off"><span class="day">Niedziela</span><span class="hr">nieczynne</span></div>
         </div>
       </div>
@@ -364,24 +367,21 @@
       <aside class="price-aside">
         <p class="eyeline">ile to kosztuje</p>
         <h3>Cennik</h3>
-        <p>Ceny orientacyjne. Dokładną wycenę ustalimy przez telefon, bo każda sierść to inna historia i inny nastrój pupila. Śmiało pytaj o konkretną rasę.</p>
+        <p>Bez sztywnego cennika — wycenę ustalimy na miejscu, bo każda sierść i każdy pupil to inna historia. Strzyżemy psy ras małych i średnich, koty oraz świnki morskie.</p>
       </aside>
       <div class="price-body">
-        <!-- CENNIK: usługi i ceny to placeholder wymyślony na prośbę klienta — do potwierdzenia z Karoliną i podmiany na realne stawki -->
         <div class="grp-h">Kąpiel i pielęgnacja</div>
-        <div class="row"><span class="nm">Kąpiel z suszeniem, mała rasa</span><span class="pr">od 50 zł</span><span class="ds">szampon dobrany do sierści, suszenie i rozczesanie</span></div>
-        <div class="row"><span class="nm">Kąpiel z suszeniem, duża rasa</span><span class="pr">od 90 zł</span><span class="ds">to samo w wersji XL, więcej futra do wysuszenia</span></div>
-        <div class="row"><span class="nm">Wyczesywanie podszerstka</span><span class="pr">od 40 zł</span><span class="ds">dla ras, które gubią więcej sierści, niż chcą</span></div>
+        <div class="row"><span class="nm">Kąpiel z suszeniem</span><span class="pr">wycena na miejscu</span><span class="ds">szampon dobrany do sierści, suszenie i rozczesanie</span></div>
+        <div class="row"><span class="nm">Wyczesywanie podszerstka</span><span class="pr">wycena na miejscu</span><span class="ds">dla ras, które gubią więcej sierści, niż chcą</span></div>
 
         <div class="grp-h">Strzyżenie</div>
-        <div class="row"><span class="nm">Strzyżenie pełne, mała i średnia rasa</span><span class="pr">od 90 zł</span><span class="ds">kąpiel, strzyżenie i modelowanie pod rasę lub życzenie</span></div>
-        <div class="row"><span class="nm">Strzyżenie pełne, rasa duża i włochata</span><span class="pr">od 140 zł</span><span class="ds">więcej czasu i cierpliwości, ten sam efekt na końcu</span></div>
+        <div class="row"><span class="nm">Strzyżenie pełne</span><span class="pr">wycena na miejscu</span><span class="ds">kąpiel, strzyżenie i modelowanie pod rasę lub życzenie</span></div>
 
         <div class="grp-h">Higiena</div>
-        <div class="row"><span class="nm">Pazurki, uszy i okolice oczu</span><span class="pr">30 zł</span><span class="ds">szybki serwis higieniczny, można też osobno</span></div>
+        <div class="row"><span class="nm">Pazurki, uszy i okolice oczu</span><span class="pr">wycena na miejscu</span><span class="ds">szybki serwis higieniczny, można też osobno</span></div>
       </div>
     </div>
-    <p class="price-note">Nie wiesz, co wybrać? Zadzwoń, doradzimy przez telefon.</p>
+    <p class="price-note">Nie wiesz, co wybrać? Zadzwoń — podpowiemy, a dokładną cenę ustalimy na miejscu.</p>
   </div>
 </section>
 
@@ -479,15 +479,15 @@
         <div class="k-list">
           <div>
             <div class="lbl">Adres</div>
-            ul. Jagiellońska 22 (budynek Poczty), 97-300 Piotrków Trybunalski
+            ul. Jagiellońska 22, 97-300 Piotrków Trybunalski
           </div>
           <div>
             <div class="lbl">Godziny</div>
-            Poniedziałek–Piątek: 10:00–18:00<br>Sobota: 10:00–14:00
+            Poniedziałek–Piątek: 10:00–18:00
           </div>
           <div>
             <div class="lbl">Wejście</div>
-            Od strony budynku Poczty Polskiej.
+            Naprzeciwko straży pożarnej.
           </div>
           <div>
             <a class="plain" href="https://www.google.com/maps/search/?api=1&query=Jagiello%C5%84ska+22%2C+97-300+Piotrk%C3%B3w+Trybunalski" target="_blank" rel="noopener">Wyznacz trasę ↗</a>
