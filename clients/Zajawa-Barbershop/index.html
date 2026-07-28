@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zajawa Barbershop — Bełchatów | Skin fady, cropy, brody</title>
+<meta name="description" content="Zajawa Barbershop w Bełchatowie, Pabianicka 28. Skin fady, textured cropy, strzyżenie i modelowanie brody. 5,0 na Booksy z 538 opinii. Rezerwacja online.">
+<link rel="icon" href="photos/logo-z.jpg">
+<link rel="apple-touch-icon" href="photos/logo-z.jpg">
+<meta property="og:title" content="Zajawa Barbershop — Bełchatów">
+<meta property="og:description" content="Skin fady, textured cropy, brody. Pabianicka 28, Bełchatów. 5,0 na Booksy.">
+<meta property="og:image" content="photos/bw-strzyzenie.jpg">
+<meta property="og:type" content="website">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        screens: {
+          xs: '400px',
+        },
+        colors: {
+          bg: '#0A0A0A',
+          surface: '#111111',
+          ink: '#FFFFFF',
+          inkmuted: '#A3A3A3',
+          border: 'rgba(255,255,255,0.12)',
+          accent: '#9C8265',
+        },
+        fontFamily: {
+          display: ['"Archivo Black"', 'sans-serif'],
+          body: ['"DM Sans"', 'sans-serif'],
+        },
+      },
+    },
+  }
+</script>
+<style>
+  @font-face {
+    font-family: 'Archivo Black';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('fonts/archivoblack-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Archivo Black';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('fonts/archivoblack-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('fonts/dmsans-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('fonts/dmsans-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  }
+
+  .navbar-glass {
+    background: rgba(10, 10, 10, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* Bardzo delikatne ziarno — spina niskiej rozdzielczosci zdjecia z czernia tla */
+  .grain {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='0.55'/></svg>");
+    opacity: 0.11;
+    mix-blend-mode: overlay;
+  }
+
+  .display-wide { letter-spacing: 0.06em; }
+
+  /* Kotwice z nawigacji nie moga chowac naglowka pod sticky headerem */
+  section[id] { scroll-margin-top: 5.5rem; }
+
+  .map-frame iframe { filter: invert(92%) hue-rotate(180deg) grayscale(38%) contrast(88%) brightness(96%); }
+
+  :focus-visible {
+    outline: 2px solid #9C8265;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+</style>
+</head>
+<body class="bg-bg text-ink font-body antialiased">
+
+<a href="#tresc" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:text-bg focus:px-4 focus:py-2 focus:rounded-full">Przejdź do treści</a>
+
+<!-- ============ HEADER ============ -->
+<header class="fixed inset-x-0 top-0 z-40 navbar-glass">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8 h-[4.5rem] flex items-center justify-between gap-4">
+
+    <a href="#" class="flex items-center gap-3 shrink-0 py-2">
+      <img src="photos/logo-z.jpg" alt="Zajawa Barbershop" width="156" height="156" class="h-8 w-8 rounded-sm">
+      <span class="hidden xs:inline font-body font-bold text-[0.95rem] uppercase tracking-[0.18em]">Zajawa</span>
+    </a>
+
+    <nav class="hidden lg:flex items-center gap-7 text-sm text-inkmuted uppercase tracking-[0.14em]">
+      <a href="#galeria" class="px-1 py-3.5 hover:text-ink transition-colors motion-reduce:transition-none">Galeria</a>
+      <a href="#cennik" class="px-1 py-3.5 hover:text-ink transition-colors motion-reduce:transition-none">Cennik</a>
+      <a href="#o-nas" class="px-1 py-3.5 hover:text-ink transition-colors motion-reduce:transition-none">O nas</a>
+      <a href="#kontakt" class="px-1 py-3.5 hover:text-ink transition-colors motion-reduce:transition-none">Kontakt</a>
+    </nav>
+
+    <div class="flex items-center gap-2 sm:gap-3">
+      <a href="tel:+48572805002"
+         class="inline-flex items-center gap-2 rounded-full bg-ink text-bg font-semibold text-sm px-4 sm:px-6 h-11 hover:bg-accent hover:text-ink transition-colors motion-reduce:transition-none">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.3 2.2z"/></svg>
+        <span class="whitespace-nowrap">572 805 002</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="tresc">
+
+  <!-- ============ HERO ============ -->
+  <section class="relative isolate overflow-hidden">
+
+    <!-- Mobile: pelnoekranowe zdjecie B&W pod tekstem -->
+    <div class="absolute inset-0 lg:hidden" aria-hidden="true">
+      <img src="photos/bw-strzyzenie.jpg" alt="" width="270" height="405" fetchpriority="high"
+           class="h-full w-full object-cover object-[46%_28%] grayscale contrast-[1.12]">
+      <div class="absolute inset-0 bg-gradient-to-t from-bg via-bg/88 to-bg/55"></div>
+      <div class="absolute inset-0 grain"></div>
+    </div>
+
+    <div class="relative mx-auto max-w-6xl px-5 sm:px-8 pt-32 pb-16 sm:pt-40 sm:pb-20 lg:py-0
+                min-h-[92svh] lg:min-h-[calc(100svh)]
+                flex flex-col justify-end
+                lg:grid lg:grid-cols-[1.15fr_0.85fr] lg:gap-16 lg:items-center">
+
+      <div class="max-w-xl">
+        <h1 class="font-display uppercase display-wide leading-[0.92] text-[clamp(3.4rem,15vw,7rem)]">
+          Zajawa
+          <span class="block text-[clamp(1.05rem,4.2vw,1.9rem)] tracking-[0.34em] mt-4 text-inkmuted">Barbershop</span>
+        </h1>
+
+        <p class="mt-7 text-lg sm:text-xl text-inkmuted leading-relaxed max-w-md">
+          Skin fady, textured cropy i brody. Możesz przyjść bez planu i wyjść z fryzurą, o którą ludzie będą pytać.
+        </p>
+
+        <div class="mt-9 flex flex-col sm:flex-row gap-3">
+          <a href="https://booksy.com/pl-pl/200893_zajawa-barbershop_barber-shop_25231_belchatow" target="_blank" rel="noopener"
+             class="inline-flex items-center justify-center rounded-full bg-ink text-bg font-bold uppercase tracking-[0.1em] text-sm px-8 h-14 hover:bg-accent hover:text-ink transition-colors motion-reduce:transition-none">
+            Umów wizytę
+          </a>
+          <a href="tel:+48572805002"
+             class="inline-flex items-center justify-center rounded-full border border-border text-inkmuted font-semibold uppercase tracking-[0.1em] text-sm px-8 h-14 hover:border-accent hover:text-ink transition-colors motion-reduce:transition-none">
+            572 805 002
+          </a>
+        </div>
+
+        <p class="mt-8 text-sm text-inkmuted tracking-wide">Pabianicka 28, Bełchatów</p>
+      </div>
+
+      <!-- Desktop: zdjecie w kolumnie, w kadrze dopasowanym do rozdzielczosci pliku -->
+      <div class="hidden lg:flex justify-end">
+        <div class="relative w-full max-w-[370px]">
+          <img src="photos/bw-strzyzenie.jpg" alt="Barber z Zajawy przy pracy nad fryzurą klienta" width="270" height="405"
+               class="w-full aspect-[2/3] object-cover object-[46%_30%] grayscale contrast-[1.12]">
+          <div class="absolute inset-0 grain pointer-events-none"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ SOCIAL PROOF ============ -->
+  <section class="border-y border-border bg-surface">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8 py-5 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-sm">
+      <span class="flex items-center gap-2.5">
+        <span class="text-accent text-base leading-none" aria-hidden="true">★★★★★</span>
+        <span><span class="font-bold tracking-wide">5,0</span> <span class="text-inkmuted">z 538 opinii na Booksy</span></span>
+      </span>
+      <span class="hidden sm:inline h-4 w-px bg-border" aria-hidden="true"></span>
+      <span><span class="font-bold tracking-wide">4,8</span> <span class="text-inkmuted">z 91 opinii w Google</span></span>
+    </div>
+  </section>
+
+  <!-- ============ GALERIA ============ -->
+  <section id="galeria" class="py-20 sm:py-28">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8">
+
+      <h2 class="font-display uppercase display-wide text-[clamp(2rem,6vw,3.25rem)] leading-none">Robota</h2>
+      <div class="mt-5 h-px w-16 bg-accent"></div>
+      <p class="mt-6 text-inkmuted max-w-md">Efekty prosto z fotela. Bez retuszu i bez stocków.</p>
+
+      <ul class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
+        <li class="group overflow-hidden bg-surface">
+          <img src="photos/fade-01.jpg" alt="Textured crop z mid fadem, ujęcie z profilu" width="290" height="512" loading="lazy" decoding="async"
+               class="w-full aspect-[3/4] object-cover object-[50%_35%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        </li>
+        <li class="group overflow-hidden bg-surface">
+          <img src="photos/fade-02.jpg" alt="Krótkie strzyżenie z low taper fadem" width="290" height="512" loading="lazy" decoding="async"
+               class="w-full aspect-[3/4] object-cover object-[50%_35%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        </li>
+        <li class="group overflow-hidden bg-surface">
+          <img src="photos/fade-03.jpg" alt="Kręcony textured crop z burst fadem" width="290" height="512" loading="lazy" decoding="async"
+               class="w-full aspect-[3/4] object-cover object-[50%_35%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        </li>
+        <li class="group overflow-hidden bg-surface">
+          <img src="photos/fade-broda.jpg" alt="Skin fade połączony z pełną, wymodelowaną brodą" width="384" height="512" loading="lazy" decoding="async"
+               class="w-full aspect-[3/4] object-cover object-[50%_35%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        </li>
+        <li class="group overflow-hidden bg-surface">
+          <img src="photos/fade-04.jpg" alt="Dłuższe strzyżenie z miękkim przejściem na bokach" width="286" height="512" loading="lazy" decoding="async"
+               class="w-full aspect-[3/4] object-cover object-[50%_35%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        </li>
+        <li class="group overflow-hidden bg-surface">
+          <img src="photos/praca-junior.jpg" alt="Barber strzyże młodszego klienta maszynką" width="293" height="389" loading="lazy" decoding="async"
+               class="w-full aspect-[3/4] object-cover object-[50%_30%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        </li>
+        <li class="group overflow-hidden bg-surface">
+          <img src="photos/brwi.jpg" alt="Regulacja brwi brzytwą w fotelu barberskim" width="384" height="512" loading="lazy" decoding="async"
+               class="w-full aspect-[3/4] object-cover object-[45%_40%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        </li>
+        <li class="group overflow-hidden bg-surface">
+          <img src="photos/damskie.jpg" alt="Strzyżenie damskie na stanowisku w salonie" width="384" height="512" loading="lazy" decoding="async"
+               class="w-full aspect-[3/4] object-cover object-[50%_40%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        </li>
+      </ul>
+
+      <p class="mt-8 text-sm text-inkmuted">
+        Więcej na
+        <a href="https://www.instagram.com/zajawa_barbershop/" target="_blank" rel="noopener" class="text-ink underline underline-offset-4 decoration-accent hover:decoration-ink transition-colors motion-reduce:transition-none">Instagramie</a>.
+      </p>
+
+    </div>
+  </section>
+
+  <!-- ============ CENNIK ============ -->
+  <section id="cennik" class="bg-surface border-y border-border py-20 sm:py-28">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8">
+
+      <h2 class="font-display uppercase display-wide text-[clamp(2rem,6vw,3.25rem)] leading-none">Cennik</h2>
+      <div class="mt-5 h-px w-16 bg-accent"></div>
+
+      <div class="mt-12 grid gap-12 lg:grid-cols-3 lg:gap-10">
+
+        <div>
+          <h3 class="font-body font-bold uppercase tracking-[0.2em] text-sm text-accent">Włosy</h3>
+          <dl class="mt-5 border-t border-border divide-y divide-[rgba(255,255,255,0.12)]">
+            <div class="flex items-baseline justify-between gap-4 py-4">
+              <dt><span class="block">Strzyżenie włosów</span><span class="block text-sm text-inkmuted mt-0.5">45 min</span></dt>
+              <dd class="font-bold whitespace-nowrap">90 zł</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-4">
+              <dt><span class="block">Strzyżenie włosów długich</span><span class="block text-sm text-inkmuted mt-0.5">1 godz</span></dt>
+              <dd class="font-bold whitespace-nowrap">110 zł</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-4">
+              <dt><span class="block">Strzyżenie + woskowanie nosa</span><span class="block text-sm text-inkmuted mt-0.5">45 min</span></dt>
+              <dd class="font-bold whitespace-nowrap">100 zł</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-4">
+              <dt><span class="block">Strzyżenie u Barbera Juniora</span><span class="block text-sm text-inkmuted mt-0.5">1 godz</span></dt>
+              <dd class="font-bold whitespace-nowrap">60 zł</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div>
+          <h3 class="font-body font-bold uppercase tracking-[0.2em] text-sm text-accent">Broda</h3>
+          <dl class="mt-5 border-t border-border divide-y divide-[rgba(255,255,255,0.12)]">
+            <div class="flex items-baseline justify-between gap-4 py-4">
+              <dt><span class="block">Strzyżenie brody</span><span class="block text-sm text-inkmuted mt-0.5">30 min</span></dt>
+              <dd class="font-bold whitespace-nowrap">70 zł</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-4">
+              <dt><span class="block">Strzyżenie brody + woskowanie nosa</span><span class="block text-sm text-inkmuted mt-0.5">30 min</span></dt>
+              <dd class="font-bold whitespace-nowrap">80 zł</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-4">
+              <dt><span class="block">Farbowanie brody</span><span class="block text-sm text-inkmuted mt-0.5">30 min</span></dt>
+              <dd class="font-bold whitespace-nowrap">80 zł</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div>
+          <h3 class="font-body font-bold uppercase tracking-[0.2em] text-sm text-accent">Combo</h3>
+          <dl class="mt-5 border-t border-border divide-y divide-[rgba(255,255,255,0.12)]">
+            <div class="flex items-baseline justify-between gap-4 py-4">
+              <dt><span class="block">Włosy + broda</span><span class="block text-sm text-inkmuted mt-0.5">1 godz</span></dt>
+              <dd class="font-bold whitespace-nowrap">130 zł</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-4">
+              <dt><span class="block">Włosy + broda + woskowanie nosa</span><span class="block text-sm text-inkmuted mt-0.5">1 godz</span></dt>
+              <dd class="font-bold whitespace-nowrap">140 zł</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-4">
+              <dt><span class="block">Włosy długie + broda</span><span class="block text-sm text-inkmuted mt-0.5">1 godz 30 min</span></dt>
+              <dd class="font-bold whitespace-nowrap">150 zł</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-4">
+              <dt><span class="block">Włosy długie + woskowanie nosa</span><span class="block text-sm text-inkmuted mt-0.5">1 godz 30 min</span></dt>
+              <dd class="font-bold whitespace-nowrap">160 zł</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-4">
+              <dt><span class="block">Combo u Barbera Juniora</span><span class="block text-sm text-inkmuted mt-0.5">1 godz 30 min</span></dt>
+              <dd class="font-bold whitespace-nowrap">100 zł</dd>
+            </div>
+          </dl>
+        </div>
+
+      </div>
+
+      <div class="mt-14 flex flex-col sm:flex-row sm:items-center gap-5">
+        <a href="https://booksy.com/pl-pl/200893_zajawa-barbershop_barber-shop_25231_belchatow" target="_blank" rel="noopener"
+           class="inline-flex items-center justify-center rounded-full bg-ink text-bg font-bold uppercase tracking-[0.1em] text-sm px-8 h-14 hover:bg-accent hover:text-ink transition-colors motion-reduce:transition-none">
+          Sprawdź wolne terminy
+        </a>
+        <p class="text-sm text-inkmuted">Rezerwacja i aktualne terminy prowadzone są przez Booksy.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ O NAS ============ -->
+  <section id="o-nas" class="py-20 sm:py-28">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8 grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-center">
+
+      <div class="order-2 lg:order-1">
+        <h2 class="font-display uppercase display-wide text-[clamp(2rem,6vw,3.25rem)] leading-none">O nas</h2>
+        <div class="mt-5 h-px w-16 bg-accent"></div>
+
+        <div class="mt-8 space-y-5 text-lg text-inkmuted leading-relaxed max-w-lg">
+          <p>Nie jesteśmy profesjonalistami w garniturach. Jesteśmy ekipą, która po prostu dobrze strzyże.</p>
+          <p>Leci muzyka, rozmowa sama się klei, a ty siedzisz jak u kolegów, nie u fryzjera. Robimy skin fady, textured cropy i brody, ale też strzyżenie damskie i regulację brwi brzytwą.</p>
+          <p>Za fotelami stoją Hubert, Konrad, Krzysiek i Veronika. Prowadzimy też szkolenia barberskie.</p>
+        </div>
+
+        <dl class="mt-10 grid grid-cols-3 divide-x divide-[rgba(255,255,255,0.12)] border-t border-border pt-8">
+          <div class="pr-4">
+            <dd class="font-display text-2xl sm:text-3xl">5,0</dd>
+            <dt class="text-sm text-inkmuted mt-1">na Booksy</dt>
+          </div>
+          <div class="px-4">
+            <dd class="font-display text-2xl sm:text-3xl">4,8</dd>
+            <dt class="text-sm text-inkmuted mt-1">w Google</dt>
+          </div>
+          <div class="pl-4">
+            <dd class="font-display text-2xl sm:text-3xl">629</dd>
+            <dt class="text-sm text-inkmuted mt-1">opinii łącznie</dt>
+          </div>
+        </dl>
+      </div>
+
+      <div class="order-1 lg:order-2">
+        <div class="relative w-full max-w-[460px] lg:ml-auto">
+          <img src="photos/bw-ekipa.jpg" alt="Dwóch barberów z Zajawy odpoczywa na kanapie w salonie" width="270" height="405" loading="lazy" decoding="async"
+               class="w-full aspect-[4/5] object-cover object-[50%_30%] grayscale contrast-[1.1]">
+          <div class="absolute inset-0 grain pointer-events-none"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ OPINIE ============ -->
+  <section class="bg-surface border-y border-border py-20 sm:py-28">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8">
+
+      <h2 class="font-display uppercase display-wide text-[clamp(2rem,6vw,3.25rem)] leading-none">Opinie</h2>
+      <div class="mt-5 h-px w-16 bg-accent"></div>
+
+      <div class="mt-12 grid gap-x-10 gap-y-10 md:grid-cols-3">
+
+        <blockquote class="border-t border-border pt-6">
+          <p class="text-accent text-sm tracking-[0.3em]" aria-label="Ocena 5 na 5">★★★★★</p>
+          <p class="mt-4 text-lg leading-relaxed text-inkmuted">
+            „Super atmosfera. Wrażenie, jakby się siedziało u kolegów, a nie u fryzjera. Muzyczka leci, a chłopaki bardzo ogarniają, do tego stopnia, że można przyjść bez planu, a wyjść z naprawdę świetną fryzurą.”
+          </p>
+          <footer class="mt-5 text-sm text-inkmuted">Adam B. <span class="text-border">·</span> Google</footer>
+        </blockquote>
+
+        <blockquote class="border-t border-border pt-6">
+          <p class="text-accent text-sm tracking-[0.3em]" aria-label="Ocena 5 na 5">★★★★★</p>
+          <p class="mt-4 text-lg leading-relaxed text-inkmuted">
+            „Najlepszy barber w Polsce. Lokal nowy i czysty, miła, luźna atmosfera. Chłopaki są na czasie z modnymi fryzurami jak low taper i wiedzą co robią. Polecam!”
+          </p>
+          <footer class="mt-5 text-sm text-inkmuted">Iwo Z. <span class="text-border">·</span> Google</footer>
+        </blockquote>
+
+        <blockquote class="border-t border-border pt-6">
+          <p class="text-accent text-sm tracking-[0.3em]" aria-label="Ocena 5 na 5">★★★★★</p>
+          <p class="mt-4 text-lg leading-relaxed text-inkmuted">
+            „Wybitne miejsce, chłopaki potrafią zrobić taką atmosferę, że chce się u nich siedzieć i nie wychodzić. Zdecydowanie będę polecał każdemu i wracał z przyjemnością.”
+          </p>
+          <footer class="mt-5 text-sm text-inkmuted">Kacper W. <span class="text-border">·</span> Google</footer>
+        </blockquote>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KONTAKT / LOKALIZACJA ============ -->
+  <section id="kontakt" class="py-20 sm:py-28">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8">
+
+      <h2 class="font-display uppercase display-wide text-[clamp(2rem,6vw,3.25rem)] leading-none">Znajdziesz nas</h2>
+      <div class="mt-5 h-px w-16 bg-accent"></div>
+
+      <div class="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-16">
+
+        <div>
+          <img src="photos/front-salonu.jpg" alt="Wejście do Zajawa Barbershop przy Pabianickiej 28 w Bełchatowie" width="384" height="512" loading="lazy" decoding="async"
+               class="w-full aspect-[4/3] object-cover object-[50%_45%]">
+
+          <div class="mt-8">
+            <p class="font-body font-bold uppercase tracking-[0.2em] text-sm text-accent">Adres</p>
+            <p class="mt-3 text-lg">Pabianicka 28<br>97-400 Bełchatów</p>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=Zajawa+Barbershop%2C+Pabianicka+28%2C+97-400+Be%C5%82chat%C3%B3w" target="_blank" rel="noopener"
+               class="mt-5 inline-flex items-center justify-center rounded-full border border-border text-inkmuted font-semibold uppercase tracking-[0.1em] text-sm px-7 h-12 hover:border-accent hover:text-ink transition-colors motion-reduce:transition-none">
+              Wyznacz trasę
+            </a>
+          </div>
+
+          <div class="mt-10">
+            <p class="font-body font-bold uppercase tracking-[0.2em] text-sm text-accent">Telefon</p>
+            <a href="tel:+48572805002" class="mt-1 inline-flex items-center min-h-[44px] text-lg hover:text-accent transition-colors motion-reduce:transition-none">572 805 002</a>
+          </div>
+        </div>
+
+        <div>
+          <p class="font-body font-bold uppercase tracking-[0.2em] text-sm text-accent">Godziny otwarcia</p>
+          <dl class="mt-5 border-t border-border divide-y divide-[rgba(255,255,255,0.12)]">
+            <div class="flex items-baseline justify-between gap-4 py-3.5">
+              <dt class="text-inkmuted">Poniedziałek</dt><dd class="font-medium">09:00 – 17:00</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-3.5">
+              <dt class="text-inkmuted">Wtorek</dt><dd class="font-medium">14:00 – 21:00</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-3.5">
+              <dt class="text-inkmuted">Środa</dt><dd class="font-medium">08:00 – 20:00</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-3.5">
+              <dt class="text-inkmuted">Czwartek</dt><dd class="font-medium">08:00 – 20:00</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-3.5">
+              <dt class="text-inkmuted">Piątek</dt><dd class="font-medium">08:00 – 20:00</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-3.5">
+              <dt class="text-inkmuted">Sobota</dt><dd class="font-medium">09:00 – 18:00</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-3.5">
+              <dt class="text-inkmuted">Niedziela</dt><dd class="font-medium text-inkmuted">Zamknięte</dd>
+            </div>
+          </dl>
+
+          <div class="mt-10 map-frame overflow-hidden border border-border">
+            <iframe
+              src="https://www.google.com/maps?q=Zajawa%20Barbershop%2C%20Pabianicka%2028%2C%2097-400%20Be%C5%82chat%C3%B3w&output=embed"
+              title="Mapa dojazdu do Zajawa Barbershop, Pabianicka 28 w Bełchatowie"
+              width="100%" height="300" style="border:0;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen></iframe>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA KONCOWE ============ -->
+  <section class="bg-surface border-t border-border">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8 py-16 sm:py-20 text-center">
+      <p class="font-display uppercase display-wide text-[clamp(1.6rem,5vw,2.75rem)] leading-tight">Siadaj w fotelu</p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="https://booksy.com/pl-pl/200893_zajawa-barbershop_barber-shop_25231_belchatow" target="_blank" rel="noopener"
+           class="inline-flex items-center justify-center rounded-full bg-ink text-bg font-bold uppercase tracking-[0.1em] text-sm px-8 h-14 hover:bg-accent hover:text-ink transition-colors motion-reduce:transition-none">
+          Umów wizytę
+        </a>
+        <a href="tel:+48572805002"
+           class="inline-flex items-center justify-center rounded-full border border-border text-inkmuted font-semibold uppercase tracking-[0.1em] text-sm px-8 h-14 hover:border-accent hover:text-ink transition-colors motion-reduce:transition-none">
+          572 805 002
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ STOPKA ============ -->
+<footer class="border-t border-border">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8 py-12">
+
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8">
+
+      <div class="flex items-center gap-3">
+        <img src="photos/logo-z.jpg" alt="" width="156" height="156" class="h-9 w-9 rounded-sm" loading="lazy">
+        <div>
+          <p class="font-body font-bold uppercase tracking-[0.18em] text-sm">Zajawa Barbershop</p>
+          <p class="text-sm text-inkmuted mt-0.5">Pabianicka 28, Bełchatów</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="https://www.instagram.com/zajawa_barbershop/" target="_blank" rel="noopener" aria-label="Instagram Zajawa Barbershop"
+           class="inline-flex items-center justify-center h-11 w-11 rounded-full border border-border text-inkmuted hover:border-accent hover:text-ink transition-colors motion-reduce:transition-none">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2-.1-1.3-.1-1.7-.1-4.9s0-3.6.1-4.9c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.3-.1 1.7-.1 4.9-.1zm0 3.1a6.7 6.7 0 1 0 0 13.4 6.7 6.7 0 0 0 0-13.4zm0 11a4.3 4.3 0 1 1 0-8.6 4.3 4.3 0 0 1 0 8.6zm6.9-11.3a1.6 1.6 0 1 1-3.1 0 1.6 1.6 0 0 1 3.1 0z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/p/Zajawa-Barbershop-100094246467950/" target="_blank" rel="noopener" aria-label="Facebook Zajawa Barbershop"
+           class="inline-flex items-center justify-center h-11 w-11 rounded-full border border-border text-inkmuted hover:border-accent hover:text-ink transition-colors motion-reduce:transition-none">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg>
+        </a>
+        <a href="https://booksy.com/pl-pl/200893_zajawa-barbershop_barber-shop_25231_belchatow" target="_blank" rel="noopener"
+           class="inline-flex items-center justify-center rounded-full bg-ink text-bg font-bold uppercase tracking-[0.1em] text-sm px-7 h-11 hover:bg-accent hover:text-ink transition-colors motion-reduce:transition-none">
+          Booksy
+        </a>
+      </div>
+
+    </div>
+
+    <div class="mt-10 pt-2 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-1 text-sm text-inkmuted">
+      <p class="py-3">© 2026 Zajawa Barbershop</p>
+      <a href="privacy.html" class="inline-flex items-center min-h-[44px] hover:text-ink transition-colors motion-reduce:transition-none">Polityka prywatności</a>
+    </div>
+
+  </div>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HairSalon",
+  "name": "Zajawa Barbershop",
+  "image": "photos/front-salonu.jpg",
+  "telephone": "+48572805002",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Pabianicka 28",
+    "postalCode": "97-400",
+    "addressLocality": "Bełchatów",
+    "addressCountry": "PL"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "reviewCount": "538"
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "09:00", "closes": "17:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "14:00", "closes": "21:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "08:00", "closes": "20:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "08:00", "closes": "20:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "08:00", "closes": "20:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "18:00" }
+  ],
+  "sameAs": [
+    "https://www.instagram.com/zajawa_barbershop/",
+    "https://www.facebook.com/p/Zajawa-Barbershop-100094246467950/",
+    "https://booksy.com/pl-pl/200893_zajawa-barbershop_barber-shop_25231_belchatow"
+  ]
+}
+</script>
+
+</body>
+</html>
