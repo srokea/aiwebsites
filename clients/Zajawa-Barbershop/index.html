@@ -132,7 +132,6 @@
     animation: lb-pop .22s cubic-bezier(.2,.8,.2,1);
   }
   @keyframes lb-pop { from { transform: scale(.96); opacity: .4; } to { transform: scale(1); opacity: 1; } }
-  .lb-cap { color: #A3A3A3; font-size: .95rem; text-align: center; max-width: 60ch; }
   .lb-controls { display: flex; justify-content: center; gap: 16px; margin-top: 2px; }
   .lb-btn {
     border: 1px solid rgba(255,255,255,0.2); background: rgba(17,17,17,.8); color: #FFFFFF;
@@ -428,6 +427,11 @@
             <dt class="text-sm text-inkmuted mt-1">opinii łącznie</dt>
           </div>
         </dl>
+
+        <a href="o-nas.html" class="mt-9 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.14em] text-ink hover:text-accent transition-colors motion-reduce:transition-none">
+          Czytaj więcej
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
       </div>
 
       <div class="order-1 lg:order-2">
@@ -570,7 +574,6 @@
     <button type="button" class="lb-btn lb-close" data-close aria-label="Zamknij galerię">✕</button>
     <figure class="lb-fig">
       <img class="lb-img" src="" alt="">
-      <figcaption class="lb-cap"></figcaption>
     </figure>
     <div class="lb-controls">
       <button type="button" class="lb-btn lb-nav lb-prev" data-prev aria-label="Poprzednie zdjęcie">‹</button>
@@ -664,7 +667,6 @@
     });
     var lb = document.getElementById('lb');
     var lbImg = lb.querySelector('.lb-img');
-    var lbCap = lb.querySelector('.lb-cap');
     var focusables = lb.querySelectorAll('button');
     var idx = 0, lastFocus = null;
 
@@ -672,7 +674,6 @@
       idx = (i + items.length) % items.length;
       lbImg.src = items[idx].src;
       lbImg.alt = items[idx].alt;
-      lbCap.textContent = items[idx].alt;
     }
     function open(i) {
       lastFocus = document.activeElement;
@@ -700,9 +701,10 @@
     }
     tiles.forEach(function (t, i) { t.addEventListener('click', function () { open(i); }); });
     lb.addEventListener('click', function (e) {
-      if (e.target.closest('[data-close]') || e.target === lb) close();
+      if (e.target.closest('[data-close]')) close();
       else if (e.target.closest('[data-next]')) show(idx + 1);
       else if (e.target.closest('[data-prev]')) show(idx - 1);
+      else if (e.target !== lbImg) close();
     });
   })();
 </script>
