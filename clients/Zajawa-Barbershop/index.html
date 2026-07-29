@@ -95,8 +95,10 @@
   .z-tape {
     background-image: url("photos/z-tile.png");
     background-repeat: repeat;
-    background-size: 47px 54px;
+    background-size: 47px 108px;
     opacity: 0.16;
+    transform: rotate(8deg);
+    transform-origin: center;
   }
 
   /* Kotwice z nawigacji nie moga chowac naglowka pod sticky headerem */
@@ -243,7 +245,7 @@
 
   <!-- ============ GALERIA ============ -->
   <section id="galeria" class="relative isolate overflow-hidden py-20 sm:py-28">
-    <div class="absolute inset-0 -z-10 z-tape" aria-hidden="true"></div>
+    <div class="absolute -inset-[15%] -z-10 z-tape" aria-hidden="true"></div>
 
     <div class="mx-auto max-w-6xl px-5 sm:px-8">
 
