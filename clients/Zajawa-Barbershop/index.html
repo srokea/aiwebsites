@@ -91,6 +91,14 @@
 
   .display-wide { letter-spacing: 0.06em; }
 
+  /* Motyw "tasmy" z okien salonu — powtarzalne Z z prawdziwego logo (logo-z.jpg), wyszarzone */
+  .z-tape {
+    background-image: url("photos/z-tile.png");
+    background-repeat: repeat;
+    background-size: 128px 129px;
+    opacity: 0.16;
+  }
+
   /* Kotwice z nawigacji nie moga chowac naglowka pod sticky headerem */
   section[id] { scroll-margin-top: 5.5rem; }
 
@@ -185,9 +193,10 @@
                 lg:grid lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
 
       <div class="max-w-xl lg:h-full lg:flex lg:flex-col lg:justify-center">
-        <h1 class="font-display uppercase display-wide leading-[0.92] text-[clamp(3.4rem,15vw,7rem)]">
-          Zajawa
-          <span class="block text-[clamp(1.05rem,4.2vw,1.9rem)] tracking-[0.34em] mt-4 text-inkmuted">Barbershop</span>
+        <h1 class="leading-none">
+          <img src="photos/wordmark-zajawa.png" alt="Zajawa" width="1763" height="268"
+               class="w-[clamp(16rem,70vw,34rem)] h-auto select-none">
+          <span class="font-display uppercase display-wide block text-[clamp(0.85rem,3.4vw,1.5rem)] tracking-[0.34em] mt-3">Barbershop</span>
         </h1>
 
         <p class="mt-7 text-lg sm:text-xl text-inkmuted leading-relaxed max-w-md">
@@ -233,7 +242,9 @@
   </section>
 
   <!-- ============ GALERIA ============ -->
-  <section id="galeria" class="py-20 sm:py-28">
+  <section id="galeria" class="relative isolate overflow-hidden py-20 sm:py-28">
+    <div class="absolute inset-0 -z-10 z-tape" aria-hidden="true"></div>
+
     <div class="mx-auto max-w-6xl px-5 sm:px-8">
 
       <h2 class="font-display uppercase display-wide text-[clamp(2rem,6vw,3.25rem)] leading-none">Robota</h2>
@@ -492,7 +503,7 @@
       <div class="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-16">
 
         <div>
-          <img src="photos/front-salonu.jpg" alt="Wejście do Zajawa Barbershop przy Pabianickiej 28 w Bełchatowie" width="384" height="512" loading="lazy" decoding="async"
+          <img src="photos/szyba.jpg" alt="Wejście do Zajawa Barbershop przy Pabianickiej 28 w Bełchatowie" width="384" height="512" loading="lazy" decoding="async"
                class="w-full aspect-[4/3] object-cover object-[50%_45%]">
 
           <div class="mt-8">
@@ -610,7 +621,7 @@
   "@context": "https://schema.org",
   "@type": "HairSalon",
   "name": "Zajawa Barbershop",
-  "image": "photos/front-salonu.jpg",
+  "image": "photos/szyba.jpg",
   "telephone": "+48572805002",
   "address": {
     "@type": "PostalAddress",
