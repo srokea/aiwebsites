@@ -101,6 +101,39 @@
     outline-offset: 3px;
     border-radius: 2px;
   }
+
+  .tile { background: none; border: 0; padding: 0; margin: 0; cursor: pointer; }
+
+  /* ── LIGHTBOX galerii ── */
+  .lb[hidden] { display: none; }
+  .lb {
+    position: fixed; inset: 0; z-index: 100;
+    display: grid; place-items: center; padding: 20px;
+    background: rgba(5,5,5,.92); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    animation: lb-in .2s ease-out;
+  }
+  @keyframes lb-in { from { opacity: 0; } to { opacity: 1; } }
+  .lb-stage { position: relative; display: flex; flex-direction: column; align-items: center; gap: 14px; max-width: 1100px; width: 100%; }
+  /* staly obszar zdjecia — dzieki temu podpis i strzalki nie skacza przy zmianie zdjecia */
+  .lb-fig { margin: 0; height: 74vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+  .lb-img {
+    max-width: min(92vw, 1000px); max-height: calc(74vh - 46px); width: auto; height: auto; object-fit: contain;
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 2px;
+    animation: lb-pop .22s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes lb-pop { from { transform: scale(.96); opacity: .4; } to { transform: scale(1); opacity: 1; } }
+  .lb-cap { color: #A3A3A3; font-size: .95rem; text-align: center; max-width: 60ch; }
+  .lb-controls { display: flex; justify-content: center; gap: 16px; margin-top: 2px; }
+  .lb-btn {
+    border: 1px solid rgba(255,255,255,0.2); background: rgba(17,17,17,.8); color: #FFFFFF;
+    cursor: pointer; border-radius: 999px; display: grid; place-items: center;
+    transition: background .18s, border-color .18s; line-height: 1;
+  }
+  .lb-btn:hover, .lb-btn:focus-visible { background: #9C8265; border-color: #9C8265; color: #0A0A0A; outline: none; }
+  .lb-close { position: absolute; top: -6px; right: 0; width: 44px; height: 44px; font-size: 1.2rem; z-index: 2; }
+  .lb-nav { width: 44px; height: 44px; font-size: 1.5rem; padding-bottom: 3px; }
+  @media (min-width: 900px) { .lb-close { top: -52px; } }
+  @media (prefers-reduced-motion: reduce) { .lb, .lb-img { animation: none; } }
 </style>
 </head>
 <body class="bg-bg text-ink font-body antialiased">
@@ -149,9 +182,9 @@
     <div class="relative mx-auto max-w-6xl px-5 sm:px-8 pt-32 pb-16 sm:pt-40 sm:pb-20 lg:py-0
                 min-h-[92svh] lg:min-h-[calc(100svh)]
                 flex flex-col justify-end
-                lg:grid lg:grid-cols-[1.15fr_0.85fr] lg:gap-16 lg:items-center">
+                lg:grid lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
 
-      <div class="max-w-xl">
+      <div class="max-w-xl lg:h-full lg:flex lg:flex-col lg:justify-center">
         <h1 class="font-display uppercase display-wide leading-[0.92] text-[clamp(3.4rem,15vw,7rem)]">
           Zajawa
           <span class="block text-[clamp(1.05rem,4.2vw,1.9rem)] tracking-[0.34em] mt-4 text-inkmuted">Barbershop</span>
@@ -175,11 +208,11 @@
         <p class="mt-8 text-sm text-inkmuted tracking-wide">Pabianicka 28, Bełchatów</p>
       </div>
 
-      <!-- Desktop: zdjecie w kolumnie, w kadrze dopasowanym do rozdzielczosci pliku -->
-      <div class="hidden lg:flex justify-end">
-        <div class="relative w-full max-w-[370px]">
+      <!-- Desktop: zdjecie rozciagniete na pelna wysokosc sekcji hero -->
+      <div class="hidden lg:block lg:h-full">
+        <div class="relative h-full w-full">
           <img src="photos/bw-strzyzenie.jpg" alt="Barber z Zajawy przy pracy nad fryzurą klienta" width="270" height="405"
-               class="w-full aspect-[2/3] object-cover object-[46%_30%] grayscale contrast-[1.12]">
+               class="h-full w-full object-cover object-[38%_22%] grayscale contrast-[1.12]">
           <div class="absolute inset-0 grain pointer-events-none"></div>
         </div>
       </div>
@@ -209,36 +242,52 @@
 
       <ul class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
         <li class="group overflow-hidden bg-surface">
-          <img src="photos/fade-01.jpg" alt="Textured crop z mid fadem, ujęcie z profilu" width="290" height="512" loading="lazy" decoding="async"
-               class="w-full aspect-[3/4] object-cover object-[50%_35%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          <button type="button" class="tile block w-full h-full">
+            <img src="photos/fade-01.jpg" alt="Textured crop z mid fadem, ujęcie z profilu" width="290" height="512" loading="lazy" decoding="async"
+                 class="w-full aspect-[3/4] object-cover object-[50%_35%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          </button>
         </li>
         <li class="group overflow-hidden bg-surface">
-          <img src="photos/fade-02.jpg" alt="Krótkie strzyżenie z low taper fadem" width="290" height="512" loading="lazy" decoding="async"
-               class="w-full aspect-[3/4] object-cover object-[50%_35%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          <button type="button" class="tile block w-full h-full">
+            <img src="photos/fade-02.jpg" alt="Krótkie strzyżenie z low taper fadem" width="290" height="512" loading="lazy" decoding="async"
+                 class="w-full aspect-[3/4] object-cover object-[50%_35%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          </button>
         </li>
         <li class="group overflow-hidden bg-surface">
-          <img src="photos/fade-03.jpg" alt="Kręcony textured crop z burst fadem" width="290" height="512" loading="lazy" decoding="async"
-               class="w-full aspect-[3/4] object-cover object-[50%_35%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          <button type="button" class="tile block w-full h-full">
+            <img src="photos/fade-03.jpg" alt="Kręcony textured crop z burst fadem" width="290" height="512" loading="lazy" decoding="async"
+                 class="w-full aspect-[3/4] object-cover object-[50%_35%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          </button>
         </li>
         <li class="group overflow-hidden bg-surface">
-          <img src="photos/fade-broda.jpg" alt="Skin fade połączony z pełną, wymodelowaną brodą" width="384" height="512" loading="lazy" decoding="async"
-               class="w-full aspect-[3/4] object-cover object-[50%_35%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          <button type="button" class="tile block w-full h-full">
+            <img src="photos/fade-broda.jpg" alt="Skin fade połączony z pełną, wymodelowaną brodą" width="384" height="512" loading="lazy" decoding="async"
+                 class="w-full aspect-[3/4] object-cover object-[50%_35%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          </button>
         </li>
         <li class="group overflow-hidden bg-surface">
-          <img src="photos/fade-04.jpg" alt="Dłuższe strzyżenie z miękkim przejściem na bokach" width="286" height="512" loading="lazy" decoding="async"
-               class="w-full aspect-[3/4] object-cover object-[50%_35%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          <button type="button" class="tile block w-full h-full">
+            <img src="photos/fade-04.jpg" alt="Dłuższe strzyżenie z miękkim przejściem na bokach" width="286" height="512" loading="lazy" decoding="async"
+                 class="w-full aspect-[3/4] object-cover object-[50%_35%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          </button>
         </li>
         <li class="group overflow-hidden bg-surface">
-          <img src="photos/praca-junior.jpg" alt="Barber strzyże młodszego klienta maszynką" width="293" height="389" loading="lazy" decoding="async"
-               class="w-full aspect-[3/4] object-cover object-[50%_30%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          <button type="button" class="tile block w-full h-full">
+            <img src="photos/praca-junior.jpg" alt="Barber strzyże młodszego klienta maszynką" width="293" height="389" loading="lazy" decoding="async"
+                 class="w-full aspect-[3/4] object-cover object-[50%_30%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          </button>
         </li>
         <li class="group overflow-hidden bg-surface">
-          <img src="photos/brwi.jpg" alt="Regulacja brwi brzytwą w fotelu barberskim" width="384" height="512" loading="lazy" decoding="async"
-               class="w-full aspect-[3/4] object-cover object-[45%_40%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          <button type="button" class="tile block w-full h-full">
+            <img src="photos/brwi.jpg" alt="Regulacja brwi brzytwą w fotelu barberskim" width="384" height="512" loading="lazy" decoding="async"
+                 class="w-full aspect-[3/4] object-cover object-[45%_40%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          </button>
         </li>
         <li class="group overflow-hidden bg-surface">
-          <img src="photos/damskie.jpg" alt="Strzyżenie damskie na stanowisku w salonie" width="384" height="512" loading="lazy" decoding="async"
-               class="w-full aspect-[3/4] object-cover object-[50%_40%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          <button type="button" class="tile block w-full h-full">
+            <img src="photos/damskie.jpg" alt="Strzyżenie damskie na stanowisku w salonie" width="384" height="512" loading="lazy" decoding="async"
+                 class="w-full aspect-[3/4] object-cover object-[50%_40%] transition-transform duration-500 group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          </button>
         </li>
       </ul>
 
@@ -416,8 +465,25 @@
     </div>
   </section>
 
+  <!-- ============ CTA KONCOWE ============ -->
+  <section class="py-20 sm:py-28">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8 text-center">
+      <p class="font-display uppercase display-wide text-[clamp(1.6rem,5vw,2.75rem)] leading-tight">Siadaj w fotelu</p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="https://booksy.com/pl-pl/200893_zajawa-barbershop_barber-shop_25231_belchatow" target="_blank" rel="noopener"
+           class="inline-flex items-center justify-center rounded-full bg-ink text-bg font-bold uppercase tracking-[0.1em] text-sm px-8 h-14 hover:bg-accent hover:text-ink transition-colors motion-reduce:transition-none">
+          Umów wizytę
+        </a>
+        <a href="tel:+48572805002"
+           class="inline-flex items-center justify-center rounded-full border border-border text-inkmuted font-semibold uppercase tracking-[0.1em] text-sm px-8 h-14 hover:border-accent hover:text-ink transition-colors motion-reduce:transition-none">
+          572 805 002
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ KONTAKT / LOKALIZACJA ============ -->
-  <section id="kontakt" class="py-20 sm:py-28">
+  <section id="kontakt" class="bg-surface border-y border-border py-20 sm:py-28">
     <div class="mx-auto max-w-6xl px-5 sm:px-8">
 
       <h2 class="font-display uppercase display-wide text-[clamp(2rem,6vw,3.25rem)] leading-none">Znajdziesz nas</h2>
@@ -483,27 +549,25 @@
     </div>
   </section>
 
-  <!-- ============ CTA KONCOWE ============ -->
-  <section class="bg-surface border-t border-border">
-    <div class="mx-auto max-w-6xl px-5 sm:px-8 py-16 sm:py-20 text-center">
-      <p class="font-display uppercase display-wide text-[clamp(1.6rem,5vw,2.75rem)] leading-tight">Siadaj w fotelu</p>
-      <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-        <a href="https://booksy.com/pl-pl/200893_zajawa-barbershop_barber-shop_25231_belchatow" target="_blank" rel="noopener"
-           class="inline-flex items-center justify-center rounded-full bg-ink text-bg font-bold uppercase tracking-[0.1em] text-sm px-8 h-14 hover:bg-accent hover:text-ink transition-colors motion-reduce:transition-none">
-          Umów wizytę
-        </a>
-        <a href="tel:+48572805002"
-           class="inline-flex items-center justify-center rounded-full border border-border text-inkmuted font-semibold uppercase tracking-[0.1em] text-sm px-8 h-14 hover:border-accent hover:text-ink transition-colors motion-reduce:transition-none">
-          572 805 002
-        </a>
-      </div>
-    </div>
-  </section>
-
 </main>
 
+<!-- LIGHTBOX galerii -->
+<div class="lb" id="lb" hidden>
+  <div class="lb-stage" role="dialog" aria-modal="true" aria-label="Galeria zdjęć">
+    <button type="button" class="lb-btn lb-close" data-close aria-label="Zamknij galerię">✕</button>
+    <figure class="lb-fig">
+      <img class="lb-img" src="" alt="">
+      <figcaption class="lb-cap"></figcaption>
+    </figure>
+    <div class="lb-controls">
+      <button type="button" class="lb-btn lb-nav lb-prev" data-prev aria-label="Poprzednie zdjęcie">‹</button>
+      <button type="button" class="lb-btn lb-nav lb-next" data-next aria-label="Następne zdjęcie">›</button>
+    </div>
+  </div>
+</div>
+
 <!-- ============ STOPKA ============ -->
-<footer class="border-t border-border">
+<footer>
   <div class="mx-auto max-w-6xl px-5 sm:px-8 py-12">
 
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8">
@@ -574,6 +638,60 @@
     "https://booksy.com/pl-pl/200893_zajawa-barbershop_barber-shop_25231_belchatow"
   ]
 }
+</script>
+
+<script>
+  // Lightbox galerii: klik otwiera, strzalki < > i klawiatura przewijaja, Esc zamyka.
+  (function () {
+    var tiles = Array.prototype.slice.call(document.querySelectorAll('#galeria .tile'));
+    if (!tiles.length) return;
+    var items = tiles.map(function (t) {
+      var img = t.querySelector('img');
+      return { src: img.getAttribute('src'), alt: img.getAttribute('alt') || '' };
+    });
+    var lb = document.getElementById('lb');
+    var lbImg = lb.querySelector('.lb-img');
+    var lbCap = lb.querySelector('.lb-cap');
+    var focusables = lb.querySelectorAll('button');
+    var idx = 0, lastFocus = null;
+
+    function show(i) {
+      idx = (i + items.length) % items.length;
+      lbImg.src = items[idx].src;
+      lbImg.alt = items[idx].alt;
+      lbCap.textContent = items[idx].alt;
+    }
+    function open(i) {
+      lastFocus = document.activeElement;
+      show(i);
+      lb.hidden = false;
+      document.body.style.overflow = 'hidden';
+      lb.querySelector('.lb-next').focus();
+      document.addEventListener('keydown', onKey);
+    }
+    function close() {
+      lb.hidden = true;
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', onKey);
+      if (lastFocus) lastFocus.focus();
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowRight') show(idx + 1);
+      else if (e.key === 'ArrowLeft') show(idx - 1);
+      else if (e.key === 'Tab') { // prosty focus trap
+        var first = focusables[0], last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+    tiles.forEach(function (t, i) { t.addEventListener('click', function () { open(i); }); });
+    lb.addEventListener('click', function (e) {
+      if (e.target.closest('[data-close]') || e.target === lb) close();
+      else if (e.target.closest('[data-next]')) show(idx + 1);
+      else if (e.target.closest('[data-prev]')) show(idx - 1);
+    });
+  })();
 </script>
 
 </body>
