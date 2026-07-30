@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Grandzie — historia i ludzie | Granda Barber Shop</title>
+<meta name="description" content="Skąd wzięła się Granda Barber Shop. Rodzinny rodowód, rzemiosło brzytwy i droga od jednego salonu w Łodzi do trzech miast.">
+<link rel="icon" href="photos/logo.jpg">
+<link rel="apple-touch-icon" href="photos/logo.jpg">
+<meta property="og:title" content="O Grandzie — Granda Barber Shop">
+<meta property="og:description" content="Rodzinny rodowód, rzemiosło brzytwy i droga od jednego salonu w Łodzi do trzech miast.">
+<meta property="og:image" content="photos/wnetrze.jpg">
+<meta property="og:type" content="website">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#14100E',
+          surface: '#201814',
+          wine: '#4B1D26',
+          ink: '#F0E5D4',
+          inkmuted: '#C0AE97',
+          border: 'rgba(240,229,212,0.14)',
+          accent: '#C87B4A',
+        },
+        fontFamily: {
+          display: ['Cinzel', 'serif'],
+          body: ['"Work Sans"', 'sans-serif'],
+        },
+      },
+    },
+  }
+</script>
+<style>
+  @font-face {
+    font-family: 'Cinzel';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('fonts/cinzel-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Cinzel';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('fonts/cinzel-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 400 600;
+    font-display: swap;
+    src: url('fonts/worksans-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 400 600;
+    font-display: swap;
+    src: url('fonts/worksans-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  }
+
+  section[id] { scroll-margin-top: 5.5rem; }
+
+  .navbar-glass {
+    background: rgba(20, 16, 14, 0.78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(240, 229, 212, 0.10);
+  }
+
+  /* Surowa cegla ze sciany salonu — delikatny raster fug pod sekcjami */
+  .brick::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.45;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='62' height='52'><g stroke='%23F0E5D4' stroke-width='1' fill='none' opacity='0.09'><path d='M0 0.5H62M0 26.5H62M0 51.5H62'/><path d='M31.5 1V26M0.5 27V52M61.5 27V52'/></g></svg>");
+  }
+
+  /* Czarno-biala mozaika z podlogi salonu — pasek dekoracyjny */
+  .mozaika {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='34' height='34'><g fill='none' stroke='%23F0E5D4' stroke-width='1.1'><rect x='7' y='7' width='20' height='20'/><rect x='7' y='7' width='20' height='20' transform='rotate(45 17 17)'/></g></svg>");
+    background-size: 34px 34px;
+    opacity: 0.16;
+  }
+
+  /* Winieta grawerunku — okragla oprawa zdjecia/logo */
+  .winieta {
+    box-shadow: 0 0 0 1px rgba(240, 229, 212, 0.22), 0 0 0 9px #14100E, 0 0 0 10px rgba(240, 229, 212, 0.14);
+  }
+  .winieta-surface {
+    box-shadow: 0 0 0 1px rgba(240, 229, 212, 0.22), 0 0 0 9px #201814, 0 0 0 10px rgba(240, 229, 212, 0.14);
+  }
+
+  .ornament { color: rgba(240, 229, 212, 0.42); }
+  .ornament line, .ornament path { stroke: currentColor; stroke-width: 1; fill: none; }
+  .ornament .rdzen { fill: #C87B4A; stroke: none; }
+
+  .hero-img { object-position: 50% 42%; }
+  @media (min-width: 768px) { .hero-img { object-position: 50% 55%; } }
+
+  :focus-visible {
+    outline: 2px solid #C87B4A;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+</style>
+</head>
+
+<body class="bg-bg text-ink font-body antialiased">
+
+<!-- ══════════ HEADER ══════════ -->
+<header class="navbar-glass fixed top-0 inset-x-0 z-50">
+  <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between gap-4">
+    <a href="index.html" class="flex items-center gap-2.5 shrink-0">
+      <img src="photos/logo.jpg" alt="" class="w-9 h-9 rounded-full object-cover ring-1 ring-border">
+      <span class="text-[0.95rem] font-semibold tracking-[0.18em] uppercase">Granda</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-7 text-sm text-inkmuted">
+      <a href="index.html#salony" class="hover:text-ink transition-colors motion-reduce:transition-none">Salony</a>
+      <a href="index.html#opinie" class="hover:text-ink transition-colors motion-reduce:transition-none">Opinie</a>
+      <a href="index.html#kontakt" class="hover:text-ink transition-colors motion-reduce:transition-none">Kontakt</a>
+    </nav>
+    <div class="flex items-center gap-4 sm:gap-5">
+      <a href="https://www.instagram.com/grandabarber/" target="_blank" rel="noopener" aria-label="Instagram Granda Barber Shop" class="text-inkmuted hover:text-ink transition-colors motion-reduce:transition-none p-1.5 -m-1.5">
+        <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.facebook.com/grandabarber/" target="_blank" rel="noopener" aria-label="Facebook Granda Barber Shop" class="text-inkmuted hover:text-ink transition-colors motion-reduce:transition-none p-1.5 -m-1.5">
+        <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.24-1.5 1.5-1.5H16.7V3.9c-.3-.04-1.3-.13-2.5-.13-2.5 0-4.2 1.5-4.2 4.3V10H7.3v3h2.7v8h3.5z"/></svg>
+      </a>
+      <a href="index.html#salony" class="bg-accent text-bg font-semibold text-sm rounded-full px-5 py-2.5 min-h-[44px] flex items-center hover:brightness-110 transition motion-reduce:transition-none">
+        Umów wizytę
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="relative brick bg-surface overflow-hidden">
+  <div class="relative max-w-5xl mx-auto px-5 pt-32 pb-16 md:pt-40 md:pb-20">
+    <a href="index.html" class="text-sm text-inkmuted hover:text-ink transition-colors motion-reduce:transition-none">← Strona główna</a>
+
+    <h1 class="mt-6 font-display font-semibold leading-[1.08] tracking-[0.02em]" style="font-size: clamp(2.1rem, 3.2vw + 1.4rem, 3.75rem);">
+      O Grandzie
+    </h1>
+
+    <svg class="ornament mt-6 w-40 h-3" viewBox="0 0 160 12" aria-hidden="true">
+      <line x1="0" y1="6" x2="66" y2="6"/>
+      <line x1="94" y1="6" x2="160" y2="6"/>
+      <path d="M80 0 L86.5 6 L80 12 L73.5 6 Z"/>
+      <path class="rdzen" d="M80 3.4 L82.6 6 L80 8.6 L77.4 6 Z"/>
+    </svg>
+
+    <p class="mt-7 text-lg text-inkmuted max-w-[58ch] leading-relaxed">
+      Rodzinny rodowód, rzemiosło sprzed wieku i droga od jednego salonu w Łodzi do trzech miast.
+    </p>
+  </div>
+</section>
+
+<div class="mozaika h-9" aria-hidden="true"></div>
+
+<!-- ══════════ MANIFEST ══════════ -->
+<section class="max-w-5xl mx-auto px-5 py-16 md:py-24">
+  <div class="grid md:grid-cols-[1fr_auto] gap-12 md:gap-16 items-start">
+    <div class="max-w-[68ch] space-y-6 text-lg leading-relaxed text-inkmuted">
+      <p>
+        Stare rzemiosło fryzjerskie nigdy nie było tylko o strzyżeniu. Chodziło o odpowiednio wykonaną usługę i niezwykłą atmosferę. Zakłady ulokowane w starych kamienicach, przepełnione duchem mistrzów ostrza, przyciągały mężczyzn ceniących nienaganną prezencję. Tego ducha chcieliśmy przywrócić.
+      </p>
+      <p>
+        Współczesny, wciąż pędzący świat nie zostawia wiele miejsca na indywidualizm. W Grandzie znajdziesz czas, bo więzy krwi są fundamentem tej firmy i przekładają się na relacje, które tu budujemy. Nie ma znaczenia, czy przychodzisz pierwszy raz, czy jesteś stałym gościem od lat.
+      </p>
+      <p>
+        Nasza załoga stara się skracać dystans między klientem a barberem. Rosnące grono stałych gości i wciąż nowe twarze to najlepszy dowód, że łączymy profesjonalną jakość usługi z przyjazną, ludzką aurą. Nasze fotele i pogoda ducha czekają na Ciebie w każdym z trzech miast.
+      </p>
+    </div>
+
+    <img src="photos/logo.jpg" alt="" class="hidden md:block w-56 h-56 rounded-full object-cover winieta shrink-0">
+  </div>
+</section>
+
+<!-- ══════════ ZDJĘCIE WNĘTRZA ══════════ -->
+<section class="relative">
+  <img src="photos/wnetrze.jpg" alt="Wnętrze Granda Barber Shop: ceglane ściany, drewniany strop, mosiężne fotele barberskie i mozaikowa podłoga" class="w-full h-[46vh] md:h-[56vh] object-cover hero-img">
+</section>
+
+<!-- ══════════ TRZY SALONY, JEDNA DROGA ══════════ -->
+<section class="relative brick bg-surface overflow-hidden">
+  <div class="relative max-w-5xl mx-auto px-5 py-16 md:py-24">
+    <h2 class="font-display font-semibold leading-tight tracking-[0.02em]" style="font-size: clamp(1.75rem, 2.5vw + 1.1rem, 2.75rem);">
+      Trzy salony, jedna droga
+    </h2>
+    <p class="mt-4 text-lg text-inkmuted max-w-[58ch] leading-relaxed">
+      Zaczęliśmy od jednego adresu. Dziś Granda działa w trzech miastach — każdy salon ma własną ekipę, ale to samo podejście do rzemiosła.
+    </p>
+
+    <ol class="mt-12 space-y-10 border-l border-border pl-8 sm:pl-10">
+      <li class="relative">
+        <span class="absolute -left-[calc(2rem+5px)] sm:-left-[calc(2.5rem+5px)] top-1.5 w-2.5 h-2.5 rounded-full bg-accent"></span>
+        <h3 class="font-display text-xl tracking-[0.02em]">Łódź — Barber Shop &amp; Academy</h3>
+        <p class="mt-2 text-inkmuted leading-relaxed max-w-[56ch]">
+          Pierwszy i największy salon Grandy, przy Nawrot 13 w Śródmieściu. To tu, obok strzyżeń, szkolimy kolejnych barberów — stąd „Academy" w nazwie. Największa i najstarsza ekipa, najdłuższa historia opinii.
+        </p>
+        <a href="lodz.html" class="mt-3 inline-block text-sm underline underline-offset-4 decoration-border hover:decoration-accent hover:text-accent transition-colors motion-reduce:transition-none">Zobacz salon w Łodzi →</a>
+      </li>
+      <li class="relative">
+        <span class="absolute -left-[calc(2rem+5px)] sm:-left-[calc(2.5rem+5px)] top-1.5 w-2.5 h-2.5 rounded-full bg-accent"></span>
+        <h3 class="font-display text-xl tracking-[0.02em]">Bełchatów</h3>
+        <p class="mt-2 text-inkmuted leading-relaxed max-w-[56ch]">
+          Drugi adres Grandy, przy Rotmistrza Pileckiego 17. Mniejsza ekipa, ten sam rytuał brzytwy i gorącego ręcznika, ocena 5,0 od stałych gości miasta.
+        </p>
+        <a href="belchatow.html" class="mt-3 inline-block text-sm underline underline-offset-4 decoration-border hover:decoration-accent hover:text-accent transition-colors motion-reduce:transition-none">Zobacz salon w Bełchatowie →</a>
+      </li>
+      <li class="relative">
+        <span class="absolute -left-[calc(2rem+5px)] sm:-left-[calc(2.5rem+5px)] top-1.5 w-2.5 h-2.5 rounded-full bg-accent"></span>
+        <h3 class="font-display text-xl tracking-[0.02em]">Piotrków Trybunalski</h3>
+        <p class="mt-2 text-inkmuted leading-relaxed max-w-[56ch]">
+          Najnowszy salon Grandy, w budynku dworca PKP. Wejście przez poczekalnię, ten sam klimat i podejście, które zbudowaliśmy w pierwszych dwóch miastach.
+        </p>
+        <a href="piotrkow.html" class="mt-3 inline-block text-sm underline underline-offset-4 decoration-border hover:decoration-accent hover:text-accent transition-colors motion-reduce:transition-none">Zobacz salon w Piotrkowie →</a>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ══════════ CTA KOŃCOWE ══════════ -->
+<section class="bg-wine">
+  <div class="max-w-5xl mx-auto px-5 py-16 md:py-20">
+    <h2 class="font-display font-semibold leading-tight tracking-[0.02em]" style="font-size: clamp(1.6rem, 2vw + 1rem, 2.25rem);">
+      Poznaj nas osobiście
+    </h2>
+    <p class="mt-4 text-lg text-ink/80 max-w-[50ch] leading-relaxed">
+      Najlepiej opowie o nas fotel, nie strona internetowa. Wybierz salon najbliżej Ciebie.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="index.html#salony" class="bg-accent text-bg font-semibold rounded-full px-7 py-3.5 min-h-[44px] flex items-center hover:brightness-110 transition motion-reduce:transition-none">
+        Wybierz salon
+      </a>
+      <a href="index.html#opinie" class="border border-ink/25 text-ink/80 rounded-full px-7 py-3.5 min-h-[44px] flex items-center hover:text-ink hover:border-ink transition motion-reduce:transition-none">
+        Poczytaj opinie
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="mozaika h-9" aria-hidden="true"></div>
+
+<!-- ══════════ STOPKA ══════════ -->
+<footer class="bg-bg border-t border-border">
+  <div class="max-w-6xl mx-auto px-5 py-10 flex flex-col sm:flex-row sm:items-center justify-between gap-5 text-sm text-inkmuted">
+    <div class="flex items-center gap-2.5">
+      <img src="photos/logo.jpg" alt="" class="w-8 h-8 rounded-full object-cover ring-1 ring-border">
+      <span>Granda Barber Shop</span>
+    </div>
+    <nav class="flex flex-wrap gap-x-6 gap-y-2">
+      <a href="lodz.html" class="hover:text-ink transition-colors motion-reduce:transition-none">Łódź</a>
+      <a href="belchatow.html" class="hover:text-ink transition-colors motion-reduce:transition-none">Bełchatów</a>
+      <a href="piotrkow.html" class="hover:text-ink transition-colors motion-reduce:transition-none">Piotrków Tryb.</a>
+      <a href="privacy.html" class="hover:text-ink transition-colors motion-reduce:transition-none">Polityka prywatności</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
