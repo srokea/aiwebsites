@@ -117,6 +117,19 @@
   }
   [data-gallery-img] { cursor: zoom-in; }
 
+  .ekipa-slider {
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .ekipa-slider::-webkit-scrollbar { display: none; }
+  .ekipa-slider > * { scroll-snap-align: start; }
+  button[data-ekipa-prev]:disabled,
+  button[data-ekipa-next]:disabled {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
   :focus-visible {
     outline: 2px solid #C87B4A;
     outline-offset: 3px;
@@ -282,36 +295,59 @@
   </h2>
   <p class="mt-4 text-inkmuted max-w-[52ch] leading-relaxed">Ludzie, którzy Cię ostrzygą.</p>
 
-  <div class="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-6 gap-y-10">
-      <div class="flex flex-col items-center text-center">
-        <img src="photos/zespol/lodz-damian.jpg" alt="Damian, Granda Barber Shop" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover ring-1 ring-border ring-offset-4 ring-offset-bg">
-        <span class="mt-4 font-display text-lg tracking-[0.02em]">Damian</span>
+  <div class="mt-10 -mx-5 px-5 flex gap-5 overflow-x-auto ekipa-slider" data-ekipa-track>
+    <div class="shrink-0 w-44 sm:w-52 md:w-60 flex flex-col">
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="photos/zespol/lodz-damian.jpg" alt="Damian, Granda Barber Shop" class="w-full h-full object-cover" loading="lazy">
       </div>
-      <div class="flex flex-col items-center text-center">
-        <img src="photos/zespol/lodz-zenia.jpg" alt="Żenia, Granda Barber Shop" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover ring-1 ring-border ring-offset-4 ring-offset-bg">
-        <span class="mt-4 font-display text-lg tracking-[0.02em]">Żenia</span>
+      <span class="mt-4 font-display text-lg tracking-[0.02em]">Damian</span>
+    </div>
+    <div class="shrink-0 w-44 sm:w-52 md:w-60 flex flex-col">
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="photos/zespol/lodz-zenia.jpg" alt="Żenia, Granda Barber Shop" class="w-full h-full object-cover" loading="lazy">
       </div>
-      <div class="flex flex-col items-center text-center">
-        <img src="photos/zespol/lodz-iwona.jpg" alt="Iwona, Granda Barber Shop" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover ring-1 ring-border ring-offset-4 ring-offset-bg">
-        <span class="mt-4 font-display text-lg tracking-[0.02em]">Iwona</span>
+      <span class="mt-4 font-display text-lg tracking-[0.02em]">Żenia</span>
+    </div>
+    <div class="shrink-0 w-44 sm:w-52 md:w-60 flex flex-col">
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="photos/zespol/lodz-iwona.jpg" alt="Iwona, Granda Barber Shop" class="w-full h-full object-cover" loading="lazy">
       </div>
-      <div class="flex flex-col items-center text-center">
-        <img src="https://placehold.co/300x300/201814/C87B4A?text=V" alt="Vlad, Granda Barber Shop" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover ring-1 ring-border ring-offset-4 ring-offset-bg">
-        <span class="mt-4 font-display text-lg tracking-[0.02em]">Vlad</span>
+      <span class="mt-4 font-display text-lg tracking-[0.02em]">Iwona</span>
+    </div>
+    <div class="shrink-0 w-44 sm:w-52 md:w-60 flex flex-col">
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="https://placehold.co/600x600/201814/C87B4A?text=V" alt="Vlad, Granda Barber Shop" class="w-full h-full object-cover" loading="lazy">
       </div>
-      <div class="flex flex-col items-center text-center">
-        <img src="photos/zespol/lodz-dima.jpg" alt="Dima, Granda Barber Shop" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover ring-1 ring-border ring-offset-4 ring-offset-bg">
-        <span class="mt-4 font-display text-lg tracking-[0.02em]">Dima</span>
+      <span class="mt-4 font-display text-lg tracking-[0.02em]">Vlad</span>
+    </div>
+    <div class="shrink-0 w-44 sm:w-52 md:w-60 flex flex-col">
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="photos/zespol/lodz-dima.jpg" alt="Dima, Granda Barber Shop" class="w-full h-full object-cover" loading="lazy">
       </div>
-      <div class="flex flex-col items-center text-center">
-        <img src="https://placehold.co/300x300/201814/C87B4A?text=W" alt="Wiktor, Granda Barber Shop" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover ring-1 ring-border ring-offset-4 ring-offset-bg">
-        <span class="mt-4 font-display text-lg tracking-[0.02em]">Wiktor</span>
-        <span class="mt-1 text-xs text-inkmuted uppercase tracking-[0.12em]">Stażysta</span>
+      <span class="mt-4 font-display text-lg tracking-[0.02em]">Dima</span>
+    </div>
+    <div class="shrink-0 w-44 sm:w-52 md:w-60 flex flex-col">
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="https://placehold.co/600x600/201814/C87B4A?text=W" alt="Wiktor, Granda Barber Shop" class="w-full h-full object-cover" loading="lazy">
       </div>
-      <div class="flex flex-col items-center text-center">
-        <img src="photos/zespol/lodz-ola.jpg" alt="Ola, Granda Barber Shop" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover ring-1 ring-border ring-offset-4 ring-offset-bg">
-        <span class="mt-4 font-display text-lg tracking-[0.02em]">Ola</span>
+      <span class="mt-4 font-display text-lg tracking-[0.02em]">Wiktor</span>
+      <span class="mt-1 text-xs text-inkmuted uppercase tracking-[0.12em]">Stażysta</span>
+    </div>
+    <div class="shrink-0 w-44 sm:w-52 md:w-60 flex flex-col">
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="photos/zespol/lodz-ola.jpg" alt="Ola, Granda Barber Shop" class="w-full h-full object-cover" loading="lazy">
       </div>
+      <span class="mt-4 font-display text-lg tracking-[0.02em]">Ola</span>
+    </div>
+  </div>
+
+  <div class="mt-8 flex items-center justify-center gap-4">
+    <button type="button" class="w-11 h-11 flex items-center justify-center rounded-full border border-border text-inkmuted hover:text-ink hover:border-ink transition-colors motion-reduce:transition-none" data-ekipa-prev aria-label="Poprzedni członek ekipy">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <button type="button" class="w-11 h-11 flex items-center justify-center rounded-full border border-border text-inkmuted hover:text-ink hover:border-ink transition-colors motion-reduce:transition-none" data-ekipa-next aria-label="Następny członek ekipy">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
   </div>
 </section>
 
@@ -521,6 +557,32 @@
       if (e.key === 'ArrowRight') next();
       if (e.key === 'ArrowLeft') prev();
     });
+  })();
+</script>
+
+<script>
+  // Slider ekipy: przyciski strzalek przewijaja liste pracownikow w lewo/prawo.
+  (function () {
+    var track = document.querySelector('[data-ekipa-track]');
+    var prevBtn = document.querySelector('[data-ekipa-prev]');
+    var nextBtn = document.querySelector('[data-ekipa-next]');
+    if (!track || !prevBtn || !nextBtn) return;
+
+    function step() {
+      var card = track.children[0];
+      return card ? card.getBoundingClientRect().width + 20 : track.clientWidth * 0.8;
+    }
+    function updateButtons() {
+      var max = track.scrollWidth - track.clientWidth - 1;
+      prevBtn.disabled = track.scrollLeft <= 0;
+      nextBtn.disabled = track.scrollLeft >= max;
+    }
+
+    prevBtn.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    nextBtn.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); });
+    track.addEventListener('scroll', updateButtons);
+    window.addEventListener('resize', updateButtons);
+    updateButtons();
   })();
 </script>
 
