@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Granda Barber Shop Piotrków Trybunalski — dworzec PKP | godziny i kontakt</title>
-<meta name="description" content="Granda Barber Shop w budynku dworca PKP w Piotrkowie Trybunalskim. Godziny otwarcia, dojazd i rezerwacja telefoniczna.">
+<title>Granda Barber Shop Piotrków Trybunalski — dworzec PKP | cennik i rezerwacja</title>
+<meta name="description" content="Granda Barber Shop w budynku dworca PKP w Piotrkowie Trybunalskim. Strzyżenie, broda, golenie brzytwą, combo. Cennik, godziny i rezerwacja przez Booksy.">
 <link rel="icon" href="photos/logo.jpg">
 <link rel="apple-touch-icon" href="photos/logo.jpg">
 <meta property="og:title" content="Granda Barber Shop — Piotrków Trybunalski">
-<meta property="og:description" content="Granda Barber Shop w budynku dworca PKP w Piotrkowie Trybunalskim. Godziny otwarcia, dojazd i rezerwacja telefoniczna.">
+<meta property="og:description" content="Granda Barber Shop w budynku dworca PKP w Piotrkowie Trybunalskim. Strzyżenie, broda, golenie brzytwą, combo. Cennik, godziny i rezerwacja przez Booksy.">
 <meta property="og:image" content="photos/wnetrze.jpg">
 <meta property="og:type" content="website">
 <script src="https://cdn.tailwindcss.com"></script>
@@ -105,6 +105,31 @@
 
   .map-frame iframe { filter: invert(91%) hue-rotate(180deg) sepia(22%) saturate(80%) contrast(88%) brightness(94%); }
 
+  .lightbox {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 220ms ease, visibility 0s linear 220ms;
+  }
+  .lightbox.is-open {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 220ms ease, visibility 0s linear 0s;
+  }
+  [data-gallery-img] { cursor: zoom-in; }
+
+  .ekipa-slider {
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .ekipa-slider::-webkit-scrollbar { display: none; }
+  .ekipa-slider > * { scroll-snap-align: start; }
+  button[data-ekipa-prev]:disabled,
+  button[data-ekipa-next]:disabled {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
   :focus-visible {
     outline: 2px solid #C87B4A;
     outline-offset: 3px;
@@ -124,8 +149,10 @@
     </a>
     <nav class="hidden md:flex items-center gap-7 text-sm text-inkmuted">
       <a href="index.html#salony" class="hover:text-ink transition-colors motion-reduce:transition-none">Salony</a>
-      <a href="#rezerwacja" class="hover:text-ink transition-colors motion-reduce:transition-none">Rezerwacja</a>
+      <a href="#cennik" class="hover:text-ink transition-colors motion-reduce:transition-none">Cennik</a>
       <a href="#opinie" class="hover:text-ink transition-colors motion-reduce:transition-none">Opinie</a>
+      <a href="#ekipa" class="hover:text-ink transition-colors motion-reduce:transition-none">Ekipa</a>
+      <a href="#galeria" class="hover:text-ink transition-colors motion-reduce:transition-none">Galeria</a>
       <a href="#dojazd" class="hover:text-ink transition-colors motion-reduce:transition-none">Dojazd</a>
     </nav>
     <div class="flex items-center gap-4 sm:gap-5">
@@ -165,39 +192,54 @@
     <dl class="mt-8 text-sm space-y-2">
       <div class="flex gap-3"><dt class="text-inkmuted w-20 shrink-0">Salon</dt><dd>GRANDA Barber Shop Piotrków Trybunalski</dd></div>
       <div class="flex gap-3"><dt class="text-inkmuted w-20 shrink-0">Adres</dt><dd>Polskiej Organizacji Wojskowej 5/2, 97-300 Piotrków Trybunalski</dd></div>
-      <div class="flex gap-3"><dt class="text-inkmuted w-20 shrink-0">Ocena</dt><dd><span class="text-accent font-semibold">5,0</span> <span class="text-inkmuted">· opinie Google</span></dd></div>
+      <div class="flex gap-3"><dt class="text-inkmuted w-20 shrink-0">Ocena</dt><dd><span class="text-accent font-semibold">5,0</span> <span class="text-inkmuted">· 61 opinii na Booksy</span></dd></div>
     </dl>
 
     <div class="mt-9 flex flex-wrap gap-3">
-      <a href="tel:+48793734224" class="bg-accent text-bg font-semibold rounded-full px-7 py-3.5 min-h-[44px] flex items-center justify-center hover:brightness-110 transition motion-reduce:transition-none">Zadzwoń: 793 734 224</a>
-      <a href="#rezerwacja" class="border border-border text-inkmuted rounded-full px-7 py-3.5 min-h-[44px] flex items-center justify-center hover:text-ink hover:border-ink transition motion-reduce:transition-none">Godziny i dojazd</a>
+      <a href="https://booksy.com/pl-pl/322690_granda-barber-shop-piotrkow-trybunalski_barber-shop_25202_piotrkow-trybunalski#ba_s=seo" target="_blank" rel="noopener" class="bg-accent text-bg font-semibold rounded-full px-7 py-3.5 min-h-[44px] flex items-center justify-center hover:brightness-110 transition motion-reduce:transition-none">Umów przez Booksy</a>
+      <a href="#cennik" class="border border-border text-inkmuted rounded-full px-7 py-3.5 min-h-[44px] flex items-center justify-center hover:text-ink hover:border-ink transition motion-reduce:transition-none">Zobacz cennik</a>
     </div>
   </div>
 </section>
 
 <div class="mozaika h-9" aria-hidden="true"></div>
 
-<!-- ══════════ REZERWACJA + GODZINY ══════════ -->
-<section id="rezerwacja" class="max-w-5xl mx-auto px-5 py-16 md:py-24">
+<!-- ══════════ CENNIK + GODZINY ══════════ -->
+<section id="cennik" class="max-w-5xl mx-auto px-5 py-16 md:py-24">
   <div class="grid gap-12 md:grid-cols-2">
     <div>
-      <h2 class="font-display font-semibold leading-tight tracking-[0.02em]" style="font-size: clamp(1.6rem, 2vw + 1rem, 2.25rem);">Rezerwacja</h2>
-      <p class="mt-7 text-lg text-inkmuted leading-relaxed max-w-[44ch]">
-        Ten salon nie prowadzi rezerwacji online. Termin i cenę usługi ustalisz w minutę przez telefon albo wiadomość na Facebooku.
-      </p>
-      <div class="mt-7 flex flex-col sm:flex-row gap-3">
-        <a href="tel:+48793734224" class="bg-accent text-bg font-semibold rounded-full px-6 py-3.5 min-h-[44px] flex items-center justify-center hover:brightness-110 transition motion-reduce:transition-none">
-          Zadzwoń: 793 734 224
-        </a>
-        <a href="https://www.facebook.com/grandabarber/" target="_blank" rel="noopener" class="border border-border text-inkmuted rounded-full px-6 py-3.5 min-h-[44px] flex items-center justify-center hover:text-ink hover:border-ink transition motion-reduce:transition-none">
-          Napisz na Facebooku
-        </a>
-      </div>
-
-      <h3 class="mt-12 font-display text-xl tracking-[0.04em]">Jak trafić</h3>
-      <p class="mt-4 text-inkmuted leading-relaxed max-w-[44ch]">
-        Salon działa w budynku dworca PKP. Wejście prowadzi przez poczekalnię, więc łatwo wpaść między pociągami. Parking dworcowy jest tuż obok.
-      </p>
+      <h2 class="font-display font-semibold leading-tight tracking-[0.02em]" style="font-size: clamp(1.6rem, 2vw + 1rem, 2.25rem);">Cennik</h2>
+      <dl class="mt-7 divide-y divide-border border-y border-border">
+        <div class="flex justify-between items-baseline gap-6 py-4">
+          <dt><span class="block">Strzyżenie</span><span class="block text-sm text-inkmuted mt-0.5">50 min</span></dt>
+          <dd class="font-semibold text-accent shrink-0 tabular-nums">90 zł</dd>
+        </div>
+        <div class="flex justify-between items-baseline gap-6 py-4">
+          <dt><span class="block">Broda</span><span class="block text-sm text-inkmuted mt-0.5">masaż twarzy, gorący ręcznik, kontur brzytwą, 50 min</span></dt>
+          <dd class="font-semibold text-accent shrink-0 tabular-nums">90 zł</dd>
+        </div>
+        <div class="flex justify-between items-baseline gap-6 py-4">
+          <dt><span class="block">Combo</span><span class="block text-sm text-inkmuted mt-0.5">strzyżenie i broda z pełnym rytuałem, 1 godz. 30 min</span></dt>
+          <dd class="font-semibold text-accent shrink-0 tabular-nums">130 zł</dd>
+        </div>
+        <div class="flex justify-between items-baseline gap-6 py-4">
+          <dt><span class="block">Combo mini</span><span class="block text-sm text-inkmuted mt-0.5">strzyżenie i broda bez ręczników i brzytwy, 1 godz.</span></dt>
+          <dd class="font-semibold text-accent shrink-0 tabular-nums">100 zł</dd>
+        </div>
+        <div class="flex justify-between items-baseline gap-6 py-4">
+          <dt><span class="block">Golenie brzytwą</span><span class="block text-sm text-inkmuted mt-0.5">głowa lub twarz, ciepłe ręczniki, 30 min</span></dt>
+          <dd class="font-semibold text-accent shrink-0 tabular-nums">50 zł</dd>
+        </div>
+        <div class="flex justify-between items-baseline gap-6 py-4">
+          <dt><span class="block">Odświeżanie</span><span class="block text-sm text-inkmuted mt-0.5">poprawka boków i konturów między wizytami, 30 min</span></dt>
+          <dd class="font-semibold text-accent shrink-0 tabular-nums">50 zł</dd>
+        </div>
+        <div class="flex justify-between items-baseline gap-6 py-4">
+          <dt><span class="block">Dziecko</span><span class="block text-sm text-inkmuted mt-0.5">30 min</span></dt>
+          <dd class="font-semibold text-accent shrink-0 tabular-nums">50 zł</dd>
+        </div>
+      </dl>
+      <p class="mt-4 text-sm text-inkmuted">Pełna lista usług i wolne terminy są w Booksy.</p>
     </div>
 
     <div>
@@ -211,6 +253,10 @@
         <div class="flex justify-between gap-4 py-3"><dt class="text-inkmuted">sobota</dt><dd>9:00–17:00</dd></div>
         <div class="flex justify-between gap-4 py-3"><dt class="text-inkmuted">niedziela</dt><dd>Zamknięte</dd></div>
       </dl>
+      <div class="mt-7 flex flex-col sm:flex-row gap-3">
+        <a href="https://booksy.com/pl-pl/322690_granda-barber-shop-piotrkow-trybunalski_barber-shop_25202_piotrkow-trybunalski#ba_s=seo" target="_blank" rel="noopener" class="bg-accent text-bg font-semibold rounded-full px-7 py-3.5 min-h-[44px] flex items-center justify-center hover:brightness-110 transition motion-reduce:transition-none">Umów przez Booksy</a>
+        <a href="tel:+48793734224" class="border border-border text-inkmuted rounded-full px-7 py-3.5 min-h-[44px] flex items-center justify-center hover:text-ink hover:border-ink transition motion-reduce:transition-none">793 734 224</a>
+      </div>
     </div>
   </div>
 </section>
@@ -248,6 +294,78 @@
   </div>
 </section>
 
+<!-- ══════════ EKIPA ══════════ -->
+<section id="ekipa" class="max-w-5xl mx-auto px-5 py-16 md:py-24">
+  <h2 class="font-display font-semibold leading-tight tracking-[0.02em]" style="font-size: clamp(1.6rem, 2vw + 1rem, 2.25rem);">
+    Ekipa
+  </h2>
+  <p class="mt-4 text-inkmuted max-w-[52ch] leading-relaxed">Ludzie, którzy Cię ostrzygą.</p>
+
+  <div class="mt-10 -mx-5 px-5 flex gap-5 overflow-x-auto ekipa-slider" data-ekipa-track>
+    <div class="shrink-0 w-44 sm:w-52 md:w-60 flex flex-col">
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="photos/zespol/piotrkow-michal.jpg" alt="Michał, Granda Barber Shop" class="w-full h-full object-cover" style="object-position: 50% 20%;" loading="lazy">
+      </div>
+      <span class="mt-4 font-display text-lg tracking-[0.02em]">Michał</span>
+    </div>
+    <div class="shrink-0 w-44 sm:w-52 md:w-60 flex flex-col">
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="photos/zespol/piotrkow-gabrysia.jpg" alt="Gabrysia, Granda Barber Shop" class="w-full h-full object-cover" loading="lazy">
+      </div>
+      <span class="mt-4 font-display text-lg tracking-[0.02em]">Gabrysia</span>
+    </div>
+    <div class="shrink-0 w-44 sm:w-52 md:w-60 flex flex-col">
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="photos/zespol/piotrkow-aleksander.jpg" alt="Aleksander, Granda Barber Shop" class="w-full h-full object-cover" style="object-position: 50% 20%;" loading="lazy">
+      </div>
+      <span class="mt-4 font-display text-lg tracking-[0.02em]">Aleksander</span>
+    </div>
+    <div class="shrink-0 w-44 sm:w-52 md:w-60 flex flex-col">
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="photos/zespol/piotrkow-lena.jpg" alt="Lena, Granda Barber Shop" class="w-full h-full object-cover" loading="lazy">
+      </div>
+      <span class="mt-4 font-display text-lg tracking-[0.02em]">Lena</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ GALERIA ══════════ -->
+<section id="galeria" class="relative brick bg-surface overflow-hidden">
+  <div class="relative max-w-5xl mx-auto px-5 py-16 md:py-24">
+    <h2 class="font-display font-semibold leading-tight tracking-[0.02em]" style="font-size: clamp(1.6rem, 2vw + 1rem, 2.25rem);">
+      Galeria
+    </h2>
+    <p class="mt-4 text-inkmuted max-w-[52ch] leading-relaxed">Nasze prace, prosto z portfolio.</p>
+
+    <div class="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3" data-gallery>
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="photos/galeria/piotrkow-portfolio-1.jpg" data-gallery-img alt="Fryzura z portfolio Granda Piotrków Trybunalski — zdjęcie 1" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 motion-reduce:transition-none" style="object-position: 50% 25%;" loading="lazy">
+      </div>
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="photos/galeria/piotrkow-portfolio-2.jpg" data-gallery-img alt="Fryzura z portfolio Granda Piotrków Trybunalski — zdjęcie 2" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 motion-reduce:transition-none" style="object-position: 50% 25%;" loading="lazy">
+      </div>
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="photos/galeria/piotrkow-portfolio-3.jpg" data-gallery-img alt="Fryzura z portfolio Granda Piotrków Trybunalski — zdjęcie 3" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 motion-reduce:transition-none" style="object-position: 50% 25%;" loading="lazy">
+      </div>
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="photos/galeria/piotrkow-portfolio-4.jpg" data-gallery-img alt="Fryzura z portfolio Granda Piotrków Trybunalski — zdjęcie 4" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 motion-reduce:transition-none" style="object-position: 50% 25%;" loading="lazy">
+      </div>
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="photos/galeria/piotrkow-portfolio-5.jpg" data-gallery-img alt="Fryzura z portfolio Granda Piotrków Trybunalski — zdjęcie 5" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 motion-reduce:transition-none" style="object-position: 50% 25%;" loading="lazy">
+      </div>
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="photos/galeria/piotrkow-portfolio-6.jpg" data-gallery-img alt="Fryzura z portfolio Granda Piotrków Trybunalski — zdjęcie 6" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 motion-reduce:transition-none" style="object-position: 50% 25%;" loading="lazy">
+      </div>
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="photos/galeria/piotrkow-portfolio-7.jpg" data-gallery-img alt="Fryzura z portfolio Granda Piotrków Trybunalski — zdjęcie 7" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 motion-reduce:transition-none" style="object-position: 50% 25%;" loading="lazy">
+      </div>
+      <div class="aspect-square overflow-hidden border border-border">
+        <img src="photos/galeria/piotrkow-portfolio-8.jpg" data-gallery-img alt="Fryzura z portfolio Granda Piotrków Trybunalski — zdjęcie 8" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 motion-reduce:transition-none" style="object-position: 50% 25%;" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ══════════ DOJAZD ══════════ -->
 <section id="dojazd" class="max-w-5xl mx-auto px-5 py-16 md:py-24">
   <h2 class="font-display font-semibold leading-tight tracking-[0.02em]" style="font-size: clamp(1.6rem, 2vw + 1rem, 2.25rem);">
@@ -258,6 +376,7 @@
     <div>
       <h3 class="text-inkmuted">Adres</h3>
       <p class="mt-2 leading-relaxed">Polskiej Organizacji Wojskowej 5/2, 97-300 Piotrków Trybunalski</p>
+      <p class="mt-2 text-inkmuted leading-relaxed">Wejście przez poczekalnię dworca PKP, parking dworcowy tuż obok.</p>
     </div>
     <div>
       <h3 class="text-inkmuted">Telefon</h3>
@@ -281,10 +400,10 @@
     <h2 class="font-display font-semibold leading-tight tracking-[0.02em]" style="font-size: clamp(1.6rem, 2vw + 1rem, 2.25rem);">
       Zapraszamy na fotel
     </h2>
-    <p class="mt-4 text-lg text-ink/80 max-w-[50ch] leading-relaxed">Termin i cenę ustalisz w minutę przez telefon. Odbieramy w godzinach pracy salonu.</p>
+    <p class="mt-4 text-lg text-ink/80 max-w-[50ch] leading-relaxed">Wolne terminy znajdziesz w Booksy. Jeśli wolisz porozmawiać, po prostu zadzwoń.</p>
     <div class="mt-8 flex flex-wrap gap-3">
-      <a href="tel:+48793734224" class="bg-accent text-bg font-semibold rounded-full px-7 py-3.5 min-h-[44px] flex items-center justify-center hover:brightness-110 transition motion-reduce:transition-none">Zadzwoń: 793 734 224</a>
-      <a href="https://www.facebook.com/grandabarber/" target="_blank" rel="noopener" class="border border-ink/25 text-ink/80 rounded-full px-7 py-3.5 min-h-[44px] flex items-center justify-center hover:text-ink hover:border-ink transition motion-reduce:transition-none">Napisz na Facebooku</a>
+      <a href="https://booksy.com/pl-pl/322690_granda-barber-shop-piotrkow-trybunalski_barber-shop_25202_piotrkow-trybunalski#ba_s=seo" target="_blank" rel="noopener" class="bg-accent text-bg font-semibold rounded-full px-7 py-3.5 min-h-[44px] flex items-center justify-center hover:brightness-110 transition motion-reduce:transition-none">Umów przez Booksy</a>
+      <a href="tel:+48793734224" class="border border-ink/25 text-ink/80 rounded-full px-7 py-3.5 min-h-[44px] flex items-center justify-center hover:text-ink hover:border-ink transition motion-reduce:transition-none">Zadzwoń: 793 734 224</a>
     </div>
   </div>
 </section>
@@ -337,6 +456,112 @@
     }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
 
     map.forEach(function (m) { observer.observe(m.section); });
+  })();
+</script>
+
+<!-- ══════════ LIGHTBOX GALERII ══════════ -->
+<div class="lightbox fixed inset-0 z-[60] flex items-center justify-center bg-bg/95 p-5" data-lightbox role="dialog" aria-modal="true" aria-label="Podglad zdjecia z galerii" aria-hidden="true">
+  <button type="button" class="absolute top-4 right-4 md:top-6 md:right-6 w-11 h-11 flex items-center justify-center rounded-full border border-ink/25 text-ink/80 hover:text-ink hover:border-ink transition-colors motion-reduce:transition-none" data-lightbox-close aria-label="Zamknij podglad">
+    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <div class="flex flex-col items-center gap-6 max-w-4xl w-full">
+    <div class="w-full h-[60vh] flex items-center justify-center">
+      <img data-lightbox-img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBTAA7" alt="" class="max-h-full max-w-full w-auto h-auto object-contain border border-border">
+    </div>
+    <div class="flex items-center gap-8">
+      <button type="button" class="w-11 h-11 flex items-center justify-center rounded-full border border-ink/25 text-ink/80 hover:text-ink hover:border-ink transition-colors motion-reduce:transition-none" data-lightbox-prev aria-label="Poprzednie zdjecie">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button type="button" class="w-11 h-11 flex items-center justify-center rounded-full border border-ink/25 text-ink/80 hover:text-ink hover:border-ink transition-colors motion-reduce:transition-none" data-lightbox-next aria-label="Nastepne zdjecie">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Lightbox galerii: klik na zdjecie otwiera podglad, strzalki (na ekranie i klawiatura)
+  // przewijaja miedzy zdjeciami, klik poza zdjeciem zamyka.
+  (function () {
+    var gallery = document.querySelector('[data-gallery]');
+    var lightbox = document.querySelector('[data-lightbox]');
+    if (!gallery || !lightbox) return;
+
+    var images = [].slice.call(gallery.querySelectorAll('[data-gallery-img]'));
+    if (!images.length) return;
+
+    var lbImg = lightbox.querySelector('[data-lightbox-img]');
+    var prevBtn = lightbox.querySelector('[data-lightbox-prev]');
+    var nextBtn = lightbox.querySelector('[data-lightbox-next]');
+    var closeBtn = lightbox.querySelector('[data-lightbox-close]');
+    var current = 0;
+
+    function show() {
+      var img = images[current];
+      lbImg.src = img.currentSrc || img.src;
+      lbImg.alt = img.alt;
+    }
+    function open(index) {
+      current = index;
+      show();
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    }
+    function close() {
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+    function next() { current = (current + 1) % images.length; show(); }
+    function prev() { current = (current - 1 + images.length) % images.length; show(); }
+
+    images.forEach(function (img, i) {
+      img.addEventListener('click', function () { open(i); });
+    });
+
+    prevBtn.addEventListener('click', function (e) { e.stopPropagation(); prev(); });
+    nextBtn.addEventListener('click', function (e) { e.stopPropagation(); next(); });
+    closeBtn.addEventListener('click', function (e) { e.stopPropagation(); close(); });
+
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lbImg || prevBtn.contains(e.target) || nextBtn.contains(e.target) || closeBtn.contains(e.target)) return;
+      close();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (!lightbox.classList.contains('is-open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    });
+  })();
+</script>
+
+<script>
+  // Slider ekipy: przyciski strzalek przewijaja liste pracownikow w lewo/prawo.
+  (function () {
+    var track = document.querySelector('[data-ekipa-track]');
+    var prevBtn = document.querySelector('[data-ekipa-prev]');
+    var nextBtn = document.querySelector('[data-ekipa-next]');
+    if (!track || !prevBtn || !nextBtn) return;
+
+    function step() {
+      var card = track.children[0];
+      return card ? card.getBoundingClientRect().width + 20 : track.clientWidth * 0.8;
+    }
+    function updateButtons() {
+      var max = track.scrollWidth - track.clientWidth - 1;
+      prevBtn.disabled = track.scrollLeft <= 0;
+      nextBtn.disabled = track.scrollLeft >= max;
+    }
+
+    prevBtn.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    nextBtn.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); });
+    track.addEventListener('scroll', updateButtons);
+    window.addEventListener('resize', updateButtons);
+    updateButtons();
   })();
 </script>
 

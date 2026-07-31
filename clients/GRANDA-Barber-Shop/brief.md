@@ -1,7 +1,7 @@
 # Brief: Granda Barber Shop
 
 ## Wariant strony
-Website+ (biznes jako całość korzysta z Booksy — 2 z 3 salonów mają własne profile)
+Website+ (biznes jako całość korzysta z Booksy — wszystkie 3 salony mają własne profile)
 
 ## Lokalizacje (3 salony, każdy z osobną kartą)
 
@@ -20,8 +20,11 @@ niedziela	Zamknięte
 poniedziałek	Zamknięte
 wtorek	11:00–19:00
 środa	11:00–19:00
-- Booksy: BRAK
-- CTA: "Zadzwoń" / "Napisz" (tel: link, bez Booksy)
+- Booksy: https://booksy.com/pl-pl/322690_granda-barber-shop-piotrkow-trybunalski_barber-shop_25202_piotrkow-trybunalski#ba_s=seo (dodane później — pierwotnie BRAK, salon dołączył do Booksy)
+- CTA: "Umów przez Booksy" (link do widgetu/profilu tego salonu), telefon jako opcja dodatkowa
+- Ocena na Booksy: 5,0 · 61 opinii
+- Pracownicy (Booksy): Michał, Gabrysia, Aleksander, Lena
+- Galeria: portfolio zdjęć z Booksy (16 zdjęć dostępnych, 8 wybranych na stronę)
 - opinie: 
 Velix
 Opinia z: Google
@@ -237,7 +240,7 @@ Bartosz Bujakowski
 3 miesiące temu
 Najlepszy Barber w mieście wszystko się zgadza. Profesjonalne podejście do klienta, luźna przyjazna atmosfera
 
-> Ważne dla Claude Code: nie ujednolicaj CTA na siłę — każda karta salonu ma własny przycisk zależny od tego, czy ten konkretny salon ma Booksy. Salon 1 nie dostaje fałszywego linku do Booksy.
+> Ważne dla Claude Code: nie ujednolicaj CTA na siłę — każda karta salonu ma własny przycisk i własny link Booksy, nigdy cudzy ani zmyślony. (Aktualizacja: Salon 1 dołączył do Booksy — wcześniej ta uwaga dotyczyła jego braku profilu.)
 
 ## Struktura strony
 - Homepage: sekcja "Nasze salony" — 3 karty jak wyżej
