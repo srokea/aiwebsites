@@ -1,0 +1,47 @@
+[
+  {
+    "nazwa": "\"OdNowa\" Kosmetyka Adrianna Nowicka (Salon Kosmetyczny)",
+    "telefon": "697468487",
+    "miasto": "Wolbórz",
+    "www": "",
+    "facebook": "https://www.facebook.com/Salon-Kosmetyczny-OdNowa-110076277030898/",
+    "instagram": "",
+    "booksy": "",
+    "liczba_opinii": "2",
+    "ocena": "5.0",
+    "jakosc": "3",
+    "status": "nowy",
+    "notatki": "brak www, aktywny Facebook (ok. 640 polubien wg wyszukiwania), ale tylko 2 opinie w Google (5.0) - dwie wizytowki Maps dla tej samej firmy, scalone",
+    "maps_url": "https://www.google.com/maps/place/%22OdNowa%22+Kosmetyka+Adrianna+Nowicka/data=!4m7!3m6!1s0x471989f3cd0af3bf:0x714762651cb1cba7!8m2!3d51.4997958!4d19.8316157!16s%2Fg%2F11h5ky1tmd!19sChIJv_MKzfOJGUcRp8uxHGViR3E?authuser=0&hl=pl&rclk=1"
+  },
+  {
+    "nazwa": "salon urody Margot (Agnieszka Kwiecień)",
+    "telefon": "602407854",
+    "miasto": "Wolbórz",
+    "www": "",
+    "facebook": "",
+    "instagram": "",
+    "booksy": "",
+    "liczba_opinii": "2",
+    "ocena": "4.5",
+    "jakosc": "2",
+    "status": "nowy",
+    "notatki": "uzupelniony profil Google (2 opinie, 4.5), obecna tylko w katalogach firm (gabinetkosmetyka.pl, panoramafirm), brak potwierdzonego Facebooka/Instagrama/Booksy mimo researchu",
+    "maps_url": "https://www.google.com/maps/place/salon+urody+Margot/data=!4m7!3m6!1s0x471988c07e8d2e85:0x30ca086ffe524431!8m2!3d51.5013861!4d19.8373175!16s%2Fg%2F11fx7p4cr2!19sChIJhS6NfsCIGUcRMURS_m8IyjA?authuser=0&hl=pl&rclk=1"
+  },
+  {
+    "nazwa": "Maya Nails (Maja Stępniewska)",
+    "telefon": "790279699",
+    "miasto": "Wolbórz",
+    "www": "",
+    "facebook": "https://www.facebook.com/p/mayanailswolborz-100065419623222/",
+    "instagram": "",
+    "booksy": "",
+    "liczba_opinii": "5",
+    "ocena": "5.0",
+    "jakosc": "3",
+    "status": "nowy",
+    "notatki": "uzupelniony profil Google (5 opinii, 5.0), ma Facebooka (maya.nails.wolborz), brak wlasnej strony www i potwierdzonego Instagrama/Booksy",
+    "maps_url": "https://www.google.com/maps/place/Maya+Nails/data=!4m7!3m6!1s0x4719890192f990e5:0x1341c3d8f0dcb607!8m2!3d51.501071!4d19.829068!16s%2Fg%2F11qg1681j5!19sChIJ5ZD5kgGJGUcRB7bc8NjDQRM?authuser=0&hl=pl&rclk=1"
+  }
+]
