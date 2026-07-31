@@ -25,15 +25,13 @@ jest uzupełniony plik CSV w `leads/` zgodny ze schematem arkusza z `AI_WEB_AGEN
    Dla leadów bez www: krótkie wyszukiwanie "<nazwa> <miasto> facebook/booksy".
    Nie spędzaj więcej niż ~1 min na jednym leadzie.
 
-4. **Ocena jakości (kolumna `jakosc`, 1–5)** — potencjał jako klient agencji:
-   - **5** — aktywna firma (≥10 opinii, ocena ≥4.5, świeże opinie) BEZ własnej strony www
-     (może mieć FB/Booksy) — idealny lead pod cold call.
-   - **4** — aktywna firma, strona istnieje ale słaba/przestarzała (brak https, wygląd sprzed lat,
-     sama wizytówka) albo tylko subdomena Booksy.
-   - **3** — mało opinii (<10) ale bez strony — firma młoda lub mało widoczna.
-   - **2** — ma przyzwoitą stronę; mały potencjał, dzwonić w ostatniej kolejności.
-   - **1** — nieaktywna/zamknięta, brak telefonu, albo ocena <4.0 — pomijamy.
-   W `notatki` wpisz jednym zdaniem uzasadnienie oceny (np. "brak www, 47 opinii 4.9, aktywny FB").
+4. **Ocena jakości (kolumna `jakosc`, 1–5)** — poziom obecności online firmy:
+   - **1** — brak jakiejkolwiek aktywności w internecie: nieuzupełniony/niedokończony profil Google, brak Facebooka, Instagrama, Booksy. Firma praktycznie niewidoczna online.
+   - **2** — uzupełniony profil Google (zdjęcia, kilka opinii), ale brak mediów społecznościowych (bez Facebooka, Instagrama, Booksy).
+   - **3** — to samo co 2, plus ma Facebooka ALBO Instagrama (przynajmniej jedno medium społecznościowe).
+   - **4** — bardzo aktywna firma: obecna w social mediach, może mieć Booksy, dużo opinii na Google — ale BEZ własnej strony internetowej. To nasz najlepszy lead.
+   - **5** — firma, która MA własną stronę internetową (niezależnie od jej jakości).
+   W `notatki` wpisz jednym zdaniem uzasadnienie oceny (np. "uzupełniony Google, 32 opinie 4.8, aktywny FB, brak www").
 
 5. **Zapis.** Nadpisz CSV i JSON uzupełnionymi danymi (te same kolumny, ten sam plik).
 
