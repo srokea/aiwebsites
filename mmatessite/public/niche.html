@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nisza — Cold Calls</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%93%9E</text></svg>">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="bg-particles" id="bg-particles" aria-hidden="true"></div>
+
+<div class="wrap">
+  <div class="topbar">
+    <div>
+      <h1 id="niche-title">Nisza</h1>
+      <div class="topbar-sub" id="niche-sub"></div>
+    </div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <button type="button" class="icon-btn" id="settings-btn" title="Ustawienia niszy">⚙️</button>
+      <a class="back-link" href="/">&larr; Wszystkie nisze</a>
+    </div>
+  </div>
+
+  <div class="stat-row" id="niche-stats"></div>
+  <div class="donut-row" id="caller-row"></div>
+
+  <div class="section-title">Leady</div>
+  <div class="filter-search-row">
+    <div class="filter-bar" id="filter-bar"></div>
+    <input type="text" id="lead-search" class="search-input" placeholder="🔍 Szukaj firmy lub telefonu...">
+  </div>
+</div>
+
+<div class="leads-full">
+  <table class="leads">
+    <thead>
+      <tr>
+        <th class="idx-col">#</th>
+        <th class="sortable" data-sort-id="company" data-sort="company_name">Firma</th>
+        <th class="sortable" data-sort-id="strona" data-sort="has_social">Strona</th>
+        <th class="sortable" data-sort-id="city" data-sort="city">Miasto</th>
+        <th class="sortable" data-sort-id="phone" data-sort="phone">Telefon</th>
+        <th class="sortable" data-sort-id="quality" data-sort="quality">Jakość</th>
+        <th class="sortable" data-sort-id="social" data-sort="tags_count">Social</th>
+        <th class="sortable" data-sort-id="answered" data-sort="answered">Odebrał?</th>
+        <th class="sortable" data-sort-id="interested" data-sort="interested">Zainteresowany?</th>
+        <th class="sortable" data-sort-id="caller" data-sort="caller">Kto dzwonił</th>
+        <th class="sortable" data-sort-id="reminder" data-sort="reminder_effective">Reminder</th>
+        <th class="sortable" data-sort-id="callback" data-sort="callback_when">Kiedy oddzwonić</th>
+        <th class="sortable" data-sort-id="gterm" data-sort="google_term">Termin Google</th>
+        <th class="sortable" data-sort-id="notes" data-sort="notes">Notatki</th>
+        <th>Scheme</th>
+      </tr>
+    </thead>
+    <tbody id="leads-tbody"></tbody>
+  </table>
+</div>
+
+<div class="daily-badge" id="daily-badge" style="display:none;"></div>
+
+<div class="modal-overlay hidden" id="settings-modal">
+  <div class="modal">
+    <h3>Ustawienia niszy</h3>
+    <form id="settings-form">
+      <label for="settings-name">Nazwa</label>
+      <input type="text" id="settings-name" name="name" required>
+
+      <label>Kolor</label>
+      <div class="color-swatches" id="color-swatches"></div>
+
+      <div class="error" id="settings-error" style="display:none;"></div>
+
+      <div class="actions" style="justify-content:space-between;">
+        <button type="button" class="btn danger" id="settings-delete-btn">Usuń niszę</button>
+        <div style="display:flex; gap:10px;">
+          <button type="button" class="btn" id="settings-cancel">Anuluj</button>
+          <button type="submit" class="btn primary">Zapisz</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/niche.js"></script>
+</body>
+</html>
