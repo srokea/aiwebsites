@@ -184,8 +184,27 @@
     border-bottom-color: rgba(243, 238, 227, 0.35);
   }
 
-  /* ── Drewno scienne z prawdziwego salonu: tabelka uslug + tlo galerii ── */
-  .wood-panel,
+  /* ── Panel uslug: czarny marmur zamiast drewna ── */
+  .marble-black {
+    position: relative;
+    background-color: #161513;
+    color: #F3EEE3;
+  }
+  .marble-black::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='900' height='900'><filter id='bm' filterUnits='userSpaceOnUse' x='0' y='0' width='900' height='900'><feTurbulence type='fractalNoise' baseFrequency='0.009 0.028' numOctaves='5' seed='31' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.34 0 0 0 0 0.33 0 0 0 0 0.31 0 0 0 -2.6 1.05'/></filter><rect width='900' height='900' filter='url(%23bm)'/></svg>");
+    background-size: 900px 900px;
+    opacity: 0.12;
+  }
+  .marble-black .text-inkmuted {
+    color: #E3D9C8;
+  }
+
+  /* ── Galeria: oryginalne drewniane tlo scienne (bez zmian) ── */
   #galeria {
     background-color: #3E2A1A;
     background-image:
@@ -194,23 +213,16 @@
     background-size: 160px 420px, 26px 100%;
     color: #F3EEE3;
   }
-  .wood-panel .text-inkmuted,
   #galeria .text-inkmuted:not(.tile) {
     color: #E3D9C8;
   }
   #galeria .border-border {
     border-color: rgba(243, 238, 227, 0.2);
   }
-  #galeria a.hover\:text-ink:hover {
-    color: #F3EEE3;
-  }
 
   /* ── Dwie krzyzujace sie linie w tabelce uslug, lekko oddzielajace 4 pozycje ── */
-  .wood-panel {
-    position: relative;
-  }
   @media (min-width: 640px) {
-    .wood-panel::after {
+    .marble-black::after {
       content: '';
       position: absolute;
       inset: 2.5rem;
@@ -371,7 +383,7 @@
           <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"><path d="M10 1.5l2.6 5.3 5.9.8-4.3 4.1 1 5.8L10 14.8 4.8 17.5l1-5.8L1.5 7.6l5.9-.8z"/></svg>
           <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"><path d="M10 1.5l2.6 5.3 5.9.8-4.3 4.1 1 5.8L10 14.8 4.8 17.5l1-5.8L1.5 7.6l5.9-.8z"/></svg>
         </span>
-        <span>5,0 na Booksy, 12 opinii</span>
+        <span>5,0 na Booksy</span>
       </p>
     </div>
   </section>
@@ -387,7 +399,7 @@
         <div class="rule-gold mx-auto mt-5"></div>
       </div>
 
-      <div class="mt-12 wood-panel rounded-2xl p-6 sm:p-10 grid gap-x-10 gap-y-8 sm:grid-cols-2">
+      <div class="mt-12 marble-black rounded-2xl p-6 sm:p-10 grid gap-x-10 gap-y-8 sm:grid-cols-2">
         <div>
           <h3 class="font-display font-bold text-2xl tracking-[0.01em]">Koloryzacja</h3>
           <p class="mt-3 text-inkmuted leading-relaxed">
@@ -638,6 +650,20 @@
         </blockquote>
 
       </div>
+
+      <div class="rule-gold mx-auto mt-14"></div>
+      <div class="mt-7 text-center">
+        <a href="https://search.google.com/local/writereview?placeid=ChIJParTS_WLGUcRwIvARhd6bXs" target="_blank" rel="noopener"
+           class="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-7 py-3.5 min-h-[48px] font-semibold text-ink hover:brightness-110 transition motion-reduce:transition-none">
+          <svg viewBox="0 0 18 18" fill="currentColor" class="w-4 h-4" aria-hidden="true">
+            <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
+            <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+            <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/>
+            <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
+          </svg>
+          Zostaw opinię
+        </a>
+      </div>
     </div>
   </section>
 
@@ -677,7 +703,7 @@
 
       <div class="mt-10 text-center">
         <a href="https://www.instagram.com/ohairfryzjerstwo/" target="_blank" rel="noopener"
-           class="inline-flex items-center justify-center gap-2 rounded-full border border-border px-7 py-3.5 min-h-[48px] font-medium text-inkmuted hover:text-ink hover:border-accent transition-colors motion-reduce:transition-none">
+           class="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-7 py-3.5 min-h-[48px] font-semibold text-ink hover:brightness-110 transition motion-reduce:transition-none">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-5 h-5" aria-hidden="true">
             <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
           </svg>
