@@ -157,8 +157,19 @@
 
   /* ── Cennik: wyroznione granatowe tlo na zyczenie klienta, tekst przelaczony na jasny dla kontrastu ── */
   #cennik {
+    position: relative;
+    overflow: hidden;
     background-color: #284d79;
     color: #F3EEE3;
+  }
+  #cennik::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='900' height='900'><filter id='cm' filterUnits='userSpaceOnUse' x='0' y='0' width='900' height='900'><feTurbulence type='fractalNoise' baseFrequency='0.009 0.028' numOctaves='5' seed='23' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.25 0 0 0 0 0.44 0 0 0 0 0.64 0 0 0 -2.6 1.05'/></filter><rect width='900' height='900' filter='url(%23cm)'/></svg>");
+    background-size: 900px 900px;
+    opacity: 0.1;
   }
   #cennik .text-inkmuted {
     color: #CBC3B3;
@@ -172,6 +183,73 @@
   #cennik .leader .dots {
     border-bottom-color: rgba(243, 238, 227, 0.35);
   }
+
+  /* ── Drewno scienne z prawdziwego salonu: tabelka uslug + tlo galerii ── */
+  .wood-panel,
+  #galeria {
+    background-color: #3E2A1A;
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='420'><filter id='wg' filterUnits='userSpaceOnUse' x='0' y='0' width='160' height='420'><feTurbulence type='fractalNoise' baseFrequency='0.9 0.015' numOctaves='3' seed='11' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.04 0 0 0 0 0.02 0 0 0 -2.0 0.85'/></filter><rect width='160' height='420' filter='url(%23wg)'/></svg>"),
+      repeating-linear-gradient(90deg, #4C331F 0px, #4C331F 22px, #2E1F13 22px, #2E1F13 26px);
+    background-size: 160px 420px, 26px 100%;
+    color: #F3EEE3;
+  }
+  .wood-panel .text-inkmuted,
+  #galeria .text-inkmuted:not(.tile) {
+    color: #E3D9C8;
+  }
+  #galeria .border-border {
+    border-color: rgba(243, 238, 227, 0.2);
+  }
+  #galeria a.hover\:text-ink:hover {
+    color: #F3EEE3;
+  }
+
+  /* ── Dwie krzyzujace sie linie w tabelce uslug, lekko oddzielajace 4 pozycje ── */
+  .wood-panel {
+    position: relative;
+  }
+  @media (min-width: 640px) {
+    .wood-panel::after {
+      content: '';
+      position: absolute;
+      inset: 2.5rem;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(243, 238, 227, 0.16), rgba(243, 238, 227, 0.16)) no-repeat center / 1px 100%,
+        linear-gradient(rgba(243, 238, 227, 0.16), rgba(243, 238, 227, 0.16)) no-repeat center / 100% 1px;
+    }
+  }
+
+  /* ── Lightbox galerii ── */
+  .lb[hidden] { display: none; }
+  .lb {
+    position: fixed; inset: 0; z-index: 100;
+    display: grid; place-items: center; padding: 20px;
+    background: rgba(10, 9, 6, .92); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    animation: lb-in .2s ease-out;
+  }
+  @keyframes lb-in { from { opacity: 0; } to { opacity: 1; } }
+  .lb-stage { position: relative; display: flex; flex-direction: column; align-items: center; gap: 14px; max-width: 1100px; width: 100%; }
+  .lb-fig { margin: 0; height: 74vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+  .lb-img {
+    max-width: min(92vw, 1000px); max-height: calc(74vh - 46px); width: auto; height: auto; object-fit: contain;
+    border: 1px solid rgba(243,238,227,0.14); border-radius: 2px;
+    animation: lb-pop .22s cubic-bezier(.2,.8,.2,1);
+  }
+  .lb-placeholder { display: flex; flex-direction: column; align-items: center; gap: 12px; color: rgba(243,238,227,0.65); }
+  @keyframes lb-pop { from { transform: scale(.96); opacity: .4; } to { transform: scale(1); opacity: 1; } }
+  .lb-controls { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 2px; }
+  .lb-btn {
+    border: 1px solid rgba(243,238,227,0.25); background: rgba(26,26,26,.55); color: #F3EEE3;
+    cursor: pointer; border-radius: 999px; display: grid; place-items: center;
+    transition: background .18s, border-color .18s, color .18s; line-height: 1;
+  }
+  .lb-btn:hover, .lb-btn:focus-visible { background: #B8860B; border-color: #B8860B; color: #1A1A1A; outline: none; }
+  .lb-close { position: absolute; top: -6px; right: 0; width: 44px; height: 44px; font-size: 1.2rem; z-index: 2; }
+  .lb-nav { width: 44px; height: 44px; font-size: 1.5rem; padding-bottom: 3px; }
+  @media (min-width: 900px) { .lb-close { top: -52px; } }
+  @media (prefers-reduced-motion: reduce) { .lb, .lb-img { animation: none; } }
 </style>
 </head>
 <body class="bg-bg text-ink font-body antialiased">
@@ -309,26 +387,26 @@
         <div class="rule-gold mx-auto mt-5"></div>
       </div>
 
-      <div class="mt-12 grid gap-px bg-border sm:grid-cols-2">
-        <div class="bg-surface p-7 sm:p-9">
+      <div class="mt-12 wood-panel rounded-2xl p-6 sm:p-10 grid gap-x-10 gap-y-8 sm:grid-cols-2">
+        <div>
           <h3 class="font-display font-bold text-2xl tracking-[0.01em]">Koloryzacja</h3>
           <p class="mt-3 text-inkmuted leading-relaxed">
             Balejaż, sombre, pasemka, refleksy i odrost. Najwięcej czasu spędzamy przy blondach, więc wiemy, jak zejść z żółtego odcienia bez niszczenia włosa.
           </p>
         </div>
-        <div class="bg-surface p-7 sm:p-9">
+        <div>
           <h3 class="font-display font-bold text-2xl tracking-[0.01em]">Strzyżenie i modelowanie</h3>
           <p class="mt-3 text-inkmuted leading-relaxed">
             Cięcie damskie i męskie, grzywka, modelowanie, loki. Fryzura ma się układać także wtedy, kiedy myjesz włosy sama w domu.
           </p>
         </div>
-        <div class="bg-surface p-7 sm:p-9">
+        <div>
           <h3 class="font-display font-bold text-2xl tracking-[0.01em]">Regeneracja i pielęgnacja</h3>
           <p class="mt-3 text-inkmuted leading-relaxed">
             Botoks na włosy, zabiegi odbudowujące, pielęgnacja. Po mocnym rozjaśnianiu włos potrzebuje odbudowy, nie tylko odżywki.
           </p>
         </div>
-        <div class="bg-surface p-7 sm:p-9">
+        <div>
           <h3 class="font-display font-bold text-2xl tracking-[0.01em]">Upięcia i okazje</h3>
           <p class="mt-3 text-inkmuted leading-relaxed">
             Upięcia, loki i stylizacja na wesele, studniówkę czy chrzciny. Na takie terminy warto zapisać się z wyprzedzeniem.
@@ -344,7 +422,7 @@
 
   <!-- ══════════ CENNIK ══════════ -->
   <section id="cennik">
-    <div class="mx-auto max-w-3xl px-5 sm:px-8 py-16 sm:py-24">
+    <div class="relative mx-auto max-w-3xl px-5 sm:px-8 py-16 sm:py-24">
 
       <div class="text-center">
         <h2 class="font-display font-bold leading-tight tracking-[0.01em]" style="font-size: clamp(1.75rem, 2.5vw + 1.1rem, 2.75rem)">
@@ -423,23 +501,23 @@
           <div class="rule-gold mt-5"></div>
           <div class="mt-6 space-y-4 text-inkmuted leading-relaxed">
             <p>
-              O!hair to kameralny salon przy ulicy Reymonta 39 w Radomsku. Na jeden termin umawiamy jedną osobę, żeby nikt nie siedział w kolejce, a koloryzacja dostała tyle czasu, ile faktycznie potrzebuje.
+              O!hair to kameralny salon przy ulicy Reymonta 39 w Radomsku, który prowadzi Ilona Sokołowska. Na jeden termin umawiam jedną osobę, żeby nikt nie siedział w kolejce, a koloryzacja dostała tyle czasu, ile faktycznie potrzebuje.
             </p>
             <p>
-              Najwięcej pracujemy przy kolorze: balejaż, sombre, rozjaśnianie i tonowanie. Do tego strzyżenie, modelowanie i zabiegi regeneracyjne, bo po mocnym rozjaśnianiu włos trzeba odbudować.
+              Najwięcej pracuję przy kolorze: balejaż, sombre, rozjaśnianie i tonowanie. Do tego strzyżenie, modelowanie i zabiegi regeneracyjne, bo po mocnym rozjaśnianiu włos trzeba odbudować.
             </p>
             <p>
-              Wszystkie opinie, jakie dostaliśmy na Booksy, są na piątkę. Zależy nam, żeby tak zostało.
+              Wszystkie opinie, jakie dostałam na Booksy, są na piątkę. Zależy mi, żeby tak zostało.
             </p>
           </div>
         </div>
 
-        <!-- MIEJSCE NA ZDJECIE ZESPOLU: podmien ten blok na obrazek w kadrze 4:5, object-cover, rounded-2xl, gold-frame -->
+        <!-- MIEJSCE NA ZDJECIE ILONY: podmien ten blok na obrazek w kadrze 4:5, object-cover, rounded-2xl, gold-frame -->
         <div class="aspect-[4/5] rounded-2xl border border-dashed border-accent/50 bg-bg/60 flex flex-col items-center justify-center gap-3 text-inkmuted">
           <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1" class="w-10 h-10 opacity-60" aria-hidden="true">
             <rect x="6" y="10" width="36" height="28" rx="2"/><circle cx="17" cy="20" r="3.5"/><path d="M6 32l10-9 8 7 6-5 12 10"/>
           </svg>
-          <span class="text-sm">Miejsce na zdjęcie zespołu</span>
+          <span class="text-sm">Miejsce na zdjęcie Ilony</span>
         </div>
 
       </div>
@@ -458,7 +536,7 @@
       </div>
 
       <!-- Opinia wyrozniona -->
-      <figure class="mt-12 mx-auto max-w-2xl text-center">
+      <figure class="mt-12 mx-auto max-w-2xl text-center rounded-2xl border-2 border-accent px-8 py-10 sm:px-12 sm:py-12">
         <div class="flex justify-center text-accent" aria-label="Ocena 5 na 5">
           <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 1.5l2.6 5.3 5.9.8-4.3 4.1 1 5.8L10 14.8 4.8 17.5l1-5.8L1.5 7.6l5.9-.8z"/></svg>
           <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 1.5l2.6 5.3 5.9.8-4.3 4.1 1 5.8L10 14.8 4.8 17.5l1-5.8L1.5 7.6l5.9-.8z"/></svg>
@@ -474,18 +552,15 @@
         </figcaption>
       </figure>
 
-      <div class="mt-14 flex items-center justify-between gap-4">
-        <p class="text-sm text-inkmuted">Więcej opinii</p>
-        <div class="hidden sm:flex gap-2">
-          <button type="button" data-rail-prev aria-label="Poprzednie opinie"
-                  class="w-11 h-11 shrink-0 rounded-full border border-border flex items-center justify-center text-inkmuted hover:text-ink hover:border-accent transition-colors motion-reduce:transition-none">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-5 h-5" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
-          </button>
-          <button type="button" data-rail-next aria-label="Następne opinie"
-                  class="w-11 h-11 shrink-0 rounded-full border border-border flex items-center justify-center text-inkmuted hover:text-ink hover:border-accent transition-colors motion-reduce:transition-none">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-5 h-5" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
-          </button>
-        </div>
+      <div class="mt-14 flex items-center justify-center gap-3">
+        <button type="button" data-rail-prev aria-label="Poprzednie opinie"
+                class="w-11 h-11 shrink-0 rounded-full border border-border flex items-center justify-center text-inkmuted hover:text-ink hover:border-accent transition-colors motion-reduce:transition-none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-5 h-5" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <button type="button" data-rail-next aria-label="Następne opinie"
+                class="w-11 h-11 shrink-0 rounded-full border border-border flex items-center justify-center text-inkmuted hover:text-ink hover:border-accent transition-colors motion-reduce:transition-none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-5 h-5" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
       </div>
 
       <div class="mt-5 -mx-5 sm:-mx-8 px-5 sm:px-8 rail" id="rail-opinie" tabindex="0" role="group" aria-label="Karuzela opinii klientek">
@@ -567,7 +642,7 @@
   </section>
 
   <!-- ══════════ GALERIA ══════════ -->
-  <section id="galeria" class="relative overflow-hidden marble marble-soft bg-surface border-y border-border">
+  <section id="galeria" class="relative overflow-hidden border-y border-border">
     <div class="relative mx-auto max-w-5xl px-5 sm:px-8 py-16 sm:py-24">
 
       <div class="text-center">
@@ -578,26 +653,26 @@
         <p class="mt-5 text-inkmuted">Świeże zdjęcia z salonu wrzucamy na Instagram.</p>
       </div>
 
-      <!-- MIEJSCE NA ZDJECIA REALIZACJI: podmien kazdy kafel na obrazek z klasami: aspect-square w-full object-cover rounded-2xl gold-frame -->
+      <!-- MIEJSCE NA ZDJECIA REALIZACJI: podmien wnetrze kazdego przycisku na obrazek z klasami: aspect-square w-full object-cover rounded-2xl gold-frame -->
       <div class="mt-12 grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5">
-        <div class="aspect-square rounded-2xl border border-dashed border-accent/50 bg-bg/60 flex items-center justify-center text-inkmuted">
+        <button type="button" class="tile aspect-square rounded-2xl border border-dashed border-accent/50 bg-bg flex items-center justify-center text-inkmuted hover:border-accent transition-colors motion-reduce:transition-none cursor-pointer" aria-label="Powiększ zdjęcie 1 z 6">
           <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1" class="w-9 h-9 opacity-55" aria-hidden="true"><rect x="6" y="10" width="36" height="28" rx="2"/><circle cx="17" cy="20" r="3.5"/><path d="M6 32l10-9 8 7 6-5 12 10"/></svg>
-        </div>
-        <div class="aspect-square rounded-2xl border border-dashed border-accent/50 bg-bg/60 flex items-center justify-center text-inkmuted">
+        </button>
+        <button type="button" class="tile aspect-square rounded-2xl border border-dashed border-accent/50 bg-bg flex items-center justify-center text-inkmuted hover:border-accent transition-colors motion-reduce:transition-none cursor-pointer" aria-label="Powiększ zdjęcie 2 z 6">
           <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1" class="w-9 h-9 opacity-55" aria-hidden="true"><rect x="6" y="10" width="36" height="28" rx="2"/><circle cx="17" cy="20" r="3.5"/><path d="M6 32l10-9 8 7 6-5 12 10"/></svg>
-        </div>
-        <div class="aspect-square rounded-2xl border border-dashed border-accent/50 bg-bg/60 flex items-center justify-center text-inkmuted">
+        </button>
+        <button type="button" class="tile aspect-square rounded-2xl border border-dashed border-accent/50 bg-bg flex items-center justify-center text-inkmuted hover:border-accent transition-colors motion-reduce:transition-none cursor-pointer" aria-label="Powiększ zdjęcie 3 z 6">
           <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1" class="w-9 h-9 opacity-55" aria-hidden="true"><rect x="6" y="10" width="36" height="28" rx="2"/><circle cx="17" cy="20" r="3.5"/><path d="M6 32l10-9 8 7 6-5 12 10"/></svg>
-        </div>
-        <div class="aspect-square rounded-2xl border border-dashed border-accent/50 bg-bg/60 flex items-center justify-center text-inkmuted">
+        </button>
+        <button type="button" class="tile aspect-square rounded-2xl border border-dashed border-accent/50 bg-bg flex items-center justify-center text-inkmuted hover:border-accent transition-colors motion-reduce:transition-none cursor-pointer" aria-label="Powiększ zdjęcie 4 z 6">
           <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1" class="w-9 h-9 opacity-55" aria-hidden="true"><rect x="6" y="10" width="36" height="28" rx="2"/><circle cx="17" cy="20" r="3.5"/><path d="M6 32l10-9 8 7 6-5 12 10"/></svg>
-        </div>
-        <div class="aspect-square rounded-2xl border border-dashed border-accent/50 bg-bg/60 flex items-center justify-center text-inkmuted">
+        </button>
+        <button type="button" class="tile aspect-square rounded-2xl border border-dashed border-accent/50 bg-bg flex items-center justify-center text-inkmuted hover:border-accent transition-colors motion-reduce:transition-none cursor-pointer" aria-label="Powiększ zdjęcie 5 z 6">
           <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1" class="w-9 h-9 opacity-55" aria-hidden="true"><rect x="6" y="10" width="36" height="28" rx="2"/><circle cx="17" cy="20" r="3.5"/><path d="M6 32l10-9 8 7 6-5 12 10"/></svg>
-        </div>
-        <div class="aspect-square rounded-2xl border border-dashed border-accent/50 bg-bg/60 flex items-center justify-center text-inkmuted">
+        </button>
+        <button type="button" class="tile aspect-square rounded-2xl border border-dashed border-accent/50 bg-bg flex items-center justify-center text-inkmuted hover:border-accent transition-colors motion-reduce:transition-none cursor-pointer" aria-label="Powiększ zdjęcie 6 z 6">
           <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1" class="w-9 h-9 opacity-55" aria-hidden="true"><rect x="6" y="10" width="36" height="28" rx="2"/><circle cx="17" cy="20" r="3.5"/><path d="M6 32l10-9 8 7 6-5 12 10"/></svg>
-        </div>
+        </button>
       </div>
 
       <div class="mt-10 text-center">
@@ -638,29 +713,25 @@
           </dl>
 
           <h3 class="font-display font-bold text-2xl mt-10 mb-5 tracking-[0.01em]">Kontakt</h3>
-          <dl class="border-y border-border divide-y divide-border">
+          <dl class="border-t border-border">
             <div class="flex justify-between gap-4 py-3">
               <dt class="text-inkmuted">Adres</dt>
               <dd class="font-medium text-right">Reymonta 39<br>97-500 Radomsko</dd>
             </div>
-            <div class="flex items-center justify-between gap-4 py-1">
-              <dt class="text-inkmuted">Telefon</dt>
-              <dd><a href="tel:+48576137881" class="inline-flex items-center min-h-[44px] font-medium hover:text-accent transition-colors motion-reduce:transition-none">576 137 881</a></dd>
-            </div>
-            <div class="flex items-center justify-between gap-4 py-1">
-              <dt class="text-inkmuted">Rezerwacja</dt>
-              <dd><a href="https://booksy.com/pl-pl/344631_o-hair_fryzjer_25252_radomsko" target="_blank" rel="noopener" class="inline-flex items-center min-h-[44px] font-medium hover:text-accent transition-colors motion-reduce:transition-none">Booksy</a></dd>
-            </div>
           </dl>
 
-          <div class="mt-8 flex flex-col xs:flex-row gap-3">
+          <div class="mt-8 flex flex-col xs:flex-row flex-wrap gap-2">
             <a href="https://booksy.com/pl-pl/344631_o-hair_fryzjer_25252_radomsko" target="_blank" rel="noopener"
-               class="inline-flex items-center justify-center rounded-full bg-accent px-7 py-3.5 min-h-[48px] font-semibold text-ink hover:brightness-110 transition motion-reduce:transition-none">
+               class="inline-flex items-center justify-center whitespace-nowrap rounded-full bg-accent px-5 py-2.5 min-h-[44px] text-sm font-semibold text-ink hover:brightness-110 transition motion-reduce:transition-none">
               Rezerwuj na Booksy
             </a>
             <a href="tel:+48576137881"
-               class="inline-flex items-center justify-center rounded-full border border-border px-7 py-3.5 min-h-[48px] font-medium text-inkmuted hover:text-ink hover:border-accent transition-colors motion-reduce:transition-none">
+               class="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-border px-5 py-2.5 min-h-[44px] text-sm font-medium text-inkmuted hover:text-ink hover:border-accent transition-colors motion-reduce:transition-none">
               Zadzwoń
+            </a>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=Reymonta+39,+97-500+Radomsko" target="_blank" rel="noopener"
+               class="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-border px-5 py-2.5 min-h-[44px] text-sm font-medium text-inkmuted hover:text-ink hover:border-accent transition-colors motion-reduce:transition-none">
+              Wyznacz trasę
             </a>
           </div>
         </div>
@@ -673,10 +744,6 @@
               width="100%" height="100%" style="border:0" loading="lazy"
               referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
           </div>
-          <a href="https://www.google.com/maps/dir/?api=1&destination=Reymonta+39,+97-500+Radomsko" target="_blank" rel="noopener"
-             class="mt-4 inline-flex items-center justify-center rounded-full border border-border px-7 py-3.5 min-h-[48px] font-medium text-inkmuted hover:text-ink hover:border-accent transition-colors motion-reduce:transition-none">
-            Wyznacz trasę
-          </a>
         </div>
 
       </div>
@@ -727,6 +794,26 @@
     </div>
   </div>
 </footer>
+
+<!-- Lightbox galerii -->
+<div class="lb" id="lb" hidden>
+  <div class="lb-stage" role="dialog" aria-modal="true" aria-label="Galeria realizacji O!hair">
+    <button type="button" class="lb-btn lb-close" data-close aria-label="Zamknij galerię">✕</button>
+    <figure class="lb-fig">
+      <img class="lb-img" src="" alt="" hidden>
+      <div class="lb-placeholder" hidden>
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1" class="w-16 h-16 opacity-70" aria-hidden="true">
+          <rect x="6" y="10" width="36" height="28" rx="2"/><circle cx="17" cy="20" r="3.5"/><path d="M6 32l10-9 8 7 6-5 12 10"/>
+        </svg>
+        <span class="lb-placeholder-label text-sm"></span>
+      </div>
+    </figure>
+    <div class="lb-controls">
+      <button type="button" class="lb-btn lb-nav lb-prev" data-prev aria-label="Poprzednie zdjęcie">‹</button>
+      <button type="button" class="lb-btn lb-nav lb-next" data-next aria-label="Następne zdjęcie">›</button>
+    </div>
+  </div>
+</div>
 
 <script>
   // Karuzela opinii w petli: klony przed i po zestawie realnych opinii,
@@ -789,6 +876,75 @@
     var next = document.querySelector('[data-rail-next]');
     if (prev) prev.addEventListener('click', function () { scrollDir(-1); });
     if (next) next.addEventListener('click', function () { scrollDir(1); });
+  })();
+</script>
+
+<script>
+  // Lightbox galerii: klik otwiera, strzalki < > i klawiatura przewijaja w petli (po ostatnim wraca pierwsze), Esc zamyka.
+  // Kafle sa na razie placeholderami — lightbox obsluguje oba stany, gotowy na podmiane na prawdziwe zdjecia (data-full / <img>).
+  (function () {
+    var tiles = Array.prototype.slice.call(document.querySelectorAll('#galeria .tile'));
+    if (!tiles.length) return;
+    var items = tiles.map(function (t, i) {
+      var img = t.querySelector('img');
+      if (img) {
+        return { type: 'img', src: t.getAttribute('data-full') || img.getAttribute('src'), alt: img.getAttribute('alt') || '' };
+      }
+      return { type: 'placeholder', label: 'Miejsce na zdjęcie ' + (i + 1) + ' z ' + tiles.length };
+    });
+    var lb = document.getElementById('lb');
+    var lbImg = lb.querySelector('.lb-img');
+    var lbPlaceholder = lb.querySelector('.lb-placeholder');
+    var lbPlaceholderLabel = lb.querySelector('.lb-placeholder-label');
+    var focusables = lb.querySelectorAll('button');
+    var idx = 0, lastFocus = null;
+
+    function show(i) {
+      idx = (i + items.length) % items.length;
+      var item = items[idx];
+      if (item.type === 'img') {
+        lbImg.src = item.src;
+        lbImg.alt = item.alt;
+        lbImg.hidden = false;
+        lbPlaceholder.hidden = true;
+      } else {
+        lbImg.hidden = true;
+        lbImg.removeAttribute('src');
+        lbPlaceholder.hidden = false;
+        lbPlaceholderLabel.textContent = item.label;
+      }
+    }
+    function open(i) {
+      lastFocus = document.activeElement;
+      show(i);
+      lb.hidden = false;
+      document.body.style.overflow = 'hidden';
+      lb.querySelector('.lb-next').focus();
+      document.addEventListener('keydown', onKey);
+    }
+    function close() {
+      lb.hidden = true;
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', onKey);
+      if (lastFocus) lastFocus.focus();
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowRight') show(idx + 1);
+      else if (e.key === 'ArrowLeft') show(idx - 1);
+      else if (e.key === 'Tab') {
+        var first = focusables[0], last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+    tiles.forEach(function (t, i) { t.addEventListener('click', function () { open(i); }); });
+    lb.addEventListener('click', function (e) {
+      if (e.target.closest('[data-close]')) close();
+      else if (e.target.closest('[data-next]')) show(idx + 1);
+      else if (e.target.closest('[data-prev]')) show(idx - 1);
+      else if (e.target !== lbImg && !e.target.closest('.lb-placeholder')) close();
+    });
   })();
 </script>
 
