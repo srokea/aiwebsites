@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Męska Sprawa Barber | Barbershop Kamieńsk, strzyżenie i broda</title>
+<meta name="description" content="Męska Sprawa Barber w Kamieńsku, Wojska Polskiego 17. Strzyżenie, broda, golenie brzytwą. Zadzwoń i umów termin: 534 593 733.">
+<link rel="icon" href="img/logo.png">
+<meta property="og:title" content="Męska Sprawa Barber — Kamieńsk">
+<meta property="og:description" content="Włosy idealne. Broda dopieszczona. Barbershop przy Wojska Polskiego 17 w Kamieńsku.">
+<meta property="og:type" content="website">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#1A1A1A',
+          surface: '#222222',
+          ink: '#F2EFE9',
+          inkmuted: '#8F8A82',
+          border: 'rgba(242,239,233,0.12)',
+          accent: '#C9A96E',
+        },
+        fontFamily: {
+          display: ['Montserrat', 'sans-serif'],
+          body: ['"Work Sans"', 'sans-serif'],
+        },
+        maxWidth: {
+          container: '64rem',
+        },
+      },
+    },
+  }
+</script>
+<style>
+  /* Fonty hostowane lokalnie — bez zapytań do serwerów Google (RODO). */
+  @font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('fonts/montserrat-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('fonts/montserrat-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('fonts/worksans-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('fonts/worksans-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+  section[id] { scroll-margin-top: 5rem; }
+
+  /* Karuzela opinii: jedna linia, bez widocznego paska przewijania. */
+  .rail {
+    display: flex;
+    gap: 2.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .rail::-webkit-scrollbar { display: none; }
+  .rail > * { scroll-snap-align: start; flex: 0 0 auto; }
+
+  /* Mapa dopasowana do ciemnego motywu (desaturacja + odwrócenie jasności). */
+  .map-frame iframe { filter: invert(91%) hue-rotate(180deg) sepia(18%) saturate(120%) contrast(88%) brightness(94%); }
+
+  /* Lightbox galerii: klik na kafel otwiera podgląd na całym ekranie. */
+  .lb[hidden] { display: none; }
+  .lb {
+    position: fixed; inset: 0; z-index: 100;
+    display: grid; place-items: center; padding: 20px;
+    background: rgba(10, 9, 6, .92); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    animation: lb-in .2s ease-out;
+  }
+  @keyframes lb-in { from { opacity: 0; } to { opacity: 1; } }
+  .lb-stage { position: relative; display: flex; flex-direction: column; align-items: center; gap: 14px; max-width: 1100px; width: 100%; }
+  .lb-fig { margin: 0; height: 74vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+  .lb-img {
+    max-width: min(92vw, 1000px); max-height: calc(74vh - 46px); width: auto; height: auto; object-fit: contain;
+    border: 1px solid rgba(242,239,233,0.14);
+    animation: lb-pop .22s cubic-bezier(.2,.8,.2,1);
+  }
+  .lb-placeholder { display: flex; flex-direction: column; align-items: center; gap: 12px; color: rgba(242,239,233,0.65); }
+  @keyframes lb-pop { from { transform: scale(.96); opacity: .4; } to { transform: scale(1); opacity: 1; } }
+  .lb-controls { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 2px; }
+  .lb-btn {
+    border: 1px solid rgba(242,239,233,0.25); background: rgba(26,26,26,.55); color: #F2EFE9;
+    cursor: pointer; display: grid; place-items: center;
+    transition: background .18s, border-color .18s, color .18s; line-height: 1;
+  }
+  .lb-btn:hover, .lb-btn:focus-visible { background: #C9A96E; border-color: #C9A96E; color: #1A1A1A; outline: none; }
+  .lb-close { position: absolute; top: -6px; right: 0; width: 44px; height: 44px; font-size: 1.2rem; z-index: 2; }
+  .lb-nav { width: 44px; height: 44px; font-size: 1.5rem; padding-bottom: 3px; }
+  @media (min-width: 900px) { .lb-close { top: -52px; } }
+  @media (prefers-reduced-motion: reduce) { .lb, .lb-img { animation: none; } }
+
+  /* Zdjęcia klienta zawsze czarno-białe, lekko podbity kontrast. */
+  .bw { filter: grayscale(100%) contrast(1.1); }
+
+  /* Etykiety sekcji i drobne podpisy: spacjowane wersaliki. */
+  .label {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    font-size: 0.6875rem;
+  }
+
+  /* Duże stopnie display ściągane optycznie. */
+  .tight { letter-spacing: -0.03em; }
+</style>
+</head>
+<body class="bg-bg text-ink font-body antialiased">
+
+<a href="#tresc" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-3 focus:left-3 focus:bg-accent focus:text-bg focus:px-4 focus:py-2 label">Przejdź do treści</a>
+
+<!-- ============ HEADER ============ -->
+<header class="sticky top-0 z-40 bg-bg/90 backdrop-blur border-b border-border">
+  <div class="mx-auto max-w-container px-5 sm:px-8">
+    <div class="flex items-center justify-between gap-4 h-16 sm:h-20">
+      <a href="#gora" class="shrink-0" aria-label="Męska Sprawa Barber, strona główna">
+        <img src="img/logo.png" alt="Męska Sprawa Barber" class="h-5 sm:h-6 w-auto" width="1105" height="221">
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8 font-display font-bold text-[0.8125rem] uppercase tracking-[0.18em] text-inkmuted" aria-label="Nawigacja główna">
+        <a href="#o-nas" class="py-2 hover:text-ink transition-colors motion-reduce:transition-none">O nas</a>
+        <a href="#cennik" class="py-2 hover:text-ink transition-colors motion-reduce:transition-none">Cennik</a>
+        <a href="#galeria" class="py-2 hover:text-ink transition-colors motion-reduce:transition-none">Galeria</a>
+        <a href="#opinie" class="py-2 hover:text-ink transition-colors motion-reduce:transition-none">Opinie</a>
+        <a href="#kontakt" class="py-2 hover:text-ink transition-colors motion-reduce:transition-none">Kontakt</a>
+      </nav>
+
+      <div class="flex items-center gap-3 shrink-0">
+        <a href="tel:+48534593733" class="inline-flex items-center justify-center min-h-[44px] px-5 sm:px-7 bg-accent text-bg font-display font-bold text-sm uppercase tracking-[0.15em] hover:brightness-110 transition motion-reduce:transition-none">Zadzwoń</a>
+        <a href="https://www.facebook.com/profile.php?id=61576308917963" target="_blank" rel="noopener" aria-label="Facebook Męska Sprawa Barber" class="inline-flex items-center justify-center min-h-[44px] min-w-[44px] bg-accent text-bg hover:brightness-110 transition motion-reduce:transition-none">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.5-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.79 8.44-4.94 8.44-9.94z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="tresc">
+
+<!-- ============ HERO ============ -->
+<section id="gora" class="border-b border-border">
+  <div class="mx-auto max-w-container px-5 sm:px-8 py-20 sm:py-28 lg:py-36">
+
+    <p class="label text-accent mb-8 sm:mb-10">Barbershop · Kamieńsk</p>
+
+    <h1 class="font-display font-black tight leading-[0.95] text-[clamp(2.6rem,9vw,5.5rem)] uppercase">
+      Twój styl<br>zaczyna się<br>tutaj<span class="text-accent">.</span>
+    </h1>
+
+    <!-- Trzy linie copy pochodzą wprost z materiałów klienta (grafika FB). -->
+    <div class="mt-10 sm:mt-14 border-l-2 border-accent pl-5 sm:pl-7 space-y-1.5">
+      <p class="text-lg sm:text-2xl font-display font-bold tracking-tight">Włosy – idealne.</p>
+      <p class="text-lg sm:text-2xl font-display font-bold tracking-tight">Broda – dopieszczona.</p>
+      <p class="text-lg sm:text-2xl font-display font-bold tracking-tight">Klimat – 100% męskości.</p>
+    </div>
+
+    <div class="mt-12 sm:mt-16 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10">
+      <a href="tel:+48534593733" class="inline-flex items-center justify-center min-h-[52px] px-9 bg-accent text-bg font-display font-bold uppercase tracking-[0.15em] hover:brightness-110 transition motion-reduce:transition-none">
+        Zadzwoń: 534 593 733
+      </a>
+      <p class="text-inkmuted leading-relaxed">
+        Wojska Polskiego 17<br>97-360 Kamieńsk
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ PASMO: NARZĘDZIA ============ -->
+<div class="w-full overflow-hidden border-b border-border bg-surface">
+  <img src="img/zdjecie1.jpg" alt="Nożyczki i maszynka do strzyżenia na stanowisku pracy barbera" class="bw w-full h-40 sm:h-52 lg:h-64 object-cover" style="object-position: 58% 52%;" width="2400" height="1600" loading="lazy" decoding="async">
+</div>
+
+<!-- ============ O NAS ============ -->
+<section id="o-nas" class="border-b border-border">
+  <div class="mx-auto max-w-container px-5 sm:px-8 py-16 sm:py-24">
+    <div class="grid gap-8 md:grid-cols-[9rem_1fr] md:gap-12">
+      <h2 class="label text-inkmuted md:pt-2">O nas</h2>
+      <div class="max-w-2xl space-y-5 text-lg leading-relaxed">
+        <p>
+          Męska Sprawa to barbershop w Kamieńsku, przy Wojska Polskiego 17. Robimy jedno i robimy to porządnie: włosy i brodę.
+        </p>
+        <p class="text-inkmuted">
+          Bez pośpiechu i bez ściemy. Siadasz w fotelu, mówisz co chcesz, a jak nie wiesz, to doradzimy. Ostra brzytwa, ciepły ręcznik i normalna rozmowa. Wychodzisz z robotą, którą widać przez kolejne tygodnie.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CENNIK ============ -->
+<section id="cennik" class="bg-surface border-b border-border">
+  <div class="mx-auto max-w-container px-5 sm:px-8 py-16 sm:py-24">
+    <div class="grid gap-8 md:grid-cols-[9rem_1fr] md:gap-12">
+      <h2 class="label text-inkmuted md:pt-2">Cennik</h2>
+      <div class="max-w-2xl w-full">
+        <!-- TODO: ceny do uzupełnienia przez klienta -->
+        <dl class="border-y border-border divide-y divide-border">
+          <div class="flex items-baseline justify-between gap-6 py-5">
+            <dt class="text-lg">Strzyżenie włosów</dt>
+            <dd class="font-display font-bold text-accent tabular-nums shrink-0">… zł</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-5">
+            <dt class="text-lg">Strzyżenie włosów i brody</dt>
+            <dd class="font-display font-bold text-accent tabular-nums shrink-0">… zł</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-5">
+            <dt class="text-lg">Broda: trymowanie i modelowanie</dt>
+            <dd class="font-display font-bold text-accent tabular-nums shrink-0">… zł</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-5">
+            <dt class="text-lg">Golenie brzytwą</dt>
+            <dd class="font-display font-bold text-accent tabular-nums shrink-0">… zł</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-5">
+            <dt class="text-lg">Strzyżenie maszynką</dt>
+            <dd class="font-display font-bold text-accent tabular-nums shrink-0">… zł</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-5">
+            <dt class="text-lg">Strzyżenie juniora</dt>
+            <dd class="font-display font-bold text-accent tabular-nums shrink-0">… zł</dd>
+          </div>
+        </dl>
+        <p class="mt-6 text-sm text-inkmuted">Ceny potwierdzimy telefonicznie przed wizytą.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALERIA ============ -->
+<section id="galeria" class="border-b border-border">
+  <div class="mx-auto max-w-container px-5 sm:px-8 pt-16 sm:pt-24 pb-8 sm:pb-10">
+    <div class="grid gap-8 md:grid-cols-[9rem_1fr] md:gap-12">
+      <h2 class="label text-inkmuted md:pt-2">Galeria</h2>
+      <p class="max-w-2xl text-lg text-inkmuted leading-relaxed">Kilka kadrów z fotela.</p>
+    </div>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-px bg-border border-y border-border">
+    <button type="button" class="tile block w-full aspect-[4/5] bg-surface overflow-hidden" data-full="img/tile-1.jpg" aria-label="Powiększ zdjęcie 1 z 6">
+      <img src="img/tile-1.jpg" alt="Strzyżenie i stylizacja włosów u klienta barbershopu" class="bw w-full h-full object-cover" style="object-position: 50% 40%;" width="800" height="1000" loading="lazy" decoding="async">
+    </button>
+    <button type="button" class="tile block w-full aspect-[4/5] bg-surface overflow-hidden" data-full="img/tile-3.jpg" aria-label="Powiększ zdjęcie 2 z 6">
+      <img src="img/tile-3.jpg" alt="Pielęgnacja brody podczas wizyty w barbershopie" class="bw w-full h-full object-cover" style="object-position: 50% 35%;" width="800" height="1000" loading="lazy" decoding="async">
+    </button>
+    <button type="button" class="tile block w-full aspect-[4/5] bg-surface overflow-hidden" data-full="img/tile-4.jpg" aria-label="Powiększ zdjęcie 3 z 6">
+      <img src="img/tile-4.jpg" alt="Wymodelowana broda po zabiegu u barbera" class="bw w-full h-full object-cover" style="object-position: 42% 15%;" width="800" height="1000" loading="lazy" decoding="async">
+    </button>
+
+    <!-- Miejsce na filmy z pracy — na razie placeholdery, podmienimy na <video>/embed gdy będą gotowe materiały. -->
+    <button type="button" class="tile aspect-[4/5] bg-surface flex items-center justify-center text-inkmuted hover:text-ink transition-colors motion-reduce:transition-none" data-video aria-label="Odtwórz wideo 4 z 6">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1" class="w-10 h-10 opacity-60" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M20 17l11 7-11 7z" fill="currentColor" stroke="none"/></svg>
+    </button>
+    <button type="button" class="tile aspect-[4/5] bg-surface flex items-center justify-center text-inkmuted hover:text-ink transition-colors motion-reduce:transition-none" data-video aria-label="Odtwórz wideo 5 z 6">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1" class="w-10 h-10 opacity-60" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M20 17l11 7-11 7z" fill="currentColor" stroke="none"/></svg>
+    </button>
+    <button type="button" class="tile aspect-[4/5] bg-surface flex items-center justify-center text-inkmuted hover:text-ink transition-colors motion-reduce:transition-none" data-video aria-label="Odtwórz wideo 6 z 6">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1" class="w-10 h-10 opacity-60" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M20 17l11 7-11 7z" fill="currentColor" stroke="none"/></svg>
+    </button>
+  </div>
+</section>
+
+<!-- ============ OPINIE ============ -->
+<section id="opinie" class="bg-surface border-b border-border">
+  <div class="mx-auto max-w-container px-5 sm:px-8 py-16 sm:py-24">
+    <div class="text-center">
+      <h2 class="label text-inkmuted mb-5">Opinie</h2>
+      <p class="flex items-center justify-center gap-3">
+        <span class="text-accent tracking-wide" aria-hidden="true">★★★★★</span>
+        <span class="text-inkmuted">5,0 z 87 opinii na Google</span>
+      </p>
+      <a href="https://www.google.com/search?sca_esv=a64f8b6be24e5a42&cs=0&sxsrf=APpeQntG7K3H5RTjV3hueWq8Zece9eB8gw:1785732760714&q=M%C4%99ska+Sprawa+%F0%9F%92%88+Opinie&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxIxNDK0sDQ1MDM3NzEyMbIwN7cwNN_AyPiKUdL3yMzi7ESF4IKixPJEhQ_zJ3Uo-Bdk5mWmLmLFLQcAx9Cca1MAAAA&rldimm=12189506774242877817&tbm=lcl&hl=pl-PL&sa=X&ved=2ahUKEwja3_H21IOWAxXlQvEDHXOyH_UQ9fQKegQIEBAG&biw=1512&bih=797&dpr=2#lkt=LocalPoiReviews&lrd=0x471a0345eba74c7b:0xa929d3d411f6e179,3,,,," target="_blank" rel="noopener" class="inline-flex items-center justify-center min-h-[44px] px-7 mt-6 bg-accent text-bg font-display font-bold text-sm uppercase tracking-[0.15em] hover:brightness-110 transition motion-reduce:transition-none">
+        Zostaw opinię!
+      </a>
+    </div>
+
+    <div class="mt-12 sm:mt-14 rail -mx-5 sm:-mx-8 px-5 sm:px-8" id="rail-opinie" tabindex="0" role="group" aria-label="Karuzela opinii klientów">
+
+          <blockquote class="w-[19rem] sm:w-[22rem] border-t border-border pt-6">
+            <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+            <p class="leading-relaxed">Mistrzostwo w swoim fachu. Świetne podejście do klienta, precyzyjne cięcie i bardzo przyjemna atmosfera. Syn wyszedł zachwycony i na pewno będzie tu wracał.</p>
+            <footer class="mt-4 text-sm text-inkmuted not-italic">Agnieszka Staszewska · 2 miesiące temu</footer>
+          </blockquote>
+
+          <blockquote class="w-[19rem] sm:w-[22rem] border-t border-border pt-6">
+            <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+            <p class="leading-relaxed">Świetny barber. Pełen profesjonalizm od początku do końca, strzyżenie wykonane bardzo dokładnie, z dbałością o każdy detal. Miła atmosfera i dobre doradztwo.</p>
+            <footer class="mt-4 text-sm text-inkmuted not-italic">Kuba Olszewski · 6 miesięcy temu</footer>
+          </blockquote>
+
+          <blockquote class="w-[19rem] sm:w-[22rem] border-t border-border pt-6">
+            <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+            <p class="leading-relaxed">Świetny fachowiec i prawdziwy profesjonalista. Strzyżenie zawsze na najwyższym poziomie, precyzyjne i dopracowane w każdym detalu. Widać pasję i doświadczenie, a do tego świetna atmosfera.</p>
+            <footer class="mt-4 text-sm text-inkmuted not-italic">Marcin Sewerynek · Lokalny przewodnik, 18 opinii · rok temu</footer>
+          </blockquote>
+
+          <blockquote class="w-[19rem] sm:w-[22rem] border-t border-border pt-6">
+            <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+            <p class="leading-relaxed">Kuba podchodzi do klienta z wielkim profesjonalizmem. Z czystym sumieniem mogę polecić wizytę w tym salonie.</p>
+            <footer class="mt-4 text-sm text-inkmuted not-italic">Mateusz Kołodziejczyk · 11 miesięcy temu</footer>
+          </blockquote>
+
+          <blockquote class="w-[19rem] sm:w-[22rem] border-t border-border pt-6">
+            <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+            <p class="leading-relaxed">Kuba dokładnie wysłuchał, czego syn oczekuje, doradził najlepszą fryzurę i zadbał o każdy detal. Przyjazna atmosfera i czysta przyjemność z całej wizyty. Zdecydowanie wrócimy.</p>
+            <footer class="mt-4 text-sm text-inkmuted not-italic">Edyta Szadkowska · rok temu</footer>
+          </blockquote>
+
+          <blockquote class="w-[19rem] sm:w-[22rem] border-t border-border pt-6">
+            <p class="text-accent tracking-wide mb-3" aria-hidden="true">★★★★★</p>
+            <p class="leading-relaxed">Świetne męskie strzyżenie, dokładne i z wyczuciem. Fryzjer zna się na rzeczy, potrafi doradzić fryzurę dopasowaną do kształtu twarzy. Miła atmosfera i profesjonalne podejście.</p>
+            <footer class="mt-4 text-sm text-inkmuted not-italic">Asia Janoch · rok temu</footer>
+          </blockquote>
+
+    </div>
+
+    <div class="mt-8 sm:mt-10 flex items-center justify-center gap-2">
+      <button type="button" data-rail-prev aria-label="Poprzednie opinie"
+              class="w-11 h-11 shrink-0 border border-border flex items-center justify-center text-inkmuted hover:text-ink hover:border-ink transition-colors motion-reduce:transition-none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-5 h-5" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button type="button" data-rail-next aria-label="Następne opinie"
+              class="w-11 h-11 shrink-0 border border-border flex items-center justify-center text-inkmuted hover:text-ink hover:border-ink transition-colors motion-reduce:transition-none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-5 h-5" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KONTAKT ============ -->
+<section id="kontakt" class="border-b border-border">
+  <div class="mx-auto max-w-container px-5 sm:px-8 py-16 sm:py-24">
+    <div class="grid gap-8 md:grid-cols-[9rem_1fr] md:gap-12">
+      <h2 class="label text-inkmuted md:pt-2">Kontakt</h2>
+
+      <div class="grid gap-12 sm:grid-cols-2 max-w-2xl w-full">
+
+        <div>
+          <h3 class="label text-inkmuted mb-5">Adres</h3>
+          <address class="not-italic text-lg leading-relaxed mb-6">
+            Wojska Polskiego 17<br>
+            97-360 Kamieńsk
+          </address>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=Wojska+Polskiego+17,+97-360+Kamie%C5%84sk" target="_blank" rel="noopener" class="inline-flex items-center justify-center min-h-[44px] px-6 border border-border text-inkmuted label hover:text-ink hover:border-ink transition motion-reduce:transition-none">
+            Wyznacz trasę
+          </a>
+
+          <h3 class="label text-inkmuted mt-10 mb-5 pt-10 border-t border-border">Telefon</h3>
+          <a href="tel:+48534593733" class="inline-block font-display font-black text-3xl sm:text-4xl tight text-accent hover:brightness-110 transition motion-reduce:transition-none">534 593 733</a>
+        </div>
+
+        <div>
+          <h3 class="label text-inkmuted mb-5">Godziny otwarcia</h3>
+          <dl class="border-y border-border divide-y divide-border">
+            <div class="flex items-baseline justify-between gap-4 py-3">
+              <dt class="text-inkmuted">poniedziałek</dt>
+              <dd class="tabular-nums shrink-0">zamknięte</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-3">
+              <dt class="text-inkmuted">wtorek</dt>
+              <dd class="tabular-nums shrink-0">zamknięte</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-3">
+              <dt class="text-inkmuted">środa</dt>
+              <dd class="tabular-nums shrink-0">zamknięte</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-3">
+              <dt class="text-inkmuted">czwartek</dt>
+              <dd class="tabular-nums shrink-0">8:00 – 20:00</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-3">
+              <dt class="text-inkmuted">piątek</dt>
+              <dd class="tabular-nums shrink-0">8:00 – 20:00</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-3">
+              <dt class="text-inkmuted">sobota</dt>
+              <dd class="tabular-nums shrink-0">6:00 – 15:00</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 py-3">
+              <dt class="text-inkmuted">niedziela</dt>
+              <dd class="tabular-nums shrink-0">zamknięte</dd>
+            </div>
+          </dl>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MAPA ============ -->
+<div class="w-full h-72 sm:h-96 lg:h-[26rem] map-frame">
+  <iframe src="https://www.google.com/maps?q=Wojska+Polskiego+17,+97-360+Kamie%C5%84sk&output=embed" title="Mapa: Wojska Polskiego 17, 97-360 Kamieńsk" width="100%" height="100%" style="border:0;display:block" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+
+</main>
+
+<!-- ============ STOPKA ============ -->
+<footer class="bg-bg">
+  <div class="mx-auto max-w-container px-5 sm:px-8 py-14 sm:py-16">
+    <div class="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
+
+      <div>
+        <img src="img/logo.png" alt="Męska Sprawa Barber" class="h-5 w-auto mb-6" width="1105" height="221" loading="lazy">
+        <address class="not-italic text-inkmuted leading-relaxed">
+          Wojska Polskiego 17, 97-360 Kamieńsk<br>
+          <a href="tel:+48534593733" class="text-accent hover:brightness-110 transition motion-reduce:transition-none">534 593 733</a>
+        </address>
+      </div>
+
+      <div class="flex flex-col gap-4">
+        <a href="https://www.facebook.com/profile.php?id=61576308917963" target="_blank" rel="noopener" class="inline-flex items-center gap-3 text-inkmuted hover:text-ink transition motion-reduce:transition-none">
+          <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.5-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.79 8.44-4.94 8.44-9.94z"/></svg>
+          <span class="label">Facebook</span>
+        </a>
+      </div>
+
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-sm text-inkmuted">
+      <p>© <span id="rok">2026</span> Męska Sprawa Barber</p>
+      <a href="privacy.html" class="hover:text-ink transition motion-reduce:transition-none">Polityka prywatności</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Lightbox galerii -->
+<div class="lb" id="lb" hidden>
+  <div class="lb-stage" role="dialog" aria-modal="true" aria-label="Galeria Męska Sprawa Barber">
+    <button type="button" class="lb-btn lb-close" data-close aria-label="Zamknij podgląd">✕</button>
+    <figure class="lb-fig">
+      <img class="lb-img" alt="" hidden>
+      <div class="lb-placeholder" hidden>
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1" class="w-14 h-14 opacity-70" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M20 17l11 7-11 7z" fill="currentColor" stroke="none"/></svg>
+        <span class="lb-placeholder-label text-sm"></span>
+      </div>
+    </figure>
+    <div class="lb-controls">
+      <button type="button" class="lb-btn lb-nav lb-prev" data-prev aria-label="Poprzednia pozycja">‹</button>
+      <button type="button" class="lb-btn lb-nav lb-next" data-next aria-label="Następna pozycja">›</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('rok').textContent = new Date().getFullYear();
+</script>
+
+<script>
+  // Lightbox galerii: klik otwiera, strzałki < > i klawiatura przewijają w pętli (po ostatnim wraca pierwsze), Esc zamyka.
+  // Kafle wideo są na razie placeholderami — lightbox obsługuje oba stany, gotowy na podmianę na <video>/embed gdy będą materiały.
+  (function () {
+    var tiles = Array.prototype.slice.call(document.querySelectorAll('#galeria .tile'));
+    if (!tiles.length) return;
+    var items = tiles.map(function (t, i) {
+      var img = t.querySelector('img');
+      if (img) {
+        return { type: 'img', src: t.getAttribute('data-full') || img.getAttribute('src'), alt: img.getAttribute('alt') || '' };
+      }
+      return { type: 'placeholder', label: 'Wideo ' + (i + 1) + ' z ' + tiles.length + ' — wkrótce' };
+    });
+    var lb = document.getElementById('lb');
+    var lbImg = lb.querySelector('.lb-img');
+    var lbPlaceholder = lb.querySelector('.lb-placeholder');
+    var lbPlaceholderLabel = lb.querySelector('.lb-placeholder-label');
+    var focusables = lb.querySelectorAll('button');
+    var idx = 0, lastFocus = null;
+
+    function show(i) {
+      idx = (i + items.length) % items.length;
+      var item = items[idx];
+      if (item.type === 'img') {
+        lbImg.src = item.src;
+        lbImg.alt = item.alt;
+        lbImg.hidden = false;
+        lbPlaceholder.hidden = true;
+      } else {
+        lbImg.hidden = true;
+        lbImg.removeAttribute('src');
+        lbPlaceholder.hidden = false;
+        lbPlaceholderLabel.textContent = item.label;
+      }
+    }
+    function open(i) {
+      lastFocus = document.activeElement;
+      show(i);
+      lb.hidden = false;
+      document.body.style.overflow = 'hidden';
+      lb.querySelector('.lb-next').focus();
+      document.addEventListener('keydown', onKey);
+    }
+    function close() {
+      lb.hidden = true;
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', onKey);
+      if (lastFocus) lastFocus.focus();
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowRight') show(idx + 1);
+      else if (e.key === 'ArrowLeft') show(idx - 1);
+      else if (e.key === 'Tab') {
+        var first = focusables[0], last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+    tiles.forEach(function (t, i) { t.addEventListener('click', function () { open(i); }); });
+    lb.addEventListener('click', function (e) {
+      if (e.target.closest('[data-close]')) close();
+      else if (e.target.closest('[data-next]')) show(idx + 1);
+      else if (e.target.closest('[data-prev]')) show(idx - 1);
+      else if (e.target !== lbImg && !e.target.closest('.lb-placeholder')) close();
+    });
+  })();
+</script>
+
+<script>
+  // Karuzela opinii w pętli: klony przed i po zestawie realnych opinii,
+  // po dojeździe w strefę klonów ciche przeskoczenie o szerokość zestawu (niewidoczne dla oka).
+  (function () {
+    var rail = document.getElementById('rail-opinie');
+    if (!rail) return;
+    var originals = Array.prototype.slice.call(rail.children);
+    var n = originals.length;
+    if (n < 2) return;
+
+    function cloneSet() {
+      return originals.map(function (el) {
+        var clone = el.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        return clone;
+      });
+    }
+
+    var fragBefore = document.createDocumentFragment();
+    cloneSet().forEach(function (el) { fragBefore.appendChild(el); });
+    rail.insertBefore(fragBefore, rail.firstChild);
+
+    var afterSet = cloneSet();
+    var fragAfter = document.createDocumentFragment();
+    afterSet.forEach(function (el) { fragAfter.appendChild(el); });
+    rail.appendChild(fragAfter);
+
+    function contentPos(el) {
+      return el.getBoundingClientRect().left - rail.getBoundingClientRect().left + rail.scrollLeft;
+    }
+
+    var middleStart = contentPos(originals[0]);
+    var setWidth = contentPos(afterSet[0]) - middleStart;
+
+    rail.scrollLeft = middleStart;
+
+    function step() {
+      return originals[0].getBoundingClientRect().width + 40;
+    }
+    function scrollDir(dir) {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      rail.scrollBy({ left: dir * step(), behavior: reduce ? 'auto' : 'smooth' });
+    }
+
+    var settleTimer = null;
+    rail.addEventListener('scroll', function () {
+      if (settleTimer) clearTimeout(settleTimer);
+      settleTimer = setTimeout(function () {
+        var cur = rail.scrollLeft;
+        if (cur >= middleStart + setWidth - 2) {
+          rail.scrollLeft = cur - setWidth;
+        } else if (cur < middleStart - 2) {
+          rail.scrollLeft = cur + setWidth;
+        }
+      }, 120);
+    }, { passive: true });
+
+    var prev = document.querySelector('[data-rail-prev]');
+    var next = document.querySelector('[data-rail-next]');
+    if (prev) prev.addEventListener('click', function () { scrollDir(-1); });
+    if (next) next.addEventListener('click', function () { scrollDir(1); });
+  })();
+</script>
+
+<script>
+  // Podświetlenie aktywnej sekcji w headerze (scroll-spy) na kotwicach #id wewnątrz <nav>.
+  (function () {
+    var links = [].slice.call(document.querySelectorAll('nav a[href^="#"]'));
+    var map = links.map(function (a) {
+      return { link: a, section: document.getElementById(a.getAttribute('href').slice(1)) };
+    }).filter(function (m) { return m.section; });
+    if (!map.length) return;
+
+    var active = null;
+    function setActive(link) {
+      if (active === link) return;
+      if (active) active.classList.remove('text-accent');
+      if (link) link.classList.add('text-accent');
+      active = link;
+    }
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var match = map.find(function (m) { return m.section === entry.target; });
+        if (match) setActive(match.link);
+      });
+    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+
+    map.forEach(function (m) { observer.observe(m.section); });
+  })();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HairSalon",
+  "name": "Męska Sprawa Barber",
+  "description": "Barbershop w Kamieńsku. Strzyżenie włosów, pielęgnacja i modelowanie brody, golenie brzytwą.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Wojska Polskiego 17",
+    "postalCode": "97-360",
+    "addressLocality": "Kamieńsk",
+    "addressCountry": "PL"
+  },
+  "telephone": "+48534593733",
+  "url": "https://www.facebook.com/profile.php?id=61576308917963",
+  "sameAs": ["https://www.facebook.com/profile.php?id=61576308917963"],
+  "priceRange": "$$",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "reviewCount": "87"
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Thursday", "Friday"], "opens": "08:00", "closes": "20:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "06:00", "closes": "15:00" }
+  ]
+}
+</script>
+
+</body>
+</html>

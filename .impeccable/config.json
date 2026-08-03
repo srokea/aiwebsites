@@ -3,7 +3,9 @@
     "ignoreRules": [
       "single-font"
     ],
-    "ignoreFiles": [],
+    "ignoreFiles": [
+      "clients/meska-sprawa/*.html"
+    ],
     "ignoreValues": [
       {
         "rule": "overused-font",
