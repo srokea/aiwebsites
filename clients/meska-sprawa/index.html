@@ -169,37 +169,42 @@
 
 <!-- ============ HERO ============ -->
 <section id="gora" class="border-b border-border">
-  <div class="mx-auto max-w-container px-5 sm:px-8 py-20 sm:py-28 lg:py-36">
+  <div class="mx-auto max-w-container px-5 sm:px-8">
+    <div class="grid lg:grid-cols-2 lg:gap-12 lg:items-stretch">
 
-    <p class="label text-accent mb-8 sm:mb-10">Barbershop · Kamieńsk</p>
+      <div class="py-20 sm:py-28 lg:py-32">
 
-    <h1 class="font-display font-black tight leading-[0.95] text-[clamp(2.6rem,9vw,5.5rem)] uppercase">
-      Twój styl<br>zaczyna się<br>tutaj<span class="text-accent">.</span>
-    </h1>
+        <p class="label text-accent mb-8 sm:mb-10">Barbershop · Kamieńsk</p>
 
-    <!-- Trzy linie copy pochodzą wprost z materiałów klienta (grafika FB). -->
-    <div class="mt-10 sm:mt-14 border-l-2 border-accent pl-5 sm:pl-7 space-y-1.5">
-      <p class="text-lg sm:text-2xl font-display font-bold tracking-tight">Włosy – idealne.</p>
-      <p class="text-lg sm:text-2xl font-display font-bold tracking-tight">Broda – dopieszczona.</p>
-      <p class="text-lg sm:text-2xl font-display font-bold tracking-tight">Klimat – 100% męskości.</p>
+        <h1 class="font-display font-black tight leading-[0.95] text-[clamp(2.6rem,9vw,5.5rem)] uppercase">
+          Twój styl<br>zaczyna się<br>tutaj<span class="text-accent">.</span>
+        </h1>
+
+        <!-- Trzy linie copy pochodzą wprost z materiałów klienta (grafika FB). -->
+        <div class="mt-10 sm:mt-14 border-l-2 border-accent pl-5 sm:pl-7 space-y-1.5">
+          <p class="text-lg sm:text-2xl font-display font-bold tracking-tight">Włosy – idealne.</p>
+          <p class="text-lg sm:text-2xl font-display font-bold tracking-tight">Broda – dopieszczona.</p>
+          <p class="text-lg sm:text-2xl font-display font-bold tracking-tight">Klimat – 100% męskości.</p>
+        </div>
+
+        <div class="mt-12 sm:mt-16 flex flex-col gap-6">
+          <a href="tel:+48534593733" class="inline-flex items-center justify-center min-h-[52px] px-9 bg-accent text-bg font-display font-bold uppercase tracking-[0.15em] hover:brightness-110 transition motion-reduce:transition-none w-fit">
+            Zadzwoń: 534 593 733
+          </a>
+          <p class="text-inkmuted leading-relaxed">
+            Wojska Polskiego 17<br>97-360 Kamieńsk
+          </p>
+        </div>
+
+      </div>
+
+      <div class="-mx-5 sm:-mx-8 lg:mx-0 lg:my-10">
+        <img src="img/zdjecie1.jpg" alt="Nożyczki i maszynka do strzyżenia na stanowisku pracy barbera" class="bw w-full h-64 sm:h-80 lg:h-full object-cover" style="object-position: 60% 50%;" width="2400" height="1600" loading="eager" decoding="async">
+      </div>
+
     </div>
-
-    <div class="mt-12 sm:mt-16 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10">
-      <a href="tel:+48534593733" class="inline-flex items-center justify-center min-h-[52px] px-9 bg-accent text-bg font-display font-bold uppercase tracking-[0.15em] hover:brightness-110 transition motion-reduce:transition-none">
-        Zadzwoń: 534 593 733
-      </a>
-      <p class="text-inkmuted leading-relaxed">
-        Wojska Polskiego 17<br>97-360 Kamieńsk
-      </p>
-    </div>
-
   </div>
 </section>
-
-<!-- ============ PASMO: NARZĘDZIA ============ -->
-<div class="w-full overflow-hidden border-b border-border bg-surface">
-  <img src="img/zdjecie1.jpg" alt="Nożyczki i maszynka do strzyżenia na stanowisku pracy barbera" class="bw w-full h-40 sm:h-52 lg:h-64 object-cover" style="object-position: 58% 52%;" width="2400" height="1600" loading="lazy" decoding="async">
-</div>
 
 <!-- ============ O NAS ============ -->
 <section id="o-nas" class="border-b border-border">
@@ -266,24 +271,14 @@
     </div>
   </div>
   <div class="grid grid-cols-2 md:grid-cols-3 gap-px bg-border border-y border-border">
-    <button type="button" class="tile block w-full aspect-[4/5] bg-surface overflow-hidden" data-full="img/tile-1.jpg" aria-label="Powiększ zdjęcie 1 z 6">
-      <img src="img/tile-1.jpg" alt="Strzyżenie i stylizacja włosów u klienta barbershopu" class="bw w-full h-full object-cover" style="object-position: 50% 40%;" width="800" height="1000" loading="lazy" decoding="async">
-    </button>
-    <button type="button" class="tile block w-full aspect-[4/5] bg-surface overflow-hidden" data-full="img/tile-3.jpg" aria-label="Powiększ zdjęcie 2 z 6">
-      <img src="img/tile-3.jpg" alt="Pielęgnacja brody podczas wizyty w barbershopie" class="bw w-full h-full object-cover" style="object-position: 50% 35%;" width="800" height="1000" loading="lazy" decoding="async">
-    </button>
-    <button type="button" class="tile block w-full aspect-[4/5] bg-surface overflow-hidden" data-full="img/tile-4.jpg" aria-label="Powiększ zdjęcie 3 z 6">
-      <img src="img/tile-4.jpg" alt="Wymodelowana broda po zabiegu u barbera" class="bw w-full h-full object-cover" style="object-position: 42% 15%;" width="800" height="1000" loading="lazy" decoding="async">
-    </button>
-
     <!-- Miejsce na filmy z pracy — na razie placeholdery, podmienimy na <video>/embed gdy będą gotowe materiały. -->
-    <button type="button" class="tile aspect-[4/5] bg-surface flex items-center justify-center text-inkmuted hover:text-ink transition-colors motion-reduce:transition-none" data-video aria-label="Odtwórz wideo 4 z 6">
+    <button type="button" class="tile aspect-[4/5] bg-surface flex items-center justify-center text-inkmuted hover:text-ink transition-colors motion-reduce:transition-none" data-video aria-label="Odtwórz wideo 1 z 3">
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1" class="w-10 h-10 opacity-60" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M20 17l11 7-11 7z" fill="currentColor" stroke="none"/></svg>
     </button>
-    <button type="button" class="tile aspect-[4/5] bg-surface flex items-center justify-center text-inkmuted hover:text-ink transition-colors motion-reduce:transition-none" data-video aria-label="Odtwórz wideo 5 z 6">
+    <button type="button" class="tile aspect-[4/5] bg-surface flex items-center justify-center text-inkmuted hover:text-ink transition-colors motion-reduce:transition-none" data-video aria-label="Odtwórz wideo 2 z 3">
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1" class="w-10 h-10 opacity-60" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M20 17l11 7-11 7z" fill="currentColor" stroke="none"/></svg>
     </button>
-    <button type="button" class="tile aspect-[4/5] bg-surface flex items-center justify-center text-inkmuted hover:text-ink transition-colors motion-reduce:transition-none" data-video aria-label="Odtwórz wideo 6 z 6">
+    <button type="button" class="tile aspect-[4/5] bg-surface flex items-center justify-center text-inkmuted hover:text-ink transition-colors motion-reduce:transition-none col-span-2 md:col-span-1" data-video aria-label="Odtwórz wideo 3 z 3">
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1" class="w-10 h-10 opacity-60" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M20 17l11 7-11 7z" fill="currentColor" stroke="none"/></svg>
     </button>
   </div>
