@@ -671,7 +671,7 @@
 
 <script>
   // Galeria w pętli: klony przed/po zestawie 6 kafli (jak karuzela opinii), przewijanie
-  // o całą widoczną "stronę" (3 kafle) — nigdy w pół kafla — z cichym doskokiem na końcach.
+  // o pojedynczy kafel na klik — z cichym doskokiem na końcach.
   (function () {
     var rail = document.getElementById('rail-galeria');
     if (!rail) return;
@@ -707,9 +707,7 @@
     rail.scrollLeft = middleStart;
 
     function step() {
-      // Przewijaj o całą widoczną szerokość (jedną "stronę" kafli), nie o pojedynczy kafel —
-      // dzięki temu przycisk zawsze ląduje na granicy kafla, nigdy w jego połowie.
-      return rail.clientWidth;
+      return originals[0].getBoundingClientRect().width + 40;
     }
     function scrollDir(dir) {
       var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
