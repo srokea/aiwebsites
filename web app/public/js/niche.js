@@ -48,8 +48,12 @@ async function init() {
     meta = await api.get("/api/meta");
     highlightStatuses = new Set(meta.interestedOptions.filter((o) => o.highlight).map((o) => o.value));
     renderFilterBar();
+    document.getElementById("export-csv-btn").href = `/api/niches/${encodeURIComponent(slug)}/export.csv`;
     await loadNicheHeader();
     await loadLeads();
+
+    const focusId = params.get("lead");
+    if (focusId) focusLeadRow(focusId);
   } catch (err) {
     // np. nisza usunieta w innej karcie albo zly link - lepiej pokazac komunikat niz pusta strone
     document.getElementById("niche-title").textContent = "Nie udało się wczytać niszy";
@@ -67,14 +71,15 @@ async function loadNicheHeader() {
   titleEl.textContent = niche.name;
   titleEl.style.color = niche.color || "";
   document.title = `${niche.name} — Cold Calls`;
-  document.getElementById("niche-sub").textContent = `${niche.called}/${niche.total} zadzwonionych · ${niche.todo} do zrobienia`;
+  // liczniki wzgledem "eligible" - leadow bez wlasnej strony (por. STATS_ELIGIBLE_SQL na serwerze)
+  document.getElementById("niche-sub").textContent = `${niche.called}/${niche.eligible} zadzwonionych · ${niche.todo} do zrobienia`;
 
-  const pct = niche.total ? Math.round((niche.called / niche.total) * 100) : 0;
+  const pct = niche.eligible ? Math.round((niche.called / niche.eligible) * 100) : 0;
   document.getElementById("niche-stats").innerHTML = `
-    <div class="stat-card"><div class="num">${niche.total}</div><div class="label">Wszystkich</div></div>
-    <div class="stat-card accent-green"><div class="num">${niche.called}</div><div class="label">Zadzwonionych</div></div>
-    <div class="stat-card accent-red"><div class="num">${niche.todo}</div><div class="label">Do zrobienia</div></div>
-    <div class="stat-card accent-gold"><div class="num">${pct}%</div><div class="label">Postep</div></div>
+    <div class="stat-card"><div class="num">${niche.total}</div><div class="label">${statIcon("layers")}Wszystkich</div></div>
+    <div class="stat-card"><div class="num">${niche.called}</div><div class="label">${statIcon("check")}Zadzwonionych</div></div>
+    <div class="stat-card"><div class="num">${niche.todo}</div><div class="label">${statIcon("list")}Do zrobienia</div></div>
+    <div class="stat-card"><div class="num">${pct}%</div><div class="label">${statIcon("trend")}Postęp</div></div>
   `;
 
   const maxCaller = Math.max(1, ...niche.byCaller.map((c) => c.c));
@@ -83,8 +88,8 @@ async function loadNicheHeader() {
     .map((name) => {
       const count = niche.byCaller.find((c) => c.caller === name)?.c || 0;
       const w = Math.round((count / maxCaller) * 100);
-      // % tej osoby wzgledem WSZYSTKICH leadow w niszy (nie wzgledem sumy obu dzwoniacych)
-      const pctOfTotal = niche.total ? Math.round((count / niche.total) * 100) : 0;
+      // % tej osoby wzgledem wszystkich LICZONYCH leadow w niszy (bez majacych wlasna strone)
+      const pctOfTotal = niche.eligible ? Math.round((count / niche.eligible) * 100) : 0;
       const color = callerColor(name);
       const crown = topCount > 0 && count === topCount ? `<span class="crown" title="Lider">👑</span>` : "";
       return `
@@ -403,6 +408,17 @@ function answeredHtml(lead) {
   `;
 }
 
+// Podglad notatek w komorce: ZAWSZE najnowsza notatka (lista z serwera idzie od najnowszej),
+// plus licznik gdy jest ich wiecej. Klik otwiera tablice korkowa.
+function notesCellHtml(lead) {
+  const notes = lead.notes_list || [];
+  const newest = notes[0];
+  const inner = newest
+    ? `<span class="note-preview">${escapeHtml(newest.content)}</span>${notes.length > 1 ? `<span class="note-count">${notes.length}</span>` : ""}`
+    : `<span class="note-empty">+ notatka</span>`;
+  return `<button type="button" class="note-cell" title="Notatki (${notes.length})">${inner}</button>`;
+}
+
 function companyGoogleSearchHref(lead) {
   return `https://www.google.com/search?q=${encodeURIComponent(`${lead.company_name} ${lead.city}`.trim())}`;
 }
@@ -435,7 +451,7 @@ function rowHtml(lead, index) {
       <td><span class="reminder-badge ${reminder.cls}">${reminder.text}</span></td>
       <td><input type="date" data-field="callback_when" value="${escapeHtml(lead.callback_when)}"></td>
       <td><input type="datetime-local" data-field="google_term" value="${escapeHtml(lead.google_term)}"></td>
-      <td><input type="text" data-field="notes" value="${escapeHtml(lead.notes)}" style="min-width:180px" placeholder="notatka..."></td>
+      <td>${notesCellHtml(lead)}</td>
       <td><a class="call-btn" href="/script.html?leadId=${lead.id}" title="Scheme rozmowy">📖</a></td>
     </tr>
   `;
@@ -500,6 +516,12 @@ tbody.addEventListener("change", (e) => {
 });
 
 tbody.addEventListener("click", (e) => {
+  const noteBtn = e.target.closest(".note-cell");
+  if (noteBtn) {
+    openNotesModal(Number(noteBtn.closest("tr").dataset.id));
+    return;
+  }
+
   const trigger = e.target.closest(".csel-trigger, .tags-trigger");
   if (trigger) {
     const box = trigger.closest(".csel, .tags-popover");
@@ -567,8 +589,119 @@ document.addEventListener("click", (e) => {
   });
 });
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeAllPopovers();
+  if (e.key !== "Escape") return;
+  closeAllPopovers();
+  closeNotesModal();
 });
+
+// ---------- notatki: tablica korkowa ----------
+
+let notesLeadId = null;
+
+// created_at z SQLite to UTC ("YYYY-MM-DD HH:MM:SS") - dopiero z "Z" na koncu
+// przegladarka przeliczy je na czas lokalny
+function noteDateLabel(createdAt) {
+  const d = new Date(createdAt.replace(" ", "T") + "Z");
+  if (isNaN(d.getTime())) return createdAt;
+  return `${d.toLocaleDateString("pl-PL", { day: "numeric", month: "short", year: "numeric" })} · ${d.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" })}`;
+}
+
+function renderNotesModal() {
+  const lead = leads.find((l) => l.id === notesLeadId);
+  if (!lead) return;
+  const notes = lead.notes_list || [];
+
+  document.getElementById("notes-modal-title").textContent = `📌 Notatki — ${lead.company_name}`;
+  document.getElementById("notes-modal-sub").textContent = notes.length
+    ? `${notes.length} ${notes.length === 1 ? "notatka" : notes.length < 5 ? "notatki" : "notatek"} · najnowsza u góry`
+    : "";
+
+  document.getElementById("corkboard").innerHTML = notes.length
+    ? notes
+        .map(
+          (n) => `
+          <div class="note-paper">
+            <span class="note-pin"></span>
+            <button type="button" class="note-paper-delete" data-note-id="${n.id}" title="Usuń notatkę">✕</button>
+            <div class="note-paper-content">${escapeHtml(n.content)}</div>
+            <div class="note-paper-date">${noteDateLabel(n.created_at)}</div>
+          </div>`
+        )
+        .join("")
+    : `<div class="corkboard-empty">Pusta tablica — przypnij pierwszą notatkę poniżej.</div>`;
+}
+
+function openNotesModal(leadId) {
+  notesLeadId = leadId;
+  renderNotesModal();
+  document.getElementById("note-input").value = "";
+  document.getElementById("notes-modal").classList.remove("hidden");
+  document.getElementById("note-input").focus();
+}
+
+function closeNotesModal() {
+  document.getElementById("notes-modal").classList.add("hidden");
+  notesLeadId = null;
+}
+
+// wspolna koncowka dla dodania/usuniecia: serwer odsyla pelna liste notatek leada
+function applyNotesUpdate(updatedList) {
+  const lead = leads.find((l) => l.id === notesLeadId);
+  if (!lead) return;
+  lead.notes_list = updatedList;
+  renderNotesModal();
+  renderSingleRow(lead); // odswieza podglad najnowszej notatki w komorce tabeli
+}
+
+document.getElementById("note-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const input = document.getElementById("note-input");
+  const content = input.value.trim();
+  if (!content || !notesLeadId) return;
+  try {
+    const list = await api.post(`/api/leads/${notesLeadId}/notes`, { content });
+    input.value = "";
+    applyNotesUpdate(list);
+  } catch (err) {
+    alert("Blad zapisu notatki: " + err.message);
+  }
+});
+
+// Enter = przypnij (szybkie notowanie w trakcie dzwonienia), Shift+Enter = nowa linia
+document.getElementById("note-input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    document.getElementById("note-form").requestSubmit();
+  }
+});
+
+document.getElementById("corkboard").addEventListener("click", async (e) => {
+  const btn = e.target.closest(".note-paper-delete");
+  if (!btn || !notesLeadId) return;
+  if (!confirm("Usunąć tę notatkę?")) return;
+  try {
+    applyNotesUpdate(await api.del(`/api/leads/${notesLeadId}/notes/${btn.dataset.noteId}`));
+  } catch (err) {
+    alert("Blad usuwania notatki: " + err.message);
+  }
+});
+
+document.getElementById("notes-modal").addEventListener("click", (e) => {
+  if (e.target.id === "notes-modal") closeNotesModal();
+});
+
+// ---------- wejscie z dashboardu (?lead=<id>): scroll do wiersza + chwilowe podswietlenie ----------
+
+function focusLeadRow(leadId) {
+  // czyscimy parametr od razu, zeby odswiezenie strony nie powtarzalo scrolla/flasha
+  history.replaceState(null, "", `/niche.html?slug=${encodeURIComponent(slug)}`);
+  const tr = document.querySelector(`tr[data-id="${leadId}"]`);
+  if (!tr) return;
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  tr.scrollIntoView({ block: "center", behavior: reduced ? "auto" : "smooth" });
+  tr.classList.add("row-flash");
+  setTimeout(() => tr.classList.remove("row-flash"), 2600);
+}
 
 // ---------- ustawienia niszy ----------
 

@@ -22,4 +22,10 @@ function computeCalledAt(nextLead, previousCalledAt = null) {
   return previousCalledAt || new Date().toISOString();
 }
 
-module.exports = { isCalled, computeCalledAt };
+// Leady, ktore juz maja wlasna strone (Strona = "Tak"), nie wliczaja sie do zadnych
+// statystyk dzwonienia (kafelki, wykresy, paski postepu) - nie ma do kogo dzwonic z oferta,
+// wiec zawyzalyby "do zrobienia" i zanizaly postep. W tabeli leadow normalnie widoczne.
+// Fragment SQL do wklejenia w warunki zapytan (bezpieczny - stala, nie input uzytkownika).
+const STATS_ELIGIBLE_SQL = "has_social <> 'Tak'";
+
+module.exports = { isCalled, computeCalledAt, STATS_ELIGIBLE_SQL };

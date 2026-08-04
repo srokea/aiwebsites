@@ -11,13 +11,14 @@ const LIMIT = 12;
 // isNaN nie wystarczy - wymagamy wprost jednego z dwóch prawdziwych formatow.
 const DATE_FORMAT = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$/;
 
+// Zwraca { items, total }: items przyciete do LIMIT, total = wszystkie zaplanowane
+// (z poprawna data) - do licznika "(N)" w naglowku sekcji na stronie glownej.
 function onlyValidDates(rows) {
-  return rows
+  const valid = rows
     .filter((r) => DATE_FORMAT.test(r.when_at))
     .map((r) => ({ ...r, _when: new Date(r.when_at) }))
-    .sort((a, b) => a._when - b._when)
-    .slice(0, LIMIT)
-    .map(({ _when, ...r }) => r);
+    .sort((a, b) => a._when - b._when);
+  return { items: valid.slice(0, LIMIT).map(({ _when, ...r }) => r), total: valid.length };
 }
 
 // GET /api/upcoming - najblizsze Google Meety (google_term) i callbacki (callback_when)
@@ -42,7 +43,14 @@ router.get("/", (req, res) => {
     )
     .all();
 
-  res.json({ meets: onlyValidDates(meetsRaw), callbacks: onlyValidDates(callbacksRaw) });
+  const meets = onlyValidDates(meetsRaw);
+  const callbacks = onlyValidDates(callbacksRaw);
+  res.json({
+    meets: meets.items,
+    meetsTotal: meets.total,
+    callbacks: callbacks.items,
+    callbacksTotal: callbacks.total,
+  });
 });
 
 module.exports = router;

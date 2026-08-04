@@ -72,6 +72,10 @@
 
       <div class="error" id="settings-error" style="display:none;"></div>
 
+      <label>Dane</label>
+      <a class="btn" id="export-csv-btn" href="#" download>⬇ Pobierz CSV (aktualny stan)</a>
+      <div class="hint">Plik zawiera tabelę po wszystkich naniesionych zmianach, razem z notatkami.</div>
+
       <div class="actions" style="justify-content:space-between;">
         <button type="button" class="btn danger" id="settings-delete-btn">Usuń niszę</button>
         <div style="display:flex; gap:10px;">
@@ -79,6 +83,18 @@
           <button type="submit" class="btn primary">Zapisz</button>
         </div>
       </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="notes-modal">
+  <div class="modal notes-modal">
+    <h3 id="notes-modal-title">Notatki</h3>
+    <div class="notes-sub" id="notes-modal-sub"></div>
+    <div class="corkboard" id="corkboard"></div>
+    <form class="note-form" id="note-form">
+      <textarea id="note-input" placeholder="Nowa notatka... (Enter = przypnij)" rows="2"></textarea>
+      <button type="submit" class="btn primary">Przypnij</button>
     </form>
   </div>
 </div>

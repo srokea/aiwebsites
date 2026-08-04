@@ -3,9 +3,9 @@ const multer = require("multer");
 const Papa = require("papaparse");
 const db = require("../db");
 const { mapRowsToLeads } = require("../csvImport");
-const { computeCalledAt } = require("../leadStatus");
+const { computeCalledAt, STATS_ELIGIBLE_SQL } = require("../leadStatus");
 const { stripDiacritics } = require("../text");
-const { NICHE_COLORS } = require("../constants");
+const { NICHE_COLORS, INTERESTED_OPTIONS, PLATFORM_TAGS, PLATFORM_META } = require("../constants");
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
@@ -16,10 +16,14 @@ function slugify(name) {
     .replace(/(^-|-$)/g, "");
 }
 
+// "called"/"eligible" pomijaja leady ze Strona = "Tak" (patrz STATS_ELIGIBLE_SQL) -
+// "total" to pelna liczba leadow w niszy.
 function nicheStats(nicheId) {
   return db
     .prepare(
-      `SELECT COUNT(*) total, COALESCE(SUM(called_at IS NOT NULL), 0) called
+      `SELECT COUNT(*) total,
+              COALESCE(SUM(${STATS_ELIGIBLE_SQL}), 0) eligible,
+              COALESCE(SUM(called_at IS NOT NULL AND ${STATS_ELIGIBLE_SQL}), 0) called
        FROM leads WHERE niche_id = ?`
     )
     .get(nicheId);
@@ -32,7 +36,9 @@ router.get("/", (req, res) => {
   // jedno zapytanie zbiorcze zamiast dwoch na kazda nisze
   const statsRows = db
     .prepare(
-      `SELECT niche_id, COUNT(*) total, COALESCE(SUM(called_at IS NOT NULL), 0) called
+      `SELECT niche_id, COUNT(*) total,
+              COALESCE(SUM(${STATS_ELIGIBLE_SQL}), 0) eligible,
+              COALESCE(SUM(called_at IS NOT NULL AND ${STATS_ELIGIBLE_SQL}), 0) called
        FROM leads GROUP BY niche_id`
     )
     .all();
@@ -41,7 +47,7 @@ router.get("/", (req, res) => {
   res.json(
     niches.map((n) => {
       const s = statsByNiche.get(n.id);
-      return { ...n, total: s?.total || 0, called: s?.called || 0 };
+      return { ...n, total: s?.total || 0, eligible: s?.eligible || 0, called: s?.called || 0 };
     })
   );
 });
@@ -51,10 +57,12 @@ router.get("/:slug", (req, res) => {
   const niche = db.prepare("SELECT * FROM niches WHERE slug = ?").get(req.params.slug);
   if (!niche) return res.status(404).json({ error: "Nie znaleziono niszy" });
 
-  const { total, called } = nicheStats(niche.id);
+  const { total, eligible, called } = nicheStats(niche.id);
   const byCaller = db
     .prepare(
-      "SELECT caller, COUNT(*) c FROM leads WHERE niche_id = ? AND called_at IS NOT NULL AND caller <> '' GROUP BY caller"
+      `SELECT caller, COUNT(*) c FROM leads
+       WHERE niche_id = ? AND called_at IS NOT NULL AND caller <> '' AND ${STATS_ELIGIBLE_SQL}
+       GROUP BY caller`
     )
     .all(niche.id);
   // called_at trzymamy w UTC (ISO), wiec obie strony porownania musza byc w czasie lokalnym,
@@ -62,19 +70,85 @@ router.get("/:slug", (req, res) => {
   const calledToday = db
     .prepare(
       `SELECT COUNT(*) c FROM leads
-       WHERE niche_id = ? AND called_at IS NOT NULL
+       WHERE niche_id = ? AND called_at IS NOT NULL AND ${STATS_ELIGIBLE_SQL}
          AND date(called_at, 'localtime') = date('now', 'localtime')`
     )
     .get(niche.id).c;
 
-  res.json({ ...niche, total, called, todo: total - called, byCaller, calledToday });
+  res.json({ ...niche, total, eligible, called, todo: eligible - called, byCaller, calledToday });
 });
 
-// GET /api/niches/:slug/leads - leady danej niszy
+// GET /api/niches/:slug/leads - leady danej niszy, kazdy z lista notatek (najnowsza pierwsza)
 router.get("/:slug/leads", (req, res) => {
   const niche = db.prepare("SELECT id FROM niches WHERE slug = ?").get(req.params.slug);
   if (!niche) return res.status(404).json({ error: "Nie znaleziono niszy" });
-  res.json(db.prepare("SELECT * FROM leads WHERE niche_id = ? ORDER BY id ASC").all(niche.id));
+
+  const leads = db.prepare("SELECT * FROM leads WHERE niche_id = ? ORDER BY id ASC").all(niche.id);
+  const noteRows = db
+    .prepare(
+      `SELECT lead_notes.id, lead_notes.lead_id, lead_notes.content, lead_notes.created_at
+       FROM lead_notes JOIN leads ON leads.id = lead_notes.lead_id
+       WHERE leads.niche_id = ? ORDER BY lead_notes.created_at DESC, lead_notes.id DESC`
+    )
+    .all(niche.id);
+  const notesByLead = new Map();
+  for (const { lead_id, ...note } of noteRows) {
+    if (!notesByLead.has(lead_id)) notesByLead.set(lead_id, []);
+    notesByLead.get(lead_id).push(note);
+  }
+
+  res.json(leads.map((l) => ({ ...l, notes_list: notesByLead.get(l.id) || [] })));
+});
+
+// GET /api/niches/:slug/export.csv - zrzut AKTUALNEGO stanu tabeli (po wszystkich edycjach),
+// nie oryginalnego importu. Naglowki celowo pokrywaja sie z aliasami z csvImport.js, zeby taki
+// plik dal sie z powrotem zaimportowac bez recznego mapowania kolumn.
+router.get("/:slug/export.csv", (req, res) => {
+  const niche = db.prepare("SELECT * FROM niches WHERE slug = ?").get(req.params.slug);
+  if (!niche) return res.status(404).json({ error: "Nie znaleziono niszy" });
+
+  const leads = db.prepare("SELECT * FROM leads WHERE niche_id = ? ORDER BY id ASC").all(niche.id);
+  const noteRows = db
+    .prepare(
+      `SELECT lead_notes.* FROM lead_notes
+       JOIN leads ON leads.id = lead_notes.lead_id
+       WHERE leads.niche_id = ? ORDER BY lead_notes.created_at ASC, lead_notes.id ASC`
+    )
+    .all(niche.id);
+  const notesByLead = new Map();
+  for (const n of noteRows) {
+    if (!notesByLead.has(n.lead_id)) notesByLead.set(n.lead_id, []);
+    notesByLead.get(n.lead_id).push(`[${n.created_at.slice(0, 10)}] ${n.content}`);
+  }
+
+  const interestedLabel = (value) => INTERESTED_OPTIONS.find((o) => o.value === value)?.label || value;
+
+  const rows = leads.map((l) => {
+    const row = {
+      "Firma": l.company_name,
+      "Czy mają własną stronę?": l.has_social,
+      "Miasto": l.city,
+      "Telefon": l.phone,
+      "Jakość": l.quality,
+    };
+    for (const tag of PLATFORM_TAGS) row[PLATFORM_META[tag].name] = l[`tag_${tag}`] ? "Tak" : "";
+    row["Odebrał?"] = l.answered;
+    row["Zainteresowany?"] = interestedLabel(l.interested);
+    row["Kto dzwonił"] = l.caller;
+    row["Kiedy oddzwonić"] = l.callback_when;
+    row["Termin Google Meet"] = l.google_term;
+    row["Notatki"] = (notesByLead.get(l.id) || []).join(" | ");
+    row["Notatki scrapera"] = l.research_notes;
+    row["Strona WWW"] = l.website_url;
+    return row;
+  });
+
+  const csv = Papa.unparse(rows);
+  const today = new Date().toISOString().slice(0, 10);
+  res.setHeader("Content-Type", "text/csv; charset=utf-8");
+  res.setHeader("Content-Disposition", `attachment; filename="${niche.slug}-${today}.csv"`);
+  // BOM na poczatku - bez tego Excel otwiera polskie znaki jako krzaki
+  res.send("\uFEFF" + csv);
 });
 
 // POST /api/niches/import - tworzy nowa nisze z pliku CSV
@@ -111,11 +185,16 @@ router.post("/import", upload.single("file"), (req, res) => {
     )
   `);
 
+  const insertNote = db.prepare("INSERT INTO lead_notes (lead_id, content) VALUES (?, ?)");
+
   const nicheId = db.transaction(() => {
     const id = insertNiche.run(name.trim(), slug).lastInsertRowid;
     for (const lead of leads) {
       // ta sama regula "zadzwoniony" co przy recznej edycji leada
-      insertLead.run({ ...lead, niche_id: id, called_at: computeCalledAt(lead) });
+      const leadId = insertLead.run({ ...lead, niche_id: id, called_at: computeCalledAt(lead) }).lastInsertRowid;
+      // anomalie importu (nierozpoznane wartosci itp.) laduja jako pierwsza notatka leada,
+      // bo kolumna leads.notes jest martwa po przejsciu na lead_notes
+      if (lead.notes) insertNote.run(leadId, lead.notes);
     }
     return id;
   })();

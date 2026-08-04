@@ -117,15 +117,15 @@ function renderRevenuePanel() {
         <div class="revenue-num">${r.clients}</div>
         <div class="revenue-lbl">Klientów (Dopięte)</div>
       </div>
-      <div class="revenue-item accent-gold">
+      <div class="revenue-item">
         <div class="revenue-num">${money(r.oneTime)}</div>
         <div class="revenue-lbl">Jednorazowo (${r.pricing.oneTime} zł/klient)</div>
       </div>
-      <div class="revenue-item accent-green">
+      <div class="revenue-item">
         <div class="revenue-num">${money(r.mrr)}</div>
         <div class="revenue-lbl">Miesięcznie (${r.pricing.monthly} zł/klient)</div>
       </div>
-      <div class="revenue-item accent-blue">
+      <div class="revenue-item">
         <div class="revenue-num">${money(r.annual)}</div>
         <div class="revenue-lbl">Rocznie z abonamentów</div>
       </div>
@@ -169,8 +169,9 @@ function upcomingItemHtml(item, withTime) {
     ? `${d.toLocaleDateString("pl-PL", { day: "numeric", month: "short" })} · ${d.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" })}`
     : d.toLocaleDateString("pl-PL", { day: "numeric", month: "long" });
 
+  // &lead=<id> - widok niszy przescrolluje do tego wiersza i chwilowo go podswietli
   return `
-    <a class="upcoming-item" href="/niche.html?slug=${encodeURIComponent(item.niche_slug)}">
+    <a class="upcoming-item" href="/niche.html?slug=${encodeURIComponent(item.niche_slug)}&lead=${item.id}">
       <div class="upcoming-who">
         <span class="upcoming-name">${escapeHtml(item.company_name)}</span>
         <span class="upcoming-niche">${escapeHtml(item.niche_name)}${item.city ? " · " + escapeHtml(item.city) : ""}</span>
@@ -184,12 +185,13 @@ function upcomingItemHtml(item, withTime) {
 }
 
 async function loadUpcoming() {
-  const { meets, callbacks } = await api.get("/api/upcoming");
+  const { meets, meetsTotal, callbacks, callbacksTotal } = await api.get("/api/upcoming");
   const panel = document.getElementById("upcoming-panel");
 
-  const col = (title, icon, items, withTime) => `
+  // total = wszystkie zaplanowane pozycje (nie tylko widoczne na liscie, ktora ma limit)
+  const col = (title, icon, items, total, withTime) => `
     <div class="upcoming-col">
-      <div class="upcoming-col-title">${icon} ${title}</div>
+      <div class="upcoming-col-title">${icon} ${title} <span class="upcoming-count">(${total})</span></div>
       <div class="upcoming-list">
         ${
           items.length
@@ -200,17 +202,19 @@ async function loadUpcoming() {
     </div>
   `;
 
-  panel.innerHTML = col("Najbliższe Google Meety", "🖥️", meets, true) + col("Do oddzwonienia", "📞", callbacks, false);
+  panel.innerHTML =
+    col("Najbliższe Google Meety", "🖥️", meets, meetsTotal, true) +
+    col("Do oddzwonienia", "📞", callbacks, callbacksTotal, false);
 }
 
 async function loadStats() {
   const stats = await api.get("/api/stats");
 
   document.getElementById("global-stats").innerHTML = `
-    <div class="stat-card"><div class="num">${stats.total}</div><div class="label">Wszystkich leadow</div></div>
-    <div class="stat-card accent-green"><div class="num">${stats.called}</div><div class="label">Zadzwonionych</div></div>
-    <div class="stat-card accent-red"><div class="num">${stats.todo}</div><div class="label">Do zrobienia</div></div>
-    <div class="stat-card accent-blue"><div class="num">${stats.calledToday}/${stats.dailyGoal}</div><div class="label">Dzisiaj</div></div>
+    <div class="stat-card"><div class="num">${stats.total}</div><div class="label">${statIcon("layers")}Wszystkich leadów</div></div>
+    <div class="stat-card"><div class="num">${stats.called}</div><div class="label">${statIcon("check")}Zadzwonionych</div></div>
+    <div class="stat-card"><div class="num">${stats.todo}</div><div class="label">${statIcon("list")}Do zrobienia</div></div>
+    <div class="stat-card"><div class="num">${stats.calledToday}/${stats.dailyGoal}</div><div class="label">${statIcon("flame")}Dzisiaj</div></div>
   `;
 
   lastRevenue = stats.revenue;
@@ -268,7 +272,8 @@ async function loadStats() {
     })
     .join("");
 
-  const calledPct = stats.total ? Math.round((stats.called / stats.total) * 100) : 0;
+  // postep liczony wzgledem leadow bez wlasnej strony (eligible), nie wszystkich w bazie
+  const calledPct = stats.eligible ? Math.round((stats.called / stats.eligible) * 100) : 0;
   const pctColor = calledPct < 50 ? "#e06050" : calledPct < 70 ? "#c0a050" : calledPct < 90 ? "#5cb85c" : "#2e7d4e";
 
   donutRow.innerHTML = `
@@ -292,25 +297,28 @@ async function loadStats() {
 async function loadNiches() {
   const niches = await api.get("/api/niches");
 
-  const tiles = niches
+  // lista wierszy w jednym boxie (nie osobne kafelki) - postep liczony wzgledem "eligible",
+  // czyli leadow bez wlasnej strony (patrz STATS_ELIGIBLE_SQL po stronie serwera)
+  const rows = niches
     .map((n) => {
-      const pct = n.total ? Math.round((n.called / n.total) * 100) : 0;
+      const pct = n.eligible ? Math.round((n.called / n.eligible) * 100) : 0;
       return `
-        <div class="niche-tile" ${n.color ? `style="border-left:3px solid ${n.color}"` : ""}
-             onclick="location.href='/niche.html?slug=${encodeURIComponent(n.slug)}'">
-          <div class="name" ${n.color ? `style="color:${n.color}"` : ""}>${escapeHtml(n.name)}</div>
-          <div class="count">${n.called}/${n.total} zadzwonionych</div>
-          <div class="progress-row">
-            <div class="progress-track"><div class="progress-fill ${progressClass(pct)}" style="width:${pct}%"></div></div>
+        <a class="niche-row" href="/niche.html?slug=${encodeURIComponent(n.slug)}">
+          <span class="niche-dot" style="background:${n.color || "#555"}"></span>
+          <span class="niche-row-name" ${n.color ? `style="color:${n.color}"` : ""}>${escapeHtml(n.name)}</span>
+          <span class="niche-row-count">${n.called}/${n.eligible} zadzwonionych</span>
+          <span class="niche-row-progress">
+            <span class="progress-track"><span class="progress-fill ${progressClass(pct)}" style="width:${pct}%"></span></span>
             <span class="progress-pct ${progressClass(pct)}">${pct}%</span>
-          </div>
-        </div>
+          </span>
+          <span class="niche-row-chevron">›</span>
+        </a>
       `;
     })
     .join("");
 
   document.getElementById("niche-grid").innerHTML =
-    tiles + `<div class="niche-tile add-tile" id="add-tile">+</div>`;
+    rows + `<button type="button" class="niche-row add-row" id="add-tile"><span class="niche-dot add">+</span><span class="niche-row-name">Dodaj niszę</span></button>`;
   document.getElementById("add-tile").addEventListener("click", openModal);
 }
 

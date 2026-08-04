@@ -44,6 +44,15 @@ CREATE TABLE IF NOT EXISTS leads (
 
 CREATE INDEX IF NOT EXISTS idx_leads_niche ON leads(niche_id);
 CREATE INDEX IF NOT EXISTS idx_leads_called_at ON leads(called_at);
+
+CREATE TABLE IF NOT EXISTS lead_notes (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  lead_id INTEGER NOT NULL REFERENCES leads(id) ON DELETE CASCADE,
+  content TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_lead_notes_lead ON lead_notes(lead_id);
 `);
 
 // Proste "migracje" dla kolumn dodanych po pierwszym wydaniu - ALTER TABLE ADD COLUMN
@@ -74,5 +83,17 @@ db.prepare(
   `UPDATE leads SET called_at = COALESCE(called_at, updated_at, datetime('now'))
    WHERE interested IN ('strona', 'zamkniete') AND called_at IS NULL`
 ).run();
+
+// Jednorazowa migracja danych: notatki przenosza sie z pojedynczego pola tekstowego
+// leads.notes do osobnej tabeli lead_notes (kazda notatka z data utworzenia - patrz widok
+// "tablicy korkowej"). Stara tresc staje sie pierwszym wpisem z data ostatniej edycji leada,
+// a pole zrodlowe jest czyszczone - dzieki temu drugi start nie ma juz nic do przeniesienia.
+db.transaction(() => {
+  db.prepare(
+    `INSERT INTO lead_notes (lead_id, content, created_at)
+     SELECT id, notes, COALESCE(updated_at, datetime('now')) FROM leads WHERE notes <> ''`
+  ).run();
+  db.prepare(`UPDATE leads SET notes = '' WHERE notes <> ''`).run();
+})();
 
 module.exports = db;
