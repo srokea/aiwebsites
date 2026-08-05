@@ -28,4 +28,11 @@ function computeCalledAt(nextLead, previousCalledAt = null) {
 // Fragment SQL do wklejenia w warunki zapytan (bezpieczny - stala, nie input uzytkownika).
 const STATS_ELIGIBLE_SQL = "has_social <> 'Tak'";
 
-module.exports = { isCalled, computeCalledAt, STATS_ELIGIBLE_SQL };
+// Rozklad statusow (wykres kolowy + legenda) rzadzi sie inna regula niz liczniki dzwonienia:
+// pokazuje leady, do ktorych dzwonimy, ORAZ te z odnotowanym wynikiem - nawet jesli maja
+// juz wlasna strone. Inaczej dopiety klient znikalby z wykresu w momencie, w ktorym
+// postawimy mu strone (dostaje wtedy Strona = "Tak"), czyli dokladnie po sprzedazy.
+// Leady ze strona, ktorych nikt nie ruszal, nadal sie nie licza - nie zasmiecaja wykresu.
+const STATS_BREAKDOWN_SQL = `(${STATS_ELIGIBLE_SQL} OR called_at IS NOT NULL)`;
+
+module.exports = { isCalled, computeCalledAt, STATS_ELIGIBLE_SQL, STATS_BREAKDOWN_SQL };

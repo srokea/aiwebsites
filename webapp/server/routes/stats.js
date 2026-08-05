@@ -1,7 +1,7 @@
 const express = require("express");
 const db = require("../db");
 const { INTERESTED_OPTIONS, INTERESTED_STATS_ORDER, CALLERS, DAILY_GOAL, PRICING } = require("../constants");
-const { STATS_ELIGIBLE_SQL } = require("../leadStatus");
+const { STATS_ELIGIBLE_SQL, STATS_BREAKDOWN_SQL } = require("../leadStatus");
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
     .get();
 
   const interestedRows = db
-    .prepare(`SELECT interested, COUNT(*) c FROM leads WHERE ${STATS_ELIGIBLE_SQL} GROUP BY interested`)
+    .prepare(`SELECT interested, COUNT(*) c FROM leads WHERE ${STATS_BREAKDOWN_SQL} GROUP BY interested`)
     .all();
   const countByValue = new Map(interestedRows.map((r) => [r.interested, r.c]));
 
