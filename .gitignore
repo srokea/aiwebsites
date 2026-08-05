@@ -14,12 +14,10 @@ dist/
 build/
 .cache/
 
-# baza danych appki Cold Calls (dane robocze, nie kod)
-webapp/data/
-*.db
+# baza Cold Calls: sam plik .db jest w repo (na zyczenie - klonuje sie razem z appka),
+# ale pliki tymczasowe WAL/SHM to stan otwartej bazy - te nigdy
 *.db-shm
 *.db-wal
-*.sqlite
 
 # Impeccable cache (stan sesji, nie kod)
 .impeccable/hook.cache.json
