@@ -66,6 +66,7 @@ function addColumnIfMissing(table, columnDef) {
 }
 addColumnIfMissing("leads", "research_notes TEXT NOT NULL DEFAULT ''");
 addColumnIfMissing("niches", "color TEXT NOT NULL DEFAULT ''");
+addColumnIfMissing("niches", "call_script TEXT NOT NULL DEFAULT ''");
 
 // Jednorazowa migracja danych: "nie" bywalo domyslna wartoscia dla leadow, ktorych nikt
 // jeszcze nie ruszyl (stary default w schemacie) - a to co innego niz swiadome odrzucenie.

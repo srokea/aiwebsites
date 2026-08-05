@@ -18,7 +18,26 @@ function onlyValidDates(rows) {
     .filter((r) => DATE_FORMAT.test(r.when_at))
     .map((r) => ({ ...r, _when: new Date(r.when_at) }))
     .sort((a, b) => a._when - b._when);
-  return { items: valid.slice(0, LIMIT).map(({ _when, ...r }) => r), total: valid.length };
+  return { items: attachNotes(valid.slice(0, LIMIT).map(({ _when, ...r }) => r)), total: valid.length };
+}
+
+// Dokleja notatki leada (najnowsza pierwsza) do kazdej pozycji - dashboard pokazuje przy nich
+// pinezke z podgladem, zeby przed oddzwonieniem nie trzeba bylo wchodzic w nisze.
+function attachNotes(items) {
+  if (!items.length) return items;
+  const rows = db
+    .prepare(
+      `SELECT lead_id, content, created_at FROM lead_notes
+       WHERE lead_id IN (${items.map(() => "?").join(",")})
+       ORDER BY created_at DESC, id DESC`
+    )
+    .all(items.map((i) => i.id));
+  const byLead = new Map();
+  for (const { lead_id, ...note } of rows) {
+    if (!byLead.has(lead_id)) byLead.set(lead_id, []);
+    byLead.get(lead_id).push(note);
+  }
+  return items.map((i) => ({ ...i, notes: byLead.get(i.id) || [] }));
 }
 
 // GET /api/upcoming - najblizsze Google Meety (google_term) i callbacki (callback_when)

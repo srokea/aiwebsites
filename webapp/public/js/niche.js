@@ -10,6 +10,12 @@ let sortState = { id: null, field: null, dir: "asc" };
 let filters = { interested: [], caller: [], answered: [], has_social: [] };
 let searchQuery = "";
 let highlightStatuses = new Set();
+// wlaczany klikiem w karte "Do zrobienia" - pokazuje tylko leady, ktore licza sie do tej metryki
+let todoFilter = false;
+
+// Dokladnie ta sama regula co licznik "todo" na serwerze (eligible - called, patrz
+// STATS_ELIGIBLE_SQL w leadStatus.js): bez wlasnej strony i jeszcze nie zadzwoniony.
+const isTodoLead = (l) => l.has_social !== "Tak" && !l.called_at;
 
 // Kolejnosc sortowania dla "Odebral?" - od pustego, przez Nie, po Tak.
 const ANSWERED_SORT_ORDER = ["", "Nie", "Tak"];
@@ -78,7 +84,10 @@ async function loadNicheHeader() {
   document.getElementById("niche-stats").innerHTML = `
     <div class="stat-card"><div class="num">${niche.total}</div><div class="label">${statIcon("layers")}Wszystkich</div></div>
     <div class="stat-card"><div class="num">${niche.called}</div><div class="label">${statIcon("check")}Zadzwonionych</div></div>
-    <div class="stat-card"><div class="num">${niche.todo}</div><div class="label">${statIcon("list")}Do zrobienia</div></div>
+    <button type="button" class="stat-card stat-card-btn ${todoFilter ? "active" : ""}" id="todo-card"
+      title="${todoFilter ? "Pokaż wszystkie leady" : "Pokaż tylko leady do zrobienia"}" aria-pressed="${todoFilter}">
+      <div class="num">${niche.todo}</div><div class="label">${statIcon("list")}Do zrobienia</div>
+    </button>
     <div class="stat-card"><div class="num">${pct}%</div><div class="label">${statIcon("trend")}Postęp</div></div>
   `;
 
@@ -120,6 +129,25 @@ async function loadLeads() {
   renderLeads();
 }
 
+// ---------- filtr "Do zrobienia" (klik w karte metryki) ----------
+
+function setTodoFilter(on) {
+  todoFilter = on;
+  const card = document.getElementById("todo-card");
+  if (card) {
+    card.classList.toggle("active", on);
+    card.setAttribute("aria-pressed", String(on));
+    card.title = on ? "Pokaż wszystkie leady" : "Pokaż tylko leady do zrobienia";
+  }
+}
+
+// delegacja na kontenerze - karty przebudowuja sie przy kazdym loadNicheHeader()
+document.getElementById("niche-stats").addEventListener("click", (e) => {
+  if (!e.target.closest("#todo-card")) return;
+  setTodoFilter(!todoFilter);
+  renderLeads();
+});
+
 // Reminder patrzy na dwa terminy - "Kiedy oddzwonic" i "Termin Google" - i pokazuje ten,
 // ktory jest blizej (chronologicznie pierwszy), z etykieta zalezna od tego ktory to termin.
 function reminderInfo(lead) {
@@ -139,10 +167,11 @@ function reminderInfo(lead) {
   today.setHours(0, 0, 0, 0);
   const diffDays = Math.round((date - today) / 86400000);
 
-  if (diffDays > 3) return { cls: "r-future", text: `${kind} za ${diffDays} dni` };
-  if (diffDays > 0) return { cls: "r-soon", text: `${kind} za ${diffDays} ${diffDays === 1 ? "dzień" : "dni"}` };
-  if (diffDays === 0) return { cls: "r-due", text: `${kind} dziś!` };
-  return { cls: "r-due", text: kind === "Google" ? "Google minął!" : "Oddzwoń!" };
+  // kolor wg pilnosci (wspolna skala z dashboardem - patrz urgencyClass w api.js)
+  const cls = urgencyClass(diffDays);
+  if (diffDays > 0) return { cls, text: `${kind} za ${diffDays} ${diffDays === 1 ? "dzień" : "dni"}` };
+  if (diffDays === 0) return { cls, text: `${kind} dziś!` };
+  return { cls, text: kind === "Google" ? "Google minął!" : "Oddzwoń!" };
 }
 
 function formatPhone(raw) {
@@ -170,6 +199,7 @@ function renderFilterBar() {
   `;
   document.getElementById("filter-clear").addEventListener("click", () => {
     filters = { interested: [], caller: [], answered: [], has_social: [] };
+    setTodoFilter(false);
     renderFilterBar();
     renderLeads();
   });
@@ -285,6 +315,7 @@ function matchesSearch(lead, query) {
 function getVisibleLeads() {
   const list = leads.filter(
     (l) =>
+      (!todoFilter || isTodoLead(l)) &&
       Object.entries(filters).every(([field, values]) => !values.length || values.includes(l[field])) &&
       matchesSearch(l, searchQuery)
   );
@@ -303,6 +334,9 @@ function getVisibleLeads() {
 // Czy zmiana tych pol moze przestawic wiersz (sortowanie) albo go ukryc (filtr)?
 // Jesli nie - wystarczy odswiezyc sam wiersz zamiast przebudowywac cala tabele.
 function affectsOrdering(fields) {
+  // przy aktywnym filtrze "Do zrobienia" zmiana pol wplywajacych na status zrobienia
+  // (COUNTER_FIELDS) albo na eligibility (Strona) moze usunac wiersz z listy
+  if (todoFilter && fields.some((f) => COUNTER_FIELDS.has(f) || f === "has_social")) return true;
   return fields.some((field) => {
     const sortKey = field.startsWith("tag_") ? "tags_count" : field;
     return sortKey === sortState.field || (field in filters && filters[field].length > 0);
@@ -331,7 +365,8 @@ function renderLeads() {
   const tbody = document.getElementById("leads-tbody");
   const visible = getVisibleLeads();
   if (!visible.length) {
-    tbody.innerHTML = `<tr><td colspan="15"><div class="empty-state">Brak leadow spelniajacych kryteria.</div></td></tr>`;
+    const msg = todoFilter ? "Nic do zrobienia — wszystko obdzwonione. 🎉" : "Brak leadow spelniajacych kryteria.";
+    tbody.innerHTML = `<tr><td colspan="15"><div class="empty-state">${msg}</div></td></tr>`;
     return;
   }
   tbody.innerHTML = visible.map((lead, i) => rowHtml(lead, i + 1)).join("");
@@ -598,13 +633,7 @@ document.addEventListener("keydown", (e) => {
 
 let notesLeadId = null;
 
-// created_at z SQLite to UTC ("YYYY-MM-DD HH:MM:SS") - dopiero z "Z" na koncu
-// przegladarka przeliczy je na czas lokalny
-function noteDateLabel(createdAt) {
-  const d = new Date(createdAt.replace(" ", "T") + "Z");
-  if (isNaN(d.getTime())) return createdAt;
-  return `${d.toLocaleDateString("pl-PL", { day: "numeric", month: "short", year: "numeric" })} · ${d.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" })}`;
-}
+// (noteDateLabel - wspolny helper w api.js)
 
 function renderNotesModal() {
   const lead = leads.find((l) => l.id === notesLeadId);
@@ -719,6 +748,7 @@ function renderColorSwatches() {
 function openSettings() {
   document.getElementById("settings-error").style.display = "none";
   document.getElementById("settings-name").value = currentNiche.name;
+  document.getElementById("settings-script").value = currentNiche.call_script || "";
   pendingColor = currentNiche.color || "";
   renderColorSwatches();
   document.getElementById("settings-modal").classList.remove("hidden");
@@ -748,6 +778,7 @@ document.getElementById("settings-form").addEventListener("submit", async (e) =>
     await api.patch(`/api/niches/${currentNiche.id}`, {
       name: document.getElementById("settings-name").value.trim(),
       color: pendingColor,
+      call_script: document.getElementById("settings-script").value,
     });
     closeSettings();
     await loadNicheHeader();
@@ -770,6 +801,32 @@ document.getElementById("settings-delete-btn").addEventListener("click", async (
 document.getElementById("lead-search").addEventListener("input", (e) => {
   searchQuery = e.target.value;
   renderLeads();
+});
+
+// ---------- schemat rozmowy niszy (tekst z ustawien, podglad w modalu) ----------
+
+function openScriptModal() {
+  const text = (currentNiche.call_script || "").trim();
+  document.getElementById("script-modal-body").innerHTML = text
+    ? escapeHtml(text)
+    : `<span class="script-empty">Ta nisza nie ma jeszcze schematu rozmowy — dodaj go w ustawieniach niszy (⚙️).</span>`;
+  document.getElementById("script-modal").classList.remove("hidden");
+}
+function closeScriptModal() {
+  document.getElementById("script-modal").classList.add("hidden");
+}
+
+document.getElementById("script-btn").addEventListener("click", openScriptModal);
+document.getElementById("script-close").addEventListener("click", closeScriptModal);
+document.getElementById("script-modal").addEventListener("click", (e) => {
+  if (e.target.id === "script-modal") closeScriptModal();
+});
+document.getElementById("script-edit-btn").addEventListener("click", () => {
+  closeScriptModal();
+  openSettings();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeScriptModal();
 });
 
 init();

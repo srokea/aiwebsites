@@ -219,6 +219,9 @@ router.patch("/:id", (req, res) => {
     if (color && !NICHE_COLORS.includes(color)) return res.status(400).json({ error: `Nieprawidlowy kolor: ${color}` });
     updates.color = color;
   }
+  if ("call_script" in req.body) {
+    updates.call_script = req.body.call_script == null ? "" : String(req.body.call_script);
+  }
   if (!Object.keys(updates).length) return res.status(400).json({ error: "Brak pol do aktualizacji" });
 
   const setClauses = Object.keys(updates)

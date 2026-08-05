@@ -145,15 +145,11 @@ function updateRevenueTicker() {
 // ---------- panel: najblizsze spotkania i callbacki ----------
 
 function dayLabel(diffDays) {
+  if (diffDays === -1) return "wczoraj";
   if (diffDays < 0) return `${Math.abs(diffDays)} dni temu`;
   if (diffDays === 0) return "dziś";
   if (diffDays === 1) return "jutro";
   return `za ${diffDays} dni`;
-}
-function urgencyClass(diffDays) {
-  if (diffDays <= 0) return "r-due"; // dzis albo przeterminowane
-  if (diffDays <= 3) return "r-soon"; // jutro / za kilka dni
-  return "r-future";
 }
 
 function upcomingItemHtml(item, withTime) {
@@ -169,6 +165,12 @@ function upcomingItemHtml(item, withTime) {
     ? `${d.toLocaleDateString("pl-PL", { day: "numeric", month: "short" })} · ${d.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" })}`
     : d.toLocaleDateString("pl-PL", { day: "numeric", month: "long" });
 
+  // pinezka tylko gdy lead ma notatki - klik pokazuje je w dymku (patrz openNotePopover)
+  const notes = item.notes || [];
+  const pin = notes.length
+    ? `<button type="button" class="note-pin-btn" data-item-key="${escapeHtml(itemKey(item))}" title="Pokaż notatkę">📌</button>`
+    : "";
+
   // &lead=<id> - widok niszy przescrolluje do tego wiersza i chwilowo go podswietli
   return `
     <a class="upcoming-item" href="/niche.html?slug=${encodeURIComponent(item.niche_slug)}&lead=${item.id}">
@@ -178,15 +180,54 @@ function upcomingItemHtml(item, withTime) {
       </div>
       <div class="upcoming-when">
         <span class="upcoming-date">${dateLabel}</span>
-        <span class="reminder-badge ${urgencyClass(diffDays)}">${dayLabel(diffDays)}</span>
+        <span class="upcoming-badge-row">${pin}<span class="reminder-badge ${urgencyClass(diffDays)}">${dayLabel(diffDays)}</span></span>
       </div>
     </a>
   `;
 }
 
+// ---------- pinezka: dymek z notatkami leada ----------
+
+// ten sam lead moze byc na obu listach (meet + callback), wiec klucz zawiera typ listy
+const itemKey = (item) => `${item._list}-${item.id}`;
+let upcomingNotes = new Map();
+let notePopoverEl = null;
+
+function closeNotePopover() {
+  if (notePopoverEl) notePopoverEl.remove();
+  notePopoverEl = null;
+}
+
+function openNotePopover(btn, notes) {
+  closeNotePopover();
+  const pop = document.createElement("div");
+  pop.className = "note-pop";
+  pop.innerHTML = notes
+    .map(
+      (n) => `
+      <div class="note-pop-item">
+        <div class="note-pop-content">${escapeHtml(n.content)}</div>
+        <div class="note-pop-date">${noteDateLabel(n.created_at)}</div>
+      </div>`
+    )
+    .join("");
+  document.body.appendChild(pop);
+
+  // dymek pod pinezka, dosuniety tak, zeby nie wyszedl poza viewport
+  const r = btn.getBoundingClientRect();
+  const w = pop.offsetWidth;
+  pop.style.left = `${Math.max(8, Math.min(r.left + r.width / 2 - w / 2, window.innerWidth - w - 8))}px`;
+  pop.style.top = `${r.bottom + 8}px`;
+  notePopoverEl = pop;
+}
+
 async function loadUpcoming() {
   const { meets, meetsTotal, callbacks, callbacksTotal } = await api.get("/api/upcoming");
   const panel = document.getElementById("upcoming-panel");
+
+  meets.forEach((i) => (i._list = "meet"));
+  callbacks.forEach((i) => (i._list = "cb"));
+  upcomingNotes = new Map([...meets, ...callbacks].map((i) => [itemKey(i), i.notes || []]));
 
   // total = wszystkie zaplanowane pozycje (nie tylko widoczne na liscie, ktora ma limit)
   const col = (title, icon, items, total, withTime) => `
@@ -206,6 +247,27 @@ async function loadUpcoming() {
     col("Najbliższe Google Meety", "🖥️", meets, meetsTotal, true) +
     col("Do oddzwonienia", "📞", callbacks, callbacksTotal, false);
 }
+
+// pinezka siedzi w <a> - preventDefault, zeby klik nie nawigowal do niszy
+document.getElementById("upcoming-panel").addEventListener("click", (e) => {
+  const btn = e.target.closest(".note-pin-btn");
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const wasOpen = notePopoverEl && notePopoverEl.dataset.forKey === btn.dataset.itemKey;
+  closeNotePopover();
+  if (wasOpen) return; // drugi klik w te sama pinezke = tylko zamknij
+  openNotePopover(btn, upcomingNotes.get(btn.dataset.itemKey) || []);
+  notePopoverEl.dataset.forKey = btn.dataset.itemKey;
+});
+
+document.addEventListener("click", (e) => {
+  if (notePopoverEl && !notePopoverEl.contains(e.target) && !e.target.closest(".note-pin-btn")) closeNotePopover();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeNotePopover();
+});
+window.addEventListener("scroll", closeNotePopover, { passive: true });
 
 async function loadStats() {
   const stats = await api.get("/api/stats");

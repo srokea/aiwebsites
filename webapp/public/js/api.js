@@ -57,6 +57,25 @@ function progressClass(pct) {
   return "low";
 }
 
+// Klasa pilnosci terminu wg dni do niego - wspolna dla list na dashboardzie i kolumny
+// Reminder w tabeli niszy, zeby te same terminy mialy wszedzie ten sam kolor.
+// Skala: 2 dni = zolty, 1 dzien = pomaranczowy, dzis = czerwony, po terminie = mocniejszy czerwony.
+function urgencyClass(diffDays) {
+  if (diffDays < 0) return "r-overdue";
+  if (diffDays === 0) return "r-due";
+  if (diffDays === 1) return "r-d1";
+  if (diffDays === 2) return "r-d2";
+  return "r-future";
+}
+
+// created_at z SQLite to UTC ("YYYY-MM-DD HH:MM:SS") - dopiero z "Z" na koncu
+// przegladarka przeliczy je na czas lokalny
+function noteDateLabel(createdAt) {
+  const d = new Date(createdAt.replace(" ", "T") + "Z");
+  if (isNaN(d.getTime())) return createdAt;
+  return `${d.toLocaleDateString("pl-PL", { day: "numeric", month: "short", year: "numeric" })} · ${d.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" })}`;
+}
+
 function escapeHtml(str) {
   return String(str ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
