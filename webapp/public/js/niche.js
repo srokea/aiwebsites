@@ -745,12 +745,26 @@ function renderColorSwatches() {
     .join("");
 }
 
-function openSettings() {
+async function openSettings() {
   document.getElementById("settings-error").style.display = "none";
   document.getElementById("settings-name").value = currentNiche.name;
   pendingColor = currentNiche.color || "";
   renderColorSwatches();
+
+  // lista plikow schematow czytana przy kazdym otwarciu - swiezo dorzucony plik
+  // w server/scriptsData/ pojawia sie bez przeladowania strony
+  const sel = document.getElementById("settings-script-file");
+  sel.innerHTML = `<option value="">Wczytuję…</option>`;
   document.getElementById("settings-modal").classList.remove("hidden");
+  try {
+    const files = await api.get("/api/scripts/files");
+    const current = currentNiche.script_file || "default";
+    sel.innerHTML = files
+      .map((f) => `<option value="${escapeHtml(f)}" ${f === current ? "selected" : ""}>${escapeHtml(f)}.js</option>`)
+      .join("");
+  } catch (err) {
+    sel.innerHTML = `<option value="">Nie udało się wczytać listy</option>`;
+  }
 }
 function closeSettings() {
   document.getElementById("settings-modal").classList.add("hidden");
@@ -774,10 +788,14 @@ document.getElementById("settings-form").addEventListener("submit", async (e) =>
   const errorEl = document.getElementById("settings-error");
   errorEl.style.display = "none";
   try {
-    await api.patch(`/api/niches/${currentNiche.id}`, {
+    const body = {
       name: document.getElementById("settings-name").value.trim(),
       color: pendingColor,
-    });
+    };
+    // pusta wartosc = lista sie nie wczytala - nie nadpisujemy wyboru w bazie
+    const scriptFile = document.getElementById("settings-script-file").value;
+    if (scriptFile) body.script_file = scriptFile;
+    await api.patch(`/api/niches/${currentNiche.id}`, body);
     closeSettings();
     await loadNicheHeader();
   } catch (err) {

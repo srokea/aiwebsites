@@ -1085,7 +1085,7 @@ table.leads tr.row-flash td { animation: rowFlash 2.4s ease-out; }
 }
 .modal h3 { font-size: 17px; margin-bottom: 18px; }
 .modal label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; margin-top: 14px; }
-.modal input[type=text], .modal input[type=file] {
+.modal input[type=text], .modal input[type=file], .modal select {
   width: 100%;
   background: #101010;
   border: 1px solid #2a2a2a;
@@ -1095,6 +1095,9 @@ table.leads tr.row-flash td { animation: rowFlash 2.4s ease-out; }
   font-size: 13px;
   font-family: inherit;
 }
+.modal select { cursor: pointer; }
+.modal select:focus { outline: none; border-color: var(--blue); }
+.modal .hint code { font-family: ui-monospace, Consolas, monospace; font-size: 10.5px; color: var(--muted); }
 .modal .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
 .btn {
   padding: 9px 18px;

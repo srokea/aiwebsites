@@ -4,6 +4,7 @@ const Papa = require("papaparse");
 const db = require("../db");
 const { mapRowsToLeads } = require("../csvImport");
 const { computeCalledAt, STATS_ELIGIBLE_SQL } = require("../leadStatus");
+const { listScriptFiles } = require("./scripts");
 const { stripDiacritics } = require("../text");
 const { NICHE_COLORS, INTERESTED_OPTIONS, PLATFORM_TAGS, PLATFORM_META } = require("../constants");
 
@@ -218,6 +219,13 @@ router.patch("/:id", (req, res) => {
     const color = String(req.body.color || "");
     if (color && !NICHE_COLORS.includes(color)) return res.status(400).json({ error: `Nieprawidlowy kolor: ${color}` });
     updates.color = color;
+  }
+  if ("script_file" in req.body) {
+    const scriptFile = String(req.body.script_file || "");
+    if (!listScriptFiles().includes(scriptFile)) {
+      return res.status(400).json({ error: `Nie ma takiego pliku schematu: ${scriptFile}` });
+    }
+    updates.script_file = scriptFile;
   }
   if (!Object.keys(updates).length) return res.status(400).json({ error: "Brak pol do aktualizacji" });
 

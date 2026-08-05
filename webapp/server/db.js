@@ -66,6 +66,12 @@ function addColumnIfMissing(table, columnDef) {
 }
 addColumnIfMissing("leads", "research_notes TEXT NOT NULL DEFAULT ''");
 addColumnIfMissing("niches", "color TEXT NOT NULL DEFAULT ''");
+// wybor pliku schematu rozmowy per nisza (server/scriptsData/<nazwa>.js); '' = default
+addColumnIfMissing("niches", "script_file TEXT NOT NULL DEFAULT ''");
+
+// Jednorazowy seed: stan jak dawna sztywna mapa NICHE_SCRIPTS (kosmetyczki mialy swoj plik,
+// reszta default). Idempotentne - po ustawieniu wartosci warunek '' juz nie zlapie.
+db.prepare("UPDATE niches SET script_file = 'kosmetyczki' WHERE slug = 'kosmetyczki' AND script_file = ''").run();
 
 // Jednorazowe sprzatanie: kolumna call_script byla dodana przez pomylke (schematy rozmow
 // zyja w server/scriptsData/, nie w bazie) - usuwamy ja razem z wpisanymi testowo danymi.
