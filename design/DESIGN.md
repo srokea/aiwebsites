@@ -130,7 +130,7 @@ Wybór jasnej albo ciemnej bazy jest decyzją per nisza klienta (patrz Overview)
 
 > **Wyjątek typograficzny (Zajawa Barbershop, 2026-07-28):** display to `Archivo Black` (geometryczny grotesk, uppercase, tracking `0.06em`), body to `DM Sans`. Odstępstwo uzgodnione z użytkownikiem: brief klienta wprost narzuca ten rejestr („sans-serif geometryczny, mocny, wielkie litery, w duchu logo Zajawy"), a logo firmy jest geometryczne, nie didone — Bodoni Moda gryzłaby się z brandingiem. Brief proponował Inter jako body; użyto DM Sans, bo Inter jest zakazany w tym systemie. To wyjątek TEGO klienta, nie zmiana standardu — nowa produkcja nadal domyślnie idzie w Bodoni Moda + Work Sans.
 
-> **Strony dostarczone przed zmianą standardu (nie ruszać):** `clients/M.E.N.`, `clients/M.E.N.-for-real` i `clients/Studio-Fryzur-Lidia` renderują display starszymi krojami (Playfair Display / Fraunces) — to żywe, dostarczone strony klientów i ZOSTAJĄ bez zmian. Bodoni Moda obowiązuje wyłącznie dla NOWEJ produkcji od 2026-07-11. Nie kopiuj Playfair Display ani Fraunces do nowych projektów bez wyraźnej prośby użytkownika.
+> **Strony dostarczone przed zmianą standardu (nie ruszać):** `clients/M.E.N.`, `clients/M.E.N.-for-real` i `clients/studio-fryzur-lidia` renderują display starszymi krojami (Playfair Display / Fraunces) — to żywe, dostarczone strony klientów i ZOSTAJĄ bez zmian. Bodoni Moda obowiązuje wyłącznie dla NOWEJ produkcji od 2026-07-11. Nie kopiuj Playfair Display ani Fraunces do nowych projektów bez wyraźnej prośby użytkownika.
 
 ### Hierarchy
 - **Display** (Bodoni Moda, waga 500, `clamp(2.1rem, 3.2vw + 1.4rem, 3.75rem)`, line-height 1.1): nagłówek hero, nazwa firmy/usługi — max jeden na stronę.

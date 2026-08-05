@@ -9,7 +9,7 @@ Podgląd wszystkich naraz: https://fable5-portfolio.netlify.app
 ---
 
 ## Styl 00 — Default (Rzemieślniczy szyld)
-**Link:** brak / lokalne pliki: `clients/Studio-Fryzur-Lidia/index.html`, `clients/M.E.N./index.html`
+**Link:** brak / lokalne pliki: `clients/studio-fryzur-lidia/index.html`, `clients/M.E.N./index.html`
 **Vibe:** Spokojna, wiarygodna elegancja lokalnego rzemiosła — strona jak dobrze zrobiony szyld, buduje zaufanie zamiast olśniewać.
 **Paleta:** dwa równorzędne tryby, jeden zmienny akcent per klient:
 - jasny (Lidia): `#FFFFFF` tło · `#EFF8F7` surface sekcji · `#15211F` tekst · `#0F6F66` akcent (u Lidii turkus ze ściany salonu)
