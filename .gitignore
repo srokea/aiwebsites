@@ -1,5 +1,25 @@
-# macOS
+# macOS / Windows
 .DS_Store
+Thumbs.db
+
+# node
+node_modules/
+
+# środowisko / sekrety
+.env
+.env.*
+
+# buildy
+dist/
+build/
+.cache/
+
+# baza danych appki Cold Calls (dane robocze, nie kod)
+webapp/data/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
 
 # Impeccable cache (stan sesji, nie kod)
 .impeccable/hook.cache.json
