@@ -1085,7 +1085,7 @@ table.leads tr.row-flash td { animation: rowFlash 2.4s ease-out; }
 }
 .modal h3 { font-size: 17px; margin-bottom: 18px; }
 .modal label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; margin-top: 14px; }
-.modal input[type=text], .modal input[type=file], .modal textarea {
+.modal input[type=text], .modal input[type=file] {
   width: 100%;
   background: #101010;
   border: 1px solid #2a2a2a;
@@ -1095,25 +1095,6 @@ table.leads tr.row-flash td { animation: rowFlash 2.4s ease-out; }
   font-size: 13px;
   font-family: inherit;
 }
-.modal textarea { resize: vertical; min-height: 90px; line-height: 1.55; }
-.modal textarea::placeholder { color: var(--muted-soft); }
-.modal textarea:focus, .modal input[type=text]:focus { outline: none; border-color: var(--blue); background: #131a24; }
-
-/* ---------- schemat rozmowy niszy: podglad tekstu z ustawien ---------- */
-.script-modal { width: 640px; }
-.script-modal-body {
-  white-space: pre-wrap;
-  word-break: break-word;
-  background: #101010;
-  border: 1px solid #2a2a2a;
-  border-radius: 10px;
-  padding: 16px 18px;
-  font-size: 13.5px;
-  line-height: 1.65;
-  max-height: 62vh;
-  overflow-y: auto;
-}
-.script-empty { color: var(--muted-soft); font-style: italic; }
 .modal .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
 .btn {
   padding: 9px 18px;

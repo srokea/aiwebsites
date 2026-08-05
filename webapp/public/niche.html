@@ -18,7 +18,6 @@
       <div class="topbar-sub" id="niche-sub"></div>
     </div>
     <div style="display:flex; align-items:center; gap:14px;">
-      <button type="button" class="btn" id="script-btn">📖 Schemat rozmowy</button>
       <button type="button" class="icon-btn" id="settings-btn" title="Ustawienia niszy">⚙️</button>
       <a class="back-link" href="/">&larr; Wszystkie nisze</a>
     </div>
@@ -71,10 +70,6 @@
       <label>Kolor</label>
       <div class="color-swatches" id="color-swatches"></div>
 
-      <label for="settings-script">Schemat rozmowy (cold call)</label>
-      <textarea id="settings-script" rows="8" placeholder="Wklej schemat rozmowy dla tej niszy — każda nisza ma swój."></textarea>
-      <div class="hint">Widoczny w tej niszy pod przyciskiem „📖 Schemat rozmowy".</div>
-
       <div class="error" id="settings-error" style="display:none;"></div>
 
       <label>Dane</label>
@@ -89,17 +84,6 @@
         </div>
       </div>
     </form>
-  </div>
-</div>
-
-<div class="modal-overlay hidden" id="script-modal">
-  <div class="modal script-modal">
-    <h3 id="script-modal-title">📖 Schemat rozmowy</h3>
-    <div class="script-modal-body" id="script-modal-body"></div>
-    <div class="actions">
-      <button type="button" class="btn" id="script-edit-btn">Edytuj w ustawieniach</button>
-      <button type="button" class="btn primary" id="script-close">Zamknij</button>
-    </div>
   </div>
 </div>
 

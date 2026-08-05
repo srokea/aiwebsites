@@ -748,7 +748,6 @@ function renderColorSwatches() {
 function openSettings() {
   document.getElementById("settings-error").style.display = "none";
   document.getElementById("settings-name").value = currentNiche.name;
-  document.getElementById("settings-script").value = currentNiche.call_script || "";
   pendingColor = currentNiche.color || "";
   renderColorSwatches();
   document.getElementById("settings-modal").classList.remove("hidden");
@@ -778,7 +777,6 @@ document.getElementById("settings-form").addEventListener("submit", async (e) =>
     await api.patch(`/api/niches/${currentNiche.id}`, {
       name: document.getElementById("settings-name").value.trim(),
       color: pendingColor,
-      call_script: document.getElementById("settings-script").value,
     });
     closeSettings();
     await loadNicheHeader();
@@ -801,32 +799,6 @@ document.getElementById("settings-delete-btn").addEventListener("click", async (
 document.getElementById("lead-search").addEventListener("input", (e) => {
   searchQuery = e.target.value;
   renderLeads();
-});
-
-// ---------- schemat rozmowy niszy (tekst z ustawien, podglad w modalu) ----------
-
-function openScriptModal() {
-  const text = (currentNiche.call_script || "").trim();
-  document.getElementById("script-modal-body").innerHTML = text
-    ? escapeHtml(text)
-    : `<span class="script-empty">Ta nisza nie ma jeszcze schematu rozmowy — dodaj go w ustawieniach niszy (⚙️).</span>`;
-  document.getElementById("script-modal").classList.remove("hidden");
-}
-function closeScriptModal() {
-  document.getElementById("script-modal").classList.add("hidden");
-}
-
-document.getElementById("script-btn").addEventListener("click", openScriptModal);
-document.getElementById("script-close").addEventListener("click", closeScriptModal);
-document.getElementById("script-modal").addEventListener("click", (e) => {
-  if (e.target.id === "script-modal") closeScriptModal();
-});
-document.getElementById("script-edit-btn").addEventListener("click", () => {
-  closeScriptModal();
-  openSettings();
-});
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeScriptModal();
 });
 
 init();
