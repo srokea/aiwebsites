@@ -1131,8 +1131,56 @@ table.leads tr.row-flash td { animation: rowFlash 2.4s ease-out; }
 }
 .script-header h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
 .script-header p { color: var(--muted); font-size: 13px; }
-.script-back { display: inline-block; margin-bottom: 18px; font-size: 13px; color: var(--muted); }
+.script-back { display: inline-block; font-size: 13px; color: var(--muted); }
 .script-back:hover { color: var(--text); }
+.script-topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+
+/* ---------- tryb edycji tresci schematu ---------- */
+.icon-btn.edit-toggle { font-size: 14px; }
+.icon-btn.edit-toggle:hover { transform: none; }
+.icon-btn.edit-toggle.active { border-color: rgba(96,144,224,0.55); background: #17202e; }
+
+.edit-banner {
+  background: #131a24;
+  border: 1px solid rgba(96,144,224,0.3);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #a8b8d0;
+}
+.edit-banner.hidden { display: none; }
+.edit-banner code {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 11.5px;
+  background: rgba(96,144,224,0.12);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--blue);
+}
+
+/* w trybie edycji bloki tekstowe zapraszaja do kliku */
+body.edit-mode .script-block[data-src] { cursor: text; transition: box-shadow .15s; }
+body.edit-mode .script-block[data-src]:hover { box-shadow: inset 0 0 0 1px rgba(96,144,224,0.45); }
+.script-block.editing { box-shadow: inset 0 0 0 1px var(--blue); }
+
+.block-editor {
+  width: 100%;
+  background: #0d0d0d;
+  border: 1px solid #2a2a2a;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13.5px;
+  font-family: inherit;
+  line-height: 1.6;
+  resize: vertical;
+}
+.block-editor:focus { outline: none; border-color: var(--blue); }
+.block-editor-actions { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.block-editor-actions .btn { padding: 6px 14px; font-size: 12px; }
+.block-editor-hint { flex: 1; font-size: 11px; color: var(--muted-soft); min-width: 140px; }
 
 .phase-label {
   display: inline-block;

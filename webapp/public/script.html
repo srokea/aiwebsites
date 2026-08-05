@@ -12,7 +12,16 @@
 <div class="bg-particles" id="bg-particles" aria-hidden="true"></div>
 
 <div class="wrap narrow">
-  <a class="script-back" id="back-link" href="/">&larr; Powrot</a>
+  <div class="script-topbar">
+    <a class="script-back" id="back-link" href="/">&larr; Powrot</a>
+    <button type="button" class="icon-btn edit-toggle" id="edit-toggle" title="Włącz edycję treści" aria-pressed="false">✏️</button>
+  </div>
+
+  <div class="edit-banner hidden" id="edit-banner">
+    Tryb edycji — kliknij treść, żeby ją zmienić. Zmiany trafiają do pliku
+    <code id="edit-file"></code> i zobaczą je wszystkie leady tej niszy.
+    Tokeny <code>{firma}</code>, <code>{miasto}</code>, <code>{platforma}</code> zostaw w treści — podstawią się same.
+  </div>
 
   <div class="lead-context" id="lead-context"></div>
 

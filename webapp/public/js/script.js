@@ -11,8 +11,11 @@ function renderBlocks(blocks) {
 
 function renderBlock(b) {
   switch (b.type) {
-    case "text":
-      return `<div class="script-block ${b.speaker}"><div class="speaker ${b.speaker}">${SPEAKER_LABEL[b.speaker] || ""}</div>${b.html}</div>`;
+    case "text": {
+      // _src (indeks bloku w pliku zrodlowym) przychodzi tylko w trybie edycji - patrz /api/scripts/lead/:id?edit=1
+      const src = b._src != null ? ` data-src="${b._src}"` : "";
+      return `<div class="script-block ${b.speaker}"${src}><div class="speaker ${b.speaker}">${SPEAKER_LABEL[b.speaker] || ""}</div><div class="script-text">${b.html}</div></div>`;
+    }
     case "note":
       return `<div class="note">${b.html}</div>`;
     case "dropWarning":
@@ -49,9 +52,121 @@ function renderSection(section) {
   `;
 }
 
-async function init() {
-  initParticles();
-  const { lead, niche, script } = await api.get(`/api/scripts/lead/${leadId}`);
+// ---------- tryb edycji ----------
+// Edytujemy SZABLON z pliku (surowa tresc z tokenami), nie wyrenderowany tekst tego leada -
+// dzieki temu do pliku nie ma jak trafic nazwa konkretnej firmy w miejsce {firma}.
+let editMode = false;
+let scriptFile = null;
+let sourceBlocks = []; // indeks w pliku -> { index, raw }
+let openEditor = null;
+
+async function loadSourceBlocks() {
+  const { blocks } = await api.get(`/api/scripts/source/${encodeURIComponent(scriptFile)}`);
+  sourceBlocks = blocks;
+}
+
+function closeEditor({ restore = true } = {}) {
+  if (!openEditor) return;
+  const { block, originalHtml } = openEditor;
+  openEditor = null;
+  if (restore) block.querySelector(".script-text").innerHTML = originalHtml;
+  block.classList.remove("editing");
+}
+
+function openBlockEditor(block) {
+  if (openEditor && openEditor.block === block) return;
+  closeEditor();
+
+  const index = Number(block.dataset.src);
+  const source = sourceBlocks[index];
+  if (!source || source.raw === null) {
+    alert("Ten fragment ma dynamiczną treść (kod) — trzeba go zmienić bezpośrednio w pliku.");
+    return;
+  }
+
+  const textEl = block.querySelector(".script-text");
+  const originalHtml = textEl.innerHTML;
+  openEditor = { block, originalHtml, index };
+  block.classList.add("editing");
+
+  textEl.innerHTML = `
+    <textarea class="block-editor" rows="4"></textarea>
+    <div class="block-editor-actions">
+      <span class="block-editor-hint">Enter zapisuje · Shift+Enter nowa linia · Esc anuluje</span>
+      <button type="button" class="btn block-cancel">Anuluj</button>
+      <button type="button" class="btn primary block-save">Zapisz</button>
+    </div>
+  `;
+  const ta = textEl.querySelector(".block-editor");
+  ta.value = source.raw;
+  ta.style.height = `${Math.max(ta.scrollHeight, 60)}px`;
+  ta.focus();
+  ta.setSelectionRange(ta.value.length, ta.value.length);
+}
+
+async function saveBlockEdit() {
+  if (!openEditor) return;
+  const { block, index } = openEditor;
+  const raw = block.querySelector(".block-editor").value;
+  const btn = block.querySelector(".block-save");
+  btn.disabled = true;
+  btn.textContent = "Zapisuję…";
+  try {
+    const { blocks } = await api.patch(`/api/scripts/source/${encodeURIComponent(scriptFile)}/${index}`, { raw });
+    sourceBlocks = blocks;
+    closeEditor({ restore: false });
+    // przeladowanie z serwera - tresc wraca juz z podstawionymi wartosciami tego leada
+    await render();
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = "Zapisz";
+    alert(err.message);
+  }
+}
+
+async function setEditMode(on) {
+  editMode = on;
+  const toggle = document.getElementById("edit-toggle");
+  toggle.classList.toggle("active", on);
+  toggle.setAttribute("aria-pressed", String(on));
+  toggle.title = on ? "Wyłącz edycję treści" : "Włącz edycję treści";
+  document.getElementById("edit-banner").classList.toggle("hidden", !on);
+  document.body.classList.toggle("edit-mode", on);
+  closeEditor();
+
+  if (on && !sourceBlocks.length) await loadSourceBlocks();
+  await render();
+}
+
+document.getElementById("edit-toggle").addEventListener("click", () => setEditMode(!editMode));
+
+document.getElementById("script-body").addEventListener("click", (e) => {
+  if (e.target.closest(".block-save")) return saveBlockEdit();
+  if (e.target.closest(".block-cancel")) return closeEditor();
+  if (e.target.closest(".block-editor, .block-editor-actions")) return;
+
+  const block = editMode && e.target.closest(".script-block[data-src]");
+  if (block) {
+    e.stopPropagation();
+    openBlockEditor(block);
+  }
+});
+
+document.getElementById("script-body").addEventListener("keydown", (e) => {
+  if (!e.target.classList.contains("block-editor")) return;
+  if (e.key === "Escape") closeEditor();
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    saveBlockEdit();
+  }
+});
+
+async function render() {
+  const { lead, niche, script, scriptFile: file } = await api.get(
+    `/api/scripts/lead/${leadId}${editMode ? "?edit=1" : ""}`
+  );
+  scriptFile = file;
+  document.getElementById("edit-file").textContent = `${file}.js`;
 
   document.getElementById("back-link").href = `/niche.html?slug=${encodeURIComponent(niche.slug)}`;
   document.getElementById("back-link").textContent = `← Powrot do ${niche.name}`;
@@ -81,12 +196,15 @@ async function init() {
     `;
   }
   document.getElementById("script-body").innerHTML = body;
-
-  document.getElementById("script-body").addEventListener("click", (e) => {
-    const header = e.target.closest(".branch-header");
-    if (!header) return;
-    header.parentElement.classList.toggle("open");
-  });
 }
 
-init();
+// rozwijanie galezi - w trybie edycji klik w naglowek nie moze zwijac galezi pod palcem,
+// gdy celem bylo wejscie w tresc w srodku
+document.getElementById("script-body").addEventListener("click", (e) => {
+  const header = e.target.closest(".branch-header");
+  if (!header) return;
+  header.parentElement.classList.toggle("open");
+});
+
+initParticles();
+render();
