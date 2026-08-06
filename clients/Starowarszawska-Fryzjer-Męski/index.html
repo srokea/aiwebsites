@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starowarszawska — Fryzjer Męski w Piotrkowie Trybunalskim</title>
+<meta name="description" content="Starowarszawska Fryzjer Męski, ul. Starowarszawska 5 w Piotrkowie Trybunalskim. Strzyżenie męskie, broda i zarost u Konrada Dziadczyka. Rezerwacja przez Booksy lub telefonicznie: 791 526 940.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Starowarszawska — Fryzjer Męski w Piotrkowie Trybunalskim">
+<meta property="og:description" content="Strzyżenie męskie, broda i zarost. ul. Starowarszawska 5, Piotrków Trybunalski.">
+<meta property="og:image" content="photos/polka-produkty-blat.jpg">
+<meta property="og:locale" content="pl_PL">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  /* Paleta wyprowadzona wprost ze zdjecia polka-produkty-blat.jpg (jasna sciana,
+     granatowy fragment sciany, orzechowy blat lady) — swiadome odejscie od stalej
+     palety agencji (/design/DESIGN.md) na wyrazna prosbe uzytkownika dla tego klienta. */
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg:        '#F5F4F2',
+          surface:   '#FFFFFF',
+          navy:      '#1E2D45',
+          navydark:  '#16233A',
+          walnut:    '#8B5E3C',
+          ink:       '#2C2C2C',
+          inkmuted:  '#666260',
+          border:    'rgba(30,45,69,0.12)',
+        },
+        fontFamily: {
+          display: ['"Cormorant Garamond"', 'serif'],
+          body:    ['"DM Sans"', 'system-ui', 'sans-serif'],
+        },
+        maxWidth: { content: '72rem' },
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO: bez odpytywania serwerow Google przez odwiedzajacego) */
+  @font-face {
+    font-family: 'Cormorant Garamond';
+    font-style: normal;
+    font-weight: 300 700;
+    font-display: swap;
+    src: url('fonts/cormorant-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond';
+    font-style: normal;
+    font-weight: 300 700;
+    font-display: swap;
+    src: url('fonts/cormorant-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 100 1000;
+    font-display: swap;
+    src: url('fonts/dmsans-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 100 1000;
+    font-display: swap;
+    src: url('fonts/dmsans-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  html { scroll-behavior: smooth; }
+  section[id] { scroll-margin-top: 6rem; }
+  h1, h2 { text-wrap: balance; letter-spacing: 0.02em; }
+  p { text-wrap: pretty; }
+
+  /* Trojkolorowa linia z krawedzi lady na polka-produkty-blat.jpg. Jedno uzycie
+     na calej stronie: prosta pozioma kreska pod headerem, nie diagonalny drazek. */
+  .stripe-line {
+    background: linear-gradient(to right,
+      #C0392B 0%   33.33%,
+      #FFFFFF 33.33% 66.66%,
+      #1E2D45 66.66% 100%);
+  }
+
+  /* Mapa dopasowana do jasnego motywu: desaturacja + lekki tint granatu (bez invert,
+     ktory pod jasny motyw dociemnia mape zamiast dopasowac). */
+  .map-light { filter: grayscale(55%) contrast(1.05) brightness(1.02); }
+  .map-tint { background: #1E2D45; mix-blend-mode: color; opacity: 0.06; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  :focus-visible { outline: 2px solid #1E2D45; outline-offset: 3px; border-radius: 4px; }
+</style>
+</head>
+
+<body class="font-body text-ink antialiased bg-bg">
+
+<a href="#tresc" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-navy focus:text-white focus:px-4 focus:py-2 focus:rounded-full focus:font-semibold">Przejdź do treści</a>
+
+<!-- ============ HEADER ============ -->
+<header class="fixed top-0 inset-x-0 z-40 bg-bg/90 backdrop-blur-md">
+  <div class="mx-auto max-w-content px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+
+    <a href="#top" class="shrink-0 leading-none">
+      <span class="block font-body text-[0.82rem] sm:text-[0.95rem] font-semibold tracking-[0.2em] text-navy">STAROWARSZAWSKA</span>
+      <span class="block font-body text-[0.58rem] sm:text-[0.62rem] tracking-[0.32em] text-inkmuted mt-0.5">FRYZJER MĘSKI</span>
+    </a>
+
+    <nav class="hidden lg:flex items-center gap-8 text-sm font-medium text-inkmuted">
+      <a href="#salon"   class="hover:text-navy transition-colors motion-reduce:transition-none">Salon</a>
+      <a href="#cennik"  class="hover:text-navy transition-colors motion-reduce:transition-none">Usługi i ceny</a>
+      <a href="#godziny" class="hover:text-navy transition-colors motion-reduce:transition-none">Godziny</a>
+      <a href="#kontakt" class="hover:text-navy transition-colors motion-reduce:transition-none">Kontakt</a>
+    </nav>
+
+    <div class="flex items-center gap-2 shrink-0">
+      <!-- Telefon: pelny numer na desktopie, ikona 44px na mobile -->
+      <a href="tel:+48791526940"
+         class="hidden sm:inline-flex items-center rounded-full border border-border px-5 py-2.5 text-sm font-medium text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
+        791 526 940
+      </a>
+      <a href="tel:+48791526940" aria-label="Zadzwoń: 791 526 940"
+         class="sm:hidden inline-flex items-center justify-center h-11 w-11 rounded-full border border-border text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-5 w-5" aria-hidden="true">
+          <path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.2 2.2z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <!-- Booksy w headerze (wariant Website+): widoczny na kazdym ekranie -->
+      <a href="https://booksy.com/pl-pl/223607_starowarszawska-fryzjer-meski_barber-shop_25202_piotrkow-trybunalski#ba_s=seo"
+         target="_blank" rel="noopener"
+         class="inline-flex items-center rounded-full bg-navy px-4 sm:px-6 py-2.5 text-sm font-semibold text-white hover:bg-navydark transition-colors motion-reduce:transition-none">
+        Rezerwuj
+      </a>
+    </div>
+  </div>
+  <div class="stripe-line h-1 w-full" aria-hidden="true"></div>
+</header>
+
+<main id="tresc">
+
+<!-- ============ HERO ============ -->
+<!-- Uklad dzielony: tekst + prawdziwe zdjecie wnetrza. Zdjecie jest kwadratowe (1200x1200),
+     wiec stoi w wlasnej kolumnie zamiast byc przycinane do panoramicznego tla hero. -->
+<section id="top" class="pt-28 pb-16 md:pt-36 md:pb-24 bg-bg">
+  <div class="mx-auto max-w-content px-5 sm:px-6">
+    <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+
+      <div>
+        <h1 class="font-display font-medium text-navy max-w-[15ch]" style="font-size: clamp(2.3rem, 3.4vw + 1.4rem, 4rem); line-height: 1.12;">
+          Fryzjer męski przy Starowarszawskiej
+        </h1>
+
+        <p class="mt-6 text-lg leading-relaxed text-ink max-w-[42ch]">
+          Strzyżenie, broda i zarost w spokojnym salonie w centrum Piotrkowa.
+          Za fotelem Konrad Dziadczyk. Umawiasz się na konkretną godzinę i tyle.
+        </p>
+
+        <div class="mt-9 flex flex-col sm:flex-row gap-3 sm:gap-4">
+          <a href="https://booksy.com/pl-pl/223607_starowarszawska-fryzjer-meski_barber-shop_25202_piotrkow-trybunalski#ba_s=seo"
+             target="_blank" rel="noopener"
+             class="inline-flex items-center justify-center rounded-full bg-navy px-7 py-3.5 font-semibold text-white hover:bg-navydark transition-colors motion-reduce:transition-none">
+            Rezerwuj w Booksy
+          </a>
+          <a href="tel:+48791526940"
+             class="inline-flex items-center justify-center rounded-full border border-border px-7 py-3.5 font-medium text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
+            Zadzwoń: 791 526 940
+          </a>
+        </div>
+
+        <!-- Ocena z publicznego profilu Booksy klienta (odczytana 2026-08-06). -->
+        <div class="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <div class="flex items-center gap-1 text-walnut" role="img" aria-label="Ocena 4,9 na 5">
+            <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          </div>
+          <p class="text-sm text-ink">
+            <span class="font-semibold">4,9</span>
+            <span class="text-inkmuted">z 143 opinii w Booksy</span>
+          </p>
+        </div>
+
+        <p class="mt-5 text-sm text-inkmuted">
+          ul. Starowarszawska 5, 97-300 Piotrków Trybunalski
+        </p>
+      </div>
+
+      <div class="relative">
+        <img src="photos/polka-produkty-blat.jpg"
+             alt="Wnętrze salonu: orzechowy blat lady z barberskim pasem, czarne półki z kosmetykami do brody i włosów na tle granatowej ściany"
+             width="1200" height="1200" loading="eager" decoding="async"
+             class="w-full aspect-square object-cover object-center rounded-2xl border border-border">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ SALON ============ -->
+<section id="salon" class="bg-surface py-16 md:py-24">
+  <div class="mx-auto max-w-content px-5 sm:px-6">
+    <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+
+      <div class="order-2 lg:order-1">
+        <img src="photos/wizytowki-na-blacie.jpg"
+             alt="Wizytówki salonu Starowarszawska Fryzjer Męski rozłożone na orzechowym blacie"
+             width="1080" height="1440" loading="lazy" decoding="async"
+             class="w-full aspect-[3/4] object-cover object-center rounded-2xl border border-border">
+      </div>
+
+      <div class="order-1 lg:order-2">
+        <h2 class="font-display font-medium text-navy max-w-[13ch]" style="font-size: clamp(1.9rem, 2.6vw + 1.1rem, 2.9rem); line-height: 1.15;">
+          Jedno miejsce, jeden fotel
+        </h2>
+        <div class="mt-5 h-px w-14 bg-walnut" aria-hidden="true"></div>
+
+        <p class="mt-6 text-lg leading-relaxed text-ink">
+          Salon prowadzi Konrad Dziadczyk. Sam obsługuje, sam strzyże i sam odpowiada za to,
+          jak wychodzisz. Dlatego wizyty idą po kolei, bez tłoku i bez czekania w kolejce.
+        </p>
+
+        <p class="mt-5 text-lg leading-relaxed text-ink">
+          Wnętrze jest proste: granatowa ściana, orzechowy blat, ciepłe światło i półka
+          z kosmetykami do brody oraz włosów. Jeśli chcesz kontynuować pielęgnację w domu,
+          powiemy Ci czym i jak.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ USLUGI I CENY ============ -->
+<!-- ZRODLO CEN: publiczny profil Booksy klienta (odczytany 2026-08-06), nie material
+     przeslany przez klienta. Ceny wymagaja potwierdzenia przed publikacja.
+     PLACEHOLDER: "Strzyzenie dzieci" ma na Booksy dwa sprzeczne warianty ceny
+     (50 zl i 60 zl), wiec kwota zostaje do potwierdzenia zamiast zgadywania. -->
+<section id="cennik" class="bg-bg py-16 md:py-24">
+  <div class="mx-auto max-w-content px-5 sm:px-6">
+    <div class="grid lg:grid-cols-2 gap-10 lg:gap-16">
+
+      <div>
+        <h2 class="font-display font-medium text-navy" style="font-size: clamp(1.9rem, 2.6vw + 1.1rem, 2.9rem); line-height: 1.15;">
+          Usługi i ceny
+        </h2>
+        <div class="mt-5 h-px w-14 bg-walnut" aria-hidden="true"></div>
+        <p class="mt-6 text-lg leading-relaxed text-ink max-w-[46ch]">
+          Strzyżenie, broda i zarost. Wizyta trwa tyle, ile trzeba, i tyle jest zarezerwowane
+          w kalendarzu. W niedzielę do każdej usługi dochodzi 20 zł.
+        </p>
+        <a href="https://booksy.com/pl-pl/223607_starowarszawska-fryzjer-meski_barber-shop_25202_piotrkow-trybunalski#ba_s=seo"
+           target="_blank" rel="noopener"
+           class="mt-8 inline-flex items-center justify-center rounded-full bg-navy px-7 py-3.5 font-semibold text-white hover:bg-navydark transition-colors motion-reduce:transition-none">
+          Umów wizytę w Booksy
+        </a>
+      </div>
+
+      <div>
+        <dl class="divide-y divide-border border-y border-border">
+          <div class="flex items-baseline justify-between gap-6 py-4">
+            <dt class="text-ink">
+              Strzyżenie męskie klasyczne
+              <span class="block text-sm text-inkmuted mt-0.5">30 min</span>
+            </dt>
+            <dd class="font-medium text-navy text-right whitespace-nowrap">50 zł</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-4">
+            <dt class="text-ink">
+              Strzyżenie fade / crop
+              <span class="block text-sm text-inkmuted mt-0.5">30 min</span>
+            </dt>
+            <dd class="font-medium text-navy text-right whitespace-nowrap">60 zł</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-4">
+            <dt class="text-ink">
+              Trymowanie brody
+              <span class="block text-sm text-inkmuted mt-0.5">35 min</span>
+            </dt>
+            <dd class="font-medium text-navy text-right whitespace-nowrap">60 zł</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-4">
+            <dt class="text-ink">
+              Odsiwianie
+              <span class="block text-sm text-inkmuted mt-0.5">30 min</span>
+            </dt>
+            <dd class="font-medium text-navy text-right whitespace-nowrap">70 zł</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-4">
+            <dt class="text-ink">
+              Strzyżenie dzieci (6&ndash;10 lat)
+              <span class="block text-sm text-inkmuted mt-0.5">30 min</span>
+            </dt>
+            <dd class="font-medium text-walnut text-right whitespace-nowrap">do potwierdzenia</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-4">
+            <dt class="text-ink">
+              Wosk
+              <span class="block text-sm text-inkmuted mt-0.5">20 min</span>
+            </dt>
+            <dd class="font-medium text-navy text-right whitespace-nowrap">20 zł</dd>
+          </div>
+        </dl>
+        <p class="mt-5 text-sm text-inkmuted">
+          Ceny z profilu Booksy. Aktualne stawki i wolne terminy zawsze w Booksy.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Opinie: ocena 4,9 i liczba opinii sa w hero (zrodlo: profil Booksy klienta).
+     Osobnej sekcji z cytatami swiadomie NIE ma - nie mamy tresci opinii od klienta,
+     a wymyslanie cytatow nie wchodzi w gre. Gdy klient przesle 2-4 prawdziwe opinie,
+     dodac tu sekcje wg DESIGN.md sekcja 5 (blockquote, gwiazdki w kolorze akcentu). -->
+
+<!-- PLACEHOLDER (otwarte pytanie z brief.md): promocja otwarcia z plakatu
+     (20 stycznia, -50% dla pierwszych 5 klientow) NIE jest na stronie, bo najpewniej
+     juz nie obowiazuje. Wstawic wylacznie po potwierdzeniu, ze promocja jest aktualna. -->
+
+<!-- ============ GODZINY ============ -->
+<section id="godziny" class="bg-surface py-16 md:py-24">
+  <div class="mx-auto max-w-content px-5 sm:px-6">
+    <div class="grid lg:grid-cols-2 gap-10 lg:gap-16">
+
+      <div>
+        <h2 class="font-display font-medium text-navy" style="font-size: clamp(1.9rem, 2.6vw + 1.1rem, 2.9rem); line-height: 1.15;">
+          Godziny otwarcia
+        </h2>
+        <div class="mt-5 h-px w-14 bg-walnut" aria-hidden="true"></div>
+        <p class="mt-6 text-lg leading-relaxed text-ink max-w-[46ch]">
+          Najpewniej wolny termin sprawdzisz w Booksy. Jeśli wolisz porozmawiać,
+          zadzwoń w godzinach pracy salonu.
+        </p>
+        <a href="https://booksy.com/pl-pl/223607_starowarszawska-fryzjer-meski_barber-shop_25202_piotrkow-trybunalski#ba_s=seo"
+           target="_blank" rel="noopener"
+           class="mt-8 inline-flex items-center justify-center rounded-full bg-navy px-7 py-3.5 font-semibold text-white hover:bg-navydark transition-colors motion-reduce:transition-none">
+          Sprawdź wolne terminy
+        </a>
+      </div>
+
+      <div>
+        <!-- PLACEHOLDER (otwarte pytanie z brief.md): godziny w poniedzialek i wtorek.
+             Brak danych w materialach od klienta. Swiadomie NIE zgadujemy "zamkniete".
+             Po potwierdzeniu podmienic tekst "do potwierdzenia" na godziny albo "zamknięte"
+             i uzupelnic openingHours w JSON-LD na dole pliku. -->
+        <dl class="divide-y divide-border border-y border-border">
+          <div class="flex items-baseline justify-between gap-4 py-4">
+            <dt class="text-ink">Poniedziałek</dt>
+            <dd class="font-medium text-walnut text-right">do potwierdzenia</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-4 py-4">
+            <dt class="text-ink">Wtorek</dt>
+            <dd class="font-medium text-walnut text-right">do potwierdzenia</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-4 py-4">
+            <dt class="text-ink">Środa</dt>
+            <dd class="font-medium text-navy text-right">09:00&ndash;17:00</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-4 py-4">
+            <dt class="text-ink">Czwartek</dt>
+            <dd class="font-medium text-navy text-right">09:00&ndash;17:00</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-4 py-4">
+            <dt class="text-ink">Piątek</dt>
+            <dd class="font-medium text-navy text-right">09:00&ndash;17:00</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-4 py-4">
+            <dt class="text-ink">Sobota</dt>
+            <dd class="font-medium text-navy text-right">08:00&ndash;14:00</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-4 py-4">
+            <dt class="text-ink">
+              Niedziela
+              <span class="block text-sm text-walnut mt-1">każda usługa +20 zł</span>
+            </dt>
+            <dd class="font-medium text-navy text-right">otwarte</dd>
+          </div>
+        </dl>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ KONTAKT ============ -->
+<section id="kontakt" class="bg-bg py-16 md:py-24">
+  <div class="mx-auto max-w-content px-5 sm:px-6">
+    <h2 class="font-display font-medium text-navy" style="font-size: clamp(1.9rem, 2.6vw + 1.1rem, 2.9rem); line-height: 1.15;">
+      Jak nas znaleźć
+    </h2>
+    <div class="mt-5 h-px w-14 bg-walnut" aria-hidden="true"></div>
+
+    <div class="mt-10 grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+
+      <div>
+        <dl class="divide-y divide-border border-y border-border">
+          <div class="py-4">
+            <dt class="text-sm text-inkmuted">Adres</dt>
+            <dd class="mt-1.5 font-medium text-ink">ul. Starowarszawska 5<br>97-300 Piotrków Trybunalski</dd>
+          </div>
+          <div class="py-4">
+            <dt class="text-sm text-inkmuted">Telefon</dt>
+            <dd class="mt-1.5">
+              <a href="tel:+48791526940" class="inline-flex items-center min-h-[44px] font-medium text-navy underline underline-offset-4 decoration-walnut hover:decoration-navy transition-colors motion-reduce:transition-none">791 526 940</a>
+            </dd>
+          </div>
+          <div class="py-4">
+            <dt class="text-sm text-inkmuted">Rezerwacja online</dt>
+            <dd class="mt-1.5">
+              <a href="https://booksy.com/pl-pl/223607_starowarszawska-fryzjer-meski_barber-shop_25202_piotrkow-trybunalski#ba_s=seo"
+                 target="_blank" rel="noopener"
+                 class="inline-flex items-center min-h-[44px] font-medium text-navy underline underline-offset-4 decoration-walnut hover:decoration-navy transition-colors motion-reduce:transition-none">Booksy</a>
+            </dd>
+          </div>
+        </dl>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="https://www.instagram.com/starowarszawska_barber/" target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2.5 rounded-full border border-border px-5 min-h-[44px] text-sm font-medium text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[1.125rem] w-[1.125rem]" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/>
+            </svg>
+            Instagram
+          </a>
+          <a href="https://www.facebook.com/p/Starowarszawska-Fryzjer-M%C4%99ski-61555470483578/" target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2.5 rounded-full border border-border px-5 min-h-[44px] text-sm font-medium text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="h-[1.125rem] w-[1.125rem]" aria-hidden="true">
+              <path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.6c-.3-.04-1.3-.13-2.45-.13-2.4 0-4.05 1.47-4.05 4.18v2.25H7.5V13h2.7v8h3.3z"/>
+            </svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="relative rounded-2xl overflow-hidden border border-border">
+          <iframe
+            src="https://www.google.com/maps?q=Starowarszawska%205,%2097-300%20Piotrk%C3%B3w%20Trybunalski&output=embed"
+            title="Mapa: ul. Starowarszawska 5, Piotrków Trybunalski"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            class="map-light w-full h-[300px] sm:h-[380px] block border-0"></iframe>
+          <div class="map-tint absolute inset-0 pointer-events-none" aria-hidden="true"></div>
+        </div>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Starowarszawska+5,+97-300+Piotrk%C3%B3w+Trybunalski"
+           target="_blank" rel="noopener"
+           class="mt-4 inline-flex items-center justify-center rounded-full border border-border px-7 py-3.5 text-sm font-medium text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
+          Wyznacz trasę
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ STOPKA ============ -->
+<!-- Jedyna ciemna (granatowa) sekcja na stronie — swiadomy wyjatek od jasnego motywu,
+     domykajacy strone tak jak zamykana wieczorem, oswietlona witryna salonu. -->
+<footer class="bg-navy">
+  <div class="mx-auto max-w-content px-5 sm:px-6 py-12">
+
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+      <div>
+        <p class="font-body text-[0.95rem] font-semibold tracking-[0.2em] text-white">STAROWARSZAWSKA</p>
+        <p class="font-body text-[0.62rem] tracking-[0.32em] text-white/60 mt-1">FRYZJER MĘSKI</p>
+        <p class="mt-4 text-sm text-white/70 leading-relaxed">
+          Konrad Dziadczyk<br>
+          ul. Starowarszawska 5, 97-300 Piotrków Trybunalski
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-white/70">
+        <a href="tel:+48791526940" class="inline-flex items-center min-h-[44px] hover:text-white transition-colors motion-reduce:transition-none">791 526 940</a>
+        <a href="https://www.instagram.com/starowarszawska_barber/" target="_blank" rel="noopener" class="inline-flex items-center min-h-[44px] hover:text-white transition-colors motion-reduce:transition-none">Instagram</a>
+        <a href="https://www.facebook.com/p/Starowarszawska-Fryzjer-M%C4%99ski-61555470483578/" target="_blank" rel="noopener" class="inline-flex items-center min-h-[44px] hover:text-white transition-colors motion-reduce:transition-none">Facebook</a>
+        <a href="privacy.html" class="inline-flex items-center min-h-[44px] hover:text-white transition-colors motion-reduce:transition-none">Polityka prywatności</a>
+      </div>
+    </div>
+
+    <p class="mt-10 pt-6 border-t border-white/15 text-sm text-white/60">&copy; 2026 Starowarszawska Fryzjer Męski</p>
+  </div>
+</footer>
+
+<!-- Dane strukturalne: tylko potwierdzone godziny (sroda-sobota).
+     PLACEHOLDER: poniedzialek, wtorek i niedziela celowo pominiete, bo nie znamy godzin.
+     UWAGA: dopoki niedzieli tu nie ma, Google moze pokazywac "zamkniete w niedziele",
+     a salon w niedziele pracuje. Uzupelnic razem z tabela godzin, gdy klient potwierdzi.
+     Po wyborze domeny zamienic tez "image" i og:image na pelne adresy https://. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BarberShop",
+  "name": "Starowarszawska Fryzjer Męski",
+  "image": "photos/polka-produkty-blat.jpg",
+  "telephone": "+48791526940",
+  "priceRange": "50-70 zł",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "143",
+    "bestRating": "5"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "ul. Starowarszawska 5",
+    "postalCode": "97-300",
+    "addressLocality": "Piotrków Trybunalski",
+    "addressCountry": "PL"
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Wednesday", "Thursday", "Friday"], "opens": "09:00", "closes": "17:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:00", "closes": "14:00" }
+  ],
+  "sameAs": [
+    "https://www.instagram.com/starowarszawska_barber/",
+    "https://www.facebook.com/p/Starowarszawska-Fryzjer-M%C4%99ski-61555470483578/"
+  ],
+  "hasMap": "https://www.google.com/maps/dir/?api=1&destination=Starowarszawska+5,+97-300+Piotrk%C3%B3w+Trybunalski"
+}
+</script>
+
+</body>
+</html>

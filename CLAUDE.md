@@ -27,3 +27,10 @@ Przed budową nowej strony sprawdź `/design/STYLES.md`. Jeśli prompt nie wskaz
 ## Uczenie się na błędach
 
 Jeśli zauważysz, że powtarzasz ten sam błąd albo użytkownik poprawia Cię wielokrotnie w tej samej sprawie — zaproponuj konkretną poprawkę do odpowiedniego pliku (CLAUDE.md, SKILL.md albo pliku agenta) i zapytaj o zgodę, zanim ją wprowadzisz. Nigdy nie edytuj tych plików samodzielnie bez pytania.
+
+## Skille opcjonalne (tylko na żądanie)
+
+Poniższe skille są dostępne w `.claude/skills/`, ale **nie używaj ich domyślnie** — korzystaj z nich wyłącznie gdy użytkownik wprost o to poprosi:
+
+- `emil-design-eng` — inżynieria designu w stylu Emila
+- `apple-design` — zasady projektowania w stylu Apple

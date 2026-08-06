@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paradoxe Studio — Barber & Hair Studio w Bełchatowie</title>
+<meta name="description" content="Paradoxe Studio przy Wyspiańskiego 2 w Bełchatowie. Strzyżenia męskie, fade i golenie oraz fryzjerstwo damskie: koloryzacja, balayage, stylizacja i upięcia. Rezerwacja przez Booksy lub telefonicznie: 533 588 960.">
+<link rel="icon" href="brand/favicon.jpg">
+<link rel="apple-touch-icon" href="brand/favicon.jpg">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Paradoxe Studio — Barber & Hair Studio w Bełchatowie">
+<meta property="og:description" content="Strzyżenia męskie i fryzjerstwo damskie pod jednym adresem. ul. Wyspiańskiego 2, Bełchatów.">
+<meta property="og:image" content="photos/wnetrze-salonu.jpg">
+<meta property="og:locale" content="pl_PL">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg:       '#0B0906',
+          surface:  '#232323',
+          ink:      '#F3EEE3',
+          inkmuted: '#CBC3B3',
+          accent:   '#C79A4B',
+          border:   'rgba(243,238,227,0.12)',
+        },
+        fontFamily: {
+          display: ['"Bodoni Moda"', 'serif'],
+          body:    ['"Work Sans"', 'system-ui', 'sans-serif'],
+        },
+        maxWidth: { content: '72rem' },
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO: bez odpytywania serwerow Google przez odwiedzajacego) */
+  @font-face {
+    font-family: 'Bodoni Moda';
+    font-style: normal;
+    font-weight: 400 600;
+    font-display: swap;
+    src: url('fonts/bodonimoda-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Bodoni Moda';
+    font-style: normal;
+    font-weight: 400 600;
+    font-display: swap;
+    src: url('fonts/bodonimoda-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('fonts/worksans-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('fonts/worksans-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background-color: #0B0906;
+    /* Ambientowe, nieruchome poswiaty w kolorze akcentu (DESIGN.md, sekcja Elevation) */
+    background-image:
+      radial-gradient(60rem 40rem at 78% 6%,  rgba(199,154,75,0.08), transparent 65%),
+      radial-gradient(50rem 34rem at 8%  52%, rgba(199,154,75,0.05), transparent 65%),
+      radial-gradient(55rem 38rem at 88% 92%, rgba(199,154,75,0.06), transparent 65%);
+    background-attachment: fixed;
+  }
+  section[id] { scroll-margin-top: 5rem; }
+
+  /* Mapa Google dociemniona pod ciemny motyw (DESIGN.md, sekcja Map embed) */
+  .map-dark { filter: invert(90%) hue-rotate(180deg) saturate(0.55) contrast(0.92) brightness(0.95); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  :focus-visible { outline: 2px solid #C79A4B; outline-offset: 3px; border-radius: 4px; }
+</style>
+</head>
+
+<body class="font-body text-ink antialiased">
+
+<a href="#tresc" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-accent focus:text-bg focus:px-4 focus:py-2 focus:rounded-full focus:font-semibold">Przejdź do treści</a>
+
+<!-- ============ HEADER ============ -->
+<header class="fixed top-0 inset-x-0 z-40 border-b border-border bg-bg/80 backdrop-blur-md">
+  <div class="mx-auto max-w-content px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+
+    <a href="#top" class="shrink-0 leading-none">
+      <span class="block font-body text-[0.95rem] sm:text-base font-semibold tracking-[0.18em] text-ink">PARADOXE</span>
+      <span class="block font-body text-[0.6rem] tracking-[0.3em] text-inkmuted">STUDIO</span>
+    </a>
+
+    <nav class="hidden lg:flex items-center gap-8 text-sm font-medium text-inkmuted">
+      <a href="#oferta"   class="hover:text-ink transition-colors motion-reduce:transition-none">Oferta</a>
+      <a href="#cennik"   class="hover:text-ink transition-colors motion-reduce:transition-none">Cennik</a>
+      <a href="#voucher"  class="hover:text-ink transition-colors motion-reduce:transition-none">Voucher</a>
+      <a href="#kontakt"  class="hover:text-ink transition-colors motion-reduce:transition-none">Kontakt</a>
+    </nav>
+
+    <div class="flex items-center gap-2 shrink-0">
+      <!-- Telefon: pelny numer na desktopie, ikona 44px na mobile -->
+      <a href="tel:+48533588960"
+         class="hidden sm:inline-flex items-center rounded-full border border-border px-5 py-2.5 text-sm font-medium text-inkmuted hover:text-ink hover:border-inkmuted transition-colors motion-reduce:transition-none">
+        533 588 960
+      </a>
+      <a href="tel:+48533588960" aria-label="Zadzwoń: 533 588 960"
+         class="sm:hidden inline-flex items-center justify-center h-11 w-11 rounded-full border border-border text-inkmuted hover:text-ink transition-colors motion-reduce:transition-none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-5 w-5" aria-hidden="true">
+          <path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.2 2.2z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <!-- Booksy w headerze (wariant Website+): widoczny na kazdym ekranie -->
+      <a href="https://booksy.com/pl-pl/308877_paradoxe-studio-barber-shop-belchatow_barber-shop_25231_belchatow#ba_s=seo"
+         target="_blank" rel="noopener"
+         class="inline-flex items-center rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-bg hover:brightness-110 transition-[filter] motion-reduce:transition-none">
+        Rezerwuj
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="tresc">
+
+<!-- ============ HERO ============ -->
+<section id="top" class="pt-28 pb-16 sm:pt-32 sm:pb-24">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+
+      <div class="lg:col-span-6 xl:col-span-7">
+        <h1 class="font-display font-medium leading-[1.1] text-[clamp(2.1rem,3.2vw+1.4rem,3.75rem)]">
+          Strzyżenia męskie i fryzjerstwo damskie pod jednym adresem
+        </h1>
+
+        <p class="mt-6 max-w-[60ch] text-lg leading-relaxed text-inkmuted">
+          Paradoxe Studio to barber i studio fryzjerskie w jednym wnętrzu, przy Wyspiańskiego 2 w Bełchatowie.
+          Fade i klasyczne cięcie dla panów, koloryzacja, balayage i stylizacja dla pań.
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="https://booksy.com/pl-pl/308877_paradoxe-studio-barber-shop-belchatow_barber-shop_25231_belchatow#ba_s=seo"
+             target="_blank" rel="noopener"
+             class="inline-flex items-center justify-center min-h-[44px] rounded-full bg-accent px-7 py-3.5 font-semibold text-bg hover:brightness-110 transition-[filter] motion-reduce:transition-none">
+            Rezerwuj w Booksy
+          </a>
+          <a href="tel:+48533588960"
+             class="inline-flex items-center justify-center min-h-[44px] rounded-full border border-border px-7 py-3.5 font-medium text-inkmuted hover:text-ink hover:border-inkmuted transition-colors motion-reduce:transition-none">
+            Zadzwoń: 533 588 960
+          </a>
+        </div>
+
+        <dl class="mt-10 flex flex-wrap gap-x-10 gap-y-4 border-t border-border pt-6 text-sm">
+          <div>
+            <dt class="text-inkmuted">Adres</dt>
+            <dd class="mt-1 font-medium">ul. Wyspiańskiego 2, Bełchatów</dd>
+          </div>
+          <div>
+            <!-- Bez JS pokazuje prawdziwe godziny pon-pt; skrypt podmienia etykiete i wartosc na dzisiejsze -->
+            <dt class="text-inkmuted" id="dzisiaj-etykieta">Poniedziałek do piątku</dt>
+            <dd class="mt-1 font-medium" id="dzisiaj-godziny">10:00–19:00</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="lg:col-span-6 xl:col-span-5">
+        <img src="photos/wnetrze-salonu.jpg"
+             alt="Wnętrze Paradoxe Studio: ciemna boazeria z drewna, czarne fotele barberskie, drewniany blat z produktami i okrągłe lampy wiszące"
+             width="1051" height="1400" loading="eager" decoding="async"
+             class="w-full aspect-[3/4] object-cover object-center rounded-2xl border border-border">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ OFERTA ============ -->
+<section id="oferta" class="bg-surface py-16 sm:py-24">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+
+    <h2 class="font-display font-medium leading-[1.15] text-[clamp(1.75rem,2.5vw+1.1rem,2.75rem)]">
+      Dwie strony jednego studia
+    </h2>
+    <p class="mt-5 max-w-[65ch] text-lg leading-relaxed text-inkmuted">
+      Nazwa „Barber &amp; Hair Studio” nie jest przypadkowa. W tym samym wnętrzu robimy męskie strzyżenia
+      i pełne fryzjerstwo damskie. Nie trzeba szukać dwóch miejsc.
+    </p>
+
+    <div class="mt-12 grid md:grid-cols-2 gap-10 md:gap-0">
+
+      <div class="md:pr-12">
+        <h3 class="font-display text-2xl font-medium">Barber</h3>
+        <p class="mt-3 text-inkmuted leading-relaxed">
+          Precyzyjne strzyżenia męskie. Czysta linia i dopracowane przejścia.
+        </p>
+        <ul class="mt-6 divide-y divide-border border-y border-border text-[0.95rem]">
+          <li class="py-3">Strzyżenie męskie</li>
+          <li class="py-3">Fade i undercut</li>
+          <li class="py-3">Golenie</li>
+        </ul>
+      </div>
+
+      <div class="md:pl-12 md:border-l md:border-border">
+        <h3 class="font-display text-2xl font-medium">Hair Studio</h3>
+        <p class="mt-3 text-inkmuted leading-relaxed">
+          Fryzjerstwo damskie z naciskiem na kolor i wykończenie. Od koloryzacji po gotowe ułożenie włosów.
+        </p>
+        <ul class="mt-6 divide-y divide-border border-y border-border text-[0.95rem]">
+          <li class="py-3">Koloryzacja i balayage</li>
+          <li class="py-3">Stylizacja i modelowanie loków</li>
+          <li class="py-3">Upięcia</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Efekty: prawdziwe zdjecia klienta, wszystkie w pionie 3:4, bez przycinania twarzy -->
+    <div class="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <figure>
+        <img src="photos/meskie-fade.jpg"
+             alt="Męskie strzyżenie z precyzyjnym fade, widok z profilu, wykonane w Paradoxe Studio"
+             width="1050" height="1400" loading="lazy" decoding="async"
+             class="w-full aspect-[3/4] object-cover object-center rounded-2xl border border-border">
+      </figure>
+      <figure>
+        <img src="photos/damskie-loki.jpg"
+             alt="Długie brązowe włosy ułożone w miękkie fale z rozjaśnieniami, praca fryzjerska Paradoxe Studio"
+             width="1210" height="1400" loading="lazy" decoding="async"
+             class="w-full aspect-[3/4] object-cover object-center rounded-2xl border border-border">
+      </figure>
+      <figure>
+        <img src="photos/damskie-balayage-upiecie.jpg"
+             alt="Balayage w ciepłych, karmelowych odcieniach z półupięciem i wymodelowanymi lokami"
+             width="1050" height="1400" loading="lazy" decoding="async"
+             class="w-full aspect-[3/4] object-cover object-center rounded-2xl border border-border">
+      </figure>
+    </div>
+
+  </div>
+</section>
+
+<!--
+  ======================================================================
+  PLACEHOLDER — SEKCJA "ZESPÓŁ" (otwarte pytanie z briefu)
+  Do ustalenia: czy klient chce pokazac imiona barberow i fryzjerek,
+  czy zostac przy marce jako calosci?
+
+  Swiadomie NIE buduje tu pustej sekcji: brief nie podaje ani imion,
+  ani zdjec zespolu, a CLAUDE.md zabrania dodawania sekcji spoza briefu.
+  Jesli klient zdecyduje sie pokazac zespol, sekcja wchodzi TUTAJ
+  (po ofercie, przed cennikiem) i potrzebuje: imion + zdjec portretowych.
+  ======================================================================
+-->
+
+<!-- ============ CENNIK ============ -->
+<section id="cennik" class="py-16 sm:py-24">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+
+    <h2 class="font-display font-medium leading-[1.15] text-[clamp(1.75rem,2.5vw+1.1rem,2.75rem)]">
+      Cennik
+    </h2>
+
+    <!--
+      ======================================================================
+      PLACEHOLDER — CENNIK DO UZUPEŁNIENIA
+      Brief nie zawiera cennika (otwarte pytanie do klienta).
+      Do decyzji: pełna lista cen na stronie CZY świadome kierowanie do Booksy.
+
+      Gdy klient poda ceny, wstaw w miejsce bloku ponizej plaska liste <dl>
+      (wzorzec z DESIGN.md, sekcja "Lists / Cennik / Godziny"):
+
+      <dl class="mt-10 max-w-2xl divide-y divide-border border-y border-border">
+        <div class="flex items-baseline justify-between gap-6 py-4">
+          <dt class="text-inkmuted">Strzyżenie męskie</dt>
+          <dd class="font-medium whitespace-nowrap">00 zł</dd>
+        </div>
+        ...
+      </dl>
+
+      i usun caly blok .placeholder-cennik wraz z tym komentarzem.
+      ======================================================================
+    -->
+    <div class="placeholder-cennik mt-10 max-w-2xl rounded-2xl border border-dashed border-border p-6 sm:p-8">
+      <p class="text-sm font-medium text-accent">Do uzupełnienia przez klienta</p>
+      <p class="mt-3 text-lg leading-relaxed text-inkmuted">
+        Tu wejdzie cennik usług. Do ustalenia, czy ceny mają być wypisane na stronie,
+        czy strona ma kierować po nie do Booksy.
+      </p>
+      <a href="https://booksy.com/pl-pl/308877_paradoxe-studio-barber-shop-belchatow_barber-shop_25231_belchatow#ba_s=seo"
+         target="_blank" rel="noopener"
+         class="mt-6 inline-flex items-center justify-center min-h-[44px] rounded-full border border-border px-7 py-3.5 font-medium text-inkmuted hover:text-ink hover:border-inkmuted transition-colors motion-reduce:transition-none">
+        Zobacz ceny w Booksy
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ VOUCHER ============ -->
+<section id="voucher" class="bg-surface py-16 sm:py-24">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+    <div class="grid md:grid-cols-2 gap-10 md:gap-14 items-center">
+
+      <div>
+        <h2 class="font-display font-medium leading-[1.15] text-[clamp(1.75rem,2.5vw+1.1rem,2.75rem)]">
+          Voucher prezentowy
+        </h2>
+        <p class="mt-5 text-lg leading-relaxed text-inkmuted">
+          Karta podarunkowa Paradoxe na dowolną kwotę lub konkretną usługę.
+          Do wykorzystania w salonie w ciągu 6 miesięcy od dnia otrzymania.
+        </p>
+
+        <!--
+          PLACEHOLDER — SPOSÓB SPRZEDAŻY VOUCHERA DO USTALENIA.
+          Otwarte pytanie z briefu: czy vouchery sa sprzedawane tylko stacjonarnie,
+          czy tez zdalnie (np. przez Booksy)?
+          - jesli TYLKO stacjonarnie -> zostaw CTA "Zapytaj o voucher" (tel:)
+          - jesli takze zdalnie      -> podmien na link do Booksy / kanalu sprzedazy
+                                        i usun blok .placeholder-voucher ponizej
+        -->
+        <div class="placeholder-voucher mt-6 rounded-2xl border border-dashed border-border p-5">
+          <p class="text-sm font-medium text-accent">Do ustalenia przez klienta</p>
+          <p class="mt-2 text-sm leading-relaxed text-inkmuted">
+            Czy voucher można kupić tylko w salonie, czy również zdalnie? Od tego zależy, dokąd prowadzi przycisk poniżej.
+          </p>
+        </div>
+
+        <a href="tel:+48533588960"
+           class="mt-6 inline-flex items-center justify-center min-h-[44px] rounded-full bg-accent px-7 py-3.5 font-semibold text-bg hover:brightness-110 transition-[filter] motion-reduce:transition-none">
+          Zapytaj o voucher
+        </a>
+      </div>
+
+      <div>
+        <img src="brand/voucher-prezentowy.jpg"
+             alt="Czarny voucher prezentowy Paradoxe Studio ze srebrnym tłoczeniem: strona z logo i strona z miejscem na wpisanie kwoty lub usługi"
+             width="1400" height="1400" loading="lazy" decoding="async"
+             class="w-full aspect-square object-cover rounded-2xl border border-border">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ OPINIE ============ -->
+<section id="opinie" class="py-16 sm:py-24">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+
+    <h2 class="font-display font-medium leading-[1.15] text-[clamp(1.75rem,2.5vw+1.1rem,2.75rem)]">
+      Opinie
+    </h2>
+
+    <!--
+      ======================================================================
+      PLACEHOLDER — OPINIE DO UZUPEŁNIENIA
+      Brief nie podaje ani oceny, ani liczby opinii (otwarte pytanie:
+      "Liczba opinii / ocena na Booksy lub Facebooku - do sprawdzenia na ich profilach").
+      Swiadomie NIE wpisuje tu zadnych liczb ani cytatow, zeby nie zmyslic social proof.
+
+      Gdy dane beda znane, wstaw tu ocene + liczbe opinii oraz 2-4 cytaty
+      wg wzorca z DESIGN.md (sekcja "Reviews / Opinie"):
+      <blockquote> z gornym border-t, 5 gwiazdek w kolorze akcentu, cytat text-lg,
+      autor + zrodlo + ocena w text-sm text-inkmuted. Siatka 2 kolumny.
+      ======================================================================
+    -->
+    <div class="placeholder-opinie mt-10 max-w-2xl rounded-2xl border border-dashed border-border p-6 sm:p-8">
+      <p class="text-sm font-medium text-accent">Do uzupełnienia przez klienta</p>
+      <p class="mt-3 text-lg leading-relaxed text-inkmuted">
+        Tu wejdzie ocena, liczba opinii i kilka wypowiedzi klientów. Potrzebne są dane z profilu Booksy
+        albo Facebooka, żeby nie wpisywać niczego na wyczucie.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="https://booksy.com/pl-pl/308877_paradoxe-studio-barber-shop-belchatow_barber-shop_25231_belchatow#ba_s=seo"
+           target="_blank" rel="noopener"
+           class="inline-flex items-center justify-center min-h-[44px] rounded-full border border-border px-7 py-3.5 font-medium text-inkmuted hover:text-ink hover:border-inkmuted transition-colors motion-reduce:transition-none">
+          Opinie w Booksy
+        </a>
+        <a href="https://www.facebook.com/paradoxestudioo/"
+           target="_blank" rel="noopener"
+           class="inline-flex items-center justify-center min-h-[44px] rounded-full border border-border px-7 py-3.5 font-medium text-inkmuted hover:text-ink hover:border-inkmuted transition-colors motion-reduce:transition-none">
+          Opinie na Facebooku
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ REZERWACJA (Website+) ============ -->
+<section id="rezerwacja" class="bg-surface py-16 sm:py-24">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+    <div class="grid lg:grid-cols-2 gap-8 lg:gap-14 items-center">
+
+      <div>
+        <h2 class="font-display font-medium leading-[1.15] text-[clamp(1.75rem,2.5vw+1.1rem,2.75rem)]">
+          Rezerwacja wizyty
+        </h2>
+        <p class="mt-5 max-w-[55ch] text-lg leading-relaxed text-inkmuted">
+          Wolne terminy są na bieżąco w Booksy, rezerwacja zajmuje chwilę i działa całą dobę.
+          Wolisz porozmawiać? Zadzwoń w godzinach otwarcia.
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row lg:justify-end gap-3">
+        <a href="https://booksy.com/pl-pl/308877_paradoxe-studio-barber-shop-belchatow_barber-shop_25231_belchatow#ba_s=seo"
+           target="_blank" rel="noopener"
+           class="inline-flex items-center justify-center min-h-[44px] rounded-full bg-accent px-7 py-3.5 font-semibold text-bg hover:brightness-110 transition-[filter] motion-reduce:transition-none">
+          Rezerwuj w Booksy
+        </a>
+        <a href="tel:+48533588960"
+           class="inline-flex items-center justify-center min-h-[44px] rounded-full border border-border px-7 py-3.5 font-medium text-inkmuted hover:text-ink hover:border-inkmuted transition-colors motion-reduce:transition-none">
+          533 588 960
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ KONTAKT + GODZINY + MAPA ============ -->
+<section id="kontakt" class="py-16 sm:py-24">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+
+    <h2 class="font-display font-medium leading-[1.15] text-[clamp(1.75rem,2.5vw+1.1rem,2.75rem)]">
+      Kontakt i godziny
+    </h2>
+
+    <div class="mt-10 grid md:grid-cols-2 gap-10 md:gap-14">
+
+      <div>
+        <h3 class="font-display text-xl font-medium">Salon</h3>
+        <dl class="mt-5 divide-y divide-border border-y border-border">
+          <div class="flex items-baseline justify-between gap-6 py-4">
+            <dt class="text-inkmuted">Adres</dt>
+            <dd class="text-right font-medium">ul. Wyspiańskiego 2<br>97-400 Bełchatów</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-4">
+            <dt class="text-inkmuted">Telefon</dt>
+            <dd><a href="tel:+48533588960" class="font-medium text-accent hover:brightness-110 transition-[filter] motion-reduce:transition-none">533 588 960</a></dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-4">
+            <dt class="text-inkmuted">Facebook</dt>
+            <dd><a href="https://www.facebook.com/paradoxestudioo/" target="_blank" rel="noopener" class="font-medium hover:text-accent transition-colors motion-reduce:transition-none">paradoxestudioo</a></dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-4">
+            <dt class="text-inkmuted">Rezerwacje</dt>
+            <dd><a href="https://booksy.com/pl-pl/308877_paradoxe-studio-barber-shop-belchatow_barber-shop_25231_belchatow#ba_s=seo" target="_blank" rel="noopener" class="font-medium hover:text-accent transition-colors motion-reduce:transition-none">Booksy</a></dd>
+          </div>
+        </dl>
+      </div>
+
+      <div>
+        <h3 class="font-display text-xl font-medium">Godziny otwarcia</h3>
+        <dl id="godziny" class="mt-5 divide-y divide-border border-y border-border">
+          <div data-dzien="1" class="flex items-baseline justify-between gap-6 py-3">
+            <dt class="text-inkmuted">Poniedziałek</dt><dd class="font-medium">10:00–19:00</dd>
+          </div>
+          <div data-dzien="2" class="flex items-baseline justify-between gap-6 py-3">
+            <dt class="text-inkmuted">Wtorek</dt><dd class="font-medium">10:00–19:00</dd>
+          </div>
+          <div data-dzien="3" class="flex items-baseline justify-between gap-6 py-3">
+            <dt class="text-inkmuted">Środa</dt><dd class="font-medium">10:00–19:00</dd>
+          </div>
+          <div data-dzien="4" class="flex items-baseline justify-between gap-6 py-3">
+            <dt class="text-inkmuted">Czwartek</dt><dd class="font-medium">10:00–19:00</dd>
+          </div>
+          <div data-dzien="5" class="flex items-baseline justify-between gap-6 py-3">
+            <dt class="text-inkmuted">Piątek</dt><dd class="font-medium">10:00–19:00</dd>
+          </div>
+          <div data-dzien="6" class="flex items-baseline justify-between gap-6 py-3">
+            <dt class="text-inkmuted">Sobota</dt><dd class="font-medium">09:00–15:00</dd>
+          </div>
+          <div data-dzien="0" class="flex items-baseline justify-between gap-6 py-3">
+            <dt class="text-inkmuted">Niedziela</dt><dd class="font-medium">Zamknięte</dd>
+          </div>
+        </dl>
+      </div>
+
+    </div>
+
+    <div class="mt-12">
+      <div class="overflow-hidden rounded-2xl border border-border">
+        <iframe
+          title="Mapa dojazdu do Paradoxe Studio, ul. Wyspiańskiego 2 w Bełchatowie"
+          src="https://www.google.com/maps?q=Wyspia%C5%84skiego%202,%2097-400%20Be%C5%82chat%C3%B3w&output=embed"
+          class="map-dark block w-full h-[320px] sm:h-[400px]"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          style="border:0"></iframe>
+      </div>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=ul.%20Wyspia%C5%84skiego%202%2C%2097-400%20Be%C5%82chat%C3%B3w"
+         target="_blank" rel="noopener"
+         class="mt-4 inline-flex items-center justify-center min-h-[44px] rounded-full border border-border px-7 py-3.5 font-medium text-inkmuted hover:text-ink hover:border-inkmuted transition-colors motion-reduce:transition-none">
+        Wyznacz trasę
+      </a>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- ============ STOPKA ============ -->
+<footer class="bg-surface border-t border-border py-14">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8">
+
+      <div class="flex items-center gap-4">
+        <img src="brand/logo-znak.png"
+             alt="Logo Paradoxe Studio: okrągła plakietka z monogramem PD, napisem Barber &amp; Hair Studio oraz Bełchatów"
+             width="512" height="512" loading="lazy" decoding="async"
+             class="h-24 w-24 shrink-0">
+        <div class="text-sm leading-relaxed text-inkmuted">
+          <p class="font-medium text-ink">Paradoxe Studio</p>
+          <p>ul. Wyspiańskiego 2, 97-400 Bełchatów</p>
+          <p><a href="tel:+48533588960" class="hover:text-ink transition-colors motion-reduce:transition-none">533 588 960</a></p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-inkmuted">
+        <a href="https://booksy.com/pl-pl/308877_paradoxe-studio-barber-shop-belchatow_barber-shop_25231_belchatow#ba_s=seo" target="_blank" rel="noopener" class="hover:text-ink transition-colors motion-reduce:transition-none">Booksy</a>
+        <a href="https://www.facebook.com/paradoxestudioo/" target="_blank" rel="noopener" class="hover:text-ink transition-colors motion-reduce:transition-none">Facebook</a>
+        <a href="privacy.html" class="hover:text-ink transition-colors motion-reduce:transition-none">Polityka prywatności</a>
+      </div>
+
+    </div>
+
+    <p class="mt-10 border-t border-border pt-6 text-xs text-inkmuted">
+      &copy; <span id="rok">2026</span> Paradoxe Studio, Bełchatów.
+    </p>
+  </div>
+</footer>
+
+<script>
+  // Rok w stopce
+  document.getElementById('rok').textContent = new Date().getFullYear();
+
+  // Wyroznienie dzisiejszego dnia w godzinach otwarcia + skrot "Dzisiaj" w hero.
+  (function () {
+    var dzis = new Date().getDay(); // 0 = niedziela
+    var wiersz = document.querySelector('#godziny [data-dzien="' + dzis + '"]');
+    if (!wiersz) return;
+
+    wiersz.querySelector('dt').classList.remove('text-inkmuted');
+    wiersz.querySelector('dt').classList.add('text-accent', 'font-medium');
+    wiersz.querySelector('dd').classList.add('text-accent');
+
+    var skrot = document.getElementById('dzisiaj-godziny');
+    var etykieta = document.getElementById('dzisiaj-etykieta');
+    if (skrot && etykieta) {
+      skrot.textContent = wiersz.querySelector('dd').textContent;
+      etykieta.textContent = 'Dzisiaj';
+    }
+  })();
+</script>
+
+</body>
+</html>

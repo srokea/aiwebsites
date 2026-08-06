@@ -10,3 +10,6 @@ screenshots/
 
 # Local Netlify folder
 .netlify
+
+# Prywatne projekty, nie dla repo agencji
+personal/
