@@ -4,7 +4,7 @@
  * robi wersję mobilną I desktopową). Zastępuje ad-hocowe shot.js.
  *
  * Użycie:
- *   node scripts/screenshot.mjs clients/Studio-Fryzur-Lidia [plik.html] [opcje]
+ *   node scripts/screenshot.mjs clients/studio-fryzur-lidia [plik.html] [opcje]
  *
  * Opcje:
  *   --out DIR      katalog wyjściowy (domyślnie screenshots/<klient>/)
@@ -57,7 +57,7 @@ const args = process.argv.slice(2);
 const positional = args.filter((a) => !a.startsWith('--'));
 const dir = positional[0];
 if (!dir) {
-  console.error('Podaj katalog klienta, np.: node scripts/screenshot.mjs clients/Studio-Fryzur-Lidia');
+  console.error('Podaj katalog klienta, np.: node scripts/screenshot.mjs clients/studio-fryzur-lidia');
   process.exit(1);
 }
 const root = resolve(dir);

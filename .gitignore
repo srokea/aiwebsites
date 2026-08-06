@@ -1,5 +1,26 @@
-# macOS
+# macOS / Windows
 .DS_Store
+Thumbs.db
+
+# node
+node_modules/
+
+# środowisko / sekrety
+.env
+.env.*
+
+# buildy
+dist/
+build/
+.cache/
+
+# kopie zapasowe schematow rozmow (tworzone przy edycji z poziomu appki)
+*.js.bak
+
+# baza Cold Calls: sam plik .db jest w repo (na zyczenie - klonuje sie razem z appka),
+# ale pliki tymczasowe WAL/SHM to stan otwartej bazy - te nigdy
+*.db-shm
+*.db-wal
 
 # Impeccable cache (stan sesji, nie kod)
 .impeccable/hook.cache.json
