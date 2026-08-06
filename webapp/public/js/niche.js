@@ -53,6 +53,7 @@ async function init() {
   try {
     meta = await api.get("/api/meta");
     highlightStatuses = new Set(meta.interestedOptions.filter((o) => o.highlight).map((o) => o.value));
+    restoreViewState(); // zanim narysujemy pasek filtrow i tabele - patrz nizej
     renderFilterBar();
     document.getElementById("export-csv-btn").href = `/api/niches/${encodeURIComponent(slug)}/export.csv`;
     await loadNicheHeader();
@@ -145,6 +146,7 @@ function setTodoFilter(on) {
 document.getElementById("niche-stats").addEventListener("click", (e) => {
   if (!e.target.closest("#todo-card")) return;
   setTodoFilter(!todoFilter);
+  saveViewState();
   renderLeads();
 });
 
@@ -200,6 +202,7 @@ function renderFilterBar() {
   document.getElementById("filter-clear").addEventListener("click", () => {
     filters = { interested: [], caller: [], answered: [], has_social: [] };
     setTodoFilter(false);
+    saveViewState();
     renderFilterBar();
     renderLeads();
   });
@@ -343,6 +346,65 @@ function affectsOrdering(fields) {
   });
 }
 
+// ---------- zapamietany widok niszy (sortowanie + filtry) ----------
+// Kazda nisza ma wlasny zapis: w Fryzjerach mozesz miec sortowanie po jakosci, a w
+// Kosmetyczkach po czym innym i z wlasnymi filtrami - jedno drugiego nie nadpisuje.
+// Stan przezywa odswiezenie strony (localStorage). Wyszukiwarka celowo sie nie zapisuje -
+// to doraznie szukanie konkretnej firmy, nie ustawienie widoku.
+const VIEW_STORAGE_KEY = `coldcalls.view.${slug}`;
+
+function saveViewState() {
+  try {
+    localStorage.setItem(
+      VIEW_STORAGE_KEY,
+      JSON.stringify({ sort: { id: sortState.id, dir: sortState.dir }, filters, todo: todoFilter })
+    );
+  } catch {
+    // np. tryb prywatny bez dostepu do localStorage - UI ma dzialac mimo to
+  }
+}
+
+function applySortIndicators() {
+  document.querySelectorAll("th.sortable").forEach((el) => {
+    el.classList.toggle("sort-asc", el.dataset.sortId === sortState.id && sortState.dir === "asc");
+    el.classList.toggle("sort-desc", el.dataset.sortId === sortState.id && sortState.dir === "desc");
+  });
+}
+
+// Wolane PRZED pierwszym renderem paska filtrow i tabeli, zeby od razu wyswietlily sie
+// z przywroconym stanem (bez mrugniecia niesortowana lista).
+function restoreViewState() {
+  let saved;
+  try {
+    saved = JSON.parse(localStorage.getItem(VIEW_STORAGE_KEY) || "null");
+  } catch {
+    return; // uszkodzony wpis nie moze wywalic calej strony
+  }
+  if (!saved) return;
+
+  // kolumna musi nadal istniec w tabeli - inaczej zapis ze starszej wersji UI
+  // sortowalby po polu, ktorego juz nie ma
+  const th = saved.sort?.id && document.querySelector(`th.sortable[data-sort-id="${saved.sort.id}"]`);
+  if (th) {
+    sortState = { id: saved.sort.id, field: th.dataset.sort, dir: saved.sort.dir === "desc" ? "desc" : "asc" };
+    applySortIndicators();
+  }
+
+  // bierzemy tylko znane pola filtrow i tylko wartosci, ktore nadal istnieja w /api/meta
+  const allowed = {
+    interested: meta.interestedOptions.map((o) => o.value),
+    caller: meta.callers,
+    answered: meta.answeredOptions.map((o) => o.value),
+    has_social: meta.websiteStatusOptions.map((o) => o.value),
+  };
+  for (const [key, values] of Object.entries(allowed)) {
+    const savedValues = saved.filters?.[key];
+    if (Array.isArray(savedValues)) filters[key] = savedValues.filter((v) => values.includes(v));
+  }
+
+  todoFilter = Boolean(saved.todo);
+}
+
 document.querySelectorAll("th.sortable").forEach((th) => {
   th.addEventListener("click", () => {
     // identyfikujemy po kolumnie, nie po polu - dwie kolumny moga sortowac po tym samym polu
@@ -351,10 +413,8 @@ document.querySelectorAll("th.sortable").forEach((th) => {
     if (sortState.id === id) sortState.dir = sortState.dir === "asc" ? "desc" : "asc";
     else sortState = { id, field: th.dataset.sort, dir: "asc" };
 
-    document.querySelectorAll("th.sortable").forEach((el) => {
-      el.classList.toggle("sort-asc", el.dataset.sortId === sortState.id && sortState.dir === "asc");
-      el.classList.toggle("sort-desc", el.dataset.sortId === sortState.id && sortState.dir === "desc");
-    });
+    applySortIndicators();
+    saveViewState();
     renderLeads();
   });
 });
@@ -615,6 +675,7 @@ document.getElementById("filter-bar").addEventListener("change", (e) => {
   filters[key] = [...set];
 
   refreshFilterTrigger(key);
+  saveViewState();
   renderLeads();
 });
 
