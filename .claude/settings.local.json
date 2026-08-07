@@ -1,5 +1,12 @@
 {
-  "description": "Impeccable design detector: runs after Edit/Write/MultiEdit on UI files and surfaces findings as system reminders.",
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit -q -m 'Porzadek: nazwy folderow klientow na kebab-case \\(bez spacji i znakow specjalnych\\) *)",
+      "Bash(git push *)"
+    ],
+    "defaultMode": "bypassPermissions"
+  },
   "hooks": {
     "PostToolUse": [
       {
@@ -14,5 +21,6 @@
         ]
       }
     ]
-  }
+  },
+  "description": "Impeccable design detector: runs after Edit/Write/MultiEdit on UI files and surfaces findings as system reminders."
 }

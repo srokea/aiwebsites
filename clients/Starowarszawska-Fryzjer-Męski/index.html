@@ -105,6 +105,47 @@
   }
 
   :focus-visible { outline: 2px solid #1E2D45; outline-offset: 3px; border-radius: 4px; }
+
+  /* Karuzela (galeria/opinie): jedna linia, bez widocznego paska przewijania. */
+  .rail {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .rail::-webkit-scrollbar { display: none; }
+  .rail > * { scroll-snap-align: start; flex: 0 0 auto; }
+
+  /* Lightbox galerii: klik na kafel otwiera podglad na calym ekranie. */
+  .lb[hidden] { display: none; }
+  .lb {
+    position: fixed; inset: 0; z-index: 100;
+    display: grid; place-items: center; padding: 20px;
+    background: rgba(22,35,58,.85); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    animation: lb-in .2s ease-out;
+  }
+  @keyframes lb-in { from { opacity: 0; } to { opacity: 1; } }
+  .lb-stage { position: relative; display: flex; flex-direction: column; align-items: center; gap: 14px; max-width: 1100px; width: 100%; }
+  .lb-fig { margin: 0; height: 74vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .lb-img {
+    max-width: min(92vw, 1000px); max-height: 74vh; width: auto; height: auto; object-fit: contain;
+    border-radius: 1rem;
+    animation: lb-pop .22s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes lb-pop { from { transform: scale(.96); opacity: .4; } to { transform: scale(1); opacity: 1; } }
+  .lb-controls { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 2px; }
+  .lb-btn {
+    border: 1px solid rgba(245,244,242,0.3); background: rgba(22,35,58,.55); color: #F5F4F2;
+    cursor: pointer; display: grid; place-items: center; border-radius: 999px;
+    transition: background .18s, border-color .18s, color .18s; line-height: 1;
+  }
+  .lb-btn:hover, .lb-btn:focus-visible { background: #F5F4F2; border-color: #F5F4F2; color: #1E2D45; outline: none; }
+  .lb-close { position: absolute; top: -6px; right: 0; width: 44px; height: 44px; font-size: 1.2rem; z-index: 2; }
+  .lb-nav { width: 44px; height: 44px; font-size: 1.5rem; padding-bottom: 3px; }
+  @media (min-width: 900px) { .lb-close { top: -52px; } }
+  @media (prefers-reduced-motion: reduce) { .lb, .lb-img { animation: none; } }
 </style>
 </head>
 
@@ -124,14 +165,32 @@
     <nav class="hidden lg:flex items-center gap-8 text-sm font-medium text-inkmuted">
       <a href="#salon"   class="hover:text-navy transition-colors motion-reduce:transition-none">Salon</a>
       <a href="#cennik"  class="hover:text-navy transition-colors motion-reduce:transition-none">Usługi i ceny</a>
+      <a href="#galeria" class="hover:text-navy transition-colors motion-reduce:transition-none">Galeria</a>
+      <a href="#opinie"  class="hover:text-navy transition-colors motion-reduce:transition-none">Opinie</a>
       <a href="#godziny" class="hover:text-navy transition-colors motion-reduce:transition-none">Godziny</a>
       <a href="#kontakt" class="hover:text-navy transition-colors motion-reduce:transition-none">Kontakt</a>
     </nav>
 
     <div class="flex items-center gap-2 shrink-0">
-      <!-- Telefon: pelny numer na desktopie, ikona 44px na mobile -->
+      <!-- Social w headerze: widoczne od sm w gore, na najwezszym mobile schowane zeby nie stloczyc paska -->
+      <a href="https://www.instagram.com/starowarszawska_barber/" target="_blank" rel="noopener" aria-label="Instagram"
+         class="hidden sm:inline-flex items-center justify-center h-11 w-11 rounded-full border border-border text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[1.125rem] w-[1.125rem]" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/p/Starowarszawska-Fryzjer-M%C4%99ski-61555470483578/" target="_blank" rel="noopener" aria-label="Facebook"
+         class="hidden sm:inline-flex items-center justify-center h-11 w-11 rounded-full border border-border text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="h-[1.125rem] w-[1.125rem]" aria-hidden="true">
+          <path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.6c-.3-.04-1.3-.13-2.45-.13-2.4 0-4.05 1.47-4.05 4.18v2.25H7.5V13h2.7v8h3.3z"/>
+        </svg>
+      </a>
+      <!-- Telefon: pelny numer + ikona na desktopie, sama ikona na mobile -->
       <a href="tel:+48791526940"
-         class="hidden sm:inline-flex items-center rounded-full border border-border px-5 py-2.5 text-sm font-medium text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
+         class="hidden sm:inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-medium text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true">
+          <path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.2 2.2z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
         791 526 940
       </a>
       <a href="tel:+48791526940" aria-label="Zadzwoń: 791 526 940"
@@ -143,7 +202,10 @@
       <!-- Booksy w headerze (wariant Website+): widoczny na kazdym ekranie -->
       <a href="https://booksy.com/pl-pl/223607_starowarszawska-fryzjer-meski_barber-shop_25202_piotrkow-trybunalski#ba_s=seo"
          target="_blank" rel="noopener"
-         class="inline-flex items-center rounded-full bg-navy px-4 sm:px-6 py-2.5 text-sm font-semibold text-white hover:bg-navydark transition-colors motion-reduce:transition-none">
+         class="inline-flex items-center gap-2 rounded-full bg-navy px-4 sm:px-6 py-2.5 text-sm font-semibold text-white hover:bg-navydark transition-colors motion-reduce:transition-none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true">
+          <rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/><path d="m8.5 15 2 2 4.5-4.5"/>
+        </svg>
         Rezerwuj
       </a>
     </div>
@@ -154,15 +216,18 @@
 <main id="tresc">
 
 <!-- ============ HERO ============ -->
-<!-- Uklad dzielony: tekst + prawdziwe zdjecie wnetrza. Zdjecie jest kwadratowe (1200x1200),
-     wiec stoi w wlasnej kolumnie zamiast byc przycinane do panoramicznego tla hero. -->
+<!-- Uklad dzielony: tekst + prawdziwe zdjecie wnetrza, kolumna zdjecia lekko szersza
+     (1.15fr) i przyciete do 4:5 zamiast kwadratu 1:1, zeby zdjecie mialo wiecej wagi
+     wizualnej. Ocena przeniesiona z kolumny tekstu na szklana plakietke (glassmorphism)
+     na zdjeciu — na wyrazna prosbe uzytkownika. Oryginalny plik to nadal 1200x1200,
+     wiec width/height zostaja bez zmian (realne wymiary), a przyciecie robi CSS. -->
 <section id="top" class="pt-28 pb-16 md:pt-36 md:pb-24 bg-bg">
   <div class="mx-auto max-w-content px-5 sm:px-6">
-    <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+    <div class="grid lg:grid-cols-[1fr_1.15fr] gap-10 lg:gap-16 items-center">
 
       <div>
-        <h1 class="font-display font-medium text-navy max-w-[15ch]" style="font-size: clamp(2.3rem, 3.4vw + 1.4rem, 4rem); line-height: 1.12;">
-          Fryzjer męski przy Starowarszawskiej
+        <h1 class="font-display font-medium text-navy max-w-[16ch]" style="font-size: clamp(2.3rem, 3.4vw + 1.4rem, 4rem); line-height: 1.12;">
+          Fryzjer męski przy ul. Starowarszawskiej
         </h1>
 
         <p class="mt-6 text-lg leading-relaxed text-ink max-w-[42ch]">
@@ -170,34 +235,33 @@
           Za fotelem Konrad Dziadczyk. Umawiasz się na konkretną godzinę i tyle.
         </p>
 
-        <div class="mt-9 flex flex-col sm:flex-row gap-3 sm:gap-4">
+        <div class="mt-9 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
           <a href="https://booksy.com/pl-pl/223607_starowarszawska-fryzjer-meski_barber-shop_25202_piotrkow-trybunalski#ba_s=seo"
              target="_blank" rel="noopener"
-             class="inline-flex items-center justify-center rounded-full bg-navy px-7 py-3.5 font-semibold text-white hover:bg-navydark transition-colors motion-reduce:transition-none">
-            Rezerwuj w Booksy
+             class="inline-flex items-center justify-center gap-2.5 rounded-full bg-navy px-7 py-3.5 font-semibold text-white hover:bg-navydark transition-colors motion-reduce:transition-none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[1.125rem] w-[1.125rem] shrink-0" aria-hidden="true">
+              <rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/><path d="m8.5 15 2 2 4.5-4.5"/>
+            </svg>
+            Rezerwuj
           </a>
           <a href="tel:+48791526940"
-             class="inline-flex items-center justify-center rounded-full border border-border px-7 py-3.5 font-medium text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
-            Zadzwoń: 791 526 940
+             class="inline-flex items-center justify-center gap-2.5 rounded-full border border-border px-7 py-3.5 font-medium text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[1.125rem] w-[1.125rem] shrink-0" aria-hidden="true">
+              <path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.2 2.2z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            791 526 940
+          </a>
+          <a href="https://www.google.com/maps/place/Starowarszawska+Fryzjer+M%C4%99ski/@51.407943,19.6960841,17z/data=!3m1!4b1!4m6!3m5!1s0x47198b000a83f55b:0xe49163e6b1b46172!8m2!3d51.407943!4d19.698659!16s%2Fg%2F11lcq314wr?entry=ttu&g_ep=EgoyMDI2MDgwNC4wIKXMDSoASAFQAw%3D%3D"
+             target="_blank" rel="noopener"
+             class="inline-flex items-center justify-center gap-2.5 rounded-full border border-border px-7 py-3.5 font-medium text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-[1.125rem] w-[1.125rem] shrink-0" aria-hidden="true">
+              <path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>
+            </svg>
+            Google Maps
           </a>
         </div>
 
-        <!-- Ocena z publicznego profilu Booksy klienta (odczytana 2026-08-06). -->
-        <div class="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1.5">
-          <div class="flex items-center gap-1 text-walnut" role="img" aria-label="Ocena 4,9 na 5">
-            <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
-            <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
-            <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
-            <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
-            <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
-          </div>
-          <p class="text-sm text-ink">
-            <span class="font-semibold">4,9</span>
-            <span class="text-inkmuted">z 143 opinii w Booksy</span>
-          </p>
-        </div>
-
-        <p class="mt-5 text-sm text-inkmuted">
+        <p class="mt-8 text-base text-inkmuted">
           ul. Starowarszawska 5, 97-300 Piotrków Trybunalski
         </p>
       </div>
@@ -206,7 +270,22 @@
         <img src="photos/polka-produkty-blat.jpg"
              alt="Wnętrze salonu: orzechowy blat lady z barberskim pasem, czarne półki z kosmetykami do brody i włosów na tle granatowej ściany"
              width="1200" height="1200" loading="eager" decoding="async"
-             class="w-full aspect-square object-cover object-center rounded-2xl border border-border">
+             class="w-full aspect-[4/5] object-cover object-center rounded-2xl border border-border">
+
+        <!-- Ocena z publicznego profilu Booksy klienta (odczytana 2026-08-06), teraz jako plakietka na zdjeciu. -->
+        <div class="absolute bottom-4 left-4 right-4 sm:right-auto sm:bottom-6 sm:left-6 flex items-center gap-3 rounded-2xl bg-white/80 backdrop-blur-md border border-white/60 px-5 py-4 shadow-xl">
+          <div class="flex items-center gap-1 text-walnut shrink-0" role="img" aria-label="Ocena 4,9 na 5">
+            <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          </div>
+          <p class="text-sm text-ink leading-snug">
+            <span class="font-semibold">4,9</span>
+            <span class="text-inkmuted">z 143 opinii w Booksy</span>
+          </p>
+        </div>
       </div>
 
     </div>
@@ -267,7 +346,10 @@
         </p>
         <a href="https://booksy.com/pl-pl/223607_starowarszawska-fryzjer-meski_barber-shop_25202_piotrkow-trybunalski#ba_s=seo"
            target="_blank" rel="noopener"
-           class="mt-8 inline-flex items-center justify-center rounded-full bg-navy px-7 py-3.5 font-semibold text-white hover:bg-navydark transition-colors motion-reduce:transition-none">
+           class="mt-8 inline-flex items-center justify-center gap-2.5 rounded-full bg-navy px-7 py-3.5 font-semibold text-white hover:bg-navydark transition-colors motion-reduce:transition-none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[1.125rem] w-[1.125rem] shrink-0" aria-hidden="true">
+            <rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/><path d="m8.5 15 2 2 4.5-4.5"/>
+          </svg>
           Umów wizytę w Booksy
         </a>
       </div>
@@ -326,14 +408,170 @@
   </div>
 </section>
 
-<!-- Opinie: ocena 4,9 i liczba opinii sa w hero (zrodlo: profil Booksy klienta).
-     Osobnej sekcji z cytatami swiadomie NIE ma - nie mamy tresci opinii od klienta,
-     a wymyslanie cytatow nie wchodzi w gre. Gdy klient przesle 2-4 prawdziwe opinie,
-     dodac tu sekcje wg DESIGN.md sekcja 5 (blockquote, gwiazdki w kolorze akcentu). -->
-
 <!-- PLACEHOLDER (otwarte pytanie z brief.md): promocja otwarcia z plakatu
      (20 stycznia, -50% dla pierwszych 5 klientow) NIE jest na stronie, bo najpewniej
      juz nie obowiazuje. Wstawic wylacznie po potwierdzeniu, ze promocja jest aktualna. -->
+
+<!-- ============ GALERIA ============ -->
+<!-- PLACEHOLDER: klient nie przeslal jeszcze zdjec z prac (strzyzenia, wnetrze przy pracy).
+     Kafle to placehold.co w kolorach marki, nie realna tresc. Gdy klient przesle zdjecia,
+     podmienic src na photos/..., alt na opis kadru, usunac aria-label "wkrótce" i data-full
+     jesli miniatura bedzie przycieta wzgledem oryginalu (patrz web-design SKILL.md, blad #2). -->
+<section id="galeria" class="bg-surface py-16 md:py-24">
+  <div class="mx-auto max-w-content px-5 sm:px-6">
+    <h2 class="font-display font-medium text-navy" style="font-size: clamp(1.9rem, 2.6vw + 1.1rem, 2.9rem); line-height: 1.15;">
+      Galeria
+    </h2>
+    <div class="mt-5 h-px w-14 bg-walnut" aria-hidden="true"></div>
+    <p class="mt-6 text-lg leading-relaxed text-ink max-w-[46ch]">
+      Zdjęcia z salonu i efekty pracy dodamy wkrótce.
+    </p>
+
+    <div class="mt-10 rail" id="rail-galeria" tabindex="0" role="group" aria-label="Galeria zdjęć salonu">
+      <button type="button" class="tile w-[74vw] sm:w-[calc((100%-3rem)/3)] aspect-[4/5] rounded-xl overflow-hidden border border-border bg-bg motion-reduce:transition-none" data-idx="0" aria-label="Powiększ zdjęcie 1 z 6 (wkrótce)">
+        <img src="https://placehold.co/640x800/1E2D45/F5F4F2?text=Wkr%C3%B3tce" alt="Miejsce na zdjęcie z salonu — wkrótce" class="w-full h-full object-cover" width="640" height="800" loading="lazy" decoding="async">
+      </button>
+      <button type="button" class="tile w-[74vw] sm:w-[calc((100%-3rem)/3)] aspect-[4/5] rounded-xl overflow-hidden border border-border bg-bg motion-reduce:transition-none" data-idx="1" aria-label="Powiększ zdjęcie 2 z 6 (wkrótce)">
+        <img src="https://placehold.co/640x800/8B5E3C/F5F4F2?text=Wkr%C3%B3tce" alt="Miejsce na zdjęcie z salonu — wkrótce" class="w-full h-full object-cover" width="640" height="800" loading="lazy" decoding="async">
+      </button>
+      <button type="button" class="tile w-[74vw] sm:w-[calc((100%-3rem)/3)] aspect-[4/5] rounded-xl overflow-hidden border border-border bg-bg motion-reduce:transition-none" data-idx="2" aria-label="Powiększ zdjęcie 3 z 6 (wkrótce)">
+        <img src="https://placehold.co/640x800/1E2D45/F5F4F2?text=Wkr%C3%B3tce" alt="Miejsce na zdjęcie z salonu — wkrótce" class="w-full h-full object-cover" width="640" height="800" loading="lazy" decoding="async">
+      </button>
+      <button type="button" class="tile w-[74vw] sm:w-[calc((100%-3rem)/3)] aspect-[4/5] rounded-xl overflow-hidden border border-border bg-bg motion-reduce:transition-none" data-idx="3" aria-label="Powiększ zdjęcie 4 z 6 (wkrótce)">
+        <img src="https://placehold.co/640x800/8B5E3C/F5F4F2?text=Wkr%C3%B3tce" alt="Miejsce na zdjęcie z salonu — wkrótce" class="w-full h-full object-cover" width="640" height="800" loading="lazy" decoding="async">
+      </button>
+      <button type="button" class="tile w-[74vw] sm:w-[calc((100%-3rem)/3)] aspect-[4/5] rounded-xl overflow-hidden border border-border bg-bg motion-reduce:transition-none" data-idx="4" aria-label="Powiększ zdjęcie 5 z 6 (wkrótce)">
+        <img src="https://placehold.co/640x800/1E2D45/F5F4F2?text=Wkr%C3%B3tce" alt="Miejsce na zdjęcie z salonu — wkrótce" class="w-full h-full object-cover" width="640" height="800" loading="lazy" decoding="async">
+      </button>
+      <button type="button" class="tile w-[74vw] sm:w-[calc((100%-3rem)/3)] aspect-[4/5] rounded-xl overflow-hidden border border-border bg-bg motion-reduce:transition-none" data-idx="5" aria-label="Powiększ zdjęcie 6 z 6 (wkrótce)">
+        <img src="https://placehold.co/640x800/8B5E3C/F5F4F2?text=Wkr%C3%B3tce" alt="Miejsce na zdjęcie z salonu — wkrótce" class="w-full h-full object-cover" width="640" height="800" loading="lazy" decoding="async">
+      </button>
+    </div>
+
+    <div class="mt-8 flex items-center justify-center gap-2">
+      <button type="button" data-rail-prev="galeria" aria-label="Poprzednie zdjęcie"
+              class="w-11 h-11 shrink-0 rounded-full border border-border flex items-center justify-center text-inkmuted hover:text-navy hover:border-navy transition-colors motion-reduce:transition-none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-5 h-5" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button type="button" data-rail-next="galeria" aria-label="Następne zdjęcie"
+              class="w-11 h-11 shrink-0 rounded-full border border-border flex items-center justify-center text-inkmuted hover:text-navy hover:border-navy transition-colors motion-reduce:transition-none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-5 h-5" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OPINIE ============ -->
+<!-- Cytaty ponizej to prawdziwe opinie z Google (przeslane przez uzytkownika 2026-08-07),
+     nie wymyslone tresci. Ocena "4,9 z 143 opinii" w naglowku to osobne, potwierdzone
+     zrodlo (profil Booksy klienta) — dwa rozne, realne dowody zaufania obok siebie. -->
+<section id="opinie" class="bg-bg py-16 md:py-24">
+  <div class="mx-auto max-w-content px-5 sm:px-6">
+    <div class="text-center max-w-2xl mx-auto">
+      <h2 class="font-display font-medium text-navy" style="font-size: clamp(1.9rem, 2.6vw + 1.1rem, 2.9rem); line-height: 1.15;">
+        Co mówią klienci
+      </h2>
+      <div class="mt-5 h-px w-14 bg-walnut mx-auto" aria-hidden="true"></div>
+      <div class="mt-6 flex items-center justify-center gap-3">
+        <div class="flex items-center gap-1 text-walnut" role="img" aria-label="Ocena 4,9 na 5">
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+        </div>
+        <p class="text-sm text-ink"><span class="font-semibold">4,9</span> <span class="text-inkmuted">z 143 opinii w Booksy</span></p>
+      </div>
+
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+        <a href="https://share.google/HIZOwd7lNsgFn7GHX"
+           target="_blank" rel="noopener"
+           class="inline-flex items-center justify-center gap-2.5 rounded-full bg-navy px-7 py-3.5 font-semibold text-white hover:bg-navydark transition-colors motion-reduce:transition-none">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="h-[1.125rem] w-[1.125rem] shrink-0" aria-hidden="true"><path d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.344-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z"/></svg>
+          Zostaw opinię
+        </a>
+        <a href="https://booksy.com/pl-pl/223607_starowarszawska-fryzjer-meski_barber-shop_25202_piotrkow-trybunalski#ba_s=seo"
+           target="_blank" rel="noopener"
+           class="inline-flex items-center justify-center gap-2.5 rounded-full border border-border px-7 py-3.5 font-medium text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[1.125rem] w-[1.125rem] shrink-0" aria-hidden="true">
+            <rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/><path d="m8.5 15 2 2 4.5-4.5"/>
+          </svg>
+          Zobacz opinie w Booksy
+        </a>
+      </div>
+      <p class="mt-4 text-sm text-inkmuted">Twoja opinia pomaga nam się rozwijać.</p>
+    </div>
+
+    <div class="mt-12 rail" id="rail-opinie" tabindex="0" role="group" aria-label="Opinie klientów z Google">
+      <blockquote class="w-[74vw] sm:w-[calc((100%-3rem)/3)] shrink-0 bg-surface border border-border rounded-2xl p-6">
+        <p class="flex items-center gap-1 mb-3 text-walnut" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+        </p>
+        <p class="leading-relaxed">Wpadłem przypadkiem, przejazdem, wyszedłem mega zadowolony. Profesjonalne combo w dobrej cenie, będę wpadał częściej, bo do naprawdę dobrego fryzjera warto dojechać.</p>
+        <footer class="mt-4 text-sm text-inkmuted">Piotr Ka · 47 opinii · 11 miesięcy temu</footer>
+      </blockquote>
+      <blockquote class="w-[74vw] sm:w-[calc((100%-3rem)/3)] shrink-0 bg-surface border border-border rounded-2xl p-6">
+        <p class="flex items-center gap-1 mb-3 text-walnut" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+        </p>
+        <p class="leading-relaxed">Najlepszy fryzjer, u jakiego byłem. Pełen profesjonalizm i zawsze wychodzę w 100% zadowolony. Jak najbardziej polecam.</p>
+        <footer class="mt-4 text-sm text-inkmuted">Jacek Chabielski · 4 opinie · 2 lata temu</footer>
+      </blockquote>
+      <blockquote class="w-[74vw] sm:w-[calc((100%-3rem)/3)] shrink-0 bg-surface border border-border rounded-2xl p-6">
+        <p class="flex items-center gap-1 mb-3 text-walnut" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+        </p>
+        <p class="leading-relaxed">Naprawdę bardzo ciepła i luźna atmosfera. Pan Konrad ma fach w ręku. Rachu, ciachu i po strachu :)</p>
+        <footer class="mt-4 text-sm text-inkmuted">Jarosław Turała · Lokalny przewodnik, 312 opinii · 2 lata temu</footer>
+      </blockquote>
+      <blockquote class="w-[74vw] sm:w-[calc((100%-3rem)/3)] shrink-0 bg-surface border border-border rounded-2xl p-6">
+        <p class="flex items-center gap-1 mb-3 text-walnut" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+        </p>
+        <p class="leading-relaxed">Polecam gorąco Pana Konrada. Idealnie potrafi dobrać fryzurę pod klienta, fajna atmosfera.</p>
+        <footer class="mt-4 text-sm text-inkmuted">Paweł Gadecki · 1 opinia · 2 lata temu</footer>
+      </blockquote>
+      <blockquote class="w-[74vw] sm:w-[calc((100%-3rem)/3)] shrink-0 bg-surface border border-border rounded-2xl p-6">
+        <p class="flex items-center gap-1 mb-3 text-walnut" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+        </p>
+        <p class="leading-relaxed">Nasz kolega zadowolony, dobrze ostrzyżony. Polecamy bardzo serdecznie ❤️🥰</p>
+        <footer class="mt-4 text-sm text-inkmuted">Instagram d1ana._.d1ana · 5 opinii · 2 lata temu</footer>
+      </blockquote>
+    </div>
+
+    <div class="mt-8 flex items-center justify-center gap-2">
+      <button type="button" data-rail-prev="opinie" aria-label="Poprzednie opinie"
+              class="w-11 h-11 shrink-0 rounded-full border border-border flex items-center justify-center text-inkmuted hover:text-navy hover:border-navy transition-colors motion-reduce:transition-none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-5 h-5" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button type="button" data-rail-next="opinie" aria-label="Następne opinie"
+              class="w-11 h-11 shrink-0 rounded-full border border-border flex items-center justify-center text-inkmuted hover:text-navy hover:border-navy transition-colors motion-reduce:transition-none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-5 h-5" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
 
 <!-- ============ GODZINY ============ -->
 <section id="godziny" class="bg-surface py-16 md:py-24">
@@ -351,7 +589,10 @@
         </p>
         <a href="https://booksy.com/pl-pl/223607_starowarszawska-fryzjer-meski_barber-shop_25202_piotrkow-trybunalski#ba_s=seo"
            target="_blank" rel="noopener"
-           class="mt-8 inline-flex items-center justify-center rounded-full bg-navy px-7 py-3.5 font-semibold text-white hover:bg-navydark transition-colors motion-reduce:transition-none">
+           class="mt-8 inline-flex items-center justify-center gap-2.5 rounded-full bg-navy px-7 py-3.5 font-semibold text-white hover:bg-navydark transition-colors motion-reduce:transition-none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[1.125rem] w-[1.125rem] shrink-0" aria-hidden="true">
+            <rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/><path d="m8.5 15 2 2 4.5-4.5"/>
+          </svg>
           Sprawdź wolne terminy
         </a>
       </div>
@@ -371,15 +612,7 @@
             <dd class="font-medium text-walnut text-right">do potwierdzenia</dd>
           </div>
           <div class="flex items-baseline justify-between gap-4 py-4">
-            <dt class="text-ink">Środa</dt>
-            <dd class="font-medium text-navy text-right">09:00&ndash;17:00</dd>
-          </div>
-          <div class="flex items-baseline justify-between gap-4 py-4">
-            <dt class="text-ink">Czwartek</dt>
-            <dd class="font-medium text-navy text-right">09:00&ndash;17:00</dd>
-          </div>
-          <div class="flex items-baseline justify-between gap-4 py-4">
-            <dt class="text-ink">Piątek</dt>
+            <dt class="text-ink">Środa &ndash; Piątek</dt>
             <dd class="font-medium text-navy text-right">09:00&ndash;17:00</dd>
           </div>
           <div class="flex items-baseline justify-between gap-4 py-4">
@@ -401,6 +634,10 @@
 </section>
 
 <!-- ============ KONTAKT ============ -->
+<!-- Mapa celowo pelnej szerokosci (poza max-w-content), poza dl+socialami, jak w
+     meska-sprawa: mapa jako osobny pasek pod blokiem kontaktowym zamiast malego
+     boxu w gridzie. "Wyznacz trase" jako szklana plakietka na mapie (jak plakietka
+     z ocena w hero — spojny motyw glassmorphism na calej stronie). -->
 <section id="kontakt" class="bg-bg py-16 md:py-24">
   <div class="mx-auto max-w-content px-5 sm:px-6">
     <h2 class="font-display font-medium text-navy" style="font-size: clamp(1.9rem, 2.6vw + 1.1rem, 2.9rem); line-height: 1.15;">
@@ -408,65 +645,72 @@
     </h2>
     <div class="mt-5 h-px w-14 bg-walnut" aria-hidden="true"></div>
 
-    <div class="mt-10 grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-
-      <div>
-        <dl class="divide-y divide-border border-y border-border">
-          <div class="py-4">
-            <dt class="text-sm text-inkmuted">Adres</dt>
-            <dd class="mt-1.5 font-medium text-ink">ul. Starowarszawska 5<br>97-300 Piotrków Trybunalski</dd>
-          </div>
-          <div class="py-4">
-            <dt class="text-sm text-inkmuted">Telefon</dt>
-            <dd class="mt-1.5">
-              <a href="tel:+48791526940" class="inline-flex items-center min-h-[44px] font-medium text-navy underline underline-offset-4 decoration-walnut hover:decoration-navy transition-colors motion-reduce:transition-none">791 526 940</a>
-            </dd>
-          </div>
-          <div class="py-4">
-            <dt class="text-sm text-inkmuted">Rezerwacja online</dt>
-            <dd class="mt-1.5">
-              <a href="https://booksy.com/pl-pl/223607_starowarszawska-fryzjer-meski_barber-shop_25202_piotrkow-trybunalski#ba_s=seo"
-                 target="_blank" rel="noopener"
-                 class="inline-flex items-center min-h-[44px] font-medium text-navy underline underline-offset-4 decoration-walnut hover:decoration-navy transition-colors motion-reduce:transition-none">Booksy</a>
-            </dd>
-          </div>
-        </dl>
-
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a href="https://www.instagram.com/starowarszawska_barber/" target="_blank" rel="noopener"
-             class="inline-flex items-center gap-2.5 rounded-full border border-border px-5 min-h-[44px] text-sm font-medium text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[1.125rem] w-[1.125rem]" aria-hidden="true">
-              <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/>
-            </svg>
-            Instagram
-          </a>
-          <a href="https://www.facebook.com/p/Starowarszawska-Fryzjer-M%C4%99ski-61555470483578/" target="_blank" rel="noopener"
-             class="inline-flex items-center gap-2.5 rounded-full border border-border px-5 min-h-[44px] text-sm font-medium text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
-            <svg viewBox="0 0 24 24" fill="currentColor" class="h-[1.125rem] w-[1.125rem]" aria-hidden="true">
-              <path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.6c-.3-.04-1.3-.13-2.45-.13-2.4 0-4.05 1.47-4.05 4.18v2.25H7.5V13h2.7v8h3.3z"/>
-            </svg>
-            Facebook
-          </a>
+    <div class="mt-10 max-w-xl">
+      <dl class="grid grid-cols-2 gap-4">
+        <div class="rounded-2xl border border-border p-5">
+          <dt class="text-sm text-inkmuted">Adres</dt>
+          <dd class="mt-1.5 font-medium text-ink">ul. Starowarszawska 5<br>97-300 Piotrków Trybunalski</dd>
         </div>
-      </div>
-
-      <div>
-        <div class="relative rounded-2xl overflow-hidden border border-border">
-          <iframe
-            src="https://www.google.com/maps?q=Starowarszawska%205,%2097-300%20Piotrk%C3%B3w%20Trybunalski&output=embed"
-            title="Mapa: ul. Starowarszawska 5, Piotrków Trybunalski"
-            loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-            class="map-light w-full h-[300px] sm:h-[380px] block border-0"></iframe>
-          <div class="map-tint absolute inset-0 pointer-events-none" aria-hidden="true"></div>
+        <div class="rounded-2xl border border-border p-5">
+          <dt class="text-sm text-inkmuted">Telefon</dt>
+          <dd class="mt-1.5">
+            <a href="tel:+48791526940" class="inline-flex items-center gap-2 min-h-[44px] font-medium text-navy underline underline-offset-4 decoration-walnut hover:decoration-navy transition-colors motion-reduce:transition-none">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true">
+                <path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.2 2.2z" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              791 526 940
+            </a>
+          </dd>
         </div>
-        <a href="https://www.google.com/maps/dir/?api=1&destination=Starowarszawska+5,+97-300+Piotrk%C3%B3w+Trybunalski"
-           target="_blank" rel="noopener"
-           class="mt-4 inline-flex items-center justify-center rounded-full border border-border px-7 py-3.5 text-sm font-medium text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
-          Wyznacz trasę
-        </a>
-      </div>
-
+        <div class="rounded-2xl border border-border p-5">
+          <dt class="text-sm text-inkmuted">Rezerwacja online</dt>
+          <dd class="mt-1.5">
+            <a href="https://booksy.com/pl-pl/223607_starowarszawska-fryzjer-meski_barber-shop_25202_piotrkow-trybunalski#ba_s=seo"
+               target="_blank" rel="noopener"
+               class="inline-flex items-center gap-2 min-h-[44px] font-medium text-navy underline underline-offset-4 decoration-walnut hover:decoration-navy transition-colors motion-reduce:transition-none">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true">
+                <rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/><path d="m8.5 15 2 2 4.5-4.5"/>
+              </svg>
+              Booksy
+            </a>
+          </dd>
+        </div>
+        <div class="rounded-2xl border border-border p-5">
+          <dt class="text-sm text-inkmuted">Social media</dt>
+          <dd class="mt-2.5 flex items-center gap-3">
+            <a href="https://www.instagram.com/starowarszawska_barber/" target="_blank" rel="noopener" aria-label="Instagram"
+               class="inline-flex items-center justify-center h-10 w-10 rounded-full border border-border text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[1.125rem] w-[1.125rem]" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/>
+              </svg>
+            </a>
+            <a href="https://www.facebook.com/p/Starowarszawska-Fryzjer-M%C4%99ski-61555470483578/" target="_blank" rel="noopener" aria-label="Facebook"
+               class="inline-flex items-center justify-center h-10 w-10 rounded-full border border-border text-navy hover:bg-navy/5 transition-colors motion-reduce:transition-none">
+              <svg viewBox="0 0 24 24" fill="currentColor" class="h-[1.125rem] w-[1.125rem]" aria-hidden="true">
+                <path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.6c-.3-.04-1.3-.13-2.45-.13-2.4 0-4.05 1.47-4.05 4.18v2.25H7.5V13h2.7v8h3.3z"/>
+              </svg>
+            </a>
+          </dd>
+        </div>
+      </dl>
     </div>
+  </div>
+
+  <div class="relative mt-12 w-full h-[22rem] sm:h-[28rem] lg:h-[32rem] border-t border-border">
+    <iframe
+      src="https://www.google.com/maps?q=Starowarszawska%205,%2097-300%20Piotrk%C3%B3w%20Trybunalski&output=embed"
+      title="Mapa: ul. Starowarszawska 5, Piotrków Trybunalski"
+      loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+      class="map-light w-full h-full block border-0"></iframe>
+    <div class="map-tint absolute inset-0 pointer-events-none" aria-hidden="true"></div>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=Starowarszawska+5,+97-300+Piotrk%C3%B3w+Trybunalski"
+       target="_blank" rel="noopener"
+       class="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 inline-flex items-center gap-2.5 rounded-full bg-white/85 backdrop-blur-md border border-white/60 px-6 py-3.5 text-sm font-medium text-navy shadow-xl hover:bg-white transition-colors motion-reduce:transition-none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-[1.125rem] w-[1.125rem] shrink-0" aria-hidden="true">
+        <path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>
+      </svg>
+      Wyznacz trasę
+    </a>
   </div>
 </section>
 
@@ -499,6 +743,149 @@
     <p class="mt-10 pt-6 border-t border-white/15 text-sm text-white/60">&copy; 2026 Starowarszawska Fryzjer Męski</p>
   </div>
 </footer>
+
+<!-- Lightbox galerii -->
+<div class="lb" id="lb" hidden>
+  <div class="lb-stage" role="dialog" aria-modal="true" aria-label="Galeria Starowarszawska Fryzjer Męski">
+    <button type="button" class="lb-btn lb-close" data-close aria-label="Zamknij podgląd">✕</button>
+    <figure class="lb-fig">
+      <img class="lb-img" alt="">
+    </figure>
+    <div class="lb-controls">
+      <button type="button" class="lb-btn lb-nav lb-prev" data-prev aria-label="Poprzednie zdjęcie">‹</button>
+      <button type="button" class="lb-btn lb-nav lb-next" data-next aria-label="Następne zdjęcie">›</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Karuzele (galeria/opinie) w petli: klony przed/po zestawie kart, przewijanie o jedna
+  // karte na klik, ciche doskoczenie po przekroczeniu granicy klonow (niewidoczne dla oka).
+  function initLoopRail(railId, prevSelector, nextSelector) {
+    var rail = document.getElementById(railId);
+    if (!rail) return;
+    var originals = Array.prototype.slice.call(rail.children);
+    var n = originals.length;
+    if (n < 2) return;
+
+    function cloneSet() {
+      return originals.map(function (el) {
+        var clone = el.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        if (clone.matches('button, a')) clone.setAttribute('tabindex', '-1');
+        clone.querySelectorAll('button, a').forEach(function (f) { f.setAttribute('tabindex', '-1'); });
+        return clone;
+      });
+    }
+
+    var fragBefore = document.createDocumentFragment();
+    cloneSet().forEach(function (el) { fragBefore.appendChild(el); });
+    rail.insertBefore(fragBefore, rail.firstChild);
+
+    var afterSet = cloneSet();
+    var fragAfter = document.createDocumentFragment();
+    afterSet.forEach(function (el) { fragAfter.appendChild(el); });
+    rail.appendChild(fragAfter);
+
+    function contentPos(el) {
+      return el.getBoundingClientRect().left - rail.getBoundingClientRect().left + rail.scrollLeft;
+    }
+
+    var middleStart = contentPos(originals[0]);
+    var setWidth = contentPos(afterSet[0]) - middleStart;
+
+    rail.scrollLeft = middleStart;
+
+    function step() {
+      return originals[0].getBoundingClientRect().width + 24;
+    }
+    function scrollDir(dir) {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      rail.scrollBy({ left: dir * step(), behavior: reduce ? 'auto' : 'smooth' });
+    }
+
+    var settleTimer = null;
+    rail.addEventListener('scroll', function () {
+      if (settleTimer) clearTimeout(settleTimer);
+      settleTimer = setTimeout(function () {
+        var cur = rail.scrollLeft;
+        if (cur >= middleStart + setWidth - 2) {
+          rail.scrollLeft = cur - setWidth;
+        } else if (cur < middleStart - 2) {
+          rail.scrollLeft = cur + setWidth;
+        }
+      }, 120);
+    }, { passive: true });
+
+    var prev = document.querySelector(prevSelector);
+    var next = document.querySelector(nextSelector);
+    if (prev) prev.addEventListener('click', function () { scrollDir(-1); });
+    if (next) next.addEventListener('click', function () { scrollDir(1); });
+  }
+
+  initLoopRail('rail-galeria', '[data-rail-prev="galeria"]', '[data-rail-next="galeria"]');
+  initLoopRail('rail-opinie', '[data-rail-prev="opinie"]', '[data-rail-next="opinie"]');
+</script>
+
+<script>
+  // Lightbox galerii: klik otwiera, strzalki < > i klawiatura przewijaja w petli, Esc zamyka.
+  (function () {
+    var tiles = Array.prototype.slice.call(document.querySelectorAll('#galeria .tile'));
+    if (!tiles.length) return;
+    var items = tiles.map(function (t) {
+      var img = t.querySelector('img');
+      return { src: t.getAttribute('data-full') || img.getAttribute('src'), alt: img.getAttribute('alt') || '' };
+    });
+    var lb = document.getElementById('lb');
+    var lbImg = lb.querySelector('.lb-img');
+    var focusables = lb.querySelectorAll('button');
+    var idx = 0, lastFocus = null;
+
+    function show(i) {
+      idx = (i + items.length) % items.length;
+      lbImg.src = items[idx].src;
+      lbImg.alt = items[idx].alt;
+    }
+    function open(i) {
+      lastFocus = document.activeElement;
+      show(i);
+      lb.hidden = false;
+      document.body.style.overflow = 'hidden';
+      lb.querySelector('.lb-next').focus();
+      document.addEventListener('keydown', onKey);
+    }
+    function close() {
+      lb.hidden = true;
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', onKey);
+      if (lastFocus) lastFocus.focus();
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowRight') show(idx + 1);
+      else if (e.key === 'ArrowLeft') show(idx - 1);
+      else if (e.key === 'Tab') {
+        var first = focusables[0], last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+    // Delegacja na sekcji: karuzela dokleja klony obok oryginalow, klik na klon ma
+    // trafic w ten sam indeks co oryginal (stad data-idx zamiast pozycji w DOM).
+    document.getElementById('galeria').addEventListener('click', function (e) {
+      var t = e.target.closest('.tile');
+      if (!t) return;
+      var i = parseInt(t.getAttribute('data-idx'), 10);
+      if (!isNaN(i)) open(i);
+    });
+    lb.addEventListener('click', function (e) {
+      if (e.target.closest('[data-close]')) close();
+      else if (e.target.closest('[data-next]')) show(idx + 1);
+      else if (e.target.closest('[data-prev]')) show(idx - 1);
+      else if (e.target !== lbImg) close();
+    });
+  })();
+</script>
 
 <!-- Dane strukturalne: tylko potwierdzone godziny (sroda-sobota).
      PLACEHOLDER: poniedzialek, wtorek i niedziela celowo pominiete, bo nie znamy godzin.
