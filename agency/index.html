@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Robimy strony internetowe dla lokalnych firm</title>
+<meta name="description" content="Dwójka studentów informatyki. Projektujemy i prowadzimy strony internetowe dla barberów, fryzjerów i lokalnych usług. Wystarczy jeden telefon.">
+<meta name="theme-color" content="#a7c4e0">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Robimy strony internetowe dla lokalnych firm">
+<meta property="og:description" content="Dwójka studentów informatyki. Strony dla barberów, fryzjerów i lokalnych usług.">
+<meta property="og:locale" content="pl_PL">
+<link rel="stylesheet" href="style.css">
+<script>
+  /* Warstwa scroll-story włącza się tylko gdy jest JS i użytkownik nie prosił
+     o ograniczenie ruchu. Bez tej klasy strona jest zwykłą, czytelną listą scen. */
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('motion');
+  }
+</script>
+</head>
+<body>
+
+<!-- ══ Tło: jedno niebo na całą długość strony ══ -->
+<div class="sky" aria-hidden="true">
+  <!-- Chmury trzymają się lewej i prawej krawędzi oraz góry.
+       Środek kadru zostaje czystym niebem, żeby tekst miał gdzie oddychać. -->
+  <div class="clouds" id="clouds">
+    <span class="cloud cloud--a" style="--x:-20%; --y:2%;   --w:44vw; --h:30vw; --dur:104s; --delay:0s;"></span>
+    <span class="cloud cloud--b" style="--x:-26%; --y:36%;  --w:48vw; --h:32vw; --dur:137s; --delay:-31s;"></span>
+    <span class="cloud cloud--a" style="--x:-18%; --y:72%;  --w:42vw; --h:28vw; --dur:119s; --delay:-64s;"></span>
+    <span class="cloud cloud--c" style="--x:76%;  --y:8%;   --w:44vw; --h:30vw; --dur:126s; --delay:-18s;"></span>
+    <span class="cloud cloud--b" style="--x:80%;  --y:44%;  --w:48vw; --h:33vw; --dur:151s; --delay:-77s;"></span>
+    <span class="cloud cloud--c" style="--x:74%;  --y:76%;  --w:42vw; --h:28vw; --dur:112s; --delay:-45s;"></span>
+    <span class="cloud cloud--d" style="--x:14%;  --y:-26%; --w:56vw; --h:26vw; --dur:143s; --delay:-52s;"></span>
+    <span class="cloud cloud--d" style="--x:52%;  --y:-30%; --w:48vw; --h:24vw; --dur:97s;  --delay:-9s;"></span>
+  </div>
+</div>
+
+<main>
+
+  <!-- ══ 1 ══ Scena startowa jest już w kadrze przy p ≈ 0.42,
+             dlatego ma tylko wyjście, a wejście robi jednorazowa
+             animacja CSS na .intro. -->
+  <section class="scene" data-scene>
+    <div class="stage">
+      <h1 class="display beat" data-out="0.50 0.72">
+        <span class="intro">Potrzebujesz strony internetowej?</span>
+      </h1>
+      <div class="hint" id="hint" aria-hidden="true">
+        <span class="hint__line"></span>
+        <span class="hint__label">przewiń</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 2 ══ -->
+  <section class="scene" data-scene>
+    <div class="stage">
+      <p class="display beat" data-in="0.34 0.46" data-out="0.58 0.72">Jesteś we właściwym miejscu.</p>
+    </div>
+  </section>
+
+  <!-- ══ 3 ══ -->
+  <section class="scene" data-scene>
+    <div class="stage">
+      <h2 class="display display--ask beat" data-in="0.34 0.46" data-out="0.58 0.72">Kim jesteśmy?</h2>
+    </div>
+  </section>
+
+  <!-- ══ 4 ══ -->
+  <section class="scene" data-scene>
+    <div class="stage">
+      <figure class="shot beat" data-motion="image" data-in="0.32 0.48" data-out="0.60 0.74">
+        <!-- TODO: podmień assets/image1.png na właściwy plik (teraz placeholder)
+             i wpisz alt opisujący, co na nim widać. -->
+        <img src="assets/image1.png" alt="" width="1500" height="1000" decoding="async">
+      </figure>
+    </div>
+  </section>
+
+  <!-- ══ 5 ══ -->
+  <section class="scene" data-scene>
+    <div class="stage">
+      <p class="display beat" data-in="0.34 0.46" data-out="0.58 0.72">Jesteśmy dwójką studentów informatyki.</p>
+    </div>
+  </section>
+
+  <!-- ══ 6 ══ -->
+  <section class="scene" data-scene>
+    <div class="stage">
+      <h2 class="display display--ask beat" data-in="0.34 0.46" data-out="0.58 0.72">Z kim pracujemy?</h2>
+    </div>
+  </section>
+
+  <!-- ══ 7 ══ mapa: kraj wchodzi pierwszy, potem znaczniki po kolei -->
+  <section class="scene" data-scene>
+    <div class="stage">
+      <div class="map beat" data-motion="plain" data-in="0.28 0.40" data-out="0.64 0.76">
+        <svg viewBox="0 0 1000 950" role="img" aria-label="Mapa Polski. Nasi klienci działają w centralnej Polsce, w Warszawie i na południu kraju.">
+          <path class="map__land" d="M15 158 L146 116 L273 52 L342 23 L465 48 L450 89 L525 89 L564 84 L643 85 L782 89 L861 81 L930 121 L970 161 L940 225 L970 354 L940 419 L940 467 L990 652 L940 725 L851 853 L866 933 L782 886 L683 886 L643 918 L584 918 L535 886 L505 886 L470 870 L445 805 L386 789 L356 741 L346 757 L277 717 L247 773 L228 725 L188 692 L129 660 L89 628 L64 652 L59 548 L50 467 L5 330 L30 306 L15 225 L30 185 Z"/>
+
+          <!-- centralna Polska: Łódź, Piotrków Tryb., Bełchatów, Tomaszów Maz. -->
+          <g class="pin beat" data-motion="dot" data-in="0.400 0.445" data-out="0.64 0.76"><circle class="pin__halo" cx="531" cy="505" r="20"/><circle class="pin__dot" cx="531" cy="505" r="8"/></g>
+          <g class="pin beat" data-motion="dot" data-in="0.421 0.466" data-out="0.64 0.76"><circle class="pin__halo" cx="554" cy="563" r="20"/><circle class="pin__dot" cx="554" cy="563" r="8"/></g>
+          <g class="pin beat" data-motion="dot" data-in="0.442 0.487" data-out="0.64 0.76"><circle class="pin__halo" cx="522" cy="568" r="20"/><circle class="pin__dot" cx="522" cy="568" r="8"/></g>
+          <g class="pin beat" data-motion="dot" data-in="0.463 0.508" data-out="0.64 0.76"><circle class="pin__halo" cx="585" cy="542" r="20"/><circle class="pin__dot" cx="585" cy="542" r="8"/></g>
+          <!-- Warszawa -->
+          <g class="pin beat" data-motion="dot" data-in="0.484 0.529" data-out="0.64 0.76"><circle class="pin__halo" cx="684" cy="430" r="20"/><circle class="pin__dot" cx="684" cy="430" r="8"/></g>
+          <!-- południe: Katowice, Kraków -->
+          <g class="pin beat" data-motion="dot" data-in="0.505 0.550" data-out="0.64 0.76"><circle class="pin__halo" cx="487" cy="747" r="20"/><circle class="pin__dot" cx="487" cy="747" r="8"/></g>
+          <g class="pin beat" data-motion="dot" data-in="0.526 0.571" data-out="0.64 0.76"><circle class="pin__halo" cx="578" cy="779" r="20"/><circle class="pin__dot" cx="578" cy="779" r="8"/></g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 8 ══ CTA -->
+  <section class="scene" data-scene>
+    <div class="stage stage--cta">
+      <p class="display beat" data-in="0.32 0.44" data-out="0.60 0.74">Wystarczy jeden telefon.</p>
+      <!-- TODO: podmień numer w href i w treści -->
+      <a class="phone beat" data-in="0.38 0.50" data-out="0.60 0.74" href="tel:+48000000000">+48&nbsp;000&nbsp;000&nbsp;000</a>
+    </div>
+  </section>
+
+  <!-- ══ 9 ══ pytanie, chwila, obietnica -->
+  <section class="scene" data-scene>
+    <div class="stage stage--tease">
+      <p class="lede beat" data-in="0.30 0.42" data-out="0.62 0.76">Nie przekonało Cię to?</p>
+      <p class="display beat" data-in="0.44 0.56" data-out="0.62 0.76">Zobacz nasze portfolio.</p>
+    </div>
+  </section>
+
+  <!-- ══ 10 ══ portfolio -->
+  <section class="work" id="work" aria-label="Nasze realizacje">
+    <div class="work__stage">
+      <div class="work__scene">
+
+        <article class="win" data-i="0">
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Granda Barber Shop</span></div>
+          <div class="win__view"><img src="assets/work/granda.jpg" alt="Strona internetowa Granda Barber Shop" width="1280" height="800" loading="lazy" decoding="async"></div>
+        </article>
+
+        <article class="win" data-i="1">
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Zajawa Barbershop</span></div>
+          <div class="win__view"><img src="assets/work/zajawa.jpg" alt="Strona internetowa Zajawa Barbershop" width="1280" height="800" loading="lazy" decoding="async"></div>
+        </article>
+
+        <article class="win" data-i="2">
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">O!hair</span></div>
+          <div class="win__view"><img src="assets/work/ohair.jpg" alt="Strona internetowa salonu fryzjerskiego O!hair" width="1280" height="800" loading="lazy" decoding="async"></div>
+        </article>
+
+        <article class="win" data-i="3">
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Męska Sprawa</span></div>
+          <div class="win__view"><img src="assets/work/meska-sprawa.jpg" alt="Strona internetowa Męska Sprawa Barber" width="1280" height="800" loading="lazy" decoding="async"></div>
+        </article>
+
+        <article class="win" data-i="4">
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Paradoxe Studio</span></div>
+          <div class="win__view"><img src="assets/work/paradoxe.jpg" alt="Strona internetowa Paradoxe Studio" width="1280" height="800" loading="lazy" decoding="async"></div>
+        </article>
+
+        <article class="win" data-i="5">
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Starowarszawska</span></div>
+          <div class="win__view"><img src="assets/work/starowarszawska.jpg" alt="Strona internetowa Starowarszawska — fryzjer męski" width="1280" height="800" loading="lazy" decoding="async"></div>
+        </article>
+
+      </div>
+
+      <div class="caps">
+        <div class="cap" data-i="0"><h3>Granda Barber Shop</h3><p>Barbershop · Łódź, Bełchatów, Piotrków Tryb.</p></div>
+        <div class="cap" data-i="1"><h3>Zajawa Barbershop</h3><p>Barbershop · Bełchatów</p></div>
+        <div class="cap" data-i="2"><h3>O!hair</h3><p>Salon fryzjerski · Radomsko</p></div>
+        <div class="cap" data-i="3"><h3>Męska Sprawa</h3><p>Barbershop · Kamieńsk</p></div>
+        <div class="cap" data-i="4"><h3>Paradoxe Studio</h3><p>Barber &amp; hair studio · Bełchatów</p></div>
+        <div class="cap" data-i="5"><h3>Starowarszawska</h3><p>Fryzjer męski · Piotrków Tryb.</p></div>
+      </div>
+
+      <div class="rail" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+  </section>
+
+  <!-- ══ zamknięcie: wracamy do jednego telefonu.
+         Ostatnia sekcja nie może się wygaszać — na dole strony
+         postęp zatrzymuje się na p ≈ 0.57, więc bez data-out. -->
+  <section class="scene scene--end" data-scene>
+    <div class="stage stage--cta">
+      <p class="lede beat" data-in="0.34 0.46">Tyle wystarczy, żeby zacząć.</p>
+      <!-- TODO: podmień numer w href i w treści -->
+      <a class="phone beat" data-in="0.40 0.52" href="tel:+48000000000">+48&nbsp;000&nbsp;000&nbsp;000</a>
+    </div>
+  </section>
+
+</main>
+
+<script src="app.js" defer></script>
+</body>
+</html>
