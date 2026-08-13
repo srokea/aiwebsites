@@ -126,12 +126,8 @@ function renderRevenuePanel() {
         <div class="revenue-lbl">Miesięcznie (${r.pricing.monthly} zł/klient)</div>
       </div>
       <div class="revenue-item">
-        <div class="revenue-num">${money(r.earned)}</div>
-        <div class="revenue-lbl">Zarobione łącznie</div>
-      </div>
-      <div class="revenue-item">
         <div class="revenue-num">${money(r.net)}</div>
-        <div class="revenue-lbl">Netto (po kosztach, np. Claude)</div>
+        <div class="revenue-lbl">Netto łącznie (jednorazowe + miesięczne − koszty)</div>
       </div>
     </div>
     <div class="revenue-ticker" id="revenue-ticker"></div>
