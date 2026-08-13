@@ -177,10 +177,15 @@ async function render() {
   document.getElementById("sms-note").textContent = script.smsNote;
 
   const activeTags = ["instagram", "facebook", "booksy", "youtube"].filter((t) => lead[`tag_${t}`]);
+  const phoneHref = telHref(lead.phone);
   document.getElementById("lead-context").innerHTML = `
     <div><b>${escapeHtml(lead.company_name)}</b></div>
     <div>${escapeHtml(lead.city || "—")}</div>
-    <div>${escapeHtml(lead.phone || "—")}</div>
+    <div>${
+      phoneHref
+        ? `<a class="lead-call-btn" href="tel:${escapeHtml(phoneHref)}">📞 ${escapeHtml(lead.phone)}</a>`
+        : escapeHtml(lead.phone || "—")
+    }</div>
     <div>${activeTags.length ? activeTags.map((t) => TAG_LABELS[t]).join(", ") : "brak tagow platform"}</div>
   `;
 

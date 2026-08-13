@@ -76,6 +76,15 @@ function noteDateLabel(createdAt) {
   return `${d.toLocaleDateString("pl-PL", { day: "numeric", month: "short", year: "numeric" })} · ${d.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" })}`;
 }
 
+// tel: link - Phone Link (Windows) i macOS/iPhone Continuity oba obsluguja ten sam schemat URI,
+// wiec dziala identycznie u obu bez zadnej detekcji platformy. Numery PL bez prefiksu -> +48.
+// Uzywane na podstronie scheme (script.js), gdzie realnie dzwoni sie z telefonu w naglowku.
+function telHref(raw) {
+  const digits = String(raw || "").replace(/\D/g, "");
+  if (!digits) return "";
+  return digits.length === 9 ? `+48${digits}` : `+${digits}`;
+}
+
 // Weekend = "rest day" dla licznika dziennego celu (patrz uzycie w index.js / niche.js) -
 // sob/niedz nie ma planu dzwonienia, wiec 0/20 wygladaloby jak zaleglosc, a to po prostu wolne.
 function isRestDay() {

@@ -1294,6 +1294,20 @@ em { color: var(--blue); font-style: normal; }
   flex-wrap: wrap;
 }
 .lead-context b { color: var(--text); }
+.lead-call-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(96,144,224,0.14);
+  border: 1px solid rgba(96,144,224,0.4);
+  color: var(--blue);
+  border-radius: 7px;
+  padding: 3px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background .15s, transform .1s;
+}
+.lead-call-btn:hover { background: rgba(96,144,224,0.26); transform: scale(1.03); }
 
 @media (max-width: 640px) {
   table.leads { min-width: 900px; }
