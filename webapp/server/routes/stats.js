@@ -57,11 +57,12 @@ router.get("/", (req, res) => {
   const clients = dopieteRows.length;
   const now = new Date();
 
-  // Realnie zarobione do dzis: 300 zl jednorazowo za kazdego klienta + 100 zl za kazdy PELNY
-  // miesiac abonamentu, ktory juz minal od jego dopiecia (nie prognoza calego roku).
+  // Realnie zarobione do dzis: 300 zl jednorazowo za kazdego klienta + 100 zl abonamentu za
+  // pierwszy miesiac (platny od razu przy dopieciu, tak samo jak koszty ponizej) + kolejne
+  // 100 zl za kazdy nastepny PELNY miesiac, ktory juz minal (nie prognoza calego roku).
   const earned = dopieteRows.reduce((sum, row) => {
     const months = row.dopiete_at ? fullMonthsElapsed(row.dopiete_at, now) : 0;
-    return sum + PRICING.oneTime + PRICING.monthly * months;
+    return sum + PRICING.oneTime + PRICING.monthly * (months + 1);
   }, 0);
 
   // Koszty pobrane do dzis: subskrypcja placona z gory, wiec pierwsza oplata liczy sie od razu
