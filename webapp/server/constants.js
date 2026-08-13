@@ -63,6 +63,14 @@ const DAILY_GOAL = 20;
 // i miesiecznie za utrzymanie/opieke. Uzywane do panelu zarobkow na stronie glownej.
 const PRICING = { oneTime: 300, monthly: 100 };
 
+// Stale koszty miesieczne (np. subskrypcje narzedzi) - kazdy wpis liczy sie od swojej daty
+// "from" (dzien miesiaca = dzien odnowienia). Dodanie/zmiana/koniec kosztu = edycja tej listy,
+// nic wiecej nie trzeba ruszac (patrz panel Kasy / /api/stats). "to" opcjonalne - koniec kosztu
+// (np. zmiana planu), brak = koszt nadal aktywny.
+// UWAGA: data "from" ponizej jest przyblizona (~poczatek pierwszego miesiaca) - popraw na
+// faktyczna date startu subskrypcji, jesli chcesz dokladne wyliczenie w kafelku "Netto".
+const EXPENSES = [{ name: "Claude Code", amount: 75, from: "2026-07-01" }];
+
 module.exports = {
   INTERESTED_OPTIONS,
   INTERESTED_STATS_ORDER,
@@ -76,4 +84,5 @@ module.exports = {
   NICHE_COLORS,
   DAILY_GOAL,
   PRICING,
+  EXPENSES,
 };

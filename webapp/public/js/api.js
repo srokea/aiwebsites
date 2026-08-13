@@ -76,6 +76,13 @@ function noteDateLabel(createdAt) {
   return `${d.toLocaleDateString("pl-PL", { day: "numeric", month: "short", year: "numeric" })} · ${d.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" })}`;
 }
 
+// Weekend = "rest day" dla licznika dziennego celu (patrz uzycie w index.js / niche.js) -
+// sob/niedz nie ma planu dzwonienia, wiec 0/20 wygladaloby jak zaleglosc, a to po prostu wolne.
+function isRestDay() {
+  const day = new Date().getDay();
+  return day === 0 || day === 6;
+}
+
 function escapeHtml(str) {
   return String(str ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }

@@ -1,9 +1,20 @@
 const express = require("express");
 const db = require("../db");
-const { INTERESTED_OPTIONS, INTERESTED_STATS_ORDER, CALLERS, DAILY_GOAL, PRICING } = require("../constants");
+const { INTERESTED_OPTIONS, INTERESTED_STATS_ORDER, CALLERS, DAILY_GOAL, PRICING, EXPENSES } = require("../constants");
 const { STATS_ELIGIBLE_SQL, STATS_BREAKDOWN_SQL } = require("../leadStatus");
 
 const router = express.Router();
+
+// Ile pelnych miesiecy minelo od danej daty do teraz (np. dopiecie klienta 13.07 -> pelny
+// miesiac dopiero 13.08). Uzywane i do dochodu z klientow, i do kosztow - obie liczby w
+// panelu Kasy maja pokazywac "ile juz naprawde", a nie prognoze na caly rok.
+function fullMonthsElapsed(fromIso, now = new Date()) {
+  const from = new Date(fromIso);
+  if (Number.isNaN(from.getTime())) return 0;
+  let months = (now.getFullYear() - from.getFullYear()) * 12 + (now.getMonth() - from.getMonth());
+  if (now.getDate() < from.getDate()) months -= 1;
+  return Math.max(0, months);
+}
 
 // GET /api/stats - zbiorcze statystyki na strone glowna
 // Wszystkie liczniki dzwonienia pomijaja leady ze Strona = "Tak" (patrz STATS_ELIGIBLE_SQL) -
@@ -42,12 +53,31 @@ router.get("/", (req, res) => {
   // Kazde "Dopiete" to jeden klient: 300 zl jednorazowo za wdrozenie + 100 zl/mies. za opieke.
   // Liczone ze WSZYSTKICH leadow (bez filtra STATS_ELIGIBLE_SQL) - dopiety klient, ktoremu
   // postawilismy strone, dostaje Strona = "Tak" i nie moze przez to zniknac z Kasy.
-  const clients = db.prepare("SELECT COUNT(*) c FROM leads WHERE interested = 'dopiete'").get().c;
+  const dopieteRows = db.prepare("SELECT dopiete_at FROM leads WHERE interested = 'dopiete'").all();
+  const clients = dopieteRows.length;
+  const now = new Date();
+
+  // Realnie zarobione do dzis: 300 zl jednorazowo za kazdego klienta + 100 zl za kazdy PELNY
+  // miesiac abonamentu, ktory juz minal od jego dopiecia (nie prognoza calego roku).
+  const earned = dopieteRows.reduce((sum, row) => {
+    const months = row.dopiete_at ? fullMonthsElapsed(row.dopiete_at, now) : 0;
+    return sum + PRICING.oneTime + PRICING.monthly * months;
+  }, 0);
+
+  // Koszty pobrane do dzis: subskrypcja placona z gory, wiec pierwsza oplata liczy sie od razu
+  // w dniu "from", a kolejne co pelny miesiac odnowienia (patrz EXPENSES w constants.js).
+  const expensesSoFar = EXPENSES.reduce((sum, exp) => {
+    const until = exp.to && new Date(exp.to) < now ? new Date(exp.to) : now;
+    return sum + exp.amount * (fullMonthsElapsed(exp.from, until) + 1);
+  }, 0);
+
   const revenue = {
     clients,
     oneTime: clients * PRICING.oneTime,
     mrr: clients * PRICING.monthly,
-    annual: clients * PRICING.monthly * 12,
+    earned,
+    expensesSoFar,
+    net: earned - expensesSoFar,
     pricing: PRICING,
   };
 

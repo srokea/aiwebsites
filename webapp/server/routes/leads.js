@@ -1,7 +1,7 @@
 const express = require("express");
 const db = require("../db");
 const { INTERESTED_OPTIONS, ANSWERED_OPTIONS, CALLERS, WEBSITE_STATUS_OPTIONS } = require("../constants");
-const { computeCalledAt } = require("../leadStatus");
+const { computeCalledAt, computeDopieteAt } = require("../leadStatus");
 
 const router = express.Router();
 
@@ -29,10 +29,14 @@ const ENUM_FIELDS = {
 };
 
 // Notatki leada, najnowsza pierwsza - w tej kolejnosci pokazuje je frontend
-// (podglad w komorce tabeli = pierwszy element tej listy).
+// (podglad w komorce tabeli = pierwszy element tej listy). updated_at ustawione = notatka
+// byla edytowana (patrz PATCH ponizej); historia starych tresci zyje w lead_note_edits
+// i jest doladowywana osobno, dopiero gdy ktos ja rozwinie na froncie.
 function notesForLead(leadId) {
   return db
-    .prepare("SELECT id, content, created_at FROM lead_notes WHERE lead_id = ? ORDER BY created_at DESC, id DESC")
+    .prepare(
+      "SELECT id, content, created_at, updated_at FROM lead_notes WHERE lead_id = ? ORDER BY created_at DESC, id DESC"
+    )
     .all(leadId);
 }
 
@@ -52,6 +56,36 @@ router.post("/:id/notes", (req, res) => {
 
   db.prepare("INSERT INTO lead_notes (lead_id, content) VALUES (?, ?)").run(lead.id, content);
   res.status(201).json(notesForLead(lead.id));
+});
+
+// PATCH /api/leads/:id/notes/:noteId - edytuje tresc notatki; stara tresc trafia do
+// lead_note_edits (nic nie ginie), zwraca pelna, aktualna liste notatek leada.
+router.patch("/:id/notes/:noteId", (req, res) => {
+  const note = db.prepare("SELECT * FROM lead_notes WHERE id = ? AND lead_id = ?").get(req.params.noteId, req.params.id);
+  if (!note) return res.status(404).json({ error: "Nie znaleziono notatki" });
+
+  const content = String(req.body.content || "").trim();
+  if (!content) return res.status(400).json({ error: "Notatka nie moze byc pusta" });
+
+  if (content !== note.content) {
+    db.transaction(() => {
+      db.prepare("INSERT INTO lead_note_edits (note_id, content) VALUES (?, ?)").run(note.id, note.content);
+      db.prepare("UPDATE lead_notes SET content = ?, updated_at = datetime('now') WHERE id = ?").run(content, note.id);
+    })();
+  }
+
+  res.json(notesForLead(req.params.id));
+});
+
+// GET /api/leads/:id/notes/:noteId/history - poprzednie tresci notatki (najnowsza zmiana pierwsza)
+router.get("/:id/notes/:noteId/history", (req, res) => {
+  const note = db.prepare("SELECT id FROM lead_notes WHERE id = ? AND lead_id = ?").get(req.params.noteId, req.params.id);
+  if (!note) return res.status(404).json({ error: "Nie znaleziono notatki" });
+
+  const history = db
+    .prepare("SELECT content, replaced_at FROM lead_note_edits WHERE note_id = ? ORDER BY replaced_at DESC, id DESC")
+    .all(note.id);
+  res.json(history);
 });
 
 // DELETE /api/leads/:id/notes/:noteId - usuwa notatke; zwraca aktualna liste
@@ -89,14 +123,15 @@ router.patch("/:id", (req, res) => {
   if (!Object.keys(updates).length) return res.status(400).json({ error: "Brak pol do aktualizacji" });
 
   const calledAt = computeCalledAt({ ...lead, ...updates }, lead.called_at);
+  const dopieteAt = computeDopieteAt({ ...lead, ...updates }, lead.dopiete_at);
 
   const setClauses = Object.keys(updates)
     .map((f) => `${f} = @${f}`)
     .join(", ");
 
   db.prepare(
-    `UPDATE leads SET ${setClauses}, called_at = @called_at, updated_at = datetime('now') WHERE id = @id`
-  ).run({ ...updates, called_at: calledAt, id: req.params.id });
+    `UPDATE leads SET ${setClauses}, called_at = @called_at, dopiete_at = @dopiete_at, updated_at = datetime('now') WHERE id = @id`
+  ).run({ ...updates, called_at: calledAt, dopiete_at: dopieteAt, id: req.params.id });
 
   const updated = db.prepare("SELECT * FROM leads WHERE id = ?").get(req.params.id);
   res.json({ ...updated, notes_list: notesForLead(updated.id) });

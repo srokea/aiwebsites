@@ -126,8 +126,12 @@ function renderRevenuePanel() {
         <div class="revenue-lbl">Miesięcznie (${r.pricing.monthly} zł/klient)</div>
       </div>
       <div class="revenue-item">
-        <div class="revenue-num">${money(r.annual)}</div>
-        <div class="revenue-lbl">Rocznie z abonamentów</div>
+        <div class="revenue-num">${money(r.earned)}</div>
+        <div class="revenue-lbl">Zarobione łącznie</div>
+      </div>
+      <div class="revenue-item">
+        <div class="revenue-num">${money(r.net)}</div>
+        <div class="revenue-lbl">Netto (po kosztach, np. Claude)</div>
       </div>
     </div>
     <div class="revenue-ticker" id="revenue-ticker"></div>
@@ -276,7 +280,7 @@ async function loadStats() {
     <div class="stat-card"><div class="num">${stats.total}</div><div class="label">${statIcon("layers")}Wszystkich leadów</div></div>
     <div class="stat-card"><div class="num">${stats.called}</div><div class="label">${statIcon("check")}Zadzwonionych</div></div>
     <div class="stat-card"><div class="num">${stats.todo}</div><div class="label">${statIcon("list")}Do zrobienia</div></div>
-    <div class="stat-card"><div class="num">${stats.calledToday}/${stats.dailyGoal}</div><div class="label">${statIcon("flame")}Dzisiaj</div></div>
+    <div class="stat-card"><div class="num">${isRestDay() ? "💤" : `${stats.calledToday}/${stats.dailyGoal}`}</div><div class="label">${statIcon("flame")}${isRestDay() ? "Rest day" : "Dzisiaj"}</div></div>
   `;
 
   lastRevenue = stats.revenue;

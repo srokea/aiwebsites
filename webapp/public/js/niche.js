@@ -66,7 +66,7 @@ async function init() {
     document.getElementById("niche-title").textContent = "Nie udało się wczytać niszy";
     document.getElementById("niche-sub").textContent = err.message;
     document.getElementById("leads-tbody").innerHTML =
-      `<tr><td colspan="15"><div class="empty-state">${escapeHtml(err.message)} — <a href="/" style="color:var(--blue)">wróć do listy nisz</a></div></td></tr>`;
+      `<tr><td colspan="14"><div class="empty-state">${escapeHtml(err.message)} — <a href="/" style="color:var(--blue)">wróć do listy nisz</a></div></td></tr>`;
   }
 }
 
@@ -122,7 +122,9 @@ async function loadNicheHeader() {
 
   const badge = document.getElementById("daily-badge");
   badge.style.display = "block";
-  badge.innerHTML = `<span class="n">${niche.calledToday}</span>/${meta.dailyGoal} dzisiaj`;
+  badge.innerHTML = isRestDay()
+    ? `<span class="n">💤</span> rest day`
+    : `<span class="n">${niche.calledToday}</span>/${meta.dailyGoal} dzisiaj`;
 }
 
 async function loadLeads() {
@@ -179,14 +181,6 @@ function reminderInfo(lead) {
 function formatPhone(raw) {
   const digits = String(raw || "").replace(/\D/g, "");
   return digits.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-}
-
-// tel: link - Phone Link (Windows) i macOS/iPhone Continuity oba obsluguja ten sam schemat URI,
-// wiec dziala identycznie u obu bez zadnej detekcji platformy. Numery PL bez prefiksu -> +48.
-function telHref(raw) {
-  const digits = String(raw || "").replace(/\D/g, "");
-  if (!digits) return "";
-  return digits.length === 9 ? `+48${digits}` : `+${digits}`;
 }
 
 // ---------- filtry (multi-select) + sortowanie ----------
@@ -353,6 +347,28 @@ function affectsOrdering(fields) {
 // to doraznie szukanie konkretnej firmy, nie ustawienie widoku.
 const VIEW_STORAGE_KEY = `coldcalls.view.${slug}`;
 
+// ---------- ostatnio dzwoniony lead (przezywa odswiezenie) ----------
+// Ten sam mechanizm co wejscie z dashboardu (?lead=<id>, patrz focusLeadRow) - tylko zamiast
+// linku z panelu "Najblizsze" zrodlem jest ostatnia akcja dzwonienia (Kto dzwonil / Odebral /
+// Status) w tej samej niszy. Dzieki temu odswiezenie w trakcie sesji wraca w to samo miejsce.
+const LAST_LEAD_KEY = `coldcalls.lastLead.${slug}`;
+
+function rememberLastLead(id) {
+  try {
+    localStorage.setItem(LAST_LEAD_KEY, String(id));
+  } catch {
+    // np. tryb prywatny bez dostepu do localStorage - po prostu nie zapamietamy pozycji
+  }
+}
+
+function recallLastLead() {
+  try {
+    return localStorage.getItem(LAST_LEAD_KEY);
+  } catch {
+    return null;
+  }
+}
+
 function saveViewState() {
   try {
     localStorage.setItem(
@@ -426,7 +442,7 @@ function renderLeads() {
   const visible = getVisibleLeads();
   if (!visible.length) {
     const msg = todoFilter ? "Nic do zrobienia — wszystko obdzwonione. 🎉" : "Brak leadow spelniajacych kryteria.";
-    tbody.innerHTML = `<tr><td colspan="15"><div class="empty-state">${msg}</div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="14"><div class="empty-state">${msg}</div></td></tr>`;
     return;
   }
   tbody.innerHTML = visible.map((lead, i) => rowHtml(lead, i + 1)).join("");
@@ -530,7 +546,7 @@ function rowHtml(lead, index) {
       <td>${fieldCsel("has_social", meta.websiteStatusOptions, lead.has_social, "—")}</td>
       <td class="city-cell">${escapeHtml(lead.city)}</td>
       <td class="phone-cell">
-        <a class="phone-call-btn" href="tel:${escapeHtml(telHref(lead.phone))}" title="Zadzwoń (Phone Link / iPhone)">📞</a>
+        <a class="phone-call-btn" href="/script.html?leadId=${lead.id}" title="Scheme rozmowy">📖</a>
         <span class="phone-text">${escapeHtml(formatPhone(lead.phone))}</span>
       </td>
       <td><input type="text" class="quality-input" data-field="quality" value="${escapeHtml(lead.quality)}"></td>
@@ -547,7 +563,6 @@ function rowHtml(lead, index) {
       <td><input type="date" data-field="callback_when" value="${escapeHtml(lead.callback_when)}"></td>
       <td><input type="datetime-local" data-field="google_term" value="${escapeHtml(lead.google_term)}"></td>
       <td>${notesCellHtml(lead)}</td>
-      <td><a class="call-btn" href="/script.html?leadId=${lead.id}" title="Scheme rozmowy">📖</a></td>
     </tr>
   `;
 }
@@ -579,7 +594,10 @@ async function saveLead(id, body, { keepPopoverOpen = false } = {}) {
       renderSingleRow(updated);
     }
 
-    if (fields.some((f) => COUNTER_FIELDS.has(f))) await loadNicheHeader();
+    if (fields.some((f) => COUNTER_FIELDS.has(f))) {
+      await loadNicheHeader();
+      rememberLastLead(id); // Kto dzwonil / Odebral / Status - to jest "dzwonienie", zapamietaj pozycje
+    }
   } catch (err) {
     alert("Blad zapisu: " + err.message);
   }
@@ -693,8 +711,55 @@ document.addEventListener("keydown", (e) => {
 // ---------- notatki: tablica korkowa ----------
 
 let notesLeadId = null;
+let editingNoteId = null; // id notatki aktualnie w trybie edycji (jedna naraz)
+const openHistoryNoteIds = new Set(); // ktore kartki maja rozwinieta historie starych wersji
+const noteHistoryCache = new Map(); // note id -> lista poprzednich wersji (doladowana z serwera)
 
 // (noteDateLabel - wspolny helper w api.js)
+
+function noteHistoryHtml(noteId) {
+  const entries = noteHistoryCache.get(noteId);
+  if (!entries) return `<div class="note-history-loading">Wczytywanie historii…</div>`;
+  if (!entries.length) return `<div class="note-history-loading">Brak wcześniejszych wersji.</div>`;
+  return entries
+    .map(
+      (h) => `
+      <div class="note-history-entry">
+        <div class="note-history-content">${escapeHtml(h.content)}</div>
+        <div class="note-history-date">obowiązywało do ${noteDateLabel(h.replaced_at)}</div>
+      </div>`
+    )
+    .join("");
+}
+
+function notePaperHtml(n) {
+  if (n.id === editingNoteId) {
+    return `
+      <div class="note-paper note-paper-editing">
+        <span class="note-pin"></span>
+        <textarea class="note-edit-input">${escapeHtml(n.content)}</textarea>
+        <div class="note-edit-actions">
+          <button type="button" class="note-edit-save" data-note-id="${n.id}">Zapisz</button>
+          <button type="button" class="note-edit-cancel">Anuluj</button>
+        </div>
+      </div>`;
+  }
+
+  const editedLbl = n.updated_at
+    ? ` · <button type="button" class="note-history-toggle" data-note-id="${n.id}">edytowano ${noteDateLabel(n.updated_at)}</button>`
+    : "";
+  const historyOpen = openHistoryNoteIds.has(n.id);
+
+  return `
+    <div class="note-paper">
+      <span class="note-pin"></span>
+      <button type="button" class="note-paper-edit" data-note-id="${n.id}" title="Edytuj notatkę">✎</button>
+      <button type="button" class="note-paper-delete" data-note-id="${n.id}" title="Usuń notatkę">✕</button>
+      <div class="note-paper-content">${escapeHtml(n.content)}</div>
+      <div class="note-paper-date">${noteDateLabel(n.created_at)}${editedLbl}</div>
+      ${historyOpen ? `<div class="note-history">${noteHistoryHtml(n.id)}</div>` : ""}
+    </div>`;
+}
 
 function renderNotesModal() {
   const lead = leads.find((l) => l.id === notesLeadId);
@@ -707,22 +772,22 @@ function renderNotesModal() {
     : "";
 
   document.getElementById("corkboard").innerHTML = notes.length
-    ? notes
-        .map(
-          (n) => `
-          <div class="note-paper">
-            <span class="note-pin"></span>
-            <button type="button" class="note-paper-delete" data-note-id="${n.id}" title="Usuń notatkę">✕</button>
-            <div class="note-paper-content">${escapeHtml(n.content)}</div>
-            <div class="note-paper-date">${noteDateLabel(n.created_at)}</div>
-          </div>`
-        )
-        .join("")
+    ? notes.map(notePaperHtml).join("")
     : `<div class="corkboard-empty">Pusta tablica — przypnij pierwszą notatkę poniżej.</div>`;
+
+  if (editingNoteId != null) {
+    const textarea = document.querySelector(".note-edit-input");
+    if (textarea) {
+      textarea.focus();
+      textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+    }
+  }
 }
 
 function openNotesModal(leadId) {
   notesLeadId = leadId;
+  editingNoteId = null;
+  openHistoryNoteIds.clear();
   renderNotesModal();
   document.getElementById("note-input").value = "";
   document.getElementById("notes-modal").classList.remove("hidden");
@@ -732,6 +797,8 @@ function openNotesModal(leadId) {
 function closeNotesModal() {
   document.getElementById("notes-modal").classList.add("hidden");
   notesLeadId = null;
+  editingNoteId = null;
+  openHistoryNoteIds.clear();
 }
 
 // wspolna koncowka dla dodania/usuniecia: serwer odsyla pelna liste notatek leada
@@ -765,14 +832,82 @@ document.getElementById("note-input").addEventListener("keydown", (e) => {
   }
 });
 
-document.getElementById("corkboard").addEventListener("click", async (e) => {
-  const btn = e.target.closest(".note-paper-delete");
-  if (!btn || !notesLeadId) return;
-  if (!confirm("Usunąć tę notatkę?")) return;
+async function saveNoteEdit(noteId) {
+  const textarea = document.querySelector(".note-edit-input");
+  const content = textarea ? textarea.value.trim() : "";
+  if (!content) return;
   try {
-    applyNotesUpdate(await api.del(`/api/leads/${notesLeadId}/notes/${btn.dataset.noteId}`));
+    const list = await api.patch(`/api/leads/${notesLeadId}/notes/${noteId}`, { content });
+    noteHistoryCache.delete(noteId); // tresc sie zmienila - stara historia w cache jest juz nieaktualna
+    editingNoteId = null;
+    applyNotesUpdate(list);
   } catch (err) {
-    alert("Blad usuwania notatki: " + err.message);
+    alert("Blad zapisu notatki: " + err.message);
+  }
+}
+
+document.getElementById("corkboard").addEventListener("click", async (e) => {
+  const editBtn = e.target.closest(".note-paper-edit");
+  if (editBtn) {
+    editingNoteId = Number(editBtn.dataset.noteId);
+    renderNotesModal();
+    return;
+  }
+
+  const saveBtn = e.target.closest(".note-edit-save");
+  if (saveBtn) {
+    await saveNoteEdit(Number(saveBtn.dataset.noteId));
+    return;
+  }
+
+  const cancelBtn = e.target.closest(".note-edit-cancel");
+  if (cancelBtn) {
+    editingNoteId = null;
+    renderNotesModal();
+    return;
+  }
+
+  const historyBtn = e.target.closest(".note-history-toggle");
+  if (historyBtn) {
+    const noteId = Number(historyBtn.dataset.noteId);
+    if (openHistoryNoteIds.has(noteId)) {
+      openHistoryNoteIds.delete(noteId);
+      renderNotesModal();
+      return;
+    }
+    openHistoryNoteIds.add(noteId);
+    renderNotesModal();
+    if (!noteHistoryCache.has(noteId)) {
+      try {
+        noteHistoryCache.set(noteId, await api.get(`/api/leads/${notesLeadId}/notes/${noteId}/history`));
+      } catch (err) {
+        noteHistoryCache.set(noteId, []);
+      }
+      renderNotesModal();
+    }
+    return;
+  }
+
+  const delBtn = e.target.closest(".note-paper-delete");
+  if (delBtn && notesLeadId) {
+    if (!confirm("Usunąć tę notatkę?")) return;
+    try {
+      applyNotesUpdate(await api.del(`/api/leads/${notesLeadId}/notes/${delBtn.dataset.noteId}`));
+    } catch (err) {
+      alert("Blad usuwania notatki: " + err.message);
+    }
+  }
+});
+
+// W edycji: Enter = zapisz, Shift+Enter = nowa linia, Escape = anuluj (spojne z note-input)
+document.getElementById("corkboard").addEventListener("keydown", (e) => {
+  if (!e.target.classList.contains("note-edit-input")) return;
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    saveNoteEdit(editingNoteId);
+  } else if (e.key === "Escape") {
+    editingNoteId = null;
+    renderNotesModal();
   }
 });
 

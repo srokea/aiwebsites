@@ -22,6 +22,14 @@ function computeCalledAt(nextLead, previousCalledAt = null) {
   return previousCalledAt || new Date().toISOString();
 }
 
+// Zwraca nowy dopiete_at: stempluje "teraz" przy pierwszym przejsciu na "dopiete", zachowuje
+// istniejacy znacznik gdy status sie nie zmienil, czysci przy wycofaniu (np. pomylka przy
+// zaznaczaniu) - zeby ponowne domkniecie tego samego leada zaczynalo liczenie od nowa.
+function computeDopieteAt(nextLead, previousDopieteAt = null) {
+  if (nextLead.interested !== "dopiete") return null;
+  return previousDopieteAt || new Date().toISOString();
+}
+
 // Leady, ktore juz maja wlasna strone (Strona = "Tak"), nie wliczaja sie do zadnych
 // statystyk dzwonienia (kafelki, wykresy, paski postepu) - nie ma do kogo dzwonic z oferta,
 // wiec zawyzalyby "do zrobienia" i zanizaly postep. W tabeli leadow normalnie widoczne.
@@ -35,4 +43,4 @@ const STATS_ELIGIBLE_SQL = "has_social <> 'Tak'";
 // Leady ze strona, ktorych nikt nie ruszal, nadal sie nie licza - nie zasmiecaja wykresu.
 const STATS_BREAKDOWN_SQL = `(${STATS_ELIGIBLE_SQL} OR called_at IS NOT NULL)`;
 
-module.exports = { isCalled, computeCalledAt, STATS_ELIGIBLE_SQL, STATS_BREAKDOWN_SQL };
+module.exports = { isCalled, computeCalledAt, computeDopieteAt, STATS_ELIGIBLE_SQL, STATS_BREAKDOWN_SQL };

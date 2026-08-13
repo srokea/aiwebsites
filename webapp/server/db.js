@@ -53,6 +53,17 @@ CREATE TABLE IF NOT EXISTS lead_notes (
 );
 
 CREATE INDEX IF NOT EXISTS idx_lead_notes_lead ON lead_notes(lead_id);
+
+-- Historia edycji notatki: przy kazdej zmianie tresci stara wersja ladowana jest tutaj
+-- (patrz PATCH /api/leads/:id/notes/:noteId), zeby nic nie ginelo po edycji.
+CREATE TABLE IF NOT EXISTS lead_note_edits (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  note_id INTEGER NOT NULL REFERENCES lead_notes(id) ON DELETE CASCADE,
+  content TEXT NOT NULL,
+  replaced_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_lead_note_edits_note ON lead_note_edits(note_id);
 `);
 
 // Proste "migracje" dla kolumn dodanych po pierwszym wydaniu - ALTER TABLE ADD COLUMN
@@ -65,6 +76,8 @@ function addColumnIfMissing(table, columnDef) {
   }
 }
 addColumnIfMissing("leads", "research_notes TEXT NOT NULL DEFAULT ''");
+addColumnIfMissing("leads", "dopiete_at TEXT");
+addColumnIfMissing("lead_notes", "updated_at TEXT");
 addColumnIfMissing("niches", "color TEXT NOT NULL DEFAULT ''");
 // wybor pliku schematu rozmowy per nisza (server/scriptsData/<nazwa>.js); '' = default
 addColumnIfMissing("niches", "script_file TEXT NOT NULL DEFAULT ''");
@@ -97,6 +110,14 @@ db.prepare(
 db.prepare(
   `UPDATE leads SET called_at = COALESCE(called_at, updated_at, datetime('now'))
    WHERE interested IN ('strona', 'zamkniete') AND called_at IS NULL`
+).run();
+
+// Jednorazowa migracja danych: dopiete_at (od kiedy liczymy dochod z abonamentu klienta,
+// patrz panel Kasy / /api/stats) nie istnial przed wprowadzeniem tej kolumny - dla juz
+// dopietych klientow backfillujemy najlepszym dostepnym przyblizeniem daty domkniecia.
+db.prepare(
+  `UPDATE leads SET dopiete_at = COALESCE(called_at, updated_at, created_at)
+   WHERE interested = 'dopiete' AND dopiete_at IS NULL`
 ).run();
 
 // Jednorazowa migracja danych: notatki przenosza sie z pojedynczego pola tekstowego
