@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Monogram "JB" czarny na bezowym tle, echo watermarku z logo klientki. -->
+  <rect width="64" height="64" rx="12" fill="#E3D4CB"/>
+  <text x="32" y="41" font-family="'Bodoni Moda', 'Didot', Georgia, serif" font-size="26" font-weight="500" fill="#120F0C" text-anchor="middle">JB</text>
+</svg>
