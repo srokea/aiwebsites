@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psia Łapka — psi fryzjer, Piotrków Trybunalski</title>
+<meta name="description" content="Psia Łapka — psi fryzjer w Piotrkowie Trybunalskim. Strzyżenie pod rasę, kąpiel, rozczesywanie kołtunów, pazurki, uszy i oczy. Ul. Wyzwolenia 46. Tel. 781 214 342.">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<link rel="canonical" href="https://psialapka.pl/">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:site_name" content="Psia Łapka">
+<meta property="og:title" content="Psia Łapka — psi fryzjer, Piotrków Trybunalski">
+<meta property="og:description" content="Strzyżenie pod rasę, kąpiel i pielęgnacja psów. Bez pośpiechu, z cierpliwością do każdego psa. Ul. Wyzwolenia 46, Piotrków Trybunalski.">
+<meta property="og:url" content="https://psialapka.pl/">
+<meta property="og:image" content="https://psialapka.pl/og-image.jpg">
+
+<!-- Favicon: łapka w kolorze rdzy (ten sam token co akcent na stronie) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='10' fill='%23fdf8f5'/%3E%3Cellipse cx='16' cy='21' rx='6.6' ry='5.4' fill='%23a34a25'/%3E%3Cellipse cx='8' cy='13' rx='2.7' ry='3.4' fill='%23a34a25'/%3E%3Cellipse cx='14.6' cy='9' rx='2.7' ry='3.4' fill='%23a34a25'/%3E%3Cellipse cx='21.4' cy='9' rx='2.7' ry='3.4' fill='%23a34a25'/%3E%3Cellipse cx='24.9' cy='13' rx='2.7' ry='3.4' fill='%23a34a25'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="photos/logo.jpg">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#FFFFFF',
+          // Neutralny jasny szary, zgodny z realnym wnetrzem salonu (sciany na zdjeciach
+          // klientki wychodza w analizie na #8b807a-#b0a6a1, czyli cieply neutral bez koloru).
+          surface: '#F3F2F1',
+          ink: '#211C18',
+          inkmuted: '#5C534C',
+          // JEDEN akcent (rdza z obrozy na tabliczce WELCOME + siersc rudego szpica).
+          // accenton to ten sam odcien rozjasniony WYLACZNIE pod ciemne tlo stopki,
+          // zeby nie zejsc z kontrastem. To wariant tonalny, nie drugi akcent.
+          accent: '#A34A25',
+          accenton: '#D9814F',
+          deep: '#2A231E',
+          deepink: '#EFE7E1',
+          deepmuted: '#C4B7AF',
+          deepfaint: '#9C8F88',
+          line: 'rgba(33,28,24,0.12)',
+        },
+        fontFamily: {
+          display: ['Young Serif', 'Georgia', 'serif'],
+          body: ['Nunito', 'system-ui', 'sans-serif'],
+        },
+        maxWidth: { content: '68rem' },
+      },
+    },
+  };
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO: bez odpytywania serwerow Google przy wejsciu). */
+  @font-face {
+    font-family: 'Young Serif';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('fonts/youngserif-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Young Serif';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('fonts/youngserif-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url('fonts/nunito-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url('fonts/nunito-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+  body { font-family: 'Nunito', system-ui, sans-serif; }
+
+  /* Display: Young Serif. Miekki, lekko rustykalny szeryf w rejestrze recznie wycinanej
+     drewnianej tabliczki z salonu (patrz logo.jpg). Jedna waga 400, z natury gruba. */
+  .display { font-family: 'Young Serif', Georgia, serif; font-weight: 400; }
+  .h-display { font-size: clamp(2.05rem, 3.2vw + 1.3rem, 3.5rem); line-height: 1.12; letter-spacing: -0.012em; text-wrap: balance; }
+  .h-section { font-size: clamp(1.7rem, 2.2vw + 1.1rem, 2.45rem); line-height: 1.18; letter-spacing: -0.008em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+
+  /* Luk: miekki ksztalt przewodni strony (zdjecia, kafle galerii). */
+  .arch { border-radius: 14rem 14rem 1.75rem 1.75rem; }
+  .arch-sm { border-radius: 8rem 8rem 1.25rem 1.25rem; }
+
+  /* Ambientowe, nieruchome poswiaty w kolorze akcentu. Nie gradientowe hero. */
+  .glow { position: relative; isolation: isolate; }
+  .glow::before {
+    content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(58rem 32rem at 12% -8%, rgba(163,74,37,0.07), transparent 62%),
+      radial-gradient(44rem 28rem at 92% 8%, rgba(163,74,37,0.05), transparent 60%);
+  }
+
+  .map-frame iframe { filter: grayscale(48%) sepia(16%) contrast(1.04) saturate(0.92); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+
+<body class="bg-bg text-ink font-body antialiased">
+
+<!-- Ikony uzywane wielokrotnie: lapka + gwiazdka -->
+<svg width="0" height="0" class="absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-paw" viewBox="0 0 32 32">
+    <ellipse cx="16" cy="21" rx="6.6" ry="5.4"/>
+    <ellipse cx="8" cy="13" rx="2.7" ry="3.4"/>
+    <ellipse cx="14.6" cy="9" rx="2.7" ry="3.4"/>
+    <ellipse cx="21.4" cy="9" rx="2.7" ry="3.4"/>
+    <ellipse cx="24.9" cy="13" rx="2.7" ry="3.4"/>
+  </symbol>
+  <symbol id="i-star" viewBox="0 0 20 20">
+    <path d="M10 1.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/>
+  </symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <path d="M6.6 3.5 9 8l-2 1.6a13 13 0 0 0 5.4 5.4L14 13l4.5 2.4-.9 3.5a2 2 0 0 1-2.2 1.5C8.7 19.6 4.4 15.3 3.1 8.6A2 2 0 0 1 4.6 6.4z"/>
+  </symbol>
+</svg>
+
+<a href="#tresc" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-full focus:bg-accent focus:px-5 focus:py-3 focus:text-white focus:font-semibold">Przejdź do treści</a>
+
+<!-- ============ HEADER ============ -->
+<header class="sticky top-0 z-40 border-b border-line bg-bg/90 backdrop-blur-md">
+  <div class="mx-auto flex max-w-content items-center gap-3 px-5 py-3 sm:gap-6">
+    <a href="#gora" class="flex shrink-0 items-center gap-2.5">
+      <img src="photos/tabliczka-welcome.webp" alt="" width="40" height="40" class="h-10 w-10 rounded-full object-cover ring-1 ring-line">
+      <span class="text-[1.05rem] font-extrabold leading-none tracking-tight">Psia Łapka</span>
+    </a>
+
+    <nav class="ml-auto hidden items-center gap-5 text-sm font-semibold text-inkmuted md:flex" aria-label="Nawigacja główna">
+      <a href="#uslugi" class="px-1 py-2 transition hover:text-accent motion-reduce:transition-none">Usługi</a>
+      <a href="#cennik" class="px-1 py-2 transition hover:text-accent motion-reduce:transition-none">Cennik</a>
+      <a href="#galeria" class="px-1 py-2 transition hover:text-accent motion-reduce:transition-none">Efekty</a>
+      <a href="#opinie" class="px-1 py-2 transition hover:text-accent motion-reduce:transition-none">Opinie</a>
+      <a href="#kontakt" class="px-1 py-2 transition hover:text-accent motion-reduce:transition-none">Kontakt</a>
+    </nav>
+
+    <a href="tel:+48781214342"
+       class="ml-auto inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full bg-accent px-4 py-2.5 text-sm font-bold text-white transition hover:brightness-110 md:ml-0 md:px-6">
+      <svg class="h-4 w-4" aria-hidden="true"><use href="#i-phone"/></svg>
+      <span class="hidden sm:inline">781 214 342</span>
+      <span class="sm:hidden">Zadzwoń</span>
+    </a>
+  </div>
+</header>
+
+<main id="tresc">
+
+<!-- ============ HERO ============ -->
+<section id="gora" class="glow overflow-hidden">
+  <div class="mx-auto grid max-w-content items-center gap-10 px-5 py-14 md:grid-cols-[1.05fr_0.95fr] md:gap-14 md:py-24">
+
+    <div>
+      <h1 class="display h-display">
+        Salon, z którego pies wychodzi zadowolony
+      </h1>
+
+      <p class="mt-5 max-w-[46ch] text-lg leading-relaxed text-inkmuted">
+        Psia Łapka w Piotrkowie Trybunalskim. Strzyżenie dopasowane do rasy, kąpiel i cała pielęgnacja.
+        Spokojnie, bez pośpiechu i z cierpliwością do każdego psa. Także tego, który boi się maszynki.
+      </p>
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="tel:+48781214342"
+           class="inline-flex min-h-[52px] items-center gap-2.5 rounded-full bg-accent px-7 py-3.5 text-base font-bold text-white transition hover:brightness-110 motion-reduce:transition-none">
+          <svg class="h-5 w-5" aria-hidden="true"><use href="#i-phone"/></svg>
+          Zadzwoń i umów wizytę
+        </a>
+        <a href="#uslugi"
+           class="inline-flex min-h-[52px] items-center rounded-full border border-line px-7 py-3.5 text-base font-bold text-inkmuted transition hover:border-ink hover:text-ink motion-reduce:transition-none">
+          Zobacz usługi
+        </a>
+      </div>
+
+      <p class="mt-6 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm font-semibold text-inkmuted">
+        <span class="inline-flex items-center gap-0.5 text-accent" aria-hidden="true">
+          <svg class="h-4 w-4 fill-current"><use href="#i-star"/></svg>
+          <svg class="h-4 w-4 fill-current"><use href="#i-star"/></svg>
+          <svg class="h-4 w-4 fill-current"><use href="#i-star"/></svg>
+          <svg class="h-4 w-4 fill-current"><use href="#i-star"/></svg>
+          <svg class="h-4 w-4 fill-current"><use href="#i-star"/></svg>
+        </span>
+        <span class="whitespace-nowrap">5,0 w Google</span>
+        <span class="whitespace-nowrap"><span class="text-inkmuted/50" aria-hidden="true">·</span> 23 opinie, wszystkie na piątkę</span>
+      </p>
+    </div>
+
+    <div class="arch relative mx-auto aspect-[4/5] w-full max-w-[19rem] overflow-hidden bg-surface md:max-w-[24rem]">
+      <img src="photos/maltanczyk-hero.webp"
+           alt="Biały maltańczyk po strzyżeniu w salonie Psia Łapka"
+           width="788" height="1400" fetchpriority="high"
+           class="h-full w-full object-cover" style="object-position: center 55%;">
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ PASEK ZAUFANIA ============ -->
+<section class="border-y border-line bg-surface" aria-labelledby="zaufanie">
+  <h2 id="zaufanie" class="sr-only">Dlaczego Psia Łapka</h2>
+  <ul class="mx-auto grid max-w-content gap-7 px-5 py-10 sm:grid-cols-3 sm:gap-8 md:py-12">
+    <!-- Każdy punkt oparty na konkretnej opinii z Google (patrz brief.md), nie na deklaracji salonu. -->
+    <li class="flex gap-3.5">
+      <svg class="mt-0.5 h-6 w-6 shrink-0 fill-accent" aria-hidden="true"><use href="#i-paw"/></svg>
+      <div>
+        <p class="text-base font-extrabold">5,0 w Google</p>
+        <p class="mt-1 text-sm leading-relaxed text-inkmuted">23 opinie i wszystkie na piątkę, najstarsze sprzed sześciu lat.</p>
+      </div>
+    </li>
+    <li class="flex gap-3.5">
+      <svg class="mt-0.5 h-6 w-6 shrink-0 fill-accent" aria-hidden="true"><use href="#i-paw"/></svg>
+      <div>
+        <p class="text-base font-extrabold">Cierpliwość wraca w opiniach</p>
+        <p class="mt-1 text-sm leading-relaxed text-inkmuted">Właściciele piszą o niej przy psach strachliwych, starszych i pierwszorazowych.</p>
+      </div>
+    </li>
+    <li class="flex gap-3.5">
+      <svg class="mt-0.5 h-6 w-6 shrink-0 fill-accent" aria-hidden="true"><use href="#i-paw"/></svg>
+      <div>
+        <p class="text-base font-extrabold">Strzyżenie dopasowane do rasy</p>
+        <p class="mt-1 text-sm leading-relaxed text-inkmuted">Razem z myciem, uszami, pazurkami i oczami w jednej wizycie.</p>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ USŁUGI ============ -->
+<section id="uslugi" class="scroll-mt-20">
+  <div class="mx-auto max-w-content px-5 py-16 md:py-24">
+    <h2 class="display h-section">Usługi</h2>
+    <p class="mt-4 max-w-[58ch] text-lg leading-relaxed text-inkmuted">
+      Zadzwoń i powiedz, jaka rasa i czego pies potrzebuje. Resztę ustalimy przez telefon.
+    </p>
+
+    <!-- Lista dokładnie wg briefu (6 usług potwierdzonych ze starej strony).
+         TODO: jeśli klientka poda opisy albo dorzuci usługi, dopisz je tutaj. -->
+    <ul class="mt-10 grid gap-x-12 border-t border-line sm:grid-cols-2">
+      <li class="flex items-center gap-4 border-b border-line py-5">
+        <svg class="h-5 w-5 shrink-0 fill-accent" aria-hidden="true"><use href="#i-paw"/></svg>
+        <h3 class="text-lg font-extrabold">Mycie i suszenie</h3>
+      </li>
+      <li class="flex items-center gap-4 border-b border-line py-5">
+        <svg class="h-5 w-5 shrink-0 fill-accent" aria-hidden="true"><use href="#i-paw"/></svg>
+        <h3 class="text-lg font-extrabold">Strzyżenie dopasowane do rasy</h3>
+      </li>
+      <li class="flex items-center gap-4 border-b border-line py-5">
+        <svg class="h-5 w-5 shrink-0 fill-accent" aria-hidden="true"><use href="#i-paw"/></svg>
+        <h3 class="text-lg font-extrabold">Rozczesywanie kołtunów</h3>
+      </li>
+      <li class="flex items-center gap-4 border-b border-line py-5">
+        <svg class="h-5 w-5 shrink-0 fill-accent" aria-hidden="true"><use href="#i-paw"/></svg>
+        <h3 class="text-lg font-extrabold">Obcinanie pazurów</h3>
+      </li>
+      <li class="flex items-center gap-4 border-b border-line py-5">
+        <svg class="h-5 w-5 shrink-0 fill-accent" aria-hidden="true"><use href="#i-paw"/></svg>
+        <h3 class="text-lg font-extrabold">Czyszczenie uszu</h3>
+      </li>
+      <li class="flex items-center gap-4 border-b border-line py-5">
+        <svg class="h-5 w-5 shrink-0 fill-accent" aria-hidden="true"><use href="#i-paw"/></svg>
+        <h3 class="text-lg font-extrabold">Pielęgnacja oczu</h3>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ CENNIK (do uzupełnienia) ============ -->
+<section id="cennik" class="scroll-mt-20 border-y border-line bg-surface">
+  <div class="mx-auto max-w-content px-5 py-16 md:py-24">
+    <h2 class="display h-section">Cennik</h2>
+    <p class="mt-4 max-w-[58ch] text-lg leading-relaxed text-inkmuted">
+      Cennik pojawi się tutaj wkrótce. Na razie najszybciej zapytać o cenę przez telefon.
+    </p>
+
+    <!-- =========================================================
+         TODO: cennik do uzupełnienia.
+         Gdy klientka poda ceny, usuń blok "placeholder cennika" poniżej
+         i odkomentuj tę listę, wpisując prawdziwe pozycje i kwoty:
+
+         <dl class="mt-10 divide-y divide-line border-y border-line">
+           <div class="flex items-baseline justify-between gap-6 py-4">
+             <dt class="font-semibold text-inkmuted">Strzyżenie, pies mały</dt>
+             <dd class="font-extrabold tabular-nums">00 zł</dd>
+           </div>
+           <div class="flex items-baseline justify-between gap-6 py-4">
+             <dt class="font-semibold text-inkmuted">Strzyżenie, pies średni</dt>
+             <dd class="font-extrabold tabular-nums">00 zł</dd>
+           </div>
+         </dl>
+         ========================================================= -->
+
+    <!-- placeholder cennika -->
+    <div class="mt-10 max-w-2xl rounded-3xl border-2 border-dashed border-accent/40 p-7 sm:p-9">
+      <p class="text-base font-extrabold text-accent">[TODO: cennik do uzupełnienia]</p>
+      <p class="mt-2 max-w-[52ch] text-sm leading-relaxed text-inkmuted">
+        Tu wejdzie lista usług z cenami. Puste miejsce zostawione celowo, żeby nie zgadywać stawek.
+      </p>
+      <dl class="mt-6 divide-y divide-line">
+        <div class="flex items-baseline justify-between gap-6 py-3.5">
+          <dt class="font-semibold text-inkmuted">Nazwa usługi</dt>
+          <dd class="font-extrabold text-inkmuted">00 zł</dd>
+        </div>
+        <div class="flex items-baseline justify-between gap-6 py-3.5">
+          <dt class="font-semibold text-inkmuted">Nazwa usługi</dt>
+          <dd class="font-extrabold text-inkmuted">00 zł</dd>
+        </div>
+        <div class="flex items-baseline justify-between gap-6 py-3.5">
+          <dt class="font-semibold text-inkmuted">Nazwa usługi</dt>
+          <dd class="font-extrabold text-inkmuted">00 zł</dd>
+        </div>
+      </dl>
+    </div>
+
+    <a href="tel:+48781214342"
+       class="mt-8 inline-flex min-h-[52px] items-center gap-2.5 rounded-full bg-accent px-7 py-3.5 text-base font-bold text-white transition hover:brightness-110 motion-reduce:transition-none">
+      <svg class="h-5 w-5" aria-hidden="true"><use href="#i-phone"/></svg>
+      Zapytaj o cenę: 781 214 342
+    </a>
+  </div>
+</section>
+
+<!-- ============ GALERIA ============ -->
+<section id="galeria" class="scroll-mt-20">
+  <div class="mx-auto max-w-content px-5 py-16 md:py-24">
+    <h2 class="display h-section">Efekty strzyżenia</h2>
+    <p class="mt-4 max-w-[58ch] text-lg leading-relaxed text-inkmuted">
+      Kilka psiaków po wizycie w Psiej Łapce. Więcej zdjęć jest na Facebooku i Instagramie.
+    </p>
+
+    <!-- Zdjęcia klientki z profili FB/IG. object-position dobrane per zdjęcie,
+         żeby kwadratowy kadr nie ucinał psu głowy. -->
+    <div class="mt-10 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3">
+      <img src="photos/terier-welcome.webp" alt="Biało-czarny terier po strzyżeniu, w tle drewniana tabliczka WELCOME"
+           loading="lazy" width="900" height="900"
+           class="aspect-square w-full rounded-3xl bg-surface object-cover" style="object-position: center 45%;">
+      <img src="photos/szpic-rudy.webp" alt="Rudy szpic miniaturowy po pielęgnacji, z wywieszonym językiem"
+           loading="lazy" width="495" height="900"
+           class="aspect-square w-full rounded-3xl bg-surface object-cover" style="object-position: center 42%;">
+      <img src="photos/yorek-kokardka.webp" alt="York po strzyżeniu, z kucykiem spiętym gumką"
+           loading="lazy" width="506" height="900"
+           class="aspect-square w-full rounded-3xl bg-surface object-cover" style="object-position: center 38%;">
+      <img src="photos/pudel-czarny.webp" alt="Czarny pudel po strzyżeniu, trzymany delikatnie pod brodą"
+           loading="lazy" width="634" height="900"
+           class="aspect-square w-full rounded-3xl bg-surface object-cover" style="object-position: center 38%;">
+      <img src="photos/sznaucer.webp" alt="Sznaucer po strzyżeniu, stoi na stole groomerskim"
+           loading="lazy" width="495" height="900"
+           class="aspect-square w-full rounded-3xl bg-surface object-cover" style="object-position: center 28%;">
+      <img src="photos/yorek-usmiech.webp" alt="Uśmiechnięty york po strzyżeniu, z wywieszonym językiem"
+           loading="lazy" width="495" height="900"
+           class="aspect-square w-full rounded-3xl bg-surface object-cover" style="object-position: center 28%;">
+    </div>
+
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="https://www.instagram.com/lapkapsia_fryzjer/" target="_blank" rel="noopener"
+         class="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-line px-6 py-3 text-sm font-bold text-inkmuted transition hover:border-ink hover:text-ink motion-reduce:transition-none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" class="h-5 w-5" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"/>
+        </svg>
+        Zobacz na Instagramie
+      </a>
+      <a href="https://www.facebook.com/people/Psia-%C5%81apka/100036289681084/?locale=pl_PL" target="_blank" rel="noopener"
+         class="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-line px-6 py-3 text-sm font-bold text-inkmuted transition hover:border-ink hover:text-ink motion-reduce:transition-none">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5" aria-hidden="true">
+          <path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.6c-.3-.04-1.28-.13-2.42-.13-2.4 0-4.05 1.47-4.05 4.16V9.9H7.5V13h2.73v8z"/>
+        </svg>
+        Zobacz na Facebooku
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ O SALONIE ============ -->
+<section id="o-nas" class="scroll-mt-20 border-y border-line bg-surface">
+  <div class="mx-auto grid max-w-content items-center gap-10 px-5 py-16 md:grid-cols-[0.85fr_1.15fr] md:gap-14 md:py-24">
+
+    <figure class="relative mx-auto w-full max-w-[20rem] pb-6 pl-6">
+      <img src="photos/maltipoo-portret.webp"
+           alt="Jasny maltipoo po strzyżeniu, trzymany delikatnie pod brodą"
+           loading="lazy" width="506" height="900"
+           class="arch-sm aspect-[4/5] w-full object-cover" style="object-position: center 40%;">
+      <!-- Tabliczka WELCOME z salonu. Plik ma tylko 150x150 px, więc jest wyświetlany
+           mały (96 px). TODO: podmienić, gdy klientka przyśle lepszą jakość. -->
+      <img src="photos/tabliczka-welcome.webp"
+           alt="Drewniana tabliczka w kształcie psiej głowy z zawieszką WELCOME, wisząca w salonie"
+           loading="lazy" width="96" height="96"
+           class="absolute bottom-0 left-0 h-24 w-24 rounded-full object-cover ring-4 ring-surface">
+    </figure>
+
+    <div>
+      <h2 class="display h-section">Za nożyczkami stoi Aldona</h2>
+      <!-- Tylko to, co potwierdzają opinie z Google (brief.md). Bez zgadywania trybu pracy salonu. -->
+      <p class="mt-5 text-lg leading-relaxed text-inkmuted">
+        W opiniach z Google od sześciu lat wraca to samo: cierpliwość, spokój i dobre podejście
+        do psa. Także do tego strachliwego i do staruszka, który źle znosi wizyty.
+      </p>
+      <p class="mt-4 text-lg leading-relaxed text-inkmuted">
+        Jeden z właścicieli napisał, że jego Kofik na widok salonu skacze i piszczy z radości.
+        To chyba najlepsza recenzja, jaką psi fryzjer może dostać.
+      </p>
+
+      <dl class="mt-8 grid grid-cols-2 gap-6 border-t border-line pt-7">
+        <div>
+          <dt class="text-sm font-semibold text-inkmuted">Ocena w Google</dt>
+          <dd class="display mt-1 text-3xl text-accent">5,0</dd>
+        </div>
+        <div>
+          <dt class="text-sm font-semibold text-inkmuted">Opinii, wszystkie na 5</dt>
+          <dd class="display mt-1 text-3xl text-accent">23</dd>
+        </div>
+      </dl>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ OPINIE ============ -->
+<section id="opinie" class="scroll-mt-20">
+  <div class="mx-auto max-w-content px-5 py-16 md:py-24">
+    <h2 class="display h-section">Co mówią właściciele</h2>
+    <p class="mt-4 max-w-[58ch] text-lg leading-relaxed text-inkmuted">
+      Wszystkie opinie pochodzą z profilu Psiej Łapki w Google.
+    </p>
+
+    <div class="mt-10 grid gap-x-12 sm:grid-cols-2">
+      <blockquote class="border-t border-line py-7">
+        <div class="flex gap-0.5 text-accent" aria-label="Ocena 5 na 5">
+          <svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg>
+        </div>
+        <p class="mt-4 text-lg leading-relaxed">„Najlepsza groomerka w mieście!”</p>
+        <footer class="mt-3 text-sm font-semibold text-inkmuted">Weronika Grzybowska, Google</footer>
+      </blockquote>
+
+      <blockquote class="border-t border-line py-7">
+        <div class="flex gap-0.5 text-accent" aria-label="Ocena 5 na 5">
+          <svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg>
+        </div>
+        <p class="mt-4 text-lg leading-relaxed">„Fantastyczne podejście do mojego psa. […] Kofik cieszy się na wizytę, skacze i piszczy na widok Pani Aldony.”</p>
+        <footer class="mt-3 text-sm font-semibold text-inkmuted">Mateusz Rutowicz, Google</footer>
+      </blockquote>
+
+      <blockquote class="border-t border-line py-7">
+        <div class="flex gap-0.5 text-accent" aria-label="Ocena 5 na 5">
+          <svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg>
+        </div>
+        <p class="mt-4 text-lg leading-relaxed">„Niezwykle sympatyczna i profesjonalna psia fryzjerka. Ma świetne podejście do zwierząt, może dlatego, że sama ma i lubi psy.”</p>
+        <footer class="mt-3 text-sm font-semibold text-inkmuted">Dorota Wesołowska, Google</footer>
+      </blockquote>
+
+      <blockquote class="border-t border-line py-7">
+        <div class="flex gap-0.5 text-accent" aria-label="Ocena 5 na 5">
+          <svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg>
+        </div>
+        <p class="mt-4 text-lg leading-relaxed">„Przesympatyczna Pani, bardzo profesjonalna, cierpliwa i wyrozumiała dla mojego staruszka, na pewno będziemy wracać.”</p>
+        <footer class="mt-3 text-sm font-semibold text-inkmuted">Izabela Mazerant, Google</footer>
+      </blockquote>
+
+      <blockquote class="border-t border-line py-7">
+        <div class="flex gap-0.5 text-accent" aria-label="Ocena 5 na 5">
+          <svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg>
+        </div>
+        <p class="mt-4 text-lg leading-relaxed">„Najlepsza psia fryzjerka. Mój piesek wychodzi zawsze pięknie ostrzyżony. Polecam.”</p>
+        <footer class="mt-3 text-sm font-semibold text-inkmuted">Kamila Pawelczyk, Google</footer>
+      </blockquote>
+
+      <blockquote class="border-t border-line py-7">
+        <div class="flex gap-0.5 text-accent" aria-label="Ocena 5 na 5">
+          <svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg><svg class="h-4 w-4 fill-current" aria-hidden="true"><use href="#i-star"/></svg>
+        </div>
+        <p class="mt-4 text-lg leading-relaxed">„[…] na wielki plus fakt, że można być obecnym przy strzyżeniu psiaka, z czym w innych salonach w Piotrkowie się nie spotkałam.”</p>
+        <footer class="mt-3 text-sm font-semibold text-inkmuted">Aleksandra, Google</footer>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KONTAKT ============ -->
+<section id="kontakt" class="scroll-mt-20 border-t border-line bg-surface">
+  <div class="mx-auto max-w-content px-5 py-16 md:py-24">
+    <h2 class="display h-section">Umów wizytę</h2>
+    <p class="mt-4 max-w-[58ch] text-lg leading-relaxed text-inkmuted">
+      Najprościej zadzwonić i umówić termin.
+    </p>
+
+    <div class="mt-10 grid gap-10 md:grid-cols-2 md:gap-14">
+
+      <div>
+        <a href="tel:+48781214342"
+           class="inline-flex min-h-[56px] items-center gap-3 rounded-full bg-accent px-8 py-4 text-lg font-bold text-white transition hover:brightness-110 motion-reduce:transition-none">
+          <svg class="h-5 w-5" aria-hidden="true"><use href="#i-phone"/></svg>
+          781 214 342
+        </a>
+
+        <dl class="mt-9 divide-y divide-line border-y border-line">
+          <div class="py-4">
+            <dt class="text-sm font-semibold text-inkmuted">Adres</dt>
+            <dd class="mt-1 font-bold">ul. Wyzwolenia 46<br>97-300 Piotrków Trybunalski</dd>
+          </div>
+          <div class="py-4">
+            <dt class="text-sm font-semibold text-inkmuted">Telefon</dt>
+            <dd class="mt-1 font-bold"><a href="tel:+48781214342" class="underline decoration-accent decoration-2 underline-offset-4 hover:text-accent">781 214 342</a></dd>
+          </div>
+          <!-- TODO: godziny otwarcia do uzupełnienia. Podmień blok poniżej na listę dni z godzinami. -->
+          <div class="py-4">
+            <dt class="text-sm font-semibold text-inkmuted">Godziny otwarcia</dt>
+            <dd class="mt-1 font-bold text-accent">[TODO: godziny otwarcia]</dd>
+            <dd class="mt-1 text-sm font-semibold text-inkmuted">Do czasu uzupełnienia: zadzwoń, ustalimy termin.</dd>
+          </div>
+        </dl>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="https://www.facebook.com/people/Psia-%C5%81apka/100036289681084/?locale=pl_PL" target="_blank" rel="noopener"
+             aria-label="Psia Łapka na Facebooku"
+             class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-line text-inkmuted transition hover:border-ink hover:text-ink motion-reduce:transition-none">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5" aria-hidden="true">
+              <path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.6c-.3-.04-1.28-.13-2.42-.13-2.4 0-4.05 1.47-4.05 4.16V9.9H7.5V13h2.73v8z"/>
+            </svg>
+          </a>
+          <a href="https://www.instagram.com/lapkapsia_fryzjer/" target="_blank" rel="noopener"
+             aria-label="Psia Łapka na Instagramie"
+             class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-line text-inkmuted transition hover:border-ink hover:text-ink motion-reduce:transition-none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" class="h-5 w-5" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <!-- Mapa wczytuje się dopiero po kliknięciu (RODO: bez kliknięcia żadne dane nie idą do Google).
+             Tak samo opisane w privacy.html. -->
+        <div class="map-frame relative overflow-hidden rounded-3xl border border-line bg-bg" style="height: 330px;">
+          <div id="mapa-zgoda" class="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-8 w-8 text-accent" aria-hidden="true">
+              <path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/>
+            </svg>
+            <p class="max-w-[34ch] text-sm leading-relaxed text-inkmuted">
+              Mapa Google wczyta się po kliknięciu. Wtedy Google pozna twój adres IP.
+            </p>
+            <button type="button" id="mapa-btn"
+                    class="inline-flex min-h-[48px] items-center rounded-full bg-accent px-6 py-3 text-sm font-bold text-white transition hover:brightness-110 motion-reduce:transition-none">
+              Pokaż mapę
+            </button>
+          </div>
+        </div>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Wyzwolenia+46,+97-300+Piotrk%C3%B3w+Trybunalski"
+           target="_blank" rel="noopener"
+           class="mt-4 inline-flex min-h-[48px] items-center rounded-full border border-line px-6 py-3 text-sm font-bold text-inkmuted transition hover:border-ink hover:text-ink motion-reduce:transition-none">
+          Wyznacz trasę
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ STOPKA ============ -->
+<footer class="bg-deep text-deepink">
+  <div class="mx-auto max-w-content px-5 py-12">
+    <div class="flex flex-wrap items-start justify-between gap-8">
+      <div>
+        <p class="flex items-center gap-2.5 text-lg font-extrabold">
+          <svg class="h-6 w-6 fill-accenton" aria-hidden="true"><use href="#i-paw"/></svg>
+          Psia Łapka
+        </p>
+        <p class="mt-3 text-sm leading-relaxed text-deepmuted">
+          Psi fryzjer w Piotrkowie Trybunalskim.<br>
+          ul. Wyzwolenia 46, 97-300 Piotrków Trybunalski
+        </p>
+        <p class="mt-3 text-sm font-bold">
+          <a href="tel:+48781214342" class="underline decoration-accenton decoration-2 underline-offset-4">781 214 342</a>
+        </p>
+      </div>
+
+      <div class="flex flex-col text-sm font-semibold text-deepmuted">
+        <a href="https://www.facebook.com/people/Psia-%C5%81apka/100036289681084/?locale=pl_PL" target="_blank" rel="noopener" class="py-2 transition hover:text-white motion-reduce:transition-none">Facebook</a>
+        <a href="https://www.instagram.com/lapkapsia_fryzjer/" target="_blank" rel="noopener" class="py-2 transition hover:text-white motion-reduce:transition-none">Instagram</a>
+        <a href="privacy.html" class="py-2 transition hover:text-white motion-reduce:transition-none">Polityka prywatności</a>
+      </div>
+    </div>
+
+    <p class="mt-10 border-t border-white/10 pt-6 text-xs text-deepfaint">© 2026 Psia Łapka</p>
+  </div>
+</footer>
+
+<script>
+  // Mapa na klik. Zero danych do Google, dopoki uzytkownik sam nie poprosi.
+  document.getElementById('mapa-btn').addEventListener('click', function () {
+    var box = document.getElementById('mapa-zgoda');
+    var f = document.createElement('iframe');
+    f.title = 'Mapa dojazdu do salonu Psia Łapka, ul. Wyzwolenia 46, Piotrków Trybunalski';
+    f.src = 'https://www.google.com/maps?q=Wyzwolenia%2046,%2097-300%20Piotrk%C3%B3w%20Trybunalski&z=16&output=embed';
+    f.width = '100%';
+    f.height = '330';
+    f.style.border = '0';
+    f.style.display = 'block';
+    f.referrerPolicy = 'no-referrer-when-downgrade';
+    box.replaceWith(f);
+  });
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "additionalType": "https://www.wikidata.org/wiki/Q56276561",
+  "name": "Psia Łapka",
+  "description": "Psi fryzjer w Piotrkowie Trybunalskim. Mycie i suszenie, strzyżenie dopasowane do rasy, rozczesywanie kołtunów, obcinanie pazurów, czyszczenie uszu, pielęgnacja oczu.",
+  "url": "https://psialapka.pl/",
+  "image": "https://psialapka.pl/og-image.jpg",
+  "telephone": "+48781214342",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "ul. Wyzwolenia 46",
+    "postalCode": "97-300",
+    "addressLocality": "Piotrków Trybunalski",
+    "addressCountry": "PL"
+  },
+  "sameAs": [
+    "https://www.facebook.com/people/Psia-%C5%81apka/100036289681084/",
+    "https://www.instagram.com/lapkapsia_fryzjer/"
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "reviewCount": "23"
+  }
+}
+</script>
+<!-- TODO: po uzupełnieniu godzin otwarcia dodaj do JSON-LD pole "openingHoursSpecification". -->
+
+</body>
+</html>
