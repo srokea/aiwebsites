@@ -651,7 +651,7 @@ table.leads th {
   letter-spacing: 0.5px;
   color: var(--muted);
   background: var(--bg);
-  padding: 10px 14px;
+  padding: 10px 10px;
   border-bottom: 1px solid var(--border);
   white-space: nowrap;
   position: sticky;
@@ -664,7 +664,7 @@ table.leads th.sortable::after { content: ""; margin-left: 5px; opacity: 0.4; }
 table.leads th.sortable.sort-asc::after { content: "▲"; opacity: 1; color: var(--blue); }
 table.leads th.sortable.sort-desc::after { content: "▼"; opacity: 1; color: var(--blue); }
 table.leads td {
-  padding: 10px 14px;
+  padding: 10px 10px;
   border-bottom: 1px solid var(--border-soft);
   vertical-align: middle;
   white-space: nowrap;
@@ -830,6 +830,7 @@ table.leads input.quality-input { min-width: 44px; width: 44px; text-align: cent
   flex-shrink: 0;
   transition: transform .15s;
 }
+.platform-badge svg { width: 11px; height: 11px; }
 .tags-trigger:hover .platform-badge { transform: scale(1.12); }
 .tags-trigger .plus {
   font-size: 11px;
@@ -913,10 +914,13 @@ table.leads input.quality-input { min-width: 44px; width: 44px; text-align: cent
   font-size: 13px;
   vertical-align: middle;
   margin-right: 6px;
-  opacity: 0.75;
-  transition: opacity .15s, transform .1s;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--card-alt);
+  opacity: 0.85;
+  transition: opacity .15s, transform .1s, border-color .15s;
 }
-.phone-call-btn:hover { opacity: 1; transform: scale(1.12); }
+.phone-call-btn:hover { opacity: 1; transform: scale(1.12); border-color: #3a3a3a; }
 
 /* ---------- chwilowe podswietlenie wiersza (wejscie z listy Meety/Oddzwonienia) ---------- */
 @keyframes rowFlash {
@@ -1123,7 +1127,7 @@ table.leads tr.row-flash td { animation: rowFlash 2.4s ease-out; }
 }
 .modal h3 { font-size: 17px; margin-bottom: 18px; }
 .modal label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; margin-top: 14px; }
-.modal input[type=text], .modal input[type=file], .modal select {
+.modal input[type=text], .modal input[type=password], .modal input[type=file], .modal select {
   width: 100%;
   background: #101010;
   border: 1px solid #2a2a2a;
@@ -1294,6 +1298,7 @@ em { color: var(--blue); font-style: normal; }
   flex-wrap: wrap;
 }
 .lead-context b { color: var(--text); }
+.lead-context-name:hover b { color: var(--blue); }
 .lead-call-btn {
   display: inline-flex;
   align-items: center;
@@ -1311,4 +1316,389 @@ em { color: var(--blue); font-style: normal; }
 
 @media (max-width: 640px) {
   table.leads { min-width: 900px; }
+}
+
+/* ---------- logowanie ---------- */
+.login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  padding: 24px;
+  position: relative;
+  z-index: 2;
+}
+.login-header { text-align: center; }
+.login-logo { font-size: 40px; margin-bottom: 8px; }
+.login-header h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.4px; }
+.login-sub { color: var(--muted); font-size: 14px; margin-top: 6px; }
+
+@media (max-width: 760px) {
+  .login-wrap { flex-direction: column; gap: 28px; }
+}
+.login-card {
+  background: linear-gradient(165deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02) 45%, rgba(255,255,255,0.05));
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 24px;
+  padding: 30px 26px;
+  width: 420px;
+  max-width: 100%;
+  text-align: center;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 1px 2px rgba(0,0,0,0.3), 0 24px 64px rgba(0,0,0,0.55);
+}
+.login-card label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; margin-top: 14px; text-align: left; }
+.login-card input {
+  width: 100%;
+  background: #101010;
+  border: 1px solid #2a2a2a;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13.5px;
+  font-family: inherit;
+}
+.login-card input:focus { outline: none; border-color: var(--blue); background: #131a24; }
+
+/* ---------- kafelki wyboru konta (jak macOS/Windows) ---------- */
+.login-tiles { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.login-tiles.hidden { display: none; }
+.login-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 108px;
+  padding: 10px 4px;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  background: none;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, transform .15s;
+  font-family: inherit;
+}
+.login-tile:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); transform: translateY(-2px); }
+.login-tile .user-avatar { width: 100px !important; height: 100px !important; font-size: 42px !important; }
+.login-tile-name { font-size: 13.5px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.login-tile-add .login-tile-plus {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 1px dashed #3a3a3a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  color: var(--muted-soft);
+}
+.login-tile-add:hover .login-tile-plus { border-color: var(--blue); color: var(--blue); }
+.login-tile-add .login-tile-name { color: var(--muted); }
+
+/* ---------- krok 2: haslo (po wybraniu kafelka albo "+") ---------- */
+.login-password-step.hidden { display: none; }
+.login-password-step { position: relative; }
+.login-back {
+  position: absolute;
+  top: -44px;
+  left: -2px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color .15s, color .15s, background .15s, transform .15s;
+}
+.login-back svg { width: 16px; height: 16px; }
+.login-back:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.22); color: var(--text); transform: translateX(-2px); }
+.login-selected { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 6px; }
+.login-selected.hidden { display: none; }
+.login-selected .user-avatar { width: 56px !important; height: 56px !important; font-size: 24px !important; }
+.login-selected-name { font-size: 15px; font-weight: 700; color: var(--text); }
+#login-manual-username-wrap.hidden { display: none; }
+.login-card .error { color: var(--red); font-size: 12px; margin-top: 12px; text-align: left; }
+.login-submit { width: 100%; margin-top: 20px; padding: 11px; }
+
+.hidden { display: none; }
+
+/* ---------- widget "zalogowany jako" (topbar wszystkich 3 stron) ---------- */
+#user-widget { display: flex; align-items: center; gap: 8px; }
+.user-widget-btn {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 4px 8px 4px 4px;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  font-family: inherit;
+}
+.user-widget-btn:hover { border-color: var(--border); background: var(--card-alt); }
+.user-widget-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.user-widget-logout {
+  color: var(--red);
+  border-color: rgba(224,96,80,0.4);
+  background: rgba(224,96,80,0.1);
+}
+.user-widget-logout svg { width: 16px; height: 16px; }
+.user-widget-logout:hover { border-color: rgba(224,96,80,0.7); background: rgba(224,96,80,0.2); color: #ff9184; transform: none; }
+
+.user-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid;
+  font-weight: 700;
+  flex-shrink: 0;
+  line-height: 1;
+  object-fit: cover;
+}
+
+.modal-divider { height: 1px; background: var(--border-soft); margin: 22px 0; }
+#profile-modal .modal { text-align: left; }
+#profile-modal select {
+  width: 100%;
+  background: #101010;
+  border: 1px solid #2a2a2a;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ---------- edytor avatara (emoji albo wgrane zdjecie) w modalu profilu ---------- */
+.avatar-editor { display: flex; gap: 16px; align-items: flex-start; margin-top: 2px; }
+.avatar-preview {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.avatar-preview .user-avatar { width: 64px !important; height: 64px !important; font-size: 28px !important; }
+.avatar-editor-controls { flex: 1; min-width: 0; }
+.avatar-mode-toggle {
+  display: inline-flex;
+  background: #101010;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 3px;
+  margin-bottom: 10px;
+}
+.avatar-mode-btn {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .15s, color .15s;
+}
+.avatar-mode-btn.active { background: var(--card-alt); color: var(--text); }
+.avatar-photo-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.avatar-photo-actions .btn { padding: 8px 14px; font-size: 12.5px; }
+
+/* ---------- "na czym teraz jestem" - trwaly wskaznik ostatnio klikanego wiersza (Twoj kolor) ---------- */
+table.leads tr.row-active td { background: color-mix(in srgb, var(--user-color, var(--blue)) 8%, transparent); }
+table.leads tr.row-active td.idx-col { box-shadow: inset 3px 0 0 0 var(--user-color, var(--blue)); }
+table.leads tr.row-active:hover td { background: color-mix(in srgb, var(--user-color, var(--blue)) 14%, transparent); }
+
+/* ---------- "kto tu jest" - dymek obecnosci nad nazwa firmy + # w kolorze tej osoby (niche.js) ---------- */
+table.leads td.company-cell { position: relative; overflow: visible; }
+.presence-badge {
+  position: absolute;
+  top: -9px;
+  left: 12px;
+  padding: 1px 7px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+  border: 1px solid;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.45);
+  pointer-events: none;
+  z-index: 1;
+}
+table.leads td.idx-col.idx-presence .idx-num { font-weight: 800; text-shadow: 0 0 8px currentColor; }
+
+/* ---------- "kto jest w appce" - box obok tytulu na dashboardzie (index.js) ---------- */
+.topbar-title-row { display: flex; align-items: center; gap: 20px; }
+.team-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 14px 7px 8px;
+  border-radius: 24px;
+  background: var(--card-alt);
+  border: 1px solid var(--border);
+}
+.team-status-avatars { display: inline-flex; gap: 6px; }
+.team-status-avatars .team-avatar { display: inline-flex; }
+.team-avatar .user-avatar { box-shadow: 0 0 0 2px var(--card-alt); transition: filter .2s, opacity .2s; }
+.team-avatar.offline .user-avatar { filter: grayscale(1) brightness(0.6); opacity: 0.55; }
+.team-avatar.online .user-avatar { box-shadow: 0 0 0 2px var(--card-alt), 0 0 9px rgba(92,184,92,0.55); }
+.team-status-count { font-size: 14px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 560px) {
+  .topbar-title-row { flex-wrap: wrap; row-gap: 10px; }
+}
+
+/* ---------- ikony obecnosci na dashboardzie (index.js) - kto jest w danej niszy /
+   czyj to lead na liscie najblizszych meetow i oddzwonien ---------- */
+.niche-presence-icons { display: inline-flex; align-items: center; gap: 4px; margin-right: 8px; }
+.niche-presence-icons .user-avatar { box-shadow: 0 0 0 2px var(--card); }
+.upcoming-caller-icon { flex-shrink: 0; }
+
+/* ---------- panel boczny na scheme rozmowy (script.js) - "glass" karta, przypieta do
+   prawej krawedzi, zawsze na wysokosci srodka ekranu (nie przesuwa sie przy scrollu) ---------- */
+.lead-panel {
+  position: fixed;
+  top: 50%;
+  left: calc(50% + 404px); /* prawa krawedz .wrap.narrow (380px polowa 760px) + odstep 24px */
+  right: 48px;
+  max-width: 340px;
+  margin-left: auto;
+  transform: translateY(-50%);
+  max-height: 82vh;
+  overflow-y: auto;
+  padding: 20px;
+  border-radius: 22px;
+  background: linear-gradient(165deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02) 45%, rgba(255,255,255,0.04));
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 1px 2px rgba(0,0,0,0.3), 0 24px 64px rgba(0,0,0,0.55);
+  z-index: 10;
+}
+.lead-panel:empty { display: none; }
+.lead-panel-timer-row { display: flex; align-items: center; justify-content: center; gap: 8px; padding-bottom: 14px; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.panel-timer-reset {
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: var(--muted);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .15s, color .15s, transform .2s;
+}
+.panel-timer-reset:hover { background: rgba(255,255,255,0.12); color: var(--text); transform: rotate(-70deg); }
+.lead-panel-timer {
+  font-size: 20px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 1px;
+  color: var(--blue);
+  transition: color .3s;
+}
+.lead-panel-timer.frozen { color: var(--gold); }
+.lead-panel-field { margin-bottom: 16px; }
+.lead-panel-field:last-child { margin-bottom: 0; }
+.lead-panel-field-row { display: flex; gap: 12px; }
+.lead-panel-field-row .lead-panel-field { flex: 1; min-width: 0; }
+.lead-panel-field label {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--muted-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 6px;
+}
+.lead-panel-field input[type=date], .lead-panel-field input[type=datetime-local] {
+  width: 100%;
+  background: #101010;
+  border: 1px solid #2a2a2a;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 12.5px;
+  font-family: inherit;
+  color-scheme: dark;
+}
+.lead-panel-field input[type=date]:focus, .lead-panel-field input[type=datetime-local]:focus { outline: none; border-color: var(--blue); }
+.lead-panel-notes { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; max-height: 130px; overflow-y: auto; }
+.panel-note { position: relative; background: rgba(255,255,255,0.04); border-radius: 8px; padding: 8px 26px 8px 10px; }
+.panel-note-content { font-size: 12px; color: var(--text); white-space: pre-wrap; word-break: break-word; }
+.panel-note-date { font-size: 10px; color: var(--muted-soft); margin-top: 4px; }
+.panel-note-empty { font-size: 12px; color: var(--muted-soft); font-style: italic; }
+.panel-note-edit-btn, .panel-note-delete-btn {
+  position: absolute;
+  top: 6px;
+  border: none;
+  background: none;
+  color: var(--muted-soft);
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 3px;
+  opacity: 0;
+  transition: opacity .12s, color .12s;
+}
+.panel-note-delete-btn { right: 4px; }
+.panel-note-edit-btn { right: 20px; }
+.panel-note:hover .panel-note-edit-btn, .panel-note:hover .panel-note-delete-btn { opacity: 1; }
+.panel-note-delete-btn:hover { color: var(--red); }
+.panel-note-edit-btn:hover { color: var(--blue); }
+.panel-note-editing { padding-right: 10px; }
+.panel-note-edit-input {
+  width: 100%;
+  min-height: 60px;
+  resize: vertical;
+  background: #101010;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font: inherit;
+  font-size: 12px;
+  color: var(--text);
+}
+.panel-note-edit-input:focus { outline: none; border-color: var(--blue); }
+.panel-note-edit-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px; }
+.panel-note-edit-actions button { border: none; border-radius: 5px; padding: 4px 10px; font-size: 11px; cursor: pointer; font-family: inherit; }
+.panel-note-edit-save { background: var(--green); color: #0f1f0f; font-weight: 600; }
+.panel-note-edit-cancel { background: none; color: var(--muted); text-decoration: underline; }
+#panel-note-input {
+  width: 100%;
+  background: #101010;
+  border: 1px solid #2a2a2a;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 12.5px;
+  font-family: inherit;
+  resize: vertical;
+}
+#panel-note-input:focus { outline: none; border-color: var(--blue); background: #131a24; }
+
+/* na waskich ekranach nie ma miejsca obok tresci scheme - panel wraca do normalnego przeplywu */
+@media (max-width: 1320px) {
+  .lead-panel {
+    position: static;
+    top: auto;
+    left: auto;
+    right: auto;
+    transform: none;
+    width: 100%;
+    max-height: none;
+    margin-bottom: 24px;
+  }
 }

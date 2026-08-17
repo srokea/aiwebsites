@@ -14,13 +14,17 @@ let highlightStatuses = new Set();
 let todoFilter = false;
 
 // Dokladnie ta sama regula co licznik "todo" na serwerze (eligible - called, patrz
-// STATS_ELIGIBLE_SQL w leadStatus.js): bez wlasnej strony i jeszcze nie zadzwoniony.
-const isTodoLead = (l) => l.has_social !== "Tak" && !l.called_at;
+// STATS_ELIGIBLE_SQL w leadStatus.js): bez wlasnej strony, nie "0" (tragiczny lead) i jeszcze
+// nie zadzwoniony.
+const isTodoLead = (l) => l.has_social !== "Tak" && l.quality !== "0" && !l.called_at;
 
 // Kolejnosc sortowania dla "Odebral?" - od pustego, przez Nie, po Tak.
 const ANSWERED_SORT_ORDER = ["", "Nie", "Tak"];
 // Zmiana tych pol moze przestawic licznik "zadzwonionych" w naglowku (patrz server/leadStatus.js)
 const COUNTER_FIELDS = new Set(["caller", "answered", "interested"]);
+// Zmiana tych pol (osobno od COUNTER_FIELDS) moze przestawic "eligible"/"do zrobienia" -
+// wplywaja na STATS_ELIGIBLE_SQL, ale nie licza sie jako "dzwonienie" (bez rememberLastLead)
+const ELIGIBILITY_FIELDS = new Set(["has_social", "quality"]);
 
 const callerColor = (name) => meta.callerColors[name] || "#888";
 const callerOptions = () => meta.callers.map((c) => ({ value: c, label: c, color: callerColor(c) }));
@@ -56,8 +60,15 @@ async function init() {
     restoreViewState(); // zanim narysujemy pasek filtrow i tabele - patrz nizej
     renderFilterBar();
     document.getElementById("export-csv-btn").href = `/api/niches/${encodeURIComponent(slug)}/export.csv`;
+    const savedActive = recallLastLead();
+    activeRowId = savedActive ? Number(savedActive) : null;
     await loadNicheHeader();
     await loadLeads();
+    startPresencePolling();
+    // zglaszamy obecnosc od razu: albo na konkretnym leadzie (jesli activeRowId przetrwal
+    // odswiezenie - inaczej dymek u innych zniknalby na chwile), albo lead_id=0 = "jestem
+    // w tej niszy" (dashboard: GET /api/presence/summary), zeby bylo widac to bez klikania
+    pingPresence(activeRowId || 0);
 
     const focusId = params.get("lead");
     if (focusId) focusLeadRow(focusId);
@@ -332,8 +343,8 @@ function getVisibleLeads() {
 // Jesli nie - wystarczy odswiezyc sam wiersz zamiast przebudowywac cala tabele.
 function affectsOrdering(fields) {
   // przy aktywnym filtrze "Do zrobienia" zmiana pol wplywajacych na status zrobienia
-  // (COUNTER_FIELDS) albo na eligibility (Strona) moze usunac wiersz z listy
-  if (todoFilter && fields.some((f) => COUNTER_FIELDS.has(f) || f === "has_social")) return true;
+  // (COUNTER_FIELDS) albo na eligibility (ELIGIBILITY_FIELDS) moze usunac wiersz z listy
+  if (todoFilter && fields.some((f) => COUNTER_FIELDS.has(f) || ELIGIBILITY_FIELDS.has(f))) return true;
   return fields.some((field) => {
     const sortKey = field.startsWith("tag_") ? "tags_count" : field;
     return sortKey === sortState.field || (field in filters && filters[field].length > 0);
@@ -446,69 +457,129 @@ function renderLeads() {
     return;
   }
   tbody.innerHTML = visible.map((lead, i) => rowHtml(lead, i + 1)).join("");
+  renderPresenceBadges();
+  applyActiveRowClass();
 }
 
 function renderSingleRow(lead) {
   const tr = document.querySelector(`tr[data-id="${lead.id}"]`);
   if (!tr) return renderLeads();
   tr.outerHTML = rowHtml(lead, tr.querySelector(".idx-col")?.textContent || "");
+  renderPresenceBadges();
+  applyActiveRowClass();
 }
 
-// Uniwersalny dropdown. `attr` trafia na kontener (data-field dla wiersza / data-filter dla paska).
-function cselHtml({ attr, options, currentValue, emptyOption = null, currentOverride = null }) {
-  const full = emptyOption ? [emptyOption, ...options] : options;
-  const current = currentOverride || full.find((o) => o.value === currentValue) || full[0];
-  const optsHtml = full
-    .map(
-      (o) => `
-      <div class="csel-option ${o.value === currentValue ? "active" : ""}" data-value="${escapeHtml(o.value)}">
-        <span class="dot" style="background:${o.color}"></span>${escapeHtml(o.label)}
-      </div>`
-    )
-    .join("");
-  return `
-    <div class="csel" ${attr}>
-      <div class="csel-trigger" style="color:${current.color}">
-        <span class="dot" style="background:${current.color}"></span>${escapeHtml(current.label)}
-      </div>
-      <div class="csel-menu">${optsHtml}</div>
-    </div>
-  `;
+// ---------- "na czym teraz jestem" - trwaly wskaznik ostatnio klikanego wiersza ----------
+// Wlasny, prywatny stan (nie ma nic wspolnego z dymkiem "kto tu jest" dla innych) -
+// przezywa odswiezenie strony (ten sam mechanizm co LAST_LEAD_KEY/recallLastLead nizej),
+// zeby po powrocie do niszy od razu bylo widac, ktory lead byl ostatnio kliknietym.
+let activeRowId = null;
+
+function setActiveRow(id) {
+  activeRowId = id;
+  rememberLastLead(id);
+  applyActiveRowClass();
 }
 
-const fieldCsel = (field, options, currentValue, emptyLabel) =>
-  cselHtml({
-    attr: `data-field="${field}"`,
-    options,
-    currentValue,
-    emptyOption: emptyLabel ? { value: "", label: emptyLabel, color: "#666" } : null,
+function applyActiveRowClass() {
+  document.querySelectorAll("tr[data-id]").forEach((tr) => {
+    tr.classList.toggle("row-active", Number(tr.dataset.id) === activeRowId);
   });
-
-function tagsTriggerContent(lead) {
-  const active = meta.platformTags.filter((t) => lead[`tag_${t}`]);
-  if (!active.length) return `<span class="plus">+</span>`;
-  return active
-    .map((t) => {
-      const m = meta.platformMeta[t];
-      return `<span class="platform-badge" style="background:${m.color}" title="${m.name}">${m.label}</span>`;
-    })
-    .join("");
 }
 
-function tagsMenuContent(lead) {
-  return meta.platformTags
-    .map((t) => {
-      const m = meta.platformMeta[t];
-      return `
-      <label class="tags-option">
-        <input type="checkbox" data-tag-field="tag_${t}" ${lead[`tag_${t}`] ? "checked" : ""}>
-        <span class="check">✓</span>
-        <span class="platform-badge" style="background:${m.color}">${m.label}</span>
-        ${m.name}
-      </label>`;
-    })
-    .join("");
+// ---------- "kto tu jest" - kolizja dwoch osob na tym samym leadzie ----------
+// Klik gdziekolwiek w wierszu = "ja teraz na to patrze" (zapis, throttlowany per lead).
+// Co 4s odpytujemy, kto INNY jest aktywny na leadach tej niszy, i pokazujemy dymek
+// nad nazwa firmy (patrz .presence-badge w style.css) - ambientowo, bez klikania.
+let presenceMap = new Map(); // lead_id -> { display_name, color }
+let lastPresencePing = { leadId: null, time: 0 };
+let presencePollTimer = null;
+
+async function pingPresence(leadId) {
+  if (!currentNiche) return;
+  const now = Date.now();
+  if (lastPresencePing.leadId === leadId && now - lastPresencePing.time < 3000) return;
+  lastPresencePing = { leadId, time: now };
+  try {
+    await api.post("/api/presence", { lead_id: leadId, niche_id: currentNiche.id });
+  } catch {
+    // best-effort - brak zapisu obecnosci nie powinien przerywac pracy z leadem
+  }
 }
+
+function renderPresenceBadges() {
+  document.querySelectorAll("tr[data-id]").forEach((tr) => {
+    const leadId = Number(tr.dataset.id);
+    const badge = tr.querySelector(".presence-badge");
+    const idxCol = tr.querySelector(".idx-col");
+    const info = presenceMap.get(leadId);
+
+    if (!info) {
+      if (badge) badge.style.display = "none";
+      if (idxCol) {
+        idxCol.classList.remove("idx-presence");
+        idxCol.style.color = "";
+      }
+      return;
+    }
+
+    const color = info.color || "#888";
+    if (badge) {
+      badge.textContent = info.display_name;
+      badge.style.color = color;
+      badge.style.background = `${color}22`;
+      badge.style.borderColor = `${color}66`;
+      badge.style.display = "";
+    }
+    // # kolumna tez podswietlona w kolorze TEJ osoby - odrozniona od .row-active (Twoj wlasny
+    // ostatnio kliknietey wiersz, kolorowany na Twoj kolor), zeby dwa sygnaly sie nie mylily
+    if (idxCol) {
+      idxCol.classList.add("idx-presence");
+      idxCol.style.color = color;
+    }
+  });
+}
+
+async function pollPresence() {
+  if (!currentNiche || document.visibilityState !== "visible") return;
+  try {
+    const rows = await api.get(`/api/presence?niche_id=${currentNiche.id}`);
+    presenceMap = new Map(rows.map((r) => [r.lead_id, r]));
+    renderPresenceBadges();
+  } catch {
+    // pojedynczy nieudany poll pomijamy - kolejny za 4s
+  }
+}
+
+function startPresencePolling() {
+  if (presencePollTimer) return;
+  presencePollTimer = setInterval(pollPresence, 4000);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") pollPresence();
+  });
+  pollPresence();
+}
+
+// zamkniecie karty / nawigacja gdzies indziej / odswiezenie = "wychodze z tego leada" -
+// sendBeacon (nie fetch) dziala niezawodnie w trakcie zamykania strony. Przy zwyklym
+// odswiezeniu ponowne wejscie od razu zglasza obecnosc z powrotem (patrz init() wyzej),
+// wiec u innych dymek co najwyzej mignie, a nie zniknie na dobre.
+window.addEventListener("pagehide", () => {
+  navigator.sendBeacon("/api/presence/leave");
+});
+
+document.getElementById("leads-tbody").addEventListener("click", (e) => {
+  const tr = e.target.closest("tr[data-id]");
+  if (!tr) return;
+  const id = Number(tr.dataset.id);
+  pingPresence(id);
+  setActiveRow(id);
+});
+
+// cselHtml/fieldCsel/closeAllPopovers/tagsTriggerContent/tagsMenuContent - wspolne z
+// script.js, patrz public/js/api.js
+const platformTriggerContent = (lead) => tagsTriggerContent(lead, meta);
+const platformMenuContent = (lead) => tagsMenuContent(lead, meta);
 
 function answeredHtml(lead) {
   return `
@@ -530,10 +601,6 @@ function notesCellHtml(lead) {
   return `<button type="button" class="note-cell" title="Notatki (${notes.length})">${inner}</button>`;
 }
 
-function companyGoogleSearchHref(lead) {
-  return `https://www.google.com/search?q=${encodeURIComponent(`${lead.company_name} ${lead.city}`.trim())}`;
-}
-
 function rowHtml(lead, index) {
   const reminder = reminderInfo(lead);
   const highlightClass = highlightStatuses.has(lead.interested) ? `row-glow-${lead.interested}` : "";
@@ -541,19 +608,22 @@ function rowHtml(lead, index) {
 
   return `
     <tr data-id="${lead.id}" class="${highlightClass}" ${titleAttr}>
-      <td class="idx-col">${index}</td>
-      <td><a class="company-link" href="${escapeHtml(companyGoogleSearchHref(lead))}" target="_blank" rel="noopener" title="${escapeHtml(lead.company_name)} — szukaj w Google">${escapeHtml(lead.company_name)}</a></td>
+      <td class="idx-col"><span class="idx-num">${index}</span></td>
+      <td class="company-cell">
+        <span class="presence-badge" style="display:none;"></span>
+        <a class="company-link" href="${escapeHtml(companyGoogleSearchHref(lead))}" target="_blank" rel="noopener" title="${escapeHtml(lead.company_name)} — szukaj w Google">${escapeHtml(lead.company_name)}</a>
+      </td>
       <td>${fieldCsel("has_social", meta.websiteStatusOptions, lead.has_social, "—")}</td>
       <td class="city-cell">${escapeHtml(lead.city)}</td>
       <td class="phone-cell">
         <a class="phone-call-btn" href="/script.html?leadId=${lead.id}" title="Scheme rozmowy">📖</a>
         <span class="phone-text">${escapeHtml(formatPhone(lead.phone))}</span>
       </td>
-      <td><input type="text" class="quality-input" data-field="quality" value="${escapeHtml(lead.quality)}"></td>
+      <td>${fieldCsel("quality", meta.qualityOptions, lead.quality, "—")}</td>
       <td>
         <div class="tags-popover">
-          <div class="tags-trigger">${tagsTriggerContent(lead)}</div>
-          <div class="tags-menu">${tagsMenuContent(lead)}</div>
+          <div class="tags-trigger">${platformTriggerContent(lead)}</div>
+          <div class="tags-menu">${platformMenuContent(lead)}</div>
         </div>
       </td>
       <td>${answeredHtml(lead)}</td>
@@ -567,10 +637,6 @@ function rowHtml(lead, index) {
   `;
 }
 
-function closeAllPopovers() {
-  document.querySelectorAll(".csel.open, .tags-popover.open").forEach((el) => el.classList.remove("open"));
-}
-
 // `keepPopoverOpen` - przy tagach chcemy odswiezyc tylko podglad, zeby menu nie znikalo pod palcem
 async function saveLead(id, body, { keepPopoverOpen = false } = {}) {
   try {
@@ -582,7 +648,7 @@ async function saveLead(id, body, { keepPopoverOpen = false } = {}) {
     if (keepPopoverOpen) {
       const tr = document.querySelector(`tr[data-id="${id}"]`);
       if (tr) {
-        tr.querySelector(".tags-trigger").innerHTML = tagsTriggerContent(updated);
+        tr.querySelector(".tags-trigger").innerHTML = platformTriggerContent(updated);
         const strona = tr.querySelector('.csel[data-field="has_social"]');
         if (strona && "has_social" in body) {
           strona.outerHTML = fieldCsel("has_social", meta.websiteStatusOptions, updated.has_social, "—");
@@ -594,8 +660,13 @@ async function saveLead(id, body, { keepPopoverOpen = false } = {}) {
       renderSingleRow(updated);
     }
 
-    if (fields.some((f) => COUNTER_FIELDS.has(f))) {
+    // COUNTER_FIELDS zmienia licznik "zadzwonionych", ELIGIBILITY_FIELDS zmienia "eligible"/"do
+    // zrobienia" (patrz STATS_ELIGIBLE_SQL) - oba wymagaja odswiezenia naglowka niszy, ale tylko
+    // pierwsze liczy sie jako "dzwonienie" (zapamietanie pozycji na potrzeby powrotu)
+    if (fields.some((f) => COUNTER_FIELDS.has(f) || ELIGIBILITY_FIELDS.has(f))) {
       await loadNicheHeader();
+    }
+    if (fields.some((f) => COUNTER_FIELDS.has(f))) {
       rememberLastLead(id); // Kto dzwonil / Odebral / Status - to jest "dzwonienie", zapamietaj pozycje
     }
   } catch (err) {
@@ -697,11 +768,7 @@ document.getElementById("filter-bar").addEventListener("change", (e) => {
   renderLeads();
 });
 
-document.addEventListener("click", (e) => {
-  document.querySelectorAll(".csel.open, .tags-popover.open").forEach((el) => {
-    if (!el.contains(e.target)) el.classList.remove("open");
-  });
-});
+// klik-poza-zamyka juz obsluzone globalnie w api.js
 document.addEventListener("keydown", (e) => {
   if (e.key !== "Escape") return;
   closeAllPopovers();

@@ -1,4 +1,4 @@
-const { INTERESTED_OPTIONS, CALLERS, PLATFORM_TAGS } = require("./constants");
+const { INTERESTED_OPTIONS, PLATFORM_TAGS } = require("./constants");
 const { stripDiacritics } = require("./text");
 
 function normalize(str) {
@@ -45,10 +45,10 @@ function normalizeInterested(raw) {
   return found ? found.value : null;
 }
 
-function normalizeCaller(raw) {
+function normalizeCaller(raw, callerNames) {
   const n = normalize(raw);
   if (!n) return null;
-  const found = CALLERS.find((c) => normalize(c) === n);
+  const found = callerNames.find((c) => normalize(c) === n);
   return found || null;
 }
 
@@ -93,7 +93,9 @@ function buildHeaderMap(headers) {
 }
 
 // rows: tablica obiektow z papaparse (header:true) -> pierwszy wiersz pliku traktowany jako naglowki
-function mapRowsToLeads(rows) {
+// callerNames: zywa lista kont (patrz server/callers.js) - przekazywana z zewnatrz, zeby ten
+// modul zostal czysta funkcja bez zaleznosci od bazy
+function mapRowsToLeads(rows, callerNames) {
   if (!rows.length) return [];
   const headers = Object.keys(rows[0]);
   const headerMap = buildHeaderMap(headers);
@@ -165,7 +167,7 @@ function mapRowsToLeads(rows) {
             break;
           }
           case "caller": {
-            const norm = normalizeCaller(value);
+            const norm = normalizeCaller(value, callerNames);
             if (norm) lead.caller = norm;
             else extraNotes.push(`Kto dzwonil (import): ${value}`);
             break;

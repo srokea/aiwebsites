@@ -30,11 +30,12 @@ function computeDopieteAt(nextLead, previousDopieteAt = null) {
   return previousDopieteAt || new Date().toISOString();
 }
 
-// Leady, ktore juz maja wlasna strone (Strona = "Tak"), nie wliczaja sie do zadnych
-// statystyk dzwonienia (kafelki, wykresy, paski postepu) - nie ma do kogo dzwonic z oferta,
-// wiec zawyzalyby "do zrobienia" i zanizaly postep. W tabeli leadow normalnie widoczne.
+// Leady, ktore juz maja wlasna strone (Strona = "Tak") ALBO dostaly jakosc 0 (tragiczny lead,
+// patrz QUALITY_OPTIONS w constants.js), nie wliczaja sie do zadnych statystyk dzwonienia
+// (kafelki, wykresy, paski postepu) - nie ma do kogo dzwonic z oferta / nie warto, wiec
+// zawyzalyby "do zrobienia" i zanizaly postep. W tabeli leadow normalnie widoczne.
 // Fragment SQL do wklejenia w warunki zapytan (bezpieczny - stala, nie input uzytkownika).
-const STATS_ELIGIBLE_SQL = "has_social <> 'Tak'";
+const STATS_ELIGIBLE_SQL = "has_social <> 'Tak' AND quality <> '0'";
 
 // Rozklad statusow (wykres kolowy + legenda) rzadzi sie inna regula niz liczniki dzwonienia:
 // pokazuje leady, do ktorych dzwonimy, ORAZ te z odnotowanym wynikiem - nawet jesli maja

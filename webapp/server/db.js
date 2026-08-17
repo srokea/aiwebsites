@@ -64,6 +64,44 @@ CREATE TABLE IF NOT EXISTS lead_note_edits (
 );
 
 CREATE INDEX IF NOT EXISTS idx_lead_note_edits_note ON lead_note_edits(note_id);
+
+CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL DEFAULT '',
+  role TEXT NOT NULL DEFAULT 'user',
+  display_name TEXT NOT NULL,
+  avatar TEXT NOT NULL DEFAULT '',
+  color TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS sessions (
+  token TEXT PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  expires_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id);
+
+CREATE TABLE IF NOT EXISTS api_keys (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  key_hash TEXT NOT NULL UNIQUE,
+  label TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  last_used_at TEXT
+);
+
+-- Jeden wiersz na uzytkownika (PK = user_id) - kazdy nowy klik po prostu nadpisuje
+-- poprzedni, wiec zawsze widac tylko najswiezsza aktywnosc (patrz "kto tu jest" w niche.js).
+CREATE TABLE IF NOT EXISTS presence (
+  user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  lead_id INTEGER NOT NULL,
+  niche_id INTEGER NOT NULL,
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
 `);
 
 // Proste "migracje" dla kolumn dodanych po pierwszym wydaniu - ALTER TABLE ADD COLUMN
@@ -81,6 +119,12 @@ addColumnIfMissing("lead_notes", "updated_at TEXT");
 addColumnIfMissing("niches", "color TEXT NOT NULL DEFAULT ''");
 // wybor pliku schematu rozmowy per nisza (server/scriptsData/<nazwa>.js); '' = default
 addColumnIfMissing("niches", "script_file TEXT NOT NULL DEFAULT ''");
+// 'emoji' -> users.avatar to krotki tekst/emoji, 'photo' -> users.avatar to sciezka do wgranego
+// pliku (/avatars/<plik>, patrz server/routes/users.js) - dwa rozne sposoby wyswietlenia avatara
+addColumnIfMissing("users", "avatar_kind TEXT NOT NULL DEFAULT 'emoji'");
+// "czas do decyzji" - zamrozony stoper z panelu bocznego na scheme rozmowy (patrz script.js) -
+// ile sekund minelo od otwarcia strony do pierwszej zmiany "Zainteresowany" w danej wizycie
+addColumnIfMissing("leads", "decision_seconds INTEGER");
 
 // Jednorazowy seed: stan jak dawna sztywna mapa NICHE_SCRIPTS (kosmetyczki mialy swoj plik,
 // reszta default). Idempotentne - po ustawieniu wartosci warunek '' juz nie zlapie.

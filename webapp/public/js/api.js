@@ -1,7 +1,24 @@
+// Brak wazniej sesji (wygasla, wylogowano w innej karcie) - kazde wywolanie API konczy sie
+// 401, wiec to jedno miejsce wystarczy, zeby zawsze odeslac z powrotem na ekran logowania.
+// Wyjatek: sam formularz logowania tez leci przez api.post("/api/auth/login", ...), a jego
+// 401 (zle haslo) NIE ma przekierowywac - stad sprawdzenie sciezki ponizej.
+function handleUnauthorized(url) {
+  if (url.startsWith("/api/auth/login")) return false;
+  location.href = `/login.html?next=${encodeURIComponent(location.pathname + location.search)}`;
+  return true;
+}
+
+async function apiFail(res) {
+  if (res.status === 401 && handleUnauthorized(res.url.replace(location.origin, ""))) {
+    return new Promise(() => {}); // przekierowanie w toku - nie odpalaj dalszej obslugi bledu
+  }
+  throw new Error((await res.json().catch(() => ({}))).error || `Blad ${res.status}`);
+}
+
 const api = {
   async get(url) {
     const res = await fetch(url);
-    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `Blad ${res.status}`);
+    if (!res.ok) return apiFail(res);
     return res.json();
   },
   async patch(url, body) {
@@ -10,7 +27,7 @@ const api = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `Blad ${res.status}`);
+    if (!res.ok) return apiFail(res);
     return res.json();
   },
   async post(url, body) {
@@ -19,19 +36,18 @@ const api = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `Blad ${res.status}`);
+    if (!res.ok) return apiFail(res);
     return res.json();
   },
   async del(url) {
     const res = await fetch(url, { method: "DELETE" });
-    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `Blad ${res.status}`);
+    if (!res.ok) return apiFail(res);
     return res.json();
   },
   async postForm(url, formData) {
     const res = await fetch(url, { method: "POST", body: formData });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || `Blad ${res.status}`);
-    return data;
+    if (!res.ok) return apiFail(res);
+    return res.json();
   },
 };
 
@@ -85,6 +101,12 @@ function telHref(raw) {
   return digits.length === 9 ? `+48${digits}` : `+${digits}`;
 }
 
+// link "szukaj w Google" po nazwie firmy + miescie - wspolne dla niche.js (kolumna Firma)
+// i script.js (naglowek scheme rozmowy)
+function companyGoogleSearchHref(lead) {
+  return `https://www.google.com/search?q=${encodeURIComponent(`${lead.company_name} ${lead.city}`.trim())}`;
+}
+
 // Weekend = "rest day" dla licznika dziennego celu (patrz uzycie w index.js / niche.js) -
 // sob/niedz nie ma planu dzwonienia, wiec 0/20 wygladaloby jak zaleglosc, a to po prostu wolne.
 function isRestDay() {
@@ -94,6 +116,102 @@ function isRestDay() {
 
 function escapeHtml(str) {
   return String(str ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+// ---------- avatar (emoji/zdjecie/inicjaly) - wspolne dla login.js (kafelki), auth-widget.js
+// (topbar) i index.js (dashboard: kto jest w niszy / czyj to lead) ----------
+function initials(user) {
+  return (user.display_name || user.username || "?").trim().charAt(0).toUpperCase();
+}
+
+function avatarGlyphHtml(user, size) {
+  if (user.avatar_kind === "photo" && user.avatar) {
+    return `<img class="user-avatar" style="width:${size}px;height:${size}px;" src="${escapeHtml(user.avatar)}" alt="">`;
+  }
+  const glyph = user.avatar ? user.avatar : initials(user);
+  const color = user.color || "#666";
+  return `<span class="user-avatar" style="width:${size}px;height:${size}px;font-size:${Math.round(size * 0.46)}px;background:${color}22;color:${color};border-color:${color}55;">${escapeHtml(glyph)}</span>`;
+}
+
+// ---------- dropdown z kropka koloru (.csel) - wspolne dla niche.js (tabela leadow) i
+// script.js (panel boczny scheme rozmowy), zeby oba miejsca mialy identyczny wyglad/zachowanie ----------
+
+// Uniwersalny dropdown. `attr` trafia na kontener (data-field dla wiersza/panelu / data-filter dla paska).
+function cselHtml({ attr, options, currentValue, emptyOption = null, currentOverride = null }) {
+  const full = emptyOption ? [emptyOption, ...options] : options;
+  const current = currentOverride || full.find((o) => o.value === currentValue) || full[0];
+  const optsHtml = full
+    .map(
+      (o) => `
+      <div class="csel-option ${o.value === currentValue ? "active" : ""}" data-value="${escapeHtml(o.value)}">
+        <span class="dot" style="background:${o.color}"></span>${escapeHtml(o.label)}
+      </div>`
+    )
+    .join("");
+  return `
+    <div class="csel" ${attr}>
+      <div class="csel-trigger" style="color:${current.color}">
+        <span class="dot" style="background:${current.color}"></span>${escapeHtml(current.label)}
+      </div>
+      <div class="csel-menu">${optsHtml}</div>
+    </div>
+  `;
+}
+
+const fieldCsel = (field, options, currentValue, emptyLabel) =>
+  cselHtml({
+    attr: `data-field="${field}"`,
+    options,
+    currentValue,
+    emptyOption: emptyLabel ? { value: "", label: emptyLabel, color: "#666" } : null,
+  });
+
+function closeAllPopovers() {
+  document.querySelectorAll(".csel.open, .tags-popover.open").forEach((el) => el.classList.remove("open"));
+}
+
+document.addEventListener("click", (e) => {
+  document.querySelectorAll(".csel.open, .tags-popover.open").forEach((el) => {
+    if (!el.contains(e.target)) el.classList.remove("open");
+  });
+});
+
+// ikonki platform (proste, generyczne ksztalty - nie kopie oficjalnych logo) do odznak
+// tagow (patrz platformBadge ponizej). Jedno miejsce, uzywane w trigger i w menu.
+const PLATFORM_ICONS = {
+  instagram: `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.15" fill="white" stroke="none"/></svg>`,
+  facebook: `<svg viewBox="0 0 24 24" fill="white"><path d="M15.3 8.3h-1.8c-.5 0-.9.4-.9 1V11h2.6l-.4 2.7h-2.2V21h-2.8v-7.3H8.1V11h1.7V9.1c0-2.2 1.4-3.7 3.6-3.7h1.9v2.9z"/></svg>`,
+  booksy: `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><line x1="3" y1="9.5" x2="21" y2="9.5"/><path d="M8 14l2.2 2.2L16 11.2"/></svg>`,
+  youtube: `<svg viewBox="0 0 24 24" fill="white"><path d="M9.5 8.3v7.4l6.4-3.7z"/></svg>`,
+};
+
+function platformBadge(m, t) {
+  return `<span class="platform-badge" style="background:${m.color}" title="${m.name}">${PLATFORM_ICONS[t] || m.label}</span>`;
+}
+
+// ---------- tagi platform (IG/FB/Booksy/YT) - popover z checkboxami (.tags-popover),
+// wspolne dla niche.js (kolumna Social) i script.js (panel boczny scheme rozmowy).
+// `metaData` = obiekt z /api/meta (platformTags/platformMeta) - kazda strona ma swoja
+// zmienna `meta`/`panelMeta`, wiec przekazywana jawnie zamiast domykania globala.
+function tagsTriggerContent(lead, metaData) {
+  const active = metaData.platformTags.filter((t) => lead[`tag_${t}`]);
+  if (!active.length) return `<span class="plus">+</span>`;
+  return active.map((t) => platformBadge(metaData.platformMeta[t], t)).join("");
+}
+
+function tagsMenuContent(lead, metaData) {
+  return metaData.platformTags
+    .map((t) => {
+      const m = metaData.platformMeta[t];
+      return `
+      <label class="tags-option">
+        <input type="checkbox" data-tag-field="tag_${t}" ${lead[`tag_${t}`] ? "checked" : ""}>
+        <span class="check">✓</span>
+        ${platformBadge(m, t)}
+        ${m.name}
+      </label>`;
+    })
+    .join("");
 }
 
 // ---------- tlo: pojedyncze latajace drobinki (na kazdej stronie) ----------

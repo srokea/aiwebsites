@@ -1,7 +1,8 @@
 const express = require("express");
 const db = require("../db");
-const { INTERESTED_OPTIONS, ANSWERED_OPTIONS, CALLERS, WEBSITE_STATUS_OPTIONS } = require("../constants");
+const { INTERESTED_OPTIONS, ANSWERED_OPTIONS, WEBSITE_STATUS_OPTIONS, QUALITY_OPTIONS } = require("../constants");
 const { computeCalledAt, computeDopieteAt } = require("../leadStatus");
+const { getCallerNames } = require("../callers");
 
 const router = express.Router();
 
@@ -11,7 +12,6 @@ const TEXT_FIELDS = [
   "company_name",
   "city",
   "phone",
-  "quality",
   "website_url",
   "reminder",
   "callback_when",
@@ -21,11 +21,13 @@ const TEXT_FIELDS = [
 const BOOL_FIELDS = ["tag_instagram", "tag_facebook", "tag_booksy", "tag_youtube"];
 
 // Pola z zamknieta lista wartosci - pusty string zawsze dozwolony (= "nie ustawiono").
-const ENUM_FIELDS = {
+// "caller" nie jest tu na sztywno - liczba i nazwy kont sie zmieniaja (nowe konto, zmiana
+// nazwy), wiec whitelist budujemy swiezo przy kazdym requescie (patrz getCallerNames ponizej).
+const ENUM_FIELDS_STATIC = {
   interested: INTERESTED_OPTIONS.map((o) => o.value),
   answered: ANSWERED_OPTIONS.map((o) => o.value),
-  caller: CALLERS,
   has_social: WEBSITE_STATUS_OPTIONS.map((o) => o.value),
+  quality: QUALITY_OPTIONS.map((o) => o.value),
 };
 
 // Notatki leada, najnowsza pierwsza - w tej kolejnosci pokazuje je frontend
@@ -109,7 +111,22 @@ router.patch("/:id", (req, res) => {
   for (const field of BOOL_FIELDS) {
     if (field in req.body) updates[field] = req.body[field] ? 1 : 0;
   }
-  for (const [field, allowed] of Object.entries(ENUM_FIELDS)) {
+  // "czas do decyzji" z panelu na scheme rozmowy (script.js) - system'owa wartosc, nie ma
+  // pola do jej recznego wpisania w UI; null = reset stopera (patrz resetPanelTimer)
+  if ("decision_seconds" in req.body) {
+    const raw = req.body.decision_seconds;
+    if (raw === null) {
+      updates.decision_seconds = null;
+    } else {
+      const seconds = Number(raw);
+      if (!Number.isInteger(seconds) || seconds < 0) {
+        return res.status(400).json({ error: "Nieprawidlowa wartosc decision_seconds" });
+      }
+      updates.decision_seconds = seconds;
+    }
+  }
+  const enumFields = { ...ENUM_FIELDS_STATIC, caller: getCallerNames() };
+  for (const [field, allowed] of Object.entries(enumFields)) {
     if (!(field in req.body)) continue;
     const value = req.body[field] == null ? "" : String(req.body[field]);
     // "interested" nie ma sensownego stanu pustego - kazdy lead ma jakis status

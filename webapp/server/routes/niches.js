@@ -7,6 +7,7 @@ const { computeCalledAt, STATS_ELIGIBLE_SQL } = require("../leadStatus");
 const { listScriptFiles } = require("./scripts");
 const { stripDiacritics } = require("../text");
 const { NICHE_COLORS, INTERESTED_OPTIONS, PLATFORM_TAGS, PLATFORM_META } = require("../constants");
+const { getCallerNames } = require("../callers");
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
@@ -163,7 +164,7 @@ router.post("/import", upload.single("file"), (req, res) => {
     return res.status(400).json({ error: "Nie udalo sie odczytac pliku CSV" });
   }
 
-  const leads = mapRowsToLeads(parsed.data);
+  const leads = mapRowsToLeads(parsed.data, getCallerNames());
   if (!leads.length) return res.status(400).json({ error: "Plik CSV nie zawiera zadnych wierszy z danymi" });
 
   const baseSlug = slugify(name) || "nisza";

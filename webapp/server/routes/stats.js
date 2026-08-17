@@ -1,7 +1,8 @@
 const express = require("express");
 const db = require("../db");
-const { INTERESTED_OPTIONS, INTERESTED_STATS_ORDER, CALLERS, DAILY_GOAL, PRICING, EXPENSES } = require("../constants");
+const { INTERESTED_OPTIONS, INTERESTED_STATS_ORDER, DAILY_GOAL, PRICING, EXPENSES } = require("../constants");
 const { STATS_ELIGIBLE_SQL, STATS_BREAKDOWN_SQL } = require("../leadStatus");
+const { getCallerNames } = require("../callers");
 
 const router = express.Router();
 
@@ -48,7 +49,7 @@ router.get("/", (req, res) => {
     )
     .all();
   const countByCaller = new Map(byCallerRows.map((r) => [r.caller, r.c]));
-  const byCaller = CALLERS.map((c) => ({ caller: c, count: countByCaller.get(c) || 0 }));
+  const byCaller = getCallerNames().map((c) => ({ caller: c, count: countByCaller.get(c) || 0 }));
 
   // Kazde "Dopiete" to jeden klient: 300 zl jednorazowo za wdrozenie + 100 zl/mies. za opieke.
   // Liczone ze WSZYSTKICH leadow (bez filtra STATS_ELIGIBLE_SQL) - dopiety klient, ktoremu

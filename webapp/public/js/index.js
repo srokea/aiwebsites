@@ -1,4 +1,5 @@
 let meta = null;
+let usersByName = {}; // display_name -> user (patrz "Kto dzwonił" ikonki w panelu "Najblizsze")
 
 // ---------- panel powitalny ----------
 
@@ -64,6 +65,23 @@ function utcOffsetLabel() {
   return `UTC${sign}${Math.abs(offsetMin / 60)}`;
 }
 
+// ---------- pogoda (Piotrkow Trybunalski) - doklejona do panelu powitalnego ----------
+let lastWeather = null;
+
+function weatherInlineHtml() {
+  if (!lastWeather) return "";
+  return ` · ${lastWeather.icon} ${lastWeather.temp}°C`;
+}
+
+async function loadWeather() {
+  try {
+    lastWeather = await api.get("/api/weather");
+  } catch {
+    // brak pogody nie powinien wywalic reszty dashboardu - zostaje placeholder "⏳"
+  }
+  renderGreetingPanel();
+}
+
 function renderGreetingPanel() {
   const now = new Date();
   const { text, emoji } = greetingForHour(now.getHours());
@@ -80,7 +98,7 @@ function renderGreetingPanel() {
     </div>
     <div class="greeting-meta">
       <div class="greeting-clock">${time}</div>
-      <div class="greeting-sub">${date.charAt(0).toUpperCase() + date.slice(1)}</div>
+      <div class="greeting-sub">${date.charAt(0).toUpperCase() + date.slice(1)}${weatherInlineHtml()}</div>
       <div class="greeting-sub">📍 ${escapeHtml(city)} &middot; ${utcOffsetLabel()}</div>
     </div>
   `;
@@ -170,6 +188,10 @@ function upcomingItemHtml(item, withTime) {
   const pin = notes.length
     ? `<button type="button" class="note-pin-btn" data-item-key="${escapeHtml(itemKey(item))}" title="Pokaż notatkę">📌</button>`
     : "";
+  // ikonka osoby "Kto dzwonił" - zawsze pierwsza w rzedzie, wiec ląduje na lewo od pinezki
+  // (jesli sa notatki) albo wprost na lewo od "za X dni" (jesli nie ma)
+  const caller = usersByName[item.caller];
+  const callerIcon = caller ? `<span class="upcoming-caller-icon" title="${escapeHtml(item.caller)}">${avatarGlyphHtml(caller, 18)}</span>` : "";
 
   // &lead=<id> - widok niszy przescrolluje do tego wiersza i chwilowo go podswietli
   return `
@@ -180,7 +202,7 @@ function upcomingItemHtml(item, withTime) {
       </div>
       <div class="upcoming-when">
         <span class="upcoming-date">${dateLabel}</span>
-        <span class="upcoming-badge-row">${pin}<span class="reminder-badge ${urgencyClass(diffDays)}">${dayLabel(diffDays)}</span></span>
+        <span class="upcoming-badge-row">${callerIcon}${pin}<span class="reminder-badge ${urgencyClass(diffDays)}">${dayLabel(diffDays)}</span></span>
       </div>
     </a>
   `;
@@ -356,32 +378,99 @@ async function loadStats() {
   `;
 }
 
-async function loadNiches() {
-  const niches = await api.get("/api/niches");
+// ---------- kto teraz jest w ktorej niszy (dashboard) ----------
+// Zbiorczy odpowiednik "kto tu jest" z niche.js - tu nie interesuje nas KTORY lead,
+// tylko sama obecnosc w niszy (rowniez lead_id=0, patrz server/routes/presence.js),
+// wiec ikonki lezą przy calej niszy, nie przy pojedynczym wierszu leada.
+let lastNiches = [];
+let presenceByNiche = new Map(); // niche_id -> [{ display_name, avatar, avatar_kind, color }, ...]
 
+function nicheRowHtml(n) {
+  const pct = n.eligible ? Math.round((n.called / n.eligible) * 100) : 0;
+  const present = presenceByNiche.get(n.id) || [];
+  const icons = present.length
+    ? `<span class="niche-presence-icons">${present.map((u) => avatarGlyphHtml(u, 20)).join("")}</span>`
+    : "";
+  return `
+    <a class="niche-row" href="/niche.html?slug=${encodeURIComponent(n.slug)}">
+      <span class="niche-dot" style="background:${n.color || "#555"}"></span>
+      <span class="niche-row-name" ${n.color ? `style="color:${n.color}"` : ""}>${escapeHtml(n.name)}</span>
+      ${icons}
+      <span class="niche-row-count">${n.called}/${n.eligible} zadzwonionych</span>
+      <span class="niche-row-progress">
+        <span class="progress-track"><span class="progress-fill ${progressClass(pct)}" style="width:${pct}%"></span></span>
+        <span class="progress-pct ${progressClass(pct)}">${pct}%</span>
+      </span>
+      <span class="niche-row-chevron">›</span>
+    </a>
+  `;
+}
+
+function renderNicheRows() {
   // lista wierszy w jednym boxie (nie osobne kafelki) - postep liczony wzgledem "eligible",
   // czyli leadow bez wlasnej strony (patrz STATS_ELIGIBLE_SQL po stronie serwera)
-  const rows = niches
-    .map((n) => {
-      const pct = n.eligible ? Math.round((n.called / n.eligible) * 100) : 0;
-      return `
-        <a class="niche-row" href="/niche.html?slug=${encodeURIComponent(n.slug)}">
-          <span class="niche-dot" style="background:${n.color || "#555"}"></span>
-          <span class="niche-row-name" ${n.color ? `style="color:${n.color}"` : ""}>${escapeHtml(n.name)}</span>
-          <span class="niche-row-count">${n.called}/${n.eligible} zadzwonionych</span>
-          <span class="niche-row-progress">
-            <span class="progress-track"><span class="progress-fill ${progressClass(pct)}" style="width:${pct}%"></span></span>
-            <span class="progress-pct ${progressClass(pct)}">${pct}%</span>
-          </span>
-          <span class="niche-row-chevron">›</span>
-        </a>
-      `;
-    })
-    .join("");
-
+  const rows = lastNiches.map(nicheRowHtml).join("");
   document.getElementById("niche-grid").innerHTML =
     rows + `<button type="button" class="niche-row add-row" id="add-tile"><span class="niche-dot add">+</span><span class="niche-row-name">Dodaj niszę</span></button>`;
   document.getElementById("add-tile").addEventListener("click", openModal);
+}
+
+async function loadNiches() {
+  lastNiches = await api.get("/api/niches");
+  renderNicheRows();
+}
+
+async function pollNichePresence() {
+  if (document.visibilityState !== "visible") return;
+  try {
+    const rows = await api.get("/api/presence/summary");
+    const map = new Map();
+    for (const r of rows) {
+      if (!map.has(r.niche_id)) map.set(r.niche_id, []);
+      map.get(r.niche_id).push(r);
+    }
+    presenceByNiche = map;
+    renderNicheRows();
+  } catch {
+    // pojedynczy nieudany poll pomijamy - kolejny za chwile
+  }
+}
+
+function startNichePresencePolling() {
+  setInterval(pollNichePresence, 6000);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") pollNichePresence();
+  });
+  pollNichePresence();
+}
+
+// ---------- "kto teraz jest w appce" - maly box przy tytule (obejmuje Ciebie samego,
+// w przeciwienstwie do reszty "kto tu jest" - patrz uzasadnienie przy GET /online) ----------
+function renderTeamStatus(users) {
+  const el = document.getElementById("team-status");
+  if (!el) return;
+  const onlineCount = users.filter((u) => u.online).length;
+  const avatars = users
+    .map((u) => `<span class="team-avatar ${u.online ? "online" : "offline"}" title="${escapeHtml(u.display_name)} — ${u.online ? "online" : "offline"}">${avatarGlyphHtml(u, 30)}</span>`)
+    .join("");
+  el.innerHTML = `<span class="team-status-avatars">${avatars}</span><span class="team-status-count">${onlineCount}/${users.length}</span>`;
+}
+
+async function pollTeamStatus() {
+  if (document.visibilityState !== "visible") return;
+  try {
+    renderTeamStatus(await api.get("/api/presence/online"));
+  } catch {
+    // pojedynczy nieudany poll pomijamy - kolejny za chwile
+  }
+}
+
+function startTeamStatusPolling() {
+  setInterval(pollTeamStatus, 6000);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") pollTeamStatus();
+  });
+  pollTeamStatus();
 }
 
 function openModal() {
@@ -421,8 +510,16 @@ initParticles();
 renderGreetingPanel();
 setInterval(renderGreetingPanel, 1000);
 setInterval(updateRevenueTicker, 1000);
+loadWeather();
+setInterval(loadWeather, 20 * 60 * 1000); // dopasowane do cache serwera (server/routes/weather.js)
+
+pingOnlinePresence(); // "jestem na dashboardzie" - patrz auth-widget.js
 
 (async () => {
-  meta = await api.get("/api/meta");
+  const [metaRes, usersRes] = await Promise.all([api.get("/api/meta"), api.get("/api/users")]);
+  meta = metaRes;
+  usersByName = Object.fromEntries(usersRes.map((u) => [u.display_name, u]));
   await Promise.all([loadStats(), loadNiches(), loadUpcoming()]);
+  startNichePresencePolling();
+  startTeamStatusPolling();
 })();

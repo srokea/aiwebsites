@@ -55,7 +55,21 @@ const WEBSITE_STATUS_OPTIONS = [
   { value: "Nie", label: "Nie", color: "#e06050" },
 ];
 
-const NICHE_COLORS = ["#6090e0", "#5cb85c", "#e06050", "#c0a050", "#a066e0", "#50b8c0", "#e0935c", "#e15a97"];
+// Jakosc leada: dropdown 0-6 zamiast wolnego tekstu. 0 = tragiczny lead - traktowany w
+// statystykach jak leady z wlasna strona (patrz STATS_ELIGIBLE_SQL w leadStatus.js), zeby
+// nie zawyzal "do zrobienia". 6 = ma wlasna strone (umowna konwencja Sylwestra/Nikodema,
+// bez dodatkowej logiki po stronie kodu).
+const QUALITY_OPTIONS = [
+  { value: "0", label: "0", color: "#5a5a5a" },
+  { value: "1", label: "1", color: "#e06050" },
+  { value: "2", label: "2", color: "#e0935c" },
+  { value: "3", label: "3", color: "#c0a050" },
+  { value: "4", label: "4", color: "#6ec6ff" },
+  { value: "5", label: "5", color: "#6090e0" },
+  { value: "6", label: "6", color: "#5cb85c" },
+];
+
+const NICHE_COLORS = ["#6090e0", "#5cb85c", "#e06050", "#c0a050", "#a066e0", "#0e86d4", "#e0935c", "#e15a97"];
 
 const DAILY_GOAL = 20;
 
@@ -81,6 +95,7 @@ module.exports = {
   PLATFORM_TAGS,
   PLATFORM_META,
   WEBSITE_STATUS_OPTIONS,
+  QUALITY_OPTIONS,
   NICHE_COLORS,
   DAILY_GOAL,
   PRICING,

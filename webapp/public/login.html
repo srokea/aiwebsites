@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zaloguj się — Cold Calls</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%93%9E</text></svg>">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="bg-particles" id="bg-particles" aria-hidden="true"></div>
+
+<div class="login-wrap">
+  <div class="login-header">
+    <div class="login-logo">💰</div>
+    <h1>Cold Calls</h1>
+    <p class="login-sub" id="login-sub">Kto dzwoni?</p>
+  </div>
+
+  <div class="login-card">
+    <div class="login-tiles" id="login-tiles"></div>
+
+    <form class="login-password-step hidden" id="login-password-step">
+      <button type="button" class="login-back" id="login-back" title="Wróć">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 5l-7 7 7 7"/>
+        </svg>
+      </button>
+
+      <div class="login-selected hidden" id="login-selected"></div>
+
+      <div id="login-manual-username-wrap" class="hidden">
+        <label for="login-username-visible">Login</label>
+        <input type="text" id="login-username-visible" autocomplete="username">
+      </div>
+      <input type="hidden" id="login-username">
+
+      <label for="login-password">Hasło</label>
+      <input type="password" id="login-password" autocomplete="current-password">
+
+      <div class="error" id="login-error" style="display:none;"></div>
+
+      <button type="submit" class="btn primary login-submit">Zaloguj</button>
+    </form>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/login.js"></script>
+</body>
+</html>

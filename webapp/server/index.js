@@ -1,13 +1,32 @@
 const express = require("express");
 const path = require("path");
+const cookieParser = require("cookie-parser");
 
 require("./db"); // inicjalizuje baze i tworzy tabele przy starcie
+const { requireAuth } = require("./auth");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// pod Cloudflare Tunnel TLS jest terminowany na tunelu - to ustawienie mowi Expressowi,
+// zeby ufal naglowkowi X-Forwarded-Proto, inaczej ciasteczko sesji z flaga secure nigdy
+// nie zostaloby wyslane z powrotem przez przegladarke
+app.set("trust proxy", 1);
+
 app.use(express.json());
+app.use(cookieParser());
+// pliki statyczne (HTML/CSS/JS) same w sobie nie ujawniaja danych leadow - jedyna
+// prawdziwa granica bezpieczenstwa to /api, wiec to ja chronimy ponizej, a nie routing stron
 app.use(express.static(path.join(__dirname, "..", "public")));
+// wgrane zdjecia profilowe (patrz POST /api/users/:id/avatar-photo) - poza public/, bo to dane
+// uzytkownikow (jak data/coldcall.db), nie kod aplikacji pod git
+app.use("/avatars", express.static(path.join(__dirname, "..", "data", "avatars")));
+
+// logowanie musi byc publiczne - montowane PRZED globalnym auth-gate ponizej
+app.use("/api/auth", require("./routes/auth"));
+
+// wszystko dalej pod /api wymaga zalogowania (sesja z ciasteczka albo, w przyszlosci, API key)
+app.use("/api", requireAuth);
 
 app.use("/api/niches", require("./routes/niches"));
 app.use("/api/leads", require("./routes/leads"));
@@ -15,6 +34,9 @@ app.use("/api/stats", require("./routes/stats"));
 app.use("/api/meta", require("./routes/meta"));
 app.use("/api/scripts", require("./routes/scripts"));
 app.use("/api/upcoming", require("./routes/upcoming"));
+app.use("/api/users", require("./routes/users"));
+app.use("/api/presence", require("./routes/presence"));
+app.use("/api/weather", require("./routes/weather"));
 
 // Frontend parsuje kazda odpowiedz API jako JSON, wiec bledy tez musza byc JSON-em -
 // domyslnie Express oddaje HTML-owa strone bledu i front pokazalby bezsensowny komunikat.

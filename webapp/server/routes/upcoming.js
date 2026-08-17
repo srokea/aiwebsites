@@ -46,7 +46,7 @@ function attachNotes(items) {
 router.get("/", (req, res) => {
   const meetsRaw = db
     .prepare(
-      `SELECT leads.id, leads.company_name, leads.city, leads.google_term AS when_at,
+      `SELECT leads.id, leads.company_name, leads.city, leads.caller, leads.google_term AS when_at,
               niches.slug AS niche_slug, niches.name AS niche_name
        FROM leads JOIN niches ON niches.id = leads.niche_id
        WHERE leads.google_term <> ''`
@@ -55,7 +55,7 @@ router.get("/", (req, res) => {
 
   const callbacksRaw = db
     .prepare(
-      `SELECT leads.id, leads.company_name, leads.city, leads.callback_when AS when_at,
+      `SELECT leads.id, leads.company_name, leads.city, leads.caller, leads.callback_when AS when_at,
               niches.slug AS niche_slug, niches.name AS niche_name
        FROM leads JOIN niches ON niches.id = leads.niche_id
        WHERE leads.callback_when <> ''`
