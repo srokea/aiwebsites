@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patent na Pazur — stylizacja paznokci w Opocznie</title>
+<meta name="description" content="Patent na Pazur, salon stylizacji paznokci w Opocznie. Manicure hybrydowy, żel, pedicure. Piotrkowska 6. Umów wizytę przez Booksy lub zadzwoń: 575 689 972.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Patent na Pazur — stylizacja paznokci w Opocznie">
+<meta property="og:description" content="Manicure hybrydowy, żel i pedicure w Opocznie, ul. Piotrkowska 6. Zapisy przez Booksy albo telefonicznie.">
+<!-- TODO przy deployu: pelny adres w og:image (https://domena/photos/...) oraz og:url. -->
+<meta property="og:image" content="photos/5ebce4c04883492cbd6e7648da45ac-patent-na-pazur-biz-photo-8403810c65544450acb707adef418e-booksy.jpeg">
+<meta property="og:locale" content="pl_PL">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  /* PALETA — wyjatek per klient uzgodniony w brief.md.
+     Dwa akcenty (magenta + zloto) zamiast jednego z puli agencji.
+     Hexy zmierzone bezposrednio ze zdjec w photos/, nie przepisane z briefu:
+       accent   #9E3A66  = sciana salonu, srednia pikseli hue 310-350 (29 557 px)
+       accentlt #C9558B  = ta sama sciana, najjasniejsze 15% pikseli
+       surface2 #F5E6E9  = tapicerka plecionych foteli (#A77D82) podniesiona do tla
+       gold     #B08D4E  = zlote nogi foteli i barokowe okucia (#9B815A) w metalicznej jasnosci
+       logopink #FCC9D8  = tlo pliku z logo (43% pikseli) — karta pod logo ma sie z nim zlac
+     Kontrast (WCAG): ink/bg 16.4 · inkmuted/bg 6.7 · accent/bg 6.2 · bialy/accent 6.5
+                      goldtxt/bg 4.6 · gold/bg 3.0 (tylko linie i ornamenty, nigdy tekst) */
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg:       '#FFFAF9',
+          surface:  '#FDF0F3',
+          surface2: '#F5E6E9',
+          ink:      '#26191F',
+          inkmuted: '#6E525B',
+          accent:   '#9E3A66',
+          accentlt: '#C9558B',
+          gold:     '#B08D4E',
+          goldtxt:  '#7E6027',
+          goldlt:   '#D9BC7A',
+          plum:     '#2E1A24',
+          logopink: '#FCC9D8',
+          border:   'rgba(38,25,31,0.12)',
+        },
+        fontFamily: {
+          display: ['"Prata"', 'Georgia', 'serif'],
+          script:  ['"Great Vibes"', 'cursive'],
+          body:    ['"Quicksand"', 'system-ui', 'sans-serif'],
+        },
+        maxWidth: { content: '68rem', prose: '42rem' },
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO: przegladarka nie odpytuje serwerow Google). */
+  @font-face {
+    font-family: 'Prata'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/prata-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    /* Google nie serwuje dla Praty statycznego subsetu latin-ext — to wycinek text= z polskimi znakami. */
+    font-family: 'Prata'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/prata-latin-ext.woff2') format('woff2');
+    unicode-range: U+0104-0107, U+0118-0119, U+0141-0144, U+015A-015B, U+0179-017C;
+  }
+  @font-face {
+    font-family: 'Great Vibes'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/greatvibes-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Great Vibes'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/greatvibes-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Quicksand'; font-style: normal; font-weight: 400 700; font-display: swap;
+    src: url('fonts/quicksand-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Quicksand'; font-style: normal; font-weight: 400 700; font-display: swap;
+    src: url('fonts/quicksand-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+  :focus-visible { outline: 2px solid #9E3A66; outline-offset: 3px; border-radius: 6px; }
+
+  /* Szklany navbar */
+  .glass { background: rgba(255,250,249,.82); backdrop-filter: saturate(150%) blur(14px); -webkit-backdrop-filter: saturate(150%) blur(14px); }
+
+  /* Luki (technika ze Stylu 06) */
+  .arch { border-radius: 200px 200px 20px 20px; overflow: hidden; }
+  .arch img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* Cienkie zlote linie + ornament (technika ze Stylu 04, przelozona na jasna baze) */
+  .rule { display: flex; align-items: center; justify-content: center; gap: 14px; color: #B08D4E; font-size: .8rem; line-height: 1; }
+  .rule::before, .rule::after { content: ""; height: 0; width: 56px; border-top: 1px solid rgba(176,141,78,.55); }
+  .rule.on-plum { color: #D9BC7A; }
+  .rule.on-plum::before, .rule.on-plum::after { border-top-color: rgba(217,188,122,.5); }
+  .label { font-size: .72rem; letter-spacing: .32em; text-transform: uppercase; font-weight: 600; }
+
+  /* Rozmyte plamy w tle hero (technika ze Stylu 06, mocno wyciszona) */
+  .blob { position: absolute; border-radius: 9999px; filter: blur(80px); pointer-events: none; z-index: 0; }
+
+  /* Dot-leader w cenniku (technika ze Stylu 04) */
+  .leader { flex: 1 1 auto; min-width: 18px; border-bottom: 1px dotted rgba(176,141,78,.7); transform: translateY(-.3em); }
+
+  .press { transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease, border-color .15s ease, color .15s ease; }
+  .press:active { transform: translateY(1px); }
+</style>
+</head>
+
+<body class="bg-bg font-body text-ink antialiased">
+
+<a href="#tresc" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-accent focus:px-5 focus:py-3 focus:text-white">Przejdź do treści</a>
+
+<!-- ============ NAVBAR ============ -->
+<header class="glass sticky top-0 z-40 border-b border-[rgba(176,141,78,.35)]">
+  <div class="mx-auto flex max-w-content items-center gap-3 px-4 py-3 sm:px-6">
+    <a href="#gora" class="flex min-h-[44px] shrink-0 items-center gap-2.5">
+      <span class="font-script text-2xl leading-none text-accent sm:text-[1.7rem]">Patent&nbsp;na&nbsp;Pazur</span>
+    </a>
+
+    <nav class="ml-auto hidden items-center gap-7 lg:flex" aria-label="Główne">
+      <a href="#uslugi"    class="inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-accent">Usługi</a>
+      <a href="#szkolenia" class="inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-accent">Szkolenia</a>
+      <a href="#galeria"   class="inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-accent">Galeria</a>
+      <a href="#opinie"    class="inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-accent">Opinie</a>
+      <a href="#kontakt"   class="inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-accent">Kontakt</a>
+    </nav>
+
+    <div class="ml-auto flex items-center gap-2 lg:ml-6">
+      <a href="tel:+48575689972"
+         class="press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-gold px-4 py-2.5 text-sm font-semibold text-ink hover:bg-surface2"
+         aria-label="Zadzwoń: 575 689 972">
+        <svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+        <span class="hidden sm:inline">575 689 972</span>
+        <span class="sm:hidden">Zadzwoń</span>
+      </a>
+      <a href="https://booksy.com/pl-pl/327039_patent-na-pazur_paznokcie_8522_opoczno#ba_s=seo" target="_blank" rel="noopener"
+         class="press hidden min-h-[44px] items-center rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-white hover:bg-[#8b3059] sm:inline-flex">
+        Umów wizytę
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="tresc">
+
+<!-- ============ HERO ============ -->
+<section id="gora" class="relative overflow-hidden">
+  <div class="blob -left-24 -top-16 h-72 w-72 bg-[#F7C9DD] opacity-70"></div>
+  <div class="blob -right-24 top-72 h-72 w-72 bg-[#F3DCC8] opacity-45"></div>
+
+  <div class="relative z-10 mx-auto grid max-w-content gap-12 px-4 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-14 lg:grid-cols-[1fr_.92fr] lg:items-center lg:gap-14 lg:pb-24 lg:pt-16">
+
+    <div>
+      <!-- Karta pod logo ma tlo dokladnie w kolorze tla pliku (#FCC9D8), zeby nie bylo widac krawedzi JPG. -->
+      <div class="inline-block max-w-[300px] rounded-[26px] border border-[rgba(176,141,78,.55)] bg-logopink p-2 shadow-[0_16px_38px_rgba(158,58,102,.14)] sm:max-w-[340px]">
+        <img src="photos/5ebce4c04883492cbd6e7648da45ac-patent-na-pazur-biz-photo-8403810c65544450acb707adef418e-booksy.jpeg"
+             alt="Patent na Pazur — logo salonu stylizacji paznokci" width="1014" height="570"
+             class="w-full rounded-[20px]">
+      </div>
+
+      <p class="label mt-7 text-goldtxt">Stylizacja paznokci · Opoczno</p>
+
+      <h1 class="mt-3 font-display text-[2.05rem] leading-[1.12] sm:text-[2.7rem] lg:text-[3.15rem]">
+        Paznokcie, które trzymają&nbsp;się
+        <span class="font-script text-accent text-[1.35em] leading-[.9]">długo</span>
+      </h1>
+
+      <p class="mt-5 max-w-prose text-[1.02rem] leading-relaxed text-inkmuted">
+        Manicure hybrydowy, żel i pedicure przy Piotrkowskiej 6 w Opocznie.
+        Robimy dokładnie, bez pośpiechu i z dbałością o każdy szczegół, od kształtu po zdobienie.
+      </p>
+
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <a href="https://booksy.com/pl-pl/327039_patent-na-pazur_paznokcie_8522_opoczno#ba_s=seo" target="_blank" rel="noopener"
+           class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-accent px-8 py-3.5 text-base font-bold text-white shadow-[0_10px_26px_rgba(158,58,102,.28)] hover:bg-[#8b3059]">
+          Umów wizytę w Booksy
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </a>
+        <a href="tel:+48575689972"
+           class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-gold bg-bg px-8 py-3.5 text-base font-semibold text-ink hover:bg-surface2">
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+          575 689 972
+        </a>
+      </div>
+
+      <p class="mt-7 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-inkmuted">
+        <span class="text-base tracking-[.18em] text-goldtxt" aria-hidden="true">★★★★★</span>
+        <span><strong class="font-bold text-ink">5,0</strong> z 53 opinii w Google, Booksy i na Facebooku</span>
+      </p>
+    </div>
+
+    <!-- Dwa luki ze zdjeciami wnetrza (technika arch-stack ze Stylu 06) -->
+    <div class="grid grid-cols-2 gap-3 sm:gap-4">
+      <div class="arch aspect-[3/4.2] border lg:aspect-[2268/4032] border-[rgba(176,141,78,.5)] shadow-[0_18px_44px_rgba(38,25,31,.14)]">
+        <img src="photos/8749a90a04084f1aad6df656f51643-patent-na-pazur-biz-photo-2a8f3917de7741f3b50fb0d9632f1e-booksy.jpeg"
+             alt="Stanowiska do manicure w salonie Patent na Pazur, tapeta w piwonie i pudrowe fotele"
+             width="2268" height="4032" loading="lazy" style="object-position: 50% 38%;">
+      </div>
+      <div class="arch aspect-[3/4.2] translate-y-6 border lg:aspect-[2268/4032] border-[rgba(176,141,78,.5)] shadow-[0_18px_44px_rgba(38,25,31,.14)] sm:translate-y-8">
+        <img src="photos/ed3639d473584981a71235c21c76a0-patent-na-pazur-biz-photo-5aae54f0a7884719bd46e35509e741-booksy.jpeg"
+             alt="Wnętrze salonu Patent na Pazur w Opocznie, magenta na ścianie i lampy kreślarskie"
+             width="2268" height="4032" loading="lazy" style="object-position: 50% 46%;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ USLUGI / CENNIK ============ -->
+<section id="uslugi" class="bg-surface py-16 sm:py-20 lg:py-24">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+    <div class="text-center">
+      <p class="label text-goldtxt">Cennik</p>
+      <h2 class="mt-3 font-display text-[1.85rem] leading-tight sm:text-[2.4rem]">Co robimy w salonie</h2>
+      <div class="rule mt-5" aria-hidden="true">✦</div>
+      <p class="mx-auto mt-5 max-w-prose text-[.98rem] leading-relaxed text-inkmuted">
+        Cena zależy od długości paznokci i zdobienia. Aktualne stawki znajdziesz w Booksy albo potwierdzimy je przez telefon przy zapisie.
+      </p>
+    </div>
+
+    <!-- TODO klientka: w miejsce kreskowanych pol wpisac ceny, np. "od 90 zł". Struktura zostaje bez zmian. -->
+    <div class="mt-12 grid gap-5 sm:gap-6 lg:grid-cols-3">
+
+      <div class="rounded-[26px] border border-[rgba(176,141,78,.4)] bg-bg p-6 shadow-[0_10px_30px_rgba(38,25,31,.06)] sm:p-7">
+        <h3 class="font-display text-xl text-ink">Dłonie</h3>
+        <p class="mt-1.5 text-sm text-inkmuted">Hybryda, żel i przedłużanie</p>
+        <dl class="mt-6 space-y-4">
+          <div class="flex items-baseline gap-2">
+            <dt class="text-[.97rem] font-medium">Manicure hybrydowy</dt>
+            <span class="leader" aria-hidden="true"></span>
+            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <dt class="text-[.97rem] font-medium">Żel na naturalnej płytce</dt>
+            <span class="leader" aria-hidden="true"></span>
+            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <dt class="text-[.97rem] font-medium">Uzupełnienie żelowe <span class="whitespace-nowrap text-inkmuted">(do 4 tyg.)</span></dt>
+            <span class="leader" aria-hidden="true"></span>
+            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <dt class="text-[.97rem] font-medium">Przedłużanie paznokci</dt>
+            <span class="leader" aria-hidden="true"></span>
+            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <dt class="text-[.97rem] font-medium">Manicure klasyczny</dt>
+            <span class="leader" aria-hidden="true"></span>
+            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="rounded-[26px] border border-[rgba(176,141,78,.4)] bg-bg p-6 shadow-[0_10px_30px_rgba(38,25,31,.06)] sm:p-7">
+        <h3 class="font-display text-xl text-ink">Stopy</h3>
+        <p class="mt-1.5 text-sm text-inkmuted">Pedicure w pełnym komforcie</p>
+        <dl class="mt-6 space-y-4">
+          <div class="flex items-baseline gap-2">
+            <dt class="text-[.97rem] font-medium">Pedicure hybrydowy</dt>
+            <span class="leader" aria-hidden="true"></span>
+            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <dt class="text-[.97rem] font-medium">Pedicure klasyczny</dt>
+            <span class="leader" aria-hidden="true"></span>
+            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <dt class="text-[.97rem] font-medium">Pedicure leczniczy</dt>
+            <span class="leader" aria-hidden="true"></span>
+            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <dt class="text-[.97rem] font-medium">Sam lakier hybrydowy na stopach</dt>
+            <span class="leader" aria-hidden="true"></span>
+            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="rounded-[26px] border border-[rgba(176,141,78,.4)] bg-bg p-6 shadow-[0_10px_30px_rgba(38,25,31,.06)] sm:p-7">
+        <h3 class="font-display text-xl text-ink">Zdobienia i poprawki</h3>
+        <p class="mt-1.5 text-sm text-inkmuted">Wzory malowane ręcznie</p>
+        <dl class="mt-6 space-y-4">
+          <div class="flex items-baseline gap-2">
+            <dt class="text-[.97rem] font-medium">Zdobienie ręcznie malowane</dt>
+            <span class="leader" aria-hidden="true"></span>
+            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <dt class="text-[.97rem] font-medium">Ombre, french, efekty</dt>
+            <span class="leader" aria-hidden="true"></span>
+            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <dt class="text-[.97rem] font-medium">Naprawa jednego paznokcia</dt>
+            <span class="leader" aria-hidden="true"></span>
+            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <dt class="text-[.97rem] font-medium">Zdjęcie hybrydy lub żelu</dt>
+            <span class="leader" aria-hidden="true"></span>
+            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <div class="mt-10 text-center">
+      <a href="https://booksy.com/pl-pl/327039_patent-na-pazur_paznokcie_8522_opoczno#ba_s=seo" target="_blank" rel="noopener"
+         class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-accent px-8 py-3.5 text-base font-bold text-white shadow-[0_10px_26px_rgba(158,58,102,.28)] hover:bg-[#8b3059]">
+        Zobacz wolne terminy w Booksy
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SZKOLENIA (osobna dzialalnosc — pasmo wizualnie odciete) ============ -->
+<section id="szkolenia" class="border-y border-[rgba(176,141,78,.45)] bg-plum py-16 text-[#F7EFE9] sm:py-20 lg:py-24">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+    <div class="text-center">
+      <p class="label text-goldlt">Osobna działalność Sylwii</p>
+      <h2 class="mt-3 font-display text-[1.85rem] leading-tight text-white sm:text-[2.4rem]">
+        Szkolenia stylizacji paznokci
+      </h2>
+      <div class="rule on-plum mt-5" aria-hidden="true">✦</div>
+    </div>
+
+    <div class="mx-auto mt-10 max-w-prose rounded-[26px] border border-[rgba(217,188,122,.45)] p-7 text-center sm:p-9">
+      <p class="font-script text-[2.1rem] leading-none text-goldlt">Sylwia Fogiel</p>
+      <p class="label mt-3 text-goldlt">Instruktorka stylizacji paznokci</p>
+
+      <p class="mt-6 text-[1.02rem] leading-relaxed text-[#EADFD8]">
+        Szkolenia prowadzi Sylwia i jest to jej odrębna działalność, skierowana do osób,
+        które chcą nauczyć się stylizacji paznokci. To nie jest usługa salonu.
+        Szczegóły terminów i programu znajdziesz na profilach instruktorskich.
+      </p>
+
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+        <a href="https://www.instagram.com/sylvia_nailart" target="_blank" rel="noopener"
+           class="press inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-goldlt px-7 py-3.5 text-base font-bold text-plum hover:bg-[#e7cea0]">
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
+          Instagram szkoleń
+        </a>
+        <a href="https://www.facebook.com/Fogielsylwiainstruktor93/" target="_blank" rel="noopener"
+           class="press inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full border border-[rgba(217,188,122,.7)] px-7 py-3.5 text-base font-semibold text-goldlt hover:bg-[rgba(217,188,122,.12)]">
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor" aria-hidden="true"><path d="M14 9V7.2c0-.9.2-1.3 1.4-1.3H17V3h-2.6C11.5 3 10.4 4.5 10.4 7v2H8.5v3h1.9v9H14v-9h2.6l.4-3z"/></svg>
+          Facebook szkoleń
+        </a>
+      </div>
+
+      <p class="mt-7 text-sm text-[#C9B7B0]">
+        Szukasz wizyty na paznokcie, a nie szkolenia?
+        <a href="#uslugi" class="font-semibold text-goldlt underline underline-offset-4 hover:text-white">Wróć do oferty salonu</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALERIA ============ -->
+<section id="galeria" class="py-16 sm:py-20 lg:py-24">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+    <div class="text-center">
+      <p class="label text-goldtxt">Nasze prace</p>
+      <h2 class="mt-3 font-display text-[1.85rem] leading-tight sm:text-[2.4rem]">Galeria stylizacji</h2>
+      <div class="rule mt-5" aria-hidden="true">✦</div>
+      <p class="mx-auto mt-5 max-w-prose text-[.98rem] leading-relaxed text-inkmuted">
+        Zdjęcia stylizacji trafią tu wkrótce. Najświeższe prace pokazujemy na bieżąco na Instagramie.
+      </p>
+    </div>
+
+    <!-- TODO: podmienic kafle na <img> ze zdjeciami z photos/galeria/. Zaokraglenia narozników zostaja. -->
+    <div class="mt-12 grid grid-cols-2 gap-3.5 sm:gap-5 lg:grid-cols-3">
+      <div class="flex aspect-square items-center justify-center rounded-b-[22px] rounded-t-[80px] border border-dashed border-gold bg-surface text-center">
+        <span class="px-3 text-xs font-medium text-inkmuted"><span class="mb-1 block text-base text-gold" aria-hidden="true">✦</span>Zdjęcie wkrótce</span>
+      </div>
+      <div class="flex aspect-square items-center justify-center rounded-b-[22px] rounded-t-[80px] border border-dashed border-gold bg-surface text-center">
+        <span class="px-3 text-xs font-medium text-inkmuted"><span class="mb-1 block text-base text-gold" aria-hidden="true">✦</span>Zdjęcie wkrótce</span>
+      </div>
+      <div class="flex aspect-square items-center justify-center rounded-b-[22px] rounded-t-[80px] border border-dashed border-gold bg-surface text-center">
+        <span class="px-3 text-xs font-medium text-inkmuted"><span class="mb-1 block text-base text-gold" aria-hidden="true">✦</span>Zdjęcie wkrótce</span>
+      </div>
+      <div class="flex aspect-square items-center justify-center rounded-b-[22px] rounded-t-[80px] border border-dashed border-gold bg-surface text-center">
+        <span class="px-3 text-xs font-medium text-inkmuted"><span class="mb-1 block text-base text-gold" aria-hidden="true">✦</span>Zdjęcie wkrótce</span>
+      </div>
+      <div class="flex aspect-square items-center justify-center rounded-b-[22px] rounded-t-[80px] border border-dashed border-gold bg-surface text-center">
+        <span class="px-3 text-xs font-medium text-inkmuted"><span class="mb-1 block text-base text-gold" aria-hidden="true">✦</span>Zdjęcie wkrótce</span>
+      </div>
+      <div class="flex aspect-square items-center justify-center rounded-b-[22px] rounded-t-[80px] border border-dashed border-gold bg-surface text-center">
+        <span class="px-3 text-xs font-medium text-inkmuted"><span class="mb-1 block text-base text-gold" aria-hidden="true">✦</span>Zdjęcie wkrótce</span>
+      </div>
+    </div>
+
+    <div class="mt-10 text-center">
+      <a href="https://www.instagram.com/patent_na_pazur/" target="_blank" rel="noopener"
+         class="press inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full border border-gold px-7 py-3.5 text-base font-semibold text-ink hover:bg-surface2">
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
+        Zobacz prace na Instagramie
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OPINIE ============ -->
+<section id="opinie" class="bg-surface2 py-16 sm:py-20 lg:py-24">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+    <div class="text-center">
+      <p class="label text-goldtxt">Zaufanie</p>
+      <h2 class="mt-3 font-display text-[1.85rem] leading-tight sm:text-[2.4rem]">Co mówią klientki</h2>
+      <div class="rule mt-5" aria-hidden="true">✦</div>
+      <p class="mx-auto mt-5 max-w-prose text-[.98rem] leading-relaxed text-inkmuted">
+        Pięć na pięć w trzech niezależnych miejscach. Łącznie 53 oceny.
+      </p>
+    </div>
+
+    <!-- TODO klientka: w kazde <blockquote> wkleic prawdziwy cytat i podpisac autora.
+         Material z brief.md gotowy do wklejenia:
+         GOOGLE / Izabela Adamczyk: "Jestem bardzo zadowolona z uslug salonu! Sylwia robi niesamowite paznokcie,
+           jest prawdziwa artystka! Potrafi namalowac wszystko, o czym sobie tylko marzysz, dbajac przy tym o kazdy szczegol."
+         GOOGLE / Patrycja Jedrzejczak: "Szukalam i znalazlam dusze artystyczna, przemila, nie bojaca sie wyzwan.
+           Trafilam do Pani Sylwii z polecenia i byl to strzal w 10. Paznokcie sa dopracowane w 100%."
+         BOOKSY / Monika: "Super atmosfera i bardzo ladnie zrobione paznokcie. Polecam."
+         BOOKSY / Malgorzata: "Jak zawsze perfekcyjnie, dziekuje Pani Ewo."
+         FACEBOOK: brak zebranego cytatu, do uzupelnienia przez klientke. -->
+    <div class="mt-12 grid gap-5 sm:gap-6 lg:grid-cols-3">
+
+      <article class="flex flex-col rounded-[26px] border border-[rgba(176,141,78,.4)] bg-bg p-6 shadow-[0_10px_30px_rgba(38,25,31,.06)] sm:p-7">
+        <div class="flex items-center gap-3">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface text-accent">
+            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor" aria-hidden="true"><path d="M14 9V7.2c0-.9.2-1.3 1.4-1.3H17V3h-2.6C11.5 3 10.4 4.5 10.4 7v2H8.5v3h1.9v9H14v-9h2.6l.4-3z"/></svg>
+          </span>
+          <div>
+            <p class="text-sm font-bold">Facebook</p>
+            <p class="text-xs text-inkmuted">14 opinii</p>
+          </div>
+          <p class="ml-auto text-right">
+            <span class="block font-display text-2xl leading-none text-accent">5,0</span>
+            <span class="block text-xs tracking-[.12em] text-goldtxt" aria-hidden="true">★★★★★</span>
+          </p>
+        </div>
+        <blockquote class="mt-6 flex min-h-[132px] flex-1 items-center rounded-[18px] border border-dashed border-gold bg-surface px-5 py-5 text-sm leading-relaxed text-inkmuted">
+          Miejsce na opinię z Facebooka.
+        </blockquote>
+        <p class="mt-4 text-sm text-inkmuted"><span class="font-semibold text-ink">imię klientki</span> · Facebook</p>
+        <a href="https://www.facebook.com/profile.php?id=61576445061800" target="_blank" rel="noopener"
+           class="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-accent underline underline-offset-4 hover:text-ink">
+          Zobacz opinie na Facebooku
+        </a>
+      </article>
+
+      <article class="flex flex-col rounded-[26px] border border-[rgba(176,141,78,.4)] bg-bg p-6 shadow-[0_10px_30px_rgba(38,25,31,.06)] sm:p-7">
+        <div class="flex items-center gap-3">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface font-display text-lg text-accent" aria-hidden="true">G</span>
+          <div>
+            <p class="text-sm font-bold">Google</p>
+            <p class="text-xs text-inkmuted">13 opinii</p>
+          </div>
+          <p class="ml-auto text-right">
+            <span class="block font-display text-2xl leading-none text-accent">5,0</span>
+            <span class="block text-xs tracking-[.12em] text-goldtxt" aria-hidden="true">★★★★★</span>
+          </p>
+        </div>
+        <blockquote class="mt-6 flex min-h-[132px] flex-1 items-center rounded-[18px] border border-dashed border-gold bg-surface px-5 py-5 text-sm leading-relaxed text-inkmuted">
+          Miejsce na opinię z Google.
+        </blockquote>
+        <p class="mt-4 text-sm text-inkmuted"><span class="font-semibold text-ink">imię klientki</span> · Google</p>
+        <a href="https://www.google.com/search?q=Patent+na+Pazur+Opoczno" target="_blank" rel="noopener"
+           class="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-accent underline underline-offset-4 hover:text-ink">
+          Zobacz opinie w Google
+        </a>
+      </article>
+
+      <article class="flex flex-col rounded-[26px] border border-[rgba(176,141,78,.4)] bg-bg p-6 shadow-[0_10px_30px_rgba(38,25,31,.06)] sm:p-7">
+        <div class="flex items-center gap-3">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface font-display text-lg text-accent" aria-hidden="true">B</span>
+          <div>
+            <p class="text-sm font-bold">Booksy</p>
+            <p class="text-xs text-inkmuted">26 opinii</p>
+          </div>
+          <p class="ml-auto text-right">
+            <span class="block font-display text-2xl leading-none text-accent">5,0</span>
+            <span class="block text-xs tracking-[.12em] text-goldtxt" aria-hidden="true">★★★★★</span>
+          </p>
+        </div>
+        <blockquote class="mt-6 flex min-h-[132px] flex-1 items-center rounded-[18px] border border-dashed border-gold bg-surface px-5 py-5 text-sm leading-relaxed text-inkmuted">
+          Miejsce na opinię z Booksy.
+        </blockquote>
+        <p class="mt-4 text-sm text-inkmuted"><span class="font-semibold text-ink">imię klientki</span> · Booksy</p>
+        <a href="https://booksy.com/pl-pl/327039_patent-na-pazur_paznokcie_8522_opoczno#ba_s=seo" target="_blank" rel="noopener"
+           class="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-accent underline underline-offset-4 hover:text-ink">
+          Zobacz opinie w Booksy
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GODZINY + KONTAKT + MAPA ============ -->
+<section id="kontakt" class="py-16 sm:py-20 lg:py-24">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+    <div class="text-center">
+      <p class="label text-goldtxt">Wpadnij do nas</p>
+      <h2 class="mt-3 font-display text-[1.85rem] leading-tight sm:text-[2.4rem]">Godziny i kontakt</h2>
+      <div class="rule mt-5" aria-hidden="true">✦</div>
+    </div>
+
+    <div class="mt-12 grid gap-6 lg:grid-cols-2 lg:gap-8">
+
+      <div class="rounded-[26px] border border-[rgba(176,141,78,.4)] bg-surface p-6 sm:p-8">
+        <h3 class="font-display text-xl">Godziny otwarcia</h3>
+        <dl class="mt-6" id="godziny">
+          <div data-dzien="1" class="flex items-center justify-between gap-4 border-b border-border py-3">
+            <dt class="text-[.97rem]">Poniedziałek</dt><dd class="text-[.97rem] font-semibold tabular-nums">10:00 – 18:00</dd>
+          </div>
+          <div data-dzien="2" class="flex items-center justify-between gap-4 border-b border-border py-3">
+            <dt class="text-[.97rem]">Wtorek</dt><dd class="text-[.97rem] font-semibold tabular-nums">09:00 – 17:00</dd>
+          </div>
+          <div data-dzien="3" class="flex items-center justify-between gap-4 border-b border-border py-3">
+            <dt class="text-[.97rem]">Środa</dt><dd class="text-[.97rem] font-semibold tabular-nums">10:00 – 18:00</dd>
+          </div>
+          <div data-dzien="4" class="flex items-center justify-between gap-4 border-b border-border py-3">
+            <dt class="text-[.97rem]">Czwartek</dt><dd class="text-[.97rem] font-semibold tabular-nums">09:00 – 17:00</dd>
+          </div>
+          <div data-dzien="5" class="flex items-center justify-between gap-4 border-b border-border py-3">
+            <dt class="text-[.97rem]">Piątek</dt><dd class="text-[.97rem] font-semibold tabular-nums">08:00 – 16:00</dd>
+          </div>
+          <div data-dzien="6" class="flex items-center justify-between gap-4 border-b border-border py-3 text-inkmuted">
+            <dt class="text-[.97rem]">Sobota</dt><dd class="text-[.97rem] font-semibold">Zamknięte</dd>
+          </div>
+          <div data-dzien="0" class="flex items-center justify-between gap-4 py-3 text-inkmuted">
+            <dt class="text-[.97rem]">Niedziela</dt><dd class="text-[.97rem] font-semibold">Zamknięte</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="rounded-[26px] border border-[rgba(176,141,78,.4)] bg-surface p-6 sm:p-8">
+        <h3 class="font-display text-xl">Salon</h3>
+
+        <p class="mt-6 text-[.97rem] leading-relaxed">
+          <span class="font-semibold">Patent na Pazur</span><br>
+          ul. Piotrkowska 6<br>
+          26-300 Opoczno
+        </p>
+
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <a href="tel:+48575689972"
+             class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-accent px-7 py-3.5 text-base font-bold text-white hover:bg-[#8b3059]">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+            575 689 972
+          </a>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=Piotrkowska+6,+26-300+Opoczno" target="_blank" rel="noopener"
+             class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-gold bg-bg px-7 py-3.5 text-base font-semibold text-ink hover:bg-surface2">
+            Wyznacz trasę
+          </a>
+        </div>
+
+        <p class="label mt-8 text-goldtxt">Znajdziesz nas też tutaj</p>
+        <div class="mt-4 flex flex-wrap gap-2.5">
+          <a href="https://booksy.com/pl-pl/327039_patent-na-pazur_paznokcie_8522_opoczno#ba_s=seo" target="_blank" rel="noopener"
+             class="press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-border bg-bg px-4 py-2.5 text-sm font-semibold hover:border-accent hover:text-accent">
+            Booksy
+          </a>
+          <a href="https://www.instagram.com/patent_na_pazur/" target="_blank" rel="noopener"
+             class="press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-border bg-bg px-4 py-2.5 text-sm font-semibold hover:border-accent hover:text-accent">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
+            Instagram
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61576445061800" target="_blank" rel="noopener"
+             class="press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-border bg-bg px-4 py-2.5 text-sm font-semibold hover:border-accent hover:text-accent">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true"><path d="M14 9V7.2c0-.9.2-1.3 1.4-1.3H17V3h-2.6C11.5 3 10.4 4.5 10.4 7v2H8.5v3h1.9v9H14v-9h2.6l.4-3z"/></svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 overflow-hidden rounded-[26px] border border-[rgba(176,141,78,.4)] lg:mt-8">
+      <iframe
+        title="Mapa dojazdu: Patent na Pazur, Piotrkowska 6, Opoczno"
+        src="https://maps.google.com/maps?q=Piotrkowska%206%2C%2026-300%20Opoczno&z=16&output=embed"
+        class="h-[300px] w-full sm:h-[380px]" style="border:0; filter: saturate(.82) contrast(1.02);"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ STOPKA ============ -->
+<footer class="border-t border-[rgba(176,141,78,.45)] bg-surface2">
+  <div class="mx-auto max-w-content px-4 py-12 sm:px-6 sm:py-14">
+    <div class="grid gap-8 sm:grid-cols-2">
+      <div>
+        <p class="font-script text-3xl leading-none text-accent">Patent na Pazur</p>
+        <p class="mt-4 text-sm leading-relaxed text-inkmuted">
+          ul. Piotrkowska 6, 26-300 Opoczno<br>
+          <a href="tel:+48575689972" class="inline-flex min-h-[44px] items-center font-semibold text-ink underline underline-offset-4 hover:text-accent">575 689 972</a>
+        </p>
+      </div>
+      <div class="sm:text-right">
+        <p class="label text-goldtxt">Salon</p>
+        <ul class="mt-2 text-sm">
+          <li><a href="https://booksy.com/pl-pl/327039_patent-na-pazur_paznokcie_8522_opoczno#ba_s=seo" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center text-inkmuted hover:text-accent">Booksy</a></li>
+          <li><a href="https://www.instagram.com/patent_na_pazur/" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center text-inkmuted hover:text-accent">Instagram</a></li>
+          <li><a href="https://www.facebook.com/profile.php?id=61576445061800" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center text-inkmuted hover:text-accent">Facebook</a></li>
+        </ul>
+        <p class="label mt-6 text-goldtxt">Szkolenia (Sylwia Fogiel)</p>
+        <ul class="mt-2 text-sm">
+          <li><a href="https://www.instagram.com/sylvia_nailart" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center text-inkmuted hover:text-accent">Instagram instruktorki</a></li>
+          <li><a href="https://www.facebook.com/Fogielsylwiainstruktor93/" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center text-inkmuted hover:text-accent">Facebook instruktorki</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-10 flex flex-col gap-3 border-t border-border pt-6 text-sm text-inkmuted sm:flex-row sm:items-center sm:justify-between">
+      <p>© <span id="rok">2026</span> Patent na Pazur</p>
+      <a href="privacy.html" class="inline-flex min-h-[44px] items-center underline underline-offset-4 hover:text-accent">Polityka prywatności</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('rok').textContent = new Date().getFullYear();
+  // Podswietlenie dzisiejszego dnia w tabeli godzin.
+  (function () {
+    var wiersz = document.querySelector('#godziny [data-dzien="' + new Date().getDay() + '"]');
+    if (!wiersz) return;
+    wiersz.classList.add('rounded-lg', 'bg-bg', 'px-3', 'font-semibold', 'text-ink');
+    var dt = wiersz.querySelector('dt');
+    dt.insertAdjacentHTML('beforeend', '<span class="ml-2 rounded-full bg-accent px-2 py-0.5 text-[.68rem] font-bold uppercase tracking-wider text-white">dziś</span>');
+  })();
+</script>
+
+</body>
+</html>
