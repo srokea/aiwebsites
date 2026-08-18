@@ -32,7 +32,7 @@
         },
         fontFamily: {
           display: ['"Bodoni Moda"', 'serif'],
-          body:    ['"Work Sans"', 'system-ui', 'sans-serif'],
+          body:    ['"Poppins"', 'system-ui', 'sans-serif'],
         },
         maxWidth: { content: '64rem' },
       }
@@ -90,46 +90,143 @@
     src: url('fonts/worksans-latin-ext.woff2') format('woff2');
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
   }
+  /* Body font — proba: Cormorant Garamond (opcja 7 z porownania czcionek), zamiast Work Sans.
+     Work Sans zostaje zdefiniowany powyzej na wypadek powrotu, ale nieuzywany (bez pobierania). */
+  @font-face {
+    font-family: 'Cormorant Garamond';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('fonts/cormorant-400-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('fonts/cormorant-400-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('fonts/cormorant-700-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('fonts/cormorant-700-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  /* Body font — proba: Poppins (opcja 5 z porownania). */
+  @font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('fonts/poppins-400-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('fonts/poppins-400-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('fonts/poppins-600-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('fonts/poppins-600-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
 
   html { scroll-behavior: smooth; }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
   }
 
-  .display  { font-family: 'Bodoni Moda', serif; font-weight: 500; line-height: 1.08; font-size: clamp(2.4rem, 4.5vw + 1.4rem, 4.5rem); }
+  .display  { font-family: 'Bodoni Moda', serif; font-weight: 500; line-height: 1.06; font-size: clamp(2.35rem, 3.4vw + 1.3rem, 4rem); }
   .headline { font-family: 'Bodoni Moda', serif; font-weight: 500; line-height: 1.15; font-size: clamp(1.75rem, 2.5vw + 1.1rem, 2.75rem); }
 
   section[id] { scroll-margin-top: 4.5rem; }
 
-  /* Pasek ukosnych kresek na styku lewej plyty ze zdjeciem (referencja klientki: saloncattaleya.pl). */
+  /* Pasek ukosnych kresek w strefie "deadspace" miedzy paskiem a zdjeciem (referencja: saloncattaleya.pl). */
   .hero-stripes {
-    background-image: repeating-linear-gradient(45deg, rgba(227,212,203,0.16) 0, rgba(227,212,203,0.16) 1.5px, transparent 1.5px, transparent 15px);
+    background-image: repeating-linear-gradient(45deg, rgba(30,25,20,0.10) 0, rgba(30,25,20,0.10) 4.5px, transparent 4.5px, transparent 45px);
   }
 
-  /* Hero cross-fade: przenikajace sie zdjecia w tle, efekt wskazany w briefie (inspo saloncattaleya.pl).
-     Kazdy .hero-slide ma wlasny animation-delay tak, zeby w kazdej chwili dokladnie jedno
-     zdjecie bylo w pelni widoczne, a przejscia zachodzily na siebie (cross-fade, nie ciecie). */
+  /* Duzy, zachodzacy na fotografie napis w hero — echo "FRYZURY Z PASJA" z referencji klientki. */
+  .hero-bigtext {
+    font-family: 'Bodoni Moda', serif;
+    font-weight: 500;
+    font-size: clamp(3.2rem, 8vw, 8.5rem);
+    line-height: 0.94;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.92);
+    mix-blend-mode: overlay;
+  }
+
+  /* Aktywna sekcja w menu bocznym (scrollspy, patrz <script> na dole strony). */
+  .nav-link.is-active { color: #1E1914; font-weight: 600; }
+
+  /* Hero: 3 zdjecia (te same co ostatnie 3 w galerii), subtelny slide + fade. Obecne zdjecie
+     robi krotki, lekki ruch w lewo (6%) gasnac szybko do zera — powstaje malutka przerwa,
+     w ktorej widac tlo .hero-crossfade (#171310). Kolejne zdjecie zaczyna wjezdzac z prawej
+     (6% -> 0%) i pojawiac sie JUZ w trakcie tej przerwy (jego delay startuje przed pelnym
+     zgaśnięciem poprzedniego — patrz przesuniecie 33.3% vs 35% ponizej). Cykl 15s = 3 x 5s. */
   .hero-crossfade { position: relative; overflow: hidden; background: #171310; }
   .hero-slide {
     position: absolute; inset: 0;
     background-size: cover; background-repeat: no-repeat;
     opacity: 0;
-    animation: heroFade 25s infinite;
+    animation: heroSlide 15s infinite;
     animation-fill-mode: backwards;
+    will-change: transform, opacity;
   }
-  @keyframes heroFade {
-    0%   { opacity: 0; }
-    6%   { opacity: 1; }
-    14%  { opacity: 1; }
-    20%  { opacity: 0; }
-    100% { opacity: 0; }
+  @keyframes heroSlide {
+    0%     { opacity: 0; transform: translateX(6%); }
+    10%    { opacity: 1; transform: translateX(0%); }
+    26.7%  { opacity: 1; transform: translateX(0%); }
+    35%    { opacity: 0; transform: translateX(-6%); }
+    100%   { opacity: 0; transform: translateX(-6%); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .hero-slide { animation: none; opacity: 0; }
+    .hero-slide { animation: none; opacity: 0; transform: none; }
     .hero-slide:first-child { opacity: 1; }
   }
   /* Zawijas pod nazwiskiem, echo odrecznego podpisu z logo. */
   .flourish { display: block; margin-top: 0.6rem; }
+
+  /* Lightbox galerii — ten sam wzorzec co clients/GRANDA-Barber-Shop (wejscie/przewijanie/wyjscie). */
+  .lightbox {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 220ms ease, visibility 0s linear 220ms;
+  }
+  .lightbox.is-open {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 220ms ease, visibility 0s linear 0s;
+  }
 
   /* Mapa spieta z beżowym motywem: lekkie sepiowe zdjecie zamiast surowych kolorow Google. */
   .map-frame { position: relative; }
@@ -147,94 +244,127 @@
 
 <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-accent focus:px-5 focus:py-3 focus:text-bg">Przejdź do treści</a>
 
-<main id="main" tabindex="-1">
+<!-- Trwale CTA w prawym dolnym rogu — fixed, towarzyszy przez cala strone tak jak pasek boczny. -->
+<a href="tel:+48739090942" aria-label="Umów wizytę: zadzwoń pod numer 739 090 942" class="fixed bottom-5 right-5 z-40 inline-flex min-h-[48px] items-center gap-2 rounded-full bg-accent px-5 py-3.5 text-sm font-semibold text-bg shadow-lg shadow-ink/25 transition hover:brightness-125 motion-reduce:transition-none sm:bottom-8 sm:right-8 sm:px-6 sm:text-base">
+  <svg class="h-[1.1rem] w-[1.1rem] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>
+  </svg>
+  Umów wizytę
+</a>
 
-<!-- ============ HERO ============ -->
-<!-- Split-screen wg ukladu referencyjnego wskazanego przez klientke (saloncattaleya.pl):
-     lewa plyta w kolorze accent niesie logo, naglowek, pionowe menu i CTA — nawigacja
-     "przeniesiona na bok", nie stoi juz jako osobny gorny pasek. Prawa kolumna to
-     wylacznie zdjecia (cross-fade), bez pelnoekranowego tla. Miedzy kolumnami pasek
-     ukosnych kresek (repeating-linear-gradient), echo tekstury z referencji.
-     Kolory i tresc identyczne jak w poprzedniej wersji hero — zmienia sie ulozenie. -->
-<section class="flex min-h-[100svh] flex-col md:flex-row">
+<!-- ============ SIDEBAR / HEADER (md+) ============ -->
+<!-- Lewy pasek pelni role headera na md+: jest fixed i nie znika przy scrollu. Na mobile
+     ukryty (hidden) — tam dziala osobny, klasyczny gorny header ponizej. -->
+<!-- Kolor: pasek w odcieniu beżu #D0B99E, wyraznie ciemniejszy niz hero-deadspace, ktory
+     dostal jasny beż wprost z tla logo (#E3D4CB, patrz sekcja hero) — pasek ma sie wizualnie
+     wyrozniac od reszty hero, obie plyty zostaja w rodzinie beżu (bez czerni).
+     Tekst nieaktywnych linkow uzywa text-ink/75 (nie globalnego inkmuted) bo na tym
+     ciemniejszym tle sam inkmuted spada ponizej WCAG AA — przeliczone osobno.
+     Logo: zdjecie photos/logo2.jpg (wariant "Beda.makeup") zamiast SVG-monogramu. -->
+<aside class="hero-sidebar relative hidden w-full flex-col bg-[#D0B99E] px-7 py-8 md:fixed md:inset-y-0 md:left-0 md:z-30 md:flex md:w-[220px] md:overflow-y-auto lg:w-[240px] xl:w-[260px]">
 
-  <!-- Lewa kolumna: plyta koloru accent, logo + naglowek + pionowe menu + CTA. -->
-  <div class="relative order-2 flex w-full flex-col bg-accent px-5 py-8 sm:px-8 sm:py-10 md:order-1 md:w-[46%] md:px-12 md:py-10 md:pr-28 lg:w-[42%] lg:pr-32">
+  <a href="index.html" class="mt-6 flex shrink-0 items-center justify-center sm:mt-8 md:mt-10">
+    <img src="photos/logo2.jpg" alt="Julia Bednarska Makeup Artist — logo" width="150" height="150" loading="eager" class="h-24 w-24 rounded-lg border border-ink/10 object-cover sm:h-28 sm:w-28 lg:h-32 lg:w-32">
+  </a>
 
-    <a href="index.html" class="flex shrink-0 items-center gap-2.5 leading-tight">
-      <svg class="h-9 w-9 shrink-0 rounded-[8px]" viewBox="0 0 64 64" aria-hidden="true">
-        <rect width="64" height="64" rx="12" fill="#E3D4CB"/>
-        <text x="32" y="41" font-family="'Bodoni Moda', 'Didot', Georgia, serif" font-size="26" font-weight="500" fill="#120F0C" text-anchor="middle">JB</text>
-      </svg>
-      <span class="block">
-        <span class="block text-sm font-semibold tracking-wide text-bg">Julia Bednarska</span>
-        <span class="block text-[0.65rem] uppercase tracking-[0.18em] text-bg/60">Makeup Artist</span>
-      </span>
-    </a>
-
-    <div class="mt-10 sm:mt-12 md:mt-14">
-      <h1 class="display text-bg">Julia Bednarska</h1>
-      <svg class="flourish text-bg/75" width="230" height="22" viewBox="0 0 230 22" fill="none" aria-hidden="true">
-        <path d="M2 8c34-10 68-10 100-2 30 8 62 8 90-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-      <span class="mt-4 block text-sm uppercase tracking-[0.35em] text-bg/80">Makeup Artist</span>
-
-      <p class="mt-6 max-w-md text-lg leading-relaxed text-bg/90">
-        Makijaż, który trzyma się cały wieczór. Nie tylko na pierwszym zdjęciu.
-      </p>
-    </div>
-
-    <nav class="mt-8 flex flex-col gap-2.5 text-sm font-medium sm:mt-10" aria-label="Sekcje strony">
-      <a href="#about" class="inline-flex min-h-[36px] items-center text-bg/70 transition-colors hover:text-bg motion-reduce:transition-none">O mnie</a>
-      <a href="#galeria" class="inline-flex min-h-[36px] items-center text-bg/70 transition-colors hover:text-bg motion-reduce:transition-none">Galeria</a>
-      <a href="#opinie" class="inline-flex min-h-[36px] items-center text-bg/70 transition-colors hover:text-bg motion-reduce:transition-none">Opinie</a>
-      <a href="#kontakt" class="inline-flex min-h-[36px] items-center text-bg/70 transition-colors hover:text-bg motion-reduce:transition-none">Kontakt</a>
+  <div class="flex flex-1 flex-col items-center justify-center">
+    <nav class="flex flex-col items-center gap-3 text-center text-base font-medium" aria-label="Sekcje strony">
+      <a href="#about" class="nav-link inline-flex min-h-[36px] items-center text-ink/75 transition-colors hover:text-ink motion-reduce:transition-none">O mnie</a>
+      <a href="#galeria" class="nav-link inline-flex min-h-[36px] items-center text-ink/75 transition-colors hover:text-ink motion-reduce:transition-none">Galeria</a>
+      <a href="#opinie" class="nav-link inline-flex min-h-[36px] items-center text-ink/75 transition-colors hover:text-ink motion-reduce:transition-none">Opinie</a>
+      <a href="#kontakt" class="nav-link inline-flex min-h-[36px] items-center text-ink/75 transition-colors hover:text-ink motion-reduce:transition-none">Kontakt</a>
     </nav>
-
-    <div class="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-      <a href="tel:+48739090942" aria-label="Zadzwoń: 739 090 942" class="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-bg px-7 py-3.5 text-base font-semibold text-ink transition hover:brightness-95 motion-reduce:transition-none">
-        <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>
-        </svg>
-        Zadzwoń: 739 090 942
-      </a>
-      <a href="https://www.instagram.com/juliabednarskamakeup_/" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-bg/50 px-7 py-3.5 text-base font-medium text-bg transition hover:border-bg hover:bg-bg/10 motion-reduce:transition-none">
-        <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-          <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" stroke="none"/>
-        </svg>
-        @juliabednarskamakeup_
-      </a>
-    </div>
-
-    <div class="flex-1"></div>
-
-    <div class="mt-10 flex items-center justify-between gap-4 border-t border-bg/15 pt-6">
-      <p class="text-sm text-bg/70">
-        Narutowicza 22a &middot; Radomsko
-      </p>
-      <a href="https://www.instagram.com/juliabednarskamakeup_/" target="_blank" rel="noopener" aria-label="Julia Bednarska na Instagramie" class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-bg/30 text-bg transition hover:border-bg motion-reduce:transition-none">
-        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-          <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" stroke="none"/>
-        </svg>
-      </a>
-    </div>
-
-    <!-- Pasek ukosnych kresek na styku z fotografia, tylko na ukladzie dwukolumnowym (md+). -->
-    <div class="hero-stripes pointer-events-none absolute inset-y-0 right-0 hidden w-24 md:block lg:w-28" aria-hidden="true"></div>
   </div>
 
-  <!-- Prawa kolumna: cross-fade zdjec, tylko w obrebie tej kolumny (nie pelny ekran). -->
-  <div class="hero-crossfade relative order-1 h-[46vh] w-full md:order-2 md:h-auto md:w-[54%] lg:w-[58%]" role="img" aria-label="Przenikające się zdjęcia realizacji makijażu Julii Bednarskiej: smoky eyes, stylizacja różowa, wieczorowa z czerwoną szminką, naturalny glamour i wieczorowa czarna">
-    <div class="hero-slide" style="background-image:url('photos/unnamed.webp'); background-position:center 30%; animation-delay:0s;" aria-hidden="true"></div>
-    <div class="hero-slide" style="background-image:url('photos/unnamed (1).webp'); background-position:center 25%; animation-delay:5s;" aria-hidden="true"></div>
-    <div class="hero-slide" style="background-image:url('photos/unnamed (2).webp'); background-position:center 20%; animation-delay:10s;" aria-hidden="true"></div>
-    <div class="hero-slide" style="background-image:url('photos/unnamed (4).webp'); background-position:center 22%; animation-delay:15s;" aria-hidden="true"></div>
-    <div class="hero-slide" style="background-image:url('photos/unnamed (5).webp'); background-position:center 18%; animation-delay:20s;" aria-hidden="true"></div>
+  <!-- Kontakt jako same ikony (bez numeru/nazwy w tym miejscu — pelne dane sa w sekcji Kontakt i stopce). -->
+  <div class="mt-8 flex items-center justify-center gap-3">
+    <a href="tel:+48739090942" aria-label="Zadzwoń: 739 090 942" class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent text-bg transition hover:brightness-125 motion-reduce:transition-none">
+      <svg class="h-[1.1rem] w-[1.1rem]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>
+      </svg>
+    </a>
+    <a href="https://www.instagram.com/juliabednarskamakeup_/" target="_blank" rel="noopener" aria-label="Julia Bednarska na Instagramie" class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-ink/25 text-ink transition hover:border-ink hover:bg-ink/5 motion-reduce:transition-none">
+      <svg class="h-[1.1rem] w-[1.1rem]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" stroke="none"/>
+      </svg>
+    </a>
+  </div>
+</aside>
+
+<!-- ============ HEADER (mobile, klasyczny) ============ -->
+<!-- Tylko na mobile (md:hidden) — sticky gorny pasek, standardowy uklad logo+hamburger+nazwa | ig.
+     Na md+ ta rola przechodzi na <aside> powyzej. Hamburger rozwija liste sekcji (te same
+     linki co w aside, wiec dziedziczy .nav-link i podswietlanie scrollspy). -->
+<header class="sticky top-0 z-40 border-b border-border bg-bg/90 backdrop-blur-md md:hidden">
+  <div class="relative flex items-center justify-between px-5 py-3">
+    <div class="flex items-center gap-2.5">
+      <a href="index.html" class="shrink-0">
+        <img src="photos/logo2.jpg" alt="Julia Bednarska Makeup Artist — logo" width="80" height="80" loading="eager" class="h-10 w-10 rounded-md border border-ink/10 object-cover">
+      </a>
+      <button type="button" data-mobile-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Otwórz menu" class="inline-flex h-8 w-8 shrink-0 items-center justify-center text-ink">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+    <a href="https://www.instagram.com/juliabednarskamakeup_/" target="_blank" rel="noopener" aria-label="Julia Bednarska na Instagramie" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent text-bg transition hover:brightness-125 motion-reduce:transition-none">
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" stroke="none"/>
+      </svg>
+    </a>
+  </div>
+  <nav id="mobile-menu" data-mobile-menu class="absolute left-5 top-[calc(100%+8px)] z-50 hidden w-52 flex-col gap-1 rounded-2xl border border-border bg-bg p-3 shadow-xl shadow-ink/10" aria-label="Sekcje strony">
+    <a href="#about" class="nav-link inline-flex min-h-[40px] items-center rounded-lg px-3 text-base font-medium text-ink/75 transition-colors hover:bg-ink/5 hover:text-ink motion-reduce:transition-none">O mnie</a>
+    <a href="#galeria" class="nav-link inline-flex min-h-[40px] items-center rounded-lg px-3 text-base font-medium text-ink/75 transition-colors hover:bg-ink/5 hover:text-ink motion-reduce:transition-none">Galeria</a>
+    <a href="#opinie" class="nav-link inline-flex min-h-[40px] items-center rounded-lg px-3 text-base font-medium text-ink/75 transition-colors hover:bg-ink/5 hover:text-ink motion-reduce:transition-none">Opinie</a>
+    <a href="#kontakt" class="nav-link inline-flex min-h-[40px] items-center rounded-lg px-3 text-base font-medium text-ink/75 transition-colors hover:bg-ink/5 hover:text-ink motion-reduce:transition-none">Kontakt</a>
+  </nav>
+</header>
+
+<main id="main" tabindex="-1" class="md:ml-[220px] lg:ml-[240px] xl:ml-[260px]">
+
+<!-- ============ HERO ============ -->
+<!-- Trzy strefy 1:1 wg referencji klientki (saloncattaleya.pl): waski pasek (aside powyzej,
+     osobno) + "deadspace" (plyta w tym samym odcieniu beżu co pasek, teraz niesie naglowek
+     przeniesiony z headera — tam zostaje tylko nawigacja) + zdjecia po prawej. Ukosne kreski
+     TYLKO jako waski pasek tuz przy zdjeciu (nie na calej plycie — poprawka po referencji:
+     na saloncattaleya.pl tekstura jest przy fotografii, reszta plyty jest jednolita). -->
+<section class="relative flex w-full flex-col md:h-[100svh] md:flex-row">
+  <div class="relative flex w-full flex-col justify-start bg-bg px-6 pb-10 pt-14 sm:px-10 sm:pt-16 md:h-full md:w-1/2 md:px-12 md:pt-20 lg:px-16">
+    <h1 class="display text-ink">Julia Bednarska</h1>
+    <svg class="flourish text-ink/60" width="210" height="20" viewBox="0 0 230 22" fill="none" aria-hidden="true">
+      <path d="M2 8c34-10 68-10 100-2 30 8 62 8 90-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <p class="mt-6 max-w-sm text-lg leading-relaxed text-ink/85 sm:text-xl">
+      Makijaż, który trzyma się cały wieczór. Nie tylko na pierwszym zdjęciu.
+    </p>
+
+    <!-- Pasek ukosnych kresek tuz przy fotografii, lekko na nia wchodzacy (z-10 ponad zdjeciem). -->
+    <div class="hero-stripes pointer-events-none absolute inset-y-0 right-[-1.75rem] z-10 hidden w-24 md:block lg:w-28 lg:right-[-2.25rem]" aria-hidden="true"></div>
+
+    <!-- Waski pionowy czarny prostokat na calej wysokosci hero — lewa "obramowka" zdjecia,
+         flush z jego lewa krawedzia (nie wchodzi na fotografie). Kolor #171310 to to samo tlo,
+         ktore widac pod .hero-slide podczas fade-outu miedzy zdjeciami — spojnie z crossfade'em.
+         Tylko md+. -->
+    <div class="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-6 bg-[#171310] md:block" aria-hidden="true"></div>
+  </div>
+
+  <div class="hero-crossfade relative h-[46vh] w-full md:h-full md:w-1/2" role="img" aria-label="Przenikające się zdjęcia realizacji makijażu Julii Bednarskiej: smoky eyes, jasny top i wieczorowa czarna stylizacja">
+    <div class="hero-slide" style="background-image:url('photos/unnamed.webp'); background-position:center 26%; animation-delay:0s;" aria-hidden="true"></div>
+    <div class="hero-slide" style="background-image:url('photos/unnamed (4).webp'); background-position:center 20%; animation-delay:5s;" aria-hidden="true"></div>
+    <div class="hero-slide" style="background-image:url('photos/unnamed (5).webp'); background-position:center 18%; animation-delay:10s;" aria-hidden="true"></div>
+  </div>
+
+  <!-- Duzy napis "MAKE-UP ARTIST" zachodzacy z deadspace na fotografie — echo "FRYZURY Z PASJA"
+       z referencji klientki (saloncattaleya.pl). Dekoracyjny, zduplikowany tresciowo z etykieta
+       przy naglowku, wiec aria-hidden. Tylko na ukladzie dwukolumnowym (md+). -->
+  <div class="pointer-events-none absolute inset-0 z-20 hidden items-end px-6 pb-14 md:flex md:px-12 md:pb-16 lg:px-16 lg:pb-20" aria-hidden="true">
+    <p class="hero-bigtext md:translate-x-[50px]">MAKE-UP<br>ARTIST</p>
   </div>
 </section>
 
 <!-- ============ O MNIE ============ -->
-<section id="about" class="px-5 py-16 sm:px-8 sm:py-24">
+<section id="about" class="bg-surface px-5 py-16 sm:px-8 sm:py-24">
   <div class="mx-auto max-w-content">
     <h2 class="headline">O mnie</h2>
     <div class="mt-6 max-w-2xl space-y-5 text-lg leading-relaxed text-ink">
@@ -249,30 +379,50 @@
 </section>
 
 <!-- ============ GALERIA ============ -->
-<section id="galeria" class="bg-surface px-5 py-16 sm:px-8 sm:py-24">
+<section id="galeria" class="px-5 py-16 sm:px-8 sm:py-24">
   <div class="mx-auto max-w-content">
     <h2 class="headline">Metamorfozy</h2>
     <p class="mt-4 max-w-2xl text-lg leading-relaxed text-inkmuted">
       Kilka ostatnich realizacji. Od naturalnego blasku po mocny, wieczorowy look.
     </p>
 
-    <div class="mt-10 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3">
-      <img src="photos/unnamed.webp" alt="Makijaż smoky eyes z brązową paletą cieni" width="576" height="1024" loading="lazy" class="aspect-[3/4] w-full rounded-2xl border border-border object-cover" style="object-position:center 20%">
-      <img src="photos/unnamed (1).webp" alt="Delikatny makijaż okolicznościowy w różowej tonacji" width="632" height="1024" loading="lazy" class="aspect-[3/4] w-full rounded-2xl border border-border object-cover" style="object-position:center 15%">
-      <img src="photos/unnamed (2).webp" alt="Makijaż wieczorowy z wyrazistą czerwoną szminką" width="716" height="1024" loading="lazy" class="aspect-[3/4] w-full rounded-2xl border border-border object-cover" style="object-position:center 10%">
-      <img src="photos/unnamed (3).webp" alt="Kolorowy makijaż w różowo-brzoskwiniowej stylizacji" width="770" height="1024" loading="lazy" class="aspect-[3/4] w-full rounded-2xl border border-border object-cover" style="object-position:center 15%">
-      <img src="photos/unnamed (4).webp" alt="Naturalny makijaż glamour z rozświetloną skórą" width="775" height="1024" loading="lazy" class="aspect-[3/4] w-full rounded-2xl border border-border object-cover" style="object-position:center 20%">
-      <img src="photos/unnamed (5).webp" alt="Makijaż wieczorowy do czarnej, eleganckiej stylizacji" width="830" height="1024" loading="lazy" class="aspect-[3/4] w-full rounded-2xl border border-border object-cover" style="object-position:center 22%">
+    <div class="mt-10 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3" data-gallery>
+      <div class="aspect-[3/4] overflow-hidden rounded-2xl border border-border">
+        <img src="photos/unnamed.webp" data-gallery-img alt="Makijaż smoky eyes z brązową paletą cieni" width="576" height="1024" loading="lazy" class="h-full w-full cursor-zoom-in object-cover transition-transform duration-500 hover:scale-105 motion-reduce:transition-none" style="object-position:center 20%">
+      </div>
+      <div class="aspect-[3/4] overflow-hidden rounded-2xl border border-border">
+        <img src="photos/unnamed (1).webp" data-gallery-img alt="Delikatny makijaż okolicznościowy w różowej tonacji" width="632" height="1024" loading="lazy" class="h-full w-full cursor-zoom-in object-cover transition-transform duration-500 hover:scale-105 motion-reduce:transition-none" style="object-position:center 15%">
+      </div>
+      <div class="aspect-[3/4] overflow-hidden rounded-2xl border border-border">
+        <img src="photos/galeriakolejne.webp" data-gallery-img alt="Makijaż wieczorowy smoky eyes do czarnej, brokatowej stylizacji" width="584" height="1020" loading="lazy" class="h-full w-full cursor-zoom-in object-cover transition-transform duration-500 hover:scale-105 motion-reduce:transition-none" style="object-position:center 18%">
+      </div>
+      <div class="aspect-[3/4] overflow-hidden rounded-2xl border border-border">
+        <img src="photos/unnamed (3).webp" data-gallery-img alt="Kolorowy makijaż w różowo-brzoskwiniowej stylizacji" width="770" height="1024" loading="lazy" class="h-full w-full cursor-zoom-in object-cover transition-transform duration-500 hover:scale-105 motion-reduce:transition-none" style="object-position:center 15%">
+      </div>
+      <div class="aspect-[3/4] overflow-hidden rounded-2xl border border-border">
+        <img src="photos/unnamed (4).webp" data-gallery-img alt="Naturalny makijaż glamour z rozświetloną skórą" width="775" height="1024" loading="lazy" class="h-full w-full cursor-zoom-in object-cover transition-transform duration-500 hover:scale-105 motion-reduce:transition-none" style="object-position:center 20%">
+      </div>
+      <div class="aspect-[3/4] overflow-hidden rounded-2xl border border-border">
+        <img src="photos/unnamed (5).webp" data-gallery-img alt="Makijaż wieczorowy do czarnej, eleganckiej stylizacji" width="830" height="1024" loading="lazy" class="h-full w-full cursor-zoom-in object-cover transition-transform duration-500 hover:scale-105 motion-reduce:transition-none" style="object-position:center 22%">
+      </div>
+    </div>
+
+    <div class="mt-10 flex justify-center">
+      <a href="https://www.instagram.com/juliabednarskamakeup_/" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-border px-7 py-3.5 text-base font-medium text-ink transition hover:border-ink motion-reduce:transition-none">
+        Więcej na Instagramie
+      </a>
     </div>
   </div>
 </section>
 
 <!-- ============ OPINIE ============ -->
-<section id="opinie" class="px-5 py-16 sm:px-8 sm:py-24">
+<section id="opinie" class="bg-surface px-5 py-16 sm:px-8 sm:py-24">
   <div class="mx-auto max-w-content">
     <h2 class="headline">Opinie</h2>
-    <p class="mt-4 max-w-2xl text-lg leading-relaxed text-inkmuted">
-      5,0 na 5 z 10 opinii w Google.
+    <p class="mt-4 flex max-w-2xl items-center gap-1.5 text-lg leading-relaxed text-inkmuted">
+      5,0
+      <svg class="h-4 w-4 shrink-0 text-accent" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="m10 1.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9L10 1.5Z"/></svg>
+      z 10 opinii w Google.
     </p>
 
     <!-- Opinie skopiowane z profilu Google, tresc dostarczona przez klientke w briefie (stan na sierpien 2026). -->
@@ -355,7 +505,7 @@
 </section>
 
 <!-- ============ GODZINY + KONTAKT ============ -->
-<section id="kontakt" class="bg-surface px-5 py-16 sm:px-8 sm:py-24">
+<section id="kontakt" class="px-5 py-16 sm:px-8 sm:py-24">
   <div class="mx-auto max-w-content">
     <h2 class="headline">Godziny i kontakt</h2>
 
@@ -383,7 +533,7 @@
             97-561 Radomsko
           </p>
           <p>
-            <a href="tel:+48739090942" class="inline-flex min-h-[44px] items-center gap-2 font-semibold text-accent underline underline-offset-4">
+            <a href="tel:+48739090942" class="inline-flex min-h-[44px] items-center gap-2 font-semibold text-accent">
               <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>
               </svg>
@@ -391,7 +541,7 @@
             </a>
           </p>
           <p>
-            <a href="https://www.instagram.com/juliabednarskamakeup_/" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center gap-2 text-inkmuted transition-colors hover:text-ink motion-reduce:transition-none">
+            <a href="https://www.instagram.com/juliabednarskamakeup_/" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center gap-2 font-semibold text-accent">
               <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                 <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" stroke="none"/>
               </svg>
@@ -401,7 +551,7 @@
         </div>
 
         <a href="tel:+48739090942" class="mt-8 inline-flex min-h-[44px] items-center justify-center rounded-full bg-accent px-7 py-3.5 text-base font-semibold text-bg transition hover:brightness-125 motion-reduce:transition-none">
-          Zadzwoń i umów termin
+          Wyznacz trasę
         </a>
       </div>
 
@@ -410,7 +560,7 @@
 </section>
 
 <!-- ============ MAPA (pelna szerokosc) ============ -->
-<section aria-label="Mapa dojazdu do pracowni Julii Bednarskiej" class="bg-surface pb-16 sm:pb-24">
+<section aria-label="Mapa dojazdu do pracowni Julii Bednarskiej">
   <div class="map-frame">
     <iframe
       src="https://www.google.com/maps?q=Narutowicza%2022a%2C%2097-561%20Radomsko&output=embed"
@@ -419,17 +569,12 @@
       loading="lazy"
       referrerpolicy="no-referrer-when-downgrade"></iframe>
   </div>
-  <div class="flex justify-center px-5 pt-8 sm:px-8">
-    <a href="https://www.google.com/maps/dir/?api=1&destination=Narutowicza+22a,+97-561+Radomsko" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center justify-center rounded-full border border-border bg-bg px-7 py-3.5 text-base font-medium text-ink transition hover:border-ink motion-reduce:transition-none">
-      Wyznacz trasę
-    </a>
-  </div>
 </section>
 
 </main>
 
 <!-- ============ STOPKA ============ -->
-<footer class="px-5 py-12 sm:px-8">
+<footer class="px-5 py-12 sm:px-8 md:ml-[220px] lg:ml-[240px] xl:ml-[260px]">
   <div class="mx-auto flex max-w-content flex-col gap-6 border-t border-border pt-8 sm:flex-row sm:items-start sm:justify-between">
     <div class="flex items-center gap-4">
       <img src="photos/logo.webp" alt="Logo Julia Bednarska Makeup Artist" width="72" height="72" loading="lazy" class="h-16 w-16 shrink-0 rounded-xl border border-border object-cover">
@@ -446,6 +591,86 @@
     </div>
   </div>
 </footer>
+
+<!-- ══════════ LIGHTBOX GALERII ══════════ -->
+<div class="lightbox fixed inset-0 z-[60] flex items-center justify-center bg-ink/15 p-5 backdrop-blur-md" data-lightbox role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia z galerii" aria-hidden="true">
+  <button type="button" class="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full border border-ink/25 text-ink/80 transition-colors hover:border-ink hover:text-ink motion-reduce:transition-none md:right-6 md:top-6" data-lightbox-close aria-label="Zamknij podgląd">
+    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <div class="flex w-full max-w-4xl flex-col items-center gap-6">
+    <div class="flex h-[60vh] w-full items-center justify-center">
+      <img data-lightbox-img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBTAA7" alt="" class="h-auto max-h-full w-auto max-w-full rounded-lg border border-border object-contain">
+    </div>
+    <div class="flex items-center gap-8">
+      <button type="button" class="flex h-11 w-11 items-center justify-center rounded-full border border-ink/25 text-ink/80 transition-colors hover:border-ink hover:text-ink motion-reduce:transition-none" data-lightbox-prev aria-label="Poprzednie zdjęcie">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button type="button" class="flex h-11 w-11 items-center justify-center rounded-full border border-ink/25 text-ink/80 transition-colors hover:border-ink hover:text-ink motion-reduce:transition-none" data-lightbox-next aria-label="Następne zdjęcie">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Lightbox galerii: klik na zdjecie otwiera podglad, strzalki (na ekranie i klawiatura)
+  // przewijaja miedzy zdjeciami, klik poza zdjeciem zamyka. Ten sam wzorzec co GRANDA-Barber-Shop.
+  (function () {
+    var gallery = document.querySelector('[data-gallery]');
+    var lightbox = document.querySelector('[data-lightbox]');
+    if (!gallery || !lightbox) return;
+
+    var images = [].slice.call(gallery.querySelectorAll('[data-gallery-img]'));
+    if (!images.length) return;
+
+    var lbImg = lightbox.querySelector('[data-lightbox-img]');
+    var prevBtn = lightbox.querySelector('[data-lightbox-prev]');
+    var nextBtn = lightbox.querySelector('[data-lightbox-next]');
+    var closeBtn = lightbox.querySelector('[data-lightbox-close]');
+    var current = 0;
+
+    function show() {
+      var img = images[current];
+      lbImg.src = img.currentSrc || img.src;
+      lbImg.alt = img.alt;
+    }
+    function open(index) {
+      current = index;
+      show();
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    }
+    function close() {
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+    function next() { current = (current + 1) % images.length; show(); }
+    function prev() { current = (current - 1 + images.length) % images.length; show(); }
+
+    images.forEach(function (img, i) {
+      img.addEventListener('click', function () { open(i); });
+    });
+
+    prevBtn.addEventListener('click', function (e) { e.stopPropagation(); prev(); });
+    nextBtn.addEventListener('click', function (e) { e.stopPropagation(); next(); });
+    closeBtn.addEventListener('click', function (e) { e.stopPropagation(); close(); });
+
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lbImg || prevBtn.contains(e.target) || nextBtn.contains(e.target) || closeBtn.contains(e.target)) return;
+      close();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (!lightbox.classList.contains('is-open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    });
+  })();
+</script>
 
 <script type="application/ld+json">
 {
@@ -472,6 +697,57 @@
 
 <script>
   document.getElementById('rok').textContent = new Date().getFullYear();
+</script>
+
+<script>
+  // Podswietlenie aktywnej sekcji w menu (aside md+ i menu mobilne) podczas scrollowania (scrollspy).
+  // linksByHash trzyma tablice linkow na hash, bo ten sam #about wystepuje w obu menu.
+  (function () {
+    var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+    if (!links.length || !('IntersectionObserver' in window)) return;
+    var linksByHash = {};
+    links.forEach(function (a) {
+      var hash = a.getAttribute('href');
+      (linksByHash[hash] = linksByHash[hash] || []).push(a);
+    });
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var active = linksByHash['#' + entry.target.id];
+        if (!active || !entry.isIntersecting) return;
+        links.forEach(function (a) { a.classList.remove('is-active'); });
+        active.forEach(function (a) { a.classList.add('is-active'); });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+
+    Object.keys(linksByHash).forEach(function (hash) {
+      var section = document.querySelector(hash);
+      if (section) observer.observe(section);
+    });
+  })();
+</script>
+
+<script>
+  // Hamburger w mobilnym headerze: rozwija/zwija liste sekcji. Zamyka sie tez po kliknieciu linku.
+  (function () {
+    var toggle = document.querySelector('[data-mobile-menu-toggle]');
+    var menu = document.querySelector('[data-mobile-menu]');
+    if (!toggle || !menu) return;
+
+    function setOpen(isOpen) {
+      menu.classList.toggle('hidden', !isOpen);
+      menu.classList.toggle('flex', isOpen);
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }
+
+    toggle.addEventListener('click', function () {
+      setOpen(menu.classList.contains('hidden'));
+    });
+
+    menu.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () { setOpen(false); });
+    });
+  })();
 </script>
 
 </body>
