@@ -116,7 +116,31 @@
   /* Dot-leader w cenniku (technika ze Stylu 04) */
   .leader { flex: 1 1 auto; min-width: 18px; border-bottom: 1px dotted rgba(176,141,78,.7); transform: translateY(-.3em); }
 
+  /* Glif Booksy wyodrebniony z photos/unnamed.png (biala ikonka na turkusowym tle
+     oficjalnej apki), przekolorowany na currentColor przez CSS mask — nie kopiujemy
+     turkusowego brandingu Booksy, tylko ksztalt, w palecie tego klienta. */
+  .icon-booksy {
+    display: inline-block; flex-shrink: 0; width: 1.32rem; height: 1rem;
+    background-color: currentColor;
+    -webkit-mask-image: url('data:image/png;base64,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');
+    mask-image: url('data:image/png;base64,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');
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    -webkit-mask-position: center; mask-position: center;
+    -webkit-mask-size: contain; mask-size: contain;
+  }
+
   .press { transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease, border-color .15s ease, color .15s ease; }
+
+  /* Scrollspy: link aktywnej sekcji w nawigacji desktopowej. */
+  .nav-link.is-active { color: #9E3A66; font-weight: 600; }
+
+  /* Podpowiedź powiększenia na kaflu galerii. */
+  .gallery-tile { cursor: zoom-in; }
+  .gallery-hint {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: rgba(38,25,31,.38); color: #FFFAF9; opacity: 0; transition: opacity .2s ease;
+  }
+  .gallery-tile:hover .gallery-hint, .gallery-tile:focus-visible .gallery-hint { opacity: 1; }
   .press:active { transform: translateY(1px); }
 </style>
 </head>
@@ -132,25 +156,26 @@
       <span class="font-script text-2xl leading-none text-accent sm:text-[1.7rem]">Patent&nbsp;na&nbsp;Pazur</span>
     </a>
 
-    <nav class="ml-auto hidden items-center gap-7 lg:flex" aria-label="Główne">
-      <a href="#uslugi"    class="inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-accent">Usługi</a>
-      <a href="#szkolenia" class="inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-accent">Szkolenia</a>
-      <a href="#galeria"   class="inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-accent">Galeria</a>
-      <a href="#opinie"    class="inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-accent">Opinie</a>
-      <a href="#kontakt"   class="inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-accent">Kontakt</a>
+    <div class="flex-1" aria-hidden="true"></div>
+
+    <nav class="mr-8 hidden items-center gap-7 lg:flex" aria-label="Główne">
+      <a href="#uslugi"    data-navlink class="nav-link inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-accent">Usługi</a>
+      <a href="#szkolenia" data-navlink class="nav-link inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-accent">Szkolenia</a>
+      <a href="#galeria"   data-navlink class="nav-link inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-accent">Galeria</a>
+      <a href="#opinie"    data-navlink class="nav-link inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-accent">Opinie</a>
+      <a href="#kontakt"   data-navlink class="nav-link inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-accent">Kontakt</a>
     </nav>
 
-    <div class="ml-auto flex items-center gap-2 lg:ml-6">
-      <a href="tel:+48575689972"
-         class="press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-gold px-4 py-2.5 text-sm font-semibold text-ink hover:bg-surface2"
-         aria-label="Zadzwoń: 575 689 972">
+    <div class="flex shrink-0 items-center gap-2">
+      <a href="tel:+48575689972" aria-label="Zadzwoń: 575 689 972"
+         class="press inline-flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-full border border-gold text-ink hover:bg-surface2 sm:h-auto sm:w-auto sm:min-h-[44px] sm:px-4 sm:py-2.5">
         <svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
-        <span class="hidden sm:inline">575 689 972</span>
-        <span class="sm:hidden">Zadzwoń</span>
+        <span class="hidden text-sm font-semibold sm:inline">575 689 972</span>
       </a>
-      <a href="https://booksy.com/pl-pl/327039_patent-na-pazur_paznokcie_8522_opoczno#ba_s=seo" target="_blank" rel="noopener"
-         class="press hidden min-h-[44px] items-center rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-white hover:bg-[#8b3059] sm:inline-flex">
-        Umów wizytę
+      <a href="https://booksy.com/pl-pl/327039_patent-na-pazur_paznokcie_8522_opoczno#ba_s=seo" target="_blank" rel="noopener" aria-label="Umów wizytę w Booksy"
+         class="press inline-flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-full bg-accent text-white hover:bg-[#8b3059] sm:h-auto sm:w-auto sm:min-h-[44px] sm:px-5 sm:py-2.5">
+        <span class="icon-booksy" aria-hidden="true"></span>
+        <span class="hidden text-sm font-bold sm:inline">Umów wizytę</span>
       </a>
     </div>
   </div>
@@ -228,11 +253,13 @@
       <h2 class="mt-3 font-display text-[1.85rem] leading-tight sm:text-[2.4rem]">Co robimy w salonie</h2>
       <div class="rule mt-5" aria-hidden="true">✦</div>
       <p class="mx-auto mt-5 max-w-prose text-[.98rem] leading-relaxed text-inkmuted">
-        Cena zależy od długości paznokci i zdobienia. Aktualne stawki znajdziesz w Booksy albo potwierdzimy je przez telefon przy zapisie.
+        Ceny z naszego cennika w Booksy. Dokładna kwota zależy od długości paznokci i zdobienia, dlatego przy niektórych usługach podajemy „od”.
       </p>
     </div>
 
-    <!-- TODO klientka: w miejsce kreskowanych pol wpisac ceny, np. "od 90 zł". Struktura zostaje bez zmian. -->
+    <!-- Ceny pobrane z danych strukturalnych (JSON-LD) na booksy.com/.../patent-na-pazur, sierpień 2026.
+         Booksy nie ma publicznego API do biezacej synchronizacji — przy zmianie cennika w Booksy
+         trzeba recznie zaktualizowac wartosci ponizej. -->
     <div class="mt-12 grid gap-5 sm:gap-6 lg:grid-cols-3">
 
       <div class="rounded-[26px] border border-[rgba(176,141,78,.4)] bg-bg p-6 shadow-[0_10px_30px_rgba(38,25,31,.06)] sm:p-7">
@@ -242,27 +269,27 @@
           <div class="flex items-baseline gap-2">
             <dt class="text-[.97rem] font-medium">Manicure hybrydowy</dt>
             <span class="leader" aria-hidden="true"></span>
-            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+            <dd class="shrink-0 rounded-md bg-surface2 px-2.5 py-1 text-sm font-bold text-accent">130 zł</dd>
           </div>
           <div class="flex items-baseline gap-2">
             <dt class="text-[.97rem] font-medium">Żel na naturalnej płytce</dt>
             <span class="leader" aria-hidden="true"></span>
-            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+            <dd class="shrink-0 rounded-md bg-surface2 px-2.5 py-1 text-sm font-bold text-accent">130 zł</dd>
           </div>
           <div class="flex items-baseline gap-2">
             <dt class="text-[.97rem] font-medium">Uzupełnienie żelowe <span class="whitespace-nowrap text-inkmuted">(do 4 tyg.)</span></dt>
             <span class="leader" aria-hidden="true"></span>
-            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+            <dd class="shrink-0 rounded-md bg-surface2 px-2.5 py-1 text-sm font-bold text-accent">od 130 zł</dd>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <dt class="text-[.97rem] font-medium">Odnowa żelowa <span class="whitespace-nowrap text-inkmuted">(po 4 tyg.)</span></dt>
+            <span class="leader" aria-hidden="true"></span>
+            <dd class="shrink-0 rounded-md bg-surface2 px-2.5 py-1 text-sm font-bold text-accent">od 140 zł</dd>
           </div>
           <div class="flex items-baseline gap-2">
             <dt class="text-[.97rem] font-medium">Przedłużanie paznokci</dt>
             <span class="leader" aria-hidden="true"></span>
-            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
-          </div>
-          <div class="flex items-baseline gap-2">
-            <dt class="text-[.97rem] font-medium">Manicure klasyczny</dt>
-            <span class="leader" aria-hidden="true"></span>
-            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+            <dd class="shrink-0 rounded-md bg-surface2 px-2.5 py-1 text-sm font-bold text-accent">od 170 zł</dd>
           </div>
         </dl>
       </div>
@@ -274,49 +301,44 @@
           <div class="flex items-baseline gap-2">
             <dt class="text-[.97rem] font-medium">Pedicure hybrydowy</dt>
             <span class="leader" aria-hidden="true"></span>
-            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+            <dd class="shrink-0 rounded-md bg-surface2 px-2.5 py-1 text-sm font-bold text-accent">100 zł</dd>
           </div>
           <div class="flex items-baseline gap-2">
-            <dt class="text-[.97rem] font-medium">Pedicure klasyczny</dt>
+            <dt class="text-[.97rem] font-medium">Pedicure kosmetyczny</dt>
             <span class="leader" aria-hidden="true"></span>
-            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+            <dd class="shrink-0 rounded-md bg-surface2 px-2.5 py-1 text-sm font-bold text-accent">110 zł</dd>
           </div>
           <div class="flex items-baseline gap-2">
-            <dt class="text-[.97rem] font-medium">Pedicure leczniczy</dt>
+            <dt class="text-[.97rem] font-medium">Pedicure kosmetyczny + hybrydowy</dt>
             <span class="leader" aria-hidden="true"></span>
-            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
-          </div>
-          <div class="flex items-baseline gap-2">
-            <dt class="text-[.97rem] font-medium">Sam lakier hybrydowy na stopach</dt>
-            <span class="leader" aria-hidden="true"></span>
-            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+            <dd class="shrink-0 rounded-md bg-surface2 px-2.5 py-1 text-sm font-bold text-accent">170 zł</dd>
           </div>
         </dl>
       </div>
 
       <div class="rounded-[26px] border border-[rgba(176,141,78,.4)] bg-bg p-6 shadow-[0_10px_30px_rgba(38,25,31,.06)] sm:p-7">
         <h3 class="font-display text-xl text-ink">Zdobienia i poprawki</h3>
-        <p class="mt-1.5 text-sm text-inkmuted">Wzory malowane ręcznie</p>
+        <p class="mt-1.5 text-sm text-inkmuted">Dodatki i pielęgnacja stylizacji</p>
         <dl class="mt-6 space-y-4">
           <div class="flex items-baseline gap-2">
-            <dt class="text-[.97rem] font-medium">Zdobienie ręcznie malowane</dt>
+            <dt class="text-[.97rem] font-medium">Zdobienia</dt>
             <span class="leader" aria-hidden="true"></span>
-            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+            <dd class="shrink-0 rounded-md bg-surface2 px-2.5 py-1 text-sm font-bold text-accent">od 10 zł</dd>
           </div>
           <div class="flex items-baseline gap-2">
-            <dt class="text-[.97rem] font-medium">Ombre, french, efekty</dt>
+            <dt class="text-[.97rem] font-medium">Naprawa paznokcia</dt>
             <span class="leader" aria-hidden="true"></span>
-            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+            <dd class="shrink-0 rounded-md bg-surface2 px-2.5 py-1 text-sm font-bold text-accent">od 10 zł</dd>
           </div>
           <div class="flex items-baseline gap-2">
-            <dt class="text-[.97rem] font-medium">Naprawa jednego paznokcia</dt>
+            <dt class="text-[.97rem] font-medium">Ściąganie stylizacji hybrydowej <span class="whitespace-nowrap text-inkmuted">+ opracowanie skórek</span></dt>
             <span class="leader" aria-hidden="true"></span>
-            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+            <dd class="shrink-0 rounded-md bg-surface2 px-2.5 py-1 text-sm font-bold text-accent">60 zł</dd>
           </div>
           <div class="flex items-baseline gap-2">
-            <dt class="text-[.97rem] font-medium">Zdjęcie hybrydy lub żelu</dt>
+            <dt class="text-[.97rem] font-medium">Ściąganie stylizacji żelowej <span class="whitespace-nowrap text-inkmuted">+ opracowanie skórek</span></dt>
             <span class="leader" aria-hidden="true"></span>
-            <dd class="shrink-0 rounded-md border border-dashed border-gold px-2.5 py-1 text-sm font-semibold text-goldtxt"><span class="tracking-[.15em]">•••</span> zł</dd>
+            <dd class="shrink-0 rounded-md bg-surface2 px-2.5 py-1 text-sm font-bold text-accent">70 zł</dd>
           </div>
         </dl>
       </div>
@@ -350,26 +372,17 @@
       <p class="mt-6 text-[1.02rem] leading-relaxed text-[#EADFD8]">
         Szkolenia prowadzi Sylwia i jest to jej odrębna działalność, skierowana do osób,
         które chcą nauczyć się stylizacji paznokci. To nie jest usługa salonu.
-        Szczegóły terminów i programu znajdziesz na profilach instruktorskich.
+        Uczy budowy aparatu paznokciowego, techniki bez zalewania skórek i pracy frezarką,
+        w kameralnych grupach 2–4 osób.
       </p>
 
-      <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-        <a href="https://www.instagram.com/sylvia_nailart" target="_blank" rel="noopener"
-           class="press inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-goldlt px-7 py-3.5 text-base font-bold text-plum hover:bg-[#e7cea0]">
-          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
-          Instagram szkoleń
-        </a>
-        <a href="https://www.facebook.com/Fogielsylwiainstruktor93/" target="_blank" rel="noopener"
-           class="press inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full border border-[rgba(217,188,122,.7)] px-7 py-3.5 text-base font-semibold text-goldlt hover:bg-[rgba(217,188,122,.12)]">
-          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor" aria-hidden="true"><path d="M14 9V7.2c0-.9.2-1.3 1.4-1.3H17V3h-2.6C11.5 3 10.4 4.5 10.4 7v2H8.5v3h1.9v9H14v-9h2.6l.4-3z"/></svg>
-          Facebook szkoleń
+      <div class="mt-8">
+        <a href="szkolenia.html"
+           class="press inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-goldlt px-8 py-3.5 text-base font-bold text-plum shadow-[0_10px_26px_rgba(0,0,0,.25)] hover:bg-[#e7cea0]">
+          Zobacz więcej o szkoleniach
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
         </a>
       </div>
-
-      <p class="mt-7 text-sm text-[#C9B7B0]">
-        Szukasz wizyty na paznokcie, a nie szkolenia?
-        <a href="#uslugi" class="font-semibold text-goldlt underline underline-offset-4 hover:text-white">Wróć do oferty salonu</a>.
-      </p>
     </div>
   </div>
 </section>
@@ -382,30 +395,35 @@
       <h2 class="mt-3 font-display text-[1.85rem] leading-tight sm:text-[2.4rem]">Galeria stylizacji</h2>
       <div class="rule mt-5" aria-hidden="true">✦</div>
       <p class="mx-auto mt-5 max-w-prose text-[.98rem] leading-relaxed text-inkmuted">
-        Zdjęcia stylizacji trafią tu wkrótce. Najświeższe prace pokazujemy na bieżąco na Instagramie.
+        Wybrane stylizacje z naszego salonu. Kliknij zdjęcie, żeby zobaczyć całą galerię.
       </p>
     </div>
 
-    <!-- TODO: podmienic kafle na <img> ze zdjeciami z photos/galeria/. Zaokraglenia narozników zostaja. -->
     <div class="mt-12 grid grid-cols-2 gap-3.5 sm:gap-5 lg:grid-cols-3">
-      <div class="flex aspect-square items-center justify-center rounded-b-[22px] rounded-t-[80px] border border-dashed border-gold bg-surface text-center">
-        <span class="px-3 text-xs font-medium text-inkmuted"><span class="mb-1 block text-base text-gold" aria-hidden="true">✦</span>Zdjęcie wkrótce</span>
-      </div>
-      <div class="flex aspect-square items-center justify-center rounded-b-[22px] rounded-t-[80px] border border-dashed border-gold bg-surface text-center">
-        <span class="px-3 text-xs font-medium text-inkmuted"><span class="mb-1 block text-base text-gold" aria-hidden="true">✦</span>Zdjęcie wkrótce</span>
-      </div>
-      <div class="flex aspect-square items-center justify-center rounded-b-[22px] rounded-t-[80px] border border-dashed border-gold bg-surface text-center">
-        <span class="px-3 text-xs font-medium text-inkmuted"><span class="mb-1 block text-base text-gold" aria-hidden="true">✦</span>Zdjęcie wkrótce</span>
-      </div>
-      <div class="flex aspect-square items-center justify-center rounded-b-[22px] rounded-t-[80px] border border-dashed border-gold bg-surface text-center">
-        <span class="px-3 text-xs font-medium text-inkmuted"><span class="mb-1 block text-base text-gold" aria-hidden="true">✦</span>Zdjęcie wkrótce</span>
-      </div>
-      <div class="flex aspect-square items-center justify-center rounded-b-[22px] rounded-t-[80px] border border-dashed border-gold bg-surface text-center">
-        <span class="px-3 text-xs font-medium text-inkmuted"><span class="mb-1 block text-base text-gold" aria-hidden="true">✦</span>Zdjęcie wkrótce</span>
-      </div>
-      <div class="flex aspect-square items-center justify-center rounded-b-[22px] rounded-t-[80px] border border-dashed border-gold bg-surface text-center">
-        <span class="px-3 text-xs font-medium text-inkmuted"><span class="mb-1 block text-base text-gold" aria-hidden="true">✦</span>Zdjęcie wkrótce</span>
-      </div>
+      <button type="button" data-index="0" class="gallery-tile group relative aspect-square overflow-hidden rounded-b-[22px] rounded-t-[80px] border border-gold bg-surface">
+        <img src="photos/galeria/dcc664e7b202430ab4c4c299e6856a-patent-na-pazur-inspiration-f2795e0abb804f95a1dcf12e9c23f1-booksy.jpeg" alt="Biały manicure ombre na migdałowych paznokciach" loading="lazy" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" data-index="1" class="gallery-tile group relative aspect-square overflow-hidden rounded-b-[22px] rounded-t-[80px] border border-gold bg-surface">
+        <img src="photos/galeria/9daa32860d00481f943928216fa827-patent-na-pazur-inspiration-b670d3cc09e34a18bbb080c9b0dec9-booksy.jpeg" alt="Kolorowy french z kropkowym zdobieniem, cztery odcienie" loading="lazy" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" data-index="2" class="gallery-tile group relative aspect-square overflow-hidden rounded-b-[22px] rounded-t-[80px] border border-gold bg-surface">
+        <img src="photos/galeria/e0fe9471db9843bd8d4c1a096ffd2e-patent-na-pazur-inspiration-1f0403676f4140889b8c0c076b5483-booksy.jpeg" alt="Stylizacja 3D: muszelka i kwiat z cyrkonią, błękit i róż" loading="lazy" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" data-index="3" class="gallery-tile group relative aspect-square overflow-hidden rounded-b-[22px] rounded-t-[80px] border border-gold bg-surface">
+        <img src="photos/galeria/c1c2f8c8b4d748798f163cbb93f226-patent-na-pazur-inspiration-c3f2b140809f47d49547fd75475b21-booksy.jpeg" alt="Manicure french ze srebrnym brokatem" loading="lazy" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" data-index="4" class="gallery-tile group relative aspect-square overflow-hidden rounded-b-[22px] rounded-t-[80px] border border-gold bg-surface">
+        <img src="photos/galeria/de20c053c3d34c74bd27d8470d0e1e-patent-na-pazur-inspiration-ed171aa36c0d47b588c912184b3f53-booksy.jpeg" alt="Czerwony manicure klasyczny, wysoki połysk" loading="lazy" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" data-index="5" class="gallery-tile group relative aspect-square overflow-hidden rounded-b-[22px] rounded-t-[80px] border border-gold bg-surface">
+        <img src="photos/galeria/61df5f8f72874257a1923aa0e33809-patent-na-pazur-inspiration-e78ec48812e94d8d9460b05a750fe8-booksy.jpeg" alt="Różowy manicure migdałowy z brokatem i kwiatowym zdobieniem" loading="lazy" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
     </div>
 
     <div class="mt-10 text-center">
@@ -417,6 +435,26 @@
     </div>
   </div>
 </section>
+
+<!-- ============ LIGHTBOX GALERII (10 zdjec, 6 kafli + 4 dostepne strzalkami) ============ -->
+<div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-[rgba(28,17,22,.92)] p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia z galerii">
+  <button type="button" id="lightboxClose" aria-label="Zamknij podgląd"
+          class="press absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(255,250,249,.12)] text-[#F7EFE9] hover:bg-[rgba(255,250,249,.22)] sm:right-6 sm:top-6">
+    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <button type="button" id="lightboxPrev" aria-label="Poprzednie zdjęcie"
+          class="press absolute left-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(255,250,249,.12)] text-[#F7EFE9] hover:bg-[rgba(255,250,249,.22)] sm:left-5">
+    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+  <button type="button" id="lightboxNext" aria-label="Następne zdjęcie"
+          class="press absolute right-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(255,250,249,.12)] text-[#F7EFE9] hover:bg-[rgba(255,250,249,.22)] sm:right-5">
+    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <figure class="mx-auto flex max-h-full max-w-3xl flex-col items-center">
+    <img id="lightboxImg" src="" alt="" class="max-h-[75vh] w-auto rounded-2xl object-contain shadow-[0_20px_60px_rgba(0,0,0,.4)]">
+    <figcaption id="lightboxCounter" class="label mt-4 text-[#D9BC7A]" aria-live="polite"></figcaption>
+  </figure>
+</div>
 
 <!-- ============ OPINIE ============ -->
 <section id="opinie" class="bg-surface2 py-16 sm:py-20 lg:py-24">
@@ -430,15 +468,8 @@
       </p>
     </div>
 
-    <!-- TODO klientka: w kazde <blockquote> wkleic prawdziwy cytat i podpisac autora.
-         Material z brief.md gotowy do wklejenia:
-         GOOGLE / Izabela Adamczyk: "Jestem bardzo zadowolona z uslug salonu! Sylwia robi niesamowite paznokcie,
-           jest prawdziwa artystka! Potrafi namalowac wszystko, o czym sobie tylko marzysz, dbajac przy tym o kazdy szczegol."
-         GOOGLE / Patrycja Jedrzejczak: "Szukalam i znalazlam dusze artystyczna, przemila, nie bojaca sie wyzwan.
-           Trafilam do Pani Sylwii z polecenia i byl to strzal w 10. Paznokcie sa dopracowane w 100%."
-         BOOKSY / Monika: "Super atmosfera i bardzo ladnie zrobione paznokcie. Polecam."
-         BOOKSY / Malgorzata: "Jak zawsze perfekcyjnie, dziekuje Pani Ewo."
-         FACEBOOK: brak zebranego cytatu, do uzupelnienia przez klientke. -->
+    <!-- Facebook nie mial wlasnego cytatu w brief.md — na prosbe uzytkownika uzywamy tu
+         opinii Patrycji z puli Google (ten sam zestaw zrodlowy, po prostu inny cytat niz w karcie Google). -->
     <div class="mt-12 grid gap-5 sm:gap-6 lg:grid-cols-3">
 
       <article class="flex flex-col rounded-[26px] border border-[rgba(176,141,78,.4)] bg-bg p-6 shadow-[0_10px_30px_rgba(38,25,31,.06)] sm:p-7">
@@ -455,14 +486,10 @@
             <span class="block text-xs tracking-[.12em] text-goldtxt" aria-hidden="true">★★★★★</span>
           </p>
         </div>
-        <blockquote class="mt-6 flex min-h-[132px] flex-1 items-center rounded-[18px] border border-dashed border-gold bg-surface px-5 py-5 text-sm leading-relaxed text-inkmuted">
-          Miejsce na opinię z Facebooka.
+        <blockquote class="mt-6 flex min-h-[132px] flex-1 items-center rounded-[18px] bg-surface px-5 py-5 text-sm italic leading-relaxed text-ink">
+          Szukałam i znalazłam duszę artystyczną, przemiłą, przesympatyczną, nie bojącą się wyzwań. Trafiłam do Pani Sylwii z polecenia i był to strzał w 10. Paznokcie są dopracowane w 100%.
         </blockquote>
-        <p class="mt-4 text-sm text-inkmuted"><span class="font-semibold text-ink">imię klientki</span> · Facebook</p>
-        <a href="https://www.facebook.com/profile.php?id=61576445061800" target="_blank" rel="noopener"
-           class="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-accent underline underline-offset-4 hover:text-ink">
-          Zobacz opinie na Facebooku
-        </a>
+        <p class="mt-4 text-sm text-inkmuted"><span class="font-semibold text-ink">Patrycja Jędrzejczak</span> · Facebook</p>
       </article>
 
       <article class="flex flex-col rounded-[26px] border border-[rgba(176,141,78,.4)] bg-bg p-6 shadow-[0_10px_30px_rgba(38,25,31,.06)] sm:p-7">
@@ -477,14 +504,10 @@
             <span class="block text-xs tracking-[.12em] text-goldtxt" aria-hidden="true">★★★★★</span>
           </p>
         </div>
-        <blockquote class="mt-6 flex min-h-[132px] flex-1 items-center rounded-[18px] border border-dashed border-gold bg-surface px-5 py-5 text-sm leading-relaxed text-inkmuted">
-          Miejsce na opinię z Google.
+        <blockquote class="mt-6 flex min-h-[132px] flex-1 items-center rounded-[18px] bg-surface px-5 py-5 text-sm italic leading-relaxed text-ink">
+          Jestem bardzo zadowolona z usług salonu! Sylwia robi niesamowite paznokcie, jest prawdziwą artystką! Potrafi namalować wszystko, o czym sobie tylko marzysz, dbając przy tym o każdy szczegół.
         </blockquote>
-        <p class="mt-4 text-sm text-inkmuted"><span class="font-semibold text-ink">imię klientki</span> · Google</p>
-        <a href="https://www.google.com/search?q=Patent+na+Pazur+Opoczno" target="_blank" rel="noopener"
-           class="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-accent underline underline-offset-4 hover:text-ink">
-          Zobacz opinie w Google
-        </a>
+        <p class="mt-4 text-sm text-inkmuted"><span class="font-semibold text-ink">Izabela Adamczyk</span> · Google</p>
       </article>
 
       <article class="flex flex-col rounded-[26px] border border-[rgba(176,141,78,.4)] bg-bg p-6 shadow-[0_10px_30px_rgba(38,25,31,.06)] sm:p-7">
@@ -499,15 +522,22 @@
             <span class="block text-xs tracking-[.12em] text-goldtxt" aria-hidden="true">★★★★★</span>
           </p>
         </div>
-        <blockquote class="mt-6 flex min-h-[132px] flex-1 items-center rounded-[18px] border border-dashed border-gold bg-surface px-5 py-5 text-sm leading-relaxed text-inkmuted">
-          Miejsce na opinię z Booksy.
+        <blockquote class="mt-6 flex min-h-[132px] flex-1 flex-col justify-center gap-4 rounded-[18px] bg-surface px-5 py-5 text-sm italic leading-relaxed text-ink">
+          <p>Super atmosfera i bardzo ładnie zrobione paznokcie. Polecam.</p>
+          <p class="not-italic text-xs font-semibold tracking-wide text-goldtxt">Uzupełnienie żelowe (do 4 tyg.) · obsługa: Ewa</p>
         </blockquote>
-        <p class="mt-4 text-sm text-inkmuted"><span class="font-semibold text-ink">imię klientki</span> · Booksy</p>
-        <a href="https://booksy.com/pl-pl/327039_patent-na-pazur_paznokcie_8522_opoczno#ba_s=seo" target="_blank" rel="noopener"
-           class="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-accent underline underline-offset-4 hover:text-ink">
-          Zobacz opinie w Booksy
-        </a>
+        <p class="mt-4 text-sm text-inkmuted"><span class="font-semibold text-ink">Monika S.</span> · Booksy</p>
       </article>
+    </div>
+
+    <!-- Google Place ID zweryfikowany 2026-08-19 przez dane osadzonej mapy Google
+         (dopasowany po telefonie 575 689 972, adresie i linku do Booksy 327039). -->
+    <div class="mt-10 text-center">
+      <a href="https://search.google.com/local/writereview?placeid=ChIJh_uJFFi9GUcRLBbZhQQe8Dc" target="_blank" rel="noopener"
+         class="press inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-accent px-8 py-3.5 text-base font-bold text-white shadow-[0_10px_26px_rgba(158,58,102,.28)] hover:bg-[#8b3059]">
+        Zostaw opinię
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+      </a>
     </div>
   </div>
 </section>
@@ -645,6 +675,98 @@
     wiersz.classList.add('rounded-lg', 'bg-bg', 'px-3', 'font-semibold', 'text-ink');
     var dt = wiersz.querySelector('dt');
     dt.insertAdjacentHTML('beforeend', '<span class="ml-2 rounded-full bg-accent px-2 py-0.5 text-[.68rem] font-bold uppercase tracking-wider text-white">dziś</span>');
+  })();
+
+  // Scrollspy: podswietla w nawigacji link sekcji aktualnie widocznej na ekranie.
+  (function () {
+    var navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+    if (!navLinks.length) return;
+    var sections = [];
+    navLinks.forEach(function (link) {
+      var sec = document.querySelector(link.getAttribute('href'));
+      if (sec) sections.push({ link: link, el: sec });
+    });
+    if (!sections.length) return;
+    var headerH = document.querySelector('header').offsetHeight || 72;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var match = sections.find(function (s) { return s.el === entry.target; });
+        if (!match) return;
+        if (entry.isIntersecting) {
+          navLinks.forEach(function (l) { l.classList.remove('is-active'); });
+          match.link.classList.add('is-active');
+        }
+      });
+    }, { rootMargin: '-' + (headerH + 4) + 'px 0px -60% 0px', threshold: 0 });
+    sections.forEach(function (s) { observer.observe(s.el); });
+  })();
+
+  // Galeria: lightbox z 10 zdjeciami. 6 kafli widocznych w sekcji + 4 kolejne
+  // dostepne wylacznie strzalkami nastepny/poprzedni (patrz brief agencji: nie zmieniac 6 slotow).
+  (function () {
+    var GALERIA = [
+      { src: 'photos/galeria/dcc664e7b202430ab4c4c299e6856a-patent-na-pazur-inspiration-f2795e0abb804f95a1dcf12e9c23f1-booksy.jpeg', alt: 'Biały manicure ombre na migdałowych paznokciach' },
+      { src: 'photos/galeria/9daa32860d00481f943928216fa827-patent-na-pazur-inspiration-b670d3cc09e34a18bbb080c9b0dec9-booksy.jpeg', alt: 'Kolorowy french z kropkowym zdobieniem, cztery odcienie' },
+      { src: 'photos/galeria/e0fe9471db9843bd8d4c1a096ffd2e-patent-na-pazur-inspiration-1f0403676f4140889b8c0c076b5483-booksy.jpeg', alt: 'Stylizacja 3D: muszelka i kwiat z cyrkonią, błękit i róż' },
+      { src: 'photos/galeria/c1c2f8c8b4d748798f163cbb93f226-patent-na-pazur-inspiration-c3f2b140809f47d49547fd75475b21-booksy.jpeg', alt: 'Manicure french ze srebrnym brokatem' },
+      { src: 'photos/galeria/de20c053c3d34c74bd27d8470d0e1e-patent-na-pazur-inspiration-ed171aa36c0d47b588c912184b3f53-booksy.jpeg', alt: 'Czerwony manicure klasyczny, wysoki połysk' },
+      { src: 'photos/galeria/61df5f8f72874257a1923aa0e33809-patent-na-pazur-inspiration-e78ec48812e94d8d9460b05a750fe8-booksy.jpeg', alt: 'Różowy manicure migdałowy z brokatem i kwiatowym zdobieniem' },
+      { src: 'photos/galeria/2b649443f2dd403f802c48017c8754-patent-na-pazur-inspiration-905ea4216bb74298b44e02ab9abb29-booksy.jpeg', alt: 'Mleczny manicure ombre na kwadratowych paznokciach' },
+      { src: 'photos/galeria/6f942e9383cf4ebabff3dda676094f-patent-na-pazur-inspiration-baae4b6e951946b69c97afe5525f89-booksy.jpeg', alt: 'Różowy manicure z płatkowym brokatem' },
+      { src: 'photos/galeria/96757e9815d8405abaf0f5880274ce-patent-na-pazur-inspiration-65762e5cc8994ee8b1f24bd95758d1-booksy.jpeg', alt: 'Manicure french z różowym kwiatowym zdobieniem' },
+      { src: 'photos/galeria/fd681f3769d7431ab6d8d31a4e5737-patent-na-pazur-inspiration-a9011c2368ec484b8f91eb49877f73-booksy.jpeg', alt: 'Stylizacja 3D: muszelka i kwiat z cyrkonią, wariant błękitny' }
+    ];
+
+    var lightbox = document.getElementById('lightbox');
+    var img = document.getElementById('lightboxImg');
+    var counter = document.getElementById('lightboxCounter');
+    var btnClose = document.getElementById('lightboxClose');
+    var btnPrev = document.getElementById('lightboxPrev');
+    var btnNext = document.getElementById('lightboxNext');
+    var tiles = document.querySelectorAll('.gallery-tile');
+    var current = 0;
+    var lastFocused = null;
+
+    function render() {
+      img.src = GALERIA[current].src;
+      img.alt = GALERIA[current].alt;
+      counter.textContent = (current + 1) + ' / ' + GALERIA.length;
+    }
+    function open(index) {
+      current = index;
+      lastFocused = document.activeElement;
+      render();
+      lightbox.classList.remove('hidden');
+      lightbox.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      btnClose.focus();
+    }
+    function close() {
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+      document.body.style.overflow = '';
+      if (lastFocused) lastFocused.focus();
+    }
+    function next() { current = (current + 1) % GALERIA.length; render(); }
+    function prev() { current = (current - 1 + GALERIA.length) % GALERIA.length; render(); }
+
+    tiles.forEach(function (tile) {
+      tile.addEventListener('click', function () {
+        open(parseInt(tile.getAttribute('data-index'), 10));
+      });
+    });
+    btnClose.addEventListener('click', close);
+    btnNext.addEventListener('click', next);
+    btnPrev.addEventListener('click', prev);
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lightbox) close();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (lightbox.classList.contains('hidden')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    });
   })();
 </script>
 
