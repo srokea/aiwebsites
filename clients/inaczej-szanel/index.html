@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inaczej Szanel — odzież używana, Opoczno | Cennik tygodniowy</title>
+<meta name="description" content="Sklep z odzieżą używaną w Opocznie, Partyzantów 8. Nowa dostawa w każdy poniedziałek, a przez tydzień ceny schodzą coraz niżej. Sprawdź cennik tygodniowy.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Inaczej Szanel — odzież używana, Opoczno">
+<meta property="og:description" content="Nowa dostawa w każdy poniedziałek, a przez tydzień ceny schodzą coraz niżej.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:image" content="photos/logo.jpg">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          cream:  '#F4E3C9',   /* tło — pobrane wprost z pliku logo */
+          lift:   '#FBF1E2',   /* jaśniejsza powierzchnia paneli */
+          deep:   '#EDD8B8',   /* ciemniejsze pasmo */
+          ink:    '#2B1A11',
+          muted:  '#675648',
+          flame:  '#EA4A23',   /* akcent z logo — tylko grafika, nie tekst */
+          rust:   '#B23714',   /* ten sam akcent pogłębiony — tekst i CTA */
+          salmon: '#EF9475',
+          peach:  '#F2BCA2',
+          line:   'rgba(43,26,17,0.14)',
+        },
+        fontFamily: {
+          display: ['Lora', 'Georgia', 'serif'],
+          body:    ['Karla', 'system-ui', 'sans-serif'],
+        },
+        maxWidth: { content: '68rem', prose: '40rem' },
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO) — bez połączenia z serwerami Google. */
+  @font-face {
+    font-family: 'Karla'; font-style: normal; font-weight: 300 600; font-display: swap;
+    src: url('fonts/karla-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Karla'; font-style: normal; font-weight: 300 600; font-display: swap;
+    src: url('fonts/karla-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Lora'; font-style: normal; font-weight: 400 600; font-display: swap;
+    src: url('fonts/lora-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Lora'; font-style: normal; font-weight: 400 600; font-display: swap;
+    src: url('fonts/lora-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Lora'; font-style: italic; font-weight: 400 500; font-display: swap;
+    src: url('fonts/lora-italic-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Lora'; font-style: italic; font-weight: 400 500; font-display: swap;
+    src: url('fonts/lora-italic-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { -webkit-font-smoothing: antialiased; }
+  h1, h2, h3 { text-wrap: balance; }
+  p, dd, address { text-wrap: pretty; }
+  a { transition-timing-function: cubic-bezier(.22,1,.36,1); }
+  ::selection { background: #EA4A23; color: #F4E3C9; }
+  :focus-visible { outline: 2px solid #B23714; outline-offset: 3px; border-radius: 4px; }
+
+  /* Wordmark z pliku logo, przycięty do samego napisu (w pliku 800×800 napis
+     zajmuje obszar x 107–618, y 492–674). Nie przepisujemy go fontem. */
+  .wordmark { --w: 92px; --s: calc(var(--w) / 511); display: block; position: relative;
+              width: var(--w); height: calc(182 * var(--s)); overflow: hidden; }
+  .wordmark img { position: absolute; width: calc(800 * var(--s)); max-width: none;
+                  height: auto; left: calc(-107 * var(--s)); top: calc(-492 * var(--s)); }
+
+  /* Organiczne plamy tła — ten sam język co plamy w logo. */
+  .blobs { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+  .blobs svg { position: absolute; display: block; }
+  .drift { transform-origin: 50% 60%; animation: drift 16s ease-in-out infinite; }
+  .drift.d2 { animation-delay: -5.5s; animation-duration: 21s; }
+  .drift.d3 { animation-delay: -11s; animation-duration: 18s; }
+  @keyframes drift {
+    0%, 100% { transform: translate3d(0,0,0) rotate(-1.6deg) scale(1); }
+    50%      { transform: translate3d(0,-10px,0) rotate(1.8deg) scale(1.03); }
+  }
+  .sway { transform-box: view-box; animation: sway 7s ease-in-out infinite; }
+  .sway.s2 { animation-delay: -2.4s; animation-duration: 8.4s; }
+  .sway.s3 { animation-delay: -4.8s; animation-duration: 6.4s; }
+  @keyframes sway { 0%, 100% { transform: rotate(-1.8deg); } 50% { transform: rotate(1.8deg); } }
+  @media (prefers-reduced-motion: reduce) { .drift, .sway { animation: none; } }
+
+  /* Cennik jako rejestr: dot-leadery łączą nazwę z ceną. */
+  .reg-line { display: flex; align-items: baseline; gap: 0; }
+  .reg-line dt { flex: 1 1 auto; min-width: 0; display: flex; align-items: baseline; }
+  .reg-line dt::after {
+    content: ""; flex: 1 1 auto; min-width: 14px; margin: 0 .55rem;
+    border-bottom: 2px dotted rgba(43,26,17,.34); transform: translateY(-.3em);
+  }
+  .reg-line dd { flex: 0 0 auto; margin: 0; }
+  .reg-day + .reg-day { border-top: 1px solid rgba(43,26,17,.12); }
+
+  .map-frame iframe { filter: sepia(24%) saturate(112%) contrast(.97); }
+
+  /* "Dziś" — wyróżnienie aktualnego dnia w cenniku i w godzinach otwarcia. */
+  .today-badge { display: none; }
+  .reg-day[data-today="true"],
+  .hours-row[data-today="true"] { background: rgba(178,55,20,.08); }
+  .reg-day[data-today="true"] .today-badge,
+  .hours-row[data-today="true"] .today-badge {
+    display: inline-flex; align-items: center; flex-shrink: 0;
+    border-radius: 999px; background: #B23714; color: #F4E3C9;
+    padding: .2rem .65rem; font-size: .68rem; font-weight: 600;
+    letter-spacing: .04em; text-transform: uppercase;
+  }
+  .reg-day[data-today="true"] {
+    position: relative; border-radius: .875rem; border-top-color: transparent !important;
+    margin-inline: -1.25rem; padding-inline: 1.25rem;
+  }
+  .reg-day[data-today="true"] + .reg-day { border-top-color: transparent; }
+  @media (min-width: 640px) {
+    .reg-day[data-today="true"] { margin-inline: -2rem; padding-inline: 2rem; }
+  }
+  .hours-row[data-today="true"] {
+    border-radius: .625rem; border-bottom-color: transparent !important;
+    margin-inline: -.75rem; padding-inline: .75rem;
+  }
+</style>
+</head>
+
+<body class="bg-cream font-body text-[1.02rem] leading-relaxed text-ink antialiased">
+
+<a href="#cennik" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-rust focus:px-5 focus:py-3 focus:text-cream">Przejdź do cennika</a>
+
+<!-- ── Navbar ─────────────────────────────────────────────────────── -->
+<header class="sticky top-0 z-50 border-b border-line bg-cream/90 backdrop-blur-md">
+  <div class="mx-auto flex max-w-content items-center justify-between gap-4 px-4 py-2.5 sm:px-6">
+    <a href="#top" class="shrink-0" aria-label="Inaczej Szanel, strona główna">
+      <span class="wordmark sm:[--w:112px]"><img src="photos/logo.jpg" alt="Inaczej Szanel"></span>
+    </a>
+    <a href="tel:+48882804197"
+       class="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-rust px-4 py-2.5 text-[.95rem] font-semibold tracking-wide text-cream transition hover:bg-ink sm:px-6">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>
+      </svg>
+      <span>882 804 197</span>
+    </a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ── Hero ───────────────────────────────────────────────────────── -->
+<section class="relative overflow-hidden">
+  <div class="blobs" aria-hidden="true">
+    <svg class="drift -left-32 top-20 w-[300px] opacity-50 sm:left-auto sm:-right-16 sm:top-0 sm:w-[420px] sm:opacity-70" viewBox="0 0 400 420" fill="none">
+      <path d="M250 30c70 20 100 110 85 200-13 78-67 122-119 100-56-24-64-124-40-210 20-70 36-102 74-90Z" fill="#F2BCA2" opacity=".5"/>
+    </svg>
+    <svg class="drift d2 -right-28 top-[26rem] w-[260px] opacity-45 sm:-left-24 sm:top-40 sm:w-[300px] sm:opacity-60" viewBox="0 0 240 260" fill="none">
+      <path d="M120 20c56-12 92 46 84 100s-54 88-98 70-70-72-48-112c16-30 32-52 62-58Z" fill="#EF9475" opacity=".38"/>
+    </svg>
+  </div>
+
+  <div class="relative z-10 mx-auto grid max-w-content items-center gap-3 px-4 pb-14 pt-8 sm:px-6 sm:pb-20 sm:pt-14 lg:grid-cols-[1.12fr_.88fr] lg:gap-12 lg:pb-24 lg:pt-16">
+
+    <div class="order-2 lg:order-1">
+      <p class="font-display text-[.82rem] uppercase tracking-[.22em] text-rust">Opoczno · odzież używana</p>
+      <h1 class="mt-4 font-display text-[2.1rem] font-medium leading-[1.14] sm:text-[2.7rem] lg:text-[3.05rem]">
+        Styl z pierwszej półki.<br>Cena <em class="italic text-rust">z drugiej ręki</em>.
+      </h1>
+      <p class="mt-5 max-w-[46ch] text-[1.05rem] text-muted">
+        Damska, męska, dziecięca i okrycia wierzchnie. W poniedziałek wjeżdża nowa dostawa,
+        a przez cały tydzień ceny schodzą coraz niżej. Im później przyjdziesz, tym taniej.
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-4">
+        <a href="tel:+48882804197"
+           class="inline-flex min-h-[52px] items-center gap-2.5 rounded-full bg-rust px-7 py-3.5 text-base font-semibold text-cream transition hover:bg-ink">
+          Zadzwoń: 882 804 197
+        </a>
+        <a href="#cennik" class="group inline-flex min-h-[52px] items-center gap-2 text-base font-semibold text-rust">
+          Zobacz cennik tygodniowy
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-y-0.5" aria-hidden="true"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+        </a>
+      </div>
+
+      <p class="mt-7 text-[.95rem] text-muted">
+        Partyzantów 8, Opoczno · pon.–pt. 9:00–17:00, sob. 9:00–13:00
+      </p>
+    </div>
+
+    <div class="order-1 lg:order-2">
+      <img src="photos/logo.jpg" alt="Inaczej Szanel — sklep z odzieżą używaną w Opocznie"
+           width="800" height="800" fetchpriority="high"
+           class="mx-auto block w-full max-w-[300px] sm:max-w-[380px] lg:max-w-[440px]">
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Cennik tygodniowy ──────────────────────────────────────────── -->
+<section id="cennik" class="relative border-y border-line bg-lift">
+  <div class="mx-auto max-w-content px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
+
+    <div class="max-w-prose">
+      <h2 class="font-display text-[1.9rem] font-medium leading-tight sm:text-[2.5rem]">Cennik tygodniowy</h2>
+      <p class="mt-5 text-muted">
+        Każdy tydzień zaczyna się od nowa. W poniedziałek wieszaki są pełne i ceny są najwyższe.
+        Potem, dzień po dniu, schodzą w dół. Przychodzisz w poniedziałek po największy wybór
+        albo w piątek po najniższą cenę.
+      </p>
+    </div>
+
+    <div class="mt-12 grid gap-10 lg:grid-cols-[1fr_17rem] lg:gap-14">
+
+      <!-- rejestr dni -->
+      <div>
+        <div class="rounded-2xl border border-line bg-cream px-5 py-2 sm:px-8 sm:py-4">
+
+          <article class="reg-day py-6" data-day="1">
+            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span class="font-display text-[.9rem] font-semibold text-rust">I.</span>
+              <h3 class="font-display text-[1.3rem] font-medium sm:text-[1.45rem]">Poniedziałek</h3>
+              <p class="font-display text-[.98rem] italic text-muted">nowa dostawa</p>
+              <span class="today-badge ml-auto">Dziś</span>
+            </div>
+            <dl class="mt-4 space-y-2.5 text-[.98rem]">
+              <div class="reg-line"><dt><span>Dziecięce</span></dt><dd class="font-display font-semibold">10 zł</dd></div>
+              <div class="reg-line"><dt><span>Główny asortyment</span></dt><dd class="font-display font-semibold">25 zł</dd></div>
+              <div class="reg-line"><dt><span>Kurtki i płaszcze</span></dt><dd class="font-display font-semibold">35 zł</dd></div>
+            </dl>
+          </article>
+
+          <article class="reg-day py-6" data-day="2">
+            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span class="font-display text-[.9rem] font-semibold text-rust">II.</span>
+              <h3 class="font-display text-[1.3rem] font-medium sm:text-[1.45rem]">Wtorek</h3>
+              <p class="font-display text-[.98rem] italic text-muted">pełen asortyment</p>
+              <span class="today-badge ml-auto">Dziś</span>
+            </div>
+            <dl class="mt-4 space-y-2.5 text-[.98rem]">
+              <div class="reg-line"><dt><span>Dziecięce</span></dt><dd class="font-display font-semibold">8 zł</dd></div>
+              <div class="reg-line"><dt><span>Główny asortyment</span></dt><dd class="font-display font-semibold">20 zł</dd></div>
+              <div class="reg-line"><dt><span>Kurtki i płaszcze</span></dt><dd class="font-display font-semibold">28 zł</dd></div>
+            </dl>
+          </article>
+
+          <article class="reg-day py-6" data-day="3">
+            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span class="font-display text-[.9rem] font-semibold text-rust">III.</span>
+              <h3 class="font-display text-[1.3rem] font-medium sm:text-[1.45rem]">Środa</h3>
+              <p class="font-display text-[.98rem] italic text-muted">drugi dzień obniżek</p>
+              <span class="today-badge ml-auto">Dziś</span>
+            </div>
+            <dl class="mt-4 space-y-2.5 text-[.98rem]">
+              <div class="reg-line"><dt><span>Dziecięce</span></dt><dd class="font-display font-semibold">6 zł</dd></div>
+              <div class="reg-line"><dt><span>Główny asortyment</span></dt><dd class="font-display font-semibold">15 zł</dd></div>
+              <div class="reg-line"><dt><span>Kurtki i płaszcze</span></dt><dd class="font-display font-semibold">20 zł</dd></div>
+            </dl>
+          </article>
+
+          <article class="reg-day py-6" data-day="4">
+            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span class="font-display text-[.9rem] font-semibold text-rust">IV.</span>
+              <h3 class="font-display text-[1.3rem] font-medium sm:text-[1.45rem]">Czwartek</h3>
+              <p class="font-display text-[.98rem] italic text-muted">ostatnia szansa</p>
+              <span class="today-badge ml-auto">Dziś</span>
+            </div>
+            <dl class="mt-4 space-y-2.5 text-[.98rem]">
+              <div class="reg-line"><dt><span>Dziecięce</span></dt><dd class="font-display font-semibold">4 zł</dd></div>
+              <div class="reg-line"><dt><span>Główny asortyment</span></dt><dd class="font-display font-semibold">10 zł</dd></div>
+              <div class="reg-line"><dt><span>Kurtki i płaszcze</span></dt><dd class="font-display font-semibold">12 zł</dd></div>
+            </dl>
+          </article>
+
+          <article class="reg-day relative py-6" data-day="5 6">
+            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span class="font-display text-[.9rem] font-semibold text-rust">V.</span>
+              <h3 class="font-display text-[1.3rem] font-medium sm:text-[1.45rem]">Piątek i sobota</h3>
+              <p class="font-display text-[.98rem] italic text-rust">wielka wyprzedaż</p>
+              <span class="today-badge ml-auto">Dziś</span>
+            </div>
+            <dl class="mt-4 space-y-2.5 text-[.98rem]">
+              <div class="reg-line"><dt><span>Dziecięce</span></dt><dd class="font-display font-semibold text-rust">2–3 zł</dd></div>
+              <div class="reg-line"><dt><span>Główny asortyment</span></dt><dd class="font-display font-semibold text-rust">5–8 zł</dd></div>
+              <div class="reg-line"><dt><span>Kurtki i płaszcze</span></dt><dd class="font-display font-semibold text-rust">8–10 zł</dd></div>
+            </dl>
+          </article>
+
+        </div>
+
+        <p class="mt-5 max-w-[54ch] font-display text-[.98rem] italic text-muted">
+          Ceny dotyczą całego asortymentu w sklepie. To nasz stały, cotygodniowy rytm, a nie
+          jednorazowa promocja. W niedzielę sklep jest zamknięty.
+        </p>
+      </div>
+
+      <!-- legenda asortymentu -->
+      <aside class="lg:sticky lg:top-24 lg:self-start">
+        <h3 class="font-display text-[1.15rem] font-medium">Co kryją kategorie</h3>
+        <dl class="mt-5 space-y-5 text-[.95rem]">
+          <div>
+            <dt class="font-display text-[1.08rem] font-medium">Dziecięce</dt>
+            <dd class="mt-1 text-muted">Koszulki, body, spodenki, bluzeczki, małe sweterki. Drobne rzeczy i kosze.</dd>
+          </div>
+          <div class="border-t border-line pt-5">
+            <dt class="font-display text-[1.08rem] font-medium">Główny asortyment</dt>
+            <dd class="mt-1 text-muted">Bluzy, swetry, spodnie, sukienki, koszule, spódnice. Damskie i męskie.</dd>
+          </div>
+          <div class="border-t border-line pt-5">
+            <dt class="font-display text-[1.08rem] font-medium">Kurtki i płaszcze</dt>
+            <dd class="mt-1 text-muted">Kurtki zimowe i przejściowe, płaszcze, grube marynarki.</dd>
+          </div>
+        </dl>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Nowa dostawa w poniedziałek ────────────────────────────────── -->
+<section id="dostawa" class="bg-rust text-cream">
+  <div class="mx-auto grid max-w-content items-center gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.1fr_.9fr] lg:gap-16 lg:py-24">
+
+    <div>
+      <h2 class="font-display text-[2rem] font-medium leading-[1.15] sm:text-[2.6rem]">
+        Nowa dostawa<br>w każdy <em class="italic text-peach">poniedziałek</em>
+      </h2>
+      <p class="mt-5 max-w-[46ch] text-[1.05rem] text-cream">
+        W poniedziałek rano wjeżdża świeży towar i ceny wracają na górę. Kto lubi przebierać
+        w pełnych wieszakach, przychodzi na początku tygodnia. Kto poluje na okazje, czeka do piątku.
+        Jedno i drugie ma sens.
+      </p>
+      <a href="#kontakt" class="group mt-8 inline-flex min-h-[52px] items-center gap-2 rounded-full border border-peach/60 px-7 py-3.5 text-base font-semibold text-cream transition hover:bg-cream hover:text-rust">
+        Sprawdź godziny otwarcia
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- wieszak z ubraniami: ilustracja linearna, ten sam język co logo -->
+    <div class="mx-auto w-full max-w-[380px]">
+      <svg viewBox="0 0 240 172" fill="none" stroke="#F2BCA2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full" role="img" aria-label="Rysunek drążka z ubraniami na wieszakach">
+        <path d="M8 26h224"/>
+        <path d="M8 20v12M232 20v12"/>
+
+        <!-- dziecięce: mała koszulka -->
+        <g class="sway" style="transform-origin: 55px 26px">
+          <path d="M55 40v-8c0-4-5-5-5-9a5 5 0 0 1 10 0"/>
+          <path d="M55 40 42 51h26L55 40Z"/>
+          <path d="M42 51c-5 3-8 5-9 9l5 5 4-4v37h26V61l4 4 5-5c-1-4-4-6-9-9"/>
+          <path d="M48 51l7 5 7-5" stroke-width="1.5"/>
+        </g>
+
+        <!-- główny asortyment: sukienka -->
+        <g class="sway s2" style="transform-origin: 120px 26px">
+          <path d="M120 42V32c0-4-5-5-5-9a5 5 0 0 1 10 0"/>
+          <path d="M120 42l-16 15h32l-16-15Z"/>
+          <path d="M104 57c-3 12-6 24-6 34 0 16 4 30 8 42h28c4-12 8-26 8-42 0-10-3-22-6-34"/>
+          <path d="M108 96c8 3 16 3 24 0" stroke-width="1.4" opacity=".8"/>
+        </g>
+
+        <!-- kurtki i płaszcze: długi płaszcz -->
+        <g class="sway s3" style="transform-origin: 185px 26px">
+          <path d="M185 42V32c0-4-5-5-5-9a5 5 0 0 1 10 0"/>
+          <path d="M185 42l-18 15h36l-18-15Z"/>
+          <path d="M167 57c-9 4-15 9-17 16l-3 56 15 2 5-50"/>
+          <path d="M203 57c9 4 15 9 17 16l3 56-15 2-5-50"/>
+          <path d="M167 57v92h36V57"/>
+          <path d="M177 57l8 11 8-11" stroke-width="1.6"/>
+          <path d="M185 68v81" stroke-width="1.3" opacity=".8"/>
+          <circle cx="185" cy="92" r="1.8" fill="#F2BCA2" stroke="none"/>
+          <circle cx="185" cy="114" r="1.8" fill="#F2BCA2" stroke="none"/>
+        </g>
+
+        <circle cx="26" cy="12" r="5" fill="#EF9475" stroke="none"/>
+        <circle cx="40" cy="8" r="2.6" fill="#EF9475" stroke="none"/>
+      </svg>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Social: co jest teraz ──────────────────────────────────────── -->
+<section id="social" class="relative overflow-hidden">
+  <div class="blobs" aria-hidden="true">
+    <svg class="drift -right-16 top-8 w-[240px] opacity-50 sm:-right-10 sm:w-[320px]" viewBox="0 0 240 260" fill="none">
+      <path d="M120 20c56-12 92 46 84 100s-54 88-98 70-70-72-48-112c16-30 32-52 62-58Z" fill="#F2BCA2" opacity=".45"/>
+    </svg>
+  </div>
+
+  <div class="relative z-10 mx-auto grid max-w-content items-center gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[.9fr_1.1fr] lg:gap-16 lg:py-24">
+
+    <div class="order-2 lg:order-1 mx-auto w-full max-w-[190px] lg:max-w-[280px]">
+      <!-- torba: nawiązanie do torebki z logo -->
+      <svg viewBox="0 0 160 170" fill="none" stroke="#EA4A23" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="w-full" aria-hidden="true">
+        <path d="M40 58h80l-8 92H48l-8-92Z"/>
+        <path d="M62 58c0-24 36-24 36 0" stroke-width="2.4"/>
+        <path d="M41 70h78" stroke-width="1.3" opacity=".5"/>
+        <circle cx="126" cy="30" r="9" fill="#EF9475" stroke="none"/>
+        <circle cx="142" cy="48" r="4.4" fill="#EA4A23" stroke="none"/>
+      </svg>
+    </div>
+
+    <div class="order-1 lg:order-2">
+      <h2 class="font-display text-[1.9rem] font-medium leading-tight sm:text-[2.5rem]">Zobacz, co jest teraz</h2>
+      <p class="mt-5 max-w-[46ch] text-muted">
+        Towar zmienia się co tydzień, więc nie robimy tu katalogu. Byłby nieaktualny w trzy dni.
+        Najświeższe rzeczy pokazujemy na bieżąco na Instagramie i Facebooku.
+      </p>
+
+      <div class="mt-8 grid gap-3 sm:grid-cols-2">
+        <a href="https://www.instagram.com/inaczej.szanel/" target="_blank" rel="noopener"
+           class="group flex min-h-[64px] items-center gap-4 rounded-2xl border border-line bg-lift px-5 py-4 transition hover:border-rust hover:bg-cream">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#B23714" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="shrink-0" aria-hidden="true">
+            <rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.2" fill="#B23714" stroke="none"/>
+          </svg>
+          <span>
+            <span class="block font-display text-[1.05rem] font-medium">Instagram</span>
+            <span class="block text-[.9rem] text-muted">@inaczej.szanel</span>
+          </span>
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61589391164751" target="_blank" rel="noopener"
+           class="group flex min-h-[64px] items-center gap-4 rounded-2xl border border-line bg-lift px-5 py-4 transition hover:border-rust hover:bg-cream">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#B23714" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="shrink-0" aria-hidden="true">
+            <rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><path d="M15.4 8.2h-1.6c-1 0-1.6.6-1.6 1.6v1.8h3l-.4 3h-2.6v5"/><path d="M9.7 11.6h2.5"/>
+          </svg>
+          <span>
+            <span class="block font-display text-[1.05rem] font-medium">Facebook</span>
+            <span class="block text-[.9rem] text-muted">Inaczej Szanel</span>
+          </span>
+        </a>
+      </div>
+
+      <p class="mt-6 text-[.95rem] text-muted">
+        Szukasz czegoś konkretnego? Zadzwoń pod
+        <a href="tel:+48882804197" class="font-semibold text-rust underline underline-offset-4 hover:text-ink">882 804 197</a>
+        i zapytaj, czy mamy to na wieszaku.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Godziny, adres, mapa ───────────────────────────────────────── -->
+<section id="kontakt" class="border-t border-line bg-lift">
+  <div class="mx-auto max-w-content px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
+
+    <h2 class="font-display text-[1.9rem] font-medium leading-tight sm:text-[2.5rem]">Godziny i dojazd</h2>
+
+    <div class="mt-10 grid gap-10 lg:grid-cols-2 lg:gap-14">
+
+      <div>
+        <h3 class="font-display text-[1.15rem] font-medium">Godziny otwarcia</h3>
+        <dl class="mt-4 text-[1rem]">
+          <div class="hours-row flex items-baseline justify-between gap-4 border-b border-line py-3" data-day="1"><dt class="inline-flex items-baseline gap-2">Poniedziałek <span class="today-badge">Dziś</span></dt><dd class="font-display font-medium tabular-nums">9:00 – 17:00</dd></div>
+          <div class="hours-row flex items-baseline justify-between gap-4 border-b border-line py-3" data-day="2"><dt class="inline-flex items-baseline gap-2">Wtorek <span class="today-badge">Dziś</span></dt><dd class="font-display font-medium tabular-nums">9:00 – 17:00</dd></div>
+          <div class="hours-row flex items-baseline justify-between gap-4 border-b border-line py-3" data-day="3"><dt class="inline-flex items-baseline gap-2">Środa <span class="today-badge">Dziś</span></dt><dd class="font-display font-medium tabular-nums">9:00 – 17:00</dd></div>
+          <div class="hours-row flex items-baseline justify-between gap-4 border-b border-line py-3" data-day="4"><dt class="inline-flex items-baseline gap-2">Czwartek <span class="today-badge">Dziś</span></dt><dd class="font-display font-medium tabular-nums">9:00 – 17:00</dd></div>
+          <div class="hours-row flex items-baseline justify-between gap-4 border-b border-line py-3" data-day="5"><dt class="inline-flex items-baseline gap-2">Piątek <span class="today-badge">Dziś</span></dt><dd class="font-display font-medium tabular-nums">9:00 – 17:00</dd></div>
+          <div class="hours-row flex items-baseline justify-between gap-4 border-b border-line py-3" data-day="6"><dt class="inline-flex items-baseline gap-2">Sobota <span class="today-badge">Dziś</span></dt><dd class="font-display font-medium tabular-nums">9:00 – 13:00</dd></div>
+          <div class="hours-row flex items-baseline justify-between gap-4 py-3" data-day="0"><dt class="inline-flex items-baseline gap-2">Niedziela <span class="today-badge">Dziś</span></dt><dd class="font-display font-medium italic text-muted">zamknięte</dd></div>
+        </dl>
+
+        <div class="mt-9">
+          <h3 class="font-display text-[1.15rem] font-medium">Gdzie nas znajdziesz</h3>
+          <address class="mt-3 not-italic text-muted">
+            Inaczej Szanel<br>
+            ul. Partyzantów 8<br>
+            26-300 Opoczno
+          </address>
+          <div class="mt-5 flex flex-wrap gap-3">
+            <a href="tel:+48882804197"
+               class="inline-flex min-h-[52px] items-center gap-2.5 rounded-full bg-rust px-7 py-3.5 text-base font-semibold text-cream transition hover:bg-ink">
+              Zadzwoń: 882 804 197
+            </a>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=Partyzant%C3%B3w+8,+26-300+Opoczno" target="_blank" rel="noopener"
+               class="inline-flex min-h-[52px] items-center gap-2 rounded-full border border-rust/45 px-7 py-3.5 text-base font-semibold text-rust transition hover:bg-cream">
+              Wyznacz trasę
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-frame overflow-hidden rounded-2xl border border-line">
+        <iframe
+          title="Mapa dojazdu: Partyzantów 8, 26-300 Opoczno"
+          src="https://maps.google.com/maps?q=Partyzant%C3%B3w%208%2C%2026-300%20Opoczno&z=16&output=embed"
+          class="block h-[320px] w-full lg:h-full lg:min-h-[440px]"
+          style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ── Stopka ─────────────────────────────────────────────────────── -->
+<footer class="border-t border-line bg-cream">
+  <div class="mx-auto max-w-content px-4 py-12 sm:px-6 sm:py-14">
+    <div class="grid gap-8 sm:grid-cols-[1fr_auto] sm:items-start">
+      <div>
+        <span class="wordmark [--w:132px]"><img src="photos/logo.jpg" alt="Inaczej Szanel"></span>
+        <p class="mt-4 text-[.95rem] text-muted">
+          ul. Partyzantów 8, 26-300 Opoczno<br>
+          <a href="tel:+48882804197" class="inline-flex min-h-[44px] items-center font-semibold text-ink underline underline-offset-4 hover:text-rust">882 804 197</a>
+        </p>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="https://www.instagram.com/inaczej.szanel/" target="_blank" rel="noopener" aria-label="Instagram Inaczej Szanel"
+           class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-rust/40 text-rust transition hover:bg-cream">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61589391164751" target="_blank" rel="noopener" aria-label="Facebook Inaczej Szanel"
+           class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-rust/40 text-rust transition hover:bg-cream">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><path d="M15.4 8.2h-1.6c-1 0-1.6.6-1.6 1.6v1.8h3l-.4 3h-2.6v5"/><path d="M9.7 11.6h2.5"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-[rgba(43,26,17,.16)] pt-6 text-[.88rem] text-muted">
+      <p>© 2026 Inaczej Szanel</p>
+      <a href="privacy.html" class="underline underline-offset-4 hover:text-rust">Polityka prywatności</a>
+    </div>
+  </div>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ClothingStore",
+  "name": "Inaczej Szanel",
+  "description": "Sklep z odzieżą używaną w Opocznie. Nowa dostawa w każdy poniedziałek, ceny spadają przez cały tydzień.",
+  "image": "photos/logo.jpg",
+  "telephone": "+48882804197",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "ul. Partyzantów 8",
+    "postalCode": "26-300",
+    "addressLocality": "Opoczno",
+    "addressCountry": "PL"
+  },
+  "sameAs": [
+    "https://www.instagram.com/inaczej.szanel/",
+    "https://www.facebook.com/profile.php?id=61589391164751"
+  ],
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "17:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "13:00" }
+  ]
+}
+</script>
+
+<script>
+  (function () {
+    var day = new Date().getDay();
+    document.querySelectorAll('[data-day]').forEach(function (el) {
+      var days = el.getAttribute('data-day').split(' ').map(Number);
+      if (days.indexOf(day) !== -1) el.setAttribute('data-today', 'true');
+    });
+  })();
+</script>
+
+</body>
+</html>
