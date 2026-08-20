@@ -177,13 +177,31 @@ a { color: inherit; text-decoration: none; }
   color: #fff;
 }
 .revenue-lbl { font-size: 11.5px; color: rgba(255,255,255,0.75); margin-top: 4px; }
-.revenue-ticker {
+.revenue-ticker-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 20px;
   margin-top: 16px;
   padding-top: 14px;
   border-top: 1px solid rgba(255,255,255,0.14);
+}
+.revenue-ticker {
   font-size: 12.5px;
   color: rgba(255,255,255,0.85);
   font-variant-numeric: tabular-nums;
+}
+/* "W grze: N Meetow -> +X zl/mies." - kwota lekko oddycha zlotym poswiata, zeby przyciagac
+   oko jako "do zgarniecia", bez zadnej animacji ktora ruszalaby layoutem (tylko text-shadow) */
+.revenue-potential { font-size: 12.5px; color: rgba(255,255,255,0.9); font-variant-numeric: tabular-nums; }
+.revenue-potential b { color: #ffd97a; font-weight: 800; animation: revenuePotentialGlow 2.4s ease-in-out infinite; }
+@keyframes revenuePotentialGlow {
+  0%, 100% { text-shadow: 0 0 0 rgba(255,217,122,0); }
+  50% { text-shadow: 0 0 8px rgba(255,217,122,0.7); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .revenue-potential b { animation: none; }
 }
 
 /* ---------- panel: najblizsze spotkania / callbacki ---------- */

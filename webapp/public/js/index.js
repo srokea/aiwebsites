@@ -119,6 +119,16 @@ function monthTickerAmount(mrr) {
   return mrr * ((now - start) / (end - start));
 }
 
+// "W grze": leady tuz przed finiszem (Meet odbyty/umowiony albo czekajace na podpis, patrz
+// pipelineCount w server/routes/stats.js) - motywacyjna linijka obok tykajacego abonamentu:
+// "gdybyscie domkneli WSZYSTKO co juz macie w toku, tyle wpadnie do abonamentu co miesiac".
+function pipelineHtml(r) {
+  if (!r.pipelineCount) return "";
+  const word = r.pipelineCount === 1 ? "Meet" : r.pipelineCount < 5 ? "Meety" : "Meetów";
+  const bonus = r.pipelineCount * r.pricing.monthly;
+  return `<div class="revenue-potential">🚀 W grze: <b>${r.pipelineCount}</b> ${word} — domknij wszystkie i abonament rośnie o <b>+${money(bonus)}</b>/mies.</div>`;
+}
+
 function renderRevenuePanel() {
   const panel = document.getElementById("revenue-panel");
   if (!lastRevenue) return;
@@ -132,25 +142,33 @@ function renderRevenuePanel() {
     </div>
     <div class="revenue-row">
       <div class="revenue-item">
-        <div class="revenue-num">${r.clients}</div>
+        <div class="revenue-num" data-count="${r.clients}">0</div>
         <div class="revenue-lbl">Klientów (Dopięte)</div>
       </div>
       <div class="revenue-item">
-        <div class="revenue-num">${money(r.oneTime)}</div>
+        <div class="revenue-num" data-count="${r.oneTime}" data-money>0 zł</div>
         <div class="revenue-lbl">Jednorazowo (${r.pricing.oneTime} zł/klient)</div>
       </div>
       <div class="revenue-item">
-        <div class="revenue-num">${money(r.mrr)}</div>
+        <div class="revenue-num" data-count="${r.mrr}" data-money>0 zł</div>
         <div class="revenue-lbl">Miesięcznie (${r.pricing.monthly} zł/klient)</div>
       </div>
       <div class="revenue-item">
-        <div class="revenue-num">${money(r.net)}</div>
+        <div class="revenue-num" data-count="${r.net}" data-money>0 zł</div>
         <div class="revenue-lbl">Netto łącznie (jednorazowe + miesięczne − koszty)</div>
       </div>
     </div>
-    <div class="revenue-ticker" id="revenue-ticker"></div>
+    <div class="revenue-ticker-row">
+      <div class="revenue-ticker" id="revenue-ticker"></div>
+      ${pipelineHtml(r)}
+    </div>
   `;
   updateRevenueTicker();
+  // dopaminowy "doliczanie do wartosci" tak samo jak % zrobienia na wykresie - patrz
+  // countUpValue/countUpPct nizej (ta sama sekcja animacji przy swiezych danych)
+  panel.querySelectorAll(".revenue-num[data-count]").forEach((el) => {
+    countUpValue(el, Number(el.dataset.count), "money" in el.dataset ? money : String);
+  });
 }
 
 function updateRevenueTicker() {
@@ -451,6 +469,23 @@ function countUpPct(el, to, duration = 900) {
   const step = (now) => {
     const t = Math.min(1, (now - start) / duration);
     el.textContent = `${Math.round(to * (1 - Math.pow(1 - t, 3)))}%`;
+    if (t < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+// Ten sam "dopaminowy" doliczanie co countUpPct, tylko na dowolna liczbe/kwote (panel Kasy) -
+// stad osobny formatter zamiast sztywnego dopisywania "%".
+function countUpValue(el, to, format = String, duration = 900) {
+  if (!el) return;
+  if (reducedMotion()) {
+    el.textContent = format(to);
+    return;
+  }
+  const start = performance.now();
+  const step = (now) => {
+    const t = Math.min(1, (now - start) / duration);
+    el.textContent = format(Math.round(to * (1 - Math.pow(1 - t, 3))));
     if (t < 1) requestAnimationFrame(step);
   };
   requestAnimationFrame(step);

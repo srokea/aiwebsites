@@ -86,6 +86,13 @@ router.get("/", (req, res) => {
     return sum + exp.amount * (fullMonthsElapsed(exp.from, until) + 1);
   }, 0);
 
+  // "W grze": leady po odbytej rozmowie, ktore jeszcze nie sa dopiete, ale sa najblizej -
+  // maja juz umowiony/odbyty Meet (status google_meet) albo czekaja na podpis (closing).
+  // Uzywane do motywacyjnej linijki w panelu Kasy: "tyle wpadnie, jak domkniecie wszystkich".
+  const pipelineCount = db
+    .prepare("SELECT COUNT(*) c FROM leads WHERE interested IN ('google_meet', 'closing')")
+    .get().c;
+
   const revenue = {
     clients,
     oneTime: clients * PRICING.oneTime,
@@ -94,6 +101,8 @@ router.get("/", (req, res) => {
     expensesSoFar,
     net: earned - expensesSoFar,
     pricing: PRICING,
+    pipelineCount,
+    potentialMrr: clients * PRICING.monthly + pipelineCount * PRICING.monthly,
   };
 
   res.json({
