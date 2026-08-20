@@ -1662,13 +1662,20 @@ table.leads td.idx-col.idx-presence .idx-num { font-weight: 800; text-shadow: 0 
   border-radius: 24px;
   background: var(--card-alt);
   border: 1px solid var(--border);
+  transition: background .3s, border-color .3s;
 }
 .team-status-avatars { display: inline-flex; gap: 6px; }
 .team-status-avatars .team-avatar { display: inline-flex; }
 .team-avatar .user-avatar { box-shadow: 0 0 0 2px var(--card-alt); transition: filter .2s, opacity .2s; }
 .team-avatar.offline .user-avatar { filter: grayscale(1) brightness(0.6); opacity: 0.55; }
 .team-avatar.online .user-avatar { box-shadow: 0 0 0 2px var(--card-alt), 0 0 9px rgba(92,184,92,0.55); }
-.team-status-count { font-size: 14px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+.team-status-count { font-size: 14px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; transition: color .3s; }
+/* czesc, ale nie caly zespol online (np. 1/2) - przygaszony pomarancz, "brakuje kogos" */
+.team-status.status-partial { background: rgba(192,160,80,0.10); border-color: rgba(192,160,80,0.45); }
+.team-status.status-partial .team-status-count { color: var(--gold); }
+/* caly zespol online (np. 2/2) - wyrazista ziel, "komplet" */
+.team-status.status-full { background: rgba(92,184,92,0.12); border-color: rgba(92,184,92,0.5); }
+.team-status.status-full .team-status-count { color: var(--green); }
 
 @media (max-width: 560px) {
   .topbar-title-row { flex-wrap: wrap; row-gap: 10px; }

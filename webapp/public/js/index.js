@@ -656,6 +656,10 @@ function renderTeamStatus(users) {
     )
     .join("");
   el.innerHTML = `<span class="team-status-avatars">${avatars}</span><span class="team-status-count">${onlineCount}/${users.length}</span>`;
+  // caly zespol online = wyrazna zielen, ktos brakuje = przygaszony pomarancz, nikogo nie ma =
+  // neutralny szary (bez klasy) - patrz .team-status.status-* w style.css
+  el.classList.toggle("status-full", users.length > 0 && onlineCount === users.length);
+  el.classList.toggle("status-partial", onlineCount > 0 && onlineCount < users.length);
 }
 
 async function pollTeamStatus() {
