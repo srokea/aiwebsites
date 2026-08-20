@@ -272,12 +272,16 @@ a { color: inherit; text-decoration: none; }
   justify-content: space-between;
   gap: 12px;
   padding: 9px 10px;
+  margin-bottom: 5px;
   border-radius: 10px;
   border: 1px solid transparent;
   border-bottom-color: var(--border-soft);
   transition: opacity .15s, background .2s, border-color .2s;
 }
-.upcoming-item:last-child { border-bottom-color: transparent; }
+/* odstep miedzy wierszami zamiast stykajacych sie obwodek - dwie sasiadujace podswietlone
+   karty w roznych kolorach (np. "jutro" pomaranczowe obok "za 2 dni" zlotego) inaczej stykaly
+   sie krawedziami i wygladalo to jak jedna zlepiona, dwukolorowa kreska */
+.upcoming-item:last-child { margin-bottom: 0; border-bottom-color: transparent; }
 .upcoming-item:hover { opacity: 0.75; }
 /* kazdy prog ma swoj wlasny odcien (ten sam co jego badge, patrz .reminder-badge.r-* nizej) -
    za 2 dni zloty, jutro pomaranczowy, dzis czerwony - zamiast jednego zoltego dla wszystkich.
