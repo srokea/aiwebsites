@@ -720,7 +720,10 @@ function renderCallerStats(s, user) {
       ${tile(s.meetsAhead, "Meety przed nami")}
     </div>
 
-    <div class="caller-modal-money">💰 Wykręcone: <b>${money(s.earned)}</b></div>
+    <div class="caller-modal-money-row">
+      <div class="caller-modal-money">💰 Wykręcone: <b>${money(s.earned)}</b></div>
+      <div class="caller-modal-money">🎯 Success ratio: <b>${s.called ? Math.round((s.clients / s.called) * 100) : 0}%</b></div>
+    </div>
 
     <div class="section-title" style="margin-bottom:2px">Statusy</div>
     <div class="caller-bars">

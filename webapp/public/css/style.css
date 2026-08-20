@@ -568,7 +568,8 @@ a { color: inherit; text-decoration: none; }
 .caller-stat { background: var(--card); padding: 14px 10px; text-align: center; }
 .caller-stat .num { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; font-variant-numeric: tabular-nums; }
 .caller-stat .lbl { font-size: 10.5px; color: var(--muted); margin-top: 4px; }
-.caller-modal-money { margin: 16px 0 6px; font-size: 13px; color: var(--muted); }
+.caller-modal-money-row { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 16px 0 6px; }
+.caller-modal-money { font-size: 13px; color: var(--muted); }
 .caller-modal-money b { color: var(--green); font-size: 15px; }
 .caller-modal .caller-bars { margin-bottom: 18px; }
 .caller-modal .caller-bar-row { grid-template-columns: 130px 1fr 32px; }
@@ -690,7 +691,7 @@ a { color: inherit; text-decoration: none; }
 .icon-btn:hover { border-color: #3a3a3a; background: #202020; transform: rotate(45deg); }
 /* #10 - linki powrotu ("Wszystkie nisze" / "Powrot do niszy") w tym samym kwadratowym stylu co
    ⚙️, ale strzalka na hover przesuwa sie w lewo (krok wstecz), a nie obraca sie jak zebatka */
-.icon-btn.icon-btn-back { display: flex; align-items: center; justify-content: center; font-size: 17px; text-decoration: none; color: var(--text); }
+.icon-btn.icon-btn-back { display: flex; align-items: center; justify-content: center; text-decoration: none; color: var(--text); }
 .icon-btn.icon-btn-back:hover { transform: translateX(-2px); }
 
 .color-swatches { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }

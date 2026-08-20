@@ -708,7 +708,7 @@ function rowHtml(lead, index) {
       <td>${fieldCsel("has_social", meta.websiteStatusOptions, lead.has_social, "—")}</td>
       <td class="city-cell">${escapeHtml(lead.city)}</td>
       <td class="phone-cell">
-        <a class="phone-call-btn" href="/script.html?leadId=${lead.id}" title="Scheme rozmowy">📖</a>
+        <a class="phone-call-btn" href="/script.html?leadId=${lead.id}" target="_blank" rel="noopener" title="Scheme rozmowy (nowe okno)">📖</a>
         <span class="phone-text">${escapeHtml(formatPhone(lead.phone))}</span>
       </td>
       <td><input type="time" class="time-input" data-field="open_time" value="${escapeHtml(lead.open_time || "")}"></td>
