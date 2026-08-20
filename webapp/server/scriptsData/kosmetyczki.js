@@ -46,7 +46,7 @@ function buildScript(lead) {
             {
               type: "text",
               speaker: "you",
-              html: `Świetnie, wie Pani co, widziałem ostatnio Wasz ${p.profileNoun} ${p.onPhrase} – naprawdę świetne zdjęcia efektów${otherPlatforms}. Tak się składa, że jestem studentem informatyki z okolicy ${city} i żeby wspomóc swoje portfolio, zacząłem robić strony internetowe dla lokalnych biznesów tu w ${city}. Przygotowałem już jedną specjalnie dla Was – takie miejsce, które spina ${platform}, cennik, opinie i kontakt w jedno. Miałaby Pani może 5-10 minut w tygodniu, żebym zaprezentował przykładowy koncept?`,
+              html: `Świetnie, wie Pani co, widziałem ostatnio Wasz ${p.profileNoun} <em>${p.onPhrase}</em> – naprawdę świetne zdjęcia efektów${otherPlatforms}. Tak się składa, że jestem studentem informatyki z okolicy ${city} i żeby wspomóc swoje portfolio, zacząłem robić strony internetowe dla lokalnych biznesów tu w ${city}. Przygotowałem już jedną specjalnie dla Was – takie miejsce, które spina ${platform}, cennik, opinie i kontakt w jedno. Miałaby Pani może 5-10 minut w tygodniu, żebym zaprezentował przykładowy koncept?`,
             },
             { type: "divider" },
             { type: "hookTag", variant: "backup", label: "Backup – prezent / voucher" },
