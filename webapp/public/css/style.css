@@ -273,17 +273,19 @@ a { color: inherit; text-decoration: none; }
   gap: 12px;
   padding: 9px 10px;
   margin: 0 -10px;
-  border-radius: 10px;
-  border-bottom: 1px solid var(--border-soft);
-  transition: opacity .15s, background .2s;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  border-bottom-color: var(--border-soft);
+  transition: opacity .15s, background .2s, border-color .2s;
 }
-.upcoming-item:last-child { border-bottom: none; }
+.upcoming-item:last-child { border-bottom-color: transparent; }
 .upcoming-item:hover { opacity: 0.75; }
-/* im blizej terminu, tym mocniejsza zolta poswiata calego wiersza (ten sam odcien co badge
-   "za 2 dni", tylko skalowany nasyceniem) - przeterminowane/dalsze niz za 2 dni bez zmian */
-.upcoming-item.r-d2 { background: rgba(212, 192, 80, 0.045); }
-.upcoming-item.r-d1 { background: rgba(212, 192, 80, 0.08); }
-.upcoming-item.r-due { background: rgba(212, 192, 80, 0.12); }
+/* kazdy prog ma swoj wlasny odcien (ten sam co jego badge, patrz .reminder-badge.r-* nizej) -
+   za 2 dni zloty, jutro pomaranczowy, dzis czerwony - zamiast jednego zoltego dla wszystkich.
+   Kolorowa obwodka (mocniejsza niz tlo) daje karcie wyrazny, zaokraglony ksztalt. */
+.upcoming-item.r-d2 { background: rgba(212, 192, 80, 0.1); border-color: rgba(212, 192, 80, 0.5); }
+.upcoming-item.r-d1 { background: rgba(224, 147, 92, 0.12); border-color: rgba(224, 147, 92, 0.55); }
+.upcoming-item.r-due { background: rgba(224, 96, 80, 0.14); border-color: rgba(224, 96, 80, 0.6); }
 .upcoming-who { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .upcoming-name { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
 .upcoming-niche { font-size: 11px; color: var(--muted-soft); }
