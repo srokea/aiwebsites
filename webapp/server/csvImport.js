@@ -30,7 +30,23 @@ const FIELD_ALIASES = {
   callback_when: ["kiedyoddzwonic", "kiedyzadzwonic", "kiedydzwonic", "callbackwhen", "oddzwonic"],
   google_term: ["termingooglemeet", "termingoogle", "googleterm", "terminspotkania"],
   notes: ["notatki", "notes", "uwagi", "notatkimoj", "notatkimoje"],
+  // godziny otwarcia (#11) - "godzinaotwarcia" musi byc przed krotszym "otwarcie",
+  // bo dopasowanie "naglowek zawiera alias" bierze najdluzszy pasujacy alias
+  open_time: ["godzinaotwarcia", "godzinyotwarcia", "otwarcie", "otwiera", "opentime", "open"],
+  close_time: ["godzinazamkniecia", "godzinyzamkniecia", "zamkniecie", "zamyka", "closetime", "close"],
 };
+
+// "9", "9:00", "09.00" -> "09:00"; cokolwiek innego -> "" (nie zgadujemy)
+const TIME_ROW = /^(\d{1,2})[:.]?(\d{2})?$/;
+
+function normalizeTime(raw) {
+  const m = String(raw).trim().match(TIME_ROW);
+  if (!m) return "";
+  const h = Number(m[1]);
+  const min = m[2] ? Number(m[2]) : 0;
+  if (h > 23 || min > 59) return "";
+  return `${String(h).padStart(2, "0")}:${String(min).padStart(2, "0")}`;
+}
 
 const TRUTHY = new Set(["tak", "yes", "y", "true", "1", "x", "v"]);
 
@@ -120,6 +136,8 @@ function mapRowsToLeads(rows, callerNames) {
         reminder: "",
         callback_when: "",
         google_term: "",
+        open_time: "",
+        close_time: "",
         notes: "",
         research_notes: "",
       };
@@ -176,6 +194,16 @@ function mapRowsToLeads(rows, callerNames) {
             // notatki scrapera trzymamy osobno (research_notes) - kolumna "Notatki" w UI
             // ma zostac pusta do recznego uzytku zespolu (patrz tez detectTagsAndUrl ponizej)
             lead.research_notes = value;
+            break;
+          case "open_time":
+          case "close_time":
+            // arkusze zapisuja godziny roznie ("9", "9:00", "09.00") - do bazy wpuszczamy
+            // tylko znormalizowane "HH:MM", reszta idzie do notatek zamiast smiecic w kolumnie
+            {
+              const time = normalizeTime(value);
+              if (time) lead[mapping.field] = time;
+              else extraNotes.push(`Godziny (import): ${value}`);
+            }
             break;
           default:
             lead[mapping.field] = value;

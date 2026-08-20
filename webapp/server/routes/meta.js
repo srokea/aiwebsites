@@ -7,6 +7,8 @@ const {
   PLATFORM_META,
   WEBSITE_STATUS_OPTIONS,
   QUALITY_OPTIONS,
+  SITE_PROGRESS_OPTIONS,
+  SMS_CONFIRM_TEMPLATE,
   NICHE_COLORS,
   DAILY_GOAL,
 } = require("../constants");
@@ -28,6 +30,8 @@ router.get("/", (req, res) => {
     platformMeta: PLATFORM_META,
     websiteStatusOptions: WEBSITE_STATUS_OPTIONS,
     qualityOptions: QUALITY_OPTIONS,
+    siteProgressOptions: SITE_PROGRESS_OPTIONS,
+    smsConfirmTemplate: SMS_CONFIRM_TEMPLATE,
     nicheColors: NICHE_COLORS,
     dailyGoal: DAILY_GOAL,
   });

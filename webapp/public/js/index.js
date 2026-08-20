@@ -170,6 +170,33 @@ function dayLabel(diffDays) {
   return `za ${diffDays} dni`;
 }
 
+// #14 - kolko postepu budowy strony przy pozycji w "Najblizsze Google Meety". Klik przestawia
+// na kolejny etap (i zawija sie z powrotem na "Wcale"), zeby dalo sie to ustawic bez wchodzenia
+// w nisze - etapy i kolory pochodza z SITE_PROGRESS_OPTIONS w server/constants.js.
+function siteProgressHtml(item) {
+  const stages = (meta && meta.siteProgressOptions) || [];
+  if (!stages.length) return "";
+  const stage = stages.find((s) => s.value === (item.site_progress || 0)) || stages[0];
+  const circumference = 2 * Math.PI * 7;
+  return `
+    <button type="button" class="site-progress" data-progress-lead="${item.id}" data-progress-stage="${stage.value}"
+            title="Strona: ${escapeHtml(stage.label)} — kliknij, żeby zmienić">
+      <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+        <circle cx="10" cy="10" r="7" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="3"></circle>
+        <circle cx="10" cy="10" r="7" fill="none" stroke="${stage.color}" stroke-width="3" stroke-linecap="round"
+                transform="rotate(-90 10 10)"
+                stroke-dasharray="${circumference}" stroke-dashoffset="${circumference * (1 - stage.pct / 100)}"></circle>
+      </svg>
+    </button>
+  `;
+}
+
+// #10 - guzik kopiujacy gotowego SMS-a z podstawiona godzina jutrzejszego spotkania
+function smsCopyHtml(item, d) {
+  const hour = d.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
+  return `<button type="button" class="sms-copy-btn" data-sms-hour="${escapeHtml(hour)}" title="Skopiuj SMS potwierdzający">✉️</button>`;
+}
+
 function upcomingItemHtml(item, withTime) {
   const d = new Date(item.when_at);
   if (isNaN(d.getTime())) return "";
@@ -183,6 +210,11 @@ function upcomingItemHtml(item, withTime) {
     ? `${d.toLocaleDateString("pl-PL", { day: "numeric", month: "short" })} · ${d.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" })}`
     : d.toLocaleDateString("pl-PL", { day: "numeric", month: "long" });
 
+  // Na liscie Closing data to ostatnia zmiana leada, a nie umowiony termin - wiec zamiast
+  // "16 dni temu" (co sugerowaloby przegapiony termin) mowimy wprost, ile lezy bez ruchu.
+  const badgeText =
+    item._list === "closing" ? (diffDays === 0 ? "dziś ruszone" : `${Math.abs(diffDays)} dni bez ruchu`) : dayLabel(diffDays);
+
   // pinezka tylko gdy lead ma notatki - klik pokazuje je w dymku (patrz openNotePopover)
   const notes = item.notes || [];
   const pin = notes.length
@@ -190,8 +222,16 @@ function upcomingItemHtml(item, withTime) {
     : "";
   // ikonka osoby "Kto dzwonił" - zawsze pierwsza w rzedzie, wiec ląduje na lewo od pinezki
   // (jesli sa notatki) albo wprost na lewo od "za X dni" (jesli nie ma)
+  // obramowka wokol avatara w kolorze TEJ osoby (Sylwester niebieski, Nikodem pomaranczowy) -
+  // zeby jednym rzutem oka bylo widac, czyj to termin, bez czytania tooltipa
   const caller = usersByName[item.caller];
-  const callerIcon = caller ? `<span class="upcoming-caller-icon" title="${escapeHtml(item.caller)}">${avatarGlyphHtml(caller, 18)}</span>` : "";
+  const ring = caller ? caller.color || (meta && meta.callerColors[item.caller]) || "#888" : "#888";
+  const callerIcon = caller
+    ? `<span class="upcoming-caller-icon" style="--ring-color:${ring}" title="${escapeHtml(item.caller)}">${avatarGlyphHtml(caller, 18)}</span>`
+    : "";
+
+  // dodatki zalezne od listy: postep strony przy Meetach, guzik SMS przy jutrzejszych
+  const extra = item._list === "meet" ? siteProgressHtml(item) : item._list === "sms" ? smsCopyHtml(item, d) : "";
 
   // &lead=<id> - widok niszy przescrolluje do tego wiersza i chwilowo go podswietli
   return `
@@ -202,7 +242,7 @@ function upcomingItemHtml(item, withTime) {
       </div>
       <div class="upcoming-when">
         <span class="upcoming-date">${dateLabel}</span>
-        <span class="upcoming-badge-row">${callerIcon}${pin}<span class="reminder-badge ${urgencyClass(diffDays)}">${dayLabel(diffDays)}</span></span>
+        <span class="upcoming-badge-row">${extra}${callerIcon}${pin}<span class="reminder-badge ${urgencyClass(diffDays)}">${badgeText}</span></span>
       </div>
     </a>
   `;
@@ -244,12 +284,15 @@ function openNotePopover(btn, notes) {
 }
 
 async function loadUpcoming() {
-  const { meets, meetsTotal, callbacks, callbacksTotal } = await api.get("/api/upcoming");
+  const { meets, meetsTotal, callbacks, callbacksTotal, sms, smsTotal, closing, closingTotal } =
+    await api.get("/api/upcoming");
   const panel = document.getElementById("upcoming-panel");
 
   meets.forEach((i) => (i._list = "meet"));
   callbacks.forEach((i) => (i._list = "cb"));
-  upcomingNotes = new Map([...meets, ...callbacks].map((i) => [itemKey(i), i.notes || []]));
+  sms.forEach((i) => (i._list = "sms"));
+  closing.forEach((i) => (i._list = "closing"));
+  upcomingNotes = new Map([...meets, ...callbacks, ...sms, ...closing].map((i) => [itemKey(i), i.notes || []]));
 
   // total = wszystkie zaplanowane pozycje (nie tylko widoczne na liscie, ktora ma limit)
   const col = (title, icon, items, total, withTime) => `
@@ -267,8 +310,72 @@ async function loadUpcoming() {
 
   panel.innerHTML =
     col("Najbliższe Google Meety", "🖥️", meets, meetsTotal, true) +
-    col("Do oddzwonienia", "📞", callbacks, callbacksTotal, false);
+    col("Do oddzwonienia", "📞", callbacks, callbacksTotal, false) +
+    col("SMS do wysłania", "✉️", sms, smsTotal, true) +
+    col("Closing", "🤝", closing, closingTotal, false);
 }
+
+// Kopiowanie dziala tez po zwyklym http (appka chodzi na http://...:3000), gdzie
+// navigator.clipboard w ogole nie istnieje - stad fallback na stara metode z <textarea>.
+async function copyText(text) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {
+    // np. odmowa uprawnien - lecimy fallbackiem ponizej
+  }
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.cssText = "position:fixed; top:-1000px; opacity:0;";
+  document.body.appendChild(ta);
+  ta.select();
+  let ok = false;
+  try {
+    ok = document.execCommand("copy");
+  } catch {
+    ok = false;
+  }
+  ta.remove();
+  return ok;
+}
+
+// #14 - klik w kolko przestawia etap budowy strony na kolejny (po ostatnim wraca na "Wcale")
+document.getElementById("upcoming-panel").addEventListener("click", async (e) => {
+  const btn = e.target.closest(".site-progress");
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+
+  const stages = meta.siteProgressOptions || [];
+  const current = Number(btn.dataset.progressStage);
+  const idx = stages.findIndex((s) => s.value === current);
+  const next = stages[(idx + 1) % stages.length];
+  try {
+    await api.patch(`/api/leads/${btn.dataset.progressLead}`, { site_progress: next.value });
+    await loadUpcoming();
+  } catch (err) {
+    alert("Nie udalo sie zapisac postepu strony: " + err.message);
+  }
+});
+
+// #10 - guzik kopiuje gotowa tresc SMS-a z podstawiona godzina jutrzejszego spotkania
+document.getElementById("upcoming-panel").addEventListener("click", async (e) => {
+  const btn = e.target.closest(".sms-copy-btn");
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+
+  const text = (meta.smsConfirmTemplate || "").replace("{godzina}", btn.dataset.smsHour);
+  const ok = await copyText(text);
+  btn.textContent = ok ? "✅" : "✖";
+  btn.classList.toggle("copied", ok);
+  setTimeout(() => {
+    btn.textContent = "✉️";
+    btn.classList.remove("copied");
+  }, 1600);
+});
 
 // pinezka siedzi w <a> - preventDefault, zeby klik nie nawigowal do niszy
 document.getElementById("upcoming-panel").addEventListener("click", (e) => {
@@ -290,6 +397,48 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeNotePopover();
 });
 window.addEventListener("scroll", closeNotePopover, { passive: true });
+
+// ---------- #9: animacja wykresow przy wejsciu i po odswiezeniu ----------
+// Wykresy rysuja sie "od zera" za kazdym razem, gdy dane sa swiezo wczytane (wejscie na strone,
+// F5, powrot z podstrony) - nie przy kazdym pollingu obecnosci, zeby nie migalo co 6 sekund.
+
+const reducedMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// procent w srodku donuta dobija do wartosci razem z rysowaniem pierscienia
+function countUpPct(el, to, duration = 900) {
+  if (!el) return;
+  if (reducedMotion()) {
+    el.textContent = `${to}%`;
+    return;
+  }
+  const start = performance.now();
+  const step = (now) => {
+    const t = Math.min(1, (now - start) / duration);
+    el.textContent = `${Math.round(to * (1 - Math.pow(1 - t, 3)))}%`;
+    if (t < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+// Paski renderuja sie z width:0 i docelowa szerokoscia w data-w - tu tylko ja przypisujemy,
+// a rozjezdzanie sie robi transition z CSS. Podwojne rAF, bo po jednym przegladarka potrafi
+// zlaczyc "0%" i "60%" w jedno wyliczenie stylu i animacja by nie ruszyla.
+function growBars(selector, stagger = 90) {
+  const bars = [...document.querySelectorAll(selector)];
+  if (!bars.length) return;
+  if (reducedMotion()) {
+    bars.forEach((b) => (b.style.width = `${b.dataset.w}%`));
+    return;
+  }
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => {
+      bars.forEach((b, i) => {
+        b.style.transitionDelay = `${i * stagger}ms`;
+        b.style.width = `${b.dataset.w}%`;
+      });
+    })
+  );
+}
 
 async function loadStats() {
   const stats = await api.get("/api/stats");
@@ -347,9 +496,9 @@ async function loadStats() {
       const w = Math.round((c.count / maxCaller) * 100);
       const crown = topCount > 0 && c.count === topCount ? `<span class="crown" title="Lider">👑</span>` : "";
       return `
-        <div class="caller-bar-row">
+        <div class="caller-bar-row clickable" data-caller="${escapeHtml(c.caller)}" title="Statystyki: ${escapeHtml(c.caller)}">
           <span style="color:${color}; font-weight:600;">${crown}${escapeHtml(c.caller)}</span>
-          <div class="caller-bar-track"><div class="caller-bar-fill" style="width:${w}%; background:${color};"></div></div>
+          <div class="caller-bar-track"><div class="caller-bar-fill" style="width:0; background:${color};" data-w="${w}"></div></div>
           <span>${c.count}</span>
         </div>
       `;
@@ -360,10 +509,13 @@ async function loadStats() {
   const calledPct = stats.eligible ? Math.round((stats.called / stats.eligible) * 100) : 0;
   const pctColor = calledPct < 50 ? "#e06050" : calledPct < 70 ? "#c0a050" : calledPct < 90 ? "#5cb85c" : "#2e7d4e";
 
+  // pierscien to osobna warstwa pod srodkiem donuta - dzieki temu maska animujaca rysowanie
+  // wykresu nie zjada tez procentu w srodku (maska dziala na cale poddrzewo elementu)
   donutRow.innerHTML = `
-    <div class="donut" style="background: conic-gradient(${stops})">
+    <div class="donut">
+      <div class="donut-ring" style="background: conic-gradient(${stops})"></div>
       <div class="donut-pct">
-        <span class="pct-num" style="color:${pctColor}">${calledPct}%</span>
+        <span class="pct-num" style="color:${pctColor}">0%</span>
         <span class="pct-lbl">zrobione</span>
       </div>
     </div>
@@ -376,6 +528,9 @@ async function loadStats() {
       ${callerBars || '<div class="legend-item"><span class="lbl">Brak jeszcze polaczen</span></div>'}
     </div>
   `;
+
+  countUpPct(donutRow.querySelector(".pct-num"), calledPct);
+  growBars(".caller-bar-fill");
 }
 
 // ---------- kto teraz jest w ktorej niszy (dashboard) ----------
@@ -384,6 +539,8 @@ async function loadStats() {
 // wiec ikonki lezą przy calej niszy, nie przy pojedynczym wierszu leada.
 let lastNiches = [];
 let presenceByNiche = new Map(); // niche_id -> [{ display_name, avatar, avatar_kind, color }, ...]
+
+let nicheBarsAnimated = false;
 
 function nicheRowHtml(n) {
   const pct = n.eligible ? Math.round((n.called / n.eligible) * 100) : 0;
@@ -398,7 +555,7 @@ function nicheRowHtml(n) {
       ${icons}
       <span class="niche-row-count">${n.called}/${n.eligible} zadzwonionych</span>
       <span class="niche-row-progress">
-        <span class="progress-track"><span class="progress-fill ${progressClass(pct)}" style="width:${pct}%"></span></span>
+        <span class="progress-track"><span class="progress-fill ${progressClass(pct)}" style="width:${nicheBarsAnimated ? pct : 0}%" data-w="${pct}"></span></span>
         <span class="progress-pct ${progressClass(pct)}">${pct}%</span>
       </span>
       <span class="niche-row-chevron">›</span>
@@ -413,10 +570,16 @@ function renderNicheRows() {
   document.getElementById("niche-grid").innerHTML =
     rows + `<button type="button" class="niche-row add-row" id="add-tile"><span class="niche-dot add">+</span><span class="niche-row-name">Dodaj niszę</span></button>`;
   document.getElementById("add-tile").addEventListener("click", openModal);
+
+  if (!nicheBarsAnimated) {
+    nicheBarsAnimated = true;
+    growBars(".niche-row-progress .progress-fill", 50);
+  }
 }
 
 async function loadNiches() {
   lastNiches = await api.get("/api/niches");
+  nicheBarsAnimated = false; // swieze dane = paski rysuja sie od nowa (patrz growBars)
   renderNicheRows();
 }
 
@@ -451,7 +614,10 @@ function renderTeamStatus(users) {
   if (!el) return;
   const onlineCount = users.filter((u) => u.online).length;
   const avatars = users
-    .map((u) => `<span class="team-avatar ${u.online ? "online" : "offline"}" title="${escapeHtml(u.display_name)} — ${u.online ? "online" : "offline"}">${avatarGlyphHtml(u, 30)}</span>`)
+    .map(
+      (u) =>
+        `<span class="team-avatar clickable ${u.online ? "online" : "offline"}" data-caller="${escapeHtml(u.display_name)}" title="${escapeHtml(u.display_name)} — ${u.online ? "online" : "offline"} · kliknij po statystyki">${avatarGlyphHtml(u, 30)}</span>`
+    )
     .join("");
   el.innerHTML = `<span class="team-status-avatars">${avatars}</span><span class="team-status-count">${onlineCount}/${users.length}</span>`;
 }
@@ -472,6 +638,107 @@ function startTeamStatusPolling() {
   });
   pollTeamStatus();
 }
+
+// ---------- #1: statystyki jednej osoby (klik w avatar w pasku online albo w jej wiersz
+// na wykresie "Zadzwonione wg osoby") ----------
+// Modal budowany raz i doklejany do body - dokladnie tak samo jak panel profilu w auth-widget.js,
+// zeby nie trzymac w index.html markupu, ktory przez wiekszosc czasu jest niepotrzebny.
+
+let callerModalEl = null;
+
+function ensureCallerModal() {
+  if (callerModalEl) return callerModalEl;
+  const el = document.createElement("div");
+  el.className = "modal-overlay hidden";
+  el.id = "caller-modal";
+  el.innerHTML = `<div class="modal caller-modal"><div id="caller-modal-body"></div></div>`;
+  el.addEventListener("click", (e) => {
+    if (e.target === el || e.target.id === "caller-modal-close") el.classList.add("hidden");
+  });
+  document.body.appendChild(el);
+  callerModalEl = el;
+  return el;
+}
+
+// pasek w kolorze pozycji (status / nisza) - ten sam ksztalt co "Zadzwonione wg osoby"
+function statBarRow(label, count, max, color) {
+  const w = max ? Math.round((count / max) * 100) : 0;
+  return `
+    <div class="caller-bar-row">
+      <span style="color:${color}; font-weight:600;">${escapeHtml(label)}</span>
+      <div class="caller-bar-track"><div class="caller-bar-fill" style="width:0; background:${color};" data-w="${w}"></div></div>
+      <span>${count}</span>
+    </div>
+  `;
+}
+
+function renderCallerStats(s, user) {
+  const color = (user && user.color) || (meta && meta.callerColors[s.caller]) || "#6090e0";
+  const statuses = s.interestedBreakdown.filter((o) => o.count > 0);
+  const maxStatus = Math.max(1, ...statuses.map((o) => o.count));
+  const maxNiche = Math.max(1, ...s.byNiche.map((n) => n.c));
+
+  const tile = (num, lbl) => `<div class="caller-stat"><div class="num">${num}</div><div class="lbl">${lbl}</div></div>`;
+
+  document.getElementById("caller-modal-body").innerHTML = `
+    <div class="caller-modal-head">
+      ${user ? avatarGlyphHtml(user, 48) : ""}
+      <div>
+        <div class="caller-modal-name" style="color:${color}">${escapeHtml(s.caller)}</div>
+        <div class="caller-modal-sub">${s.sharePct}% wszystkich telefonów zespołu</div>
+      </div>
+    </div>
+
+    <div class="caller-stat-grid">
+      ${tile(s.called, "Zadzwonionych")}
+      ${tile(isRestDay() ? "💤" : `${s.calledToday}/${s.dailyGoal}`, isRestDay() ? "Rest day" : "Dzisiaj")}
+      ${tile(s.calledWeek, "Ostatnie 7 dni")}
+      ${tile(s.answered, "Odebranych")}
+      ${tile(s.clients, "Dopiętych")}
+      ${tile(s.meetsAhead, "Meety przed nami")}
+    </div>
+
+    <div class="caller-modal-money">💰 Wykręcone: <b>${money(s.earned)}</b></div>
+
+    <div class="section-title" style="margin-bottom:2px">Statusy</div>
+    <div class="caller-bars">
+      ${statuses.length ? statuses.map((o) => statBarRow(o.label, o.count, maxStatus, o.color)).join("") : '<div class="legend-item"><span class="lbl">Jeszcze nic tu nie ma</span></div>'}
+    </div>
+
+    <div class="section-title" style="margin-bottom:2px">Zadzwonione wg niszy</div>
+    <div class="caller-bars">
+      ${s.byNiche.length ? s.byNiche.map((n) => statBarRow(n.name, n.c, maxNiche, n.color || "#6090e0")).join("") : '<div class="legend-item"><span class="lbl">Jeszcze zadnego telefonu</span></div>'}
+    </div>
+
+    <div class="actions"><button type="button" class="btn" id="caller-modal-close">Zamknij</button></div>
+  `;
+  growBars("#caller-modal .caller-bar-fill", 40);
+}
+
+async function openCallerStats(name) {
+  const el = ensureCallerModal();
+  document.getElementById("caller-modal-body").innerHTML = `<div class="empty-state">Liczę…</div>`;
+  el.classList.remove("hidden");
+  try {
+    renderCallerStats(await api.get(`/api/stats/caller/${encodeURIComponent(name)}`), usersByName[name]);
+  } catch (err) {
+    document.getElementById("caller-modal-body").innerHTML =
+      `<div class="empty-state">${escapeHtml(err.message)}</div><div class="actions"><button type="button" class="btn" id="caller-modal-close">Zamknij</button></div>`;
+  }
+}
+
+// oba miejsca z osobami (pasek online i wykres "wg osoby") przebudowuja sie przy kazdym
+// pollingu, wiec nasluch siedzi na kontenerach, nie na samych elementach
+for (const id of ["team-status", "donut-row"]) {
+  document.getElementById(id).addEventListener("click", (e) => {
+    const target = e.target.closest("[data-caller]");
+    if (target) openCallerStats(target.dataset.caller);
+  });
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && callerModalEl) callerModalEl.classList.add("hidden");
+});
 
 function openModal() {
   document.getElementById("import-error").style.display = "none";
@@ -514,6 +781,14 @@ loadWeather();
 setInterval(loadWeather, 20 * 60 * 1000); // dopasowane do cache serwera (server/routes/weather.js)
 
 pingOnlinePresence(); // "jestem na dashboardzie" - patrz auth-widget.js
+
+// Powrot "wstecz" z niszy/scheme oddaje strone z bfcache - ze statystykami sprzed wyjscia.
+// Dociagamy je same, zeby nie trzeba bylo dodatkowo odswiezac recznie (wykresy rysuja sie
+// przy okazji od nowa, patrz growBars/countUpPct).
+window.addEventListener("pageshow", (e) => {
+  if (!e.persisted || !meta) return;
+  Promise.all([loadStats(), loadNiches(), loadUpcoming()]).catch(() => {});
+});
 
 (async () => {
   const [metaRes, usersRes] = await Promise.all([api.get("/api/meta"), api.get("/api/users")]);

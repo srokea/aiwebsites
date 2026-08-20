@@ -206,7 +206,9 @@ a { color: inherit; text-decoration: none; }
 }
 .upcoming-col { padding: 20px 24px; }
 .upcoming-list { max-height: 260px; overflow-y: auto; padding-right: 4px; }
-.upcoming-col:first-child { border-right: 1px solid var(--border-soft); }
+/* 4 sekcje w ukladzie 2x2: pionowa kreska po lewej kolumnie, pozioma pod gornym rzedem */
+.upcoming-col:nth-child(odd) { border-right: 1px solid var(--border-soft); }
+.upcoming-col:nth-child(-n+2) { border-bottom: 1px solid var(--border-soft); }
 .upcoming-col-title {
   font-size: 13px;
   font-weight: 700;
@@ -268,7 +270,8 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 640px) {
   .upcoming-panel { grid-template-columns: 1fr; }
-  .upcoming-col:first-child { border-right: none; border-bottom: 1px solid var(--border-soft); }
+  .upcoming-col:nth-child(odd) { border-right: none; }
+  .upcoming-col:not(:last-child) { border-bottom: 1px solid var(--border-soft); }
 }
 
 /* ---------- big stat numbers ---------- */
@@ -532,6 +535,58 @@ a { color: inherit; text-decoration: none; }
 .caller-bar-pct { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
 .crown { margin-right: 4px; }
 
+/* ---------- statystyki jednej osoby (modal po kliknieciu w avatar / wiersz "wg osoby") ---------- */
+.caller-bar-row.clickable, .team-avatar.clickable { cursor: pointer; }
+.caller-bar-row.clickable { border-radius: 8px; padding: 3px 6px; margin: -3px -6px; transition: background .15s; }
+.caller-bar-row.clickable:hover { background: rgba(255,255,255,0.04); }
+.team-avatar.clickable:hover .user-avatar { filter: brightness(1.15); }
+
+.caller-modal { width: 460px; text-align: left; max-height: 88vh; overflow-y: auto; }
+.caller-modal-head { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+.caller-modal-name { font-size: 19px; font-weight: 800; letter-spacing: -0.3px; }
+.caller-modal-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.caller-stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border-soft); border: 1px solid var(--border-soft); border-radius: 12px; overflow: hidden; }
+.caller-stat { background: var(--card); padding: 14px 10px; text-align: center; }
+.caller-stat .num { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; font-variant-numeric: tabular-nums; }
+.caller-stat .lbl { font-size: 10.5px; color: var(--muted); margin-top: 4px; }
+.caller-modal-money { margin: 16px 0 6px; font-size: 13px; color: var(--muted); }
+.caller-modal-money b { color: var(--green); font-size: 15px; }
+.caller-modal .caller-bars { margin-bottom: 18px; }
+.caller-modal .caller-bar-row { grid-template-columns: 130px 1fr 32px; }
+
+@media (max-width: 520px) {
+  .caller-stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .caller-modal .caller-bar-row { grid-template-columns: 100px 1fr 28px; }
+}
+
+/* ---------- animacja wykresow przy wejsciu na strone / odswiezeniu (index.js) ----------
+   Donut rysuje sie "od zera" maska obracajaca sie o pelny kat. @property jest tu konieczne,
+   bo bez zarejestrowanej zmiennej katowej przegladarka nie potrafi animowac conic-gradient.
+   Tam gdzie @property nie dziala, maska z nieznanym var() jest po prostu ignorowana
+   i pierscien widac od razu - czyli tak jak przed zmiana. */
+@property --donut-sweep {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+.donut-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  -webkit-mask: conic-gradient(#000 var(--donut-sweep), transparent 0deg);
+  mask: conic-gradient(#000 var(--donut-sweep), transparent 0deg);
+  animation: donut-sweep 900ms cubic-bezier(.22,.7,.25,1) forwards;
+}
+@keyframes donut-sweep { to { --donut-sweep: 360deg; } }
+
+/* paski startuja z width:0 (data-w trzyma cel, patrz growBars w index.js) - reszte robi transition */
+.caller-bar-fill, .progress-fill { transition: width .55s cubic-bezier(.22,.7,.25,1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .donut-ring { animation: none; -webkit-mask: none; mask: none; }
+  .caller-bar-fill, .progress-fill { transition: none; }
+}
+
 /* ---------- celebracja "dopiete" ---------- */
 @keyframes dealPop {
   0% { transform: scale(0.7) rotate(-2deg); opacity: 0; }
@@ -695,6 +750,8 @@ table.leads tr.row-glow-dopiete td { background: rgba(92, 184, 92, 0.09); }
 table.leads tr.row-glow-google_meet td { background: rgba(96, 144, 224, 0.1); }
 table.leads tr.row-glow-my_dzwonimy td { background: rgba(80, 184, 192, 0.1); }
 table.leads tr.row-glow-oczekiwanie td { background: rgba(192, 160, 80, 0.1); }
+table.leads tr.row-glow-closing td { background: rgba(46, 201, 160, 0.1); }
+table.leads tr.row-glow-closing:hover td { background: rgba(46, 201, 160, 0.17); }
 table.leads tr.row-glow-dopiete:hover td { background: rgba(92, 184, 92, 0.16); }
 table.leads tr.row-glow-google_meet:hover td { background: rgba(96, 144, 224, 0.17); }
 table.leads tr.row-glow-my_dzwonimy:hover td { background: rgba(80, 184, 192, 0.17); }
@@ -1518,6 +1575,11 @@ em { color: var(--blue); font-style: normal; }
 table.leads tr.row-active td { background: color-mix(in srgb, var(--user-color, var(--blue)) 8%, transparent); }
 table.leads tr.row-active td.idx-col { box-shadow: inset 3px 0 0 0 var(--user-color, var(--blue)); }
 table.leads tr.row-active:hover td { background: color-mix(in srgb, var(--user-color, var(--blue)) 14%, transparent); }
+/* odklikniecie: nad "#" aktywnego wiersza numer zamienia sie w ✕ (patrz clearActiveRow w niche.js) */
+.idx-unclick { display: none; font-weight: 800; }
+table.leads tr.row-active td.idx-col { cursor: pointer; }
+table.leads tr.row-active td.idx-col:hover .idx-num { display: none; }
+table.leads tr.row-active td.idx-col:hover .idx-unclick { display: inline; color: var(--user-color, var(--blue)); }
 
 /* ---------- "kto tu jest" - dymek obecnosci nad nazwa firmy + # w kolorze tej osoby (niche.js) ---------- */
 table.leads td.company-cell { position: relative; overflow: visible; }
@@ -1564,6 +1626,11 @@ table.leads td.idx-col.idx-presence .idx-num { font-weight: 800; text-shadow: 0 
 .niche-presence-icons { display: inline-flex; align-items: center; gap: 4px; margin-right: 8px; }
 .niche-presence-icons .user-avatar { box-shadow: 0 0 0 2px var(--card); }
 .upcoming-caller-icon { flex-shrink: 0; }
+/* obramowka wokol avatara w kolorze TEJ osoby - --ring-color ustawia index.js (upcomingItemHtml) */
+.upcoming-caller-icon .user-avatar {
+  border-color: var(--ring-color, var(--border));
+  box-shadow: 0 0 0 1px var(--ring-color, transparent);
+}
 
 /* ---------- panel boczny na scheme rozmowy (script.js) - "glass" karta, przypieta do
    prawej krawedzi, zawsze na wysokosci srodka ekranu (nie przesuwa sie przy scrollu) ---------- */
@@ -1702,3 +1769,225 @@ table.leads td.idx-col.idx-presence .idx-num { font-weight: 800; text-shadow: 0 
     margin-bottom: 24px;
   }
 }
+
+
+/* ================= nowe elementy: godziny, usuwanie leadow, zestawy filtrow,
+   postep strony i SMS potwierdzajacy ================= */
+
+/* ---------- #11: godziny otwarcia w tabeli ---------- */
+.time-input {
+  background: #141414;
+  border: 1px solid #232323;
+  color: var(--text);
+  border-radius: 7px;
+  padding: 5px 7px;
+  font-size: 12px;
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  width: 92px;
+}
+.time-input:focus { outline: none; border-color: var(--blue); }
+/* pusta godzina ma byc wyraznie "nie wiemy", a nie krzykliwe 00:00 */
+.time-input:not(:focus):invalid, .time-input[value=""] { color: var(--muted-soft); }
+
+/* ---------- #15: kosz na koncu wiersza ---------- */
+table.leads th.row-actions-col, table.leads td.row-actions { width: 34px; padding-left: 0; padding-right: 8px; }
+.lead-delete-btn {
+  border: none;
+  background: none;
+  color: var(--muted-soft);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity .15s, color .15s, background .15s;
+}
+/* kosz pokazuje sie dopiero po najechaniu na wiersz - zeby nie kusil przy kazdym przewinieciu */
+table.leads tr:hover .lead-delete-btn { opacity: 1; }
+.lead-delete-btn:hover { color: var(--red); background: rgba(224,96,80,0.15); }
+.lead-delete-btn:focus-visible { opacity: 1; outline: 2px solid var(--red); }
+
+/* ---------- #13: zestawy filtrow ---------- */
+.filter-sets-menu { min-width: 300px; }
+.filter-set-row { display: flex; align-items: center; gap: 2px; }
+.filter-set-apply {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: none;
+  background: none;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12.5px;
+  text-align: left;
+  padding: 7px 8px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+.filter-set-apply:hover { background: rgba(255,255,255,0.06); }
+.filter-set-count {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  background: rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 1px 7px;
+  font-variant-numeric: tabular-nums;
+}
+.filter-set-icon {
+  border: none;
+  background: none;
+  color: var(--muted-soft);
+  font-size: 11px;
+  cursor: pointer;
+  padding: 5px 6px;
+  border-radius: 6px;
+  transition: color .15s, background .15s;
+}
+.filter-set-icon:hover { color: var(--text); background: rgba(255,255,255,0.08); }
+.filter-set-icon.danger:hover { color: var(--red); background: rgba(224,96,80,0.15); }
+.filter-set-name-input, .filter-set-new input {
+  flex: 1;
+  width: 100%;
+  background: #101010;
+  border: 1px solid #2a2a2a;
+  color: var(--text);
+  border-radius: 7px;
+  padding: 7px 9px;
+  font-size: 12.5px;
+  font-family: inherit;
+}
+.filter-set-name-input:focus, .filter-set-new input:focus { outline: none; border-color: var(--blue); }
+.filter-set-empty { font-size: 11.5px; color: var(--muted-soft); font-style: italic; padding: 6px 8px; max-width: 280px; line-height: 1.5; }
+.filter-set-new { display: flex; gap: 6px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-soft); }
+.filter-set-new .btn { padding: 7px 12px; font-size: 12px; white-space: nowrap; }
+
+/* ---------- #14: kolko postepu budowy strony ---------- */
+.site-progress {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  line-height: 0;
+  border-radius: 50%;
+  transition: transform .12s;
+}
+.site-progress:hover { transform: scale(1.15); }
+.site-progress:active { transform: scale(0.95); }
+
+/* ---------- #10: guzik "skopiuj SMS" ---------- */
+.sms-copy-btn {
+  border: 1px solid var(--border);
+  background: var(--card-alt);
+  color: var(--text);
+  font-size: 11px;
+  line-height: 1;
+  padding: 4px 6px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: border-color .15s, background .15s, transform .12s;
+}
+.sms-copy-btn:hover { border-color: var(--blue); transform: translateY(-1px); }
+.sms-copy-btn.copied { border-color: var(--green); background: rgba(92,184,92,0.16); }
+
+/* ---------- #12: kalendarzyk terminow Google Meet ---------- */
+/* Guzik zastepuje systemowe <input type="datetime-local"> - wyglada jak pole, ale otwiera
+   wlasny kalendarz (systemowego nie da sie pokolorowac, a o kolory tu wlasnie chodzi). */
+.term-btn {
+  background: #141414;
+  border: 1px solid #232323;
+  color: var(--muted-soft);
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color .15s, color .15s;
+}
+.term-btn:hover { border-color: var(--blue); }
+.term-btn.set { color: var(--text); font-weight: 600; }
+
+.term-pop {
+  position: fixed;
+  z-index: 300;
+  width: 292px;
+  background: #191919;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.6);
+  animation: popIn .12s ease-out;
+}
+.term-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.term-month { font-size: 13px; font-weight: 700; text-transform: capitalize; }
+.term-nav {
+  border: 1px solid var(--border);
+  background: var(--card-alt);
+  color: var(--text);
+  border-radius: 7px;
+  width: 26px;
+  height: 26px;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+.term-nav:hover { border-color: var(--blue); }
+.term-owner { font-size: 10.5px; color: var(--muted-soft); margin-bottom: 10px; }
+.term-owner b { color: var(--text); }
+
+.term-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.term-dow { font-size: 9.5px; color: var(--muted-soft); text-align: center; text-transform: uppercase; letter-spacing: 0.4px; padding-bottom: 4px; }
+.term-day {
+  border: 1px solid transparent;
+  background: none;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  height: 30px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background .12s, border-color .12s;
+}
+.term-day.empty { pointer-events: none; }
+.term-day:hover { background: rgba(255,255,255,0.08); }
+.term-day.today { border-color: var(--border); font-weight: 700; }
+/* dzien, w ktorym TA osoba ma juz spotkanie - o to chodzi w calym kalendarzu */
+.term-day.busy { background: rgba(224,96,80,0.2); color: #ff9184; font-weight: 700; }
+.term-day.busy:hover { background: rgba(224,96,80,0.32); }
+.term-day.selected { background: var(--blue); color: #0b1220; font-weight: 700; }
+.term-day.selected.busy { background: linear-gradient(135deg, var(--blue) 55%, rgba(224,96,80,0.9) 55%); color: #fff; }
+
+.term-hours {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+  margin-top: 10px;
+  max-height: 132px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+.term-hour {
+  border: 1px solid var(--border);
+  background: var(--card-alt);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  padding: 5px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color .12s, background .12s;
+}
+.term-hour:hover { border-color: var(--blue); }
+.term-hour.busy { background: rgba(224,96,80,0.22); border-color: rgba(224,96,80,0.5); color: #ff9184; font-weight: 700; }
+.term-hour.selected { background: var(--blue); border-color: var(--blue); color: #0b1220; font-weight: 700; }
+.term-hint { grid-column: 1 / -1; font-size: 11px; color: var(--muted-soft); font-style: italic; padding: 10px 2px; }
+
+.term-foot { display: flex; justify-content: space-between; gap: 8px; margin-top: 10px; }
+.term-foot .btn { padding: 6px 10px; font-size: 11.5px; flex: 1; }

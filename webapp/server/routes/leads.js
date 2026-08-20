@@ -1,6 +1,6 @@
 const express = require("express");
 const db = require("../db");
-const { INTERESTED_OPTIONS, ANSWERED_OPTIONS, WEBSITE_STATUS_OPTIONS, QUALITY_OPTIONS } = require("../constants");
+const { INTERESTED_OPTIONS, ANSWERED_OPTIONS, WEBSITE_STATUS_OPTIONS, QUALITY_OPTIONS, SITE_PROGRESS_OPTIONS } = require("../constants");
 const { computeCalledAt, computeDopieteAt } = require("../leadStatus");
 const { getCallerNames } = require("../callers");
 
@@ -19,6 +19,11 @@ const TEXT_FIELDS = [
   "research_notes",
 ];
 const BOOL_FIELDS = ["tag_instagram", "tag_facebook", "tag_booksy", "tag_youtube"];
+
+// Godziny otwarcia (#11) - albo "HH:MM" prosto z <input type="time">, albo pusty string
+// ("nie wiemy"). Trzymane jako tekst, bo tak sortuja sie leksykalnie tak samo jak czasowo.
+const TIME_FIELDS = ["open_time", "close_time"];
+const TIME_FORMAT = /^([01]\d|2[0-3]):[0-5]\d$/;
 
 // Pola z zamknieta lista wartosci - pusty string zawsze dozwolony (= "nie ustawiono").
 // "caller" nie jest tu na sztywno - liczba i nazwy kont sie zmieniaja (nowe konto, zmiana
@@ -125,6 +130,24 @@ router.patch("/:id", (req, res) => {
       updates.decision_seconds = seconds;
     }
   }
+  for (const field of TIME_FIELDS) {
+    if (!(field in req.body)) continue;
+    const value = req.body[field] == null ? "" : String(req.body[field]);
+    if (value !== "" && !TIME_FORMAT.test(value)) {
+      return res.status(400).json({ error: `Nieprawidlowa godzina ${field}: "${value}"` });
+    }
+    updates[field] = value;
+  }
+
+  // etap budowy strony (#14) - klikany w kolku przy pozycji w "Najblizsze Google Meety"
+  if ("site_progress" in req.body) {
+    const stage = Number(req.body.site_progress);
+    if (!SITE_PROGRESS_OPTIONS.some((o) => o.value === stage)) {
+      return res.status(400).json({ error: `Nieprawidlowy etap strony: "${req.body.site_progress}"` });
+    }
+    updates.site_progress = stage;
+  }
+
   const enumFields = { ...ENUM_FIELDS_STATIC, caller: getCallerNames() };
   for (const [field, allowed] of Object.entries(enumFields)) {
     if (!(field in req.body)) continue;
@@ -152,6 +175,14 @@ router.patch("/:id", (req, res) => {
 
   const updated = db.prepare("SELECT * FROM leads WHERE id = ?").get(req.params.id);
   res.json({ ...updated, notes_list: notesForLead(updated.id) });
+});
+
+// DELETE /api/leads/:id - usuwa leada razem z jego notatkami (ON DELETE CASCADE).
+// Nieodwracalne, wiec front pyta o potwierdzenie nazwa firmy (patrz niche.js).
+router.delete("/:id", (req, res) => {
+  const info = db.prepare("DELETE FROM leads WHERE id = ?").run(req.params.id);
+  if (!info.changes) return res.status(404).json({ error: "Nie znaleziono leada" });
+  res.json({ ok: true });
 });
 
 module.exports = router;

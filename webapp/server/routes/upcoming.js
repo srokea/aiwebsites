@@ -47,7 +47,7 @@ router.get("/", (req, res) => {
   const meetsRaw = db
     .prepare(
       `SELECT leads.id, leads.company_name, leads.city, leads.caller, leads.google_term AS when_at,
-              niches.slug AS niche_slug, niches.name AS niche_name
+              leads.site_progress, niches.slug AS niche_slug, niches.name AS niche_name
        FROM leads JOIN niches ON niches.id = leads.niche_id
        WHERE leads.google_term <> ''`
     )
@@ -62,14 +62,54 @@ router.get("/", (req, res) => {
     )
     .all();
 
+  // #10 "SMS do wyslania": Meety zaplanowane na JUTRO - dzien porownujemy w czasie lokalnym,
+  // bo google_term to lokalna data-godzina wpisana przez czlowieka, a nie znacznik UTC.
+  const smsRaw = db
+    .prepare(
+      `SELECT leads.id, leads.company_name, leads.city, leads.caller, leads.google_term AS when_at,
+              niches.slug AS niche_slug, niches.name AS niche_name
+       FROM leads JOIN niches ON niches.id = leads.niche_id
+       WHERE substr(leads.google_term, 1, 10) = date('now', 'localtime', '+1 day')`
+    )
+    .all();
+
+  // #10 "Closing": etap miedzy odbytym Meetem a podpisem. Zamiast terminu pokazujemy date
+  // ostatniej zmiany leada - dzieki temu na gorze listy (sortowanie rosnaco po dacie) laduja
+  // te, ktore leza najdluzej nieruszone, czyli te, o ktorych najlatwiej zapomniec.
+  const closingRaw = db
+    .prepare(
+      `SELECT leads.id, leads.company_name, leads.city, leads.caller,
+              date(leads.updated_at, 'localtime') AS when_at,
+              niches.slug AS niche_slug, niches.name AS niche_name
+       FROM leads JOIN niches ON niches.id = leads.niche_id
+       WHERE leads.interested = 'closing'`
+    )
+    .all();
+
   const meets = onlyValidDates(meetsRaw);
   const callbacks = onlyValidDates(callbacksRaw);
+  const sms = onlyValidDates(smsRaw);
+  const closing = onlyValidDates(closingRaw);
   res.json({
     meets: meets.items,
     meetsTotal: meets.total,
     callbacks: callbacks.items,
     callbacksTotal: callbacks.total,
+    sms: sms.items,
+    smsTotal: sms.total,
+    closing: closing.items,
+    closingTotal: closing.total,
   });
+});
+
+// GET /api/upcoming/meets - wszystkie umowione Meety (kto, kiedy, z kim). Zrodlo dla
+// kalendarzyka przy wyborze terminu (#12): zeby dalo sie podswietlic dni i godziny, w
+// ktorych TA SAMA osoba ma juz spotkanie. Bez limitu - tych rekordow sa dziesiatki, nie tysiace.
+router.get("/meets", (req, res) => {
+  const rows = db
+    .prepare("SELECT id, company_name, caller, google_term FROM leads WHERE google_term <> ''")
+    .all();
+  res.json(rows.filter((r) => /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(r.google_term)));
 });
 
 module.exports = router;

@@ -102,6 +102,21 @@ CREATE TABLE IF NOT EXISTS presence (
   niche_id INTEGER NOT NULL,
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+-- Zapisane zestawy filtrow (#13): PRYWATNE per osoba i per nisza - "Zestaw 1" Nikodema w
+-- Fryzjerach nie ma nic wspolnego z zestawem Sylwestra ani z tym samym zestawem w innej niszy.
+-- filters to JSON o tym samym ksztalcie co obiekt filters w niche.js, zeby zapis/odczyt byl
+-- jednym przypisaniem, bez tlumaczenia formatow po drodze.
+CREATE TABLE IF NOT EXISTS filter_sets (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  niche_id INTEGER NOT NULL REFERENCES niches(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  filters TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_filter_sets_owner ON filter_sets(user_id, niche_id);
 `);
 
 // Proste "migracje" dla kolumn dodanych po pierwszym wydaniu - ALTER TABLE ADD COLUMN
@@ -125,6 +140,12 @@ addColumnIfMissing("users", "avatar_kind TEXT NOT NULL DEFAULT 'emoji'");
 // "czas do decyzji" - zamrozony stoper z panelu bocznego na scheme rozmowy (patrz script.js) -
 // ile sekund minelo od otwarcia strony do pierwszej zmiany "Zainteresowany" w danej wizycie
 addColumnIfMissing("leads", "decision_seconds INTEGER");
+// #11 - godziny otwarcia firmy ("HH:MM" albo pusty string), zeby dalo sie filtrowac
+// "kto jest juz otwarty, gdy zaczynam dzwonic"
+addColumnIfMissing("leads", "open_time TEXT NOT NULL DEFAULT ''");
+addColumnIfMissing("leads", "close_time TEXT NOT NULL DEFAULT ''");
+// #14 - etap budowy strony klienta (indeks z SITE_PROGRESS_OPTIONS w constants.js)
+addColumnIfMissing("leads", "site_progress INTEGER NOT NULL DEFAULT 0");
 
 // Jednorazowy seed: stan jak dawna sztywna mapa NICHE_SCRIPTS (kosmetyczki mialy swoj plik,
 // reszta default). Idempotentne - po ustawieniu wartosci warunek '' juz nie zlapie.

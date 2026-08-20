@@ -22,13 +22,13 @@ server/
   leadStatus.js   # reguła "kiedy lead liczy się jako zadzwoniony"
   csvImport.js    # elastyczne mapowanie kolumn CSV + wykrywanie tagów/URL z notatek
   db.js           # SQLite + proste migracje kolumn
-  routes/         # niches, leads, stats, meta, scripts
+  routes/         # niches, leads, stats, meta, scripts, upcoming, filterSets
   scriptsData/    # treść scheme rozmowy per nisza
 public/           # frontend: czysty HTML/CSS/JS, bez frameworka
 data/             # plik bazy (gitignored)
 ```
 
-**Dodanie nowej opcji** (status, dzwoniący, kolor niszy) = edycja `server/constants.js`. Frontend podciągnie ją sam, a walidacja w API zacznie ją akceptować — nie trzeba dotykać żadnego innego pliku.
+**Dodanie nowej opcji** (status, dzwoniący, kolor niszy, etap budowy strony, treść SMS-a potwierdzającego) = edycja `server/constants.js`. Frontend podciągnie ją sam, a walidacja w API zacznie ją akceptować — nie trzeba dotykać żadnego innego pliku.
 
 ## Import CSV
 

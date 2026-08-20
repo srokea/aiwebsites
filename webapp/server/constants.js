@@ -21,17 +21,19 @@ const INTERESTED_OPTIONS = [
   { value: "sms", label: "SMS", color: "#a066e0", resolved: true },
   { value: "mail", label: "Mail", color: "#6ec6ff", resolved: true },
   { value: "google_meet", label: "Google Meet", color: "#6090e0", resolved: true, highlight: true },
+  // etap miedzy odbytym spotkaniem a podpisem - lead juz po Meecie, jeszcze nie klient
+  { value: "closing", label: "Closing", color: "#2ec9a0", resolved: true, highlight: true },
   { value: "dopiete", label: "Dopięte", color: "#5cb85c", resolved: true, highlight: true },
 ];
 
 // Kolejnosc na liscie zbiorczej (kropki) na stronie glownej - inna niz w dropdownie, bo tam
 // chcemy najpierw to, co najciekawsze biznesowo (te same pierwsze 6 co na wykresie kolowym,
 // patrz INTERESTED_DONUT_ORDER), a reszta (mniej istotne/rzadsze statusy) na koncu listy.
-const INTERESTED_STATS_ORDER = ["dopiete", "google_meet", "oczekiwanie", "my_dzwonimy", "nie", "nieruszone", "strona", "zamkniete", "brak_wlasciciela", "sms", "mail"];
+const INTERESTED_STATS_ORDER = ["dopiete", "closing", "google_meet", "oczekiwanie", "my_dzwonimy", "nie", "nieruszone", "strona", "zamkniete", "brak_wlasciciela", "sms", "mail"];
 
 // Wykres kolowy na stronie glownej ma pokazywac tylko te kluczowe statusy (i w tej kolejnosci) -
 // reszta (Strona, Zamkniete, SMS, Mail, Brak wlasciciela) widoczna jest tylko w legendzie z kropkami obok.
-const INTERESTED_DONUT_ORDER = ["dopiete", "google_meet", "oczekiwanie", "my_dzwonimy", "nie", "nieruszone"];
+const INTERESTED_DONUT_ORDER = ["dopiete", "closing", "google_meet", "oczekiwanie", "my_dzwonimy", "nie", "nieruszone"];
 
 const ANSWERED_OPTIONS = [
   { value: "Nie", label: "Nie", color: "#e06050" },
@@ -69,6 +71,21 @@ const QUALITY_OPTIONS = [
   { value: "6", label: "6", color: "#5cb85c" },
 ];
 
+// #14 - postep budowy strony klienta, ustawiany recznie klikiem w kolko przy pozycji w
+// panelu "Najblizsze Google Meety" (patrz index.js). W bazie leads.site_progress = value.
+// Dopisanie etapu tutaj wystarczy - front i walidacja API biora liste stad.
+const SITE_PROGRESS_OPTIONS = [
+  { value: 0, label: "Wcale", pct: 0, color: "#5a5a5a" },
+  { value: 1, label: "W połowie", pct: 50, color: "#c0a050" },
+  { value: 2, label: "Prawie skończona", pct: 80, color: "#6ec6ff" },
+  { value: 3, label: "Skończona", pct: 100, color: "#5cb85c" },
+];
+
+// #10 - gotowiec do skopiowania przy przypomnieniu o jutrzejszym Meecie. {godzina} podstawia
+// sie z terminu leada; zmiana tresci = edycja tej jednej linijki.
+const SMS_CONFIRM_TEMPLATE =
+  "Dzień dobry, potwierdzam nasze spotkanie online jutro o {godzina}. Link do spotkania wyślę chwilę przed rozpoczęciem. Do usłyszenia ☺️";
+
 const NICHE_COLORS = ["#6090e0", "#5cb85c", "#e06050", "#c0a050", "#a066e0", "#0e86d4", "#e0935c", "#e15a97"];
 
 const DAILY_GOAL = 20;
@@ -96,6 +113,8 @@ module.exports = {
   PLATFORM_META,
   WEBSITE_STATUS_OPTIONS,
   QUALITY_OPTIONS,
+  SITE_PROGRESS_OPTIONS,
+  SMS_CONFIRM_TEMPLATE,
   NICHE_COLORS,
   DAILY_GOAL,
   PRICING,

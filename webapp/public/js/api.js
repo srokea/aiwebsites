@@ -239,3 +239,193 @@ function initParticles() {
   }
   container.appendChild(frag);
 }
+
+// ---------- #12: kalendarzyk terminow Google Meet ----------
+// Wspolny dla tabeli leadow (niche.js) i panelu na scheme rozmowy (script.js). Zastepuje
+// systemowy <input type="datetime-local">, bo tamtego nie da sie pokolorowac - a caly sens
+// jest w tym, zeby na czerwono bylo widac dni i godziny, w ktorych TA SAMA osoba ma juz
+// umowione spotkanie. Dzieki temu nie da sie przypadkiem wcisnac dwoch Meetow na raz.
+//
+// "ta sama osoba" = caller wpisany na leadzie, a gdy go jeszcze nie ma - osoba zalogowana.
+// Kalendarz Sylwestra i Nikodema sa niezalezne: piatek zajety u jednego nie blokuje drugiego.
+
+let meetsCache = [];
+
+async function loadMeets() {
+  try {
+    meetsCache = await api.get("/api/upcoming/meets");
+  } catch {
+    meetsCache = []; // bez listy kalendarz nadal dziala, tylko nic sie nie podswietli na czerwono
+  }
+}
+
+// godziny do wyboru: 7:00-20:30 co pol godziny - zakres, w ktorym realnie umawiamy spotkania
+const MEET_HOURS = (() => {
+  const out = [];
+  for (let minutes = 7 * 60; minutes <= 20 * 60 + 30; minutes += 30) {
+    out.push(`${String(Math.floor(minutes / 60)).padStart(2, "0")}:${String(minutes % 60).padStart(2, "0")}`);
+  }
+  return out;
+})();
+
+const MEET_WEEKDAYS = ["Pn", "Wt", "Śr", "Cz", "Pt", "So", "Nd"];
+const isoDay = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
+// Spotkania TEJ osoby, bez leada, ktory wlasnie edytujemy - inaczej jego wlasny, juz zapisany
+// termin swiecilby sie jako kolizja sam ze soba.
+function meetsForCaller(caller, excludeLeadId) {
+  return meetsCache.filter((m) => m.caller === caller && m.id !== Number(excludeLeadId));
+}
+
+let termPickerEl = null;
+
+function closeTermPicker() {
+  if (termPickerEl) termPickerEl.remove();
+  termPickerEl = null;
+}
+
+// value: "YYYY-MM-DDTHH:mm" albo "" | onPick(nowaWartosc) - wolane tez z "" przy czyszczeniu
+function openTermPicker({ anchor, value, caller, leadId, onPick }) {
+  closeTermPicker();
+
+  const busy = meetsForCaller(caller, leadId);
+  const busyByDay = new Map(); // "YYYY-MM-DD" -> [{ time, company }]
+  for (const m of busy) {
+    const [day, time] = m.google_term.split("T");
+    if (!busyByDay.has(day)) busyByDay.set(day, []);
+    busyByDay.get(day).push({ time, company: m.company_name });
+  }
+
+  const selectedDay = value ? value.slice(0, 10) : "";
+  const selectedTime = value ? value.slice(11, 16) : "";
+  const start = selectedDay ? new Date(`${selectedDay}T00:00:00`) : new Date();
+  const state = { year: start.getFullYear(), month: start.getMonth(), day: selectedDay };
+
+  const pop = document.createElement("div");
+  pop.className = "term-pop";
+  document.body.appendChild(pop);
+  termPickerEl = pop;
+
+  function render() {
+    const first = new Date(state.year, state.month, 1);
+    const daysInMonth = new Date(state.year, state.month + 1, 0).getDate();
+    // getDay(): 0 = niedziela, a nasza siatka zaczyna sie od poniedzialku
+    const offset = (first.getDay() + 6) % 7;
+    const todayIso = isoDay(new Date());
+
+    const cells = [];
+    for (let i = 0; i < offset; i++) cells.push(`<span class="term-day empty"></span>`);
+    for (let d = 1; d <= daysInMonth; d++) {
+      const iso = isoDay(new Date(state.year, state.month, d));
+      const dayMeets = busyByDay.get(iso) || [];
+      const classes = [
+        "term-day",
+        dayMeets.length ? "busy" : "",
+        iso === state.day ? "selected" : "",
+        iso === todayIso ? "today" : "",
+      ]
+        .filter(Boolean)
+        .join(" ");
+      const title = dayMeets.length
+        ? `${escapeHtml(caller)}: ${dayMeets.map((m) => `${m.time} ${m.company}`).join(", ")}`
+        : "";
+      cells.push(`<button type="button" class="${classes}" data-term-day="${iso}" title="${title}">${d}</button>`);
+    }
+
+    const dayMeets = state.day ? busyByDay.get(state.day) || [] : [];
+    const takenAt = new Map(dayMeets.map((m) => [m.time, m.company]));
+    const hours = state.day
+      ? MEET_HOURS.map((h) => {
+          const taken = takenAt.get(h);
+          const classes = ["term-hour", taken ? "busy" : "", h === selectedTime && state.day === selectedDay ? "selected" : ""]
+            .filter(Boolean)
+            .join(" ");
+          const title = taken ? `Zajęte: ${escapeHtml(taken)}` : "";
+          return `<button type="button" class="${classes}" data-term-hour="${h}" title="${title}">${h}</button>`;
+        }).join("")
+      : `<div class="term-hint">Wybierz dzień, żeby zobaczyć godziny.</div>`;
+
+    const monthLabel = first.toLocaleDateString("pl-PL", { month: "long", year: "numeric" });
+
+    pop.innerHTML = `
+      <div class="term-head">
+        <button type="button" class="term-nav" data-term-nav="-1" title="Poprzedni miesiąc">‹</button>
+        <span class="term-month">${monthLabel}</span>
+        <button type="button" class="term-nav" data-term-nav="1" title="Następny miesiąc">›</button>
+      </div>
+      <div class="term-owner">Kalendarz: <b>${escapeHtml(caller || "—")}</b> · na czerwono zajęte</div>
+      <div class="term-grid">
+        ${MEET_WEEKDAYS.map((d) => `<span class="term-dow">${d}</span>`).join("")}
+        ${cells.join("")}
+      </div>
+      <div class="term-hours">${hours}</div>
+      <div class="term-foot">
+        <button type="button" class="btn" data-term-clear>Wyczyść termin</button>
+        <button type="button" class="btn" data-term-close>Zamknij</button>
+      </div>
+    `;
+    position();
+  }
+
+  // dymek pod polem, a gdy nie miesci sie na dole ekranu - nad nim; zawsze w granicach okna
+  function position() {
+    const r = anchor.getBoundingClientRect();
+    const w = pop.offsetWidth;
+    const h = pop.offsetHeight;
+    pop.style.left = `${Math.max(8, Math.min(r.left, window.innerWidth - w - 8))}px`;
+    const below = r.bottom + 6;
+    pop.style.top = `${below + h > window.innerHeight - 8 ? Math.max(8, r.top - h - 6) : below}px`;
+  }
+
+  pop.addEventListener("click", (e) => {
+    // Kazdy klik w kalendarzu przerysowuje jego wnetrze, wiec zanim zdarzenie dojdzie do
+    // globalnego "klik poza zamyka", klikniety element juz nie istnieje w DOM - i dymek
+    // zamykalby sie sam przy wyborze dnia. Stad zatrzymanie propagacji tutaj.
+    e.stopPropagation();
+
+    const nav = e.target.closest("[data-term-nav]");
+    if (nav) {
+      const delta = Number(nav.dataset.termNav);
+      const moved = new Date(state.year, state.month + delta, 1);
+      state.year = moved.getFullYear();
+      state.month = moved.getMonth();
+      return render();
+    }
+
+    const day = e.target.closest("[data-term-day]");
+    if (day) {
+      state.day = day.dataset.termDay;
+      return render();
+    }
+
+    const hour = e.target.closest("[data-term-hour]");
+    if (hour) {
+      onPick(`${state.day}T${hour.dataset.termHour}`);
+      return closeTermPicker();
+    }
+
+    if (e.target.closest("[data-term-clear]")) {
+      onPick("");
+      return closeTermPicker();
+    }
+    if (e.target.closest("[data-term-close]")) closeTermPicker();
+  });
+
+  render();
+}
+
+document.addEventListener("click", (e) => {
+  if (termPickerEl && !termPickerEl.contains(e.target) && !e.target.closest("[data-term-open]")) closeTermPicker();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeTermPicker();
+});
+window.addEventListener("resize", closeTermPicker);
+
+// etykieta na guziku otwierajacym kalendarz
+function termLabel(value) {
+  if (!value) return "— ustaw —";
+  const d = new Date(value);
+  if (isNaN(d.getTime())) return value;
+  return `${d.toLocaleDateString("pl-PL", { day: "numeric", month: "short" })} · ${d.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" })}`;
+}

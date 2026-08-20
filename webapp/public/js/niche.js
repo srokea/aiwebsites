@@ -7,7 +7,7 @@ let leads = [];
 let currentNiche = null;
 let sortState = { id: null, field: null, dir: "asc" };
 // kazdy filtr to lista wartosci (multi-select) - pusta lista = brak filtra na tym polu
-let filters = { interested: [], caller: [], answered: [], has_social: [] };
+let filters = { interested: [], caller: [], answered: [], has_social: [], open_time: [] };
 let searchQuery = "";
 let highlightStatuses = new Set();
 // wlaczany klikiem w karte "Do zrobienia" - pokazuje tylko leady, ktore licza sie do tej metryki
@@ -64,6 +64,9 @@ async function init() {
     activeRowId = savedActive ? Number(savedActive) : null;
     await loadNicheHeader();
     await loadLeads();
+    await loadFilterSets(); // wymaga currentNiche.id, wiec po naglowku niszy
+    await loadMeets(); // zajete terminy do kalendarzyka przy kolumnie "Termin Google" (#12)
+    renderFilterBar(); // ponownie: dopiero teraz znamy godziny otwarcia wystepujace w tej niszy
     startPresencePolling();
     // zglaszamy obecnosc od razu: albo na konkretnym leadzie (jesli activeRowId przetrwal
     // odswiezenie - inaczej dymek u innych zniknalby na chwile), albo lead_id=0 = "jestem
@@ -72,12 +75,13 @@ async function init() {
 
     const focusId = params.get("lead");
     if (focusId) focusLeadRow(focusId);
+    else restoreScroll(); // wejscie z dashboardu ma wlasny scroll do wiersza - nie nadpisujemy go
   } catch (err) {
     // np. nisza usunieta w innej karcie albo zly link - lepiej pokazac komunikat niz pusta strone
     document.getElementById("niche-title").textContent = "Nie udało się wczytać niszy";
     document.getElementById("niche-sub").textContent = err.message;
     document.getElementById("leads-tbody").innerHTML =
-      `<tr><td colspan="14"><div class="empty-state">${escapeHtml(err.message)} — <a href="/" style="color:var(--blue)">wróć do listy nisz</a></div></td></tr>`;
+      `<tr><td colspan="17"><div class="empty-state">${escapeHtml(err.message)} — <a href="/" style="color:var(--blue)">wróć do listy nisz</a></div></td></tr>`;
   }
 }
 
@@ -196,16 +200,26 @@ function formatPhone(raw) {
 
 // ---------- filtry (multi-select) + sortowanie ----------
 
+// Opcje filtra "Otwiera o" biora sie z DANYCH, nie ze stalej listy godzin: pokazujemy tylko te
+// godziny, ktore faktycznie wystepuja w tej niszy, zeby nie przewijac 24 pozycji dla trzech
+// realnych wartosci. Dlatego pasek filtrow rysuje sie ponownie po wczytaniu leadow (patrz init).
+function openTimeOptions() {
+  const times = [...new Set(leads.map((l) => l.open_time).filter(Boolean))].sort();
+  return times.map((t) => ({ value: t, label: t, color: "#6ec6ff" }));
+}
+
 function renderFilterBar() {
   document.getElementById("filter-bar").innerHTML = `
+    ${filterSetsHtml()}
     ${multiFilterHtml("interested", "Zainteresowany", meta.interestedOptions)}
     ${multiFilterHtml("caller", "Kto dzwonił", callerOptions())}
     ${multiFilterHtml("answered", "Odebrał", meta.answeredOptions)}
     ${multiFilterHtml("has_social", "Strona", meta.websiteStatusOptions)}
+    ${multiFilterHtml("open_time", "Otwiera o", openTimeOptions())}
     <button type="button" class="btn" id="filter-clear" style="margin-left:4px;">Wyczyść filtry</button>
   `;
   document.getElementById("filter-clear").addEventListener("click", () => {
-    filters = { interested: [], caller: [], answered: [], has_social: [] };
+    filters = { interested: [], caller: [], answered: [], has_social: [], open_time: [] };
     setTodoFilter(false);
     saveViewState();
     renderFilterBar();
@@ -286,6 +300,11 @@ function sortValue(lead, field) {
       return ANSWERED_SORT_ORDER.indexOf(lead.answered);
     case "phone":
       return lead.phone.replace(/\D/g, "");
+    // godziny to teksty "HH:MM", wiec sortuja sie leksykalnie tak samo jak czasowo -
+    // wystarczy zepchnac puste na koniec, zeby nie ladowaly przed poranna zmiana
+    case "open_time":
+    case "close_time":
+      return lead[field] || "99:99";
     // kolumna Reminder pokazuje blizszy z dwoch terminow (patrz reminderInfo), wiec sortuje
     // sie po tym samym - nie tylko po callback_when, inaczej rozjezdza sie z tym co widac
     case "reminder_effective": {
@@ -380,6 +399,36 @@ function recallLastLead() {
   }
 }
 
+function forgetLastLead() {
+  try {
+    localStorage.removeItem(LAST_LEAD_KEY);
+  } catch {
+    // patrz rememberLastLead - brak localStorage nie jest bledem, po prostu nic nie zapamietamy
+  }
+}
+
+// ---------- powrot na to samo miejsce (scheme rozmowy -> nisza) ----------
+// Pozycja scrolla per nisza w sessionStorage: wyjscie w scheme i powrot "<- Powrot" to dwie
+// pelne nawigacje, wiec bez tego zawsze ladujemy na gorze tabeli - przy 300 leadach to bolesne.
+const SCROLL_KEY = `coldcalls.scroll.${slug}`;
+
+function rememberScroll() {
+  try {
+    sessionStorage.setItem(SCROLL_KEY, String(Math.round(window.scrollY)));
+  } catch {
+    // jak wyzej - brak sessionStorage tylko wylacza pamiec pozycji
+  }
+}
+
+function restoreScroll() {
+  try {
+    const y = Number(sessionStorage.getItem(SCROLL_KEY));
+    if (y > 0) window.scrollTo(0, y);
+  } catch {
+    // ignorujemy
+  }
+}
+
 function saveViewState() {
   try {
     localStorage.setItem(
@@ -428,6 +477,11 @@ function restoreViewState() {
     const savedValues = saved.filters?.[key];
     if (Array.isArray(savedValues)) filters[key] = savedValues.filter((v) => values.includes(v));
   }
+  // godziny otwarcia nie maja zamknietej listy w /api/meta (biora sie z danych niszy),
+  // wiec zamiast slownika sprawdzamy sam format
+  if (Array.isArray(saved.filters?.open_time)) {
+    filters.open_time = saved.filters.open_time.filter((v) => /^\d{2}:\d{2}$/.test(v));
+  }
 
   todoFilter = Boolean(saved.todo);
 }
@@ -453,7 +507,7 @@ function renderLeads() {
   const visible = getVisibleLeads();
   if (!visible.length) {
     const msg = todoFilter ? "Nic do zrobienia — wszystko obdzwonione. 🎉" : "Brak leadow spelniajacych kryteria.";
-    tbody.innerHTML = `<tr><td colspan="14"><div class="empty-state">${msg}</div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="17"><div class="empty-state">${msg}</div></td></tr>`;
     return;
   }
   tbody.innerHTML = visible.map((lead, i) => rowHtml(lead, i + 1)).join("");
@@ -464,7 +518,7 @@ function renderLeads() {
 function renderSingleRow(lead) {
   const tr = document.querySelector(`tr[data-id="${lead.id}"]`);
   if (!tr) return renderLeads();
-  tr.outerHTML = rowHtml(lead, tr.querySelector(".idx-col")?.textContent || "");
+  tr.outerHTML = rowHtml(lead, tr.querySelector(".idx-num")?.textContent || "");
   renderPresenceBadges();
   applyActiveRowClass();
 }
@@ -479,6 +533,16 @@ function setActiveRow(id) {
   activeRowId = id;
   rememberLastLead(id);
   applyActiveRowClass();
+}
+
+// Odklikniecie ("juz sie tym leadem nie zajmuje") - klik w kolumne "#" aktywnego wiersza.
+// Zdejmuje i Twoje podswietlenie, i dymek "kto tu jest" u pozostalych: lead_id=0 znaczy
+// "jestem w tej niszy, ale nie na konkretnym leadzie" (patrz server/routes/presence.js).
+function clearActiveRow() {
+  activeRowId = null;
+  forgetLastLead();
+  applyActiveRowClass();
+  pingPresence(0);
 }
 
 function applyActiveRowClass() {
@@ -566,12 +630,38 @@ function startPresencePolling() {
 // wiec u innych dymek co najwyzej mignie, a nie zniknie na dobre.
 window.addEventListener("pagehide", () => {
   navigator.sendBeacon("/api/presence/leave");
+  rememberScroll();
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") rememberScroll();
+});
+
+// Powrot "wstecz" ze scheme rozmowy oddaje strone z bfcache - czyli dokladnie taka, jaka byla
+// przed wyjsciem, ze starymi danymi (dlatego trzeba bylo odswiezac recznie). Dociagamy je same,
+// bez location.reload(), zeby nie zgubic pozycji scrolla ani otwartych filtrow.
+window.addEventListener("pageshow", async (e) => {
+  if (!e.persisted) return;
+  try {
+    await loadNicheHeader();
+    await loadLeads();
+    pingPresence(activeRowId || 0);
+    pollPresence();
+  } catch {
+    // brak sieci przy powrocie - zostaja dane sprzed wyjscia, kolejna akcja i tak je odswiezy
+  }
 });
 
 document.getElementById("leads-tbody").addEventListener("click", (e) => {
   const tr = e.target.closest("tr[data-id]");
   if (!tr) return;
+  if (e.target.closest(".lead-delete-btn")) return; // kosz ma wlasna obsluge (patrz #15 nizej)
   const id = Number(tr.dataset.id);
+  // klik w "#" wiersza, ktory JUZ jest aktywny = odklikniecie (kolumna pokazuje wtedy ✕)
+  if (id === activeRowId && e.target.closest(".idx-col")) {
+    clearActiveRow();
+    return;
+  }
   pingPresence(id);
   setActiveRow(id);
 });
@@ -608,7 +698,7 @@ function rowHtml(lead, index) {
 
   return `
     <tr data-id="${lead.id}" class="${highlightClass}" ${titleAttr}>
-      <td class="idx-col"><span class="idx-num">${index}</span></td>
+      <td class="idx-col"><span class="idx-num">${index}</span><span class="idx-unclick">✕</span></td>
       <td class="company-cell">
         <span class="presence-badge" style="display:none;"></span>
         <a class="company-link" href="${escapeHtml(companyGoogleSearchHref(lead))}" target="_blank" rel="noopener" title="${escapeHtml(lead.company_name)} — szukaj w Google">${escapeHtml(lead.company_name)}</a>
@@ -619,6 +709,8 @@ function rowHtml(lead, index) {
         <a class="phone-call-btn" href="/script.html?leadId=${lead.id}" title="Scheme rozmowy">📖</a>
         <span class="phone-text">${escapeHtml(formatPhone(lead.phone))}</span>
       </td>
+      <td><input type="time" class="time-input" data-field="open_time" value="${escapeHtml(lead.open_time || "")}"></td>
+      <td><input type="time" class="time-input" data-field="close_time" value="${escapeHtml(lead.close_time || "")}"></td>
       <td>${fieldCsel("quality", meta.qualityOptions, lead.quality, "—")}</td>
       <td>
         <div class="tags-popover">
@@ -631,8 +723,9 @@ function rowHtml(lead, index) {
       <td>${fieldCsel("caller", callerOptions(), lead.caller, "—")}</td>
       <td><span class="reminder-badge ${reminder.cls}">${reminder.text}</span></td>
       <td><input type="date" data-field="callback_when" value="${escapeHtml(lead.callback_when)}"></td>
-      <td><input type="datetime-local" data-field="google_term" value="${escapeHtml(lead.google_term)}"></td>
+      <td><button type="button" class="term-btn ${lead.google_term ? "set" : ""}" data-term-open>${escapeHtml(termLabel(lead.google_term))}</button></td>
       <td>${notesCellHtml(lead)}</td>
+      <td class="row-actions"><button type="button" class="lead-delete-btn" title="Usuń lead">✕</button></td>
     </tr>
   `;
 }
@@ -697,6 +790,28 @@ tbody.addEventListener("change", (e) => {
     if (current && current.has_social !== "Tak") body.has_social = "Booksy";
   }
   saveLead(id, body, { keepPopoverOpen: true });
+});
+
+// #12 - termin Google Meet wybieramy wlasnym kalendarzem (zajete dni/godziny na czerwono),
+// a nie systemowym pickerem, ktorego nie da sie pokolorowac
+tbody.addEventListener("click", (e) => {
+  const termBtn = e.target.closest(".term-btn");
+  if (!termBtn) return;
+  const tr = termBtn.closest("tr");
+  const lead = leads.find((l) => l.id === Number(tr.dataset.id));
+  if (!lead) return;
+
+  openTermPicker({
+    anchor: termBtn,
+    value: lead.google_term,
+    // lead bez przypisanego dzwoniacego = patrzymy na kalendarz osoby, ktora wlasnie umawia
+    caller: lead.caller || (currentUser && currentUser.display_name) || "",
+    leadId: lead.id,
+    onPick: async (value) => {
+      await saveLead(lead.id, { google_term: value });
+      await loadMeets(); // swiezo umowiony termin ma od razu blokowac te godzine
+    },
+  });
 });
 
 tbody.addEventListener("click", (e) => {
@@ -994,6 +1109,219 @@ function focusLeadRow(leadId) {
   tr.classList.add("row-flash");
   setTimeout(() => tr.classList.remove("row-flash"), 2600);
 }
+
+
+// ---------- #13: zestawy filtrow (prywatne, osobne dla kazdej niszy) ----------
+// Serwer zawsze zaweza zapytania do zalogowanego konta (server/routes/filterSets.js), wiec tu
+// nie ma juz zadnego "czyje to" - dostajemy po prostu swoje zestawy dla tej niszy.
+
+let filterSets = [];
+let renamingSetId = null; // zestaw, ktorego nazwe wlasnie edytujemy w menu
+
+const EMPTY_FILTERS = () => ({ interested: [], caller: [], answered: [], has_social: [], open_time: [] });
+
+// ile pojedynczych wartosci siedzi w zestawie - liczba przy nazwie mowi "ile filtrow zalacze"
+const setSize = (set) => Object.values(set.filters || {}).reduce((n, v) => n + (Array.isArray(v) ? v.length : 0), 0);
+
+async function loadFilterSets() {
+  if (!currentNiche) return;
+  try {
+    filterSets = await api.get(`/api/filter-sets?niche_id=${currentNiche.id}`);
+  } catch {
+    filterSets = []; // brak zestawow nie moze zablokowac pracy z niszą
+  }
+}
+
+// menu przebudowuje sie po kazdej zmianie (dodanie/usuniecie/zmiana nazwy), a przebudowa gubi
+// klase .open - wiec po kazdej takiej operacji otwieramy je z powrotem, zeby nie zamykalo sie
+// pod palcem w srodku pracy z zestawami
+function reopenSetsMenu() {
+  document.querySelector(".tags-popover[data-filter-sets]")?.classList.add("open");
+}
+
+function filterSetsHtml() {
+  const rows = filterSets
+    .map((set) =>
+      set.id === renamingSetId
+        ? `<div class="filter-set-row">
+             <input type="text" class="filter-set-name-input" data-set-input="${set.id}" value="${escapeHtml(set.name)}" maxlength="40">
+           </div>`
+        : `<div class="filter-set-row">
+             <button type="button" class="filter-set-apply" data-set-apply="${set.id}" title="Załącz ten zestaw filtrów">
+               ${escapeHtml(set.name)}<span class="filter-set-count">${setSize(set)}</span>
+             </button>
+             <button type="button" class="filter-set-icon" data-set-overwrite="${set.id}" title="Nadpisz obecnie ustawionymi filtrami">💾</button>
+             <button type="button" class="filter-set-icon" data-set-rename="${set.id}" title="Zmień nazwę">✎</button>
+             <button type="button" class="filter-set-icon danger" data-set-delete="${set.id}" title="Usuń zestaw">✕</button>
+           </div>`
+    )
+    .join("");
+
+  return `
+    <div class="filter-group">
+      <span class="filter-label">Zestawy</span>
+      <div class="tags-popover" data-filter-sets>
+        <div class="csel-trigger">⭐ ${filterSets.length ? `Zapisane (${filterSets.length})` : "Brak zapisanych"}</div>
+        <div class="tags-menu filter-sets-menu">
+          ${rows || `<div class="filter-set-empty">Ustaw filtry, których używasz najczęściej, i zapisz je pod nazwą — wrócisz do nich jednym kliknięciem.</div>`}
+          <div class="filter-set-new">
+            <input type="text" id="filter-set-new-name" placeholder="Nazwa zestawu" maxlength="40">
+            <button type="button" class="btn primary" id="filter-set-save">Zapisz obecne</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// wszystkie operacje na zestawach zwracaja z serwera pelna, aktualna liste - wiec jeden wspolny
+// wrapper zamiast trzech razy tego samego try/catch + rerender
+async function withFilterSets(request) {
+  try {
+    filterSets = await request();
+    renamingSetId = null;
+    renderFilterBar();
+    reopenSetsMenu();
+  } catch (err) {
+    alert("Blad zapisu zestawu: " + err.message);
+  }
+}
+
+document.getElementById("filter-bar").addEventListener("click", (e) => {
+  const apply = e.target.closest("[data-set-apply]");
+  if (apply) {
+    const set = filterSets.find((s) => s.id === Number(apply.dataset.setApply));
+    if (!set) return;
+    // zestaw zastepuje CALY stan filtrow (a nie dokłada sie do obecnych) - inaczej nie dalo
+    // by sie nim wrocic do znanego widoku, tylko zawezalo to, co akurat bylo ustawione
+    filters = { ...EMPTY_FILTERS(), ...set.filters };
+    setTodoFilter(false);
+    closeAllPopovers();
+    saveViewState();
+    renderFilterBar();
+    renderLeads();
+    return;
+  }
+
+  const overwrite = e.target.closest("[data-set-overwrite]");
+  if (overwrite) {
+    withFilterSets(() => api.patch(`/api/filter-sets/${overwrite.dataset.setOverwrite}`, { filters }));
+    return;
+  }
+
+  const rename = e.target.closest("[data-set-rename]");
+  if (rename) {
+    renamingSetId = Number(rename.dataset.setRename);
+    renderFilterBar();
+    reopenSetsMenu();
+    document.querySelector(".filter-set-name-input")?.select();
+    return;
+  }
+
+  const del = e.target.closest("[data-set-delete]");
+  if (del) {
+    const set = filterSets.find((s) => s.id === Number(del.dataset.setDelete));
+    if (!set || !confirm(`Usunąć zestaw „${set.name}"?`)) return;
+    withFilterSets(() => api.del(`/api/filter-sets/${set.id}`));
+    return;
+  }
+
+  if (e.target.id === "filter-set-save") {
+    const input = document.getElementById("filter-set-new-name");
+    const name = input.value.trim();
+    if (!name) return input.focus();
+    withFilterSets(() => api.post("/api/filter-sets", { niche_id: currentNiche.id, name, filters }));
+  }
+});
+
+// zmiana nazwy: Enter zapisuje, Escape rezygnuje (bez zapisu)
+document.getElementById("filter-bar").addEventListener("keydown", (e) => {
+  const input = e.target.closest(".filter-set-name-input");
+  if (input) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const name = input.value.trim();
+      if (!name) return;
+      withFilterSets(() => api.patch(`/api/filter-sets/${input.dataset.setInput}`, { name }));
+    } else if (e.key === "Escape") {
+      e.stopPropagation(); // inaczej globalny Escape zamknalby cale menu
+      renamingSetId = null;
+      renderFilterBar();
+      reopenSetsMenu();
+    }
+    return;
+  }
+  if (e.target.id === "filter-set-new-name" && e.key === "Enter") {
+    e.preventDefault();
+    document.getElementById("filter-set-save").click();
+  }
+});
+
+// ---------- #15: reczne dodawanie i usuwanie leadow ----------
+
+const addLeadModal = document.getElementById("add-lead-modal");
+
+function openAddLeadModal() {
+  document.getElementById("add-lead-error").style.display = "none";
+  document.getElementById("add-lead-form").reset();
+  addLeadModal.classList.remove("hidden");
+  document.getElementById("add-lead-name").focus();
+}
+
+document.getElementById("add-lead-btn").addEventListener("click", openAddLeadModal);
+document.getElementById("add-lead-cancel").addEventListener("click", () => addLeadModal.classList.add("hidden"));
+addLeadModal.addEventListener("click", (e) => {
+  if (e.target === addLeadModal) addLeadModal.classList.add("hidden");
+});
+
+document.getElementById("add-lead-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const errorEl = document.getElementById("add-lead-error");
+  errorEl.style.display = "none";
+
+  const submitBtn = e.target.querySelector("button[type=submit]");
+  submitBtn.disabled = true;
+  try {
+    const lead = await api.post(`/api/niches/${encodeURIComponent(slug)}/leads`, {
+      company_name: document.getElementById("add-lead-name").value,
+      city: document.getElementById("add-lead-city").value,
+      // telefon trzymamy w bazie samymi cyframi (tak samo jak przy edycji w tabeli)
+      phone: document.getElementById("add-lead-phone").value.replace(/\D/g, ""),
+    });
+    leads.push(lead);
+    addLeadModal.classList.add("hidden");
+    renderLeads();
+    await loadNicheHeader(); // nowy lead zmienia "wszystkich"/"do zrobienia" w kafelkach
+    focusLeadRow(lead.id); // przescrolluj do swiezego wiersza i mrugnij nim
+  } catch (err) {
+    errorEl.textContent = err.message;
+    errorEl.style.display = "block";
+  } finally {
+    submitBtn.disabled = false;
+  }
+});
+
+// kosz na koncu wiersza - potwierdzenie z nazwa firmy, bo razem z leadem znikaja jego notatki
+tbody.addEventListener("click", async (e) => {
+  const btn = e.target.closest(".lead-delete-btn");
+  if (!btn) return;
+  e.stopPropagation(); // nie ustawiaj przy okazji "zajmuje sie tym leadem"
+
+  const id = Number(btn.closest("tr").dataset.id);
+  const lead = leads.find((l) => l.id === id);
+  if (!lead) return;
+  if (!confirm(`Usunąć lead „${lead.company_name}" wraz z notatkami? Tej operacji nie da się cofnąć.`)) return;
+
+  try {
+    await api.del(`/api/leads/${id}`);
+    leads = leads.filter((l) => l.id !== id);
+    if (activeRowId === id) clearActiveRow();
+    renderLeads();
+    await loadNicheHeader();
+  } catch (err) {
+    alert("Nie udalo sie usunac leada: " + err.message);
+  }
+});
 
 // ---------- ustawienia niszy ----------
 

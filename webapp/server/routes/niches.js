@@ -102,6 +102,26 @@ router.get("/:slug/leads", (req, res) => {
   res.json(leads.map((l) => ({ ...l, notes_list: notesByLead.get(l.id) || [] })));
 });
 
+// POST /api/niches/:slug/leads - recznie dodany lead (#15). Wymagana jest tylko nazwa firmy;
+// reszta pol startuje z tymi samymi wartosciami domyslnymi co przy imporcie CSV (m.in.
+// interested = "nieruszone"), zeby recznie dodany lead nie rozni sie niczym od wgranego z pliku.
+router.post("/:slug/leads", (req, res) => {
+  const niche = db.prepare("SELECT id FROM niches WHERE slug = ?").get(req.params.slug);
+  if (!niche) return res.status(404).json({ error: "Nie znaleziono niszy" });
+
+  const companyName = String(req.body.company_name || "").trim();
+  if (!companyName) return res.status(400).json({ error: "Podaj nazwe firmy" });
+
+  // "interested" ustawiamy JAWNIE: w bazach zalozonych przed zmiana defaultu kolumna nadal ma
+  // DEFAULT 'nie' (patrz migracja w db.js), wiec swiezy lead wygladalby jak juz odrzucony.
+  const info = db
+    .prepare("INSERT INTO leads (niche_id, company_name, city, phone, interested) VALUES (?, ?, ?, ?, 'nieruszone')")
+    .run(niche.id, companyName, String(req.body.city || "").trim(), String(req.body.phone || "").trim());
+
+  const lead = db.prepare("SELECT * FROM leads WHERE id = ?").get(info.lastInsertRowid);
+  res.status(201).json({ ...lead, notes_list: [] });
+});
+
 // GET /api/niches/:slug/export.csv - zrzut AKTUALNEGO stanu tabeli (po wszystkich edycjach),
 // nie oryginalnego importu. Naglowki celowo pokrywaja sie z aliasami z csvImport.js, zeby taki
 // plik dal sie z powrotem zaimportowac bez recznego mapowania kolumn.
@@ -134,6 +154,8 @@ router.get("/:slug/export.csv", (req, res) => {
       "Jakość": l.quality,
     };
     for (const tag of PLATFORM_TAGS) row[PLATFORM_META[tag].name] = l[`tag_${tag}`] ? "Tak" : "";
+    row["Godzina otwarcia"] = l.open_time;
+    row["Godzina zamknięcia"] = l.close_time;
     row["Odebrał?"] = l.answered;
     row["Zainteresowany?"] = interestedLabel(l.interested);
     row["Kto dzwonił"] = l.caller;
@@ -179,11 +201,13 @@ router.post("/import", upload.single("file"), (req, res) => {
     INSERT INTO leads (
       niche_id, company_name, city, phone, quality, has_social, website_url,
       tag_instagram, tag_facebook, tag_booksy, tag_youtube,
-      answered, interested, caller, reminder, callback_when, google_term, notes, research_notes, called_at
+      answered, interested, caller, reminder, callback_when, google_term, notes, research_notes, called_at,
+      open_time, close_time
     ) VALUES (
       @niche_id, @company_name, @city, @phone, @quality, @has_social, @website_url,
       @tag_instagram, @tag_facebook, @tag_booksy, @tag_youtube,
-      @answered, @interested, @caller, @reminder, @callback_when, @google_term, @notes, @research_notes, @called_at
+      @answered, @interested, @caller, @reminder, @callback_when, @google_term, @notes, @research_notes, @called_at,
+      @open_time, @close_time
     )
   `);
 

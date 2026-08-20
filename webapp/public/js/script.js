@@ -368,7 +368,7 @@ function renderLeadPanel() {
 
     <div class="lead-panel-field">
       <label>Termin Google Meet</label>
-      <input type="datetime-local" data-panel-field="google_term" value="${escapeHtml(panelLead.google_term)}">
+      <button type="button" class="term-btn ${panelLead.google_term ? "set" : ""}" id="panel-term-btn" data-term-open>${escapeHtml(termLabel(panelLead.google_term))}</button>
     </div>
 
     <div class="lead-panel-field">
@@ -412,6 +412,23 @@ async function savePanelField(field, value) {
 // nasluchy dopiete raz na staly kontener #lead-panel (przetrwaja kazdy renderLeadPanel, bo
 // tylko innerHTML sie podmienia, nie sam element) - ten sam wzorzec co tbody w niche.js
 document.getElementById("lead-panel").addEventListener("click", (e) => {
+  // #12 - ten sam kalendarzyk co w tabeli niszy: na czerwono dni i godziny, w ktorych ta
+  // osoba ma juz Meeta. Tu jest szczegolnie wazny, bo termin umawia sie w trakcie rozmowy.
+  const termBtn = e.target.closest(".term-btn");
+  if (termBtn) {
+    openTermPicker({
+      anchor: termBtn,
+      value: panelLead.google_term,
+      caller: panelLead.caller || (currentUser && currentUser.display_name) || "",
+      leadId: panelLead.id,
+      onPick: async (value) => {
+        await savePanelField("google_term", value);
+        await loadMeets();
+      },
+    });
+    return;
+  }
+
   const trigger = e.target.closest(".csel-trigger, .tags-trigger");
   if (trigger) {
     const box = trigger.closest(".csel, .tags-popover");
@@ -553,4 +570,5 @@ async function loadLeadPanel() {
 initParticles();
 render();
 loadLeadPanel();
+loadMeets(); // zajete terminy do kalendarzyka przy "Termin Google Meet" (#12)
 pingOnlinePresence(); // "jestem na scheme rozmowy" - patrz auth-widget.js

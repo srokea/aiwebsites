@@ -31,6 +31,7 @@
   <div class="filter-search-row">
     <div class="filter-bar" id="filter-bar"></div>
     <input type="text" id="lead-search" class="search-input" placeholder="🔍 Szukaj firmy lub telefonu...">
+    <button type="button" class="btn primary" id="add-lead-btn">+ Dodaj lead</button>
   </div>
 </div>
 
@@ -43,6 +44,8 @@
         <th class="sortable" data-sort-id="strona" data-sort="has_social">Strona</th>
         <th class="sortable" data-sort-id="city" data-sort="city">Miasto</th>
         <th class="sortable" data-sort-id="phone" data-sort="phone">Telefon</th>
+        <th class="sortable" data-sort-id="open" data-sort="open_time">Otwiera</th>
+        <th class="sortable" data-sort-id="close" data-sort="close_time">Zamyka</th>
         <th class="sortable" data-sort-id="quality" data-sort="quality">Jakość</th>
         <th class="sortable" data-sort-id="social" data-sort="tags_count">Social</th>
         <th class="sortable" data-sort-id="answered" data-sort="answered">Odebrał?</th>
@@ -52,6 +55,7 @@
         <th class="sortable" data-sort-id="callback" data-sort="callback_when">Kiedy oddzwonić</th>
         <th class="sortable" data-sort-id="gterm" data-sort="google_term">Termin Google</th>
         <th class="sortable" data-sort-id="notes" data-sort="notes">Notatki</th>
+        <th class="row-actions-col"></th>
       </tr>
     </thead>
     <tbody id="leads-tbody"></tbody>
@@ -86,6 +90,31 @@
           <button type="button" class="btn" id="settings-cancel">Anuluj</button>
           <button type="submit" class="btn primary">Zapisz</button>
         </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="add-lead-modal">
+  <div class="modal">
+    <h3>Nowy lead</h3>
+    <form id="add-lead-form">
+      <label for="add-lead-name">Nazwa firmy</label>
+      <input type="text" id="add-lead-name" placeholder="np. Barber King" required>
+
+      <label for="add-lead-city">Miasto</label>
+      <input type="text" id="add-lead-city" placeholder="np. Bełchatów">
+
+      <label for="add-lead-phone">Telefon</label>
+      <input type="text" id="add-lead-phone" placeholder="np. 500600700">
+
+      <div class="hint">Resztę (godziny, jakość, tagi) uzupełnisz od razu w tabeli — nowy lead ląduje na jej końcu.</div>
+
+      <div class="error" id="add-lead-error" style="display:none;"></div>
+
+      <div class="actions">
+        <button type="button" class="btn" id="add-lead-cancel">Anuluj</button>
+        <button type="submit" class="btn primary">Dodaj</button>
       </div>
     </form>
   </div>
