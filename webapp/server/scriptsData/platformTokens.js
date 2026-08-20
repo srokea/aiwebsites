@@ -46,4 +46,15 @@ function pickPrimaryTag(lead, priority = DEFAULT_PRIORITY) {
   return found || "instagram";
 }
 
-module.exports = { PLATFORM_INFO, pickPrimaryTag, activeTags };
+// Gdy lead ma wiecej niz jedna platforme, dorzuca do hooka krotka wzmianke o pozostalych
+// (po nazwie, przecinkami - bez odmiany przez przypadki, zeby nie ryzykowac blednej gramatyki
+// w wygenerowanym tekscie), podswietlona tak samo na niebiesko jak inne dynamiczne tokeny
+// (<em>, patrz company/city w buildScript). Pusty string gdy nie ma nic do dopisania.
+function otherPlatformsMention(lead, primary) {
+  const others = activeTags(lead).filter((t) => t !== primary);
+  if (!others.length) return "";
+  const names = others.map((t) => PLATFORM_INFO[t].name).join(", ");
+  return ` (są też na <em>${names}</em>)`;
+}
+
+module.exports = { PLATFORM_INFO, pickPrimaryTag, activeTags, otherPlatformsMention };

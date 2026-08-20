@@ -3,7 +3,6 @@ const leadId = params.get("leadId");
 if (!leadId) location.href = "/";
 
 const SPEAKER_LABEL = { you: "Ty", them: "Oni", info: "Info" };
-const TAG_LABELS = { instagram: "Instagram", facebook: "Facebook", booksy: "Booksy", youtube: "YouTube" };
 
 function renderBlocks(blocks) {
   return (blocks || []).map(renderBlock).join("");
@@ -162,9 +161,12 @@ document.getElementById("script-body").addEventListener("keydown", (e) => {
 });
 
 async function render() {
-  const { lead, niche, script, scriptFile: file } = await api.get(
-    `/api/scripts/lead/${leadId}${editMode ? "?edit=1" : ""}`
-  );
+  // meta osobno (rownolegle) - potrzebne tylko do ikonek platform w naglowku ponizej
+  // (kolory/etykiety z platformMeta), niezaleznie od panelMeta ktore doladowuje loadLeadPanel()
+  const [{ lead, niche, script, scriptFile: file }, meta] = await Promise.all([
+    api.get(`/api/scripts/lead/${leadId}${editMode ? "?edit=1" : ""}`),
+    api.get("/api/meta"),
+  ]);
   scriptFile = file;
   document.getElementById("edit-file").textContent = `${file}.js`;
 
@@ -187,7 +189,11 @@ async function render() {
         ? `<a class="lead-call-btn" href="tel:${escapeHtml(phoneHref)}">📞 ${escapeHtml(lead.phone)}</a>`
         : escapeHtml(lead.phone || "—")
     }</div>
-    <div>${activeTags.length ? activeTags.map((t) => TAG_LABELS[t]).join(", ") : "brak tagow platform"}</div>
+    <div>${
+      activeTags.length
+        ? `<span class="lead-context-tags">${activeTags.map((t) => platformBadge(meta.platformMeta[t], t)).join("")}</span>`
+        : "brak tagów platform"
+    }</div>
   `;
 
   let body = script.sections.map(renderSection).join("");

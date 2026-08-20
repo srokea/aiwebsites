@@ -1,4 +1,4 @@
-const { PLATFORM_INFO, pickPrimaryTag } = require("./platformTokens");
+const { PLATFORM_INFO, pickPrimaryTag, otherPlatformsMention } = require("./platformTokens");
 const { escapeHtml } = require("../text");
 
 // Generyczny scheme rozmowy dla nisz, dla ktorych nie ma jeszcze dedykowanej tresci
@@ -11,6 +11,10 @@ function buildScript(lead, niche) {
 
   const company = lead.company_name ? `<em>${escapeHtml(lead.company_name)}</em>` : "<em>nazwa firmy</em>";
   const city = lead.city ? `<em>${escapeHtml(lead.city)}</em>` : "<em>miejscowość</em>";
+  // nazwa glownej platformy (np. "Facebook") na niebiesko tak samo jak reszta dynamicznych
+  // tokenow - i, jesli lead ma wiecej niz jedna platforme, dopisek o pozostalych (tez niebieski)
+  const platform = `<em>${p.name}</em>`;
+  const otherPlatforms = otherPlatformsMention(lead, primary);
 
   const sections = [
     {
@@ -29,7 +33,7 @@ function buildScript(lead, niche) {
           content: [
             { type: "text", speaker: "you", html: "Jasne, a kiedy mogę się z nią / z nim skontaktować?" },
             { type: "text", speaker: "them", html: "Proszę zadzwonić później." },
-            { type: "text", speaker: "you", html: `Dzwonię w sprawie ${p.name} / działalności internetowej.` },
+            { type: "text", speaker: "you", html: `Dzwonię w sprawie ${platform} / działalności internetowej.` },
           ],
         },
         {
@@ -42,7 +46,7 @@ function buildScript(lead, niche) {
             {
               type: "text",
               speaker: "you",
-              html: `Świetnie, widziałem ostatnio Wasz ${p.profileNoun} ${p.onPhrase} – wygląda naprawdę dobrze. Jestem studentem informatyki z okolicy ${city} i żeby wspomóc swoje portfolio, robię strony internetowe dla lokalnych ${nicheName}. Przygotowałem już przykładowy koncept strony dla Was – miejsce, które spina ${p.name}, cennik, opinie i kontakt w jedno. Miałby Pan / Miałaby Pani 5-10 minut w tygodniu, żebym go zaprezentował?`,
+              html: `Świetnie, widziałem ostatnio Wasz ${p.profileNoun} ${p.onPhrase} – wygląda naprawdę dobrze${otherPlatforms}. Jestem studentem informatyki z okolicy ${city} i żeby wspomóc swoje portfolio, robię strony internetowe dla lokalnych ${nicheName}. Przygotowałem już przykładowy koncept strony dla Was – miejsce, które spina ${platform}, cennik, opinie i kontakt w jedno. Miałby Pan / Miałaby Pani 5-10 minut w tygodniu, żebym go zaprezentował?`,
             },
           ],
         },
@@ -67,7 +71,7 @@ function buildScript(lead, niche) {
             {
               type: "text",
               speaker: "you",
-              html: `Rozumiem, to super że już tam działacie. Strona nie zastępuje ${p.name}, tylko zbiera wszystko w jednym miejscu: cennik, opinie, zdjęcia, kontakt – i pomaga wypaść lepiej w Google. Czy byłby Pan / byłaby Pani otwarty/a zobaczyć przykładowy koncept?`,
+              html: `Rozumiem, to super że już tam działacie. Strona nie zastępuje ${platform}, tylko zbiera wszystko w jednym miejscu: cennik, opinie, zdjęcia, kontakt – i pomaga wypaść lepiej w Google. Czy byłby Pan / byłaby Pani otwarty/a zobaczyć przykładowy koncept?`,
             },
           ],
         },

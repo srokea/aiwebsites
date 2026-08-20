@@ -1,4 +1,4 @@
-const { PLATFORM_INFO, pickPrimaryTag, activeTags } = require("./platformTokens");
+const { PLATFORM_INFO, pickPrimaryTag, activeTags, otherPlatformsMention } = require("./platformTokens");
 const { escapeHtml } = require("../text");
 
 function buildScript(lead) {
@@ -9,6 +9,10 @@ function buildScript(lead) {
 
   const company = lead.company_name ? `<em>${escapeHtml(lead.company_name)}</em>` : "<em>nazwa firmy</em>";
   const city = lead.city ? `<em>${escapeHtml(lead.city)}</em>` : "<em>miejscowość</em>";
+  // nazwa glownej platformy (np. "Facebook") na niebiesko tak samo jak reszta dynamicznych
+  // tokenow - i, jesli lead ma wiecej niz jedna platforme, dopisek o pozostalych (tez niebieski)
+  const platform = `<em>${p.name}</em>`;
+  const otherPlatforms = otherPlatformsMention(lead, primary);
 
   const sections = [
     {
@@ -29,7 +33,7 @@ function buildScript(lead) {
             { type: "text", speaker: "them", html: "Szefowa będzie jutro / Teraz jest z klientką, proszę zadzwonić za chwilę." },
             { type: "divider" },
             { type: "text", speaker: "them", html: "A o co chodzi? W jakiej sprawie pan dzwoni?" },
-            { type: "text", speaker: "you", html: `Dzwonię w sprawie ${p.name} / działalności internetowej.` },
+            { type: "text", speaker: "you", html: `Dzwonię w sprawie ${platform} / działalności internetowej.` },
           ],
         },
         {
@@ -42,7 +46,7 @@ function buildScript(lead) {
             {
               type: "text",
               speaker: "you",
-              html: `Świetnie, wie Pani co, widziałem ostatnio Wasz ${p.profileNoun} ${p.onPhrase} – naprawdę świetne zdjęcia efektów. Tak się składa, że jestem studentem informatyki z okolicy ${city} i żeby wspomóc swoje portfolio, zacząłem robić strony internetowe dla lokalnych biznesów tu w ${city}. Przygotowałem już jedną specjalnie dla Was – takie miejsce, które spina ${p.name}, cennik, opinie i kontakt w jedno. Miałaby Pani może 5-10 minut w tygodniu, żebym zaprezentował przykładowy koncept?`,
+              html: `Świetnie, wie Pani co, widziałem ostatnio Wasz ${p.profileNoun} ${p.onPhrase} – naprawdę świetne zdjęcia efektów${otherPlatforms}. Tak się składa, że jestem studentem informatyki z okolicy ${city} i żeby wspomóc swoje portfolio, zacząłem robić strony internetowe dla lokalnych biznesów tu w ${city}. Przygotowałem już jedną specjalnie dla Was – takie miejsce, które spina ${platform}, cennik, opinie i kontakt w jedno. Miałaby Pani może 5-10 minut w tygodniu, żebym zaprezentował przykładowy koncept?`,
             },
             { type: "divider" },
             { type: "hookTag", variant: "backup", label: "Backup – prezent / voucher" },
@@ -56,7 +60,7 @@ function buildScript(lead) {
             {
               type: "text",
               speaker: "you",
-              html: `Ktoś mi polecił Wasz salon i próbowałem znaleźć więcej informacji w internecie, ale ciężko było cokolwiek znaleźć poza ${p.name}. Jestem studentem informatyki z okolicy ${city} i robię strony dla lokalnych biznesów. Przygotowałem jedną specjalnie dla Was. Miałaby Pani 5-10 minut w tygodniu żebym pokazał koncept?`,
+              html: `Ktoś mi polecił Wasz salon i próbowałem znaleźć więcej informacji w internecie, ale ciężko było cokolwiek znaleźć poza ${platform}. Jestem studentem informatyki z okolicy ${city} i robię strony dla lokalnych biznesów. Przygotowałem jedną specjalnie dla Was. Miałaby Pani 5-10 minut w tygodniu żebym pokazał koncept?`,
             },
           ],
         },
@@ -84,7 +88,7 @@ function buildScript(lead) {
             {
               type: "text",
               speaker: "you",
-              html: `Rozumiem i to super, że już tam działacie – zdjęcia efektów wyglądają świetnie. Strona nie zastępuje ${p.name}, tylko zbiera wszystko w jednym miejscu: cennik, opinie, zdjęcia, kontakt. Klientki, które szukają Was w Google, trafiają od razu na stronę zamiast szukać po ${p.name}. Czy byłaby Pani otwarta zobaczyć przykładowy koncept?`,
+              html: `Rozumiem i to super, że już tam działacie – zdjęcia efektów wyglądają świetnie. Strona nie zastępuje ${platform}, tylko zbiera wszystko w jednym miejscu: cennik, opinie, zdjęcia, kontakt. Klientki, które szukają Was w Google, trafiają od razu na stronę zamiast szukać po ${platform}. Czy byłaby Pani otwarta zobaczyć przykładowy koncept?`,
             },
           ],
         },

@@ -251,16 +251,21 @@ function upcomingItemHtml(item, withTime) {
   // dodatki zalezne od listy: postep strony przy Meetach, guzik SMS przy jutrzejszych
   const extra = item._list === "meet" ? siteProgressHtml(item) : item._list === "sms" ? smsCopyHtml(item, d) : "";
 
+  // im blizej terminu (za 2 dni / jutro / dzis), tym mocniej caly wiersz podswietla sie na
+  // zolto (patrz .upcoming-item.r-* w style.css) - przeterminowane i dalsze niz za 2 dni
+  // zostaja bez zmian, tak samo jak sama klasa na badge'u ponizej
+  const urgency = urgencyClass(diffDays);
+
   // &lead=<id> - widok niszy przescrolluje do tego wiersza i chwilowo go podswietli
   return `
-    <a class="upcoming-item" href="/niche.html?slug=${encodeURIComponent(item.niche_slug)}&lead=${item.id}">
+    <a class="upcoming-item ${urgency}" href="/niche.html?slug=${encodeURIComponent(item.niche_slug)}&lead=${item.id}">
       <div class="upcoming-who">
         <span class="upcoming-name">${escapeHtml(item.company_name)}</span>
         <span class="upcoming-niche">${escapeHtml(item.niche_name)}${item.city ? " · " + escapeHtml(item.city) : ""}</span>
       </div>
       <div class="upcoming-when">
         <span class="upcoming-date">${dateLabel}</span>
-        <span class="upcoming-badge-row">${extra}${callerIcon}${pin}<span class="reminder-badge ${urgencyClass(diffDays)}">${badgeText}</span></span>
+        <span class="upcoming-badge-row">${extra}${callerIcon}${pin}<span class="reminder-badge ${urgency}">${badgeText}</span></span>
       </div>
     </a>
   `;
