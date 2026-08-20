@@ -519,8 +519,11 @@ function growBars(selector, stagger = 90) {
 async function loadStats() {
   const stats = await api.get("/api/stats");
 
+  // "Wszystkich leadów" pokazuje eligible (bez wlasnej strony/jakosci 0), nie surowy total z bazy -
+  // inaczej "Wszystkich" nie sumowaloby sie do "Zadzwonionych" + "Do zrobienia" (te dwa juz
+  // pomijaja leady spoza eligible, patrz STATS_ELIGIBLE_SQL w server/leadStatus.js)
   document.getElementById("global-stats").innerHTML = `
-    <div class="stat-card"><div class="num">${stats.total}</div><div class="label">${statIcon("layers")}Wszystkich leadów</div></div>
+    <div class="stat-card"><div class="num">${stats.eligible}</div><div class="label">${statIcon("layers")}Wszystkich leadów</div></div>
     <div class="stat-card"><div class="num">${stats.called}</div><div class="label">${statIcon("check")}Zadzwonionych</div></div>
     <div class="stat-card"><div class="num">${stats.todo}</div><div class="label">${statIcon("list")}Do zrobienia</div></div>
     <div class="stat-card"><div class="num">${isRestDay() ? "💤" : `${stats.calledToday}/${stats.dailyGoal}`}</div><div class="label">${statIcon("flame")}${isRestDay() ? "Rest day" : "Dzisiaj"}</div></div>

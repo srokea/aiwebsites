@@ -97,8 +97,11 @@ async function loadNicheHeader() {
   document.getElementById("niche-sub").textContent = `${niche.called}/${niche.eligible} zadzwonionych · ${niche.todo} do zrobienia`;
 
   const pct = niche.eligible ? Math.round((niche.called / niche.eligible) * 100) : 0;
+  // "Wszystkich" pokazuje eligible, nie surowy total - inaczej nie sumowaloby sie do
+  // "Zadzwonionych" + "Do zrobienia" (patrz to samo w index.js/loadStats). Prawdziwy total
+  // (razem z leadami z wlasna strona) zostaje w danych - uzywa go np. potwierdzenie usuniecia niszy.
   document.getElementById("niche-stats").innerHTML = `
-    <div class="stat-card"><div class="num">${niche.total}</div><div class="label">${statIcon("layers")}Wszystkich</div></div>
+    <div class="stat-card"><div class="num">${niche.eligible}</div><div class="label">${statIcon("layers")}Wszystkich</div></div>
     <div class="stat-card"><div class="num">${niche.called}</div><div class="label">${statIcon("check")}Zadzwonionych</div></div>
     <button type="button" class="stat-card stat-card-btn ${todoFilter ? "active" : ""}" id="todo-card"
       title="${todoFilter ? "Pokaż wszystkie leady" : "Pokaż tylko leady do zrobienia"}" aria-pressed="${todoFilter}">
