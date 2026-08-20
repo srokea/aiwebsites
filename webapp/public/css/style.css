@@ -968,7 +968,7 @@ table.leads input.quality-input { min-width: 44px; width: 44px; text-align: cent
   flex-shrink: 0;
   transition: transform .15s;
 }
-.platform-badge svg { width: 11px; height: 11px; }
+.platform-badge svg, .platform-badge img { width: 11px; height: 11px; display: block; }
 .tags-trigger:hover .platform-badge { transform: scale(1.12); }
 .tags-trigger .plus {
   font-size: 11px;
