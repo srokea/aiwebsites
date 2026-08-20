@@ -45,7 +45,7 @@ Definicja siedzi w jednym miejscu (`server/leadStatus.js`) i obowiązuje tak sam
 
 > był kontakt (przypisany dzwoniący **lub** ustawione „Odebrał?") **i** status nie jest jednym z zawieszonych.
 
-Zawieszone = `Oczekiwanie` i `Oddzwonić - Poczta` — czekają na kolejny telefon, więc zostają w „do zrobienia". Pozostałe statusy (`Dopięte`, `Google Meet`, `SMS`, `Nie`) zamykają temat.
+Zawieszone = `Oczekiwanie` i `Poczta` — czekają na kolejny telefon, więc zostają w „do zrobienia". Pozostałe statusy (`Dopięte`, `Google Meet`, `SMS`, `Nie`) zamykają temat.
 
 ## Wystawienie na zewnątrz
 

@@ -17,7 +17,7 @@ const INTERESTED_OPTIONS = [
   { value: "strona", label: "Strona", color: "#e07ab3", resolved: true, autoCall: true },
   { value: "zamkniete", label: "Tymczasowo zamknięte", color: "#b06a3a", resolved: true, autoCall: true },
   { value: "oczekiwanie", label: "Oczekiwanie", color: "#c0a050", resolved: false, highlight: true },
-  { value: "my_dzwonimy", label: "Oddzwonić - Poczta", color: "#50b8c0", resolved: false, highlight: true },
+  { value: "my_dzwonimy", label: "Poczta", color: "#50b8c0", resolved: false, highlight: true },
   { value: "sms", label: "SMS", color: "#a066e0", resolved: true },
   { value: "mail", label: "Mail", color: "#6ec6ff", resolved: true },
   { value: "google_meet", label: "Google Meet", color: "#6090e0", resolved: true, highlight: true },

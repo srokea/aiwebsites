@@ -79,7 +79,7 @@ Lista nisz z `total`/`eligible`/`called` per nisza (do "ile zadzwonionych per ni
 
 ## Statusy (`status` / `interested`)
 `nieruszone` (nowy, nietknięty) · `brak_wlasciciela` · `nie` (odrzucony) · `strona` (ma już stronę) ·
-`zamkniete` (tymczasowo zamknięte) · `oczekiwanie` · `my_dzwonimy` ("Oddzwonić - Poczta") · `sms` ·
+`zamkniete` (tymczasowo zamknięte) · `oczekiwanie` · `my_dzwonimy` ("Poczta") · `sms` ·
 `mail` · `google_meet` · `closing` · `dopiete` (wygrany klient)
 
 ⚠️ `dopiete` i `zamkniete` to przeciwne wyniki — nie mylić.

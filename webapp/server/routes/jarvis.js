@@ -104,7 +104,7 @@ const SITE_PROGRESS_LABELS = Object.fromEntries(SITE_PROGRESS_OPTIONS.map((o) =>
 // Te same 4 kategorie co panel "Najblizsze" na dashboardzie (patrz upcoming.js: meets,
 // callbacks, sms, closing) + piata, "mail" (leady ze statusem Mail, dla ktorych rowniez nie
 // ma osobnej daty w UI - jak Closing, sortujemy po tym, kiedy lead byl ostatnio ruszony).
-// UWAGA na "mail" vs "callback": status "my_dzwonimy" ma etykiete "Oddzwonic - Poczta" w UI,
+// UWAGA na "mail" vs "callback": status "my_dzwonimy" ma etykiete "Poczta" w UI,
 // ale to jeden status, nie dwa - "callback" nizej odpowiada oddzwonieniu (callback_when),
 // a "mail" osobnemu statusowi "Mail". Popraw ten podzial, jesli Jarvis mial na mysli co innego.
 function buildUpcoming() {
