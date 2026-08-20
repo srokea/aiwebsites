@@ -324,14 +324,15 @@ async function loadUpcoming() {
     col("Closing", "🤝", closing, closingTotal, false);
 }
 
-const mineToggleBtn = document.getElementById("upcoming-mine-toggle");
-mineToggleBtn.addEventListener("click", async () => {
+const mineToggleInput = document.getElementById("upcoming-mine-toggle");
+mineToggleInput.addEventListener("change", async (e) => {
   // bez zalogowanego usera (jeszcze nie doladowany) nie ma czego filtrowac - w praktyce
-  // klik zawsze przychodzi dlugo po starcie strony, wiec currentUser juz jest gotowy
-  if (!currentUser) return;
-  showOnlyMine = !showOnlyMine;
-  mineToggleBtn.classList.toggle("active", showOnlyMine);
-  mineToggleBtn.setAttribute("aria-pressed", String(showOnlyMine));
+  // zmiana zawsze przychodzi dlugo po starcie strony, wiec currentUser juz jest gotowy
+  if (!currentUser) {
+    e.target.checked = false;
+    return;
+  }
+  showOnlyMine = e.target.checked;
   await loadUpcoming();
 });
 

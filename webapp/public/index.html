@@ -35,7 +35,11 @@
 
   <div class="upcoming-head">
     <div class="section-title" style="margin-bottom:0;">Najbliższe</div>
-    <button type="button" class="btn mine-toggle" id="upcoming-mine-toggle" aria-pressed="false">Moje</button>
+    <label class="mine-switch">
+      <input type="checkbox" id="upcoming-mine-toggle">
+      <span class="mine-switch-track"><span class="mine-switch-thumb"></span></span>
+      <span class="mine-switch-label">Tylko moje</span>
+    </label>
   </div>
   <div class="upcoming-panel" id="upcoming-panel"></div>
 
