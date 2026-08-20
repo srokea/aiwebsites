@@ -38,6 +38,7 @@ app.use("/api/users", require("./routes/users"));
 app.use("/api/presence", require("./routes/presence"));
 app.use("/api/filter-sets", require("./routes/filterSets"));
 app.use("/api/weather", require("./routes/weather"));
+app.use("/api/jarvis", require("./routes/jarvis"));
 
 // Frontend parsuje kazda odpowiedz API jako JSON, wiec bledy tez musza byc JSON-em -
 // domyslnie Express oddaje HTML-owa strone bledu i front pokazalby bezsensowny komunikat.

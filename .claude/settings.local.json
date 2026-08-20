@@ -3,7 +3,8 @@
     "allow": [
       "Bash(git add *)",
       "Bash(git commit -q -m 'Porzadek: nazwy folderow klientow na kebab-case \\(bez spacji i znakow specjalnych\\) *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(npm install *)"
     ],
     "defaultMode": "bypassPermissions"
   },
