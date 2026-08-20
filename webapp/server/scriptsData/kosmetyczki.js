@@ -21,7 +21,7 @@ function buildScript(lead) {
       title: "Opener",
       content: [
         { type: "text", speaker: "you", html: `Dzień dobry, dodzwoniłem się do ${company}?` },
-        { type: "text", speaker: "you", html: `Super, a czy rozmawiam z właścicielką / Panią <em>imię</em>?` },
+        { type: "text", speaker: "you", html: "Super, a czy rozmawiam z właścicielką?" },
         { type: "flowArrow" },
         {
           type: "branch",

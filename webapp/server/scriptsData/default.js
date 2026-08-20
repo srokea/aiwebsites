@@ -7,7 +7,6 @@ const { escapeHtml } = require("../text");
 function buildScript(lead, niche) {
   const primary = pickPrimaryTag(lead);
   const p = PLATFORM_INFO[primary];
-  const nicheName = (niche?.name || "biznesów").toLowerCase();
 
   const company = lead.company_name ? `<em>${escapeHtml(lead.company_name)}</em>` : "<em>nazwa firmy</em>";
   const city = lead.city ? `<em>${escapeHtml(lead.city)}</em>` : "<em>miejscowość</em>";
@@ -46,7 +45,7 @@ function buildScript(lead, niche) {
             {
               type: "text",
               speaker: "you",
-              html: `Świetnie, widziałem ostatnio Wasz ${p.profileNoun} ${p.onPhrase} – wygląda naprawdę dobrze${otherPlatforms}. Jestem studentem informatyki z okolicy ${city} i żeby wspomóc swoje portfolio, robię strony internetowe dla lokalnych ${nicheName}. Przygotowałem już przykładowy koncept strony dla Was – miejsce, które spina ${platform}, cennik, opinie i kontakt w jedno. Miałby Pan / Miałaby Pani 5-10 minut w tygodniu, żebym go zaprezentował?`,
+              html: `Świetnie …, wie pan co.. , widziałem ostatnio Wasz profil i że działacie głównie przez ${platform}${otherPlatforms} Tak się składa, że jestem studentem informatyki z okolicy ${city} i żeby wspomóc swoje portfolio, zacząłem robić strony internetowe dla lokalnych biznes i tak się składa ze przygotowałem już jedną (specjalnie) dla Was. Mielibyście może 5-10 minut w tygodniu/przyszłym tygodniu, żebym zaprezentował przykładowy koncept tego, co przygotowałem`,
             },
           ],
         },
