@@ -422,9 +422,10 @@ document.addEventListener("keydown", (e) => {
 });
 window.addEventListener("resize", closeTermPicker);
 
-// etykieta na guziku otwierajacym kalendarz
+// etykieta na guziku otwierajacym kalendarz - dopoki nic nie wybrano pokazujemy sama ikonke
+// (bez tekstu "-ustaw-"), zeby pusta kolumna nie krzyczala tekstem u kazdego leada na raz
 function termLabel(value) {
-  if (!value) return "— ustaw —";
+  if (!value) return "📅";
   const d = new Date(value);
   if (isNaN(d.getTime())) return value;
   return `${d.toLocaleDateString("pl-PL", { day: "numeric", month: "short" })} · ${d.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" })}`;

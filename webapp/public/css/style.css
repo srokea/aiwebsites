@@ -105,12 +105,6 @@ a { color: inherit; text-decoration: none; }
   font-weight: 800;
   letter-spacing: -0.5px;
 }
-.topbar .back-link {
-  font-size: 13px;
-  color: var(--muted);
-  transition: color .15s;
-}
-.topbar .back-link:hover { color: var(--text); }
 .topbar-sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
 
 /* ---------- panel powitalny ---------- */
@@ -193,6 +187,11 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------- panel: najblizsze spotkania / callbacki ---------- */
+/* #4 - naglowek nad panelem "Najblizsze" z przelacznikiem "Moje" (patrz index.js) */
+.upcoming-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.btn.mine-toggle { padding: 7px 16px; font-size: 12px; }
+.btn.mine-toggle.active { border-color: rgba(96,144,224,0.55); background: #17202e; color: var(--blue); }
+
 .upcoming-panel {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -377,22 +376,42 @@ a { color: inherit; text-decoration: none; }
 
 .filter-search-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
 .filter-search-row .filter-bar { flex: 1; margin-bottom: 0; }
+/* #7 - input i guzik X dzielace jeden wspolny prostokat, zeby X dalo sie ladnie osadzic
+   w prawym brzegu bez zaburzania szerokosci/wysokosci samego inputu */
+.search-wrap { position: relative; width: 260px; max-width: 100%; margin-top: 24px; margin-bottom: 18px; }
 .search-input {
   background: #141414;
   border: 1px solid #232323;
   color: var(--text);
   border-radius: 9px;
-  padding: 9px 14px;
+  padding: 9px 30px 9px 14px;
   font-size: 13px;
   font-family: inherit;
-  width: 260px;
-  max-width: 100%;
-  margin-top: 24px;
-  margin-bottom: 18px;
+  width: 100%;
   transition: border-color .15s, background .15s;
 }
 .search-input::placeholder { color: var(--muted-soft); }
 .search-input:focus { outline: none; border-color: var(--blue); background: #131a24; }
+.search-clear {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: none;
+  color: var(--muted-soft);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: color .15s, background .15s;
+}
+.search-clear:hover { color: var(--text); background: rgba(255,255,255,0.08); }
+/* #5 - guzik "Dodaj lead" ma ten sam margin-top co pole szukania obok, zeby oba stały w
+   jednym rzedzie z filtrami (ktore maja etykiete NAD kontrolka - patrz .filter-group) */
+#add-lead-btn { margin-top: 24px; }
 
 /* ---------- nisze: lista wierszy w jednym boxie ---------- */
 .niche-panel {
@@ -669,6 +688,10 @@ a { color: inherit; text-decoration: none; }
   line-height: 1;
 }
 .icon-btn:hover { border-color: #3a3a3a; background: #202020; transform: rotate(45deg); }
+/* #10 - linki powrotu ("Wszystkie nisze" / "Powrot do niszy") w tym samym kwadratowym stylu co
+   ⚙️, ale strzalka na hover przesuwa sie w lewo (krok wstecz), a nie obraca sie jak zebatka */
+.icon-btn.icon-btn-back { display: flex; align-items: center; justify-content: center; font-size: 17px; text-decoration: none; color: var(--text); }
+.icon-btn.icon-btn-back:hover { transform: translateX(-2px); }
 
 .color-swatches { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
 .color-swatch {
@@ -1230,8 +1253,6 @@ table.leads tr.row-flash td { animation: rowFlash 2.4s ease-out; }
 }
 .script-header h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
 .script-header p { color: var(--muted); font-size: 13px; }
-.script-back { display: inline-block; font-size: 13px; color: var(--muted); }
-.script-back:hover { color: var(--text); }
 .script-topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
 
 /* ---------- tryb edycji tresci schematu ---------- */
@@ -1780,11 +1801,11 @@ table.leads td.idx-col.idx-presence .idx-num { font-weight: 800; text-shadow: 0 
   border: 1px solid #232323;
   color: var(--text);
   border-radius: 7px;
-  padding: 5px 7px;
+  padding: 5px 4px;
   font-size: 12px;
   font-family: inherit;
   font-variant-numeric: tabular-nums;
-  width: 92px;
+  width: 74px;
 }
 .time-input:focus { outline: none; border-color: var(--blue); }
 /* pusta godzina ma byc wyraznie "nie wiemy", a nie krzykliwe 00:00 */

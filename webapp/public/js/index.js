@@ -283,9 +283,18 @@ function openNotePopover(btn, notes) {
   notePopoverEl = pop;
 }
 
+// #4 - przelacznik "Moje" nad panelem "Najblizsze": zawezenie wszystkich 4 list do leadow
+// przypisanych zalogowanemu (patrz "caller" na leadzie). Serwer filtruje sam (nie tylko widoczne
+// pozycje, ale i licznik "(N)" w naglowku), wiec przy wlaczonym przelaczniku dociagamy dane od nowa
+// zamiast przycinac juz wczytana (nieprzefiltrowana) liste po stronie przegladarki.
+let showOnlyMine = false;
+
 async function loadUpcoming() {
-  const { meets, meetsTotal, callbacks, callbacksTotal, sms, smsTotal, closing, closingTotal } =
-    await api.get("/api/upcoming");
+  const url =
+    showOnlyMine && currentUser
+      ? `/api/upcoming?caller=${encodeURIComponent(currentUser.display_name)}`
+      : "/api/upcoming";
+  const { meets, meetsTotal, callbacks, callbacksTotal, sms, smsTotal, closing, closingTotal } = await api.get(url);
   const panel = document.getElementById("upcoming-panel");
 
   meets.forEach((i) => (i._list = "meet"));
@@ -314,6 +323,17 @@ async function loadUpcoming() {
     col("SMS do wysłania", "✉️", sms, smsTotal, true) +
     col("Closing", "🤝", closing, closingTotal, false);
 }
+
+const mineToggleBtn = document.getElementById("upcoming-mine-toggle");
+mineToggleBtn.addEventListener("click", async () => {
+  // bez zalogowanego usera (jeszcze nie doladowany) nie ma czego filtrowac - w praktyce
+  // klik zawsze przychodzi dlugo po starcie strony, wiec currentUser juz jest gotowy
+  if (!currentUser) return;
+  showOnlyMine = !showOnlyMine;
+  mineToggleBtn.classList.toggle("active", showOnlyMine);
+  mineToggleBtn.setAttribute("aria-pressed", String(showOnlyMine));
+  await loadUpcoming();
+});
 
 // Kopiowanie dziala tez po zwyklym http (appka chodzi na http://...:3000), gdzie
 // navigator.clipboard w ogole nie istnieje - stad fallback na stara metode z <textarea>.
@@ -674,7 +694,9 @@ function statBarRow(label, count, max, color) {
 
 function renderCallerStats(s, user) {
   const color = (user && user.color) || (meta && meta.callerColors[s.caller]) || "#6090e0";
-  const statuses = s.interestedBreakdown.filter((o) => o.count > 0);
+  // #12 - pokazujemy KAZDY status z listy (nawet 0), zeby np. brak jeszcze zadnego "Dopiete"
+  // nie znikal z wykresu, tylko byl widoczny jako pasek z zerem
+  const statuses = s.interestedBreakdown;
   const maxStatus = Math.max(1, ...statuses.map((o) => o.count));
   const maxNiche = Math.max(1, ...s.byNiche.map((n) => n.c));
 

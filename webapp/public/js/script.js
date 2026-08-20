@@ -168,8 +168,10 @@ async function render() {
   scriptFile = file;
   document.getElementById("edit-file").textContent = `${file}.js`;
 
+  // #10 - guzik powrotu jest teraz ikonka-w-kwadraciku (jak ⚙️), wiec pelna nazwa niszy
+  // ląduje w title (tooltip), a nie jako widoczny tekst obok strzalki
   document.getElementById("back-link").href = `/niche.html?slug=${encodeURIComponent(niche.slug)}`;
-  document.getElementById("back-link").textContent = `← Powrot do ${niche.name}`;
+  document.getElementById("back-link").title = `Powrót do ${niche.name}`;
 
   document.title = `${lead.company_name} — scheme rozmowy`;
   document.getElementById("script-title").textContent = script.title;

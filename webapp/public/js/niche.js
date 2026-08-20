@@ -7,7 +7,7 @@ let leads = [];
 let currentNiche = null;
 let sortState = { id: null, field: null, dir: "asc" };
 // kazdy filtr to lista wartosci (multi-select) - pusta lista = brak filtra na tym polu
-let filters = { interested: [], caller: [], answered: [], has_social: [], open_time: [] };
+let filters = { interested: [], caller: [], answered: [], has_social: [], quality: [], open_time: [] };
 let searchQuery = "";
 let highlightStatuses = new Set();
 // wlaczany klikiem w karte "Do zrobienia" - pokazuje tylko leady, ktore licza sie do tej metryki
@@ -215,11 +215,12 @@ function renderFilterBar() {
     ${multiFilterHtml("caller", "Kto dzwonił", callerOptions())}
     ${multiFilterHtml("answered", "Odebrał", meta.answeredOptions)}
     ${multiFilterHtml("has_social", "Strona", meta.websiteStatusOptions)}
+    ${multiFilterHtml("quality", "Jakość", meta.qualityOptions)}
     ${multiFilterHtml("open_time", "Otwiera o", openTimeOptions())}
     <button type="button" class="btn" id="filter-clear" style="margin-left:4px;">Wyczyść filtry</button>
   `;
   document.getElementById("filter-clear").addEventListener("click", () => {
-    filters = { interested: [], caller: [], answered: [], has_social: [], open_time: [] };
+    filters = { interested: [], caller: [], answered: [], has_social: [], quality: [], open_time: [] };
     setTodoFilter(false);
     saveViewState();
     renderFilterBar();
@@ -472,6 +473,7 @@ function restoreViewState() {
     caller: meta.callers,
     answered: meta.answeredOptions.map((o) => o.value),
     has_social: meta.websiteStatusOptions.map((o) => o.value),
+    quality: meta.qualityOptions.map((o) => o.value),
   };
   for (const [key, values] of Object.entries(allowed)) {
     const savedValues = saved.filters?.[key];
@@ -723,7 +725,7 @@ function rowHtml(lead, index) {
       <td>${fieldCsel("caller", callerOptions(), lead.caller, "—")}</td>
       <td><span class="reminder-badge ${reminder.cls}">${reminder.text}</span></td>
       <td><input type="date" data-field="callback_when" value="${escapeHtml(lead.callback_when)}"></td>
-      <td><button type="button" class="term-btn ${lead.google_term ? "set" : ""}" data-term-open>${escapeHtml(termLabel(lead.google_term))}</button></td>
+      <td><button type="button" class="term-btn ${lead.google_term ? "set" : ""}" data-term-open title="${lead.google_term ? "" : "Ustaw termin Google Meet"}">${escapeHtml(termLabel(lead.google_term))}</button></td>
       <td>${notesCellHtml(lead)}</td>
       <td class="row-actions"><button type="button" class="lead-delete-btn" title="Usuń lead">✕</button></td>
     </tr>
@@ -1118,7 +1120,7 @@ function focusLeadRow(leadId) {
 let filterSets = [];
 let renamingSetId = null; // zestaw, ktorego nazwe wlasnie edytujemy w menu
 
-const EMPTY_FILTERS = () => ({ interested: [], caller: [], answered: [], has_social: [], open_time: [] });
+const EMPTY_FILTERS = () => ({ interested: [], caller: [], answered: [], has_social: [], quality: [], open_time: [] });
 
 // ile pojedynczych wartosci siedzi w zestawie - liczba przy nazwie mowi "ile filtrow zalacze"
 const setSize = (set) => Object.values(set.filters || {}).reduce((n, v) => n + (Array.isArray(v) ? v.length : 0), 0);
@@ -1405,8 +1407,21 @@ document.getElementById("settings-delete-btn").addEventListener("click", async (
   }
 });
 
-document.getElementById("lead-search").addEventListener("input", (e) => {
+// #7 - "x" po prawej stronie searchbara czysci cale pole (widoczny tylko gdy jest co czyscic)
+const leadSearchInput = document.getElementById("lead-search");
+const leadSearchClear = document.getElementById("lead-search-clear");
+
+leadSearchInput.addEventListener("input", (e) => {
   searchQuery = e.target.value;
+  leadSearchClear.classList.toggle("hidden", !searchQuery);
+  renderLeads();
+});
+
+leadSearchClear.addEventListener("click", () => {
+  searchQuery = "";
+  leadSearchInput.value = "";
+  leadSearchClear.classList.add("hidden");
+  leadSearchInput.focus();
   renderLeads();
 });
 

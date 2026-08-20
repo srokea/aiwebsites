@@ -20,7 +20,7 @@
     <div style="display:flex; align-items:center; gap:14px;">
       <div id="user-widget"></div>
       <button type="button" class="icon-btn" id="settings-btn" title="Ustawienia niszy">⚙️</button>
-      <a class="back-link" href="/">&larr; Wszystkie nisze</a>
+      <a class="icon-btn icon-btn-back" href="/" title="Wszystkie nisze">&larr;</a>
     </div>
   </div>
 
@@ -30,7 +30,10 @@
   <div class="section-title">Leady</div>
   <div class="filter-search-row">
     <div class="filter-bar" id="filter-bar"></div>
-    <input type="text" id="lead-search" class="search-input" placeholder="🔍 Szukaj firmy lub telefonu...">
+    <div class="search-wrap">
+      <input type="text" id="lead-search" class="search-input" placeholder="🔍 Szukaj firmy lub telefonu...">
+      <button type="button" class="search-clear hidden" id="lead-search-clear" title="Wyczyść szukanie">✕</button>
+    </div>
     <button type="button" class="btn primary" id="add-lead-btn">+ Dodaj lead</button>
   </div>
 </div>

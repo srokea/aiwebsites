@@ -1,5 +1,6 @@
 const express = require("express");
 const db = require("../db");
+const { getCallerNames } = require("../callers");
 
 const router = express.Router();
 const LIMIT = 12;
@@ -44,23 +45,30 @@ function attachNotes(items) {
 // ze wszystkich nisz naraz. Przeterminowane tez sie pokazuja (na gorze, jako najpilniejsze) -
 // to zamierzone, nie filtrujemy "tylko przyszlosc".
 router.get("/", (req, res) => {
+  // Switch "Moje" na dashboardzie (patrz index.js) - zawezenie wszystkich 4 list do jednego
+  // dzwoniacego. Walidujemy wzgledem zywych kont, zeby dowolny tekst w query nie trafil
+  // niesparametryzowany do zapytania (choc i tak leci przez placeholder, to dodatkowa siatka).
+  const caller = req.query.caller && getCallerNames().includes(String(req.query.caller)) ? String(req.query.caller) : null;
+  const callerClause = caller ? "AND leads.caller = ?" : "";
+  const callerParams = caller ? [caller] : [];
+
   const meetsRaw = db
     .prepare(
       `SELECT leads.id, leads.company_name, leads.city, leads.caller, leads.google_term AS when_at,
               leads.site_progress, niches.slug AS niche_slug, niches.name AS niche_name
        FROM leads JOIN niches ON niches.id = leads.niche_id
-       WHERE leads.google_term <> ''`
+       WHERE leads.google_term <> '' ${callerClause}`
     )
-    .all();
+    .all(...callerParams);
 
   const callbacksRaw = db
     .prepare(
       `SELECT leads.id, leads.company_name, leads.city, leads.caller, leads.callback_when AS when_at,
               niches.slug AS niche_slug, niches.name AS niche_name
        FROM leads JOIN niches ON niches.id = leads.niche_id
-       WHERE leads.callback_when <> ''`
+       WHERE leads.callback_when <> '' ${callerClause}`
     )
-    .all();
+    .all(...callerParams);
 
   // #10 "SMS do wyslania": Meety zaplanowane na JUTRO - dzien porownujemy w czasie lokalnym,
   // bo google_term to lokalna data-godzina wpisana przez czlowieka, a nie znacznik UTC.
@@ -69,9 +77,9 @@ router.get("/", (req, res) => {
       `SELECT leads.id, leads.company_name, leads.city, leads.caller, leads.google_term AS when_at,
               niches.slug AS niche_slug, niches.name AS niche_name
        FROM leads JOIN niches ON niches.id = leads.niche_id
-       WHERE substr(leads.google_term, 1, 10) = date('now', 'localtime', '+1 day')`
+       WHERE substr(leads.google_term, 1, 10) = date('now', 'localtime', '+1 day') ${callerClause}`
     )
-    .all();
+    .all(...callerParams);
 
   // #10 "Closing": etap miedzy odbytym Meetem a podpisem. Zamiast terminu pokazujemy date
   // ostatniej zmiany leada - dzieki temu na gorze listy (sortowanie rosnaco po dacie) laduja
@@ -82,9 +90,9 @@ router.get("/", (req, res) => {
               date(leads.updated_at, 'localtime') AS when_at,
               niches.slug AS niche_slug, niches.name AS niche_name
        FROM leads JOIN niches ON niches.id = leads.niche_id
-       WHERE leads.interested = 'closing'`
+       WHERE leads.interested = 'closing' ${callerClause}`
     )
-    .all();
+    .all(...callerParams);
 
   const meets = onlyValidDates(meetsRaw);
   const callbacks = onlyValidDates(callbacksRaw);

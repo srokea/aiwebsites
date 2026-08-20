@@ -37,9 +37,22 @@ router.get("/", (req, res) => {
     .all();
   const countByValue = new Map(interestedRows.map((r) => [r.interested, r.c]));
 
+  // "Google Meet" w tym zbiorczym rozkladzie liczy sie INACZEJ niz reszta statusow: nie po tym,
+  // co jest wpisane w "Zainteresowany" (bo tam zostaje na zawsze, nawet po odbytym i dawno
+  // zapomnianym spotkaniu), tylko po realnie NADCHODZACYCH terminach (google_term w przyszlosci) -
+  // dokladnie ta sama definicja co kafelek "Meety przed nami" w statystykach osoby (patrz
+  // /caller/:name ponizej), zeby suma osob zawsze zgadzala sie z liczba na dashboardzie.
+  const googleMeetAhead = db
+    .prepare(
+      `SELECT COUNT(*) c FROM leads
+       WHERE google_term <> '' AND google_term >= strftime('%Y-%m-%dT%H:%M', 'now', 'localtime')`
+    )
+    .get().c;
+
   const interestedBreakdown = INTERESTED_STATS_ORDER.map((value) => {
     const opt = INTERESTED_OPTIONS.find((o) => o.value === value);
-    return { ...opt, count: countByValue.get(value) || 0 };
+    const count = value === "google_meet" ? googleMeetAhead : countByValue.get(value) || 0;
+    return { ...opt, count };
   });
 
   const byCallerRows = db
