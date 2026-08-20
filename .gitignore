@@ -17,10 +17,15 @@ build/
 # kopie zapasowe schematow rozmow (tworzone przy edycji z poziomu appki)
 *.js.bak
 
-# baza Cold Calls: sam plik .db jest w repo (na zyczenie - klonuje sie razem z appka),
-# ale pliki tymczasowe WAL/SHM to stan otwartej bazy - te nigdy
+# baza Cold Calls: NIE w repo (2026-08-20 - byla tu, ale "git reset"/"git pull" na zywej
+# bazie w trybie WAL nadpisal produkcyjne dane i pouciekaly hasla/leady/avatar - patrz
+# server/backup.js, ktory teraz robi wlasne, bezpieczne kopie do data/backups/)
+webapp/data/coldcall.db
 *.db-shm
 *.db-wal
+
+# automatyczne kopie zapasowe bazy (patrz server/backup.js) - tworzone lokalnie, nie w repo
+webapp/data/backups/
 
 # Impeccable cache (stan sesji, nie kod)
 .impeccable/hook.cache.json

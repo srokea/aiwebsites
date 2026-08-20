@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 
 require("./db"); // inicjalizuje baze i tworzy tabele przy starcie
 const { requireAuth } = require("./auth");
+const { scheduleBackups } = require("./backup");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -56,3 +57,8 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Cold call tracker dziala na http://localhost:${PORT}`);
 });
+
+// baza produkcyjna zyje TYLKO na dysku serwera (nigdy w gicie, patrz .gitignore + komentarz
+// w backup.js) - to jej jedyna siatka bezpieczenstwa. Backup od razu przy starcie i potem co
+// 3h - baza jest mala, wiec czesty backup nic nie kosztuje, a duzo daje przy kolejnej wpadce.
+scheduleBackups(3 * 60 * 60 * 1000);
