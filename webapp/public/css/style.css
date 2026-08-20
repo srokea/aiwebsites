@@ -281,9 +281,9 @@ a { color: inherit; text-decoration: none; }
 .upcoming-item:hover { opacity: 0.75; }
 /* im blizej terminu, tym mocniejsza zolta poswiata calego wiersza (ten sam odcien co badge
    "za 2 dni", tylko skalowany nasyceniem) - przeterminowane/dalsze niz za 2 dni bez zmian */
-.upcoming-item.r-d2 { background: rgba(212, 192, 80, 0.08); }
-.upcoming-item.r-d1 { background: rgba(212, 192, 80, 0.15); }
-.upcoming-item.r-due { background: rgba(212, 192, 80, 0.22); }
+.upcoming-item.r-d2 { background: rgba(212, 192, 80, 0.045); }
+.upcoming-item.r-d1 { background: rgba(212, 192, 80, 0.08); }
+.upcoming-item.r-due { background: rgba(212, 192, 80, 0.12); }
 .upcoming-who { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .upcoming-name { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
 .upcoming-niche { font-size: 11px; color: var(--muted-soft); }
