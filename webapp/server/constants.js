@@ -51,10 +51,13 @@ const PLATFORM_META = {
   youtube: { label: "YT", name: "YouTube", color: "#FF3B3B" },
 };
 
+// label = skrocony tekst pokazywany w kolumnie/dropdownie "Strona" (zeby zajmowala mniej
+// miejsca w tabeli); value zostaje pelnym slowem "Tak"/"Nie"/"Booksy" - to na nim opiera sie
+// reszta logiki (STATS_ELIGIBLE_SQL, tag_booksy przy wyborze Booksy itd.), wiec go NIE skracamy.
 const WEBSITE_STATUS_OPTIONS = [
-  { value: "Tak", label: "Tak", color: "#5cb85c" },
-  { value: "Booksy", label: "Booksy", color: "#17BEBB" },
-  { value: "Nie", label: "Nie", color: "#e06050" },
+  { value: "Tak", label: "y", color: "#5cb85c" },
+  { value: "Booksy", label: "b", color: "#17BEBB" },
+  { value: "Nie", label: "n", color: "#e06050" },
 ];
 
 // Jakosc leada: dropdown 0-6 zamiast wolnego tekstu. 0 = tragiczny lead - traktowany w
