@@ -3,7 +3,6 @@ const db = require("../db");
 const { getCallerNames } = require("../callers");
 
 const router = express.Router();
-const LIMIT = 12;
 
 // google_term jest typu datetime-local ("YYYY-MM-DDTHH:mm"), callback_when typu date
 // ("YYYY-MM-DD") - to jedyne formaty jakie moglo tam zapisac UI. Stare importy czasem
@@ -12,14 +11,17 @@ const LIMIT = 12;
 // isNaN nie wystarczy - wymagamy wprost jednego z dwóch prawdziwych formatow.
 const DATE_FORMAT = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$/;
 
-// Zwraca { items, total }: items przyciete do LIMIT, total = wszystkie zaplanowane
-// (z poprawna data) - do licznika "(N)" w naglowku sekcji na stronie glownej.
+// Zwraca { items, total } - oba pola to ta sama pelna lista (bez ucinania). Kiedys items bylo
+// przyciete do 12, a total pokazywalo prawdziwa liczbe w nagłówku "(N)" - myliło to, bo licznik
+// obiecywal wiecej niz bylo faktycznie widac. Panel ma juz wlasny scroll (.upcoming-list w
+// style.css), wiec nic nie stoi na przeszkodzie, zeby po prostu pokazac wszystko.
 function onlyValidDates(rows) {
   const valid = rows
     .filter((r) => DATE_FORMAT.test(r.when_at))
     .map((r) => ({ ...r, _when: new Date(r.when_at) }))
     .sort((a, b) => a._when - b._when);
-  return { items: attachNotes(valid.slice(0, LIMIT).map(({ _when, ...r }) => r)), total: valid.length };
+  const items = attachNotes(valid.map(({ _when, ...r }) => r));
+  return { items, total: items.length };
 }
 
 // Dokleja notatki leada (najnowsza pierwsza) do kazdej pozycji - dashboard pokazuje przy nich
