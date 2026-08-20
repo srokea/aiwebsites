@@ -361,7 +361,22 @@ async function copyText(text) {
   return ok;
 }
 
-// #14 - klik w kolko przestawia etap budowy strony na kolejny (po ostatnim wraca na "Wcale")
+// Odmalowuje sam guzik po zmianie etapu (bez przeladowania calej listy) - patrz uzasadnienie
+// przy wywolaniu ponizej.
+function applySiteProgressStage(btn, stage) {
+  const circumference = 2 * Math.PI * 7;
+  btn.dataset.progressStage = stage.value;
+  btn.title = `Strona: ${stage.label} — kliknij, żeby zmienić`;
+  const ring = btn.querySelector("svg circle:last-child");
+  ring.setAttribute("stroke", stage.color);
+  ring.setAttribute("stroke-dashoffset", circumference * (1 - stage.pct / 100));
+}
+
+// #14 - klik w kolko przestawia etap budowy strony na kolejny (po ostatnim wraca na "Wcale").
+// Odswiezamy TYLKO ten guzik (nie cale loadUpcoming()) - kazda z 4 list ma wlasny wewnetrzny
+// scroll (.upcoming-list, max-height + overflow-y), a panel.innerHTML = ... w loadUpcoming()
+// buduje te listy od zera, wiec kazdy taki reload zerowal scrollTop i "wyrzucal" na gore listy
+// kogokolwiek, kto byl przescrollowany nizej - dokladnie ten bug, ktory to omija.
 document.getElementById("upcoming-panel").addEventListener("click", async (e) => {
   const btn = e.target.closest(".site-progress");
   if (!btn) return;
@@ -374,7 +389,7 @@ document.getElementById("upcoming-panel").addEventListener("click", async (e) =>
   const next = stages[(idx + 1) % stages.length];
   try {
     await api.patch(`/api/leads/${btn.dataset.progressLead}`, { site_progress: next.value });
-    await loadUpcoming();
+    applySiteProgressStage(btn, next);
   } catch (err) {
     alert("Nie udalo sie zapisac postepu strony: " + err.message);
   }
