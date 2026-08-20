@@ -176,7 +176,6 @@ async function render() {
   document.title = `${lead.company_name} — scheme rozmowy`;
   document.getElementById("script-title").textContent = script.title;
   document.getElementById("script-subtitle").textContent = script.subtitle;
-  document.getElementById("sms-note").textContent = script.smsNote;
 
   const activeTags = ["instagram", "facebook", "booksy", "youtube"].filter((t) => lead[`tag_${t}`]);
   const phoneHref = telHref(lead.phone);

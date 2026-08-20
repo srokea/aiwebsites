@@ -1411,8 +1411,6 @@ body.edit-mode .script-block[data-src]:hover { box-shadow: inset 0 0 0 1px rgba(
 
 em { color: var(--blue); font-style: normal; }
 
-.sms-note { background: #111118; border: 1px solid #1a1a30; border-radius: 8px; padding: 14px 16px; margin-bottom: 24px; font-size: 13px; color: #8898c0; }
-
 .lead-context {
   background: #161616;
   border: 1px solid var(--border);

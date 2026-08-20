@@ -132,7 +132,6 @@ function buildScript(lead, niche) {
   return {
     title: `Cold Call – ${niche?.name || "Scheme rozmowy"}`,
     subtitle: `Scheme rozmowy · Hook oparty na ${p.name}`,
-    smsNote: "⏳ Jeśli nie odbiorą – czekaj 30 min – SMS",
     sections,
     differences: [],
   };
