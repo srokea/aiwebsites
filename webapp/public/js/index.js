@@ -143,7 +143,7 @@ function renderRevenuePanel() {
     <div class="revenue-row">
       <div class="revenue-item">
         <div class="revenue-num" data-count="${r.clients}">0</div>
-        <div class="revenue-lbl">Klientów (Dopięte)</div>
+        <div class="revenue-lbl">Klientów</div>
       </div>
       <div class="revenue-item">
         <div class="revenue-num" data-count="${r.oneTime}" data-money>0 zł</div>
@@ -155,7 +155,7 @@ function renderRevenuePanel() {
       </div>
       <div class="revenue-item">
         <div class="revenue-num" data-count="${r.net}" data-money>0 zł</div>
-        <div class="revenue-lbl">Netto łącznie (jednorazowe + miesięczne − koszty)</div>
+        <div class="revenue-lbl">Już zarobione na czysto</div>
       </div>
     </div>
     <div class="revenue-ticker-row">
