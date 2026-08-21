@@ -83,10 +83,13 @@
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
   }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   :focus-visible { outline: 2px solid #725B2A; outline-offset: 3px; border-radius: 3px; }
   ::selection { background: #C09C55; color: #251E18; }
+
+  /* Scrollspy: link aktywnej sekcji w nawigacji. */
+  .nav-link.is-active { color: #725B2A; font-weight: 600; }
 
   /* Zlocony napis: kazdy stop gradientu ma min. 4:1 na jasnym panelu,
      wiec metaliczny polysk nie odbywa sie kosztem czytelnosci. */
@@ -136,16 +139,38 @@
 
 <!-- ══ NAVBAR ══ -->
 <header class="sticky top-0 z-50 border-b border-golddeep/25 bg-bg/90 backdrop-blur-md">
-  <div class="mx-auto flex max-w-wide items-center justify-between gap-3 px-5 py-3 sm:px-8">
-    <a href="#top" class="flex flex-col leading-none">
-      <span class="gold-script text-[1.75rem] leading-[1.15] sm:text-[2rem]">Metamorfoza</span>
+  <div class="mx-auto flex max-w-wide items-center gap-3 px-5 py-3 sm:px-8">
+    <a href="#top" class="flex shrink-0 flex-col leading-none">
+      <span class="gold-script text-[1.75rem] leading-[1.4] sm:text-[2rem]">Metamorfoza</span>
       <span class="mt-0.5 hidden text-[0.63rem] uppercase tracking-[0.22em] text-inkmuted sm:block">Gabinet Kosmetyki Profesjonalnej</span>
     </a>
-    <a href="tel:+48885456358" class="inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full bg-ink px-4 py-2.5 text-sm font-semibold tracking-wide text-panel transition hover:bg-golddeep motion-reduce:transition-none sm:px-6">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" class="h-4 w-4" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
-      <span class="hidden sm:inline">885 456 358</span>
-      <span class="sm:hidden">Zadzwoń</span>
-    </a>
+
+    <div class="flex-1" aria-hidden="true"></div>
+
+    <nav class="hidden items-center gap-6 lg:flex" aria-label="Główne">
+      <a href="#uslugi" data-navlink class="nav-link inline-flex min-h-[44px] items-center text-sm font-medium tracking-wide text-inkmuted transition hover:text-golddeep">Usługi</a>
+      <a href="#opinie" data-navlink class="nav-link inline-flex min-h-[44px] items-center text-sm font-medium tracking-wide text-inkmuted transition hover:text-golddeep">Opinie</a>
+      <a href="#galeria" data-navlink class="nav-link inline-flex min-h-[44px] items-center text-sm font-medium tracking-wide text-inkmuted transition hover:text-golddeep">Zdjęcia</a>
+      <a href="#kontakt" data-navlink class="nav-link inline-flex min-h-[44px] items-center text-sm font-medium tracking-wide text-inkmuted transition hover:text-golddeep">Kontakt</a>
+    </nav>
+
+    <div class="flex-1" aria-hidden="true"></div>
+
+    <div class="flex shrink-0 items-center gap-2">
+      <a href="https://www.instagram.com/metamorfoza.nat.lash/" target="_blank" rel="noopener" aria-label="Instagram"
+         class="hidden h-11 w-11 shrink-0 items-center justify-center rounded-full border border-golddeep/35 text-golddeep transition hover:bg-golddeep/10 motion-reduce:transition-none sm:inline-flex">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.facebook.com/p/Metamorfoza-Gabinet-Kosmetyki-Profesjonalnej-Natalia-J%C4%99drzejczyk-100077356554824/" target="_blank" rel="noopener" aria-label="Facebook"
+         class="hidden h-11 w-11 shrink-0 items-center justify-center rounded-full border border-golddeep/35 text-golddeep transition hover:bg-golddeep/10 motion-reduce:transition-none sm:inline-flex">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg>
+      </a>
+      <a href="tel:+48885456358" class="inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full bg-ink px-4 py-2.5 text-sm font-semibold tracking-wide text-panel transition hover:bg-golddeep motion-reduce:transition-none sm:px-6">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" class="h-4 w-4" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
+        <span class="hidden sm:inline">885 456 358</span>
+        <span class="sm:hidden">Zadzwoń</span>
+      </a>
+    </div>
   </div>
 </header>
 
@@ -160,7 +185,7 @@
 
     <!-- Panel jak mrozone szklo szyldu w gabinecie -->
     <div class="mt-6 w-full rounded-[2px] border border-golddeep/30 bg-panel/85 px-5 py-9 shadow-[0_1px_0_rgba(250,248,245,0.9)_inset] backdrop-blur-[2px] sm:px-12 sm:py-12">
-      <h1 class="gold-script text-[3.4rem] leading-[1.05] sm:text-[5.5rem]">Metamorfoza</h1>
+      <h1 class="gold-script py-1 text-[3.4rem] leading-[1.35] sm:text-[5.5rem]">Metamorfoza</h1>
       <p class="mt-4 font-display text-base uppercase tracking-[0.2em] text-ink sm:text-xl sm:tracking-[0.26em]">Gabinet Kosmetyki Profesjonalnej</p>
       <div class="ornament mt-5"><span class="text-xs" aria-hidden="true">✦</span></div>
       <p class="mt-4 font-display text-lg text-inkmuted sm:text-xl">Natalia Jędrzejczyk</p>
@@ -309,66 +334,68 @@
       <p class="mt-4 text-sm text-inkmuted">Google 5,0 z 2 opinii · Facebook 2 rekomendacje</p>
     </div>
 
-    <div class="mt-12 grid gap-x-12 gap-y-10 sm:grid-cols-2">
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 sm:gap-8">
 
-      <blockquote class="border-t border-golddeep/35 pt-6">
-        <div class="flex items-center gap-1 text-golddeep" aria-label="Ocena 5 na 5">
-          <svg viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5" aria-hidden="true"><path d="M10 1.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>
-          <svg viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5" aria-hidden="true"><path d="M10 1.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>
-          <svg viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5" aria-hidden="true"><path d="M10 1.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>
-          <svg viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5" aria-hidden="true"><path d="M10 1.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>
-          <svg viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5" aria-hidden="true"><path d="M10 1.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>
+      <div class="rounded-[2px] border border-golddeep/30 bg-panel/85 p-6 shadow-[0_1px_0_rgba(250,248,245,0.9)_inset] sm:p-8">
+        <div class="flex items-center gap-3">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface text-golddeep" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="currentColor" class="h-5 w-5">
+              <path d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/>
+              <path d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/>
+              <path d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z"/>
+              <path d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/>
+            </svg>
+          </span>
+          <div>
+            <p class="text-sm font-semibold text-ink">Google</p>
+            <p class="text-xs text-inkmuted">2 opinie</p>
+          </div>
+          <div class="ml-auto flex items-center gap-1 text-golddeep" aria-label="Ocena 5 na 5">
+            <svg viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5" aria-hidden="true"><path d="M10 1.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5" aria-hidden="true"><path d="M10 1.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5" aria-hidden="true"><path d="M10 1.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5" aria-hidden="true"><path d="M10 1.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5" aria-hidden="true"><path d="M10 1.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>
+          </div>
         </div>
-        <p class="mt-4 font-display text-xl leading-relaxed text-ink sm:text-[1.4rem]">
-          „Z czystym sumieniem polecam 💗 rzęsy oraz zabieg na twarz zrobione na najwyższym poziomie, z dużą starannością. Klient czuje się zaopiekowany ❤️”
-        </p>
-        <footer class="mt-4 text-sm text-inkmuted">
-          <span class="font-semibold text-ink">Kinga Staszczyk</span> · Google, lokalny przewodnik
-        </footer>
-        <p class="mt-3 border-l-2 border-golddeep/40 pl-4 text-sm italic text-inkmuted">
-          Odpowiedź Natalii: „Dziękujemy bardzo 🩷”
-        </p>
-      </blockquote>
+        <blockquote class="mt-6 border-t border-golddeep/35 pt-6">
+          <p class="font-display text-xl leading-relaxed text-ink sm:text-[1.4rem]">
+            „Z czystym sumieniem polecam rzęsy oraz zabieg na twarz zrobione na najwyższym poziomie, z dużą starannością. Klient czuje się zaopiekowany”
+          </p>
+          <footer class="mt-4 text-sm text-inkmuted">
+            <span class="font-semibold text-ink">Kinga Staszczyk</span> · Google, lokalny przewodnik
+          </footer>
+        </blockquote>
+      </div>
 
-      <blockquote class="border-t border-golddeep/35 pt-6">
-        <div class="flex items-center gap-1 text-golddeep" aria-label="Ocena 5 na 5">
-          <svg viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5" aria-hidden="true"><path d="M10 1.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>
-          <svg viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5" aria-hidden="true"><path d="M10 1.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>
-          <svg viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5" aria-hidden="true"><path d="M10 1.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>
-          <svg viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5" aria-hidden="true"><path d="M10 1.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>
-          <svg viewBox="0 0 20 20" fill="currentColor" class="h-3.5 w-3.5" aria-hidden="true"><path d="M10 1.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>
+      <div class="rounded-[2px] border border-golddeep/30 bg-panel/85 p-6 shadow-[0_1px_0_rgba(250,248,245,0.9)_inset] sm:p-8">
+        <div class="flex items-center gap-3">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface text-golddeep" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg>
+          </span>
+          <div>
+            <p class="text-sm font-semibold text-ink">Facebook</p>
+            <p class="text-xs text-inkmuted">2 rekomendacje</p>
+          </div>
+          <p class="ml-auto text-[0.62rem] uppercase tracking-[0.2em] text-golddeep">Poleca</p>
         </div>
-        <p class="mt-4 font-display text-xl leading-relaxed text-ink sm:text-[1.4rem]">
-          „Bardzo polecam. Pani robi przepiękne brwi. 🩷”
-        </p>
-        <footer class="mt-4 text-sm text-inkmuted">
-          <span class="font-semibold text-ink">Klaudia Dąbrowska</span> · Google
-        </footer>
-        <p class="mt-3 border-l-2 border-golddeep/40 pl-4 text-sm italic text-inkmuted">
-          Odpowiedź Natalii: „Dziękujemy 🩷”
-        </p>
-      </blockquote>
+        <blockquote class="mt-6 border-t border-golddeep/35 pt-6">
+          <p class="font-display text-xl leading-relaxed text-ink sm:text-[1.4rem]">
+            „Najlepszy salon, w którym miałam przyjemność być, korzystałam z zabiegów na twarz oraz uzupełniania rzęs. Stylistka z ogromną wiedzą oraz doświadczeniem. Pełen profesjonalizm, indywidualne podejście do klienta oraz miła obsługa, nic dodać, nic ująć. Gorąco polecam salon kosmetyczny Metamorfoza Gabinet Kosmetyki Profesjonalnej”
+          </p>
+          <footer class="mt-4 text-sm text-inkmuted">
+            <span class="font-semibold text-ink">Milena Sadowska</span> · Facebook
+          </footer>
+        </blockquote>
+      </div>
 
-      <blockquote class="border-t border-golddeep/35 pt-6">
-        <p class="text-[0.62rem] uppercase tracking-[0.28em] text-golddeep">Rekomendacja na Facebooku</p>
-        <p class="mt-4 font-display text-xl leading-relaxed text-ink sm:text-[1.4rem]">
-          „Najlepszy salon, w którym miałam przyjemność być 😊 korzystałam z zabiegów na twarz oraz uzupełniania rzęs. Stylistka z ogromną wiedzą oraz doświadczeniem. Pełen profesjonalizm, indywidualne podejście do klienta oraz miła obsługa, nic dodać, nic ująć. Gorąco polecam salon kosmetyczny Metamorfoza Gabinet Kosmetyki Profesjonalnej 😁❤️”
-        </p>
-        <footer class="mt-4 text-sm text-inkmuted">
-          <span class="font-semibold text-ink">Milena Sadowska</span> · Facebook
-        </footer>
-      </blockquote>
+    </div>
 
-      <blockquote class="border-t border-golddeep/35 pt-6">
-        <p class="text-[0.62rem] uppercase tracking-[0.28em] text-golddeep">Rekomendacja na Facebooku</p>
-        <p class="mt-4 font-display text-xl leading-relaxed text-ink sm:text-[1.4rem]">
-          „Polecam Panią Natalię i dziękuje za piękne rzęski 🤍”
-        </p>
-        <footer class="mt-4 text-sm text-inkmuted">
-          <span class="font-semibold text-ink">Wiktoria Nowak</span> · Facebook
-        </footer>
-      </blockquote>
-
+    <div class="mt-10 text-center">
+      <p class="mb-4 text-sm text-inkmuted">Twoje opinie pozwalają nam się rozwijać.</p>
+      <a href="https://www.google.com/maps/search/?api=1&query=Metamorfoza%20Gabinet%20Kosmetyki%20Profesjonalnej%20Mostowa%202A%20Przedb%C3%B3rz" target="_blank" rel="noopener" class="inline-flex min-h-[52px] items-center justify-center rounded-full bg-ink px-8 text-sm font-semibold uppercase tracking-[0.14em] text-panel transition hover:bg-golddeep motion-reduce:transition-none">
+        Zostaw opinię
+      </a>
     </div>
   </div>
 </section>
@@ -404,6 +431,10 @@
       <div class="flex aspect-square items-center justify-center rounded-2xl border border-dashed border-golddeep/45 bg-bg/70 text-inkmuted" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" class="h-7 w-7 text-golddeep/70"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.5"/><path d="M21 16l-5-5-4.5 4.5L9 13l-6 6"/></svg>
       </div>
+      <div class="col-span-2 flex aspect-[4/3] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-golddeep/45 bg-bg/70 p-4 text-center text-inkmuted lg:aspect-auto lg:min-h-[15rem]">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" class="h-8 w-8 text-golddeep/70" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.5"/><path d="M21 16l-5-5-4.5 4.5L9 13l-6 6"/></svg>
+        <span class="text-xs uppercase tracking-[0.2em]">Efekty zabiegów</span>
+      </div>
     </div>
 
     <div class="mt-8 text-center">
@@ -430,26 +461,26 @@
 
       <div>
         <h3 class="font-display text-xl tracking-[0.12em] text-ink">Godziny otwarcia</h3>
-        <dl class="mt-5 border-t border-border">
-          <div class="flex items-baseline justify-between gap-3 border-b border-border py-3">
+        <dl class="mt-5 border-t border-border" id="godziny">
+          <div data-dzien="1" class="flex items-baseline justify-between gap-3 border-b border-border py-3">
             <dt class="text-[0.97rem] text-inkmuted">Poniedziałek</dt><dd class="lining font-display text-lg text-ink">08:00 – 18:00</dd>
           </div>
-          <div class="flex items-baseline justify-between gap-3 border-b border-border py-3">
+          <div data-dzien="2" class="flex items-baseline justify-between gap-3 border-b border-border py-3">
             <dt class="text-[0.97rem] text-inkmuted">Wtorek</dt><dd class="lining font-display text-lg text-ink">08:00 – 18:00</dd>
           </div>
-          <div class="flex items-baseline justify-between gap-3 border-b border-border py-3">
+          <div data-dzien="3" class="flex items-baseline justify-between gap-3 border-b border-border py-3">
             <dt class="text-[0.97rem] text-inkmuted">Środa</dt><dd class="lining font-display text-lg text-ink">08:00 – 18:00</dd>
           </div>
-          <div class="flex items-baseline justify-between gap-3 border-b border-border py-3">
+          <div data-dzien="4" class="flex items-baseline justify-between gap-3 border-b border-border py-3">
             <dt class="text-[0.97rem] text-inkmuted">Czwartek</dt><dd class="lining font-display text-lg text-ink">08:00 – 18:00</dd>
           </div>
-          <div class="flex items-baseline justify-between gap-3 border-b border-border py-3">
+          <div data-dzien="5" class="flex items-baseline justify-between gap-3 border-b border-border py-3">
             <dt class="text-[0.97rem] text-inkmuted">Piątek</dt><dd class="lining font-display text-lg text-ink">08:00 – 18:00</dd>
           </div>
-          <div class="flex items-baseline justify-between gap-3 border-b border-border py-3">
+          <div data-dzien="6" class="flex items-baseline justify-between gap-3 border-b border-border py-3">
             <dt class="text-[0.97rem] text-inkmuted">Sobota</dt><dd class="lining font-display text-lg text-ink">07:00 – 14:00</dd>
           </div>
-          <div class="flex items-baseline justify-between gap-3 border-b border-border py-3">
+          <div data-dzien="0" class="flex items-baseline justify-between gap-3 border-b border-border py-3">
             <dt class="text-[0.97rem] text-inkmuted">Niedziela</dt><dd class="font-display text-lg text-inkmuted">Zamknięte</dd>
           </div>
         </dl>
@@ -471,7 +502,7 @@
         <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <a href="https://www.instagram.com/metamorfoza.nat.lash/" target="_blank" rel="noopener" class="inline-flex min-h-[48px] items-center gap-2.5 rounded-full border border-golddeep/45 px-6 text-sm font-semibold text-golddeep transition hover:bg-golddeep/10 motion-reduce:transition-none">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-            Instagram <span class="font-normal text-inkmuted">@metamorfoza.nat.lash</span>
+            Instagram
           </a>
           <a href="https://www.facebook.com/p/Metamorfoza-Gabinet-Kosmetyki-Profesjonalnej-Natalia-J%C4%99drzejczyk-100077356554824/" target="_blank" rel="noopener" class="inline-flex min-h-[48px] items-center gap-2.5 rounded-full border border-golddeep/45 px-6 text-sm font-semibold text-golddeep transition hover:bg-golddeep/10 motion-reduce:transition-none">
             <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg>
@@ -490,6 +521,7 @@
             class="mapframe block w-full"></iframe>
         </div>
         <a href="https://www.google.com/maps/dir/?api=1&destination=Mostowa%202A%2C%2097-570%20Przedb%C3%B3rz" target="_blank" rel="noopener" class="mt-4 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-ink px-6 text-sm font-semibold uppercase tracking-[0.14em] text-panel transition hover:bg-golddeep motion-reduce:transition-none sm:w-auto">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M12 2C7.86 2 4.5 5.36 4.5 9.5c0 5.5 6.4 11.4 7.06 12 .25.22.63.22.88 0 .66-.6 7.06-6.5 7.06-12C19.5 5.36 16.14 2 12 2z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
           Wyznacz trasę
         </a>
         <p class="mt-4 text-sm leading-relaxed text-inkmuted">
@@ -507,7 +539,7 @@
 <footer class="bg-ink text-panel">
   <div class="mx-auto max-w-wide px-5 py-14 sm:px-8">
     <div class="text-center">
-      <p class="font-script text-[2.6rem] leading-none text-gold sm:text-[3.2rem]">Metamorfoza</p>
+      <p class="font-script py-1 text-[2.6rem] leading-[1.4] text-gold sm:text-[3.2rem]">Metamorfoza</p>
       <p class="mt-3 text-[0.62rem] uppercase tracking-[0.26em] text-panel/70 sm:text-xs">Gabinet Kosmetyki Profesjonalnej · Natalia Jędrzejczyk</p>
     </div>
 
@@ -535,6 +567,43 @@
     </div>
   </div>
 </footer>
+
+<script>
+  // Podswietlenie dzisiejszego dnia w tabeli godzin.
+  (function () {
+    var wiersz = document.querySelector('#godziny [data-dzien="' + new Date().getDay() + '"]');
+    if (!wiersz) return;
+    wiersz.classList.add('rounded-lg', 'bg-surface', 'px-3');
+    var dt = wiersz.querySelector('dt');
+    dt.classList.remove('text-inkmuted');
+    dt.classList.add('font-semibold', 'text-ink');
+    dt.insertAdjacentHTML('beforeend', '<span class="ml-2 rounded-full bg-golddeep px-2 py-0.5 text-[.62rem] font-bold uppercase tracking-wider text-panel">dziś</span>');
+  })();
+
+  // Scrollspy: podswietla w nawigacji link sekcji aktualnie widocznej na ekranie.
+  (function () {
+    var navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+    if (!navLinks.length) return;
+    var sections = [];
+    navLinks.forEach(function (link) {
+      var sec = document.querySelector(link.getAttribute('href'));
+      if (sec) sections.push({ link: link, el: sec });
+    });
+    if (!sections.length) return;
+    var headerH = document.querySelector('header').offsetHeight || 72;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var match = sections.find(function (s) { return s.el === entry.target; });
+        if (!match) return;
+        if (entry.isIntersecting) {
+          navLinks.forEach(function (l) { l.classList.remove('is-active'); });
+          match.link.classList.add('is-active');
+        }
+      });
+    }, { rootMargin: '-' + (headerH + 4) + 'px 0px -60% 0px', threshold: 0 });
+    sections.forEach(function (s) { observer.observe(s.el); });
+  })();
+</script>
 
 </body>
 </html>
