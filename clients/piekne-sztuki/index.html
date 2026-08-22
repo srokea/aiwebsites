@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piękne Sztuki Stylizacja&Mani — Piotrków Trybunalski</title>
+<meta name="description" content="Profesjonalna stylizacja paznokci w Piotrkowie Trybunalskim. Manicure klasyczny, hybrydowy i żelowy, przedłużanie oraz rekonstrukcja paznokci. Jana Matejki 5. Doświadczenie od 2019 roku.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          /* Paleta z brief.md: grafit + złoto + kość słoniowa (Styl 04). */
+          char:     '#101014',  /* grafit — tło strony */
+          char2:    '#16161c',  /* panel / surface */
+          ivory:    '#F1ECE2',  /* tekst */
+          muted:    '#A39D93',  /* etykiety, tekst drugorzędny (7.1:1 na graficie) */
+          gold:     '#C9A35C',
+          goldlt:   '#E8CF9A',
+          golddeep: '#B28A44',
+          teal:     '#3FA9B4',  /* drobny akcent z tła zdjęcia efektu — tylko hover w galerii */
+        },
+        fontFamily: {
+          display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+          body:    ['"Jost"', 'system-ui', 'sans-serif'],
+        },
+        maxWidth: { content: '40rem', wide: '64rem' },
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO) — bez połączenia z fonts.googleapis.com. */
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 400 600; font-display: swap;
+    src: url('fonts/cormorant-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 400 600; font-display: swap;
+    src: url('fonts/cormorant-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 400 500; font-display: swap;
+    src: url('fonts/cormorant-italic-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 400 500; font-display: swap;
+    src: url('fonts/cormorant-italic-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Jost'; font-style: normal; font-weight: 300 500; font-display: swap;
+    src: url('fonts/jost-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Jost'; font-style: normal; font-weight: 300 500; font-display: swap;
+    src: url('fonts/jost-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { font-weight: 300; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+  ::selection { background: #C9A35C; color: #101014; }
+  /* Cormorant domyślnie daje cyfry nautyczne (oldstyle) — przez to telefon
+     "575 294 571" czytał się jak "57¹". Wymuszamy cyfry wersalikowe. */
+  body { font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+
+  /* Złoty gradient "shine" — TYLKO na dużym tekście display.
+     Najciemniejszy stop to #B28A44, żeby najsłabsza klatka animacji
+     nadal dawała ~6:1 kontrastu na graficie (WCAG AA). */
+  .gold-text {
+    background-image: linear-gradient(105deg, #B28A44, #E8CF9A 40%, #B28A44 70%, #E8CF9A);
+    background-size: 200% auto;
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent; -webkit-text-fill-color: transparent;
+    animation: shine 6s linear infinite;
+  }
+  @keyframes shine { to { background-position: 200% center; } }
+  @media (prefers-reduced-motion: reduce) { .gold-text { animation: none; } }
+
+  /* Ornament ✦ z cienkimi liniami po bokach. */
+  .rule { display: flex; align-items: center; justify-content: center; gap: 1rem; color: #C9A35C; }
+  .rule::before, .rule::after {
+    content: ""; width: clamp(2.5rem, 12vw, 4.5rem); border-top: 1px solid rgba(201,163,92,.45);
+  }
+
+  /* ── Nawigacja sekcji: cienka złota kreska rośnie pod aktywnym linkiem,
+     klasę .is-active przełącza IntersectionObserver w skrypcie na dole strony. ── */
+  .nav-link { position: relative; color: #A39D93; text-decoration: none; transition: color .25s ease; }
+  .nav-link:hover { color: #E8CF9A; }
+  .nav-link::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -.5rem; height: 1px;
+    background: #C9A35C; transform: scaleX(0); transition: transform .25s ease;
+  }
+  .nav-link.is-active { color: #E8CF9A; }
+  .nav-link.is-active::after { transform: scaleX(1); }
+  @media (prefers-reduced-motion: reduce) { .nav-link::after { transition: none; } }
+  /* Bez tego skoki do #kotwic chowałyby nagłówek sekcji pod sticky headerem. */
+  section[id] { scroll-margin-top: 76px; }
+  /* Nawigacja mieści się w jednym rzędzie na każdej realnej szerokości — overflow-x-auto
+     zostaje tylko jako cichy fallback na skrajnie wąskich ekranach, bez widocznego paska. */
+  header nav { scrollbar-width: none; -ms-overflow-style: none; }
+  header nav::-webkit-scrollbar { display: none; }
+
+  /* ── Hero ──────────────────────────────────────────────
+     Portret zostaje czytelny w górnej części kadru, a treść siada
+     na dole, gdzie gradient jest już prawie nieprzezroczysty. */
+  .hero { position: relative; isolation: isolate; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; z-index: -2;
+    background: url('photos/portret.jpg') center 10% / cover no-repeat;
+    filter: grayscale(30%) brightness(.7) contrast(1.06);
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background:
+      radial-gradient(ellipse 90% 72% at 50% 26%, rgba(16,16,20,0) 0%, rgba(16,16,20,.5) 100%),
+      linear-gradient(to bottom, rgba(16,16,20,.55) 0%, rgba(16,16,20,.12) 22%, rgba(16,16,20,.72) 46%, rgba(16,16,20,.95) 74%, #101014 100%);
+  }
+  .hero-copy { position: relative; isolation: isolate; text-shadow: 0 2px 20px rgba(0,0,0,.85); }
+  /* Miękka poświata TYLKO pod blokiem tekstu. Bez niej złoty wordmark trafiał
+     na rozjaśniony żakiet i schodził do ~2,3:1. Twarz wyżej zostaje nietknięta. */
+  .hero-copy::before {
+    content: ""; position: absolute; inset: -45% -30%; z-index: -1; pointer-events: none;
+    /* Elipsa musi zgasnąć DO ZERA wewnątrz swojego pudełka, inaczej krawędź
+       pudełka obcina ją w połowie krycia i widać twardą linię. */
+    background: radial-gradient(ellipse 46% 48% at 50% 50%,
+      rgba(16,16,20,.76) 0%, rgba(16,16,20,.70) 40%, rgba(16,16,20,.34) 72%, rgba(16,16,20,0) 100%);
+  }
+
+  /* ── Cennik: dot-leadery ── */
+  .leader {
+    flex: 1 1 auto; min-width: 1.25rem;
+    border-bottom: 1px dotted rgba(163,157,147,.45);
+    transform: translateY(-.4rem);
+  }
+  /* Widoczny placeholder ceny — celowo wygląda na miejsce do uzupełnienia. */
+  .price-todo {
+    display: inline-block; white-space: nowrap;
+    border: 1px dashed rgba(201,163,92,.6); padding: .1rem .7rem;
+    font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: #E8CF9A;
+  }
+
+  /* ── Galeria: cienkie złote ramki 3:4 ── */
+  .frame {
+    border: 1px solid rgba(201,163,92,.45); padding: 6px; background: #16161c;
+    transition: border-color .3s ease;
+  }
+  .frame > * { aspect-ratio: 3 / 4; width: 100%; }
+  .frame img { height: 100%; object-fit: cover; filter: grayscale(12%) contrast(1.03); transition: transform .5s ease, filter .5s ease; }
+  .frame:has(img):hover { border-color: rgba(63,169,180,.75); }
+  .frame:hover img { transform: scale(1.04); filter: grayscale(0%); }
+  /* Pusta ramka: ta sama geometria 3:4 co ramka ze zdjęciem, tylko linia przerywana.
+     Teraz to zawsze <button> (podgląd w lightboxie), stąd stan hover/focus. */
+  .frame-ph { border-style: dashed; border-color: rgba(201,163,92,.38); background: transparent; cursor: pointer; }
+  .frame-ph > div {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: .6rem; color: #A39D93;
+  }
+  .frame-ph:hover, .frame-ph:focus-visible { border-color: rgba(232,207,154,.7); }
+  .frame-ph:focus-visible { outline: 2px solid #E8CF9A; outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    .frame img, .frame { transition: none; }
+    .frame:hover img { transform: none; }
+  }
+
+  /* Mapa dopasowana do ciemnego motywu. */
+  .mapframe { filter: invert(92%) hue-rotate(180deg) grayscale(28%) contrast(.92) brightness(.95); }
+
+  /* Tailwind .grid ma tę samą specyficzność co domyślne [hidden]{display:none} przeglądarki
+     i wygrywa remis kolejnością w arkuszu — bez tego lightbox był widoczny od razu po wczytaniu. */
+  #lb[hidden] { display: none; }
+</style>
+</head>
+
+<body class="bg-char text-ivory font-body">
+
+<a href="#uslugi" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:bg-goldlt focus:px-4 focus:py-2 focus:text-char">Przejdź do treści</a>
+
+<!-- ── Navbar ───────────────────────────────────────────── -->
+<header class="sticky top-0 z-50 border-b border-gold/25 bg-char/85 backdrop-blur">
+  <div class="mx-auto flex max-w-wide items-center gap-1.5 px-2.5 py-3 sm:gap-4 sm:px-8">
+    <a href="#top" class="flex shrink-0 items-center gap-3" aria-label="Piękne Sztuki — początek strony">
+      <svg viewBox="0 0 64 68" class="h-9 w-auto shrink-0" role="img" aria-label="Logo Piękne Sztuki: serce z motywem oka">
+        <defs>
+          <linearGradient id="goldgrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#B28A44"/><stop offset=".5" stop-color="#E8CF9A"/><stop offset="1" stop-color="#C9A35C"/>
+          </linearGradient>
+        </defs>
+        <g fill="none" stroke="url(#goldgrad)" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M32 18.5C29.6 9.6 21.4 4.8 14.8 8.2 7.6 11.9 5.2 21.9 9.4 30.4 13.2 38.1 22.6 48.6 32 61 41.4 48.6 50.8 38.1 54.6 30.4 58.8 21.9 56.4 11.9 49.2 8.2 42.6 4.8 34.4 9.6 32 18.5Z" stroke-width="2.6"/>
+          <path d="M32 21.5V50" stroke-width="1.6" opacity=".75"/>
+          <path d="M21 27.5C24.4 22.4 39.6 22.4 43 27.5 39.6 32.6 24.4 32.6 21 27.5Z" stroke-width="2"/>
+          <circle cx="32" cy="41.6" r="6.2" stroke-width="2"/>
+        </g>
+        <circle cx="32" cy="27.5" r="3.1" fill="url(#goldgrad)"/>
+      </svg>
+      <span class="hidden font-display text-[1.15rem] uppercase leading-none tracking-[.34em] gold-text sm:inline">Piękne Sztuki</span>
+    </a>
+
+    <nav aria-label="Sekcje strony" class="min-w-0 flex-1 overflow-x-auto">
+      <div class="flex items-center justify-center gap-1.5 whitespace-nowrap text-[.64rem] uppercase tracking-[.05em] sm:gap-10 sm:text-[.72rem] sm:tracking-[.22em]">
+        <a href="#uslugi" data-nav-link class="nav-link shrink-0 py-1">Usługi</a>
+        <a href="#galeria" data-nav-link class="nav-link shrink-0 py-1">Galeria</a>
+        <a href="#opinie" data-nav-link class="nav-link shrink-0 py-1">Opinie</a>
+        <a href="#kontakt" data-nav-link class="nav-link shrink-0 py-1">Kontakt</a>
+      </div>
+    </nav>
+
+    <div class="flex shrink-0 items-center gap-1 sm:gap-3">
+      <a href="https://www.instagram.com/piekne_sztuki_/" target="_blank" rel="noopener" aria-label="Instagram Piękne Sztuki"
+         class="hidden shrink-0 items-center justify-center border border-gold/40 text-goldlt transition hover:bg-gold/12 sm:inline-flex sm:h-11 sm:w-11">
+        <svg viewBox="0 0 24 24" class="h-[15px] w-[15px]" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/pieknesztukistylizacjapaznokci?locale=pl_PL" target="_blank" rel="noopener" aria-label="Facebook Piękne Sztuki"
+         class="hidden shrink-0 items-center justify-center border border-gold/40 text-goldlt transition hover:bg-gold/12 sm:inline-flex sm:h-11 sm:w-11">
+        <svg viewBox="0 0 24 24" class="h-[15px] w-[15px]" fill="currentColor" aria-hidden="true">
+          <path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.63C16.4 3.56 15.42 3.5 14.28 3.5c-2.38 0-4.01 1.45-4.01 4.12V9.9H7.55V13h2.72v8z"/>
+        </svg>
+      </a>
+      <a href="tel:+48575294571" class="inline-flex min-h-[44px] shrink-0 items-center bg-gradient-to-r from-golddeep via-goldlt to-golddeep px-5 text-[.74rem] uppercase tracking-[.1em] text-char transition hover:brightness-110 sm:px-7 sm:text-[.82rem] sm:tracking-[.18em]">
+        575 294 571
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ── Hero ─────────────────────────────────────────────── -->
+<div id="top" class="hero grid min-h-[92svh] place-items-end px-5 pb-16 pt-24 text-center sm:pb-24">
+  <div class="hero-copy mx-auto max-w-content">
+    <p class="font-display text-[.85rem] uppercase tracking-[.42em] text-goldlt sm:text-[.95rem]">Piotrków Trybunalski</p>
+    <h1 class="mt-4 font-display font-medium leading-[.98] tracking-[.02em]">
+      <span class="block text-[clamp(2.9rem,13vw,6rem)] gold-text">Piękne Sztuki</span>
+      <em class="mt-2 block text-[clamp(1.5rem,6.4vw,2.7rem)] font-normal italic leading-tight">Stylizacja &amp; Mani</em>
+    </h1>
+    <p class="mt-6 text-[.82rem] uppercase tracking-[.28em] text-ivory/75 sm:text-[.88rem]">
+      Stylizacja paznokci od 2019 roku
+    </p>
+    <p class="mx-auto mt-5 max-w-[30rem] text-[1.02rem] leading-relaxed text-ivory/90">
+      Perfekcyjny, czysty manicure. Trwałe stylizacje. Rekonstrukcja paznokci obgryzionych i zniszczonych.
+    </p>
+    <div class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
+      <a href="tel:+48575294571" class="inline-flex min-h-[48px] w-full max-w-[22rem] items-center justify-center bg-gradient-to-r from-golddeep via-goldlt to-golddeep px-8 text-[.8rem] uppercase tracking-[.2em] text-char transition hover:brightness-110 sm:w-auto">
+        Zadzwoń i umów wizytę
+      </a>
+      <a href="#uslugi" class="inline-flex min-h-[48px] w-full max-w-[22rem] items-center justify-center border border-gold/60 px-8 text-[.8rem] uppercase tracking-[.2em] text-goldlt transition hover:bg-gold/12 sm:w-auto">
+        Cennik
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ── Usługi / cennik ──────────────────────────────────── -->
+<section id="uslugi" class="mx-auto max-w-wide px-5 py-20 sm:px-8 sm:py-28">
+  <p class="text-center text-[.72rem] uppercase tracking-[.34em] text-muted">Pracownia</p>
+  <h2 class="mt-3 text-center font-display text-[clamp(2rem,6vw,3.1rem)] font-medium leading-tight">
+    Usługi i <em class="italic">cennik</em>
+  </h2>
+  <div class="rule mt-5 mb-12">✦</div>
+
+  <div class="mx-auto max-w-content">
+    <div class="py-5 border-b border-gold/18">
+      <div class="flex items-baseline gap-3">
+        <h3 class="font-display text-[1.3rem] leading-none sm:text-[1.4rem]">Manicure klasyczny</h3>
+        <span class="leader"></span>
+        <span class="price-todo">•• zł</span>
+      </div>
+      <p class="mt-2 max-w-[26rem] text-[.82rem] leading-normal tracking-[.03em] text-muted">Opracowanie skórek, kształt, odżywienie płytki</p>
+    </div>
+    <div class="py-5 border-b border-gold/18">
+      <div class="flex items-baseline gap-3">
+        <h3 class="font-display text-[1.3rem] leading-none sm:text-[1.4rem]">Manicure hybrydowy</h3>
+        <span class="leader"></span>
+        <span class="price-todo">•• zł</span>
+      </div>
+      <p class="mt-2 max-w-[26rem] text-[.82rem] leading-normal tracking-[.03em] text-muted">Trwały kolor, który wytrzymuje codzienną pracę rąk</p>
+    </div>
+    <div class="py-5 border-b border-gold/18">
+      <div class="flex items-baseline gap-3">
+        <h3 class="font-display text-[1.3rem] leading-none sm:text-[1.4rem]">Manicure żelowy</h3>
+        <span class="leader"></span>
+        <span class="price-todo">•• zł</span>
+      </div>
+      <p class="mt-2 max-w-[26rem] text-[.82rem] leading-normal tracking-[.03em] text-muted">Wzmocnienie naturalnej płytki żelem</p>
+    </div>
+    <div class="py-5 border-b border-gold/18">
+      <div class="flex items-baseline gap-3">
+        <h3 class="font-display text-[1.3rem] leading-none sm:text-[1.4rem]">Przedłużanie paznokci</h3>
+        <span class="leader"></span>
+        <span class="price-todo">•• zł</span>
+      </div>
+      <p class="mt-2 max-w-[26rem] text-[.82rem] leading-normal tracking-[.03em] text-muted">Długość i kształt dobrane do dłoni, nie z szablonu</p>
+    </div>
+    <div class="py-5 border-b border-gold/18">
+      <div class="flex items-baseline gap-3">
+        <h3 class="font-display text-[1.3rem] leading-none sm:text-[1.4rem]">Rekonstrukcja paznokci</h3>
+        <span class="leader"></span>
+        <span class="price-todo">•• zł</span>
+      </div>
+      <p class="mt-2 max-w-[26rem] text-[.82rem] leading-normal tracking-[.03em] text-muted">Paznokcie obgryzione, uszkodzone mechanicznie, opadające</p>
+    </div>
+    <div class="py-5">
+      <div class="flex items-baseline gap-3">
+        <h3 class="font-display text-[1.3rem] leading-none sm:text-[1.4rem]">Uzupełnienie stylizacji</h3>
+        <span class="leader"></span>
+        <span class="price-todo">•• zł</span>
+      </div>
+      <p class="mt-2 max-w-[26rem] text-[.82rem] leading-normal tracking-[.03em] text-muted">Wizyta kontrolna co 3 do 4 tygodni</p>
+    </div>
+
+    <p class="mt-8 border border-dashed border-gold/40 px-5 py-4 text-center text-[.82rem] leading-relaxed text-muted">
+      Miejsce na ceny. Wpisujemy je od razu, gdy prześlesz aktualny cennik.
+    </p>
+
+    <!-- Rekonstrukcja jako specjalizacja, nie tylko pozycja w cenniku (patrz brief). -->
+    <div class="mt-14 border border-gold/30 bg-char2 px-6 py-9 text-center sm:px-10 sm:py-11">
+      <p class="text-[.7rem] uppercase tracking-[.34em] text-muted">Specjalizacja</p>
+      <h3 class="mt-3 font-display text-[clamp(1.7rem,5vw,2.4rem)] font-medium leading-tight gold-text">Rekonstrukcja</h3>
+      <p class="mx-auto mt-5 max-w-[30rem] text-[1.02rem] leading-relaxed text-ivory/90">
+        Obgryzione, złamane, opadające albo uszkodzone mechanicznie. Płytkę odbudowuję krok po kroku,
+        bez chodzenia na skróty. Czasem wystarczy jedna wizyta, czasem trzeba kilku. Zawsze mówię o tym wprost
+        na początku, żebyś wiedziała, czego się spodziewać.
+      </p>
+      <a href="tel:+48575294571" class="mt-7 inline-flex min-h-[48px] items-center border border-gold/60 px-8 text-[.8rem] uppercase tracking-[.2em] text-goldlt transition hover:bg-gold/12">
+        Zapytaj o rekonstrukcję
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Galeria ──────────────────────────────────────────── -->
+<section id="galeria" class="mx-auto max-w-wide px-5 pb-20 sm:px-8 sm:pb-28">
+  <p class="text-center text-[.72rem] uppercase tracking-[.34em] text-muted">Portfolio</p>
+  <h2 class="mt-3 text-center font-display text-[clamp(2rem,6vw,3.1rem)] font-medium leading-tight">
+    Efekt <em class="italic">w kadrze</em>
+  </h2>
+  <div class="rule mt-5 mb-12">✦</div>
+
+  <div class="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-4">
+    <button type="button" class="tile frame frame-ph" data-caption="Miejsce na zdjęcie 1" aria-label="Zobacz podgląd na pełnym ekranie: miejsce na zdjęcie 1 z 4">
+      <div>
+        <span class="text-gold">✦</span>
+        <span class="px-3 text-center text-[.68rem] uppercase leading-snug tracking-[.2em]">Miejsce na zdjęcie</span>
+      </div>
+    </button>
+    <button type="button" class="tile frame frame-ph" data-caption="Miejsce na zdjęcie 2" aria-label="Zobacz podgląd na pełnym ekranie: miejsce na zdjęcie 2 z 4">
+      <div>
+        <span class="text-gold">✦</span>
+        <span class="px-3 text-center text-[.68rem] uppercase leading-snug tracking-[.2em]">Miejsce na zdjęcie</span>
+      </div>
+    </button>
+    <button type="button" class="tile frame frame-ph" data-caption="Miejsce na zdjęcie 3" aria-label="Zobacz podgląd na pełnym ekranie: miejsce na zdjęcie 3 z 4">
+      <div>
+        <span class="text-gold">✦</span>
+        <span class="px-3 text-center text-[.68rem] uppercase leading-snug tracking-[.2em]">Miejsce na zdjęcie</span>
+      </div>
+    </button>
+    <button type="button" class="tile frame frame-ph" data-caption="Miejsce na zdjęcie 4" aria-label="Zobacz podgląd na pełnym ekranie: miejsce na zdjęcie 4 z 4">
+      <div>
+        <span class="text-gold">✦</span>
+        <span class="px-3 text-center text-[.68rem] uppercase leading-snug tracking-[.2em]">Miejsce na zdjęcie</span>
+      </div>
+    </button>
+  </div>
+
+  <p class="mx-auto mt-8 max-w-content border border-dashed border-gold/40 px-5 py-4 text-center text-[.82rem] leading-relaxed text-muted">
+    Puste ramki czekają na Twoje zdjęcia. Kliknij dowolną, żeby zobaczyć podgląd na pełnym ekranie — po wgraniu zdjęć zadziała tak samo.
+  </p>
+
+  <p class="mt-8 text-center text-[.8rem] uppercase tracking-[.2em]">
+    <a href="https://www.instagram.com/piekne_sztuki_/" target="_blank" rel="noopener" class="border-b border-gold/50 pb-1 text-goldlt transition hover:border-goldlt">
+      Więcej realizacji na Instagramie
+    </a>
+  </p>
+</section>
+
+<!-- ── Opinie ───────────────────────────────────────────── -->
+<section id="opinie" class="border-y border-gold/20 bg-char2">
+  <div class="mx-auto max-w-wide px-5 py-20 sm:px-8 sm:py-28">
+    <p class="text-center text-[.72rem] uppercase tracking-[.34em] text-muted">Słowo klientek</p>
+    <h2 class="mt-3 text-center font-display text-[clamp(2rem,6vw,3.1rem)] font-medium leading-tight">
+      Opinie
+    </h2>
+    <div class="rule mt-5 mb-12">✦</div>
+
+    <div class="mx-auto grid max-w-content gap-6 sm:grid-cols-2">
+      <div class="border border-gold/30 px-6 py-7 text-center">
+        <p class="text-[.7rem] uppercase tracking-[.28em] text-muted">Google</p>
+        <p class="mt-3 font-display text-[2.6rem] leading-none gold-text">4,8</p>
+        <p class="mt-2 text-[1.05rem] tracking-[.35em] text-gold" aria-hidden="true">★★★★★</p>
+        <p class="mt-2 text-[.82rem] tracking-[.08em] text-muted">na 5 &middot; 22 opinie</p>
+      </div>
+      <div class="border border-gold/30 px-6 py-7 text-center">
+        <p class="text-[.7rem] uppercase tracking-[.28em] text-muted">Facebook</p>
+        <p class="mt-3 font-display text-[2.6rem] leading-none gold-text">98%</p>
+        <p class="mt-2 text-[1.05rem] tracking-[.35em] text-gold" aria-hidden="true">★★★★★</p>
+        <p class="mt-2 text-[.82rem] tracking-[.08em] text-muted">poleca &middot; 38 opinii</p>
+      </div>
+    </div>
+
+    <!-- Wielki cytat centralny — hallmark Stylu 04. Reszta opinii jako mniejsze karty pod spodem. -->
+    <blockquote class="mx-auto mt-14 max-w-content text-center">
+      <p class="text-[1rem] tracking-[.32em] text-gold" aria-hidden="true">★★★★★</p>
+      <p class="mt-5 font-display text-[clamp(1.3rem,3.6vw,1.75rem)] italic leading-relaxed text-ivory/95">
+        „Ślicznie wykonane paznokcie! Zawsze dodany jakiś fajny detal, który sprawia, że pazurki są niepowtarzalne. Miła atmosfera. Będę zaglądać częściej.”
+      </p>
+      <footer class="mt-6 text-[.72rem] uppercase tracking-[.26em] text-muted">Karola S. &middot; Google</footer>
+    </blockquote>
+
+    <div class="mx-auto mt-14 grid max-w-wide gap-10 sm:grid-cols-2">
+      <div class="border-t border-gold/30 pt-6 text-center">
+        <p class="text-[.9rem] tracking-[.3em] text-gold" aria-hidden="true">★★★★★</p>
+        <p class="mt-4 font-display text-[1.15rem] italic leading-relaxed text-ivory/90">
+          „Zdecydowanie najlepsza stylistka paznokci! Przy moich ekstremalnie używanych dłoniach paznokcie mają naprawdę ciężkie życie, a mimo to po każdej wizycie wyglądają perfekcyjnie i są nie do zdarcia. Trwałość, precyzja i wykonanie na najwyższym poziomie. Widać ogromne doświadczenie i prawdziwy talent — z całego serca polecam Marzenkę!”
+        </p>
+        <footer class="mt-5 text-[.68rem] uppercase tracking-[.24em] text-muted">Sandra Purgal &middot; Facebook</footer>
+      </div>
+      <div class="border-t border-gold/30 pt-6 text-center">
+        <p class="text-[.9rem] tracking-[.3em] text-gold" aria-hidden="true">★★★★★</p>
+        <p class="mt-4 font-display text-[1.15rem] italic leading-relaxed text-ivory/90">
+          „Z całego serducha polecam — paznokcie wykonane perfekcyjnie, z doskonałą precyzją. Naprawdę widać ogromny bagaż wiedzy i doświadczenia, a przede wszystkim satysfakcję z wykonywanego zawodu. Po tygodniu noszenia wszystko nadal na swoim miejscu. Jestem zachwycona!”
+        </p>
+        <footer class="mt-5 text-[.68rem] uppercase tracking-[.24em] text-muted">Wiktoria Gomula &middot; Google</footer>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Godziny, adres, kontakt ──────────────────────────── -->
+<section id="kontakt" class="mx-auto max-w-wide px-5 py-20 sm:px-8 sm:py-28">
+  <p class="text-center text-[.72rem] uppercase tracking-[.34em] text-muted">Zapraszam</p>
+  <h2 class="mt-3 text-center font-display text-[clamp(2rem,6vw,3.1rem)] font-medium leading-tight">
+    Wizyta i <em class="italic">kontakt</em>
+  </h2>
+  <div class="rule mt-5 mb-12">✦</div>
+
+  <div class="grid gap-12 md:grid-cols-2 md:gap-14">
+
+    <!-- Godziny -->
+    <div>
+      <h3 class="text-[.72rem] uppercase tracking-[.3em] text-muted">Godziny otwarcia</h3>
+      <dl class="mt-5">
+        <div class="flex items-baseline gap-3 border-b border-gold/15 py-3">
+          <dt class="font-display text-[1.15rem]">Poniedziałek</dt><span class="leader"></span>
+          <dd class="font-display text-[1.15rem] text-goldlt">11:00 &ndash; 18:00</dd>
+        </div>
+        <div class="flex items-baseline gap-3 border-b border-gold/15 py-3">
+          <dt class="font-display text-[1.15rem]">Wtorek</dt><span class="leader"></span>
+          <dd class="font-display text-[1.15rem] text-goldlt">09:00 &ndash; 17:00</dd>
+        </div>
+        <div class="flex items-baseline gap-3 border-b border-gold/15 py-3">
+          <dt class="font-display text-[1.15rem]">Środa</dt><span class="leader"></span>
+          <dd class="font-display text-[1.15rem] text-goldlt">09:00 &ndash; 18:00</dd>
+        </div>
+        <div class="flex items-baseline gap-3 border-b border-gold/15 py-3">
+          <dt class="font-display text-[1.15rem]">Czwartek</dt><span class="leader"></span>
+          <dd class="font-display text-[1.15rem] text-goldlt">09:00 &ndash; 17:00</dd>
+        </div>
+        <div class="flex items-baseline gap-3 border-b border-gold/15 py-3">
+          <dt class="font-display text-[1.15rem]">Piątek</dt><span class="leader"></span>
+          <dd class="font-display text-[1.15rem] text-goldlt">09:00 &ndash; 17:00</dd>
+        </div>
+        <div class="flex items-baseline gap-3 border-b border-gold/15 py-3">
+          <dt class="font-display text-[1.15rem]">Sobota</dt><span class="leader"></span>
+          <dd class="font-display text-[1.15rem] text-goldlt">10:00 &ndash; 14:00</dd>
+        </div>
+        <div class="flex items-baseline gap-3 py-3 text-muted">
+          <dt class="font-display text-[1.15rem]">Niedziela</dt><span class="leader"></span>
+          <dd class="font-display text-[1.15rem]">Zamknięte</dd>
+        </div>
+      </dl>
+    </div>
+
+    <!-- Adres i kontakt -->
+    <div>
+      <h3 class="text-[.72rem] uppercase tracking-[.3em] text-muted">Adres</h3>
+      <p class="mt-4 font-display text-[1.5rem] leading-snug">
+        Jana Matejki 5<br>97-300 Piotrków Trybunalski
+      </p>
+      <p class="mt-3">
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Jana+Matejki+5,+97-300+Piotrk%C3%B3w+Trybunalski"
+           target="_blank" rel="noopener"
+           class="inline-flex min-h-[44px] items-center text-[.78rem] uppercase tracking-[.2em] text-goldlt underline underline-offset-[6px] decoration-gold/50 transition hover:decoration-goldlt">
+          Wyznacz trasę
+        </a>
+      </p>
+
+      <h3 class="mt-10 text-[.72rem] uppercase tracking-[.3em] text-muted">Telefon</h3>
+      <p class="mt-4">
+        <a href="tel:+48575294571" class="font-display text-[1.9rem] leading-none text-goldlt transition hover:text-ivory">575 294 571</a>
+      </p>
+      <p class="mt-3 text-[.9rem] text-muted">Terminy ustalamy telefonicznie. Bez rezerwacji online.</p>
+
+      <h3 class="mt-10 text-[.72rem] uppercase tracking-[.3em] text-muted">Social media</h3>
+      <div class="mt-4 flex flex-wrap gap-3">
+        <a href="https://www.instagram.com/piekne_sztuki_/" target="_blank" rel="noopener"
+           class="inline-flex min-h-[44px] items-center gap-2.5 border border-gold/50 px-5 text-[.78rem] uppercase tracking-[.18em] text-goldlt transition hover:bg-gold/12">
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
+          </svg>
+          Instagram
+        </a>
+        <a href="https://www.facebook.com/pieknesztukistylizacjapaznokci?locale=pl_PL" target="_blank" rel="noopener"
+           class="inline-flex min-h-[44px] items-center gap-2.5 border border-gold/50 px-5 text-[.78rem] uppercase tracking-[.18em] text-goldlt transition hover:bg-gold/12">
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
+            <path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.63C16.4 3.56 15.42 3.5 14.28 3.5c-2.38 0-4.01 1.45-4.01 4.12V9.9H7.55V13h2.72v8z"/>
+          </svg>
+          Facebook
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mapa -->
+  <div class="mt-14 border border-gold/30 p-1.5">
+    <iframe
+      title="Mapa dojazdu: Jana Matejki 5, Piotrków Trybunalski"
+      src="https://www.google.com/maps?q=Jana%20Matejki%205,%2097-300%20Piotrk%C3%B3w%20Trybunalski&hl=pl&z=16&output=embed"
+      class="mapframe block h-[300px] w-full sm:h-[380px]"
+      width="1200" height="380" style="border:0"
+      loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+</section>
+
+<!-- ── Stopka ───────────────────────────────────────────── -->
+<footer class="border-t border-gold/20 bg-char2">
+  <div class="mx-auto max-w-wide px-5 py-14 text-center sm:px-8">
+    <svg viewBox="0 0 64 68" class="mx-auto h-12 w-auto" role="img" aria-label="Logo Piękne Sztuki">
+      <g fill="none" stroke="url(#goldgrad)" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M32 18.5C29.6 9.6 21.4 4.8 14.8 8.2 7.6 11.9 5.2 21.9 9.4 30.4 13.2 38.1 22.6 48.6 32 61 41.4 48.6 50.8 38.1 54.6 30.4 58.8 21.9 56.4 11.9 49.2 8.2 42.6 4.8 34.4 9.6 32 18.5Z" stroke-width="2.6"/>
+        <path d="M32 21.5V50" stroke-width="1.6" opacity=".75"/>
+        <path d="M21 27.5C24.4 22.4 39.6 22.4 43 27.5 39.6 32.6 24.4 32.6 21 27.5Z" stroke-width="2"/>
+        <circle cx="32" cy="41.6" r="6.2" stroke-width="2"/>
+      </g>
+      <circle cx="32" cy="27.5" r="3.1" fill="url(#goldgrad)"/>
+    </svg>
+    <p class="mt-5 font-display text-[1.25rem] uppercase leading-none tracking-[.3em] gold-text">Piękne Sztuki</p>
+    <p class="mt-3 text-[.8rem] uppercase tracking-[.2em] text-muted">Stylizacja &amp; Mani &middot; od 2019</p>
+    <p class="mt-6 text-[.88rem] leading-relaxed text-muted">
+      Jana Matejki 5, 97-300 Piotrków Trybunalski<br>
+      <a href="tel:+48575294571" class="text-goldlt transition hover:text-ivory">575 294 571</a>
+    </p>
+    <p class="mt-7 text-[.78rem] text-muted">
+      <a href="privacy.html" class="underline underline-offset-4 decoration-gold/50 transition hover:text-ivory">Polityka prywatności</a>
+    </p>
+    <p class="mt-4 text-[.75rem] text-muted/80">&copy; 2026 Piękne Sztuki Stylizacja&amp;Mani</p>
+  </div>
+</footer>
+
+<!-- ── Lightbox galerii ─────────────────────────────────── -->
+<div id="lb" hidden class="fixed inset-0 z-[60] grid place-items-center bg-char/92 p-5 backdrop-blur-sm">
+  <div role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia z galerii" class="relative flex w-full max-w-sm flex-col items-center gap-6">
+    <button type="button" data-close aria-label="Zamknij podgląd"
+            class="absolute -top-14 right-0 inline-flex h-11 w-11 items-center justify-center border border-gold/40 text-goldlt transition hover:bg-gold/12">
+      <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+
+    <div class="frame frame-ph w-full" aria-hidden="true">
+      <div>
+        <span class="text-gold text-xl">✦</span>
+        <span id="lbCaption" class="px-3 text-center text-[.72rem] uppercase leading-snug tracking-[.2em]">Miejsce na zdjęcie</span>
+      </div>
+    </div>
+
+    <p id="lbCounter" class="text-[.72rem] uppercase tracking-[.28em] text-muted" aria-live="polite"></p>
+
+    <div class="flex items-center justify-center gap-4">
+      <button type="button" data-prev aria-label="Poprzednie zdjęcie"
+              class="inline-flex h-12 w-12 items-center justify-center border border-gold/40 text-goldlt transition hover:bg-gold/12">
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button type="button" data-next aria-label="Następne zdjęcie"
+              class="inline-flex h-12 w-12 items-center justify-center border border-gold/40 text-goldlt transition hover:bg-gold/12">
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Scrollspy: podświetla link nawigacji dla sekcji, która jest teraz w centrum ekranu.
+  (function () {
+    var links = Array.prototype.slice.call(document.querySelectorAll('[data-nav-link]'));
+    if (!links.length || !('IntersectionObserver' in window)) return;
+    var map = {};
+    links.forEach(function (l) { map[l.getAttribute('href').slice(1)] = l; });
+    var sections = Object.keys(map).map(function (id) { return document.getElementById(id); }).filter(Boolean);
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        links.forEach(function (l) { l.classList.toggle('is-active', l === map[entry.target.id]); });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    sections.forEach(function (s) { observer.observe(s); });
+  })();
+
+  // Lightbox galerii: klik otwiera, strzałki < > i klawiatura przewijają, Esc oraz klik poza zdjęciem zamyka.
+  (function () {
+    var tiles = Array.prototype.slice.call(document.querySelectorAll('#galeria .tile'));
+    if (!tiles.length) return;
+    var items = tiles.map(function (t) { return { caption: t.getAttribute('data-caption') || 'Miejsce na zdjęcie' }; });
+    var lb = document.getElementById('lb');
+    var lbCaption = document.getElementById('lbCaption');
+    var lbCounter = document.getElementById('lbCounter');
+    var focusables = lb.querySelectorAll('button');
+    var idx = 0, lastFocus = null;
+
+    function show(i) {
+      idx = (i + items.length) % items.length;
+      lbCaption.textContent = items[idx].caption;
+      lbCounter.textContent = (idx + 1) + ' / ' + items.length;
+    }
+    function open(i) {
+      lastFocus = document.activeElement;
+      show(i);
+      lb.hidden = false;
+      document.body.style.overflow = 'hidden';
+      lb.querySelector('[data-close]').focus();
+      document.addEventListener('keydown', onKey);
+    }
+    function close() {
+      lb.hidden = true;
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', onKey);
+      if (lastFocus) lastFocus.focus();
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowRight') show(idx + 1);
+      else if (e.key === 'ArrowLeft') show(idx - 1);
+      else if (e.key === 'Tab') { // prosty focus trap
+        var first = focusables[0], last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+    tiles.forEach(function (t, i) { t.addEventListener('click', function () { open(i); }); });
+    lb.addEventListener('click', function (e) {
+      if (e.target.closest('[data-close]') || e.target === lb) close();
+      else if (e.target.closest('[data-next]')) show(idx + 1);
+      else if (e.target.closest('[data-prev]')) show(idx - 1);
+    });
+  })();
+</script>
+
+</body>
+</html>

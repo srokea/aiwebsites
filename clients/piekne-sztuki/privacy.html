@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polityka prywatności — Piękne Sztuki, Piotrków Trybunalski</title>
+<meta name="description" content="Polityka prywatności strony Piękne Sztuki Stylizacja&Mani w Piotrkowie Trybunalskim.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          char: '#101014', char2: '#16161c', ivory: '#F1ECE2', muted: '#A39D93',
+          gold: '#C9A35C', goldlt: '#E8CF9A', golddeep: '#B28A44',
+        },
+        fontFamily: {
+          display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+          body:    ['"Jost"', 'system-ui', 'sans-serif'],
+        },
+        maxWidth: { content: '40rem', wide: '64rem' },
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO) — bez połączenia z fonts.googleapis.com. */
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 400 600; font-display: swap;
+    src: url('fonts/cormorant-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 400 600; font-display: swap;
+    src: url('fonts/cormorant-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 400 500; font-display: swap;
+    src: url('fonts/cormorant-italic-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Jost'; font-style: normal; font-weight: 300 500; font-display: swap;
+    src: url('fonts/jost-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Jost'; font-style: normal; font-weight: 300 500; font-display: swap;
+    src: url('fonts/jost-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  body { font-weight: 300; line-height: 1.75; -webkit-font-smoothing: antialiased;
+         font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+  ::selection { background: #C9A35C; color: #101014; }
+  .gold-text {
+    background-image: linear-gradient(105deg, #B28A44, #E8CF9A 40%, #B28A44 70%, #E8CF9A);
+    background-size: 200% auto;
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent; -webkit-text-fill-color: transparent;
+    animation: shine 6s linear infinite;
+  }
+  @keyframes shine { to { background-position: 200% center; } }
+  @media (prefers-reduced-motion: reduce) { .gold-text { animation: none; } }
+</style>
+</head>
+
+<body class="bg-char text-ivory font-body">
+
+<header class="border-b border-gold/25 bg-char">
+  <div class="mx-auto flex max-w-wide items-center justify-between gap-3 px-5 py-3 sm:px-8">
+    <a href="index.html" class="flex items-center gap-3" aria-label="Piękne Sztuki — strona główna">
+      <svg viewBox="0 0 64 68" class="h-9 w-auto shrink-0" role="img" aria-label="Logo Piękne Sztuki">
+        <defs>
+          <linearGradient id="goldgrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#B28A44"/><stop offset=".5" stop-color="#E8CF9A"/><stop offset="1" stop-color="#C9A35C"/>
+          </linearGradient>
+        </defs>
+        <g fill="none" stroke="url(#goldgrad)" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M32 18.5C29.6 9.6 21.4 4.8 14.8 8.2 7.6 11.9 5.2 21.9 9.4 30.4 13.2 38.1 22.6 48.6 32 61 41.4 48.6 50.8 38.1 54.6 30.4 58.8 21.9 56.4 11.9 49.2 8.2 42.6 4.8 34.4 9.6 32 18.5Z" stroke-width="2.6"/>
+          <path d="M32 21.5V50" stroke-width="1.6" opacity=".75"/>
+          <path d="M21 27.5C24.4 22.4 39.6 22.4 43 27.5 39.6 32.6 24.4 32.6 21 27.5Z" stroke-width="2"/>
+          <circle cx="32" cy="41.6" r="6.2" stroke-width="2"/>
+        </g>
+        <circle cx="32" cy="27.5" r="3.1" fill="url(#goldgrad)"/>
+      </svg>
+      <span class="hidden font-display text-[1.15rem] uppercase leading-none tracking-[.34em] gold-text sm:inline">Piękne Sztuki</span>
+    </a>
+    <a href="tel:+48575294571" class="inline-flex min-h-[44px] shrink-0 items-center bg-gradient-to-r from-golddeep via-goldlt to-golddeep px-5 text-[.78rem] uppercase tracking-[.18em] text-char transition hover:brightness-110 sm:px-7">
+      575 294 571
+    </a>
+  </div>
+</header>
+
+<main class="mx-auto max-w-content px-5 py-14 sm:px-8 sm:py-20">
+  <h1 class="font-display text-[clamp(2.1rem,7vw,2.9rem)] font-medium leading-tight">Polityka prywatności</h1>
+  <p class="mt-3 text-[.85rem] uppercase tracking-[.2em] text-muted">Ostatnia aktualizacja: sierpień 2026</p>
+
+  <div class="mt-10 space-y-9 text-[1rem] leading-relaxed">
+
+    <section>
+      <h2 class="font-display text-[1.4rem] tracking-wide text-goldlt">Kto odpowiada za Twoje dane</h2>
+      <p class="mt-3">
+        Administratorem danych jest właścicielka firmy Piękne Sztuki Stylizacja&amp;Mani, Jana Matejki 5,
+        97-300 Piotrków Trybunalski, telefon
+        <a href="tel:+48575294571" class="text-goldlt underline underline-offset-4 decoration-gold/50">575 294 571</a>.
+        Dane zostają u niej. Nie trafiają do żadnej agencji ani firmy trzeciej w celach marketingowych.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-[1.4rem] tracking-wide text-goldlt">Jakie dane zbiera ta strona</h2>
+      <p class="mt-3">
+        Ta strona nie ma formularza kontaktowego, nie zakłada kont i nie prowadzi rezerwacji online.
+        Nie zbieramy przez nią żadnych danych osobowych. Nie używamy własnych plików cookies ani narzędzi analitycznych.
+      </p>
+      <p class="mt-3">
+        Jeśli dzwonisz i umawiasz wizytę, podane przez Ciebie dane (imię, numer telefonu, ustalony termin)
+        zapisywane są wyłącznie po to, żeby zrealizować i potwierdzić wizytę.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-[1.4rem] tracking-wide text-goldlt">Mapa Google</h2>
+      <p class="mt-3">
+        W sekcji „Wizyta i kontakt” osadzona jest mapa Google Maps. Kiedy przewiniesz stronę do mapy, wczytuje się ona
+        z serwerów Google, a Google może wtedy odebrać Twój adres IP oraz informacje o przeglądarce.
+        Dzieje się to na zasadach Google, opisanych w
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="text-goldlt underline underline-offset-4 decoration-gold/50">polityce prywatności Google</a>.
+      </p>
+      <p class="mt-3">
+        Jeśli wolisz tego uniknąć, zamiast mapy możesz skorzystać z przycisku „Wyznacz trasę” albo po prostu wpisać adres w swojej nawigacji.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-[1.4rem] tracking-wide text-goldlt">Linki do Instagrama i Facebooka</h2>
+      <p class="mt-3">
+        Na stronie są zwykłe linki do profili firmy. To tylko odnośniki, nie wtyczki społecznościowe.
+        Dopóki w nie nie klikniesz, ani Meta, ani nikt inny nie dostaje przy okazji Twoich danych.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-[1.4rem] tracking-wide text-goldlt">Fonty i pliki strony</h2>
+      <p class="mt-3">
+        Kroje pisma używane na stronie są przechowywane na jej serwerze. Przeglądarka nie łączy się w tym celu
+        z serwerami Google, więc Twój adres IP nie jest przy okazji nikomu przekazywany.
+      </p>
+      <p class="mt-3">
+        Wygląd strony opiera się na bibliotece stylów pobieranej z zewnętrznego serwera
+        (<span class="whitespace-nowrap">cdn.tailwindcss.com</span>). Przy wczytywaniu strony ten serwer widzi Twój adres IP.
+        Nie są przy tym zbierane żadne dane o Tobie ani zapisywane pliki cookies.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-[1.4rem] tracking-wide text-goldlt">Twoje prawa</h2>
+      <p class="mt-3">
+        Masz prawo poprosić o dostęp do swoich danych, ich poprawienie albo usunięcie. Wystarczy zadzwonić pod numer
+        <a href="tel:+48575294571" class="text-goldlt underline underline-offset-4 decoration-gold/50">575 294 571</a>.
+        Przysługuje Ci też skarga do Prezesa Urzędu Ochrony Danych Osobowych.
+      </p>
+    </section>
+
+  </div>
+
+  <p class="mt-12 border-t border-gold/20 pt-6">
+    <a href="index.html" class="text-[.8rem] uppercase tracking-[.2em] text-goldlt underline underline-offset-4 decoration-gold/50">Wróć na stronę główną</a>
+  </p>
+</main>
+
+<footer class="border-t border-gold/20 bg-char2">
+  <div class="mx-auto max-w-wide px-5 py-10 text-center sm:px-8">
+    <p class="font-display text-[1.25rem] uppercase leading-none tracking-[.3em] gold-text">Piękne Sztuki</p>
+    <p class="mt-3 text-[.75rem] text-muted">&copy; 2026 Piękne Sztuki Stylizacja&amp;Mani</p>
+  </div>
+</footer>
+
+</body>
+</html>
