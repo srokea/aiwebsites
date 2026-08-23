@@ -6,7 +6,7 @@
 <title>Strefa Urody — salon kosmetyczny w Gorzędowie</title>
 <meta name="description" content="Strefa Urody — salon kosmetyczny i stylizacja paznokci w Gorzędowie, Adama Mickiewicza 18. Ocena 5,0 w Google. Terminy telefonicznie: 669 010 950.">
 <meta name="robots" content="noindex">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="photos/favicon-logo.png" type="image/png">
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -28,7 +28,7 @@
         fontFamily: {
           display: ['"Prata"', 'Georgia', 'serif'],
           script:  ['"Great Vibes"', 'cursive'],
-          body:    ['"Quicksand"', 'system-ui', 'sans-serif'],
+          body:    ['"Jost"', 'system-ui', 'sans-serif'],
         },
         maxWidth: { content: '44rem', wide: '68rem' },
       }
@@ -40,37 +40,37 @@
   /* Fonty hostowane lokalnie (RODO) — bez połączenia z fonts.googleapis.com. */
   @font-face {
     font-family: 'Prata'; font-style: normal; font-weight: 400; font-display: swap;
-    src: url('fonts/prata-latin.woff2') format('woff2');
+    src: url('fonts/prata-latin.woff2?v=2') format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
   @font-face {
     font-family: 'Prata'; font-style: normal; font-weight: 400; font-display: swap;
-    src: url('fonts/prata-latin-ext.woff2') format('woff2');
+    src: url('fonts/prata-latin-ext.woff2?v=2') format('woff2');
     unicode-range: U+0104-0107, U+0118-0119, U+0141-0144, U+015A-015B, U+0179-017C;
   }
   @font-face {
     font-family: 'Great Vibes'; font-style: normal; font-weight: 400; font-display: swap;
-    src: url('fonts/greatvibes-latin.woff2') format('woff2');
+    src: url('fonts/greatvibes-latin.woff2?v=2') format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
   @font-face {
     font-family: 'Great Vibes'; font-style: normal; font-weight: 400; font-display: swap;
-    src: url('fonts/greatvibes-latin-ext.woff2') format('woff2');
+    src: url('fonts/greatvibes-latin-ext.woff2?v=2') format('woff2');
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
   }
   @font-face {
-    font-family: 'Quicksand'; font-style: normal; font-weight: 400 700; font-display: swap;
-    src: url('fonts/quicksand-latin.woff2') format('woff2');
+    font-family: 'Jost'; font-style: normal; font-weight: 300 700; font-display: swap;
+    src: url('fonts/jost-latin.woff2?v=2') format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
   @font-face {
-    font-family: 'Quicksand'; font-style: normal; font-weight: 400 700; font-display: swap;
-    src: url('fonts/quicksand-latin-ext.woff2') format('woff2');
+    font-family: 'Jost'; font-style: normal; font-weight: 300 700; font-display: swap;
+    src: url('fonts/jost-latin-ext.woff2?v=2') format('woff2');
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
   }
 
   html { scroll-behavior: smooth; }
-  body { font-family: 'Quicksand', system-ui, sans-serif; color: #241E1D; background: #FFFFFF; -webkit-font-smoothing: antialiased; }
+  body { font-family: 'Jost', system-ui, sans-serif; color: #241E1D; background: #FFFFFF; -webkit-font-smoothing: antialiased; }
 
   /* Łuk ze Stylu 06 — tutaj czysto dekoracyjny kształt w tle, nie ramka na zdjęcie. */
   .arch { border-radius: 9999px 9999px 0 0; }
@@ -91,7 +91,26 @@
      Multiply wtapia je w każdą powierzchnię strony (białą, różową). */
   .logo { mix-blend-mode: multiply; }
 
-  .label { font-size: .875rem; font-weight: 700; letter-spacing: .01em; }
+  .label { font-size: .875rem; font-weight: 600; letter-spacing: .01em; }
+
+  /* Scrollspy: podświetla w nawigacji link sekcji aktualnie widocznej na ekranie —
+     kolor + kreska pod linkiem, która rozwija się od środka w stronę obu krawędzi. */
+  .nav-link { padding-bottom: 4px; }
+  .nav-link::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -3px; height: 2px;
+    border-radius: 9999px; background: #9A5F45;
+    transform: scaleX(0); transform-origin: center; transition: transform .32s ease;
+  }
+  .nav-link.is-active { color: #9A5F45; font-weight: 600; }
+  .nav-link.is-active::after { transform: scaleX(1); }
+
+  /* Dzisiejszy dzień w tabeli godzin otwarcia. */
+  .today-row { background: #FEF4F1; border-radius: 12px; padding-left: .75rem; padding-right: .75rem; }
+  .today-badge {
+    margin-left: .5rem; display: inline-block; border-radius: 9999px; background: #9A5F45;
+    padding: .15rem .5rem; font-size: .68rem; font-weight: 600; letter-spacing: .03em;
+    text-transform: uppercase; color: #FFFFFF;
+  }
 
   /* Podpowiedź powiększenia na kaflu galerii — lupa na hover/focus, klik otwiera lightbox. */
   .gallery-tile { cursor: zoom-in; }
@@ -121,24 +140,34 @@
 
 <!-- ============ NAVBAR ============ -->
 <header class="sticky top-0 z-40 border-b border-hairline bg-white/85 backdrop-blur-md">
-  <div class="mx-auto flex max-w-wide items-center justify-between gap-3 px-4 py-2.5 sm:px-6">
-    <a href="#gora" class="flex shrink-0 items-center" aria-label="Strefa Urody — początek strony">
+  <div class="mx-auto grid max-w-wide grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2.5 sm:px-6 md:grid-cols-[1fr_auto_1fr]">
+    <a href="#gora" class="flex shrink-0 items-center justify-self-start" aria-label="Strefa Urody — początek strony">
       <img src="photos/logo-trimmed.png" alt="Strefa Urody" width="898" height="896"
            class="h-12 w-12 object-contain logo sm:h-14 sm:w-14">
     </a>
 
-    <nav class="hidden items-center gap-7 text-sm font-semibold text-inkmuted md:flex" aria-label="Nawigacja">
-      <a href="#uslugi" class="press hover:text-ink">Usługi</a>
-      <a href="#opinie" class="press hover:text-ink">Opinie</a>
-      <a href="#galeria" class="press hover:text-ink">Galeria</a>
-      <a href="#kontakt" class="press hover:text-ink">Kontakt</a>
+    <nav class="hidden items-center justify-self-center gap-7 text-sm font-semibold text-inkmuted md:flex" aria-label="Nawigacja">
+      <a href="#uslugi" data-navlink class="nav-link press relative hover:text-ink">Usługi</a>
+      <a href="#opinie" data-navlink class="nav-link press relative hover:text-ink">Opinie</a>
+      <a href="#galeria" data-navlink class="nav-link press relative hover:text-ink">Galeria</a>
+      <a href="#kontakt" data-navlink class="nav-link press relative hover:text-ink">Kontakt</a>
     </nav>
 
-    <a href="tel:+48669010950"
-       class="press inline-flex min-h-[44px] items-center gap-2 rounded-full bg-accentdeep px-4 py-2.5 text-sm font-bold text-white hover:brightness-110 sm:px-6 sm:text-base">
-      <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
-      <span>669 010 950</span>
-    </a>
+    <div class="flex shrink-0 items-center justify-self-end gap-2 sm:gap-2.5">
+      <a href="https://www.instagram.com/strefa_urody_wiola/" target="_blank" rel="noopener" aria-label="Instagram Strefa Urody"
+         class="press inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline text-accentdeep hover:bg-surface2">
+        <svg viewBox="0 0 24 24" class="h-[18px] w-[18px]" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.facebook.com/StrefaUrodyGorzedow/" target="_blank" rel="noopener" aria-label="Facebook Strefa Urody"
+         class="press inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline text-accentdeep hover:bg-surface2">
+        <svg viewBox="0 0 24 24" class="h-[18px] w-[18px]" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.6c-.3-.04-1.3-.13-2.45-.13-2.42 0-4.08 1.48-4.08 4.2v2.23H7.5V13h2.67v8z"/></svg>
+      </a>
+      <a href="tel:+48669010950"
+         class="press inline-flex min-h-[44px] items-center gap-2 rounded-full bg-accentdeep px-4 py-2.5 text-sm font-medium text-white hover:brightness-110 sm:px-6 sm:text-base">
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+        <span>669 010 950</span>
+      </a>
+    </div>
   </div>
 </header>
 
@@ -187,7 +216,7 @@
 
     <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
       <a href="tel:+48669010950"
-         class="press inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-full bg-accentdeep px-7 py-3.5 text-base font-bold text-white hover:brightness-110 sm:w-auto">
+         class="press inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-full bg-accentdeep px-7 py-3.5 text-base font-medium text-white hover:brightness-110 sm:w-auto">
         <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
         Zadzwoń: 669 010 950
       </a>
@@ -205,7 +234,7 @@
 
     <p class="mt-7 inline-flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 rounded-full border border-hairline bg-white px-5 py-2.5 text-sm text-inkmuted">
       <span class="text-accentdeep" aria-hidden="true">★★★★★</span>
-      <span><strong class="font-bold text-ink">5,0</strong> w Google</span>
+      <span><strong class="font-semibold text-ink">5,0</strong> w Google</span>
       <span class="text-accent" aria-hidden="true">·</span>
       <span>7 opinii</span>
     </p>
@@ -249,7 +278,7 @@
       </dl>
 
       <a href="tel:+48669010950"
-         class="press mt-7 inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-full bg-accentdeep px-7 py-3.5 text-base font-bold text-white hover:brightness-110 sm:w-auto">
+         class="press mt-7 inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-full bg-accentdeep px-7 py-3.5 text-base font-medium text-white hover:brightness-110 sm:w-auto">
         <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
         Zapytaj o cenę i termin
       </a>
@@ -265,12 +294,12 @@
   </div>
 
   <div class="relative mx-auto max-w-wide px-4 sm:px-6">
-    <div class="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
+    <div class="grid gap-8 sm:grid-cols-[1.4fr_1fr] sm:items-center">
       <div class="max-w-content">
         <h2 class="font-display text-[1.65rem] leading-tight sm:text-[2.15rem]">Co mówią klientki</h2>
         <p class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-[1.0625rem] text-inkmuted">
           <span class="text-xl leading-none text-accentdeep" aria-hidden="true">★★★★★</span>
-          <span><strong class="text-2xl font-bold text-ink">5,0</strong> / 5 w Google</span>
+          <span><strong class="text-2xl font-semibold text-ink">5,0</strong> / 5 w Google</span>
           <span class="text-accentdeep" aria-hidden="true">·</span>
           <span>7 opinii</span>
         </p>
@@ -279,14 +308,14 @@
         </p>
       </div>
 
-      <div class="shrink-0 sm:text-right">
+      <div class="flex flex-col items-center justify-center text-center sm:min-h-[170px]">
         <a href="https://www.google.com/maps/search/?api=1&query=Strefa+Urody+Adama+Mickiewicza+18+Gorz%C4%99d%C3%B3w" target="_blank" rel="noopener"
-           class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-accentdeep px-7 py-3.5 text-base font-bold text-white hover:brightness-110">
+           class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-accentdeep px-7 py-3.5 text-base font-medium text-white hover:brightness-110">
           <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 17.3l-5.4 3.3 1.4-6.2L3 10.2l6.3-.6L12 3.8l2.7 5.8 6.3.6-5 4.2 1.4 6.2z"/></svg>
           Zostaw opinię!
         </a>
-        <p class="mt-3 max-w-[40ch] text-sm text-inkmuted sm:ml-auto sm:whitespace-nowrap">
-          Twoje opinie pozwalają nam się rozwijać!
+        <p class="mt-3 whitespace-nowrap text-sm text-inkmuted">
+          Twoja opinia pozwala nam się rozwijać!
         </p>
       </div>
     </div>
@@ -295,33 +324,33 @@
       <figure class="relative rounded-[26px] bg-white p-6 pt-9 sm:p-8 sm:pt-11">
         <span aria-hidden="true" class="absolute left-6 top-3 font-display text-[3.25rem] leading-none text-surface sm:left-8">”</span>
         <blockquote class="relative text-[1.0625rem] leading-relaxed">
-          Z całego serca ❤️ polecam !!!ten salon kosmetyczny! Profesjonalna obsługa, przemiła atmosfera i przede wszystkim rewelacyjne efekty. Zabiegi wykonane bardzo…
+          Z całego serca polecam !!!ten salon kosmetyczny! Profesjonalna obsługa, przemiła atmosfera i przede wszystkim rewelacyjne efekty. Zabiegi wykonane bardzo…
         </blockquote>
         <figcaption class="mt-5 text-sm text-inkmuted">
-          <span class="font-bold text-ink">Nikola Pawłowska</span><br>
-          Google, rok temu
+          <span class="font-semibold text-ink">Nikola Pawłowska</span><br>
+          Google
         </figcaption>
       </figure>
 
       <figure class="relative rounded-[26px] bg-white p-6 pt-9 sm:p-8 sm:pt-11">
         <span aria-hidden="true" class="absolute left-6 top-3 font-display text-[3.25rem] leading-none text-surface sm:left-8">”</span>
         <blockquote class="relative text-[1.0625rem] leading-relaxed">
-          Serdecznie polecam. Miła i profesjonalna obsługa 👌👌👌
+          Serdecznie polecam. Miła i profesjonalna obsługa.
         </blockquote>
         <figcaption class="mt-5 text-sm text-inkmuted">
-          <span class="font-bold text-ink">Piotr Gruszczyński</span><br>
-          Google, 5 lat temu
+          <span class="font-semibold text-ink">Piotr Gruszczyński</span><br>
+          Google
         </figcaption>
       </figure>
 
       <figure class="relative rounded-[26px] bg-white p-6 pt-9 sm:p-8 sm:pt-11">
         <span aria-hidden="true" class="absolute left-6 top-3 font-display text-[3.25rem] leading-none text-surface sm:left-8">”</span>
         <blockquote class="relative text-[1.0625rem] leading-relaxed">
-          Przemiła i profesjonalna obsługa 😊👌👌👌
+          Przemiła i profesjonalna obsługa.
         </blockquote>
         <figcaption class="mt-5 text-sm text-inkmuted">
-          <span class="font-bold text-ink">Monika W.</span><br>
-          Google, 5 lat temu
+          <span class="font-semibold text-ink">Monika W.</span><br>
+          Google
         </figcaption>
       </figure>
 
@@ -331,8 +360,8 @@
           Serdecznie polecam
         </blockquote>
         <figcaption class="mt-5 text-sm text-inkmuted">
-          <span class="font-bold text-ink">Jola Olejnik</span><br>
-          Google, 4 lata temu
+          <span class="font-semibold text-ink">Jola Olejnik</span><br>
+          Google
         </figcaption>
       </figure>
     </div>
@@ -384,7 +413,7 @@
 
     <div class="mt-8 flex justify-center">
       <a href="https://www.instagram.com/strefa_urody_wiola/" target="_blank" rel="noopener"
-         class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-accent bg-white px-7 py-3.5 text-base font-semibold text-ink hover:bg-surface2">
+         class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-accent bg-white px-7 py-3.5 text-base font-medium text-ink hover:bg-surface2">
         <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
         Więcej prac na Instagramie
       </a>
@@ -421,26 +450,26 @@
 
       <div class="rounded-[26px] border border-hairline bg-white p-6 sm:p-8">
         <h3 class="font-display text-xl">Godziny otwarcia</h3>
-        <dl class="mt-5 divide-y divide-border">
-          <div class="flex items-center justify-between gap-4 py-3">
+        <dl id="godziny" class="mt-5 divide-y divide-border">
+          <div data-dzien="1" class="flex items-center justify-between gap-4 py-3">
             <dt class="text-[1.0625rem] text-inkmuted">Poniedziałek</dt><dd class="text-[1.0625rem] font-semibold tabular-nums">09:00 – 17:00</dd>
           </div>
-          <div class="flex items-center justify-between gap-4 py-3">
+          <div data-dzien="2" class="flex items-center justify-between gap-4 py-3">
             <dt class="text-[1.0625rem] text-inkmuted">Wtorek</dt><dd class="text-[1.0625rem] font-semibold tabular-nums">09:00 – 17:00</dd>
           </div>
-          <div class="flex items-center justify-between gap-4 py-3">
+          <div data-dzien="3" class="flex items-center justify-between gap-4 py-3">
             <dt class="text-[1.0625rem] text-inkmuted">Środa</dt><dd class="text-[1.0625rem] font-semibold tabular-nums">09:00 – 17:00</dd>
           </div>
-          <div class="flex items-center justify-between gap-4 py-3">
+          <div data-dzien="4" class="flex items-center justify-between gap-4 py-3">
             <dt class="text-[1.0625rem] text-inkmuted">Czwartek</dt><dd class="text-[1.0625rem] font-semibold tabular-nums">09:00 – 17:00</dd>
           </div>
-          <div class="flex items-center justify-between gap-4 py-3">
+          <div data-dzien="5" class="flex items-center justify-between gap-4 py-3">
             <dt class="text-[1.0625rem] text-inkmuted">Piątek</dt><dd class="text-[1.0625rem] font-semibold tabular-nums">09:00 – 17:00</dd>
           </div>
-          <div class="flex items-center justify-between gap-4 py-3">
+          <div data-dzien="6" class="flex items-center justify-between gap-4 py-3">
             <dt class="text-[1.0625rem] text-inkmuted">Sobota</dt><dd class="text-[1.0625rem] font-semibold tabular-nums">09:00 – 13:00</dd>
           </div>
-          <div class="flex items-center justify-between gap-4 py-3">
+          <div data-dzien="0" class="flex items-center justify-between gap-4 py-3">
             <dt class="text-[1.0625rem] text-inkmuted">Niedziela</dt><dd class="text-[1.0625rem] font-semibold text-inkmuted">Zamknięte</dd>
           </div>
         </dl>
@@ -456,12 +485,13 @@
 
         <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <a href="tel:+48669010950"
-             class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-accentdeep px-7 py-3.5 text-base font-bold text-white hover:brightness-110">
+             class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-accentdeep px-7 py-3.5 text-base font-medium text-white hover:brightness-110">
             <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
             669 010 950
           </a>
           <a href="https://www.google.com/maps/dir/?api=1&destination=Adama+Mickiewicza+18,+97-360+Gorz%C4%99d%C3%B3w" target="_blank" rel="noopener"
-             class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-accent bg-white px-7 py-3.5 text-base font-semibold text-ink hover:bg-surface2">
+             class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-accent bg-white px-7 py-3.5 text-base font-medium text-ink hover:bg-surface2">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 text-accentdeep" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21.5s7-6.4 7-12A7 7 0 0 0 5 9.5c0 5.6 7 12 7 12z"/><circle cx="12" cy="9.5" r="2.6"/></svg>
             Wyznacz trasę
           </a>
         </div>
@@ -469,12 +499,12 @@
         <p class="label mt-8 text-accentdeep">Znajdziesz nas też tutaj</p>
         <div class="mt-4 flex flex-wrap gap-2.5">
           <a href="https://www.instagram.com/strefa_urody_wiola/" target="_blank" rel="noopener"
-             class="press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-border bg-white px-4 py-2.5 text-sm font-semibold hover:border-accent hover:text-accentdeep">
+             class="press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-border bg-white px-4 py-2.5 text-sm font-medium hover:border-accent hover:text-accentdeep">
             <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
             Instagram
           </a>
           <a href="https://www.facebook.com/StrefaUrodyGorzedow/" target="_blank" rel="noopener"
-             class="press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-border bg-white px-4 py-2.5 text-sm font-semibold hover:border-accent hover:text-accentdeep">
+             class="press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-border bg-white px-4 py-2.5 text-sm font-medium hover:border-accent hover:text-accentdeep">
             <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.6c-.3-.04-1.3-.13-2.45-.13-2.42 0-4.08 1.48-4.08 4.2v2.23H7.5V13h2.67v8z"/></svg>
             Facebook
           </a>
@@ -500,10 +530,10 @@
       <div class="flex items-start gap-4">
         <img src="photos/logo-trimmed.png" alt="" width="898" height="896" class="h-14 w-14 shrink-0 object-contain logo" loading="lazy">
         <p class="text-sm leading-relaxed text-inkmuted">
-          <span class="block text-base font-bold text-ink">Strefa Urody</span>
+          <span class="block text-base font-semibold text-ink">Strefa Urody</span>
           Adama Mickiewicza 18<br>
           97-360 Gorzędów<br>
-          <a href="tel:+48669010950" class="mt-1 inline-flex min-h-[44px] items-center font-bold text-ink underline underline-offset-4 hover:text-accentdeep">669 010 950</a>
+          <a href="tel:+48669010950" class="mt-1 inline-flex min-h-[44px] items-center font-semibold text-ink underline underline-offset-4 hover:text-accentdeep">669 010 950</a>
         </p>
       </div>
       <div class="sm:text-right">
@@ -524,6 +554,38 @@
 
 <script>
   document.getElementById('rok').textContent = new Date().getFullYear();
+
+  // Podświetlenie dzisiejszego dnia w tabeli godzin otwarcia.
+  (function () {
+    var wiersz = document.querySelector('#godziny [data-dzien="' + new Date().getDay() + '"]');
+    if (!wiersz) return;
+    wiersz.classList.add('today-row');
+    wiersz.querySelector('dt').insertAdjacentHTML('beforeend', '<span class="today-badge">dziś</span>');
+  })();
+
+  // Scrollspy: podświetla w nawigacji link sekcji aktualnie widocznej na ekranie.
+  (function () {
+    var navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+    if (!navLinks.length) return;
+    var sections = [];
+    navLinks.forEach(function (link) {
+      var sec = document.querySelector(link.getAttribute('href'));
+      if (sec) sections.push({ link: link, el: sec });
+    });
+    if (!sections.length) return;
+    var headerH = document.querySelector('header').offsetHeight || 72;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var match = sections.find(function (s) { return s.el === entry.target; });
+        if (!match) return;
+        if (entry.isIntersecting) {
+          navLinks.forEach(function (l) { l.classList.remove('is-active'); });
+          match.link.classList.add('is-active');
+        }
+      });
+    }, { rootMargin: '-' + (headerH + 4) + 'px 0px -60% 0px', threshold: 0 });
+    sections.forEach(function (s) { observer.observe(s.el); });
+  })();
 </script>
 
 <script>
