@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polityka prywatności — Cosmetology Avenue</title>
+<meta name="description" content="Polityka prywatności gabinetu kosmetologii estetycznej Cosmetology Avenue w Piotrkowie Trybunalskim.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="photos/favicon-logo.png" type="image/png">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  /* Te same tokeny co na stronie glownej — patrz komentarz w index.html. */
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#F7F3ED',
+          surface: '#F1E8E3',
+          ink: '#211D19',
+          inkmuted: '#665C53',
+          gold: '#7C6633',
+          border: 'rgba(33,29,25,0.12)',
+          hairline: 'rgba(124,102,51,0.42)',
+        },
+        fontFamily: {
+          body: ['"Jost"', 'system-ui', 'sans-serif'],
+        },
+        maxWidth: { content: '42rem', wide: '64rem' },
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO). */
+  @font-face {
+    font-family: 'Jost'; font-style: normal; font-weight: 300 700; font-display: swap;
+    src: url('fonts/jost-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Jost'; font-style: normal; font-weight: 300 700; font-display: swap;
+    src: url('fonts/jost-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  .wordmark { text-transform: uppercase; letter-spacing: 0.16em; font-weight: 300; }
+  .rule-heading { display: flex; align-items: center; gap: 1.25rem; }
+  .rule-heading::after { content: ""; flex: 1 1 auto; border-top: 1px solid rgba(124,102,51,0.42); }
+  .lining { font-variant-numeric: lining-nums tabular-nums; }
+  /* Ponizej 360 px wordmark wypycha przycisk z telefonem poza ekran (overflow 6 px).
+     Sam emblemat wystarczy do identyfikacji i nadal linkuje na gore strony. */
+  @media (max-width: 359px) { .nav-wordmark { display: none; } }
+
+  :focus-visible { outline: 2px solid #7C6633; outline-offset: 3px; border-radius: 6px; }
+  @media (prefers-reduced-motion: reduce) { * { transition-duration: 0.01ms !important; } }
+</style>
+</head>
+
+<body class="bg-bg font-body text-ink antialiased">
+
+<header class="sticky top-0 z-50 border-b border-hairline bg-bg/90 backdrop-blur-md">
+  <div class="mx-auto flex max-w-wide items-center gap-3 px-4 py-2.5 sm:px-6 sm:py-3">
+    <a href="index.html" class="flex min-h-[44px] shrink-0 items-center gap-2.5" aria-label="Cosmetology Avenue — strona główna">
+      <img src="photos/logo-mark.png" alt="" width="132" height="132" class="h-9 w-9 object-contain sm:h-11 sm:w-11">
+      <img src="photos/logo-wordmark.png" alt="Cosmetology Avenue, Monika Pabich" width="423" height="72" class="nav-wordmark h-[1.15rem] w-auto object-contain sm:h-6">
+    </a>
+    <a href="tel:+48511683488"
+       class="ml-auto inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full bg-gold px-4 py-2.5 text-sm font-medium tracking-wide text-bg transition hover:brightness-110 motion-reduce:transition-none sm:px-5">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true">
+        <path d="M6.5 3h3l1.5 4.5-2 1.5a12 12 0 0 0 6 6l1.5-2 4.5 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3Z" stroke-linejoin="round"/>
+      </svg>
+      <span class="lining">511 683 488</span>
+    </a>
+  </div>
+</header>
+
+<main class="mx-auto max-w-content px-4 py-14 sm:px-6 sm:py-20">
+
+  <h1 class="wordmark text-[1.4rem] leading-snug sm:text-[1.75rem]">Polityka prywatności</h1>
+  <p class="mt-4 text-sm text-inkmuted">Ostatnia aktualizacja: sierpień 2026</p>
+
+  <div class="mt-12 space-y-10 text-[1.0625rem] leading-relaxed">
+
+    <section>
+      <h2 class="rule-heading wordmark text-[1.0625rem] text-gold"><span class="shrink-0">Kto odpowiada za dane</span></h2>
+      <p class="mt-4">
+        Administratorem danych jest właścicielka gabinetu Cosmetology Avenue, Monika Pabich,
+        Kostromska 37 / Lokal 1, 97-300 Piotrków Trybunalski, telefon
+        <a href="tel:+48511683488" class="font-medium text-gold underline underline-offset-4 lining">511 683 488</a>.
+        Dane zostają u właścicielki gabinetu. Nie trafiają do żadnej agencji ani firmy trzeciej w celach marketingowych.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="rule-heading wordmark text-[1.0625rem] text-gold"><span class="shrink-0">Jakie dane zbiera ta strona</span></h2>
+      <p class="mt-4">
+        Ta strona nie ma formularza kontaktowego, nie zakłada kont i nie prowadzi rezerwacji online.
+        Nie zbieramy przez nią żadnych danych osobowych. Nie używamy własnych plików cookies
+        ani narzędzi analitycznych.
+      </p>
+      <p class="mt-4">
+        Jeśli dzwonisz i umawiasz wizytę, podane przez Ciebie dane (imię, numer telefonu, ustalony termin)
+        zapisywane są wyłącznie po to, żeby zrealizować i potwierdzić wizytę.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="rule-heading wordmark text-[1.0625rem] text-gold"><span class="shrink-0">Mapa Google</span></h2>
+      <p class="mt-4">
+        W sekcji „Godziny i kontakt” osadzona jest mapa Google Maps. Kiedy przewiniesz stronę do mapy,
+        wczytuje się ona z serwerów Google, a Google może wtedy odebrać Twój adres IP oraz informacje
+        o przeglądarce. Dzieje się to na zasadach opisanych w
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="font-medium text-gold underline underline-offset-4">polityce prywatności Google</a>.
+      </p>
+      <p class="mt-4">
+        Jeśli wolisz tego uniknąć, zamiast mapy możesz skorzystać z przycisku „Wyznacz trasę”
+        albo po prostu wpisać adres w swojej nawigacji.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="rule-heading wordmark text-[1.0625rem] text-gold"><span class="shrink-0">Fonty i pliki strony</span></h2>
+      <p class="mt-4">
+        Kroje pisma używane na stronie są przechowywane na jej serwerze. Przeglądarka nie łączy się
+        w tym celu z serwerami Google, więc Twój adres IP nie jest przy okazji nikomu przekazywany.
+      </p>
+      <p class="mt-4">
+        Wygląd strony opiera się na bibliotece stylów pobieranej z zewnętrznego serwera
+        (<span class="whitespace-nowrap">cdn.tailwindcss.com</span>). Przy wczytywaniu strony ten serwer
+        widzi Twój adres IP. Nie są przy tym zbierane żadne dane o Tobie ani zapisywane pliki cookies.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="rule-heading wordmark text-[1.0625rem] text-gold"><span class="shrink-0">Instagram i Facebook</span></h2>
+      <p class="mt-4">
+        Na stronie znajdziesz zwykłe linki do profili gabinetu w serwisach Instagram i Facebook.
+        To tylko odnośniki, bez wtyczek i bez pikseli śledzących. Twoje dane trafiają do tych serwisów
+        dopiero wtedy, gdy sama w nie klikniesz.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="rule-heading wordmark text-[1.0625rem] text-gold"><span class="shrink-0">Zdjęcia i opinie</span></h2>
+      <p class="mt-4">
+        Zdjęcie w sekcji powitalnej przedstawia właścicielkę gabinetu i zostało udostępnione przez nią.
+        Ocena i cytaty w sekcji „Opinie” pochodzą z publicznego profilu gabinetu w Google i są
+        przytoczone w formie, w jakiej są tam widoczne — z imieniem i nazwiskiem autora, tak jak
+        podał je przy wystawianiu opinii.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="rule-heading wordmark text-[1.0625rem] text-gold"><span class="shrink-0">Twoje prawa</span></h2>
+      <p class="mt-4">
+        Masz prawo wiedzieć, jakie dane gabinet o Tobie przechowuje, poprosić o ich poprawienie
+        lub usunięcie, a także wycofać wcześniejszą zgodę. Wystarczy zadzwonić pod
+        <a href="tel:+48511683488" class="font-medium text-gold underline underline-offset-4 lining">511 683 488</a>,
+        napisać na <a href="mailto:cosmetologyavenue@gmail.com" class="font-medium text-gold underline underline-offset-4">cosmetologyavenue@gmail.com</a>
+        albo powiedzieć o tym podczas wizyty.
+      </p>
+    </section>
+
+    <!-- TODO: przed publikacja poprosic wlascicielke o weryfikacje tresci polityki. -->
+
+  </div>
+
+  <a href="index.html" class="mt-14 inline-flex min-h-[52px] items-center justify-center rounded-full border border-gold px-7 py-3.5 text-[1.0625rem] tracking-wide transition hover:bg-surface motion-reduce:transition-none">
+    Wróć na stronę główną
+  </a>
+
+</main>
+
+<footer class="border-t border-hairline bg-surface px-4 py-12 sm:px-6">
+  <div class="mx-auto max-w-wide text-sm text-inkmuted">
+    <div class="flex flex-col items-start gap-3">
+      <img src="photos/logo-mark.png" alt="" width="132" height="132" class="h-12 w-12 object-contain" loading="lazy">
+      <img src="photos/logo-wordmark.png" alt="Cosmetology Avenue, Monika Pabich" width="423" height="72" class="h-5 w-auto object-contain" loading="lazy">
+    </div>
+    <p class="mt-5">Kostromska 37 / Lokal 1<br>97-300 Piotrków Trybunalski</p>
+    <a href="tel:+48511683488" class="mt-1 inline-flex min-h-[44px] items-center font-medium text-ink underline underline-offset-4 transition hover:text-gold motion-reduce:transition-none lining">511 683 488</a>
+  </div>
+</footer>
+
+</body>
+</html>

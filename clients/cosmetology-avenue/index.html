@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cosmetology Avenue — gabinet kosmetologii estetycznej w Piotrkowie Trybunalskim</title>
+<meta name="description" content="Cosmetology Avenue, Kostromska 37/1 w Piotrkowie Trybunalskim. Gabinet kosmetologii estetycznej Moniki Pabich: zabiegi na twarz, endermologia LPG, fala uderzeniowa STORZ i depilacja laserowa PRIMELASE. Ocena 5,0 w Google.">
+<link rel="icon" href="photos/favicon-logo.png" type="image/png">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cosmetology Avenue — kosmetologia estetyczna, Piotrków Trybunalski">
+<meta property="og:description" content="Holistyczne podejście do skóry i ciała. Zabiegi na twarz, endermologia LPG, fala uderzeniowa i depilacja laserowa PRIMELASE. Kostromska 37/1, Piotrków Trybunalski.">
+<!-- TODO przy deployu: pelne adresy absolutne w og:image i og:url (https://domena/...). -->
+<meta property="og:image" content="photos/wlascicielka.jpg">
+<meta property="og:locale" content="pl_PL">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BeautySalon",
+  "name": "Cosmetology Avenue",
+  "description": "Gabinet kosmetologii estetycznej Moniki Pabich. Zabiegi na twarz, zabiegi na ciało i depilacja laserowa.",
+  "image": "photos/wlascicielka.jpg",
+  "logo": "photos/logo-full.png",
+  "telephone": "+48511683488",
+  "email": "cosmetologyavenue@gmail.com",
+  "founder": { "@type": "Person", "name": "Monika Pabich" },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Kostromska 37/1",
+    "postalCode": "97-300",
+    "addressLocality": "Piotrków Trybunalski",
+    "addressCountry": "PL"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "reviewCount": "15"
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Monday",    "opens": "08:30", "closes": "22:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday",   "opens": "08:30", "closes": "15:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "08:30", "closes": "22:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday",  "opens": "08:00", "closes": "22:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday",    "opens": "08:00", "closes": "22:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday",  "opens": "08:00", "closes": "21:00" }
+  ],
+  "sameAs": [
+    "https://www.instagram.com/cosmetology_avenue/",
+    "https://www.facebook.com/CosmetologyAvenue/"
+  ]
+}
+</script>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  /* PALETA — hexy zmierzone bezposrednio z plikow w photos/ (kanwa + histogram),
+     nie przepisane z briefu:
+
+       gold  #7C6633  zloto z logo (#968958 = srednia 2 873 px o nasyceniu >25%, hue ~46)
+                      przyciemnione, bo oryginalny odcien daje tylko 3,16:1 na kremie
+                      i nie przechodzi WCAG AA jako maly tekst. Ten sam ton, nie nowy
+                      kolor — analogicznie do wyjatku Zajawa Barbershop w DESIGN.md.
+       bg    #F7F3ED  ciepla kremowa biel — najjasniejsze pasmo sciany gabinetu (#D3CDC1)
+                      sprowadzone do jasnosci strony.
+       surf  #F1E8E3  pudrowy taupe z oprawionej grafiki na scianie za wlascicielka
+                      (srednia rozowych pikseli lewej ramki = #B8A59E). Swiadomie NIE
+                      #F1DCE0 z briefu: prawdziwa grafika jest przygaszona, a rejestr
+                      gabinetu ma byc kliniczny, nie pastelowy.
+       ink   #211D19  ciepla prawie-czern (napis w logo to #252625).
+
+     UWAGA — odstepstwo od DESIGN.md: "No-Cream Rule" zabrania tla w pasmie kremu.
+     Krem jest tu wskazany wprost w briefie i w promptcie klienta jako baza z realnego
+     wnetrza gabinetu (override per fizyczny lokal). Do potwierdzenia z uzytkownikiem,
+     czy dopisac to jako udokumentowany wyjatek tego klienta.
+
+     Kontrast (WCAG AA, policzony):
+       ink/bg 15,14   ink/surface 13,86   inkmuted/bg 5,90   inkmuted/surface 5,40
+       gold/bg 4,99   gold/surface 4,57   bg-na-zlocie 4,99 (przycisk CTA)
+     Zloto przechodzi AA jako zwykly tekst na obu tlach, wiec jest JEDNYM tokenem —
+     bez drugiego, jasniejszego zlota obok. */
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#F7F3ED',
+          surface: '#F1E8E3',
+          ink: '#211D19',
+          inkmuted: '#665C53',
+          gold: '#7C6633',
+          border: 'rgba(33,29,25,0.12)',
+          hairline: 'rgba(124,102,51,0.42)',
+        },
+        fontFamily: {
+          /* Jeden krój niesie cala strone: Jost powtarza geometryczny sans
+             wersalikowy z logo. Cormorant Garamond kursywa tylko jako akcent osobisty. */
+          body:   ['"Jost"', 'system-ui', 'sans-serif'],
+          script: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        },
+        maxWidth: { content: '42rem', wide: '64rem' },
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO) — bez polaczenia z fonts.googleapis.com. */
+  @font-face {
+    font-family: 'Jost'; font-style: normal; font-weight: 300 700; font-display: swap;
+    src: url('fonts/jost-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Jost'; font-style: normal; font-weight: 300 700; font-display: swap;
+    src: url('fonts/jost-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 400; font-display: swap;
+    src: url('fonts/cormorant-italic-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 400; font-display: swap;
+    src: url('fonts/cormorant-italic-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { -webkit-font-smoothing: antialiased; }
+
+  /* Uklad z logo: wersaliki z szerokim trackingiem. Im wiekszy stopien,
+     tym tracking mniejszy — inaczej duze naglowki sie rozjezdzaja. */
+  .wordmark   { text-transform: uppercase; letter-spacing: 0.16em; font-weight: 300; }
+  .wordmark-l { text-transform: uppercase; letter-spacing: 0.09em; font-weight: 300; }
+
+  /* Naglowek sekcji + cienka zlota linia ciagnaca sie do konca wiersza.
+     Rejestr rysunku technicznego, nie ozdobnik. */
+  /* Na mobile linia idzie POD naglowkiem: przy dlugim tytule obok zostawal 30-pikselowy
+     ogarek, ktory wygladal na blad renderowania. Od sm w gore linia wraca obok. */
+  .rule-heading::after { content: ""; display: block; margin-top: 0.9rem; border-top: 1px solid rgba(124,102,51,0.42); }
+  @media (min-width: 640px) {
+    .rule-heading { display: flex; align-items: center; gap: 1.25rem; }
+    .rule-heading::after { margin-top: 0; flex: 1 1 auto; }
+  }
+
+  /* Cyfry mediewalowe w kursywie Cormorant psuja skanowalnosc — tu nie wystepuja,
+     ale godziny i telefon trzymamy jawnie na cyfrach tabelarycznych. */
+  .lining { font-variant-numeric: lining-nums tabular-nums; }
+
+  /* Rejestr zabiegow: kropkowany leader miedzy nazwa a cena (Styl 04).
+     Na mobile chowany — przy dlugich nazwach zostawal pasek 8 px i wygladal na blad. */
+  .leader { display: none; }
+  @media (min-width: 640px) {
+    .leader { display: block; flex: 1 1 auto; min-width: 2rem; border-bottom: 1px dotted rgba(124,102,51,0.5); transform: translateY(-0.3rem); }
+  }
+
+  .ornament { display: flex; align-items: center; justify-content: center; gap: 0.9rem; color: #7C6633; }
+  .ornament::before, .ornament::after { content: ""; width: clamp(1.75rem, 8vw, 3.5rem); border-top: 1px solid rgba(124,102,51,0.42); }
+
+  /* Surowa mapa Google gryzie sie z kremowa paleta — lekka desaturacja spina ja ze strona. */
+  .mapframe { filter: saturate(0.72) contrast(1.03) sepia(0.08); }
+
+  /* Dzisiejszy dzien w godzinach otwarcia — klasa dokladana przez JS.
+     Bez JS tabela czyta sie normalnie, nic nie znika. */
+  .today { color: #211D19; font-weight: 500; }
+  .today .daymark { opacity: 1; }
+  .daymark { opacity: 0; }
+
+  /* Ponizej 360 px wordmark wypycha przycisk z telefonem poza ekran (overflow 6 px).
+     Sam emblemat wystarczy do identyfikacji i nadal linkuje na gore strony. */
+  @media (max-width: 359px) { .nav-wordmark { display: none; } }
+
+  /* Aktywna sekcja w menu nawigacji — klasa dokladana przez IntersectionObserver.
+     Pigulka z pelnym tlem okazala sie zbyt krzykliwa — zostaje sama kropka
+     pod etykieta, spokojniejszy sygnal. */
+  .nav-link { position: relative; }
+  .nav-link.active { color: #7C6633; }
+  .nav-link.active::after {
+    content: ""; position: absolute; left: 50%; bottom: 2px;
+    width: 4px; height: 4px; border-radius: 9999px; background: #7C6633;
+    transform: translateX(-50%);
+  }
+
+  /* Powiekszenie na kaflach galerii ze zdjeciami: lekki zoom obrazka + lupa
+     na hover/focus, klik otwiera lightbox (patrz Patent-na-Pazur, ten sam wzorzec). */
+  .gallery-tile { cursor: zoom-in; }
+  .gallery-hint {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: rgba(33,29,25,.38); color: #F7F3ED; opacity: 0; transition: opacity .2s ease;
+  }
+  .gallery-tile:hover .gallery-hint, .gallery-tile:focus-visible .gallery-hint { opacity: 1; }
+
+  :focus-visible { outline: 2px solid #7C6633; outline-offset: 3px; border-radius: 6px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+
+<body class="bg-bg font-body text-ink antialiased">
+
+<a href="#hero" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-ink focus:px-5 focus:py-3 focus:text-sm focus:text-bg">Przejdź do treści</a>
+
+<!-- ══════════ NAVBAR ══════════ -->
+<header class="sticky top-0 z-50 border-b border-hairline bg-bg/90 backdrop-blur-md">
+  <div class="mx-auto flex max-w-wide items-center gap-3 px-4 py-2.5 sm:px-6 sm:py-3">
+
+    <a href="#hero" class="flex min-h-[44px] shrink-0 items-center gap-2.5" aria-label="Cosmetology Avenue — strona główna">
+      <img src="photos/logo-mark.png" alt="" width="132" height="132" class="h-9 w-9 object-contain sm:h-11 sm:w-11">
+      <img src="photos/logo-wordmark.png" alt="Cosmetology Avenue, Monika Pabich" width="423" height="72" class="nav-wordmark h-[1.15rem] w-auto object-contain sm:h-6">
+    </a>
+
+    <nav class="ml-auto hidden items-center gap-1 text-sm uppercase tracking-[0.14em] text-inkmuted lg:flex" aria-label="Menu">
+      <a href="#zabiegi" data-nav="zabiegi" class="nav-link inline-flex min-h-[44px] items-center px-3 pb-1 transition hover:text-gold motion-reduce:transition-none">Zabiegi</a>
+      <a href="#voucher" data-nav="voucher" class="nav-link inline-flex min-h-[44px] items-center px-3 pb-1 transition hover:text-gold motion-reduce:transition-none">Voucher</a>
+      <a href="#opinie" data-nav="opinie" class="nav-link inline-flex min-h-[44px] items-center px-3 pb-1 transition hover:text-gold motion-reduce:transition-none">Opinie</a>
+      <a href="#galeria" data-nav="galeria" class="nav-link inline-flex min-h-[44px] items-center px-3 pb-1 transition hover:text-gold motion-reduce:transition-none">Galeria</a>
+      <a href="#kontakt" data-nav="kontakt" class="nav-link inline-flex min-h-[44px] items-center px-3 pb-1 transition hover:text-gold motion-reduce:transition-none">Kontakt</a>
+    </nav>
+
+    <!-- Social media w headerze: tylko od lg w gore, zeby na mobile zostal
+         wylacznie telefon-CTA (konwencja z DESIGN.md). -->
+    <div class="hidden items-center gap-2 lg:flex">
+      <a href="https://www.instagram.com/cosmetology_avenue/" target="_blank" rel="noopener"
+         class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gold text-inkmuted transition hover:text-gold hover:bg-surface motion-reduce:transition-none" aria-label="Instagram gabinetu Cosmetology Avenue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-4 w-4" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/CosmetologyAvenue/" target="_blank" rel="noopener"
+         class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gold text-inkmuted transition hover:text-gold hover:bg-surface motion-reduce:transition-none" aria-label="Facebook gabinetu Cosmetology Avenue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-4 w-4" aria-hidden="true">
+          <path d="M14.5 8.5V6.9c0-.8.4-1.4 1.4-1.4h1.6V2.6c-.4-.1-1.4-.2-2.4-.2-2.4 0-3.9 1.4-3.9 4v2.1H8.5v3h2.7v8h3.3v-8h2.6l.4-3h-3Z" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+
+    <a href="tel:+48511683488"
+       class="ml-auto inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full bg-gold px-4 py-2.5 text-sm font-medium tracking-wide text-bg transition hover:brightness-110 motion-reduce:transition-none sm:px-5 sm:text-sm lg:ml-0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true">
+        <path d="M6.5 3h3l1.5 4.5-2 1.5a12 12 0 0 0 6 6l1.5-2 4.5 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3Z" stroke-linejoin="round"/>
+      </svg>
+      <span class="lining">511 683 488</span>
+    </a>
+  </div>
+</header>
+
+<main>
+
+<!-- ══════════ HERO ══════════ -->
+<section id="hero" class="scroll-mt-20 px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-20">
+  <div class="mx-auto grid max-w-wide items-center gap-10 lg:grid-cols-[1fr_0.85fr] lg:gap-16">
+
+    <div>
+      <h1 class="wordmark-l text-[2.2rem] leading-[1.18] sm:text-[2.75rem] lg:text-[3.05rem]">
+        Nowoczesna<br>kosmetologia<br>estetyczna
+      </h1>
+
+      <p class="mt-5 font-script text-[1.4rem] italic leading-snug text-gold sm:text-[1.75rem]">
+        holistycznie o skórze i ciele
+      </p>
+
+      <p class="mt-7 max-w-[38ch] text-[1.0625rem] leading-relaxed text-inkmuted">
+        Gabinet Moniki Pabich w Piotrkowie Trybunalskim. Zabiegi na twarz, zabiegi na ciało
+        i depilacja laserowa, prowadzone na profesjonalnym sprzęcie hi-tech.
+        Zabieg dobrany do stanu Twojej skóry, nie do gotowego pakietu.
+      </p>
+
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <a href="tel:+48511683488"
+           class="inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-gold px-7 py-3.5 text-[1.0625rem] font-medium tracking-wide text-bg transition hover:brightness-110 motion-reduce:transition-none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[1.15rem] w-[1.15rem] shrink-0" aria-hidden="true">
+            <path d="M6.5 3h3l1.5 4.5-2 1.5a12 12 0 0 0 6 6l1.5-2 4.5 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3Z" stroke-linejoin="round"/>
+          </svg>
+          <span class="lining whitespace-nowrap">Zadzwoń: 511 683 488</span>
+        </a>
+
+        <div class="flex gap-3">
+          <a href="https://www.instagram.com/cosmetology_avenue/" target="_blank" rel="noopener"
+             class="inline-flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-full border border-gold px-5 py-3.5 text-sm tracking-wide text-ink transition hover:bg-surface motion-reduce:transition-none sm:flex-none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-[1.15rem] w-[1.15rem]" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/>
+            </svg>
+            Instagram
+          </a>
+          <a href="https://www.facebook.com/CosmetologyAvenue/" target="_blank" rel="noopener"
+             class="inline-flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-full border border-gold px-5 py-3.5 text-sm tracking-wide text-ink transition hover:bg-surface motion-reduce:transition-none sm:flex-none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-[1.15rem] w-[1.15rem]" aria-hidden="true">
+              <path d="M14.5 8.5V6.9c0-.8.4-1.4 1.4-1.4h1.6V2.6c-.4-.1-1.4-.2-2.4-.2-2.4 0-3.9 1.4-3.9 4v2.1H8.5v3h2.7v8h3.3v-8h2.6l.4-3h-3Z" stroke-linejoin="round"/>
+            </svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Zdjecie wlascicielki w gabinecie. Kadr 4/5 przycina boki, nie gore —
+         twarz zostaje w calosci, w tle zostaja obie oprawione grafiki. -->
+    <figure class="relative">
+      <div class="border border-hairline p-2 sm:p-2.5">
+        <img src="photos/wlascicielka.jpg"
+             alt="Monika Pabich w białym fartuchu, w swoim gabinecie kosmetologicznym przy Kostromskiej w Piotrkowie Trybunalskim"
+             width="960" height="960"
+             class="aspect-[4/5] w-full object-cover"
+             style="object-position: 46% center;">
+      </div>
+      <figcaption class="mt-4 flex items-baseline gap-3 text-inkmuted">
+        <span class="font-script text-[1.4rem] italic leading-none text-ink">Monika Pabich</span>
+        <span class="h-px flex-1 bg-hairline"></span>
+        <span class="text-sm uppercase tracking-[0.18em]">kosmetolog</span>
+      </figcaption>
+    </figure>
+
+  </div>
+</section>
+
+<!-- ══════════ ZABIEGI I TECHNOLOGIE ══════════ -->
+<section id="zabiegi" class="scroll-mt-20 bg-surface px-4 py-16 sm:px-6 sm:py-24">
+  <div class="mx-auto max-w-wide">
+
+    <h2 class="rule-heading wordmark text-[1.4rem] sm:text-[1.75rem]">
+      <span class="shrink-0">Zabiegi i technologie</span>
+    </h2>
+
+    <p class="mt-6 max-w-[52ch] leading-relaxed text-inkmuted">
+      Nazwy urządzeń brzmią technicznie, więc obok każdej jest zwykłe wyjaśnienie, co ten zabieg właściwie robi.
+      Jeśli czegoś tu brakuje albo nie wiesz, co wybrać, najprościej zadzwonić.
+    </p>
+
+    <!-- TODO: ceny do uzupelnienia przez klientke. Nie wpisywac zmyslonych kwot. -->
+    <div class="mt-14 max-w-[44rem] space-y-14 sm:mt-16 sm:space-y-16">
+
+      <!-- ── TWARZ ── -->
+      <div>
+        <h3 class="rule-heading wordmark text-[1.3rem] text-gold">
+          <span class="flex shrink-0 items-center gap-3">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 shrink-0" aria-hidden="true">
+              <path d="M7.5 11c0-3.6 2-6 4.5-6s4.5 2.4 4.5 6c0 4-2 7-4.5 7s-4.5-3-4.5-7Z"/>
+              <path d="M9.3 10.3c.3-.4.9-.4 1.2 0M13.5 10.3c.3-.4.9-.4 1.2 0"/>
+              <path d="M10.2 14.2c.9.7 2.7.7 3.6 0"/>
+            </svg>
+            Twarz
+          </span>
+        </h3>
+
+        <div class="mt-7 divide-y divide-border border-b border-border">
+
+          <div class="py-5">
+            <div class="flex items-baseline gap-3">
+              <h4 class="text-[1.0625rem] font-medium">Dermaplaning</h4>
+              <span class="leader" aria-hidden="true"></span>
+              <p class="ml-auto shrink-0 whitespace-nowrap text-sm text-inkmuted sm:ml-0 lining">-- zł</p>
+            </div>
+            <p class="mt-2 max-w-[58ch] text-sm leading-relaxed text-inkmuted">
+              Mechaniczne złuszczenie martwego naskórka i meszku. Skóra po zabiegu jest gładsza,
+              rozjaśniona i lepiej przyjmuje kosmetyki.
+            </p>
+          </div>
+
+          <div class="py-5">
+            <div class="flex items-baseline gap-3">
+              <h4 class="text-[1.0625rem] font-medium">Zaawansowane oczyszczanie twarzy</h4>
+              <span class="leader" aria-hidden="true"></span>
+              <p class="ml-auto shrink-0 whitespace-nowrap text-sm text-inkmuted sm:ml-0 lining">-- zł</p>
+            </div>
+            <p class="mt-2 max-w-[58ch] text-sm leading-relaxed text-inkmuted">
+              Kilkuetapowe oczyszczenie porów, dobrane do tego, w jakim stanie jest skóra danego dnia.
+            </p>
+          </div>
+
+          <div class="py-5">
+            <div class="flex items-baseline gap-3">
+              <h4 class="text-[1.0625rem] font-medium">Peelingi chemiczne</h4>
+              <span class="leader" aria-hidden="true"></span>
+              <p class="ml-auto shrink-0 whitespace-nowrap text-sm text-inkmuted sm:ml-0 lining">-- zł</p>
+            </div>
+            <p class="mt-2 max-w-[58ch] text-sm leading-relaxed text-inkmuted">
+              Kontrolowane złuszczanie kwasami. Pracuje nad przebarwieniami, szorstkością
+              i drobnymi zmarszczkami.
+            </p>
+          </div>
+
+          <div class="py-5">
+            <div class="flex items-baseline gap-3">
+              <h4 class="text-[1.0625rem] font-medium">Terapie przeciwtrądzikowe</h4>
+              <span class="leader" aria-hidden="true"></span>
+              <p class="ml-auto shrink-0 whitespace-nowrap text-sm text-inkmuted sm:ml-0 lining">-- zł</p>
+            </div>
+            <p class="mt-2 max-w-[58ch] text-sm leading-relaxed text-inkmuted">
+              Cykl zabiegów przy cerze trądzikowej i tłustej, rozpisany w czasie.
+              Efekt buduje się przez kilka wizyt, nie przez jedną.
+            </p>
+          </div>
+
+          <div class="py-5">
+            <div class="flex items-baseline gap-3">
+              <h4 class="text-[1.0625rem] font-medium">Geneo+</h4>
+              <span class="leader" aria-hidden="true"></span>
+              <p class="ml-auto shrink-0 whitespace-nowrap text-sm text-inkmuted sm:ml-0 lining">-- zł</p>
+            </div>
+            <p class="mt-2 max-w-[58ch] text-sm leading-relaxed text-inkmuted">
+              Natleniający zabieg na twarz. W jednym przejściu złuszcza naskórek, wywołuje efekt
+              dotlenienia i wprowadza składniki aktywne.
+            </p>
+          </div>
+
+        </div>
+
+        <p class="mt-5 text-sm text-inkmuted">Zabiegi na twarz wykonywane są u kobiet i u mężczyzn.</p>
+      </div>
+
+      <!-- ── CIAŁO ── -->
+      <div>
+        <h3 class="rule-heading wordmark text-[1.3rem] text-gold">
+          <span class="flex shrink-0 items-center gap-3">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 shrink-0" aria-hidden="true">
+              <circle cx="12" cy="4.5" r="2"/>
+              <path d="M12 7v6M8.5 9.5 12 11l3.5-1.5M9 21l1.5-8M15 21l-1.5-8"/>
+            </svg>
+            Ciało
+          </span>
+        </h3>
+
+        <div class="mt-7 divide-y divide-border border-b border-border">
+
+          <div class="py-5">
+            <div class="flex items-baseline gap-3">
+              <h4 class="text-[1.0625rem] font-medium">Endermologie Alliance LPG</h4>
+              <span class="leader" aria-hidden="true"></span>
+              <p class="ml-auto shrink-0 whitespace-nowrap text-sm text-inkmuted sm:ml-0 lining">-- zł</p>
+            </div>
+            <p class="mt-2 max-w-[58ch] text-sm leading-relaxed text-inkmuted">
+              Masaż mechaniczny wykonywany głowicą, która ujmuje i rozmasowuje fałd skóry.
+              Wspiera modelowanie sylwetki i pracę nad cellulitem. Skóra nie jest nakłuwana.
+            </p>
+          </div>
+
+          <div class="py-5">
+            <div class="flex items-baseline gap-3">
+              <h4 class="text-[1.0625rem] font-medium">Fala uderzeniowa STORZ MEDICAL</h4>
+              <span class="leader" aria-hidden="true"></span>
+              <p class="ml-auto shrink-0 whitespace-nowrap text-sm text-inkmuted sm:ml-0 lining">-- zł</p>
+            </div>
+            <p class="mt-2 max-w-[58ch] text-sm leading-relaxed text-inkmuted">
+              Fala akustyczna kierowana punktowo w tkankę. Wspomaga ujędrnianie ciała
+              i redukcję cellulitu, najczęściej w serii zabiegów.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── DEPILACJA LASEROWA ── -->
+      <div>
+        <h3 class="rule-heading wordmark text-[1.3rem] text-gold">
+          <span class="flex shrink-0 items-center gap-3">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 shrink-0" aria-hidden="true">
+              <path d="M13 3 7 13h4l-1 8 7-11h-4l1-7Z"/>
+            </svg>
+            Depilacja laserowa
+          </span>
+        </h3>
+
+        <div class="mt-7 divide-y divide-border border-b border-border">
+
+          <div class="py-5">
+            <h4 class="text-[1.0625rem] font-medium">PRIMELASE</h4>
+            <p class="mt-2 max-w-[58ch] text-sm leading-relaxed text-inkmuted">
+              Laser diodowy o mocy do 4800 W, pracujący w technologii USP, czyli ultrakrótkim impulsem.
+              Impuls kierowany jest punktowo w mieszek włosowy, z minimalnym oddziaływaniem na skórę wokół.
+              Zabieg jest szybki i zwykle dobrze tolerowany. Efekt buduje się w serii, a jego zakres
+              zależy od koloru włosa i rodzaju skóry.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- TODO: te dwie pozycje pochodza z materialu promocyjnego klientki (grafika
+             na Instagram/Facebook), nie z aktualnie obowiazujacego cennika — do
+             potwierdzenia z klientka, czy to ceny stale czy tylko z konkretnej
+             kampanii. Nie dodawano tu rabatu ani daty z grafiki (byla juz nieaktualna). -->
+        <div class="mt-5 divide-y divide-border border-y border-border">
+          <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 py-4">
+            <p class="text-[1.0625rem] font-medium">Pachy + bikini</p>
+            <p class="text-sm text-inkmuted">
+              <span class="lining">500 zł</span> / zabieg
+              <span class="mx-2 text-hairline" aria-hidden="true">·</span>
+              pakiet 7 zabiegów <span class="font-medium text-ink lining">2500 zł</span>
+            </p>
+          </div>
+          <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 py-4">
+            <p class="text-[1.0625rem] font-medium">Nogi <span class="font-normal text-inkmuted">(uda + łydki + kolana)</span></p>
+            <p class="text-sm text-inkmuted">
+              <span class="lining">500 zł</span> / zabieg
+              <span class="mx-2 text-hairline" aria-hidden="true">·</span>
+              pakiet 7 zabiegów <span class="font-medium text-ink lining">2500 zł</span>
+            </p>
+          </div>
+        </div>
+        <p class="mt-3 text-sm text-inkmuted">
+          Ceny z aktualnej promocji — zapytaj telefonicznie o obowiązującą ofertę.
+          Inne partie ciała: cena po konsultacji.
+        </p>
+
+        <dl class="mt-6 grid gap-x-8 gap-y-3 border-b border-border pb-6 sm:grid-cols-3">
+          <div>
+            <dt class="text-sm uppercase tracking-[0.18em] text-gold">Moc</dt>
+            <dd class="mt-1 text-sm lining">do 4800 W</dd>
+          </div>
+          <div>
+            <dt class="text-sm uppercase tracking-[0.18em] text-gold">Technologia</dt>
+            <dd class="mt-1 text-sm">USP, ultrakrótki impuls</dd>
+          </div>
+          <div>
+            <dt class="text-sm uppercase tracking-[0.18em] text-gold">Typ lasera</dt>
+            <dd class="mt-1 text-sm">diodowy</dd>
+          </div>
+        </dl>
+      </div>
+
+    </div>
+
+    <p class="mt-14 max-w-[52ch] text-sm leading-relaxed text-inkmuted">
+      W zabiegach używane są kosmetyki <span class="font-medium text-ink">Vagheggi</span>,
+      włoskiej marki profesjonalnej.
+    </p>
+
+  </div>
+</section>
+
+<!-- ══════════ VOUCHER PODARUNKOWY ══════════ -->
+<section id="voucher" class="scroll-mt-20 border-t border-hairline bg-surface px-4 py-16 sm:px-6 sm:py-24">
+  <div class="mx-auto grid max-w-wide items-center gap-10 lg:grid-cols-[0.85fr_1fr] lg:gap-16">
+
+    <!-- Prawdziwy voucher klientki. Kadr 4/5 trzyma czytelny napis "VOUCHER
+         PODARUNKOWY" na karcie z przodu, nie ucina go u gory ani u dolu. -->
+    <figure class="order-2 lg:order-1">
+      <div class="border border-hairline p-2 sm:p-2.5">
+        <img src="photos/voucher.jpg"
+             alt="Vouchery podarunkowe Cosmetology Avenue do samodzielnego wypełnienia — imię obdarowanej osoby, zabieg lub kwota"
+             width="1000" height="1334"
+             class="aspect-[4/5] w-full object-cover"
+             style="object-position: center 35%;">
+      </div>
+    </figure>
+
+    <div class="order-1 lg:order-2">
+      <h2 class="rule-heading wordmark text-[1.4rem] sm:text-[1.75rem]">
+        <span class="shrink-0">Voucher podarunkowy</span>
+      </h2>
+
+      <p class="mt-5 font-script text-[1.4rem] italic leading-snug text-gold">
+        na urodziny, święta albo bez okazji
+      </p>
+
+      <p class="mt-6 max-w-[46ch] leading-relaxed text-inkmuted">
+        Chcesz podarować komuś chwilę oddechu dla siebie? Voucher można wykorzystać
+        na konkretny zabieg albo na dowolną kwotę — wystawiamy go od ręki, w gabinecie.
+      </p>
+
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <a href="tel:+48511683488"
+           class="inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-gold px-7 py-3.5 text-[1.0625rem] font-medium tracking-wide text-bg transition hover:brightness-110 motion-reduce:transition-none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[1.15rem] w-[1.15rem] shrink-0" aria-hidden="true">
+            <path d="M6.5 3h3l1.5 4.5-2 1.5a12 12 0 0 0 6 6l1.5-2 4.5 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3Z" stroke-linejoin="round"/>
+          </svg>
+          <span class="lining whitespace-nowrap">Zamów: 511 683 488</span>
+        </a>
+        <a href="mailto:cosmetologyavenue@gmail.com"
+           class="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-gold px-6 py-3.5 text-sm tracking-wide text-ink transition hover:bg-bg motion-reduce:transition-none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-[1.05rem] w-[1.05rem]" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 6.5 8 6 8-6"/>
+          </svg>
+          Napisz e-mail
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════ OPINIE ══════════ -->
+<section id="opinie" class="scroll-mt-20 px-4 py-16 sm:px-6 sm:py-24">
+  <div class="mx-auto max-w-wide">
+
+    <h2 class="rule-heading wordmark text-[1.4rem] sm:text-[1.75rem]">
+      <span class="shrink-0">Opinie</span>
+    </h2>
+
+    <!-- Ocena Google — jedyna potwierdzona statystyka z briefu. -->
+    <div class="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3">
+      <p class="flex items-baseline gap-3">
+        <span class="text-[3rem] font-light leading-none lining sm:text-[3.6rem]">5,0</span>
+        <span class="text-sm text-inkmuted">/ 5</span>
+      </p>
+      <div>
+        <div class="flex gap-1 text-gold" role="img" aria-label="Ocena 5 na 5 gwiazdek">
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-[1.1rem] w-[1.1rem]" aria-hidden="true"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-[1.1rem] w-[1.1rem]" aria-hidden="true"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-[1.1rem] w-[1.1rem]" aria-hidden="true"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-[1.1rem] w-[1.1rem]" aria-hidden="true"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-[1.1rem] w-[1.1rem]" aria-hidden="true"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+        </div>
+        <p class="mt-2 text-sm text-inkmuted">15 opinii w Google</p>
+      </div>
+    </div>
+
+    <!-- TODO: link prowadzi na profil w Google, nie wprost do formularza opinii —
+         nie mamy jeszcze krotkiego linku "Dodaj opinię" z wizytówki Google Biznes.
+         Podmienic na g.page/r/.../review, gdy klientka go przysle. -->
+    <div class="mt-7 flex flex-wrap items-center gap-4">
+      <a href="https://www.google.com/maps/search/?api=1&query=Cosmetology%20Avenue%20Kostromska%2037%20Piotrk%C3%B3w%20Trybunalski"
+         target="_blank" rel="noopener"
+         class="inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-gold px-6 py-3.5 text-sm font-medium tracking-wide text-bg transition hover:brightness-110 motion-reduce:transition-none">
+        <svg viewBox="0 0 20 20" fill="currentColor" class="h-[1.1rem] w-[1.1rem] shrink-0" aria-hidden="true"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+        Dodaj opinię
+      </a>
+      <p class="text-sm text-inkmuted">Twoja opinia pozwala nam się rozwijać.</p>
+    </div>
+
+    <!-- Prawdziwe cytaty z publicznego profilu Google (przytoczone w formie,
+         w jakiej sa tam widoczne, autorzy wybrani dla roznorodnosci zabiegow —
+         patrz privacy.html sekcja "Zdjecia i opinie"). Wszystkie 15 opinii
+         w profilu ma 5 gwiazdek, stad srednia 5,0. -->
+    <div class="mt-12 grid gap-6 sm:grid-cols-3">
+
+      <blockquote class="border-t border-border pt-6">
+        <div class="flex gap-1 text-gold" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+        </div>
+        <p class="mt-4 text-lg leading-relaxed text-inkmuted">Wizyty u pani Moniki to sama przyjemność. Profesjonalizm i rewelacyjnie wykonane zabiegi. Jestem zachwycona efektami zabiegów na ciało oraz epilacji laserowej. Będę wracać regularnie na zabiegi.</p>
+        <footer class="mt-6 flex items-baseline justify-between gap-3 border-t border-border pt-4 text-sm text-inkmuted">
+          <span>Justyna Rogalska</span>
+          <span class="text-sm uppercase tracking-[0.18em] text-gold">Google</span>
+        </footer>
+      </blockquote>
+
+      <blockquote class="border-t border-border pt-6">
+        <div class="flex gap-1 text-gold" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+        </div>
+        <p class="mt-4 text-lg leading-relaxed text-inkmuted">Jestem bardzo zadowolony z zabiegu. Bardzo miła obsługa, czystość i sprzęt najwyższej klasy. Na koniec dostałem próbki kremów do testowania i porady pielęgnacyjne. Polecam.</p>
+        <footer class="mt-6 flex items-baseline justify-between gap-3 border-t border-border pt-4 text-sm text-inkmuted">
+          <span>Piotr Stępnicki</span>
+          <span class="text-sm uppercase tracking-[0.18em] text-gold">Google</span>
+        </footer>
+      </blockquote>
+
+      <blockquote class="border-t border-border pt-6">
+        <div class="flex gap-1 text-gold" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
+        </div>
+        <p class="mt-4 text-lg leading-relaxed text-inkmuted">Serdecznie polecam pakiet zabiegów endermologii oraz zabieg Storz! Efekty są naprawdę świetne — moja skóra jest w bardzo dobrym stanie, gładsza i bardziej jędrna.</p>
+        <footer class="mt-6 flex items-baseline justify-between gap-3 border-t border-border pt-4 text-sm text-inkmuted">
+          <span>Wioletta Kosma</span>
+          <span class="text-sm uppercase tracking-[0.18em] text-gold">Google</span>
+        </footer>
+      </blockquote>
+
+    </div>
+
+    <p class="mt-6 text-sm text-inkmuted">
+      <a href="https://www.google.com/maps/search/?api=1&amp;query=Cosmetology%20Avenue%20Kostromska%2037%20Piotrk%C3%B3w%20Trybunalski"
+         target="_blank" rel="noopener"
+         class="font-medium text-gold underline underline-offset-4 transition hover:brightness-90 motion-reduce:transition-none">Zobacz wszystkie 15 opinii w Google</a>.
+    </p>
+
+  </div>
+</section>
+
+<!-- ══════════ GALERIA ══════════ -->
+<section id="galeria" class="scroll-mt-20 bg-surface px-4 py-16 sm:px-6 sm:py-24">
+  <div class="mx-auto max-w-wide">
+
+    <h2 class="rule-heading wordmark text-[1.4rem] sm:text-[1.75rem]">
+      <span class="shrink-0">Galeria</span>
+    </h2>
+
+    <p class="mt-6 max-w-[52ch] leading-relaxed text-inkmuted">
+      Efekty zabiegów pokażemy tutaj jako zdjęcia przed i po. Do tego czasu — kilka
+      kadrów z samego gabinetu i kosmetyków, których używamy.
+    </p>
+
+    <!-- Pierwsze 3 kafle: miejsce na porownania przed/po z suwakiem, gdy klientka
+         przysle pary zdjec. TODO: zamienic kazdy kafel na komponent suwaka —
+         dwa zdjecia (before/after) w tym samym kadrze, .ba-clip przycinany
+         szerokoscia % sterowana przez <input type="range">, patrz README w
+         photos/galeria/. Na razie oznaczone jako puste, nie udaja gotowego efektu.
+         Ostatnie 3 kafle: prawdziwe zdjecia z gabinetu (produkty, zabieg). -->
+    <div class="mt-10 grid grid-cols-3 gap-3 sm:gap-4">
+      <div class="flex aspect-square flex-col items-center justify-center gap-2 border border-dashed border-hairline bg-bg/60 p-2 text-center" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" class="h-6 w-6 text-gold/60" aria-hidden="true"><path d="M12 4v16M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>
+        <span class="text-[0.68rem] uppercase tracking-[0.14em] text-inkmuted/70">Przed / Po</span>
+      </div>
+      <div class="flex aspect-square flex-col items-center justify-center gap-2 border border-dashed border-hairline bg-bg/60 p-2 text-center" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" class="h-6 w-6 text-gold/60" aria-hidden="true"><path d="M12 4v16M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>
+        <span class="text-[0.68rem] uppercase tracking-[0.14em] text-inkmuted/70">Przed / Po</span>
+      </div>
+      <div class="flex aspect-square flex-col items-center justify-center gap-2 border border-dashed border-hairline bg-bg/60 p-2 text-center" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" class="h-6 w-6 text-gold/60" aria-hidden="true"><path d="M12 4v16M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>
+        <span class="text-[0.68rem] uppercase tracking-[0.14em] text-inkmuted/70">Przed / Po</span>
+      </div>
+      <button type="button" data-index="0" class="gallery-tile group relative aspect-square overflow-hidden border border-hairline">
+        <img src="photos/galeria/produkty-vagheggi.jpg" alt="Zestaw kosmetyków Vagheggi Rehydra używanych w gabinecie" width="900" height="776" loading="lazy" class="h-full w-full object-cover transition duration-300 group-hover:scale-105" style="object-position: center 60%;">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" data-index="1" class="gallery-tile group relative aspect-square overflow-hidden border border-hairline">
+        <img src="photos/galeria/produkty-lpg.jpg" alt="Produkty pielęgnacyjne LPG Endermologie stosowane po zabiegach" width="900" height="900" loading="lazy" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" data-index="2" class="gallery-tile group relative aspect-square overflow-hidden border border-hairline">
+        <img src="photos/galeria/salon-zabieg.jpg" alt="Głowica urządzenia do endermologii podczas zabiegu w gabinecie" width="900" height="900" loading="lazy" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+    </div>
+
+    <a href="https://www.instagram.com/cosmetology_avenue/" target="_blank" rel="noopener"
+       class="mt-8 inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-gold px-7 py-3.5 text-sm tracking-wide transition hover:bg-bg motion-reduce:transition-none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-[1.15rem] w-[1.15rem]" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/>
+      </svg>
+      Zobacz Instagram gabinetu
+    </a>
+
+  </div>
+</section>
+
+<!-- ══════════ GODZINY, ADRES, MAPA, KONTAKT ══════════ -->
+<section id="kontakt" class="scroll-mt-20 px-4 py-16 sm:px-6 sm:py-24">
+  <div class="mx-auto max-w-wide">
+
+    <h2 class="rule-heading wordmark text-[1.4rem] sm:text-[1.75rem]">
+      <span class="shrink-0">Godziny i kontakt</span>
+    </h2>
+
+    <div class="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-16">
+
+      <!-- Godziny otwarcia -->
+      <div>
+        <h3 class="text-sm uppercase tracking-[0.18em] text-gold">Godziny otwarcia</h3>
+        <dl class="mt-5 divide-y divide-border border-y border-border text-[1.0625rem]">
+          <div class="flex items-center justify-between gap-4 py-3" data-day="1">
+            <dt class="flex items-center gap-2 text-inkmuted">
+              <span class="daymark h-1.5 w-1.5 shrink-0 rounded-full bg-gold" aria-hidden="true"></span>
+              Poniedziałek
+            </dt>
+            <dd class="lining">08:30 – 22:00</dd>
+          </div>
+          <div class="flex items-center justify-between gap-4 py-3" data-day="2">
+            <dt class="flex items-center gap-2 text-inkmuted">
+              <span class="daymark h-1.5 w-1.5 shrink-0 rounded-full bg-gold" aria-hidden="true"></span>
+              Wtorek
+            </dt>
+            <dd class="lining">08:30 – 15:00</dd>
+          </div>
+          <div class="flex items-center justify-between gap-4 py-3" data-day="3">
+            <dt class="flex items-center gap-2 text-inkmuted">
+              <span class="daymark h-1.5 w-1.5 shrink-0 rounded-full bg-gold" aria-hidden="true"></span>
+              Środa
+            </dt>
+            <dd class="lining">08:30 – 22:00</dd>
+          </div>
+          <div class="flex items-center justify-between gap-4 py-3" data-day="4">
+            <dt class="flex items-center gap-2 text-inkmuted">
+              <span class="daymark h-1.5 w-1.5 shrink-0 rounded-full bg-gold" aria-hidden="true"></span>
+              Czwartek
+            </dt>
+            <dd class="lining">08:00 – 22:00</dd>
+          </div>
+          <div class="flex items-center justify-between gap-4 py-3" data-day="5">
+            <dt class="flex items-center gap-2 text-inkmuted">
+              <span class="daymark h-1.5 w-1.5 shrink-0 rounded-full bg-gold" aria-hidden="true"></span>
+              Piątek
+            </dt>
+            <dd class="lining">08:00 – 22:00</dd>
+          </div>
+          <div class="flex items-center justify-between gap-4 py-3" data-day="6">
+            <dt class="flex items-center gap-2 text-inkmuted">
+              <span class="daymark h-1.5 w-1.5 shrink-0 rounded-full bg-gold" aria-hidden="true"></span>
+              Sobota
+            </dt>
+            <dd class="lining">08:00 – 21:00</dd>
+          </div>
+          <div class="flex items-center justify-between gap-4 py-3" data-day="0">
+            <dt class="flex items-center gap-2 text-inkmuted">
+              <span class="daymark h-1.5 w-1.5 shrink-0 rounded-full bg-gold" aria-hidden="true"></span>
+              Niedziela
+            </dt>
+            <dd>Zamknięte</dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Adres i kontakt -->
+      <div>
+        <h3 class="text-sm uppercase tracking-[0.18em] text-gold">Gabinet</h3>
+        <address class="mt-5 not-italic text-[1.0625rem] leading-relaxed">
+          Kostromska 37 / Lokal 1<br>
+          97-300 Piotrków Trybunalski
+        </address>
+
+        <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+          <a href="tel:+48511683488"
+             class="inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-gold px-7 py-3.5 text-[1.0625rem] font-medium tracking-wide text-bg transition hover:brightness-110 motion-reduce:transition-none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[1.15rem] w-[1.15rem] shrink-0" aria-hidden="true">
+              <path d="M6.5 3h3l1.5 4.5-2 1.5a12 12 0 0 0 6 6l1.5-2 4.5 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3Z" stroke-linejoin="round"/>
+            </svg>
+            <span class="lining">511 683 488</span>
+          </a>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=Kostromska+37%2C+97-300+Piotrk%C3%B3w+Trybunalski"
+             target="_blank" rel="noopener"
+             class="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-gold px-7 py-3.5 text-sm tracking-wide transition hover:bg-surface motion-reduce:transition-none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-[1.15rem] w-[1.15rem]" aria-hidden="true">
+              <path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/>
+            </svg>
+            Wyznacz trasę
+          </a>
+        </div>
+
+        <h3 class="mt-10 text-sm uppercase tracking-[0.18em] text-gold">Email</h3>
+        <a href="mailto:cosmetologyavenue@gmail.com"
+           class="mt-4 inline-flex min-h-[44px] items-center gap-2 text-sm underline underline-offset-4 transition hover:text-gold motion-reduce:transition-none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-[1.05rem] w-[1.05rem]" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 6.5 8 6 8-6"/>
+          </svg>
+          cosmetologyavenue@gmail.com
+        </a>
+
+        <h3 class="mt-8 text-sm uppercase tracking-[0.18em] text-gold">Social media</h3>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href="https://www.instagram.com/cosmetology_avenue/" target="_blank" rel="noopener"
+             class="inline-flex min-h-[44px] items-center gap-2 text-sm underline underline-offset-4 transition hover:text-gold motion-reduce:transition-none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-[1.05rem] w-[1.05rem]" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/>
+            </svg>
+            cosmetology_avenue
+          </a>
+          <a href="https://www.facebook.com/CosmetologyAvenue/" target="_blank" rel="noopener"
+             class="inline-flex min-h-[44px] items-center gap-2 text-sm underline underline-offset-4 transition hover:text-gold motion-reduce:transition-none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-[1.05rem] w-[1.05rem]" aria-hidden="true">
+              <path d="M14.5 8.5V6.9c0-.8.4-1.4 1.4-1.4h1.6V2.6c-.4-.1-1.4-.2-2.4-.2-2.4 0-3.9 1.4-3.9 4v2.1H8.5v3h2.7v8h3.3v-8h2.6l.4-3h-3Z" stroke-linejoin="round"/>
+            </svg>
+            Cosmetology Avenue
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Mapa -->
+    <div class="mt-12 overflow-hidden border border-hairline">
+      <iframe
+        title="Mapa: Kostromska 37, 97-300 Piotrków Trybunalski"
+        src="https://maps.google.com/maps?q=Kostromska%2037%2C%2097-300%20Piotrk%C3%B3w%20Trybunalski&z=16&output=embed"
+        class="mapframe h-[300px] w-full sm:h-[380px]"
+        style="border:0;"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════ LIGHTBOX GALERII ══════════ -->
+<div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-[rgba(33,29,25,.92)] p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia z galerii">
+  <button type="button" id="lightboxClose" aria-label="Zamknij podgląd"
+          class="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(247,243,237,.14)] text-bg transition hover:bg-[rgba(247,243,237,.24)] motion-reduce:transition-none sm:right-6 sm:top-6">
+    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <button type="button" id="lightboxPrev" aria-label="Poprzednie zdjęcie"
+          class="absolute left-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(247,243,237,.14)] text-bg transition hover:bg-[rgba(247,243,237,.24)] motion-reduce:transition-none sm:left-5">
+    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+  <button type="button" id="lightboxNext" aria-label="Następne zdjęcie"
+          class="absolute right-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(247,243,237,.14)] text-bg transition hover:bg-[rgba(247,243,237,.24)] motion-reduce:transition-none sm:right-5">
+    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <figure class="mx-auto flex max-h-full max-w-3xl flex-col items-center">
+    <img id="lightboxImg" src="" alt="" class="max-h-[75vh] w-auto object-contain shadow-[0_20px_60px_rgba(0,0,0,.4)]">
+    <figcaption id="lightboxCounter" class="mt-4 text-sm uppercase tracking-[0.18em] text-bg/80" aria-live="polite"></figcaption>
+  </figure>
+</div>
+
+<!-- ══════════ STOPKA ══════════ -->
+<footer class="border-t border-hairline bg-surface px-4 py-14 sm:px-6">
+  <div class="mx-auto max-w-wide">
+
+    <div class="ornament" aria-hidden="true"><span class="text-sm">✦</span></div>
+
+    <div class="mt-10 grid gap-10 sm:grid-cols-2">
+      <div>
+        <div class="flex flex-col items-start gap-3">
+          <img src="photos/logo-mark.png" alt="" width="132" height="132" class="h-14 w-14 object-contain" loading="lazy">
+          <img src="photos/logo-wordmark.png" alt="Cosmetology Avenue, Monika Pabich" width="423" height="72" class="h-6 w-auto object-contain" loading="lazy">
+        </div>
+        <p class="mt-5 text-sm leading-relaxed text-inkmuted">
+          Kostromska 37 / Lokal 1<br>
+          97-300 Piotrków Trybunalski
+        </p>
+        <a href="tel:+48511683488" class="mt-1 inline-flex min-h-[44px] items-center text-sm font-medium underline underline-offset-4 transition hover:text-gold motion-reduce:transition-none lining">
+          511 683 488
+        </a>
+        <a href="mailto:cosmetologyavenue@gmail.com" class="mt-1 flex min-h-[44px] items-center text-sm underline underline-offset-4 transition hover:text-gold motion-reduce:transition-none">
+          cosmetologyavenue@gmail.com
+        </a>
+      </div>
+
+      <div class="sm:text-right">
+        <p class="text-sm uppercase tracking-[0.18em] text-gold">Zapisy</p>
+        <p class="mt-3 max-w-[34ch] text-sm leading-relaxed text-inkmuted sm:ml-auto">
+          Terminy ustalamy telefonicznie. Można też napisać wiadomość na Instagramie albo Facebooku.
+        </p>
+        <div class="mt-5 flex gap-4 sm:justify-end">
+          <a href="https://www.instagram.com/cosmetology_avenue/" target="_blank" rel="noopener"
+             class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gold transition hover:bg-bg motion-reduce:transition-none" aria-label="Instagram gabinetu Cosmetology Avenue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-5 w-5" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+          <a href="https://www.facebook.com/CosmetologyAvenue/" target="_blank" rel="noopener"
+             class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gold transition hover:bg-bg motion-reduce:transition-none" aria-label="Facebook gabinetu Cosmetology Avenue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-5 w-5" aria-hidden="true">
+              <path d="M14.5 8.5V6.9c0-.8.4-1.4 1.4-1.4h1.6V2.6c-.4-.1-1.4-.2-2.4-.2-2.4 0-3.9 1.4-3.9 4v2.1H8.5v3h2.7v8h3.3v-8h2.6l.4-3h-3Z" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 flex flex-col gap-3 border-t border-border pt-6 text-sm text-inkmuted sm:flex-row sm:items-center sm:justify-between">
+      <p>© <span class="lining">2026</span> Cosmetology Avenue, Monika Pabich</p>
+      <a href="privacy.html" class="inline-flex min-h-[44px] items-center underline underline-offset-4 transition hover:text-gold motion-reduce:transition-none">Polityka prywatności</a>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  /* Zaznacza dzisiejszy dzien w godzinach otwarcia. Progresywne ulepszenie:
+     bez JS tabela wyglada tak samo, tylko bez kropki. */
+  (function () {
+    var row = document.querySelector('[data-day="' + new Date().getDay() + '"]');
+    if (!row) return;
+    row.classList.add('today');
+    var label = document.createElement('span');
+    label.className = 'sr-only';
+    label.textContent = 'Dzisiaj: ';
+    row.querySelector('dt').prepend(label);
+  })();
+</script>
+
+<script>
+  /* Podswietla w menu sekcje, ktora jest aktualnie widoczna. Progresywne
+     ulepszenie: bez JS menu dziala normalnie, po prostu bez wyroznienia. */
+  (function () {
+    var links = document.querySelectorAll('.nav-link');
+    if (!links.length || !('IntersectionObserver' in window)) return;
+    var linkFor = {};
+    links.forEach(function (a) { linkFor[a.dataset.nav] = a; });
+    var sections = Array.prototype.filter.call(
+      document.querySelectorAll('main > section[id]'),
+      function (s) { return linkFor[s.id]; }
+    );
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        links.forEach(function (a) { a.classList.remove('active'); });
+        linkFor[entry.target.id].classList.add('active');
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    sections.forEach(function (s) { observer.observe(s); });
+  })();
+</script>
+
+<script>
+  /* Lightbox galerii: klik na kaflu ze zdjeciem otwiera powiekszenie,
+     strzalki lewo/prawo przelaczaja miedzy 3 prawdziwymi zdjeciami.
+     Placeholdery "Przed / Po" nie sa kaflami .gallery-tile — nie maja
+     jeszcze tresci, wiec nie otwieraja lightboxa. */
+  (function () {
+    var GALERIA = [
+      { src: 'photos/galeria/produkty-vagheggi.jpg', alt: 'Zestaw kosmetyków Vagheggi Rehydra używanych w gabinecie' },
+      { src: 'photos/galeria/produkty-lpg.jpg', alt: 'Produkty pielęgnacyjne LPG Endermologie stosowane po zabiegach' },
+      { src: 'photos/galeria/salon-zabieg.jpg', alt: 'Głowica urządzenia do endermologii podczas zabiegu w gabinecie' }
+    ];
+
+    var lightbox = document.getElementById('lightbox');
+    var img = document.getElementById('lightboxImg');
+    var counter = document.getElementById('lightboxCounter');
+    var btnClose = document.getElementById('lightboxClose');
+    var btnPrev = document.getElementById('lightboxPrev');
+    var btnNext = document.getElementById('lightboxNext');
+    var tiles = document.querySelectorAll('.gallery-tile');
+    if (!lightbox || !tiles.length) return;
+    var current = 0;
+    var lastFocused = null;
+
+    function render() {
+      img.src = GALERIA[current].src;
+      img.alt = GALERIA[current].alt;
+      counter.textContent = (current + 1) + ' / ' + GALERIA.length;
+    }
+    function open(index) {
+      current = index;
+      lastFocused = document.activeElement;
+      render();
+      lightbox.classList.remove('hidden');
+      lightbox.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      btnClose.focus();
+    }
+    function close() {
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+      document.body.style.overflow = '';
+      if (lastFocused) lastFocused.focus();
+    }
+    function next() { current = (current + 1) % GALERIA.length; render(); }
+    function prev() { current = (current - 1 + GALERIA.length) % GALERIA.length; render(); }
+
+    tiles.forEach(function (tile) {
+      tile.addEventListener('click', function () {
+        open(parseInt(tile.getAttribute('data-index'), 10));
+      });
+    });
+    btnClose.addEventListener('click', close);
+    btnNext.addEventListener('click', next);
+    btnPrev.addEventListener('click', prev);
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lightbox) close();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (lightbox.classList.contains('hidden')) return;
+      if (e.key === 'Escape') { close(); return; }
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key !== 'Tab') return;
+      // Focus-trap: przy otwartym modalu Tab krazy tylko miedzy jego 3 przyciskami,
+      // nie ucieka do nawigacji/tresci strony pod spodem.
+      var focusable = [btnClose, btnPrev, btnNext];
+      var idx = focusable.indexOf(document.activeElement);
+      e.preventDefault();
+      var nextIdx = e.shiftKey
+        ? (idx <= 0 ? focusable.length - 1 : idx - 1)
+        : (idx === focusable.length - 1 ? 0 : idx + 1);
+      focusable[nextIdx].focus();
+    });
+  })();
+</script>
+
+</body>
+</html>
