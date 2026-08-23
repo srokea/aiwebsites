@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juliett Beauty Room — stylizacja paznokci i brwi w Bełchatowie</title>
+<meta name="description" content="Juliett Beauty Room, Plac Wolności 14 w Bełchatowie. Manicure, pedicure, przedłużanie paznokci oraz henna, laminacja i regulacja brwi. Ponad 100 zadowolonych klientek. Rezerwacja przez Booksy.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Juliett Beauty Room — stylizacja paznokci i brwi w Bełchatowie">
+<meta property="og:description" content="Manicure, pedicure i przedłużanie paznokci oraz nowość: henna, laminacja i regulacja brwi. Plac Wolności 14, Bełchatów. Zapisy przez Booksy.">
+<!-- TODO przy deployu: pelne adresy absolutne w og:image i og:url (https://domena/...). -->
+<meta property="og:image" content="photos/logo.png">
+<meta property="og:locale" content="pl_PL">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  /* PALETA - wyjatek per klient uzgodniony w brief.md: fiolet + lawenda zamiast akcentu
+     z puli ziemistej agencji. Klientka ma juz wlasny, powtarzalny system wizualny
+     (akwarela lawendowa, czarny skrypt, fioletowe Beauty ROOM, okragle winiety),
+     wiec jej marka wygrywa z domyslna regula niszy (DESIGN.md, Override per fizyczny lokal).
+
+     Hexy zmierzone bezposrednio z plikow w photos/ (kanwa + histogram), nie przepisane z briefu:
+       accent   #88147B  = napis Beauty ROOM z pliku logo (9 576 px, hue 270-330, s>35)
+       lavender #DFD0EA  = srednia akwareli z plakatu urodzinowego (566 167 px)
+       surface  #F4ECF8  = najczestszy ton akwareli, powtarza sie na 3 plakatach (~50 tys. px kazdy)
+       surface2 #E8DAF2  = ciemniejszy wash tych samych plakatow
+       ring     #BCA0DC  = pierscien pedzla wokol okraglej winiety (60 465 px, plakat Oferta specjalna)
+       ink      #1A1418  = czern skryptu z logo (#080808) ocieplona, zeby nie byla czystym #000
+       gold     #A8811E  = zloty akcent z briefu (#C9A227) przyciemniony do 3,6:1 na bieli,
+                           bo #C9A227 daje tylko 2,4:1. Uzywany wylacznie jako grafika
+                           (gwiazdki, cienkie linie ornamentu), nigdy jako tekst.
+
+     Kontrast (WCAG): ink/bg 15,3 - inkmuted/bg 6,1 - inkmuted/surface 5,3
+                      accent/bg 8,7 - bialy/accent 8,7 - gold/bg 3,6 (tylko grafika) */
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg:       '#FFFFFF',
+          surface:  '#F4ECF8',
+          surface2: '#E8DAF2',
+          lavender: '#DFD0EA',
+          ring:     '#BCA0DC',
+          ink:      '#1A1418',
+          inkmuted: '#6B5E70',
+          accent:   '#88147B',
+          accentdk: '#6E1064',
+          gold:     '#A8811E',
+          border:   'rgba(26,20,24,0.12)',
+        },
+        fontFamily: {
+          display: ['"Prata"', 'Georgia', 'serif'],
+          body:    ['"Quicksand"', 'system-ui', 'sans-serif'],
+        },
+        maxWidth: { content: '68rem', prose: '42rem' },
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO: przegladarka nie odpytuje serwerow Google). */
+  @font-face {
+    font-family: 'Prata'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/prata-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    /* Google nie serwuje dla Praty statycznego subsetu latin-ext - to wycinek text= z polskimi znakami. */
+    font-family: 'Prata'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/prata-latin-ext.woff2') format('woff2');
+    unicode-range: U+0104-0107, U+0118-0119, U+0141-0144, U+015A-015B, U+0179-017C;
+  }
+  @font-face {
+    font-family: 'Quicksand'; font-style: normal; font-weight: 400 700; font-display: swap;
+    src: url('fonts/quicksand-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Quicksand'; font-style: normal; font-weight: 400 700; font-display: swap;
+    src: url('fonts/quicksand-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 92px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  }
+  :focus-visible { outline: 2px solid #88147B; outline-offset: 3px; border-radius: 6px; }
+
+  /* Szklany navbar. */
+  .glass { background: rgba(255,255,255,.88); backdrop-filter: saturate(160%) blur(14px); -webkit-backdrop-filter: saturate(160%) blur(14px); }
+
+  /* Akwarelowe plamy w tle - technika ze Stylu 06, wyciszona do rejestru klientki.
+     To jej lawendowy wash z plakatow, nie gradientowe hero SaaS. */
+  .wash { position: absolute; border-radius: 9999px; filter: blur(70px); pointer-events: none; z-index: 0; }
+
+  /* Cienka czarna ramka z przerwa u gory - powtarzalny motyw z JEJ plakatow
+     (konkurs urodzinowy, rekrutacja, dwie oferty specjalne). */
+  .bracket { position: absolute; inset: 0; pointer-events: none; }
+  .bracket svg { display: block; width: 100%; height: 100%; }
+
+  /* Okragla winieta: pierscien pedzla + zdjecie albo placeholder w kole.
+     To wlasna, potwierdzona technika klientki - na jej plakatach zdjecia NIGDY nie sa prostokatne. */
+  .vignette { position: relative; aspect-ratio: 1 / 1; }
+  .vignette-ring { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .vignette-inner {
+    position: absolute; inset: 9%; border-radius: 9999px; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .vignette-inner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .vignette-empty { border: 1.5px dashed rgba(136,20,123,.42); background: #FBF7FD; }
+
+  /* Ornament naglowka sekcji: podwojna linia z logo + kwiat po srodku (technika inline SVG ze Stylu 13). */
+  .ornament { display: flex; align-items: center; justify-content: center; gap: 14px; color: #BCA0DC; }
+  .ornament::before, .ornament::after {
+    content: ""; height: 0; width: 44px;
+    border-top: 1px solid rgba(26,20,24,.55);
+    box-shadow: 0 4px 0 -3px rgba(26,20,24,.55);
+  }
+
+  /* Miejsce do uzupelnienia przez klientke (ceny, godziny, tresc opinii). */
+  .blank {
+    display: inline-block; min-width: 3.4rem;
+    border-bottom: 1.5px dashed rgba(136,20,123,.55);
+    transform: translateY(-.28em);
+  }
+  .todo {
+    display: inline-flex; align-items: center; gap: .4rem;
+    border: 1px dashed rgba(136,20,123,.38); border-radius: 9999px;
+    padding: .18rem .62rem; font-size: .68rem; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase; color: #88147B; background: #FBF7FD;
+  }
+
+  /* Delikatne kolysanie lisci (technika ze Stylu 13). Wylaczone przy prefers-reduced-motion. */
+  @keyframes sway { 0%, 100% { transform: rotate(-2.2deg); } 50% { transform: rotate(2.2deg); } }
+  .sway { transform-origin: bottom center; animation: sway 9s ease-in-out infinite; }
+  .sway-slow { transform-origin: bottom center; animation: sway 13s ease-in-out infinite; }
+
+  /* Glif Booksy wyodrebniony z oficjalnej ikonki aplikacji (biala ikonka na turkusowym tle),
+     przekolorowany na currentColor przez CSS mask - nie kopiujemy turkusowego brandingu Booksy,
+     tylko ksztalt, w palecie tej klientki. */
+  :root { --booksy: url('data:image/png;base64,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'); }
+
+  .icon-booksy {
+    display: inline-block; flex-shrink: 0; width: 1.32rem; height: 1rem;
+    background-color: currentColor;
+    -webkit-mask-image: var(--booksy); mask-image: var(--booksy);
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    -webkit-mask-position: center; mask-position: center;
+    -webkit-mask-size: contain; mask-size: contain;
+  }
+
+  .press { transition: transform .15s ease, background-color .15s ease, border-color .15s ease, color .15s ease; }
+  .press:active { transform: translateY(1px); }
+
+  .nav-link.is-active { color: #88147B; font-weight: 700; }
+
+  /* Mapa spieta z motywem (potwierdzona praktyka z DESIGN.md). */
+  .map-tint { position: absolute; inset: 0; pointer-events: none; background: #88147B; opacity: .12; mix-blend-mode: color; }
+</style>
+</head>
+
+<body class="bg-bg font-body text-ink antialiased">
+
+<a href="#tresc" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-accent focus:px-5 focus:py-3 focus:text-white">Przejdź do treści</a>
+
+<!-- Botaniczne ilustracje inline SVG (technika ze Stylu 13), rysowane w kresce
+     linearnych kwiatow, ktore klientka ma juz we wlasnym logo. -->
+<svg width="0" height="0" class="absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-leaf" viewBox="0 0 24 12">
+      <path d="M1 11C3 4 10 1 23 1c-2 7-9 10-22 10Z" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+      <path d="M2.5 10.4C8 8.4 16 5 22 1.8" fill="none" stroke="currentColor" stroke-width=".75" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-bloom" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="round">
+        <path d="M12 12.4C8.9 8.8 8.9 4.8 12 2.2c3.1 2.6 3.1 6.6 0 10.2Z"/>
+        <path d="M12 12.4C8.9 8.8 8.9 4.8 12 2.2c3.1 2.6 3.1 6.6 0 10.2Z" transform="rotate(72 12 12)"/>
+        <path d="M12 12.4C8.9 8.8 8.9 4.8 12 2.2c3.1 2.6 3.1 6.6 0 10.2Z" transform="rotate(144 12 12)"/>
+        <path d="M12 12.4C8.9 8.8 8.9 4.8 12 2.2c3.1 2.6 3.1 6.6 0 10.2Z" transform="rotate(216 12 12)"/>
+        <path d="M12 12.4C8.9 8.8 8.9 4.8 12 2.2c3.1 2.6 3.1 6.6 0 10.2Z" transform="rotate(288 12 12)"/>
+        <circle cx="12" cy="12" r="1.7"/>
+      </g>
+    </symbol>
+    <!-- Galazka do naroznikow hero i stopki, w duchu kwiatow flankujacych wordmark w logo. -->
+    <symbol id="i-sprig" viewBox="0 0 120 180">
+      <g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round">
+        <path d="M10 178C15 132 27 96 51 65 66 45 82 30 97 19"/>
+      </g>
+      <g stroke="currentColor" fill="none">
+        <use href="#i-leaf" width="24" height="12" transform="translate(15 146) rotate(-58)"/>
+        <use href="#i-leaf" width="24" height="12" transform="translate(17 141) rotate(122) scale(.86)"/>
+        <use href="#i-leaf" width="24" height="12" transform="translate(24 118) rotate(-52)"/>
+        <use href="#i-leaf" width="24" height="12" transform="translate(27 113) rotate(128) scale(.86)"/>
+        <use href="#i-leaf" width="24" height="12" transform="translate(38 90) rotate(-46)"/>
+        <use href="#i-leaf" width="24" height="12" transform="translate(42 85) rotate(134) scale(.86)"/>
+        <use href="#i-leaf" width="24" height="12" transform="translate(58 60) rotate(-40)"/>
+        <use href="#i-leaf" width="24" height="12" transform="translate(63 56) rotate(140) scale(.82)"/>
+        <use href="#i-bloom" width="30" height="30" transform="translate(84 6)"/>
+      </g>
+    </symbol>
+    <linearGradient id="g-star80" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="80%" stop-color="#A8811E"/>
+      <stop offset="80%" stop-color="#A8811E" stop-opacity=".26"/>
+    </linearGradient>
+    <symbol id="i-star80" viewBox="0 0 20 20">
+      <path d="M10 1.4l2.5 5.3 5.6.8-4.1 4.1 1 5.8-5-2.8-5 2.8 1-5.8L1.9 7.5l5.6-.8L10 1.4Z" fill="url(#g-star80)"/>
+    </symbol>
+    <symbol id="i-star" viewBox="0 0 20 20">
+      <path d="M10 1.4l2.5 5.3 5.6.8-4.1 4.1 1 5.8-5-2.8-5 2.8 1-5.8L1.9 7.5l5.6-.8L10 1.4Z" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+
+<!-- ============================ NAWIGACJA ============================ -->
+<header class="glass sticky top-0 z-40 border-b border-border">
+  <div class="mx-auto flex max-w-[78rem] items-center justify-between gap-2 px-4 py-2.5 sm:gap-3 sm:px-6 sm:py-3 xl:px-8">
+
+    <a href="#gora" class="flex min-h-[44px] shrink-0 items-center" aria-label="Juliett Beauty Room - strona główna">
+      <img src="photos/logo.webp" alt="Juliett Beauty Room" width="1000" height="333"
+           class="h-9 w-auto sm:h-14">
+    </a>
+
+    <nav class="hidden items-center gap-6 text-[.95rem] font-medium text-inkmuted lg:flex xl:gap-8" aria-label="Nawigacja główna">
+      <a href="#uslugi"  class="nav-link press inline-flex min-h-[44px] items-center whitespace-nowrap hover:text-accent">Usługi i cennik</a>
+      <a href="#zaufanie" class="nav-link press inline-flex min-h-[44px] items-center whitespace-nowrap hover:text-accent">Dlaczego my</a>
+      <a href="#opinie"  class="nav-link press inline-flex min-h-[44px] items-center whitespace-nowrap hover:text-accent">Opinie</a>
+      <a href="#galeria" class="nav-link press inline-flex min-h-[44px] items-center whitespace-nowrap hover:text-accent">Galeria</a>
+      <a href="#kontakt" class="nav-link press inline-flex min-h-[44px] items-center whitespace-nowrap hover:text-accent">Kontakt</a>
+    </nav>
+
+    <div class="flex shrink-0 items-center gap-2 lg:gap-3">
+      <a href="tel:+48732701331"
+         class="press inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full border border-border px-2.5 font-semibold text-ink hover:border-accent hover:text-accent sm:px-4">
+        <svg viewBox="0 0 24 24" class="h-[18px] w-[18px]" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>
+        </svg>
+        <span class="hidden text-[.95rem] md:inline">732 701 331</span>
+        <span class="sr-only md:hidden">Zadzwoń: 732 701 331</span>
+      </a>
+
+      <a href="https://booksy.com/pl-pl/325749_juliett-beauty-room_paznokcie_25231_belchatow#ba_s=seo"
+         target="_blank" rel="noopener"
+         class="press inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full bg-accent px-3.5 font-bold text-white hover:bg-accentdk sm:px-5">
+        <span class="icon-booksy" aria-hidden="true"></span>
+        <span class="text-[.95rem]">Rezerwuj<span class="hidden sm:inline"> w Booksy</span></span>
+      </a>
+    </div>
+
+  </div>
+</header>
+
+<main id="tresc">
+
+<!-- ============================ HERO ============================ -->
+<section id="gora" class="relative overflow-hidden bg-bg px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-16">
+  <!-- Akwarelowy wash w tle: dokladnie te tony, ktore niosa jej plakaty. -->
+  <div class="wash" style="width:32rem;height:32rem;top:-9rem;left:-11rem;background:#DFD0EA;opacity:.55" aria-hidden="true"></div>
+  <div class="wash" style="width:26rem;height:26rem;top:4rem;right:-9rem;background:#E8DAF2;opacity:.6" aria-hidden="true"></div>
+  <div class="wash" style="width:22rem;height:22rem;bottom:-8rem;left:30%;background:#F0DCEC;opacity:.5" aria-hidden="true"></div>
+
+  <!-- Galazki w naroznikach: motyw botaniczny z logo rozciagniety na strone. -->
+  <svg class="sway pointer-events-none absolute -left-6 bottom-0 hidden h-64 w-auto text-ink/25 lg:block" viewBox="0 0 120 180" aria-hidden="true"><use href="#i-sprig" width="120" height="180"/></svg>
+  <svg class="sway-slow pointer-events-none absolute -right-6 bottom-0 hidden h-64 w-auto -scale-x-100 text-ink/25 lg:block" viewBox="0 0 120 180" aria-hidden="true"><use href="#i-sprig" width="120" height="180"/></svg>
+
+  <div class="relative z-10 mx-auto max-w-3xl">
+    <!-- Cienka ramka z przerwa u gory - powtarzalny motyw z jej plakatow. -->
+    <div class="relative px-5 pb-10 pt-14 sm:px-10 sm:pb-12 sm:pt-16">
+      <div class="bracket" aria-hidden="true">
+        <svg viewBox="0 0 400 300" preserveAspectRatio="none">
+          <path d="M168 1H1v298h398V1H232" fill="none" stroke="#1A1418" stroke-width="1.4" vector-effect="non-scaling-stroke"/>
+        </svg>
+      </div>
+      <svg class="absolute left-1/2 top-0 h-9 w-9 -translate-x-1/2 -translate-y-1/2 text-accent" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-bloom" width="24" height="24"/></svg>
+
+      <img src="photos/logo.webp" width="1000" height="333" fetchpriority="high"
+           alt="Juliett Beauty Room - stylizacja paznokci i brwi w Bełchatowie"
+           class="mx-auto block w-full max-w-[26rem] sm:max-w-[30rem]">
+
+      <h1 class="mx-auto mt-7 max-w-prose text-center font-display text-[1.55rem] leading-snug [text-wrap:balance] sm:text-[2.05rem]">
+        Idealne stylizacje i&nbsp;bezpieczny salon w&nbsp;sercu Bełchatowa
+      </h1>
+
+      <p class="mx-auto mt-4 max-w-prose text-center text-[1.02rem] leading-relaxed text-inkmuted">
+        Paznokcie i brwi w jednym miejscu. Ponad sto klientek zaufało nam od otwarcia salonu przy Placu Wolności 14.
+      </p>
+
+      <div class="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+        <a href="https://booksy.com/pl-pl/325749_juliett-beauty-room_paznokcie_25231_belchatow#ba_s=seo"
+           target="_blank" rel="noopener"
+           class="press inline-flex min-h-[54px] items-center justify-center gap-2.5 rounded-full bg-accent px-7 text-base font-bold text-white hover:bg-accentdk">
+          <span class="icon-booksy" aria-hidden="true"></span>
+          Umów wizytę w Booksy
+        </a>
+        <a href="tel:+48732701331"
+           class="press inline-flex min-h-[54px] items-center justify-center rounded-full border border-ink/35 px-7 text-base font-semibold text-ink hover:border-accent hover:text-accent">
+          Zadzwoń: 732 701 331
+        </a>
+      </div>
+    </div>
+
+    <!-- Trzy fakty, wszystkie potwierdzone w materialach klientki. -->
+    <dl class="mt-10 grid grid-cols-3 gap-3 text-center sm:gap-6">
+      <div>
+        <dt class="font-display text-2xl text-accent sm:text-3xl">100+</dt>
+        <dd class="mt-1 text-[.8rem] leading-tight text-inkmuted sm:text-sm">zadowolonych klientek</dd>
+      </div>
+      <div class="border-x border-border">
+        <dt class="font-display text-2xl text-accent sm:text-3xl">4,8</dt>
+        <dd class="mt-1 text-[.8rem] leading-tight text-inkmuted sm:text-sm">średnia w Booksy</dd>
+      </div>
+      <div>
+        <dt class="font-display text-2xl text-accent sm:text-3xl">5,0</dt>
+        <dd class="mt-1 text-[.8rem] leading-tight text-inkmuted sm:text-sm">średnia w Google</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+
+<!-- ============================ USŁUGI I CENNIK ============================ -->
+<section id="uslugi" class="bg-surface px-4 py-16 sm:px-6 sm:py-24">
+  <div class="mx-auto max-w-content">
+
+    <div class="ornament" aria-hidden="true">
+      <svg class="h-5 w-5 text-accent" viewBox="0 0 24 24"><use href="#i-bloom" width="24" height="24"/></svg>
+    </div>
+    <h2 class="mt-5 text-center font-display text-[1.85rem] leading-tight [text-wrap:balance] sm:text-[2.6rem]">Usługi i cennik</h2>
+    <p class="mx-auto mt-4 max-w-prose text-center leading-relaxed text-inkmuted">
+      Dwie specjalizacje pod jednym adresem. Paznokcie robimy od otwarcia salonu, brwi doszły do oferty jako nowość.
+    </p>
+
+    <div class="mt-12 grid gap-10 md:grid-cols-2 md:gap-14">
+
+      <!-- Paznokcie -->
+      <div>
+        <div class="flex items-center gap-3">
+          <svg class="h-3.5 w-7 shrink-0 text-ring" viewBox="0 0 24 12" aria-hidden="true"><use href="#i-leaf" width="24" height="12"/></svg>
+          <h3 class="font-display text-[1.5rem] sm:text-[1.75rem]">Paznokcie</h3>
+        </div>
+        <dl class="mt-6 divide-y divide-border border-y border-border">
+          <div class="flex items-baseline justify-between gap-4 py-4">
+            <dt class="font-medium">Manicure klasyczny</dt>
+            <dd class="shrink-0 text-inkmuted"><span class="blank">&nbsp;</span> zł</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-4 py-4">
+            <dt class="font-medium">Manicure hybrydowy</dt>
+            <dd class="shrink-0 text-inkmuted"><span class="blank">&nbsp;</span> zł</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-4 py-4">
+            <dt class="font-medium">Manicure żelowy</dt>
+            <dd class="shrink-0 text-inkmuted"><span class="blank">&nbsp;</span> zł</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-4 py-4">
+            <dt class="font-medium">Przedłużanie paznokci</dt>
+            <dd class="shrink-0 text-inkmuted"><span class="blank">&nbsp;</span> zł</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-4 py-4">
+            <dt class="font-medium">Pedicure</dt>
+            <dd class="shrink-0 text-inkmuted"><span class="blank">&nbsp;</span> zł</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-4 py-4">
+            <dt class="font-medium">Pedicure hybrydowy</dt>
+            <dd class="shrink-0 text-inkmuted"><span class="blank">&nbsp;</span> zł</dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Brwi -->
+      <div>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <svg class="h-3.5 w-7 shrink-0 text-ring" viewBox="0 0 24 12" aria-hidden="true"><use href="#i-leaf" width="24" height="12"/></svg>
+          <h3 class="font-display text-[1.5rem] sm:text-[1.75rem]">Brwi</h3>
+          <span class="rounded-full bg-accent px-3 py-1 text-[.7rem] font-bold uppercase tracking-wider text-white">Nowość</span>
+        </div>
+        <dl class="mt-6 divide-y divide-border border-y border-border">
+          <div class="flex items-baseline justify-between gap-4 py-4">
+            <dt class="font-medium">Henna brwi</dt>
+            <dd class="shrink-0 text-inkmuted"><span class="blank">&nbsp;</span> zł</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-4 py-4">
+            <dt class="font-medium">Laminacja brwi</dt>
+            <dd class="shrink-0 text-inkmuted"><span class="blank">&nbsp;</span> zł</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-4 py-4">
+            <dt class="font-medium">Regulacja brwi</dt>
+            <dd class="shrink-0 text-inkmuted"><span class="blank">&nbsp;</span> zł</dd>
+          </div>
+        </dl>
+
+        <div class="mt-8 rounded-2xl border border-dashed border-accent/40 bg-white/70 p-5">
+          <span class="todo">Do uzupełnienia</span>
+          <p class="mt-3 text-[.95rem] leading-relaxed text-inkmuted">
+            Ceny wpiszemy, gdy tylko potwierdzisz cennik. Do tego czasu aktualne stawki widać przy każdej usłudze w Booksy.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mt-12 text-center">
+      <a href="https://booksy.com/pl-pl/325749_juliett-beauty-room_paznokcie_25231_belchatow#ba_s=seo"
+         target="_blank" rel="noopener"
+         class="press inline-flex min-h-[54px] items-center justify-center gap-2.5 rounded-full bg-accent px-7 text-base font-bold text-white hover:bg-accentdk">
+        <span class="icon-booksy" aria-hidden="true"></span>
+        Zarezerwuj termin w Booksy
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================ ZESPÓŁ ============================ -->
+<section id="zespol" class="relative overflow-hidden bg-bg px-4 py-16 sm:px-6 sm:py-24">
+  <div class="wash" style="width:22rem;height:22rem;top:-6rem;right:-9rem;background:#F0DCEC;opacity:.5" aria-hidden="true"></div>
+
+  <div class="relative z-10 mx-auto max-w-content">
+    <div class="ornament" aria-hidden="true">
+      <svg class="h-5 w-5 text-accent" viewBox="0 0 24 24"><use href="#i-bloom" width="24" height="24"/></svg>
+    </div>
+    <h2 class="mt-5 text-center font-display text-[1.85rem] leading-tight [text-wrap:balance] sm:text-[2.6rem]">Poznaj zespół</h2>
+    <p class="mx-auto mt-4 max-w-prose text-center leading-relaxed text-inkmuted">
+      Za każdą stylizacją stoi mały, zgrany zespół, który dobrze się rozumie i lubi to, co robi.
+      Wpadnij na wizytę i poznaj nas osobiście.
+    </p>
+
+    <!-- Zdjecia zespolu: photos/zespol/, patrz README tam o kadrowaniu pod okragla winiete. -->
+    <ul class="mx-auto mt-12 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-3">
+
+      <li class="text-center">
+        <div class="vignette mx-auto max-w-[13rem]">
+          <svg class="vignette-ring" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+            <circle cx="100" cy="100" r="94" stroke="#DFD0EA" stroke-width="3" stroke-linecap="round" stroke-dasharray="130 300 96" stroke-dashoffset="205"/>
+            <circle cx="100" cy="100" r="88" stroke="#BCA0DC" stroke-width="9" stroke-linecap="round" stroke-dasharray="238 30 176 40" stroke-dashoffset="18"/>
+          </svg>
+          <div class="vignette-inner vignette-empty">
+            <svg class="h-10 w-10 text-accent/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+              <circle cx="12" cy="8.2" r="3.4"/><path d="M5 20c0-4.1 3.1-6.6 7-6.6s7 2.5 7 6.6"/>
+            </svg>
+          </div>
+        </div>
+        <p class="mt-4 font-display text-[1.2rem]">Julita</p>
+        <p class="text-[.9rem] text-inkmuted">Założycielka salonu</p>
+      </li>
+
+      <li class="text-center">
+        <div class="vignette mx-auto max-w-[13rem]">
+          <svg class="vignette-ring" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+            <circle cx="100" cy="100" r="94" stroke="#DFD0EA" stroke-width="3" stroke-linecap="round" stroke-dasharray="96 320 120" stroke-dashoffset="60"/>
+            <circle cx="100" cy="100" r="88" stroke="#BCA0DC" stroke-width="9" stroke-linecap="round" stroke-dasharray="200 34 210 32" stroke-dashoffset="120"/>
+          </svg>
+          <div class="vignette-inner vignette-empty">
+            <svg class="h-10 w-10 text-accent/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+              <circle cx="12" cy="8.2" r="3.4"/><path d="M5 20c0-4.1 3.1-6.6 7-6.6s7 2.5 7 6.6"/>
+            </svg>
+          </div>
+        </div>
+        <p class="mt-4 font-display text-[1.2rem]">Zuza</p>
+        <p class="text-[.9rem] text-inkmuted">Stylizacja paznokci i brwi</p>
+      </li>
+
+      <li class="text-center">
+        <div class="vignette mx-auto max-w-[13rem]">
+          <svg class="vignette-ring" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+            <circle cx="100" cy="100" r="94" stroke="#DFD0EA" stroke-width="3" stroke-linecap="round" stroke-dasharray="150 280 80" stroke-dashoffset="320"/>
+            <circle cx="100" cy="100" r="88" stroke="#BCA0DC" stroke-width="9" stroke-linecap="round" stroke-dasharray="262 28 150 44" stroke-dashoffset="240"/>
+          </svg>
+          <div class="vignette-inner vignette-empty">
+            <svg class="h-10 w-10 text-accent/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+              <circle cx="12" cy="8.2" r="3.4"/><path d="M5 20c0-4.1 3.1-6.6 7-6.6s7 2.5 7 6.6"/>
+            </svg>
+          </div>
+        </div>
+        <p class="mt-4 font-display text-[1.2rem]">Klaudia</p>
+        <p class="text-[.9rem] text-inkmuted">Stylizacja paznokci</p>
+      </li>
+
+    </ul>
+
+    <div class="mt-10 flex flex-col items-center gap-3">
+      <span class="todo">Do uzupełnienia</span>
+      <p class="max-w-prose text-center text-[.95rem] leading-relaxed text-inkmuted">
+        Zdjęcia zespołu wstawimy tutaj, gdy tylko będą gotowe: wystarczą trzy portretowe, dobrze oświetlone ujęcia.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================ ZAUFANIE ============================ -->
+<section id="zaufanie" class="relative overflow-hidden bg-bg px-4 py-16 sm:px-6 sm:py-24">
+  <div class="wash" style="width:24rem;height:24rem;top:2rem;right:-8rem;background:#E8DAF2;opacity:.55" aria-hidden="true"></div>
+
+  <div class="relative z-10 mx-auto max-w-content">
+    <div class="ornament" aria-hidden="true">
+      <svg class="h-5 w-5 text-accent" viewBox="0 0 24 24"><use href="#i-bloom" width="24" height="24"/></svg>
+    </div>
+    <h2 class="mt-5 text-center font-display text-[1.85rem] leading-tight [text-wrap:balance] sm:text-[2.6rem]">Dlaczego klientki nam ufają</h2>
+
+    <div class="mt-12 grid gap-10 md:grid-cols-2 md:gap-16">
+
+      <!-- Dowód społeczny -->
+      <div class="relative rounded-3xl bg-surface p-7 sm:p-9">
+        <p class="font-display text-[3.6rem] leading-none text-accent sm:text-[4.5rem]">100<span class="align-top text-[2.2rem] sm:text-[2.8rem]">+</span></p>
+        <p class="mt-2 font-display text-[1.35rem] sm:text-[1.5rem]">zadowolonych klientek</p>
+        <p class="mt-4 leading-relaxed text-inkmuted">
+          Tyle kobiet z Bełchatowa i okolic przewinęło się przez nasz fotel od otwarcia salonu.
+          Średnia ocen mówi resztę: 4,8 w Booksy i 5,0 w Google.
+        </p>
+        <p class="mt-6 text-[.95rem] text-inkmuted">
+          Salon działa przy Placu Wolności 14, w samym centrum miasta.
+        </p>
+      </div>
+
+      <!-- Bezpieczeństwo i higiena -->
+      <div>
+        <div class="flex items-center gap-3">
+          <svg class="h-7 w-7 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 2.5 4.5 5.7v5.6c0 4.5 3.1 8.7 7.5 10 4.4-1.3 7.5-5.5 7.5-10V5.7L12 2.5Z"/>
+            <path d="m9 12 2.1 2.1L15.3 10"/>
+          </svg>
+          <h3 class="font-display text-[1.5rem] sm:text-[1.75rem]">Bezpieczny salon</h3>
+        </div>
+        <p class="mt-4 leading-relaxed text-inkmuted">
+          Bezpieczeństwo to u nas część usługi, nie dodatek. Dlatego mówimy o nim wprost,
+          zamiast zakładać, że każda klientka sama o to zapyta.
+        </p>
+
+        <ul class="mt-6 space-y-4">
+          <li class="flex gap-3">
+            <svg class="mt-2 h-3 w-6 shrink-0 text-ring" viewBox="0 0 24 12" aria-hidden="true"><use href="#i-leaf" width="24" height="12"/></svg>
+            <span class="leading-relaxed">Profesjonalny sprzęt i materiały renomowanych marek.</span>
+          </li>
+          <li class="flex gap-3">
+            <svg class="mt-2 h-3 w-6 shrink-0 text-ring" viewBox="0 0 24 12" aria-hidden="true"><use href="#i-leaf" width="24" height="12"/></svg>
+            <span class="leading-relaxed">Dbałość o higienę pracy na każdym etapie zabiegu.</span>
+          </li>
+          <li class="flex gap-3">
+            <svg class="mt-2 h-3 w-6 shrink-0 text-ring" viewBox="0 0 24 12" aria-hidden="true"><use href="#i-leaf" width="24" height="12"/></svg>
+            <span class="leading-relaxed">Dokładność i estetyka. Stylizacja ma wyglądać dobrze i trzymać się długo.</span>
+          </li>
+        </ul>
+
+        <div class="mt-8 rounded-2xl border border-dashed border-accent/40 bg-surface p-5">
+          <span class="todo">Do uzupełnienia</span>
+          <p class="mt-3 text-[.95rem] leading-relaxed text-inkmuted">
+            Miejsce na konkrety, które budują największe zaufanie: sterylizacja narzędzi, jednorazowe pilniki i separatory,
+            certyfikaty szkoleń. Wpiszemy dokładnie to, co u siebie stosujesz.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================ OPINIE ============================ -->
+<section id="opinie" class="bg-surface px-4 py-16 sm:px-6 sm:py-24">
+  <div class="mx-auto max-w-content">
+
+    <div class="ornament" aria-hidden="true">
+      <svg class="h-5 w-5 text-accent" viewBox="0 0 24 24"><use href="#i-bloom" width="24" height="24"/></svg>
+    </div>
+    <h2 class="mt-5 text-center font-display text-[1.85rem] leading-tight [text-wrap:balance] sm:text-[2.6rem]">Opinie klientek</h2>
+
+    <!-- Oceny: dane ostateczne, maja byc widoczne. -->
+    <div class="mx-auto mt-10 grid max-w-2xl gap-4 sm:grid-cols-2">
+      <div class="rounded-3xl bg-white p-6 text-center">
+        <div class="flex justify-center gap-1 text-gold" aria-hidden="true">
+          <svg class="h-5 w-5" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-5 w-5" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-5 w-5" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-5 w-5" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-5 w-5" viewBox="0 0 20 20"><use href="#i-star80" width="20" height="20"/></svg>
+        </div>
+        <p class="mt-3 font-display text-[2.4rem] leading-none">4,8</p>
+        <p class="mt-2 text-[.95rem] text-inkmuted">z 29 opinii w Booksy</p>
+      </div>
+      <div class="rounded-3xl bg-white p-6 text-center">
+        <div class="flex justify-center gap-1 text-gold" aria-hidden="true">
+          <svg class="h-5 w-5" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-5 w-5" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-5 w-5" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-5 w-5" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-5 w-5" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+        </div>
+        <p class="mt-3 font-display text-[2.4rem] leading-none">5,0</p>
+        <p class="mt-2 text-[.95rem] text-inkmuted">z 15 opinii w Google</p>
+      </div>
+    </div>
+
+    <!-- Realne opinie klientek: 3 z Booksy (od klientki), 3 z Google (zweryfikowane 2026-08-22
+         bezposrednio na wizytowce Google, 5/5 gwiazdek kazda). Cytaty ucinane dokladnie tam,
+         gdzie Google/Booksy same je skracaly ("...Wiecej") - koniec na pelnym zdaniu, bez dopisywania tresci. -->
+    <div class="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+
+      <blockquote class="border-t border-border pt-6">
+        <p class="text-[1.05rem] leading-relaxed text-inkmuted">
+          Bardzo profesjonalnie wykonany pedicure. Jestem bardzo zadowolona z efektu i miłej obsługi. Zdecydowanie polecam!
+        </p>
+        <footer class="mt-5 text-sm text-inkmuted">
+          <span class="font-semibold text-ink">Magdalena</span>, pedicure hybrydowy u Zuzy · Booksy
+        </footer>
+      </blockquote>
+
+      <blockquote class="border-t border-border pt-6">
+        <p class="text-[1.05rem] leading-relaxed text-inkmuted">
+          Świetnie zrobione brwi! Pani Zuza bardzo miła osoba! Świetna atmosfera. Oczywiście w przyszłym miesiącu wrócę! Serdecznie polecam! 🙂
+        </p>
+        <footer class="mt-5 text-sm text-inkmuted">
+          <span class="font-semibold text-ink">Natalia</span>, henna i regulacja brwi u Zuzy · Booksy
+        </footer>
+      </blockquote>
+
+      <blockquote class="border-t border-border pt-6">
+        <p class="text-[1.05rem] leading-relaxed text-inkmuted">
+          Bardzo polecam. Pedicure wykonane perfekcyjnie. Pani Zuzia przesympatyczna osoba o wielkim talencie. Życzę wielu zadowolonych klientów 😊
+        </p>
+        <footer class="mt-5 text-sm text-inkmuted">
+          <span class="font-semibold text-ink">Karolina</span>, pedicure hybrydowy u Zuzy · Booksy
+        </footer>
+      </blockquote>
+
+      <blockquote class="border-t border-border pt-6">
+        <div class="flex gap-1 text-gold" aria-hidden="true">
+          <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+        </div>
+        <p class="mt-4 text-[1.05rem] leading-relaxed text-inkmuted">
+          Dawno nie byłam tak zadowolona z paznokci, dopracowane na maksa, wyglądają dokładnie tak jak pokazałam na zdjęciu. Klaudia robi Boskie paznokcie!
+        </p>
+        <footer class="mt-5 text-sm text-inkmuted">
+          <span class="font-semibold text-ink">Wiktoria Grzywinska</span>, Google
+        </footer>
+      </blockquote>
+
+      <blockquote class="border-t border-border pt-6">
+        <div class="flex gap-1 text-gold" aria-hidden="true">
+          <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+        </div>
+        <p class="mt-4 text-[1.05rem] leading-relaxed text-inkmuted">
+          Chciałabym zgłosić iż jakość wykonywanych usług w salonie Juliett jest uzależniająca! Niedawno zmieniłam miejsce zamieszkania i nawet dodatkowe 150 km nie powstrzymuje mnie by zaplanować wyjazd do Pani Julity.
+        </p>
+        <footer class="mt-5 text-sm text-inkmuted">
+          <span class="font-semibold text-ink">Maja Wojtasik</span>, Google
+        </footer>
+      </blockquote>
+
+      <blockquote class="border-t border-border pt-6 sm:col-span-2 lg:col-span-1">
+        <div class="flex gap-1 text-gold" aria-hidden="true">
+          <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+          <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
+        </div>
+        <p class="mt-4 text-[1.05rem] leading-relaxed text-inkmuted">
+          Wyjątkowo dokładnie i skrupulatnie zrobiony manicure. Bardzo trwały. Przemiła atmosfera, wychodzę zawsze zadowolona.
+        </p>
+        <footer class="mt-5 text-sm text-inkmuted">
+          <span class="font-semibold text-ink">Aleksandra Wolankiewicz</span>, Google
+        </footer>
+      </blockquote>
+
+    </div>
+
+    <div class="mt-12 flex flex-col items-center gap-4">
+      <p class="max-w-prose text-center text-[.95rem] leading-relaxed text-inkmuted">
+        Twoja opinia pomaga nam się rozwijać i pomaga innym klientkom trafić do nas po raz pierwszy.
+      </p>
+      <!-- Link Google "Napisz opinię" zweryfikowany 2026-08-22 bezposrednio na wizytowce Google
+           (dopasowany po nazwie, adresie Plac Wolnosci 14 i numerze telefonu 732 701 331). -->
+      <a href="https://search.google.com/local/writereview?placeid=0x471a199d74e1eb69:0x705011361272a707"
+         target="_blank" rel="noopener"
+         class="press inline-flex min-h-[54px] items-center justify-center gap-2.5 rounded-full bg-accent px-7 text-base font-bold text-white hover:bg-accentdk">
+        Zostaw opinię
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================ GALERIA ============================ -->
+<section id="galeria" class="relative overflow-hidden bg-bg px-4 py-16 sm:px-6 sm:py-24">
+  <div class="wash" style="width:26rem;height:26rem;bottom:-8rem;left:-9rem;background:#DFD0EA;opacity:.5" aria-hidden="true"></div>
+
+  <div class="relative z-10 mx-auto max-w-content">
+    <div class="ornament" aria-hidden="true">
+      <svg class="h-5 w-5 text-accent" viewBox="0 0 24 24"><use href="#i-bloom" width="24" height="24"/></svg>
+    </div>
+    <h2 class="mt-5 text-center font-display text-[1.85rem] leading-tight [text-wrap:balance] sm:text-[2.6rem]">Galeria prac</h2>
+    <p class="mx-auto mt-4 max-w-prose text-center leading-relaxed text-inkmuted">
+      Wybrane stylizacje z naszego salonu. Kliknij zdjęcie, żeby zobaczyć je w całości.
+    </p>
+
+    <!--
+      Okragle winiety: wlasna technika klientki, konsekwentnie powtarzana na jej plakatach
+      (pierscien pedzla + zdjecie w kole). Kazdy kafel to <button> otwierajacy lightbox
+      (JS na dole strony) z pelnym, nieprzycietym zdjeciem - okragly kadr zostaje tylko w kaflu.
+    -->
+    <ul class="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-x-5 gap-y-8 sm:gap-x-8 sm:gap-y-10 lg:grid-cols-3">
+
+      <li class="text-center">
+        <button type="button" data-index="0" class="vignette gallery-tile block w-full cursor-zoom-in">
+          <svg class="vignette-ring" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+            <circle cx="100" cy="100" r="94" stroke="#DFD0EA" stroke-width="3" stroke-linecap="round" stroke-dasharray="130 300 96" stroke-dashoffset="205"/>
+            <circle cx="100" cy="100" r="88" stroke="#BCA0DC" stroke-width="9" stroke-linecap="round" stroke-dasharray="238 30 176 40" stroke-dashoffset="18"/>
+          </svg>
+          <span class="vignette-inner">
+            <img src="photos/galeria/gal-01.webp" alt="Delikatny róż ze złotym brokatem i akcentem gwiazdki" loading="lazy" class="transition duration-300 hover:scale-105">
+          </span>
+        </button>
+        <p class="mt-3 text-[.9rem] font-medium leading-snug sm:text-[.95rem]">Brokat i akcent</p>
+      </li>
+
+      <li class="text-center">
+        <button type="button" data-index="1" class="vignette gallery-tile block w-full cursor-zoom-in">
+          <svg class="vignette-ring" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+            <circle cx="100" cy="100" r="94" stroke="#DFD0EA" stroke-width="3" stroke-linecap="round" stroke-dasharray="96 320 120" stroke-dashoffset="60"/>
+            <circle cx="100" cy="100" r="88" stroke="#BCA0DC" stroke-width="9" stroke-linecap="round" stroke-dasharray="200 34 210 32" stroke-dashoffset="120"/>
+          </svg>
+          <span class="vignette-inner">
+            <img src="photos/galeria/gal-02.webp" alt="Granatowy ombre i biały french na naturalnej bazie" loading="lazy" class="transition duration-300 hover:scale-105">
+          </span>
+        </button>
+        <p class="mt-3 text-[.9rem] font-medium leading-snug sm:text-[.95rem]">Ombre granatowe</p>
+      </li>
+
+      <li class="text-center">
+        <button type="button" data-index="2" class="vignette gallery-tile block w-full cursor-zoom-in">
+          <svg class="vignette-ring" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+            <circle cx="100" cy="100" r="94" stroke="#DFD0EA" stroke-width="3" stroke-linecap="round" stroke-dasharray="150 280 80" stroke-dashoffset="320"/>
+            <circle cx="100" cy="100" r="88" stroke="#BCA0DC" stroke-width="9" stroke-linecap="round" stroke-dasharray="262 28 150 44" stroke-dashoffset="240"/>
+          </svg>
+          <span class="vignette-inner">
+            <img src="photos/galeria/gal-03.webp" alt="Malinowy manicure ze zdobieniem w kształcie gwiazdki" loading="lazy" class="transition duration-300 hover:scale-105">
+          </span>
+        </button>
+        <p class="mt-3 text-[.9rem] font-medium leading-snug sm:text-[.95rem]">Malina z akcentem</p>
+      </li>
+
+      <li class="text-center">
+        <button type="button" data-index="3" class="vignette gallery-tile block w-full cursor-zoom-in">
+          <svg class="vignette-ring" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+            <circle cx="100" cy="100" r="94" stroke="#DFD0EA" stroke-width="3" stroke-linecap="round" stroke-dasharray="110 300 110" stroke-dashoffset="150"/>
+            <circle cx="100" cy="100" r="88" stroke="#BCA0DC" stroke-width="9" stroke-linecap="round" stroke-dasharray="222 36 188 30" stroke-dashoffset="330"/>
+          </svg>
+          <span class="vignette-inner">
+            <img src="photos/galeria/gal-04.webp" alt="Butelkowa zieleń z ręcznie malowanym ostrokrzewem" loading="lazy" class="transition duration-300 hover:scale-105">
+          </span>
+        </button>
+        <p class="mt-3 text-[.9rem] font-medium leading-snug sm:text-[.95rem]">Zdobienia ręczne</p>
+      </li>
+
+      <li class="text-center">
+        <button type="button" data-index="4" class="vignette gallery-tile block w-full cursor-zoom-in">
+          <svg class="vignette-ring" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+            <circle cx="100" cy="100" r="94" stroke="#DFD0EA" stroke-width="3" stroke-linecap="round" stroke-dasharray="84 330 122" stroke-dashoffset="410"/>
+            <circle cx="100" cy="100" r="88" stroke="#BCA0DC" stroke-width="9" stroke-linecap="round" stroke-dasharray="196 42 224 26" stroke-dashoffset="70"/>
+          </svg>
+          <span class="vignette-inner">
+            <img src="photos/galeria/gal-05.webp" alt="Pudrowy róż z opalizującym brokatem i śnieżynką" loading="lazy" class="transition duration-300 hover:scale-105">
+          </span>
+        </button>
+        <p class="mt-3 text-[.9rem] font-medium leading-snug sm:text-[.95rem]">Brokat i wzór</p>
+      </li>
+
+      <li class="text-center">
+        <button type="button" data-index="5" class="vignette gallery-tile block w-full cursor-zoom-in">
+          <svg class="vignette-ring" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+            <circle cx="100" cy="100" r="94" stroke="#DFD0EA" stroke-width="3" stroke-linecap="round" stroke-dasharray="140 290 86" stroke-dashoffset="255"/>
+            <circle cx="100" cy="100" r="88" stroke="#BCA0DC" stroke-width="9" stroke-linecap="round" stroke-dasharray="250 32 164 38" stroke-dashoffset="185"/>
+          </svg>
+          <span class="vignette-inner">
+            <img src="photos/galeria/gal-06.webp" alt="Butelkowa zieleń z motywem ostrokrzewu" loading="lazy" class="transition duration-300 hover:scale-105">
+          </span>
+        </button>
+        <p class="mt-3 text-[.9rem] font-medium leading-snug sm:text-[.95rem]">Zieleń butelkowa</p>
+      </li>
+
+    </ul>
+
+    <!-- Tylko 6 kafli widocznych w sekcji (brief agencji: 6 okienek na widoku glownym).
+         Pozostale 3 zdjecia (indeksy 6-8) sa nadal w tablicy GALERIA nizej i osiagalne
+         strzalkami nastepny/poprzedni w lightboxie po otwarciu ktoregokolwiek kafla. -->
+
+    <div class="mt-12 flex flex-col items-center gap-4">
+      <a href="https://www.instagram.com/juliett_beautyroom/" target="_blank" rel="noopener"
+         class="press inline-flex min-h-[50px] items-center justify-center gap-2.5 rounded-full border border-ink/35 px-6 font-semibold text-ink hover:border-accent hover:text-accent">
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/>
+        </svg>
+        Zobacz prace na Instagramie
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ LIGHTBOX GALERII (9 zdjec, JS logika i markup wzorowane na clients/Patent-na-Pazur) ============ -->
+<div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-[rgba(26,20,24,.92)] p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia z galerii">
+  <button type="button" id="lightboxClose" aria-label="Zamknij podgląd"
+          class="press absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(255,255,255,.14)] text-white hover:bg-[rgba(255,255,255,.24)] sm:right-6 sm:top-6">
+    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <button type="button" id="lightboxPrev" aria-label="Poprzednie zdjęcie"
+          class="press absolute left-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(255,255,255,.14)] text-white hover:bg-[rgba(255,255,255,.24)] sm:left-5">
+    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+  <button type="button" id="lightboxNext" aria-label="Następne zdjęcie"
+          class="press absolute right-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(255,255,255,.14)] text-white hover:bg-[rgba(255,255,255,.24)] sm:right-5">
+    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <figure class="mx-auto flex max-h-full max-w-3xl flex-col items-center">
+    <img id="lightboxImg" src="" alt="" class="max-h-[75vh] w-auto rounded-2xl object-contain shadow-[0_20px_60px_rgba(0,0,0,.4)]">
+    <figcaption id="lightboxCounter" class="mt-4 text-sm font-medium tracking-wide text-white/85" aria-live="polite"></figcaption>
+  </figure>
+</div>
+
+
+<!-- ============================ GODZINY, ADRES, KONTAKT ============================ -->
+<section id="kontakt" class="bg-surface px-4 py-16 sm:px-6 sm:py-24">
+  <div class="mx-auto max-w-content">
+
+    <div class="ornament" aria-hidden="true">
+      <svg class="h-5 w-5 text-accent" viewBox="0 0 24 24"><use href="#i-bloom" width="24" height="24"/></svg>
+    </div>
+    <h2 class="mt-5 text-center font-display text-[1.85rem] leading-tight [text-wrap:balance] sm:text-[2.6rem]">Godziny i kontakt</h2>
+
+    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-14">
+
+      <!-- Godziny: brak danych, widoczny placeholder. Nie zgadujemy. -->
+      <div>
+        <h3 class="font-display text-[1.4rem] sm:text-[1.6rem]">Godziny otwarcia</h3>
+
+        <dl class="mt-5 divide-y divide-border border-y border-border" id="godziny">
+          <div data-dzien="1" class="flex items-baseline justify-between gap-4 py-3.5">
+            <dt class="text-inkmuted">Poniedziałek</dt><dd><span class="blank">&nbsp;</span></dd>
+          </div>
+          <div data-dzien="2" class="flex items-baseline justify-between gap-4 py-3.5">
+            <dt class="text-inkmuted">Wtorek</dt><dd><span class="blank">&nbsp;</span></dd>
+          </div>
+          <div data-dzien="3" class="flex items-baseline justify-between gap-4 py-3.5">
+            <dt class="text-inkmuted">Środa</dt><dd><span class="blank">&nbsp;</span></dd>
+          </div>
+          <div data-dzien="4" class="flex items-baseline justify-between gap-4 py-3.5">
+            <dt class="text-inkmuted">Czwartek</dt><dd><span class="blank">&nbsp;</span></dd>
+          </div>
+          <div data-dzien="5" class="flex items-baseline justify-between gap-4 py-3.5">
+            <dt class="text-inkmuted">Piątek</dt><dd><span class="blank">&nbsp;</span></dd>
+          </div>
+          <div data-dzien="6" class="flex items-baseline justify-between gap-4 py-3.5">
+            <dt class="text-inkmuted">Sobota</dt><dd><span class="blank">&nbsp;</span></dd>
+          </div>
+          <div data-dzien="0" class="flex items-baseline justify-between gap-4 py-3.5">
+            <dt class="text-inkmuted">Niedziela</dt><dd><span class="blank">&nbsp;</span></dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Adres i kontakt -->
+      <div>
+        <h3 class="font-display text-[1.4rem] sm:text-[1.6rem]">Gdzie nas znajdziesz</h3>
+
+        <address class="mt-5 not-italic leading-relaxed">
+          <p class="text-[1.15rem] font-semibold">Juliett Beauty Room</p>
+          <p class="mt-1 text-inkmuted">Plac Wolności 14<br>97-400 Bełchatów</p>
+          <p class="mt-4">
+            <a href="tel:+48732701331" class="press inline-flex min-h-[44px] items-center text-[1.15rem] font-bold text-accent underline underline-offset-4 hover:text-accentdk">
+              732 701 331
+            </a>
+          </p>
+        </address>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="https://www.instagram.com/juliett_beautyroom/" target="_blank" rel="noopener"
+             class="press inline-flex min-h-[48px] items-center gap-2.5 rounded-full border border-ink/30 px-5 text-[.95rem] font-semibold hover:border-accent hover:text-accent">
+            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/>
+            </svg>
+            Instagram
+          </a>
+          <a href="https://www.facebook.com/p/Juliett-Beauty-Room-61574167884183/" target="_blank" rel="noopener"
+             class="press inline-flex min-h-[48px] items-center gap-2.5 rounded-full border border-ink/30 px-5 text-[.95rem] font-semibold hover:border-accent hover:text-accent">
+            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor" aria-hidden="true">
+              <path d="M13.5 21.9V13.9h2.7l.4-3.1h-3.1V8.8c0-.9.25-1.5 1.55-1.5H16.7V4.5c-.29-.04-1.28-.12-2.44-.12-2.4 0-4.06 1.47-4.06 4.18v2.24H7.5v3.1h2.7v8h3.3Z"/>
+            </svg>
+            Facebook
+          </a>
+        </div>
+
+        <!-- Mapa Google z delikatnym filtrem spinajacym ja z motywem (praktyka z DESIGN.md).
+             Przekazywanie danych do Google opisane w privacy.html. -->
+        <div class="relative mt-8 overflow-hidden rounded-3xl border border-border">
+          <iframe
+            src="https://www.google.com/maps?q=Plac%20Wolno%C5%9Bci%2014%2C%2097-400%20Be%C5%82chat%C3%B3w&output=embed"
+            title="Mapa: Juliett Beauty Room, Plac Wolności 14, Bełchatów"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            class="block h-[280px] w-full sm:h-[320px]"
+            style="border:0;filter:grayscale(42%) saturate(88%)"></iframe>
+          <div class="map-tint" aria-hidden="true"></div>
+        </div>
+
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Plac+Wolno%C5%9Bci+14%2C+97-400+Be%C5%82chat%C3%B3w"
+           target="_blank" rel="noopener"
+           class="press mt-4 inline-flex min-h-[48px] items-center justify-center rounded-full border border-ink/30 px-6 text-[.95rem] font-semibold hover:border-accent hover:text-accent">
+          Wyznacz trasę
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+
+<!-- ============================ STOPKA ============================ -->
+<footer class="relative overflow-hidden border-t border-border bg-bg px-4 py-14 sm:px-6">
+  <svg class="sway-slow pointer-events-none absolute -left-4 -bottom-6 hidden h-44 w-auto text-ink/15 sm:block" viewBox="0 0 120 180" aria-hidden="true"><use href="#i-sprig" width="120" height="180"/></svg>
+  <svg class="sway pointer-events-none absolute -right-4 -bottom-6 hidden h-44 w-auto -scale-x-100 text-ink/15 sm:block" viewBox="0 0 120 180" aria-hidden="true"><use href="#i-sprig" width="120" height="180"/></svg>
+
+  <div class="relative z-10 mx-auto max-w-content">
+    <img src="photos/logo.webp" alt="Juliett Beauty Room" width="1000" height="333" loading="lazy"
+         class="mx-auto block w-full max-w-[17rem]">
+
+    <div class="mt-8 flex flex-col items-center gap-3 text-center text-[.95rem] text-inkmuted">
+      <p>Plac Wolności 14, 97-400 Bełchatów</p>
+      <p>
+        <a href="tel:+48732701331" class="press inline-flex min-h-[44px] items-center font-bold text-ink underline underline-offset-4 hover:text-accent">732 701 331</a>
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+        <a href="https://booksy.com/pl-pl/325749_juliett-beauty-room_paznokcie_25231_belchatow#ba_s=seo" target="_blank" rel="noopener" class="press inline-flex min-h-[44px] items-center gap-2 font-semibold hover:text-accent">
+          <span class="icon-booksy" aria-hidden="true"></span> Booksy
+        </a>
+        <a href="https://www.instagram.com/juliett_beautyroom/" target="_blank" rel="noopener" class="press inline-flex min-h-[44px] items-center font-semibold hover:text-accent">Instagram</a>
+        <a href="https://www.facebook.com/p/Juliett-Beauty-Room-61574167884183/" target="_blank" rel="noopener" class="press inline-flex min-h-[44px] items-center font-semibold hover:text-accent">Facebook</a>
+        <a href="privacy.html" class="press inline-flex min-h-[44px] items-center font-semibold hover:text-accent">Polityka prywatności</a>
+      </div>
+      <p class="mt-2 text-[.85rem]">&copy; 2026 Juliett Beauty Room</p>
+    </div>
+  </div>
+</footer>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NailSalon",
+  "name": "Juliett Beauty Room",
+  "description": "Stylizacja paznokci (manicure, pedicure, przedłużanie) oraz stylizacja brwi (henna, laminacja, regulacja) w Bełchatowie.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Plac Wolności 14",
+    "postalCode": "97-400",
+    "addressLocality": "Bełchatów",
+    "addressCountry": "PL"
+  },
+  "telephone": "+48732701331",
+  "priceRange": "$$",
+  "sameAs": [
+    "https://booksy.com/pl-pl/325749_juliett-beauty-room_paznokcie_25231_belchatow",
+    "https://www.instagram.com/juliett_beautyroom/",
+    "https://www.facebook.com/p/Juliett-Beauty-Room-61574167884183/"
+  ]
+}
+</script>
+
+<script>
+  /* Podswietlenie dzisiejszego dnia w tabeli godzin. */
+  (function () {
+    var wiersz = document.querySelector('#godziny [data-dzien="' + new Date().getDay() + '"]');
+    if (!wiersz) return;
+    wiersz.classList.add('rounded-lg', 'bg-bg', 'px-3', 'font-semibold', 'text-ink');
+    var dt = wiersz.querySelector('dt');
+    dt.classList.remove('text-inkmuted');
+    dt.insertAdjacentHTML('beforeend', '<span class="ml-2 rounded-full bg-accent px-2 py-0.5 text-[.68rem] font-bold uppercase tracking-wider text-white">dziś</span>');
+  })();
+
+  /* Scrollspy: podswietla link aktywnej sekcji w nawigacji desktopowej. */
+  (function () {
+    var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+    if (!links.length || !('IntersectionObserver' in window)) return;
+    var map = {};
+    links.forEach(function (a) {
+      var el = document.querySelector(a.getAttribute('href'));
+      if (el) map[el.id] = a;
+    });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        links.forEach(function (a) { a.classList.remove('is-active'); });
+        if (map[e.target.id]) map[e.target.id].classList.add('is-active');
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    Object.keys(map).forEach(function (id) { io.observe(document.getElementById(id)); });
+  })();
+
+  // Galeria: lightbox z 9 zdjeciami, wszystkie widoczne jako kafle (brief: "wykorzystaj wszystkie").
+  (function () {
+    var GALERIA = [
+      { src: 'photos/galeria/gal-01.webp', alt: 'Delikatny róż ze złotym brokatem i akcentem gwiazdki' },
+      { src: 'photos/galeria/gal-02.webp', alt: 'Granatowy ombre i biały french na naturalnej bazie' },
+      { src: 'photos/galeria/gal-03.webp', alt: 'Malinowy manicure ze zdobieniem w kształcie gwiazdki' },
+      { src: 'photos/galeria/gal-04.webp', alt: 'Butelkowa zieleń z ręcznie malowanym ostrokrzewem' },
+      { src: 'photos/galeria/gal-05.webp', alt: 'Pudrowy róż z opalizującym brokatem i śnieżynką' },
+      { src: 'photos/galeria/gal-06.webp', alt: 'Butelkowa zieleń z motywem ostrokrzewu' },
+      { src: 'photos/galeria/gal-07.webp', alt: 'Biel z holograficznym brokatem, efekt ombre' },
+      { src: 'photos/galeria/gal-08.webp', alt: 'Biały french z 3D kwiatkami i cyrkoniami' },
+      { src: 'photos/galeria/gal-09.webp', alt: 'Czerń i nude z wzorem zebry' }
+    ];
+
+    var lightbox = document.getElementById('lightbox');
+    var img = document.getElementById('lightboxImg');
+    var counter = document.getElementById('lightboxCounter');
+    var btnClose = document.getElementById('lightboxClose');
+    var btnPrev = document.getElementById('lightboxPrev');
+    var btnNext = document.getElementById('lightboxNext');
+    var tiles = document.querySelectorAll('.gallery-tile');
+    if (!lightbox || !tiles.length) return;
+    var current = 0;
+    var lastFocused = null;
+
+    function render() {
+      img.src = GALERIA[current].src;
+      img.alt = GALERIA[current].alt;
+      counter.textContent = (current + 1) + ' / ' + GALERIA.length;
+    }
+    function open(index) {
+      current = index;
+      lastFocused = document.activeElement;
+      render();
+      lightbox.classList.remove('hidden');
+      lightbox.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      btnClose.focus();
+    }
+    function close() {
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+      document.body.style.overflow = '';
+      if (lastFocused) lastFocused.focus();
+    }
+    function next() { current = (current + 1) % GALERIA.length; render(); }
+    function prev() { current = (current - 1 + GALERIA.length) % GALERIA.length; render(); }
+
+    tiles.forEach(function (tile) {
+      tile.addEventListener('click', function () {
+        open(parseInt(tile.getAttribute('data-index'), 10));
+      });
+    });
+    btnClose.addEventListener('click', close);
+    btnNext.addEventListener('click', next);
+    btnPrev.addEventListener('click', prev);
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lightbox) close();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (lightbox.classList.contains('hidden')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    });
+  })();
+</script>
+
+</body>
+</html>
