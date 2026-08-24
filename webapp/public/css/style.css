@@ -1026,9 +1026,9 @@ table.leads input.quality-input { min-width: 44px; width: 44px; text-align: cent
 }
 /* Booksy to rastrowa ikonka (patrz PLATFORM_ICONS.booksy w api.js) - wlasne zaokraglenie,
    zeby jej kwadratowe rogi nie wystawaly poza okragla odznake (spojnosc z reszta platform).
-   10px (nie 11px) - odkad odznaka jest okragla (overflow:hidden), kwadratowa ikonka rogami
-   lekko dotykala/ucinala sie o okrag - odrobine mniejsza zostawia zapas ze wszystkich stron. */
-.platform-badge svg, .platform-badge img { width: 10px; height: 10px; display: block; border-radius: 50%; }
+   Instagram mial ten sam problem z innego powodu (patrz margines w jej viewBox w api.js) -
+   naprawione tam punktowo, wiec tutaj wszystkie ikonki wracaja do normalnego rozmiaru. */
+.platform-badge svg, .platform-badge img { width: 11px; height: 11px; display: block; border-radius: 50%; }
 .tags-trigger:hover .platform-badge { transform: scale(1.12); }
 .tags-trigger .plus {
   font-size: 11px;
