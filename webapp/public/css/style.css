@@ -1025,8 +1025,10 @@ table.leads input.quality-input { min-width: 44px; width: 44px; text-align: cent
   transition: transform .15s;
 }
 /* Booksy to rastrowa ikonka (patrz PLATFORM_ICONS.booksy w api.js) - wlasne zaokraglenie,
-   zeby jej kwadratowe rogi nie wystawaly poza okragla odznake (spojnosc z reszta platform) */
-.platform-badge svg, .platform-badge img { width: 11px; height: 11px; display: block; border-radius: 50%; }
+   zeby jej kwadratowe rogi nie wystawaly poza okragla odznake (spojnosc z reszta platform).
+   10px (nie 11px) - odkad odznaka jest okragla (overflow:hidden), kwadratowa ikonka rogami
+   lekko dotykala/ucinala sie o okrag - odrobine mniejsza zostawia zapas ze wszystkich stron. */
+.platform-badge svg, .platform-badge img { width: 10px; height: 10px; display: block; border-radius: 50%; }
 .tags-trigger:hover .platform-badge { transform: scale(1.12); }
 .tags-trigger .plus {
   font-size: 11px;
@@ -1734,6 +1736,13 @@ table.leads td.company-cell {
   background: var(--bg);
   box-shadow: 4px 0 8px -4px rgba(0,0,0,0.4);
 }
+/* #iPad-bug 2 - kolumna Firma MUSI zostac NIEPRZEZROCZYSTA, zeby zaslaniac Miasto/Telefon
+   przewijajace sie pod nia. row-glow-*/row-active/tr:hover ustawiaja tlo jako polprzezroczyste
+   rgba(...) (patrz wyzej), wiec w podswietlonych/aktywnych/najechanych wierszach kolumna Firma
+   robila sie widmowo przezroczysta i przez nia "przebijaly" dane z kolumn, ktore juz przewineli
+   sie pod spod. !important jest tu celowe: to jedyna komorka w tabeli, ktora MUSI olac
+   podswietlenie wiersza i zostac pelnym kolorem tla, inaczej przewijanie w bok wyglada na zepsute. */
+table.leads tr td.company-cell { background: var(--bg) !important; }
 /* #iPad-bug - .presence-badge NIE moze byc pozycjonowany wzgledem samego company-cell:
    WebKit/Safari na iPadzie zle liczy "containing block" dla position:absolute wewnatrz
    position:sticky przy przewijaniu w bok (dziecko zostaje przy pierwotnej, "nieprzyklejonej"
