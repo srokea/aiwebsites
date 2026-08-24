@@ -11,7 +11,7 @@
 
 <div class="bg-particles" id="bg-particles" aria-hidden="true"></div>
 
-<div class="wrap narrow">
+<div class="wrap script-wrap">
   <div class="script-topbar">
     <a class="icon-btn icon-btn-back" id="back-link" href="/" title="Powrót">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
@@ -28,16 +28,20 @@
     Tokeny <code>{firma}</code>, <code>{miasto}</code>, <code>{platforma}</code> zostaw w treści — podstawią się same.
   </div>
 
-  <div class="lead-context" id="lead-context"></div>
+  <div class="script-layout">
+    <div class="script-main">
+      <div class="lead-context" id="lead-context"></div>
 
-  <div class="lead-panel" id="lead-panel"></div>
+      <div class="script-header">
+        <h1 id="script-title">Scheme rozmowy</h1>
+        <p id="script-subtitle"></p>
+      </div>
 
-  <div class="script-header">
-    <h1 id="script-title">Scheme rozmowy</h1>
-    <p id="script-subtitle"></p>
+      <div id="script-body"></div>
+    </div>
+
+    <aside class="lead-panel" id="lead-panel"></aside>
   </div>
-
-  <div id="script-body"></div>
 </div>
 
 <script src="/js/api.js"></script>

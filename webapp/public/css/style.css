@@ -82,6 +82,21 @@ a { color: inherit; text-decoration: none; }
 
 .wrap.narrow { max-width: 760px; }
 
+/* ---------- scheme rozmowy: uklad dwukolumnowy (fazy po lewej, panel z timerem po prawej) ----------
+   Wczesniej byla to wasko wysrodkowana kolumna (.wrap.narrow, 760px) z panelem "fixed" doklejonym
+   obliczonym z palca odstepem od jej prawej krawedzi (left: calc(50% + 404px)) - dzialalo tylko
+   dopoki .wrap.narrow mial dokladnie 760px, wiec kazda zmiana szerokosci gdziekolwiek indziej
+   moglaby to rozjechac. Teraz to prawdziwa siatka dwukolumnowa: lewa kolumna elastyczna (fazy
+   scenariusza), prawa stala 340px (panel), oddzielone jednym odstepem - bez zgadywania offsetow. */
+.wrap.script-wrap { max-width: 1180px; }
+.script-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 32px;
+  align-items: start;
+}
+.script-main { min-width: 0; }
+
 /* ---------- topbar ---------- */
 .topbar {
   display: flex;
@@ -998,7 +1013,7 @@ table.leads input.quality-input { min-width: 44px; width: 44px; text-align: cent
 .platform-badge {
   width: 18px;
   height: 18px;
-  border-radius: 6px;
+  border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1006,9 +1021,12 @@ table.leads input.quality-input { min-width: 44px; width: 44px; text-align: cent
   font-weight: 800;
   color: #fff;
   flex-shrink: 0;
+  overflow: hidden;
   transition: transform .15s;
 }
-.platform-badge svg, .platform-badge img { width: 11px; height: 11px; display: block; }
+/* Booksy to rastrowa ikonka (patrz PLATFORM_ICONS.booksy w api.js) - wlasne zaokraglenie,
+   zeby jej kwadratowe rogi nie wystawaly poza okragla odznake (spojnosc z reszta platform) */
+.platform-badge svg, .platform-badge img { width: 11px; height: 11px; display: block; border-radius: 50%; }
 .tags-trigger:hover .platform-badge { transform: scale(1.12); }
 .tags-trigger .plus {
   font-size: 11px;
@@ -1779,17 +1797,13 @@ table.leads td.idx-col.idx-presence .idx-num { font-weight: 800; text-shadow: 0 
   box-shadow: 0 0 0 1px var(--ring-color, transparent);
 }
 
-/* ---------- panel boczny na scheme rozmowy (script.js) - "glass" karta, przypieta do
-   prawej krawedzi, zawsze na wysokosci srodka ekranu (nie przesuwa sie przy scrollu) ---------- */
+/* ---------- panel boczny na scheme rozmowy (script.js) - "glass" karta w prawej kolumnie
+   .script-layout (patrz wyzej), przyklejona do gornej krawedzi w trakcie scrolla fazy
+   scenariusza w lewej kolumnie - zawsze pod reka, bez zgadywania offsetow. ---------- */
 .lead-panel {
-  position: fixed;
-  top: 50%;
-  left: calc(50% + 404px); /* prawa krawedz .wrap.narrow (380px polowa 760px) + odstep 24px */
-  right: 48px;
-  max-width: 340px;
-  margin-left: auto;
-  transform: translateY(-50%);
-  max-height: 82vh;
+  position: sticky;
+  top: 24px;
+  max-height: calc(100vh - 48px);
   overflow-y: auto;
   padding: 20px;
   border-radius: 22px;
@@ -1903,15 +1917,16 @@ table.leads td.idx-col.idx-presence .idx-num { font-weight: 800; text-shadow: 0 
 }
 #panel-note-input:focus { outline: none; border-color: var(--blue); background: #131a24; }
 
-/* na waskich ekranach nie ma miejsca obok tresci scheme - panel wraca do normalnego przeplywu */
-@media (max-width: 1320px) {
+/* na waskich ekranach (telefon, iPad w pionie) nie ma miejsca na dwie kolumny obok siebie -
+   panel spada pod fazy scenariusza i wraca do normalnego przeplywu. Prog nizszy niz kiedys
+   (860 zamiast 1320), bo siatka jest bardziej oszczedna niz stary uklad z .wrap.narrow +
+   fixed - dzieki temu iPad w poziomie (~1024px+) nadal ma panel przyklejony z boku podczas
+   przewijania dlugiego scenariusza. */
+@media (max-width: 860px) {
+  .script-layout { grid-template-columns: 1fr; }
   .lead-panel {
     position: static;
     top: auto;
-    left: auto;
-    right: auto;
-    transform: none;
-    width: 100%;
     max-height: none;
     margin-bottom: 24px;
   }

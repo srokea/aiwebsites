@@ -52,7 +52,9 @@ const PLATFORM_META = {
   facebook: { label: "f", name: "Facebook", color: "#1877F2" },
   booksy: { label: "B", name: "Booksy", color: "#17BEBB" },
   youtube: { label: "YT", name: "YouTube", color: "#FF3B3B" },
-  tiktok: { label: "TT", name: "TikTok", color: "#25F4EE" },
+  // czarne tlo, nie kolor marki (#25F4EE) - tak wyglada oficjalne logo TikToka: czarna nutka
+  // z cyjanowym/rozowym "cieniem" wystajacym z lewej/prawej (patrz PLATFORM_ICONS.tiktok w api.js)
+  tiktok: { label: "TT", name: "TikTok", color: "#000000" },
 };
 
 // label = skrocony tekst pokazywany w kolumnie/dropdownie "Strona" (zeby zajmowala mniej
