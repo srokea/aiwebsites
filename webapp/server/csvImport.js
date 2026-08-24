@@ -130,6 +130,7 @@ function mapRowsToLeads(rows, callerNames) {
         tag_facebook: 0,
         tag_booksy: 0,
         tag_youtube: 0,
+        tag_tiktok: 0,
         answered: "",
         interested: "nieruszone",
         caller: "",
@@ -230,6 +231,7 @@ const NOTE_TAG_PATTERNS = {
   facebook: /\b(fb|facebook)\b/i,
   booksy: /\bbooksy\b/i,
   youtube: /\b(yt|youtube)\b/i,
+  tiktok: /\b(tt|tiktok)\b/i,
 };
 const URL_PATTERN = /https?:\/\/[^\s")]+/i;
 const BARE_DOMAIN_PATTERN = /\b([a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:pl|com|eu|net|org))\b/i;

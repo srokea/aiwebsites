@@ -118,6 +118,16 @@ function escapeHtml(str) {
   return String(str ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
+// Miasta wieloczlonowe skracamy tam, gdzie liczy sie kazdy znak (tabela leadow, panel
+// Najblizsze - #8, przygotowanie pod wezsze ekrany): pierwszy czlon zostaje pelny, kolejne
+// skracaja sie do inicjalu z kropka ("Piotrków Trybunalski" -> "Piotrków T."). Nazwy
+// jednoczlonowe ("Warszawa") zostaja bez zmian.
+function shortCity(city) {
+  const words = String(city || "").trim().split(/\s+/);
+  if (words.length < 2) return city || "";
+  return [words[0], ...words.slice(1).map((w) => `${w.charAt(0)}.`)].join(" ");
+}
+
 // ---------- avatar (emoji/zdjecie/inicjaly) - wspolne dla login.js (kafelki), auth-widget.js
 // (topbar) i index.js (dashboard: kto jest w niszy / czyj to lead) ----------
 function initials(user) {
@@ -185,7 +195,16 @@ const PLATFORM_ICONS = {
   facebook: `<svg viewBox="0 0 24 24" fill="white"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg>`,
   booksy: `<img src="data:image/png;base64,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" alt="Booksy" width="24" height="24" style="display:block;">`,
   youtube: `<svg viewBox="0 0 24 24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`,
+  tiktok: `<svg viewBox="0 0 16 16" fill="white"><path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"/></svg>`,
 };
+
+// ---------- znaczek "verified" (#6) - w prawym dolnym rogu ramki Social, gdy ktos recznie
+// poprawil tagi platform (patrz social_verified w niche.js/script.js). 12-ramienna rozeta +
+// bialy checkmark, stylistyka jak niebieski "verified" na Facebooku/X.
+const VERIFIED_BADGE_SVG = `<svg viewBox="0 0 24 24">
+  <polygon fill="var(--blue)" points="12,1 14.23,3.69 17.5,2.47 18.08,5.92 21.53,6.5 20.31,9.77 23,12 20.31,14.23 21.53,17.5 18.08,18.08 17.5,21.53 14.23,20.31 12,23 9.77,20.31 6.5,21.53 5.92,18.08 2.47,17.5 3.69,14.23 1,12 3.69,9.77 2.47,6.5 5.92,5.92 6.5,2.47 9.77,3.69"/>
+  <polyline points="7.5,12.2 10.3,15.3 16.8,7.8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
 
 function platformBadge(m, t) {
   return `<span class="platform-badge" style="background:${m.color}" title="${m.name}">${PLATFORM_ICONS[t] || m.label}</span>`;
@@ -197,8 +216,11 @@ function platformBadge(m, t) {
 // zmienna `meta`/`panelMeta`, wiec przekazywana jawnie zamiast domykania globala.
 function tagsTriggerContent(lead, metaData) {
   const active = metaData.platformTags.filter((t) => lead[`tag_${t}`]);
-  if (!active.length) return `<span class="plus">+</span>`;
-  return active.map((t) => platformBadge(metaData.platformMeta[t], t)).join("");
+  const verified = lead.social_verified
+    ? `<span class="verified-badge" title="Ręcznie zweryfikowane">${VERIFIED_BADGE_SVG}</span>`
+    : "";
+  if (!active.length) return `<span class="plus">+</span>${verified}`;
+  return active.map((t) => platformBadge(metaData.platformMeta[t], t)).join("") + verified;
 }
 
 function tagsMenuContent(lead, metaData) {
@@ -431,4 +453,117 @@ function termLabel(value) {
   const d = new Date(value);
   if (isNaN(d.getTime())) return value;
   return `${d.toLocaleDateString("pl-PL", { day: "numeric", month: "short" })} · ${d.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" })}`;
+}
+
+// ---------- #4: kalendarzyk "Kiedy oddzwonić" - ta sama stylistyka co kalendarz Google Meet
+// (openTermPicker) powyzej, tylko bez godzin i bez kolizji per-dzwoniacy: to zwykla data
+// oddzwonienia, nie konkretny termin spotkania. Wspolny dla niche.js i script.js.
+
+let callbackPickerEl = null;
+
+function closeCallbackPicker() {
+  if (callbackPickerEl) callbackPickerEl.remove();
+  callbackPickerEl = null;
+}
+
+// value: "YYYY-MM-DD" albo "" | onPick(nowaWartosc) - wolane tez z "" przy czyszczeniu
+function openCallbackPicker({ anchor, value, onPick }) {
+  closeCallbackPicker();
+
+  const start = value ? new Date(`${value}T00:00:00`) : new Date();
+  const state = { year: start.getFullYear(), month: start.getMonth(), day: value || "" };
+
+  const pop = document.createElement("div");
+  pop.className = "term-pop";
+  document.body.appendChild(pop);
+  callbackPickerEl = pop;
+
+  function render() {
+    const first = new Date(state.year, state.month, 1);
+    const daysInMonth = new Date(state.year, state.month + 1, 0).getDate();
+    const offset = (first.getDay() + 6) % 7;
+    const todayIso = isoDay(new Date());
+
+    const cells = [];
+    for (let i = 0; i < offset; i++) cells.push(`<span class="term-day empty"></span>`);
+    for (let d = 1; d <= daysInMonth; d++) {
+      const iso = isoDay(new Date(state.year, state.month, d));
+      const classes = ["term-day", iso === state.day ? "selected" : "", iso === todayIso ? "today" : ""]
+        .filter(Boolean)
+        .join(" ");
+      cells.push(`<button type="button" class="${classes}" data-callback-day="${iso}">${d}</button>`);
+    }
+
+    const monthLabel = first.toLocaleDateString("pl-PL", { month: "long", year: "numeric" });
+
+    pop.innerHTML = `
+      <div class="term-head">
+        <button type="button" class="term-nav" data-callback-nav="-1" title="Poprzedni miesiąc">‹</button>
+        <span class="term-month">${monthLabel}</span>
+        <button type="button" class="term-nav" data-callback-nav="1" title="Następny miesiąc">›</button>
+      </div>
+      <div class="term-grid">
+        ${MEET_WEEKDAYS.map((d) => `<span class="term-dow">${d}</span>`).join("")}
+        ${cells.join("")}
+      </div>
+      <div class="term-foot">
+        <button type="button" class="btn" data-callback-clear>Wyczyść</button>
+        <button type="button" class="btn" data-callback-close>Zamknij</button>
+      </div>
+    `;
+    position();
+  }
+
+  // dymek pod polem, a gdy nie miesci sie na dole ekranu - nad nim; zawsze w granicach okna
+  function position() {
+    const r = anchor.getBoundingClientRect();
+    const w = pop.offsetWidth;
+    const h = pop.offsetHeight;
+    pop.style.left = `${Math.max(8, Math.min(r.left, window.innerWidth - w - 8))}px`;
+    const below = r.bottom + 6;
+    pop.style.top = `${below + h > window.innerHeight - 8 ? Math.max(8, r.top - h - 6) : below}px`;
+  }
+
+  pop.addEventListener("click", (e) => {
+    e.stopPropagation(); // patrz ten sam komentarz w openTermPicker powyzej
+
+    const nav = e.target.closest("[data-callback-nav]");
+    if (nav) {
+      const delta = Number(nav.dataset.callbackNav);
+      const moved = new Date(state.year, state.month + delta, 1);
+      state.year = moved.getFullYear();
+      state.month = moved.getMonth();
+      return render();
+    }
+
+    const day = e.target.closest("[data-callback-day]");
+    if (day) {
+      onPick(day.dataset.callbackDay);
+      return closeCallbackPicker();
+    }
+
+    if (e.target.closest("[data-callback-clear]")) {
+      onPick("");
+      return closeCallbackPicker();
+    }
+    if (e.target.closest("[data-callback-close]")) closeCallbackPicker();
+  });
+
+  render();
+}
+
+document.addEventListener("click", (e) => {
+  if (callbackPickerEl && !callbackPickerEl.contains(e.target) && !e.target.closest("[data-callback-open]")) closeCallbackPicker();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeCallbackPicker();
+});
+window.addEventListener("resize", closeCallbackPicker);
+
+// etykieta na guziku - jak termLabel powyzej, tylko bez godziny (callback_when to sama data)
+function callbackLabel(value) {
+  if (!value) return "📅";
+  const d = new Date(`${value}T00:00:00`);
+  if (isNaN(d.getTime())) return value;
+  return d.toLocaleDateString("pl-PL", { day: "numeric", month: "short" });
 }

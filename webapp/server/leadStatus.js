@@ -4,8 +4,9 @@ const UNRESOLVED = new Set(INTERESTED_OPTIONS.filter((o) => o.resolved === false
 const AUTO_CALL = new Set(INTERESTED_OPTIONS.filter((o) => o.autoCall).map((o) => o.value));
 
 // Lead liczy sie jako "zrobiony" gdy byl jakikolwiek slad kontaktu (przypisany dzwoniacy
-// albo odnotowane Odebral) ORAZ sprawa jest rozstrzygnieta - status inny niz "Oczekiwanie"
-// czy "Oddzwonic - Poczta", ktore z definicji czekaja na kolejny telefon.
+// albo odnotowane Odebral) ORAZ sprawa jest rozstrzygnieta - status inny niz "Oczekiwanie",
+// "Oddzwonić (my)" czy "Poczta", ktore z definicji czekaja na kolejny telefon (w jedna albo
+// druga strone).
 // Wyjatek: statusy z autoCall (np. "Strona", "Tymczasowo zamkniete") licza sie same w sobie,
 // bo to czesto ustalenia z researchu, a nie z rozmowy - nie warto wymagac przy nich Odebral/dzwoniacego.
 function isCalled(lead) {
@@ -30,17 +31,20 @@ function computeDopieteAt(nextLead, previousDopieteAt = null) {
   return previousDopieteAt || new Date().toISOString();
 }
 
-// Leady, ktore juz maja wlasna strone (Strona = "Tak") ALBO dostaly jakosc 0 (tragiczny lead,
-// patrz QUALITY_OPTIONS w constants.js), nie wliczaja sie do zadnych statystyk dzwonienia
+// Leady, ktore juz maja wlasna strone (jakosc = "6", dawniej Strona = "Tak" - kolumna Strona
+// zniknela z UI, quality przejela jej role) ALBO dostaly jakosc 0 (tragiczny lead, patrz
+// QUALITY_OPTIONS w constants.js), nie wliczaja sie do zadnych statystyk dzwonienia
 // (kafelki, wykresy, paski postepu) - nie ma do kogo dzwonic z oferta / nie warto, wiec
 // zawyzalyby "do zrobienia" i zanizaly postep. W tabeli leadow normalnie widoczne.
+// Uwaga: jakosc "5" (ma Booksy) NIE wyklucza - Booksy nie zastepuje wlasnej strony, wiec taki
+// lead nadal warto obdzwonic (patrz pitch w scriptsData).
 // Fragment SQL do wklejenia w warunki zapytan (bezpieczny - stala, nie input uzytkownika).
-const STATS_ELIGIBLE_SQL = "has_social <> 'Tak' AND quality <> '0'";
+const STATS_ELIGIBLE_SQL = "quality <> '0' AND quality <> '6'";
 
 // Rozklad statusow (wykres kolowy + legenda) rzadzi sie inna regula niz liczniki dzwonienia:
 // pokazuje leady, do ktorych dzwonimy, ORAZ te z odnotowanym wynikiem - nawet jesli maja
 // juz wlasna strone. Inaczej dopiety klient znikalby z wykresu w momencie, w ktorym
-// postawimy mu strone (dostaje wtedy Strona = "Tak"), czyli dokladnie po sprzedazy.
+// postawimy mu strone (dostaje wtedy jakosc "6"), czyli dokladnie po sprzedazy.
 // Leady ze strona, ktorych nikt nie ruszal, nadal sie nie licza - nie zasmiecaja wykresu.
 const STATS_BREAKDOWN_SQL = `(${STATS_ELIGIBLE_SQL} OR called_at IS NOT NULL)`;
 

@@ -7,16 +7,16 @@ let leads = [];
 let currentNiche = null;
 let sortState = { id: null, field: null, dir: "asc" };
 // kazdy filtr to lista wartosci (multi-select) - pusta lista = brak filtra na tym polu
-let filters = { interested: [], caller: [], answered: [], has_social: [], quality: [], open_time: [] };
+let filters = { interested: [], caller: [], answered: [], quality: [] };
 let searchQuery = "";
 let highlightStatuses = new Set();
 // wlaczany klikiem w karte "Do zrobienia" - pokazuje tylko leady, ktore licza sie do tej metryki
 let todoFilter = false;
 
 // Dokladnie ta sama regula co licznik "todo" na serwerze (eligible - called, patrz
-// STATS_ELIGIBLE_SQL w leadStatus.js): bez wlasnej strony, nie "0" (tragiczny lead) i jeszcze
-// nie zadzwoniony.
-const isTodoLead = (l) => l.has_social !== "Tak" && l.quality !== "0" && !l.called_at;
+// STATS_ELIGIBLE_SQL w leadStatus.js): jakosc nie "6" (ma wlasna strone) ani "0" (tragiczny
+// lead) i jeszcze nie zadzwoniony.
+const isTodoLead = (l) => l.quality !== "6" && l.quality !== "0" && !l.called_at;
 
 // Kolejnosc sortowania dla "Odebral?" - od pustego, przez Nie, po Tak.
 const ANSWERED_SORT_ORDER = ["", "Nie", "Tak"];
@@ -24,7 +24,7 @@ const ANSWERED_SORT_ORDER = ["", "Nie", "Tak"];
 const COUNTER_FIELDS = new Set(["caller", "answered", "interested"]);
 // Zmiana tych pol (osobno od COUNTER_FIELDS) moze przestawic "eligible"/"do zrobienia" -
 // wplywaja na STATS_ELIGIBLE_SQL, ale nie licza sie jako "dzwonienie" (bez rememberLastLead)
-const ELIGIBILITY_FIELDS = new Set(["has_social", "quality"]);
+const ELIGIBILITY_FIELDS = new Set(["quality"]);
 
 const callerColor = (name) => meta.callerColors[name] || "#888";
 const callerOptions = () => meta.callers.map((c) => ({ value: c, label: c, color: callerColor(c) }));
@@ -66,7 +66,7 @@ async function init() {
     await loadLeads();
     await loadFilterSets(); // wymaga currentNiche.id, wiec po naglowku niszy
     await loadMeets(); // zajete terminy do kalendarzyka przy kolumnie "Termin Google" (#12)
-    renderFilterBar(); // ponownie: dopiero teraz znamy godziny otwarcia wystepujace w tej niszy
+    renderFilterBar(); // ponownie: dopiero teraz mamy zaladowane zestawy filtrow (loadFilterSets)
     startPresencePolling();
     // zglaszamy obecnosc od razu: albo na konkretnym leadzie (jesli activeRowId przetrwal
     // odswiezenie - inaczej dymek u innych zniknalby na chwile), albo lead_id=0 = "jestem
@@ -81,7 +81,7 @@ async function init() {
     document.getElementById("niche-title").textContent = "Nie udało się wczytać niszy";
     document.getElementById("niche-sub").textContent = err.message;
     document.getElementById("leads-tbody").innerHTML =
-      `<tr><td colspan="17"><div class="empty-state">${escapeHtml(err.message)} — <a href="/" style="color:var(--blue)">wróć do listy nisz</a></div></td></tr>`;
+      `<tr><td colspan="14"><div class="empty-state">${escapeHtml(err.message)} — <a href="/" style="color:var(--blue)">wróć do listy nisz</a></div></td></tr>`;
   }
 }
 
@@ -203,27 +203,17 @@ function formatPhone(raw) {
 
 // ---------- filtry (multi-select) + sortowanie ----------
 
-// Opcje filtra "Otwiera o" biora sie z DANYCH, nie ze stalej listy godzin: pokazujemy tylko te
-// godziny, ktore faktycznie wystepuja w tej niszy, zeby nie przewijac 24 pozycji dla trzech
-// realnych wartosci. Dlatego pasek filtrow rysuje sie ponownie po wczytaniu leadow (patrz init).
-function openTimeOptions() {
-  const times = [...new Set(leads.map((l) => l.open_time).filter(Boolean))].sort();
-  return times.map((t) => ({ value: t, label: t, color: "#6ec6ff" }));
-}
-
 function renderFilterBar() {
   document.getElementById("filter-bar").innerHTML = `
     ${filterSetsHtml()}
     ${multiFilterHtml("interested", "Zainteresowany", meta.interestedOptions)}
     ${multiFilterHtml("caller", "Kto dzwonił", callerOptions())}
     ${multiFilterHtml("answered", "Odebrał", meta.answeredOptions)}
-    ${multiFilterHtml("has_social", "Strona", meta.websiteStatusOptions)}
     ${multiFilterHtml("quality", "Jakość", meta.qualityOptions)}
-    ${multiFilterHtml("open_time", "Otwiera o", openTimeOptions())}
     <button type="button" class="btn" id="filter-clear" style="margin-left:4px;">Wyczyść filtry</button>
   `;
   document.getElementById("filter-clear").addEventListener("click", () => {
-    filters = { interested: [], caller: [], answered: [], has_social: [], quality: [], open_time: [] };
+    filters = { interested: [], caller: [], answered: [], quality: [] };
     setTodoFilter(false);
     saveViewState();
     renderFilterBar();
@@ -296,19 +286,12 @@ function sortValue(lead, field) {
     // pola kategoryczne sortujemy wg kolejnosci opcji (logicznej), a nie alfabetycznie
     case "interested":
       return meta.interestedOptions.findIndex((o) => o.value === lead.interested);
-    case "has_social":
-      return meta.websiteStatusOptions.findIndex((o) => o.value === lead.has_social);
     case "caller":
       return meta.callers.indexOf(lead.caller);
     case "answered":
       return ANSWERED_SORT_ORDER.indexOf(lead.answered);
     case "phone":
       return lead.phone.replace(/\D/g, "");
-    // godziny to teksty "HH:MM", wiec sortuja sie leksykalnie tak samo jak czasowo -
-    // wystarczy zepchnac puste na koniec, zeby nie ladowaly przed poranna zmiana
-    case "open_time":
-    case "close_time":
-      return lead[field] || "99:99";
     // kolumna Reminder pokazuje blizszy z dwoch terminow (patrz reminderInfo), wiec sortuje
     // sie po tym samym - nie tylko po callback_when, inaczej rozjezdza sie z tym co widac
     case "reminder_effective": {
@@ -475,17 +458,11 @@ function restoreViewState() {
     interested: meta.interestedOptions.map((o) => o.value),
     caller: meta.callers,
     answered: meta.answeredOptions.map((o) => o.value),
-    has_social: meta.websiteStatusOptions.map((o) => o.value),
     quality: meta.qualityOptions.map((o) => o.value),
   };
   for (const [key, values] of Object.entries(allowed)) {
     const savedValues = saved.filters?.[key];
     if (Array.isArray(savedValues)) filters[key] = savedValues.filter((v) => values.includes(v));
-  }
-  // godziny otwarcia nie maja zamknietej listy w /api/meta (biora sie z danych niszy),
-  // wiec zamiast slownika sprawdzamy sam format
-  if (Array.isArray(saved.filters?.open_time)) {
-    filters.open_time = saved.filters.open_time.filter((v) => /^\d{2}:\d{2}$/.test(v));
   }
 
   todoFilter = Boolean(saved.todo);
@@ -512,7 +489,7 @@ function renderLeads() {
   const visible = getVisibleLeads();
   if (!visible.length) {
     const msg = todoFilter ? "Nic do zrobienia — wszystko obdzwonione. 🎉" : "Brak leadow spelniajacych kryteria.";
-    tbody.innerHTML = `<tr><td colspan="17"><div class="empty-state">${msg}</div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="14"><div class="empty-state">${msg}</div></td></tr>`;
     return;
   }
   tbody.innerHTML = visible.map((lead, i) => rowHtml(lead, i + 1)).join("");
@@ -708,14 +685,11 @@ function rowHtml(lead, index) {
         <span class="presence-badge" style="display:none;"></span>
         <a class="company-link" href="${escapeHtml(companyGoogleSearchHref(lead))}" target="_blank" rel="noopener" title="${escapeHtml(lead.company_name)} — szukaj w Google">${escapeHtml(lead.company_name)}</a>
       </td>
-      <td>${fieldCsel("has_social", meta.websiteStatusOptions, lead.has_social, "—")}</td>
-      <td class="city-cell">${escapeHtml(lead.city)}</td>
+      <td class="city-cell" title="${escapeHtml(lead.city)}">${escapeHtml(shortCity(lead.city))}</td>
       <td class="phone-cell">
         <a class="phone-call-btn" href="/script.html?leadId=${lead.id}" target="_blank" rel="noopener" title="Scheme rozmowy (nowe okno)">📖</a>
         <span class="phone-text">${escapeHtml(formatPhone(lead.phone))}</span>
       </td>
-      <td><input type="time" class="time-input" data-field="open_time" value="${escapeHtml(lead.open_time || "")}"></td>
-      <td><input type="time" class="time-input" data-field="close_time" value="${escapeHtml(lead.close_time || "")}"></td>
       <td>${fieldCsel("quality", meta.qualityOptions, lead.quality, "—")}</td>
       <td>
         <div class="tags-popover">
@@ -727,7 +701,7 @@ function rowHtml(lead, index) {
       <td>${fieldCsel("interested", meta.interestedOptions, lead.interested)}</td>
       <td>${fieldCsel("caller", callerOptions(), lead.caller, "—")}</td>
       <td><span class="reminder-badge ${reminder.cls}">${reminder.text}</span></td>
-      <td><input type="date" data-field="callback_when" value="${escapeHtml(lead.callback_when)}"></td>
+      <td><button type="button" class="term-btn ${lead.callback_when ? "set" : ""}" data-callback-open title="${lead.callback_when ? "" : "Ustaw dzień oddzwonienia"}">${escapeHtml(callbackLabel(lead.callback_when))}</button></td>
       <td><button type="button" class="term-btn ${lead.google_term ? "set" : ""}" data-term-open title="${lead.google_term ? "" : "Ustaw termin Google Meet"}">${escapeHtml(termLabel(lead.google_term))}</button></td>
       <td>${notesCellHtml(lead)}</td>
       <td class="row-actions"><button type="button" class="lead-delete-btn" title="Usuń lead">✕</button></td>
@@ -745,13 +719,7 @@ async function saveLead(id, body, { keepPopoverOpen = false } = {}) {
     const fields = Object.keys(body);
     if (keepPopoverOpen) {
       const tr = document.querySelector(`tr[data-id="${id}"]`);
-      if (tr) {
-        tr.querySelector(".tags-trigger").innerHTML = platformTriggerContent(updated);
-        const strona = tr.querySelector('.csel[data-field="has_social"]');
-        if (strona && "has_social" in body) {
-          strona.outerHTML = fieldCsel("has_social", meta.websiteStatusOptions, updated.has_social, "—");
-        }
-      }
+      if (tr) tr.querySelector(".tags-trigger").innerHTML = platformTriggerContent(updated);
     } else if (affectsOrdering(fields)) {
       renderLeads();
     } else {
@@ -774,22 +742,16 @@ async function saveLead(id, body, { keepPopoverOpen = false } = {}) {
 
 const tbody = document.getElementById("leads-tbody");
 
-// pola tekstowe / daty
-tbody.addEventListener("change", (e) => {
-  const field = e.target.dataset.field;
-  if (!field || e.target.tagName !== "INPUT") return;
-  const value = field === "phone" ? e.target.value.replace(/\D/g, "") : e.target.value;
-  saveLead(e.target.closest("tr").dataset.id, { [field]: value });
-});
-
-// checkboxy tagow platform
+// checkboxy tagow platform - reczne dotkniecie tagow (nie import CSV) odznacza tez "verified"
+// (patrz .verified-badge w prawym dolnym rogu ramki Social)
 tbody.addEventListener("change", (e) => {
   const tagField = e.target.dataset.tagField;
   if (!tagField) return;
   const id = e.target.closest("tr").dataset.id;
 
-  const body = { [tagField]: e.target.checked };
-  // zaznaczenie Booksy w tagach ustawia tez kolumne Strona - chyba ze maja wlasna strone ("Tak")
+  const body = { [tagField]: e.target.checked, social_verified: true };
+  // zaznaczenie Booksy w tagach ustawia tez pole has_social (zyje dalej w bazie/eksporcie CSV,
+  // mimo ze kolumna "Strona" zniknela z tabeli - patrz QUALITY_OPTIONS w constants.js)
   if (tagField === "tag_booksy" && e.target.checked) {
     const current = leads.find((l) => l.id === Number(id));
     if (current && current.has_social !== "Tak") body.has_social = "Booksy";
@@ -800,7 +762,7 @@ tbody.addEventListener("change", (e) => {
 // #12 - termin Google Meet wybieramy wlasnym kalendarzem (zajete dni/godziny na czerwono),
 // a nie systemowym pickerem, ktorego nie da sie pokolorowac
 tbody.addEventListener("click", (e) => {
-  const termBtn = e.target.closest(".term-btn");
+  const termBtn = e.target.closest("[data-term-open]");
   if (!termBtn) return;
   const tr = termBtn.closest("tr");
   const lead = leads.find((l) => l.id === Number(tr.dataset.id));
@@ -816,6 +778,21 @@ tbody.addEventListener("click", (e) => {
       await saveLead(lead.id, { google_term: value });
       await loadMeets(); // swiezo umowiony termin ma od razu blokowac te godzine
     },
+  });
+});
+
+// "Kiedy oddzwonić" - ten sam kalendarzyk co Google Meet (#4), tylko bez godzin: to zwykla data.
+tbody.addEventListener("click", (e) => {
+  const callbackBtn = e.target.closest("[data-callback-open]");
+  if (!callbackBtn) return;
+  const tr = callbackBtn.closest("tr");
+  const lead = leads.find((l) => l.id === Number(tr.dataset.id));
+  if (!lead) return;
+
+  openCallbackPicker({
+    anchor: callbackBtn,
+    value: lead.callback_when,
+    onPick: (value) => saveLead(lead.id, { callback_when: value }),
   });
 });
 
@@ -844,8 +821,6 @@ tbody.addEventListener("click", (e) => {
 
     const tr = option.closest("tr");
     const body = { [field]: value };
-    // wybor "Booksy" w kolumnie Strona zaznacza tez tag platformy
-    if (field === "has_social" && value === "Booksy") body.tag_booksy = true;
 
     const before = leads.find((l) => l.id === Number(tr.dataset.id));
     if (field === "interested" && value === "dopiete" && before?.interested !== "dopiete") celebrateDeal();
@@ -1123,7 +1098,7 @@ function focusLeadRow(leadId) {
 let filterSets = [];
 let renamingSetId = null; // zestaw, ktorego nazwe wlasnie edytujemy w menu
 
-const EMPTY_FILTERS = () => ({ interested: [], caller: [], answered: [], has_social: [], quality: [], open_time: [] });
+const EMPTY_FILTERS = () => ({ interested: [], caller: [], answered: [], quality: [] });
 
 // ile pojedynczych wartosci siedzi w zestawie - liczba przy nazwie mowi "ile filtrow zalacze"
 const setSize = (set) => Object.values(set.filters || {}).reduce((n, v) => n + (Array.isArray(v) ? v.length : 0), 0);
@@ -1198,8 +1173,11 @@ document.getElementById("filter-bar").addEventListener("click", (e) => {
     const set = filterSets.find((s) => s.id === Number(apply.dataset.setApply));
     if (!set) return;
     // zestaw zastepuje CALY stan filtrow (a nie dokłada sie do obecnych) - inaczej nie dalo
-    // by sie nim wrocic do znanego widoku, tylko zawezalo to, co akurat bylo ustawione
-    filters = { ...EMPTY_FILTERS(), ...set.filters };
+    // by sie nim wrocic do znanego widoku, tylko zawezalo to, co akurat bylo ustawione.
+    // Bierzemy tylko klucze, ktore nadal istnieja (stary zestaw sprzed usuniecia kolumn
+    // Strona/Otwiera/Zamyka mogl miec has_social/open_time - te po cichu by juz nie dzialaly).
+    const empty = EMPTY_FILTERS();
+    filters = { ...empty, ...Object.fromEntries(Object.entries(set.filters || {}).filter(([k]) => k in empty)) };
     setTodoFilter(false);
     closeAllPopovers();
     saveViewState();

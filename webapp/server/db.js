@@ -146,6 +146,10 @@ addColumnIfMissing("leads", "open_time TEXT NOT NULL DEFAULT ''");
 addColumnIfMissing("leads", "close_time TEXT NOT NULL DEFAULT ''");
 // #14 - etap budowy strony klienta (indeks z SITE_PROGRESS_OPTIONS w constants.js)
 addColumnIfMissing("leads", "site_progress INTEGER NOT NULL DEFAULT 0");
+addColumnIfMissing("leads", "tag_tiktok INTEGER NOT NULL DEFAULT 0");
+// znaczek "verified" przy ramce social - ustawiany raz, gdy ktos recznie poprawi tagi
+// platform (odroznia recznie zweryfikowane dane od tych prosto ze scrapera/importu CSV)
+addColumnIfMissing("leads", "social_verified INTEGER NOT NULL DEFAULT 0");
 
 // Jednorazowy seed: stan jak dawna sztywna mapa NICHE_SCRIPTS (kosmetyczki mialy swoj plik,
 // reszta default). Idempotentne - po ustawieniu wartosci warunek '' juz nie zlapie.

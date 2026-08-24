@@ -18,7 +18,7 @@ const TEXT_FIELDS = [
   "google_term",
   "research_notes",
 ];
-const BOOL_FIELDS = ["tag_instagram", "tag_facebook", "tag_booksy", "tag_youtube"];
+const BOOL_FIELDS = ["tag_instagram", "tag_facebook", "tag_booksy", "tag_youtube", "tag_tiktok", "social_verified"];
 
 // Godziny otwarcia (#11) - albo "HH:MM" prosto z <input type="time">, albo pusty string
 // ("nie wiemy"). Trzymane jako tekst, bo tak sortuja sie leksykalnie tak samo jak czasowo.

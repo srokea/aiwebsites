@@ -12,11 +12,14 @@
 // odrozniona od swiadomego "Nie", zeby swiezy, nietkniety lead nie wygladal jak odrzucony.
 const INTERESTED_OPTIONS = [
   { value: "nieruszone", label: "Nieruszone", color: "#5a5a5a", resolved: false },
-  { value: "brak_wlasciciela", label: "Brak właściciela", color: "#7c8fa6", resolved: false },
+  { value: "brak_wlasciciela", label: "B. Właściciela", color: "#7c8fa6", resolved: false },
   { value: "nie", label: "Nie", color: "#e06050", resolved: true },
   { value: "strona", label: "Strona", color: "#e07ab3", resolved: true, autoCall: true },
-  { value: "zamkniete", label: "Tymczasowo zamknięte", color: "#b06a3a", resolved: true, autoCall: true },
+  { value: "zamkniete", label: "Tym. Zamk.", color: "#b06a3a", resolved: true, autoCall: true },
   { value: "oczekiwanie", label: "Oczekiwanie", color: "#c0a050", resolved: false, highlight: true },
+  // #2026-08 - inne niz "Oczekiwanie": tam CZEKAMY na telefon od nich, tu MY zobowiazalismy sie
+  // oddzwonic - rozroznienie wprost od uzytkownika (Sylwester), zeby nie mylic kto ma zadzwonic
+  { value: "oddzwon_my", label: "Oddzwonić (my)", color: "#4fa8d8", resolved: false, highlight: true },
   { value: "my_dzwonimy", label: "Poczta", color: "#50b8c0", resolved: false, highlight: true },
   { value: "sms", label: "SMS", color: "#a066e0", resolved: true },
   { value: "mail", label: "Mail", color: "#6ec6ff", resolved: true },
@@ -29,11 +32,11 @@ const INTERESTED_OPTIONS = [
 // Kolejnosc na liscie zbiorczej (kropki) na stronie glownej - inna niz w dropdownie, bo tam
 // chcemy najpierw to, co najciekawsze biznesowo (te same pierwsze 6 co na wykresie kolowym,
 // patrz INTERESTED_DONUT_ORDER), a reszta (mniej istotne/rzadsze statusy) na koncu listy.
-const INTERESTED_STATS_ORDER = ["dopiete", "closing", "google_meet", "oczekiwanie", "my_dzwonimy", "nie", "nieruszone", "strona", "zamkniete", "brak_wlasciciela", "sms", "mail"];
+const INTERESTED_STATS_ORDER = ["dopiete", "closing", "google_meet", "oczekiwanie", "oddzwon_my", "my_dzwonimy", "nie", "nieruszone", "strona", "zamkniete", "brak_wlasciciela", "sms", "mail"];
 
 // Wykres kolowy na stronie glownej ma pokazywac tylko te kluczowe statusy (i w tej kolejnosci) -
 // reszta (Strona, Zamkniete, SMS, Mail, Brak wlasciciela) widoczna jest tylko w legendzie z kropkami obok.
-const INTERESTED_DONUT_ORDER = ["dopiete", "closing", "google_meet", "oczekiwanie", "my_dzwonimy", "nie", "nieruszone"];
+const INTERESTED_DONUT_ORDER = ["dopiete", "closing", "google_meet", "oczekiwanie", "oddzwon_my", "my_dzwonimy", "nie", "nieruszone"];
 
 const ANSWERED_OPTIONS = [
   { value: "Nie", label: "Nie", color: "#e06050" },
@@ -43,12 +46,13 @@ const ANSWERED_OPTIONS = [
 const CALLERS = ["Sylwester", "Nikodem"];
 const CALLER_COLORS = { Sylwester: "#6090e0", Nikodem: "#e0935c" };
 
-const PLATFORM_TAGS = ["instagram", "facebook", "booksy", "youtube"];
+const PLATFORM_TAGS = ["instagram", "facebook", "booksy", "youtube", "tiktok"];
 const PLATFORM_META = {
   instagram: { label: "IG", name: "Instagram", color: "#E1306C" },
   facebook: { label: "f", name: "Facebook", color: "#1877F2" },
   booksy: { label: "B", name: "Booksy", color: "#17BEBB" },
   youtube: { label: "YT", name: "YouTube", color: "#FF3B3B" },
+  tiktok: { label: "TT", name: "TikTok", color: "#25F4EE" },
 };
 
 // label = skrocony tekst pokazywany w kolumnie/dropdownie "Strona" (zeby zajmowala mniej
@@ -60,10 +64,11 @@ const WEBSITE_STATUS_OPTIONS = [
   { value: "Nie", label: "n", color: "#e06050" },
 ];
 
-// Jakosc leada: dropdown 0-6 zamiast wolnego tekstu. 0 = tragiczny lead - traktowany w
-// statystykach jak leady z wlasna strona (patrz STATS_ELIGIBLE_SQL w leadStatus.js), zeby
-// nie zawyzal "do zrobienia". 6 = ma wlasna strone (umowna konwencja Sylwestra/Nikodema,
-// bez dodatkowej logiki po stronie kodu).
+// Jakosc leada: dropdown 0-6 zamiast wolnego tekstu. 0 = tragiczny lead - wykluczony ze
+// statystyk (patrz STATS_ELIGIBLE_SQL w leadStatus.js), zeby nie zawyzal "do zrobienia".
+// 5 = ma Booksy (umowna konwencja Sylwestra/Nikodema, bez dodatkowej logiki po stronie kodu).
+// 6 = ma wlasna strone - to zastapilo dawna kolumne "Strona" (has_social='Tak'), wiec TEZ
+// wyklucza leada ze statystyk (patrz STATS_ELIGIBLE_SQL).
 const QUALITY_OPTIONS = [
   { value: "0", label: "0", color: "#5a5a5a" },
   { value: "1", label: "1", color: "#e06050" },

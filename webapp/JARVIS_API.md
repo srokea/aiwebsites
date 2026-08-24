@@ -56,8 +56,8 @@ Nadchodzące/aktywne pozycje, 5 kategorii (bez filtra `type` = wszystkie naraz):
 
 ### `GET /api/jarvis/todo?niche=<slug>`
 Leady "do zrobienia" (jeszcze niezadzwonione, liczą się do statystyk) — pełne info + telefon.
-Bez `niche` = wszystkie nisze naraz. Ta sama definicja "do zrobienia" co dashboard (bez własnej
-strony, jakość ≠ 0, `called_at IS NULL`) — liczby 1:1 z tym co widać na stronie.
+Bez `niche` = wszystkie nisze naraz. Ta sama definicja "do zrobienia" co dashboard (jakość ≠ 0
+i ≠ 6 — "6" znaczy "ma własną stronę", `called_at IS NULL`) — liczby 1:1 z tym co widać na stronie.
 ```json
 { "id": 691, "client": "Kosmetologia...", "phone": "669766469", "city": "Bełchatów",
   "niche": "💅Kosmetyczki", "niche_slug": "kosmetyczki", "status": "nieruszone",
@@ -78,9 +78,10 @@ Głębokie statystyki jednej osoby: `called`, `calledToday`, `calledWeek`, `answ
 Lista nisz z `total`/`eligible`/`called` per nisza (do "ile zadzwonionych per nisza").
 
 ## Statusy (`status` / `interested`)
-`nieruszone` (nowy, nietknięty) · `brak_wlasciciela` · `nie` (odrzucony) · `strona` (ma już stronę) ·
-`zamkniete` (tymczasowo zamknięte) · `oczekiwanie` · `my_dzwonimy` ("Poczta") · `sms` ·
-`mail` · `google_meet` · `closing` · `dopiete` (wygrany klient)
+`nieruszone` (nowy, nietknięty) · `brak_wlasciciela` ("B. Właściciela") · `nie` (odrzucony) ·
+`strona` (ma już stronę) · `zamkniete` ("Tym. Zamk.") · `oczekiwanie` (czekamy na telefon OD nich) ·
+`oddzwon_my` ("Oddzwonić (my)" — MY mamy oddzwonić, odwrotnie niż `oczekiwanie`) ·
+`my_dzwonimy` ("Poczta") · `sms` · `mail` · `google_meet` · `closing` · `dopiete` (wygrany klient)
 
 ⚠️ `dopiete` i `zamkniete` to przeciwne wyniki — nie mylić.
 

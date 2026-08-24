@@ -835,12 +835,14 @@ table.leads tr.row-glow-dopiete td { background: rgba(92, 184, 92, 0.09); }
 table.leads tr.row-glow-google_meet td { background: rgba(96, 144, 224, 0.1); }
 table.leads tr.row-glow-my_dzwonimy td { background: rgba(80, 184, 192, 0.1); }
 table.leads tr.row-glow-oczekiwanie td { background: rgba(192, 160, 80, 0.1); }
+table.leads tr.row-glow-oddzwon_my td { background: rgba(79, 168, 216, 0.1); }
 table.leads tr.row-glow-closing td { background: rgba(46, 201, 160, 0.1); }
 table.leads tr.row-glow-closing:hover td { background: rgba(46, 201, 160, 0.17); }
 table.leads tr.row-glow-dopiete:hover td { background: rgba(92, 184, 92, 0.16); }
 table.leads tr.row-glow-google_meet:hover td { background: rgba(96, 144, 224, 0.17); }
 table.leads tr.row-glow-my_dzwonimy:hover td { background: rgba(80, 184, 192, 0.17); }
 table.leads tr.row-glow-oczekiwanie:hover td { background: rgba(192, 160, 80, 0.17); }
+table.leads tr.row-glow-oddzwon_my:hover td { background: rgba(79, 168, 216, 0.17); }
 
 /* text/date inputs inside the table */
 table.leads input[type=text], table.leads input[type=date], table.leads input[type=datetime-local] {
@@ -947,6 +949,7 @@ table.leads input.quality-input { min-width: 44px; width: 44px; text-align: cent
 /* ---------- platform tags: trigger + popover ---------- */
 .tags-popover { position: relative; display: inline-block; }
 .tags-trigger {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -957,6 +960,17 @@ table.leads input.quality-input { min-width: 44px; width: 44px; text-align: cent
   cursor: pointer;
   transition: border-color .15s;
 }
+/* #6 - znaczek "verified" gdy ktos recznie poprawil tagi platform (patrz social_verified) */
+.verified-badge {
+  position: absolute;
+  right: -5px;
+  bottom: -5px;
+  width: 13px;
+  height: 13px;
+  display: block;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.5));
+}
+.verified-badge svg { width: 100%; height: 100%; display: block; }
 .tags-trigger:hover { border-color: #3a3a3a; transform: translateY(-1px); }
 .tags-trigger { transition: border-color .15s, transform .15s; }
 .platform-badge {
@@ -1862,22 +1876,6 @@ table.leads td.idx-col.idx-presence .idx-num { font-weight: 800; text-shadow: 0 
 
 /* ================= nowe elementy: godziny, usuwanie leadow, zestawy filtrow,
    postep strony i SMS potwierdzajacy ================= */
-
-/* ---------- #11: godziny otwarcia w tabeli ---------- */
-.time-input {
-  background: #141414;
-  border: 1px solid #232323;
-  color: var(--text);
-  border-radius: 7px;
-  padding: 5px 4px;
-  font-size: 12px;
-  font-family: inherit;
-  font-variant-numeric: tabular-nums;
-  width: 74px;
-}
-.time-input:focus { outline: none; border-color: var(--blue); }
-/* pusta godzina ma byc wyraznie "nie wiemy", a nie krzykliwe 00:00 */
-.time-input:not(:focus):invalid, .time-input[value=""] { color: var(--muted-soft); }
 
 /* ---------- #15: kosz na koncu wiersza ---------- */
 table.leads th.row-actions-col, table.leads td.row-actions { width: 34px; padding-left: 0; padding-right: 8px; }

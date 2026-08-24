@@ -200,12 +200,12 @@ router.post("/import", upload.single("file"), (req, res) => {
   const insertLead = db.prepare(`
     INSERT INTO leads (
       niche_id, company_name, city, phone, quality, has_social, website_url,
-      tag_instagram, tag_facebook, tag_booksy, tag_youtube,
+      tag_instagram, tag_facebook, tag_booksy, tag_youtube, tag_tiktok,
       answered, interested, caller, reminder, callback_when, google_term, notes, research_notes, called_at,
       open_time, close_time
     ) VALUES (
       @niche_id, @company_name, @city, @phone, @quality, @has_social, @website_url,
-      @tag_instagram, @tag_facebook, @tag_booksy, @tag_youtube,
+      @tag_instagram, @tag_facebook, @tag_booksy, @tag_youtube, @tag_tiktok,
       @answered, @interested, @caller, @reminder, @callback_when, @google_term, @notes, @research_notes, @called_at,
       @open_time, @close_time
     )

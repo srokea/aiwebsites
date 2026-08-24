@@ -261,7 +261,7 @@ function upcomingItemHtml(item, withTime) {
     <a class="upcoming-item ${urgency}" href="/niche.html?slug=${encodeURIComponent(item.niche_slug)}&lead=${item.id}">
       <div class="upcoming-who">
         <span class="upcoming-name">${escapeHtml(item.company_name)}</span>
-        <span class="upcoming-niche">${escapeHtml(item.niche_name)}${item.city ? " · " + escapeHtml(item.city) : ""}</span>
+        <span class="upcoming-niche">${escapeHtml(item.niche_name)}${item.city ? " · " + escapeHtml(shortCity(item.city)) : ""}</span>
       </div>
       <div class="upcoming-when">
         <span class="upcoming-date">${dateLabel}</span>

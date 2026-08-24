@@ -345,10 +345,6 @@ function renderLeadPanel() {
         <label>Jakość</label>
         ${fieldCsel("quality", panelMeta.qualityOptions, panelLead.quality, "—")}
       </div>
-      <div class="lead-panel-field">
-        <label>Strona</label>
-        ${fieldCsel("has_social", panelMeta.websiteStatusOptions, panelLead.has_social, "—")}
-      </div>
     </div>
 
     <div class="lead-panel-field-row">
@@ -370,7 +366,7 @@ function renderLeadPanel() {
 
     <div class="lead-panel-field">
       <label>Kiedy oddzwonić</label>
-      <input type="date" data-panel-field="callback_when" value="${escapeHtml(panelLead.callback_when)}">
+      <button type="button" class="term-btn ${panelLead.callback_when ? "set" : ""}" id="panel-callback-btn" data-callback-open>${escapeHtml(callbackLabel(panelLead.callback_when))}</button>
     </div>
 
     <div class="lead-panel-field">
@@ -405,8 +401,6 @@ async function savePanelField(field, value) {
     if (field === "interested" && panelTimerFrozenAt == null) {
       body.decision_seconds = Math.round((Date.now() - panelTimerStart) / 1000);
     }
-    // wybor "Booksy" w Stronie zaznacza tez tag platformy - tak samo jak w tabeli niszy
-    if (field === "has_social" && value === "Booksy") body.tag_booksy = true;
     panelLead = await api.patch(`/api/leads/${leadId}`, body);
     if (field === "interested") freezeTimerOnce();
     renderLeadPanel();
@@ -421,7 +415,7 @@ async function savePanelField(field, value) {
 document.getElementById("lead-panel").addEventListener("click", (e) => {
   // #12 - ten sam kalendarzyk co w tabeli niszy: na czerwono dni i godziny, w ktorych ta
   // osoba ma juz Meeta. Tu jest szczegolnie wazny, bo termin umawia sie w trakcie rozmowy.
-  const termBtn = e.target.closest(".term-btn");
+  const termBtn = e.target.closest("[data-term-open]");
   if (termBtn) {
     openTermPicker({
       anchor: termBtn,
@@ -432,6 +426,17 @@ document.getElementById("lead-panel").addEventListener("click", (e) => {
         await savePanelField("google_term", value);
         await loadMeets();
       },
+    });
+    return;
+  }
+
+  // #4 - "Kiedy oddzwonić": ten sam kalendarzyk co Termin Google Meet, tylko bez godzin
+  const callbackBtn = e.target.closest("[data-callback-open]");
+  if (callbackBtn) {
+    openCallbackPicker({
+      anchor: callbackBtn,
+      value: panelLead.callback_when,
+      onPick: (value) => savePanelField("callback_when", value),
     });
     return;
   }
@@ -493,28 +498,20 @@ document.getElementById("lead-panel").addEventListener("click", (e) => {
 
 document.getElementById("lead-panel").addEventListener("change", (e) => {
   const tagField = e.target.dataset.tagField;
-  if (tagField) {
-    saveTagField(tagField, e.target.checked);
-    return;
-  }
-  const field = e.target.dataset.panelField;
-  if (field) savePanelField(field, e.target.value);
+  if (tagField) saveTagField(tagField, e.target.checked);
 });
 
-// checkbox tagu platformy - odswieza tylko podglad (i ew. dropdown Strona), nie caly panel,
-// zeby popover z checkboxami zostal otwarty przy zaznaczaniu kilku naraz (jak w niche.js)
+// checkbox tagu platformy - odswieza tylko podglad, nie caly panel, zeby popover z checkboxami
+// zostal otwarty przy zaznaczaniu kilku naraz (jak w niche.js). Reczne dotkniecie tagow (nie
+// import CSV) odznacza tez "verified" (patrz .verified-badge w prawym dolnym rogu ramki Social)
 async function saveTagField(tagField, checked) {
   try {
-    const body = { [tagField]: checked };
+    const body = { [tagField]: checked, social_verified: true };
     if (tagField === "tag_booksy" && checked && panelLead.has_social !== "Tak") body.has_social = "Booksy";
     panelLead = await api.patch(`/api/leads/${leadId}`, body);
 
     const trigger = document.querySelector("#lead-panel .tags-trigger");
     if (trigger) trigger.innerHTML = tagsTriggerContent(panelLead, panelMeta);
-    if ("has_social" in body) {
-      const strona = document.querySelector('#lead-panel .csel[data-field="has_social"]');
-      if (strona) strona.outerHTML = fieldCsel("has_social", panelMeta.websiteStatusOptions, panelLead.has_social, "—");
-    }
   } catch (err) {
     alert("Błąd zapisu: " + err.message);
   }
