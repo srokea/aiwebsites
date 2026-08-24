@@ -81,12 +81,13 @@
   ::selection { background: #EA4A23; color: #F4E3C9; }
   :focus-visible { outline: 2px solid #B23714; outline-offset: 3px; border-radius: 4px; }
 
-  /* Wordmark z pliku logo, przycięty do samego napisu (w pliku 800×800 napis
-     zajmuje obszar x 107–618, y 492–674). Nie przepisujemy go fontem. */
+  /* Wordmark z photos/logo-wordmark.jpg — kopii logo z zamalowanymi strzępkami
+     ilustracji, które nachodziły na obszar zawijasu nad "I" (x 107–618, y 470–676
+     w oryginale 800×800). Nie przepisujemy napisu fontem. */
   .wordmark { --w: 92px; --s: calc(var(--w) / 511); display: block; position: relative;
-              width: var(--w); height: calc(182 * var(--s)); overflow: hidden; }
+              width: var(--w); height: calc(206 * var(--s)); overflow: hidden; }
   .wordmark img { position: absolute; width: calc(800 * var(--s)); max-width: none;
-                  height: auto; left: calc(-107 * var(--s)); top: calc(-492 * var(--s)); }
+                  height: auto; left: calc(-107 * var(--s)); top: calc(-470 * var(--s)); }
 
   /* Organiczne plamy tła — ten sam język co plamy w logo. */
   .blobs { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
@@ -147,18 +148,28 @@
 <a href="#cennik" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-rust focus:px-5 focus:py-3 focus:text-cream">Przejdź do cennika</a>
 
 <!-- ── Navbar ─────────────────────────────────────────────────────── -->
-<header class="sticky top-0 z-50 border-b border-line bg-cream/90 backdrop-blur-md">
-  <div class="mx-auto flex max-w-content items-center justify-between gap-4 px-4 py-2.5 sm:px-6">
+<header class="sticky top-0 z-50 border-b border-line bg-cream">
+  <div class="mx-auto flex max-w-content items-center justify-between gap-3 px-4 py-2.5 sm:px-6">
     <a href="#top" class="shrink-0" aria-label="Inaczej Szanel, strona główna">
-      <span class="wordmark sm:[--w:112px]"><img src="photos/logo.jpg" alt="Inaczej Szanel"></span>
+      <span class="wordmark sm:[--w:112px]"><img src="photos/logo-wordmark.jpg" alt="Inaczej Szanel"></span>
     </a>
-    <a href="tel:+48882804197"
-       class="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-rust px-4 py-2.5 text-[.95rem] font-semibold tracking-wide text-cream transition hover:bg-ink sm:px-6">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>
-      </svg>
-      <span>882 804 197</span>
-    </a>
+    <div class="flex items-center gap-2 sm:gap-3">
+      <a href="https://www.instagram.com/inaczej.szanel/" target="_blank" rel="noopener" aria-label="Instagram Inaczej Szanel"
+         class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-rust/40 text-rust transition hover:bg-lift sm:h-10 sm:w-10">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.facebook.com/profile.php?id=61589391164751" target="_blank" rel="noopener" aria-label="Facebook Inaczej Szanel"
+         class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-rust/40 text-rust transition hover:bg-lift sm:h-10 sm:w-10">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><g transform="translate(8.05,4.85) scale(0.02484)"><path fill="currentColor" stroke="none" d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></g></svg>
+      </a>
+      <a href="tel:+48882804197"
+         class="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-rust px-4 py-2.5 text-[.95rem] font-semibold tracking-wide text-cream transition hover:bg-ink sm:px-6">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>
+        </svg>
+        <span>882 804 197</span>
+      </a>
+    </div>
   </div>
 </header>
 
@@ -199,7 +210,7 @@
       </div>
 
       <p class="mt-7 text-[.95rem] text-muted">
-        Partyzantów 8, Opoczno · pon.–pt. 9:00–17:00, sob. 9:00–13:00
+        ul. Partyzantów 8, Opoczno · pon.–pt. 9:00–17:00, sob. 9:00–13:00
       </p>
     </div>
 
@@ -435,8 +446,8 @@
         </a>
         <a href="https://www.facebook.com/profile.php?id=61589391164751" target="_blank" rel="noopener"
            class="group flex min-h-[64px] items-center gap-4 rounded-2xl border border-line bg-lift px-5 py-4 transition hover:border-rust hover:bg-cream">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#B23714" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="shrink-0" aria-hidden="true">
-            <rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><path d="M15.4 8.2h-1.6c-1 0-1.6.6-1.6 1.6v1.8h3l-.4 3h-2.6v5"/><path d="M9.7 11.6h2.5"/>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#B23714" stroke-width="1.8" class="shrink-0" aria-hidden="true">
+            <rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><g transform="translate(8.05,4.85) scale(0.02484)"><path fill="#B23714" stroke="none" d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></g>
           </svg>
           <span>
             <span class="block font-display text-[1.05rem] font-medium">Facebook</span>
@@ -514,7 +525,7 @@
   <div class="mx-auto max-w-content px-4 py-12 sm:px-6 sm:py-14">
     <div class="grid gap-8 sm:grid-cols-[1fr_auto] sm:items-start">
       <div>
-        <span class="wordmark [--w:132px]"><img src="photos/logo.jpg" alt="Inaczej Szanel"></span>
+        <span class="wordmark [--w:132px]"><img src="photos/logo-wordmark.jpg" alt="Inaczej Szanel"></span>
         <p class="mt-4 text-[.95rem] text-muted">
           ul. Partyzantów 8, 26-300 Opoczno<br>
           <a href="tel:+48882804197" class="inline-flex min-h-[44px] items-center font-semibold text-ink underline underline-offset-4 hover:text-rust">882 804 197</a>
@@ -527,7 +538,7 @@
         </a>
         <a href="https://www.facebook.com/profile.php?id=61589391164751" target="_blank" rel="noopener" aria-label="Facebook Inaczej Szanel"
            class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-rust/40 text-rust transition hover:bg-cream">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><path d="M15.4 8.2h-1.6c-1 0-1.6.6-1.6 1.6v1.8h3l-.4 3h-2.6v5"/><path d="M9.7 11.6h2.5"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><g transform="translate(8.05,4.85) scale(0.02484)"><path fill="currentColor" stroke="none" d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></g></svg>
         </a>
       </div>
     </div>
