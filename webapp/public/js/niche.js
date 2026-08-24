@@ -490,12 +490,28 @@ function renderLeads() {
   if (!visible.length) {
     const msg = todoFilter ? "Nic do zrobienia — wszystko obdzwonione. 🎉" : "Brak leadow spelniajacych kryteria.";
     tbody.innerHTML = `<tr><td colspan="14"><div class="empty-state">${msg}</div></td></tr>`;
+    updateScrollHint();
     return;
   }
   tbody.innerHTML = visible.map((lead, i) => rowHtml(lead, i + 1)).join("");
   renderPresenceBadges();
   applyActiveRowClass();
+  updateScrollHint();
 }
+
+// #iPad - podpowiedz "da sie przewinac tabele w bok" (patrz .table-scroll-hint w style.css):
+// widoczna tylko dopoki tabela faktycznie nie miesci sie na ekranie I nikt jeszcze nie
+// przewinal w prawo - zwykly wzorzec "wskazowki swipe", ktora znika po pierwszym uzyciu.
+function updateScrollHint() {
+  const scroller = document.getElementById("leads-scroll");
+  const hint = document.getElementById("table-scroll-hint");
+  if (!scroller || !hint) return;
+  const overflowing = scroller.scrollWidth > scroller.clientWidth + 2;
+  hint.classList.toggle("show", overflowing && scroller.scrollLeft < 4);
+}
+
+document.getElementById("leads-scroll")?.addEventListener("scroll", updateScrollHint);
+window.addEventListener("resize", updateScrollHint);
 
 function renderSingleRow(lead) {
   const tr = document.querySelector(`tr[data-id="${lead.id}"]`);
