@@ -1807,12 +1807,24 @@ table.leads td.idx-col.idx-presence .idx-num { font-weight: 800; text-shadow: 0 
 }
 
 /* ---------- panel boczny na scheme rozmowy (script.js) - "glass" karta w prawej kolumnie
-   .script-layout (patrz wyzej), przyklejona do gornej krawedzi w trakcie scrolla fazy
-   scenariusza w lewej kolumnie - zawsze pod reka, bez zgadywania offsetow. ---------- */
-.lead-panel {
+   .script-layout (patrz wyzej). Wyzsrodkowana w pionie WZGLEDEM EKRANU (nie calej, dlugiej
+   kolumny ze scenariuszem) przez cala dlugosc scrolla - stad ta "przegroda" .lead-panel-slot:
+   to ONA jest sticky i ma wysokosc calego viewportu, a panel wewnatrz niej centrowany
+   flexboxem. Bez tej przegrody position:sticky wyliczalby wysrodkowanie wzgledem CALEJ
+   (dlugiej) kolumny scenariusza, wiec panel bylby wysrodkowany gdzies daleko w dole strony -
+   niewidoczny, dopoki nie doscrollujesz w to miejsce. */
+.lead-panel-slot {
   position: sticky;
-  top: 24px;
-  max-height: calc(100vh - 48px);
+  top: 0;
+  height: 100vh;
+  height: 100dvh; /* dokladniejsze na iPadzie/telefonie - vh nie liczy sie z chowajacym paskiem adresu */
+  display: flex;
+  align-items: center;
+}
+.lead-panel {
+  width: 100%; /* w wierszowym flex (.lead-panel-slot) dziecko domyslnie kurczy sie do
+                  szerokosci tresci zamiast wypelniac 340px kolumne - to to naprawia */
+  max-height: 82vh;
   overflow-y: auto;
   padding: 20px;
   border-radius: 22px;
@@ -1933,9 +1945,13 @@ table.leads td.idx-col.idx-presence .idx-num { font-weight: 800; text-shadow: 0 
    przewijania dlugiego scenariusza. */
 @media (max-width: 860px) {
   .script-layout { grid-template-columns: 1fr; }
-  .lead-panel {
+  .lead-panel-slot {
     position: static;
     top: auto;
+    height: auto;
+    display: block;
+  }
+  .lead-panel {
     max-height: none;
     margin-bottom: 24px;
   }
