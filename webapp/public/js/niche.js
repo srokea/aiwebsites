@@ -29,6 +29,12 @@ const ELIGIBILITY_FIELDS = new Set(["quality"]);
 const callerColor = (name) => meta.callerColors[name] || "#888";
 const callerOptions = () => meta.callers.map((c) => ({ value: c, label: c, color: callerColor(c) }));
 
+// Warianty z pusta wartoscia TYLKO dla paska filtrow - dropdown w wierszu ma juz swoj wlasny
+// "—" przez emptyLabel w fieldCsel, wiec dopisywanie go tutaj tez zdublowaloby go na liscie.
+// multiFilterHtml nie ma odpowiednika emptyLabel, wiec pusta opcja musi wejsc do listy wprost.
+const callerFilterOptions = () => [{ value: "", label: "—", color: "#666" }, ...callerOptions()];
+const answeredFilterOptions = () => [{ value: "", label: "(Puste)", color: "#666" }, ...meta.answeredOptions];
+
 // Wall Street gify na dopiecie leada - bo trzeba to swietowac
 const DEAL_GIFS = [
   "https://media.giphy.com/media/119pLwyWg8ScTK/giphy.gif",
@@ -207,8 +213,8 @@ function renderFilterBar() {
   document.getElementById("filter-bar").innerHTML = `
     ${filterSetsHtml()}
     ${multiFilterHtml("interested", "Zainteresowany", meta.interestedOptions)}
-    ${multiFilterHtml("caller", "Kto dzwonił", callerOptions())}
-    ${multiFilterHtml("answered", "Odebrał", meta.answeredOptions)}
+    ${multiFilterHtml("caller", "Kto dzwonił", callerFilterOptions())}
+    ${multiFilterHtml("answered", "Odebrał", answeredFilterOptions())}
     ${multiFilterHtml("quality", "Jakość", meta.qualityOptions)}
     <button type="button" class="btn" id="filter-clear" style="margin-left:4px;">Wyczyść filtry</button>
   `;
@@ -454,10 +460,12 @@ function restoreViewState() {
   }
 
   // bierzemy tylko znane pola filtrow i tylko wartosci, ktore nadal istnieja w /api/meta
+  // ("" dopisane recznie do caller/answered - patrz callerFilterOptions/answeredFilterOptions,
+  // multiFilterHtml nie ma pojecia pustej opcji jak fieldCsel, wiec /api/meta o niej nie wie)
   const allowed = {
     interested: meta.interestedOptions.map((o) => o.value),
-    caller: meta.callers,
-    answered: meta.answeredOptions.map((o) => o.value),
+    caller: ["", ...meta.callers],
+    answered: ["", ...meta.answeredOptions.map((o) => o.value)],
     quality: meta.qualityOptions.map((o) => o.value),
   };
   for (const [key, values] of Object.entries(allowed)) {
