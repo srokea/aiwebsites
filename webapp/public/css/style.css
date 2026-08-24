@@ -1716,6 +1716,13 @@ table.leads td.company-cell {
   background: var(--bg);
   box-shadow: 4px 0 8px -4px rgba(0,0,0,0.4);
 }
+/* #iPad-bug - .presence-badge NIE moze byc pozycjonowany wzgledem samego company-cell:
+   WebKit/Safari na iPadzie zle liczy "containing block" dla position:absolute wewnatrz
+   position:sticky przy przewijaniu w bok (dziecko zostaje przy pierwotnej, "nieprzyklejonej"
+   pozycji komorki, wiec po przewinieciu wyglada jakby odjechalo w lewo). Dodatkowy,
+   NIE-sticky wrapper z position:relative omija ten blad - zwykla warstwa w normalnym
+   przeplywie zawsze renderuje sie tam, gdzie faktycznie jest sticky komorka. */
+.company-cell-inner { position: relative; overflow: visible; }
 .presence-badge {
   position: absolute;
   top: -9px;

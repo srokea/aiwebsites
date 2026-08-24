@@ -698,8 +698,10 @@ function rowHtml(lead, index) {
     <tr data-id="${lead.id}" class="${highlightClass}" ${titleAttr}>
       <td class="idx-col"><span class="idx-num">${index}</span><span class="idx-unclick">✕</span></td>
       <td class="company-cell">
-        <span class="presence-badge" style="display:none;"></span>
-        <a class="company-link" href="${escapeHtml(companyGoogleSearchHref(lead))}" target="_blank" rel="noopener" title="${escapeHtml(lead.company_name)} — szukaj w Google">${escapeHtml(lead.company_name)}</a>
+        <div class="company-cell-inner">
+          <span class="presence-badge" style="display:none;"></span>
+          <a class="company-link" href="${escapeHtml(companyGoogleSearchHref(lead))}" target="_blank" rel="noopener" title="${escapeHtml(lead.company_name)} — szukaj w Google">${escapeHtml(lead.company_name)}</a>
+        </div>
       </td>
       <td class="city-cell" title="${escapeHtml(lead.city)}">${escapeHtml(shortCity(lead.city))}</td>
       <td class="phone-cell">
