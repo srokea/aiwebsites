@@ -53,6 +53,7 @@
         fontFamily: {
           display: ['"Prata"', 'Georgia', 'serif'],
           body:    ['"Quicksand"', 'system-ui', 'sans-serif'],
+          prose:   ['"Libre Caslon Text"', 'Georgia', 'serif'],
         },
         maxWidth: { content: '68rem', prose: '42rem' },
       }
@@ -81,6 +82,28 @@
   @font-face {
     font-family: 'Quicksand'; font-style: normal; font-weight: 400 700; font-display: swap;
     src: url('fonts/quicksand-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  /* Libre Caslon Text: TYLKO do dluzszych tekstow opisowych (font-prose) - lead'y sekcji,
+     cytaty z opinii. UI (nawigacja, przyciski, etykiety, ceny, stopka) zostaje w Quicksand. */
+  @font-face {
+    font-family: 'Libre Caslon Text'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/libre-caslon-text-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Libre Caslon Text'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/libre-caslon-text-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Libre Caslon Text'; font-style: normal; font-weight: 700; font-display: swap;
+    src: url('fonts/libre-caslon-text-bold-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Libre Caslon Text'; font-style: normal; font-weight: 700; font-display: swap;
+    src: url('fonts/libre-caslon-text-bold-latin-ext.woff2') format('woff2');
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
   }
 
@@ -286,7 +309,7 @@
         Idealne stylizacje i&nbsp;bezpieczny salon w&nbsp;sercu Bełchatowa
       </h1>
 
-      <p class="mx-auto mt-4 max-w-prose text-center text-[1.02rem] leading-relaxed text-inkmuted">
+      <p class="mx-auto mt-4 max-w-prose text-center font-prose text-[1.02rem] leading-relaxed text-inkmuted">
         Paznokcie i brwi w jednym miejscu. Ponad sto klientek zaufało nam od otwarcia salonu przy Placu Wolności 14.
       </p>
 
@@ -331,7 +354,7 @@
       <svg class="h-5 w-5 text-accent" viewBox="0 0 24 24"><use href="#i-bloom" width="24" height="24"/></svg>
     </div>
     <h2 class="mt-5 text-center font-display text-[1.85rem] leading-tight [text-wrap:balance] sm:text-[2.6rem]">Usługi i cennik</h2>
-    <p class="mx-auto mt-4 max-w-prose text-center leading-relaxed text-inkmuted">
+    <p class="mx-auto mt-4 max-w-prose text-center font-prose leading-relaxed text-inkmuted">
       Dwie specjalizacje pod jednym adresem. Paznokcie robimy od otwarcia salonu, brwi doszły do oferty jako nowość.
     </p>
 
@@ -392,13 +415,6 @@
             <dd class="shrink-0 text-inkmuted"><span class="blank">&nbsp;</span> zł</dd>
           </div>
         </dl>
-
-        <div class="mt-8 rounded-2xl border border-dashed border-accent/40 bg-white/70 p-5">
-          <span class="todo">Do uzupełnienia</span>
-          <p class="mt-3 text-[.95rem] leading-relaxed text-inkmuted">
-            Ceny wpiszemy, gdy tylko potwierdzisz cennik. Do tego czasu aktualne stawki widać przy każdej usłudze w Booksy.
-          </p>
-        </div>
       </div>
 
     </div>
@@ -425,7 +441,7 @@
       <svg class="h-5 w-5 text-accent" viewBox="0 0 24 24"><use href="#i-bloom" width="24" height="24"/></svg>
     </div>
     <h2 class="mt-5 text-center font-display text-[1.85rem] leading-tight [text-wrap:balance] sm:text-[2.6rem]">Poznaj zespół</h2>
-    <p class="mx-auto mt-4 max-w-prose text-center leading-relaxed text-inkmuted">
+    <p class="mx-auto mt-4 max-w-prose text-center font-prose leading-relaxed text-inkmuted">
       Za każdą stylizacją stoi mały, zgrany zespół, który dobrze się rozumie i lubi to, co robi.
       Wpadnij na wizytę i poznaj nas osobiście.
     </p>
@@ -482,13 +498,6 @@
       </li>
 
     </ul>
-
-    <div class="mt-10 flex flex-col items-center gap-3">
-      <span class="todo">Do uzupełnienia</span>
-      <p class="max-w-prose text-center text-[.95rem] leading-relaxed text-inkmuted">
-        Zdjęcia zespołu wstawimy tutaj, gdy tylko będą gotowe: wystarczą trzy portretowe, dobrze oświetlone ujęcia.
-      </p>
-    </div>
   </div>
 </section>
 
@@ -509,11 +518,11 @@
       <div class="relative rounded-3xl bg-surface p-7 sm:p-9">
         <p class="font-display text-[3.6rem] leading-none text-accent sm:text-[4.5rem]">100<span class="align-top text-[2.2rem] sm:text-[2.8rem]">+</span></p>
         <p class="mt-2 font-display text-[1.35rem] sm:text-[1.5rem]">zadowolonych klientek</p>
-        <p class="mt-4 leading-relaxed text-inkmuted">
+        <p class="mt-4 font-prose leading-relaxed text-inkmuted">
           Tyle kobiet z Bełchatowa i okolic przewinęło się przez nasz fotel od otwarcia salonu.
           Średnia ocen mówi resztę: 4,8 w Booksy i 5,0 w Google.
         </p>
-        <p class="mt-6 text-[.95rem] text-inkmuted">
+        <p class="mt-6 font-prose text-[.95rem] text-inkmuted">
           Salon działa przy Placu Wolności 14, w samym centrum miasta.
         </p>
       </div>
@@ -527,7 +536,7 @@
           </svg>
           <h3 class="font-display text-[1.5rem] sm:text-[1.75rem]">Bezpieczny salon</h3>
         </div>
-        <p class="mt-4 leading-relaxed text-inkmuted">
+        <p class="mt-4 font-prose leading-relaxed text-inkmuted">
           Bezpieczeństwo to u nas część usługi, nie dodatek. Dlatego mówimy o nim wprost,
           zamiast zakładać, że każda klientka sama o to zapyta.
         </p>
@@ -549,7 +558,7 @@
 
         <div class="mt-8 rounded-2xl border border-dashed border-accent/40 bg-surface p-5">
           <span class="todo">Do uzupełnienia</span>
-          <p class="mt-3 text-[.95rem] leading-relaxed text-inkmuted">
+          <p class="mt-3 font-prose text-[.95rem] leading-relaxed text-inkmuted">
             Miejsce na konkrety, które budują największe zaufanie: sterylizacja narzędzi, jednorazowe pilniki i separatory,
             certyfikaty szkoleń. Wpiszemy dokładnie to, co u siebie stosujesz.
           </p>
@@ -602,7 +611,7 @@
     <div class="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
 
       <blockquote class="border-t border-border pt-6">
-        <p class="text-[1.05rem] leading-relaxed text-inkmuted">
+        <p class="font-prose text-[1.05rem] leading-relaxed text-inkmuted">
           Bardzo profesjonalnie wykonany pedicure. Jestem bardzo zadowolona z efektu i miłej obsługi. Zdecydowanie polecam!
         </p>
         <footer class="mt-5 text-sm text-inkmuted">
@@ -611,7 +620,7 @@
       </blockquote>
 
       <blockquote class="border-t border-border pt-6">
-        <p class="text-[1.05rem] leading-relaxed text-inkmuted">
+        <p class="font-prose text-[1.05rem] leading-relaxed text-inkmuted">
           Świetnie zrobione brwi! Pani Zuza bardzo miła osoba! Świetna atmosfera. Oczywiście w przyszłym miesiącu wrócę! Serdecznie polecam! 🙂
         </p>
         <footer class="mt-5 text-sm text-inkmuted">
@@ -620,7 +629,7 @@
       </blockquote>
 
       <blockquote class="border-t border-border pt-6">
-        <p class="text-[1.05rem] leading-relaxed text-inkmuted">
+        <p class="font-prose text-[1.05rem] leading-relaxed text-inkmuted">
           Bardzo polecam. Pedicure wykonane perfekcyjnie. Pani Zuzia przesympatyczna osoba o wielkim talencie. Życzę wielu zadowolonych klientów 😊
         </p>
         <footer class="mt-5 text-sm text-inkmuted">
@@ -636,7 +645,7 @@
           <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
           <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
         </div>
-        <p class="mt-4 text-[1.05rem] leading-relaxed text-inkmuted">
+        <p class="mt-4 font-prose text-[1.05rem] leading-relaxed text-inkmuted">
           Dawno nie byłam tak zadowolona z paznokci, dopracowane na maksa, wyglądają dokładnie tak jak pokazałam na zdjęciu. Klaudia robi Boskie paznokcie!
         </p>
         <footer class="mt-5 text-sm text-inkmuted">
@@ -652,7 +661,7 @@
           <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
           <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
         </div>
-        <p class="mt-4 text-[1.05rem] leading-relaxed text-inkmuted">
+        <p class="mt-4 font-prose text-[1.05rem] leading-relaxed text-inkmuted">
           Chciałabym zgłosić iż jakość wykonywanych usług w salonie Juliett jest uzależniająca! Niedawno zmieniłam miejsce zamieszkania i nawet dodatkowe 150 km nie powstrzymuje mnie by zaplanować wyjazd do Pani Julity.
         </p>
         <footer class="mt-5 text-sm text-inkmuted">
@@ -668,7 +677,7 @@
           <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
           <svg class="h-4 w-4" viewBox="0 0 20 20"><use href="#i-star" width="20" height="20"/></svg>
         </div>
-        <p class="mt-4 text-[1.05rem] leading-relaxed text-inkmuted">
+        <p class="mt-4 font-prose text-[1.05rem] leading-relaxed text-inkmuted">
           Wyjątkowo dokładnie i skrupulatnie zrobiony manicure. Bardzo trwały. Przemiła atmosfera, wychodzę zawsze zadowolona.
         </p>
         <footer class="mt-5 text-sm text-inkmuted">
@@ -679,7 +688,7 @@
     </div>
 
     <div class="mt-12 flex flex-col items-center gap-4">
-      <p class="max-w-prose text-center text-[.95rem] leading-relaxed text-inkmuted">
+      <p class="max-w-prose text-center font-prose text-[.95rem] leading-relaxed text-inkmuted">
         Twoja opinia pomaga nam się rozwijać i pomaga innym klientkom trafić do nas po raz pierwszy.
       </p>
       <!-- Link Google "Napisz opinię" zweryfikowany 2026-08-22 bezposrednio na wizytowce Google
@@ -704,7 +713,7 @@
       <svg class="h-5 w-5 text-accent" viewBox="0 0 24 24"><use href="#i-bloom" width="24" height="24"/></svg>
     </div>
     <h2 class="mt-5 text-center font-display text-[1.85rem] leading-tight [text-wrap:balance] sm:text-[2.6rem]">Galeria prac</h2>
-    <p class="mx-auto mt-4 max-w-prose text-center leading-relaxed text-inkmuted">
+    <p class="mx-auto mt-4 max-w-prose text-center font-prose leading-relaxed text-inkmuted">
       Wybrane stylizacje z naszego salonu. Kliknij zdjęcie, żeby zobaczyć je w całości.
     </p>
 
@@ -834,7 +843,7 @@
 
 
 <!-- ============================ GODZINY, ADRES, KONTAKT ============================ -->
-<section id="kontakt" class="bg-surface px-4 py-16 sm:px-6 sm:py-24">
+<section id="kontakt" class="bg-surface px-4 pt-16 sm:px-6 sm:pt-24">
   <div class="mx-auto max-w-content">
 
     <div class="ornament" aria-hidden="true">
@@ -888,6 +897,11 @@
         </address>
 
         <div class="mt-6 flex flex-wrap gap-3">
+          <a href="https://booksy.com/pl-pl/325749_juliett-beauty-room_paznokcie_25231_belchatow#ba_s=seo" target="_blank" rel="noopener"
+             class="press inline-flex min-h-[48px] items-center gap-2.5 rounded-full border border-ink/30 px-5 text-[.95rem] font-semibold hover:border-accent hover:text-accent">
+            <span class="icon-booksy" aria-hidden="true"></span>
+            Booksy
+          </a>
           <a href="https://www.instagram.com/juliett_beautyroom/" target="_blank" rel="noopener"
              class="press inline-flex min-h-[48px] items-center gap-2.5 rounded-full border border-ink/30 px-5 text-[.95rem] font-semibold hover:border-accent hover:text-accent">
             <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
@@ -904,26 +918,31 @@
           </a>
         </div>
 
-        <!-- Mapa Google z delikatnym filtrem spinajacym ja z motywem (praktyka z DESIGN.md).
-             Przekazywanie danych do Google opisane w privacy.html. -->
-        <div class="relative mt-8 overflow-hidden rounded-3xl border border-border">
-          <iframe
-            src="https://www.google.com/maps?q=Plac%20Wolno%C5%9Bci%2014%2C%2097-400%20Be%C5%82chat%C3%B3w&output=embed"
-            title="Mapa: Juliett Beauty Room, Plac Wolności 14, Bełchatów"
-            loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-            class="block h-[280px] w-full sm:h-[320px]"
-            style="border:0;filter:grayscale(42%) saturate(88%)"></iframe>
-          <div class="map-tint" aria-hidden="true"></div>
-        </div>
-
         <a href="https://www.google.com/maps/dir/?api=1&destination=Plac+Wolno%C5%9Bci+14%2C+97-400+Be%C5%82chat%C3%B3w"
            target="_blank" rel="noopener"
-           class="press mt-4 inline-flex min-h-[48px] items-center justify-center rounded-full border border-ink/30 px-6 text-[.95rem] font-semibold hover:border-accent hover:text-accent">
+           class="press mt-4 inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-full border border-ink/30 px-6 text-[.95rem] font-semibold hover:border-accent hover:text-accent">
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 21s-7-6.5-7-11.5A7 7 0 0 1 19 9.5C19 14.5 12 21 12 21Z"/>
+            <circle cx="12" cy="9.5" r="2.3"/>
+          </svg>
           Wyznacz trasę
         </a>
       </div>
 
     </div>
+  </div>
+
+  <!-- Mapa Google na pelnej szerokosci ekranu, na samym dole sekcji (wyjscie poza max-w-content
+       i padding sekcji przez w-screen + left-1/2 -translate-x-1/2). Filtr spinajacy z motywem
+       (praktyka z DESIGN.md). Przekazywanie danych do Google opisane w privacy.html. -->
+  <div class="relative left-1/2 mt-14 w-screen -translate-x-1/2">
+    <iframe
+      src="https://www.google.com/maps?q=Plac%20Wolno%C5%9Bci%2014%2C%2097-400%20Be%C5%82chat%C3%B3w&output=embed"
+      title="Mapa: Juliett Beauty Room, Plac Wolności 14, Bełchatów"
+      loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+      class="block h-[320px] w-full sm:h-[420px]"
+      style="border:0;filter:grayscale(42%) saturate(88%)"></iframe>
+    <div class="map-tint" aria-hidden="true"></div>
   </div>
 </section>
 
