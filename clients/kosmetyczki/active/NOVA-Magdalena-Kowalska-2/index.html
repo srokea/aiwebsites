@@ -182,6 +182,7 @@
     </a>
 
     <nav aria-label="Sekcje strony" class="scrollbar-none flex min-w-0 flex-1 items-center gap-1 overflow-x-auto sm:justify-center sm:gap-2">
+      <a href="#onas"    data-nav="onas"    class="navlink">O niej</a>
       <a href="#cennik"  data-nav="cennik"  class="navlink">Cennik</a>
       <a href="#opinie"  data-nav="opinie"  class="navlink">Opinie</a>
       <a href="#galeria" data-nav="galeria" class="navlink">Efekty</a>
@@ -242,6 +243,63 @@
           <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
           Facebook
         </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ O NIEJ: Magda, certyfikaty i salon ============
+     Zdjęcia (portret, dyplomy, wnętrze salonu) czekają na sesję zdjęciową — na razie
+     kafelki placeholder, klikalne w ten sam lightbox co galeria Efekty (patrz JS na dole). -->
+<section id="onas" class="border-b border-hair bg-shell">
+  <div class="mx-auto max-w-narrow px-5 py-16 sm:px-7 sm:py-20">
+
+    <h2 class="text-center font-script text-[clamp(2.8rem,11vw,4.2rem)] leading-[.95]">O niej</h2>
+
+    <div class="mt-10 grid gap-6 sm:grid-cols-2 sm:items-center sm:gap-10">
+      <div class="ph flex aspect-[4/5] items-center justify-center rounded-2xl p-4 text-center">zdjęcie Magdy</div>
+      <div class="ph rounded-2xl p-6 text-center !normal-case !tracking-normal !text-[.85rem] !leading-relaxed sm:text-left">
+        Prosimy o kilka zdań o sobie — o swojej historii, doświadczeniu i podejściu do klientek,
+        własnymi słowami. My dopasujemy tylko wygląd do reszty strony.
+      </div>
+    </div>
+
+    <div class="mt-14">
+      <h3 class="text-[1.3rem] font-bold tracking-[-.02em]">Certyfikaty i dyplomy</h3>
+      <p class="mt-1.5 text-[.85rem] text-muted">Kliknij kafelek, żeby zobaczyć powiększenie.</p>
+      <div class="mt-5 grid grid-cols-3 gap-3 sm:gap-4">
+        <button type="button" data-group="certyfikaty" data-index="0" class="ph gallery-tile group relative flex aspect-[3/4] items-center justify-center rounded-2xl p-2 text-center">
+          dyplom 1
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="certyfikaty" data-index="1" class="ph gallery-tile group relative flex aspect-[3/4] items-center justify-center rounded-2xl p-2 text-center">
+          dyplom 2
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="certyfikaty" data-index="2" class="ph gallery-tile group relative flex aspect-[3/4] items-center justify-center rounded-2xl p-2 text-center">
+          dyplom 3
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mt-14">
+      <h3 class="text-[1.3rem] font-bold tracking-[-.02em]">Salon</h3>
+      <p class="mt-1.5 text-[.85rem] text-muted">Prawdziwe zdjęcia wnętrza pojawią się tutaj po najbliższej sesji zdjęciowej.</p>
+      <div class="mt-5 grid grid-cols-3 gap-3 sm:gap-4">
+        <button type="button" data-group="salon" data-index="0" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
+          salon 1
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="salon" data-index="1" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
+          salon 2
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="salon" data-index="2" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
+          salon 3
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
       </div>
     </div>
 
@@ -448,27 +506,27 @@
       <img src="photos/galeria/brwi-01.jpg" alt="Brwi metodą ..." width="1000" height="1250" loading="lazy" decoding="async" class="h-full w-full rounded-2xl object-cover">
     -->
     <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-      <button type="button" data-index="0" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
+      <button type="button" data-group="efekty" data-index="0" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
         zdjęcie 1
         <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
       </button>
-      <button type="button" data-index="1" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
+      <button type="button" data-group="efekty" data-index="1" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
         zdjęcie 2
         <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
       </button>
-      <button type="button" data-index="2" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
+      <button type="button" data-group="efekty" data-index="2" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
         zdjęcie 3
         <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
       </button>
-      <button type="button" data-index="3" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
+      <button type="button" data-group="efekty" data-index="3" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
         zdjęcie 4
         <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
       </button>
-      <button type="button" data-index="4" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
+      <button type="button" data-group="efekty" data-index="4" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
         zdjęcie 5
         <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
       </button>
-      <button type="button" data-index="5" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
+      <button type="button" data-group="efekty" data-index="5" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
         zdjęcie 6
         <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
       </button>
@@ -659,18 +717,32 @@
     });
   })();
 
-  // Galeria: lightbox z podglądem, strzałkami i klawiaturą (wzorzec z clients/Patent-na-Pazur/index.html).
-  // Kafelki są na razie placeholderami — pole src w GALERIA zostaje puste, dopóki klientka nie doślała zdjęć.
-  // Gdy zdjęcia trafią do photos/galeria/, wystarczy uzupełnić src poniżej i podmienić .ph na <img> w kafelku.
+  // Galerie: lightbox z podglądem, strzałkami i klawiaturą (wzorzec z clients/Patent-na-Pazur/index.html).
+  // Trzy niezależne grupy kafelków (Efekty, Certyfikaty, Salon) dzielą jeden modal — strzałki
+  // przewijają tylko w obrębie grupy, którą otworzono. Wszystkie src są na razie puste — czekają
+  // na sesję zdjęciową u klientki. Gdy zdjęcia trafią do photos/, wystarczy uzupełnić src poniżej
+  // i podmienić .ph na <img> w odpowiednim kafelku (grupę i indeks kafelka zostawiamy bez zmian).
   (function () {
-    var GALERIA = [
-      { src: '', alt: 'zdjęcie 1' },
-      { src: '', alt: 'zdjęcie 2' },
-      { src: '', alt: 'zdjęcie 3' },
-      { src: '', alt: 'zdjęcie 4' },
-      { src: '', alt: 'zdjęcie 5' },
-      { src: '', alt: 'zdjęcie 6' }
-    ];
+    var GALLERIES = {
+      efekty: [
+        { src: '', alt: 'zdjęcie 1' },
+        { src: '', alt: 'zdjęcie 2' },
+        { src: '', alt: 'zdjęcie 3' },
+        { src: '', alt: 'zdjęcie 4' },
+        { src: '', alt: 'zdjęcie 5' },
+        { src: '', alt: 'zdjęcie 6' }
+      ],
+      certyfikaty: [
+        { src: '', alt: 'dyplom 1' },
+        { src: '', alt: 'dyplom 2' },
+        { src: '', alt: 'dyplom 3' }
+      ],
+      salon: [
+        { src: '', alt: 'salon 1' },
+        { src: '', alt: 'salon 2' },
+        { src: '', alt: 'salon 3' }
+      ]
+    };
     var lightbox = document.getElementById('lightbox');
     var tiles = document.querySelectorAll('.gallery-tile');
     if (!lightbox || !tiles.length) return;
@@ -681,11 +753,15 @@
     var btnClose = document.getElementById('lightboxClose');
     var btnPrev = document.getElementById('lightboxPrev');
     var btnNext = document.getElementById('lightboxNext');
+    var currentGroup = 'efekty';
     var current = 0;
     var lastFocused = null;
 
+    function items() { return GALLERIES[currentGroup] || []; }
     function render() {
-      var item = GALERIA[current];
+      var list = items();
+      var item = list[current];
+      if (!item) return;
       if (item.src) {
         img.src = item.src; img.alt = item.alt;
         img.classList.remove('hidden'); ph.classList.add('hidden');
@@ -693,10 +769,10 @@
         phText.textContent = item.alt;
         img.classList.add('hidden'); ph.classList.remove('hidden');
       }
-      counter.textContent = (current + 1) + ' / ' + GALERIA.length;
+      counter.textContent = (current + 1) + ' / ' + list.length;
     }
-    function open(index) {
-      current = index;
+    function open(group, index) {
+      currentGroup = group; current = index;
       lastFocused = document.activeElement;
       render();
       lightbox.classList.remove('hidden');
@@ -710,12 +786,13 @@
       document.body.style.overflow = '';
       if (lastFocused) lastFocused.focus();
     }
-    function next() { current = (current + 1) % GALERIA.length; render(); }
-    function prev() { current = (current - 1 + GALERIA.length) % GALERIA.length; render(); }
+    function next() { var n = items().length; current = (current + 1) % n; render(); }
+    function prev() { var n = items().length; current = (current - 1 + n) % n; render(); }
 
     tiles.forEach(function (tile) {
       tile.addEventListener('click', function () {
-        open(parseInt(tile.getAttribute('data-index'), 10));
+        var group = tile.getAttribute('data-group') || 'efekty';
+        open(group, parseInt(tile.getAttribute('data-index'), 10));
       });
     });
     btnClose.addEventListener('click', close);
