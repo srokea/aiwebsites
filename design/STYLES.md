@@ -16,7 +16,9 @@ Podgląd wszystkich naraz: https://fable5-portfolio.netlify.app
 - ciemny (M.E.N.): `#0B0906` tło · `#232323` surface sekcji · `#F3EEE3` tekst · `#C79A4B` akcent (bursztyn)
 - akcent ≤10% powierzchni (CTA, gwiazdki, aktywne stany), granice = ink na 12% krycia
 **Fonty:** Playfair Display (display; w tych dwóch dostarczonych stronach — dla NOWEJ produkcji standardem jest Bodoni Moda, patrz DESIGN.md i warianty 00-A…00-E) / Work Sans (body). Fonty hostowane lokalnie (RODO).
-**Layout:** jedna strona pionowa: sticky frosted-glass navbar z klikalnym telefonem → hero (display + kursywa na jednym słowie) → usługi/cennik jako płaskie `<dl>` z `divide-y` → galeria/zdjęcia klienta → opinie jako `<blockquote>` z gwiazdkami w akcencie → godziny + kontakt + mapa → stopka z polityką prywatności. Podstrony (galeria, o-nas) tylko gdy treści za dużo.
+**Layout (typowy, NIE obowiązkowy):** jedna strona pionowa: sticky frosted-glass navbar z klikalnym telefonem → hero (display + kursywa na jednym słowie) → usługi/cennik jako płaskie `<dl>` z `divide-y` → galeria/zdjęcia klienta → opinie jako `<blockquote>` z gwiazdkami w akcencie → godziny + kontakt + mapa → stopka z polityką prywatności. Podstrony (galeria, o-nas) tylko gdy treści za dużo.
+
+> To najczęstsza kolejność, nie szablon do odtworzenia. Układ i kolejność sekcji wynikają ze zdjęć i briefa TEGO klienta — patrz „Czego NIE robić" w `web-design/SKILL.md`. Stałe zostają: navbar z telefonem na górze, kontakt z mapą i stopka z polityką prywatności na dole.
 **Techniki:** warstwowanie tonalne bg/surface zamiast cieni (Flat-By-Default), przyciski-pigułki (pill), glass-panel na zdjęciowym tle (Lidia), sekcje ze zdjęciem lokalu pod overlay'em w akcencie, mapa Google z delikatnym filtrem pod motyw, `prefers-reduced-motion` wszędzie, mobile-first, min. 44px dotyk.
 **Kiedy używać:** domyślnie dla KAŻDEGO płacącego klienta agencji — bezpieczny, konwersyjny, zgodny z systemem. Motyw jasny/ciemny wg konwencji niszy albo koloru fizycznego lokalu (patrz DESIGN.md).
 

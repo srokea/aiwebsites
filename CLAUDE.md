@@ -24,6 +24,10 @@ Gdy tworzysz, poprawiasz lub oceniasz stronę klienta, użyj skilla `web-design`
 
 Przed budową nowej strony sprawdź `/design/STYLES.md`. Jeśli prompt nie wskazuje konkretnego stylu, użyj Stylu 00 (Default). Jeśli prompt wskazuje inny styl (np. "styl 07"), użyj go jako punkt startowy.
 
+Powtarzalne komponenty (galeria-lightbox, scroll-spy w headerze, social obok telefonu, oznaczenie "dziś" w godzinach, mapa full-width) masz gotowe w `/design/SNIPPETS.md` — wklejaj je stamtąd zamiast pisać od nowa albo kopiować od innego klienta.
+
+Paleta i typografia pochodzą z briefu, logo i zdjęć klienta — tokeny w `/design/DESIGN.md` to wartość domyślna, gdy brief milczy. Patrz sekcja 0 tego pliku.
+
 ## Uczenie się na błędach
 
 Jeśli zauważysz, że powtarzasz ten sam błąd albo użytkownik poprawia Cię wielokrotnie w tej samej sprawie — zaproponuj konkretną poprawkę do odpowiedniego pliku (CLAUDE.md, SKILL.md albo pliku agenta) i zapytaj o zgodę, zanim ją wprowadzisz. Nigdy nie edytuj tych plików samodzielnie bez pytania.
@@ -34,3 +38,7 @@ Poniższe skille są dostępne w `.claude/skills/`, ale **nie używaj ich domyś
 
 - `emil-design-eng` — inżynieria designu w stylu Emila
 - `apple-design` — zasady projektowania w stylu Apple
+- `FRONTEND-DESIGN.md` (w katalogu głównym) — konkretne czasy i krzywe animacji, reguły scroll-reveal, hover, tła
+- `APPLE-STYLE.md` (w katalogu głównym) — storytelling scenami, rytm scrolla, typografia jako główny element
+
+Dwa ostatnie to pliki, nie skille — przeczytaj je tylko wtedy, gdy poproszę. Nie stosuj ich do zwykłych stron klientów: opisują "kinowy" rejestr, sprzeczny z `PRODUCT.md` ("nie ekscytacja czy wow"). Są do stron agencji i projektów specjalnych.

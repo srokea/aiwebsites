@@ -117,6 +117,28 @@ CREATE TABLE IF NOT EXISTS filter_sets (
 );
 
 CREATE INDEX IF NOT EXISTS idx_filter_sets_owner ON filter_sets(user_id, niche_id);
+
+CREATE TABLE IF NOT EXISTS map_pins (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  osm_id TEXT NOT NULL DEFAULT '',
+  name TEXT NOT NULL DEFAULT '',
+  category TEXT NOT NULL DEFAULT '',
+  lat REAL NOT NULL,
+  lng REAL NOT NULL,
+  address TEXT NOT NULL DEFAULT '',
+  street TEXT NOT NULL DEFAULT '',
+  phone TEXT NOT NULL DEFAULT '',
+  website TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'nieruszone',
+  notes TEXT NOT NULL DEFAULT '',
+  caller TEXT NOT NULL DEFAULT '',
+  last_visited_at TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_map_pins_status ON map_pins(status);
+CREATE INDEX IF NOT EXISTS idx_map_pins_street ON map_pins(street);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_map_pins_osm_id ON map_pins(osm_id);
 `);
 
 // Proste "migracje" dla kolumn dodanych po pierwszym wydaniu - ALTER TABLE ADD COLUMN

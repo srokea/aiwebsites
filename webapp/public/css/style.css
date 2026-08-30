@@ -2162,3 +2162,22 @@ table.leads tr:hover .lead-delete-btn { opacity: 1; }
 
 .term-foot { display: flex; justify-content: space-between; gap: 8px; margin-top: 10px; }
 .term-foot .btn { padding: 6px 10px; font-size: 11.5px; flex: 1; }
+
+/* ---------- CTA "Mapa Miasta" nad lista nisz ---------- */
+.map-cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(160deg, var(--card-alt), var(--card));
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  color: var(--blue);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 16px;
+  transition: border-color .15s, transform .15s;
+}
+.map-cta-btn:hover { border-color: var(--blue); transform: translateY(-1px); }
+.map-cta-arrow { font-size: 18px; }

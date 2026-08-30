@@ -258,10 +258,17 @@
     <h2 class="text-center font-script text-[clamp(2.8rem,11vw,4.2rem)] leading-[.95]">O niej</h2>
 
     <div class="mt-10 grid gap-6 sm:grid-cols-2 sm:items-center sm:gap-10">
-      <div class="ph flex aspect-[4/5] items-center justify-center rounded-2xl p-4 text-center">zdjęcie Magdy</div>
-      <div class="ph rounded-2xl p-6 text-center !normal-case !tracking-normal !text-[.85rem] !leading-relaxed sm:text-left">
-        Prosimy o kilka zdań o sobie — o swojej historii, doświadczeniu i podejściu do klientek,
-        własnymi słowami. My dopasujemy tylko wygląd do reszty strony.
+      <div class="aspect-[4/5] overflow-hidden rounded-2xl">
+        <img src="photos/o-niej/magda.jpg" alt="Magda Kowalska, właścicielka NOVA" width="558" height="1193"
+             loading="lazy" decoding="async" class="h-full w-full object-cover object-top">
+      </div>
+      <div class="rounded-2xl bg-blush/45 p-6 text-[.95rem] leading-relaxed sm:text-left">
+        Salon NOVA prowadzę od 2015 roku — zaczynałam od stylizacji paznokci, dziś skupiam się
+        na makijażu permanentnym, stylizacji rzęs i zabiegach pielęgnacyjnych. Mam za sobą studia
+        z zarządzania i marketingu oraz kwalifikacje kosmetyczne, a co roku dokształcam się
+        na szkoleniach i konferencjach branżowych, między innymi Worlds PMU Poland.
+        W 2026 roku odebrałam dyplom laureatki konkursu ORŁY Kosmetyki w Sulejowie — nagrody
+        przyznawanej wyłącznie na podstawie ocen klientów.
       </div>
     </div>
 
@@ -269,16 +276,16 @@
       <h3 class="text-[1.3rem] font-bold tracking-[-.02em]">Certyfikaty i dyplomy</h3>
       <p class="mt-1.5 text-[.85rem] text-muted">Kliknij kafelek, żeby zobaczyć powiększenie.</p>
       <div class="mt-5 grid grid-cols-3 gap-3 sm:gap-4">
-        <button type="button" data-group="certyfikaty" data-index="0" class="ph gallery-tile group relative flex aspect-[3/4] items-center justify-center rounded-2xl p-2 text-center">
-          dyplom 1
+        <button type="button" data-group="certyfikaty" data-index="0" class="gallery-tile group relative aspect-[3/4] overflow-hidden rounded-2xl">
+          <img src="photos/o-niej/dyplom-1.jpg" alt="Dyplom laureatki konkursu ORŁY Kosmetyki 2026 w Sulejowie" width="1200" height="1600" loading="lazy" decoding="async" class="h-full w-full object-cover">
           <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
         </button>
-        <button type="button" data-group="certyfikaty" data-index="1" class="ph gallery-tile group relative flex aspect-[3/4] items-center justify-center rounded-2xl p-2 text-center">
-          dyplom 2
+        <button type="button" data-group="certyfikaty" data-index="1" class="gallery-tile group relative aspect-[3/4] overflow-hidden rounded-2xl">
+          <img src="photos/o-niej/dyplom-2.jpg" alt="Magda z nagrodą i dyplomem ORŁY Kosmetyki przy ścianie certyfikatów w salonie" width="1600" height="1200" loading="lazy" decoding="async" class="h-full w-full object-cover">
           <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
         </button>
-        <button type="button" data-group="certyfikaty" data-index="2" class="ph gallery-tile group relative flex aspect-[3/4] items-center justify-center rounded-2xl p-2 text-center">
-          dyplom 3
+        <button type="button" data-group="certyfikaty" data-index="2" class="gallery-tile group relative aspect-[3/4] overflow-hidden rounded-2xl">
+          <img src="photos/o-niej/dyplom-3.jpg" alt="Statuetka Laureat Konkursu ORŁY Kosmetyki 2026 na recepcji NOVA" width="1200" height="1600" loading="lazy" decoding="async" class="h-full w-full object-cover">
           <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
         </button>
       </div>
@@ -286,7 +293,11 @@
 
     <div class="mt-14">
       <h3 class="text-[1.3rem] font-bold tracking-[-.02em]">Salon</h3>
-      <p class="mt-1.5 text-[.85rem] text-muted">Prawdziwe zdjęcia wnętrza pojawią się tutaj po najbliższej sesji zdjęciowej.</p>
+      <p class="mt-1.5 text-[.95rem] leading-relaxed">
+        Mój salon działa w Sulejowie od 2015 roku. Zaczynałam od stylizacji paznokci,
+        dziś to miejsce skupione na makijażu permanentnym, stylizacji rzęs i pielęgnacji.
+      </p>
+      <p class="mt-3 text-[.85rem] text-muted">Prawdziwe zdjęcia wnętrza pojawią się tutaj po najbliższej sesji zdjęciowej.</p>
       <div class="mt-5 grid grid-cols-3 gap-3 sm:gap-4">
         <button type="button" data-group="salon" data-index="0" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
           salon 1
@@ -719,9 +730,10 @@
 
   // Galerie: lightbox z podglądem, strzałkami i klawiaturą (wzorzec z clients/Patent-na-Pazur/index.html).
   // Trzy niezależne grupy kafelków (Efekty, Certyfikaty, Salon) dzielą jeden modal — strzałki
-  // przewijają tylko w obrębie grupy, którą otworzono. Wszystkie src są na razie puste — czekają
-  // na sesję zdjęciową u klientki. Gdy zdjęcia trafią do photos/, wystarczy uzupełnić src poniżej
-  // i podmienić .ph na <img> w odpowiednim kafelku (grupę i indeks kafelka zostawiamy bez zmian).
+  // przewijają tylko w obrębie grupy, którą otworzono. Certyfikaty mają już prawdziwe zdjęcia
+  // (photos/o-niej/). Efekty i Salon czekają na sesję zdjęciową — src zostaje puste, dopóki
+  // zdjęcia nie trafią do photos/; wtedy wystarczy uzupełnić src poniżej i podmienić .ph na <img>
+  // w odpowiednim kafelku (grupę i indeks kafelka zostawiamy bez zmian).
   (function () {
     var GALLERIES = {
       efekty: [
@@ -733,9 +745,9 @@
         { src: '', alt: 'zdjęcie 6' }
       ],
       certyfikaty: [
-        { src: '', alt: 'dyplom 1' },
-        { src: '', alt: 'dyplom 2' },
-        { src: '', alt: 'dyplom 3' }
+        { src: 'photos/o-niej/dyplom-1.jpg', alt: 'Dyplom laureatki konkursu ORŁY Kosmetyki 2026 w Sulejowie' },
+        { src: 'photos/o-niej/dyplom-2.jpg', alt: 'Magda z nagrodą i dyplomem ORŁY Kosmetyki przy ścianie certyfikatów w salonie' },
+        { src: 'photos/o-niej/dyplom-3.jpg', alt: 'Statuetka Laureat Konkursu ORŁY Kosmetyki 2026 na recepcji NOVA' }
       ],
       salon: [
         { src: '', alt: 'salon 1' },

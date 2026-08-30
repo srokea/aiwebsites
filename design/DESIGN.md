@@ -60,6 +60,25 @@ components:
 
 # Design System: AI Web Agency
 
+## 0. Hierarchia źródeł — co wygrywa
+
+Kolory i kroje pisma w tym pliku to **wartość domyślna**, nie sztywny standard. Przy każdym kliencie
+obowiązuje ta kolejność:
+
+1. **`brief.md` klienta** — jeśli mówi o palecie, typografii albo nastroju, wygrywa
+2. **Logo i zdjęcia klienta** — dokładne hex dostrajaj bezpośrednio z plików w `photos/`, nie
+   z przybliżeń opisanych słownie
+3. **Styl wskazany z `STYLES.md`** (np. „zbuduj w stylu 07")
+4. **Tokeny poniżej** — używasz ich, gdy punkty 1–3 milczą
+
+**Odstępstwo uzasadnione przez punkty 1–3 nie jest błędem i NIE wymaga dopisywania wyjątku
+do tego pliku.** Nie zgłaszaj go jako problemu, nie proponuj „powrotu do standardu" i nie proś
+o dokumentowanie. Lista wyjątków niżej jest historyczna — nie rozbudowuj jej.
+
+**Co obowiązuje ZAWSZE, niezależnie od palety klienta** — Named Rules z sekcji 2 i 3
+(No-Cream, One Accent, No-Eyebrow, max dwa kroje pisma na stronę), Flat-By-Default z sekcji 4,
+kontrast WCAG AA i 44 px na celach dotykowych.
+
 ## 1. Overview
 
 **Creative North Star: "The Handwritten Storefront"**
@@ -72,7 +91,7 @@ Motyw (jasny albo ciemny) jest zmienny per nisza klienta, nie ustalony sztywno d
 - **Salony fryzjerskie damskie/uniseks** (stylizacja, koloryzacja, fryzury okolicznościowe/ślubne) → domyślnie **jasny** motyw, bliżej rejestru wellness niż warsztatu — rzemiosło tu jest precyzyjne i estetyczne, nie "brudnorobocze". Potwierdzone w kodzie: M.E.N.-for-real i Studio Fryzur Lidia.
 - **Barber męski** pozostaje przy domyślnym ciemnym motywie z rejestru rzemieślniczego powyżej.
 
-**Override per fizyczny lokal.** Niezależnie od domyślnego motywu niszy, gdy brief klienta wprost wskazuje kolorystykę/nastrój jego rzeczywistego lokalu (np. dominujący kolor ścian widoczny na zdjęciach), ten sygnał wygrywa z domyślną regułą niszy — strona ma odzwierciedlać KONKRETNY salon, nie tylko branżę. Potwierdzone w kodzie: M.E.N.-for-real (jasny + czerwony, dopasowany do fizycznego wnętrza salonu, brief wprost: "motyw: jasny i akcent: czerwony — dominujący kolor fizycznego salonu") oraz Studio Fryzur Lidia (jasny + turkus, ze zdjęć turkusowej ściany salonu). Każdy taki override jest udokumentowanym wyjątkiem tego klienta, nie zmianą domyślnej reguły niszy — chyba że wzorzec potwierdzi się u kolejnych klientów tej samej niszy i użytkownik zdecyduje inaczej.
+**Override per fizyczny lokal.** Niezależnie od domyślnego motywu niszy, gdy brief klienta wprost wskazuje kolorystykę/nastrój jego rzeczywistego lokalu (np. dominujący kolor ścian widoczny na zdjęciach), ten sygnał wygrywa z domyślną regułą niszy — strona ma odzwierciedlać KONKRETNY salon, nie tylko branżę. Potwierdzone w kodzie: M.E.N.-for-real (jasny + czerwony, dopasowany do fizycznego wnętrza salonu, brief wprost: "motyw: jasny i akcent: czerwony — dominujący kolor fizycznego salonu") oraz Studio Fryzur Lidia (jasny + turkus, ze zdjęć turkusowej ściany salonu). Taki override dotyczy tylko tego klienta i nie zmienia domyślnej reguły niszy — ale nie wymaga dopisywania go tutaj (patrz sekcja 0).
 
 > **Uwaga o starszej wersji w kodzie:** folder `clients/M.E.N.` (ciemny, Playfair Display, akcent bursztynowy) to WCZEŚNIEJSZA, zastąpiona wersja tego klienta. Aktualna, obowiązująca wersja to `clients/M.E.N.-for-real` (jasny, akcent czerwony). Nie traktuj starego folderu jako potwierdzonego wzorca.
 
@@ -84,7 +103,7 @@ System odrzuca explicite: estetykę SaaS/startupową (gradientowe hero z abstrak
 - Motyw dobierany per nisza klienta (rzemiosło/warsztat → ciemny, wellness/higiena → jasny), zawsze wysokokontrastowy — czytelność ponad nastrojowość, nigdy ciemny "bo wygląda cool" bez uzasadnienia niszą.
 - Jeden ciepły ziemisty akcent, używany oszczędnie (≤10% powierzchni), zmienny per nisza klienta.
 - Neutralne tło bez kremowego/piaskowego domyślnego AI-tła — prawdziwa biel (motyw jasny) albo bardzo ciemny stonowany neutral (motyw ciemny), nigdy pastelowy sand.
-- Typografia: jeden elegancki szeryf display (Bodoni Moda) do nagłówków hero/sekcji + jeden sans body (Work Sans) do reszty tekstu — nigdy więcej niż te dwa kroje, bez chłodu geometrycznego korpo-sansu.
+- Typografia: jeden krój display do nagłówków hero/sekcji + jeden sans do reszty tekstu — maksymalnie dwa kroje na stronę, bez chłodu geometrycznego korpo-sansu. Które konkretnie: patrz sekcja 0 (domyślnie Bodoni Moda + Work Sans).
 - Motion: responsywny, nie choreografowany — subtelny feedback, żadnego "pokazu".
 - Głębia przez warstwowanie tonalne: naprzemienne sekcje na dwóch odcieniach tła (bazowy vs. jaśniejszy/ciemniejszy neutral sekcji), zamiast cieni.
 
@@ -128,9 +147,12 @@ Wybór jasnej albo ciemnej bazy jest decyzją per nisza klienta (patrz Overview)
 
 **Character:** Display (Bodoni Moda) niesie elegancję i kontrast kresek — kontrast wobec neutralnego, funkcjonalnego Body (Work Sans), które ma być czytelne i przyjazne na małym ekranie. Bez chłodu geometrycznego sansu korporacyjnego w roli body (Inter i podobne są zakazane — patrz Do's and Don'ts).
 
-> **Wyjątek typograficzny (Zajawa Barbershop, 2026-07-28):** display to `Archivo Black` (geometryczny grotesk, uppercase, tracking `0.06em`), body to `DM Sans`. Odstępstwo uzgodnione z użytkownikiem: brief klienta wprost narzuca ten rejestr („sans-serif geometryczny, mocny, wielkie litery, w duchu logo Zajawy"), a logo firmy jest geometryczne, nie didone — Bodoni Moda gryzłaby się z brandingiem. Brief proponował Inter jako body; użyto DM Sans, bo Inter jest zakazany w tym systemie. To wyjątek TEGO klienta, nie zmiana standardu — nowa produkcja nadal domyślnie idzie w Bodoni Moda + Work Sans.
+> *Zapis historyczny — od wprowadzenia sekcji 0 takie odstępstwa nie wymagają już dokumentowania.*
+> **Zajawa Barbershop, 2026-07-28:** display to `Archivo Black` (geometryczny grotesk, uppercase, tracking `0.06em`), body to `DM Sans`. Odstępstwo uzgodnione z użytkownikiem: brief klienta wprost narzuca ten rejestr („sans-serif geometryczny, mocny, wielkie litery, w duchu logo Zajawy"), a logo firmy jest geometryczne, nie didone — Bodoni Moda gryzłaby się z brandingiem. Brief proponował Inter jako body; użyto DM Sans, bo Inter jest zakazany w tym systemie. To wyjątek TEGO klienta, nie zmiana standardu — nowa produkcja nadal domyślnie idzie w Bodoni Moda + Work Sans.
 
-> **Strony dostarczone przed zmianą standardu (nie ruszać):** `clients/M.E.N.`, `clients/M.E.N.-for-real` i `clients/studio-fryzur-lidia` renderują display starszymi krojami (Playfair Display / Fraunces) — to żywe, dostarczone strony klientów i ZOSTAJĄ bez zmian. Bodoni Moda obowiązuje wyłącznie dla NOWEJ produkcji od 2026-07-11. Nie kopiuj Playfair Display ani Fraunces do nowych projektów bez wyraźnej prośby użytkownika.
+> **Strony dostarczone (nie ruszać):** `clients/M.E.N.`, `clients/M.E.N.-for-real` i `clients/studio-fryzur-lidia` renderują display starszymi krojami (Playfair Display / Fraunces) — to żywe, dostarczone strony klientów i ZOSTAJĄ bez zmian.
+>
+> Nie kopiuj kroju od jednego klienta do drugiego „bo tam zadziałał" — font każdego klienta wynika z jego własnego briefu i logo (sekcja 0).
 
 ### Hierarchy
 - **Display** (Bodoni Moda, waga 500, `clamp(2.1rem, 3.2vw + 1.4rem, 3.75rem)`, line-height 1.1): nagłówek hero, nazwa firmy/usługi — max jeden na stronę.
@@ -139,7 +161,16 @@ Wybór jasnej albo ciemnej bazy jest decyzją per nisza klienta (patrz Overview)
 - **Label** (Work Sans, waga 500, `text-sm`): godziny otwarcia, etykiety cen, przyciski, stopka.
 
 ### Named Rules
-**The Two-Typeface Rule.** Jeden szeryf display (Bodoni Moda) + jeden sans body (Work Sans), nigdy więcej niż te dwa kroje. Display tylko w głównych nagłówkach sekcji i hero — nigdy w body, cenniku czy przyciskach.
+**The Two-Typeface Rule.** **Maksymalnie dwa kroje pisma na stronę** — jeden display do nagłówków
+hero/sekcji + jeden sans do reszty tekstu. To jest reguła twarda i obowiązuje zawsze.
+
+*Które* to kroje, wynika z briefu, logo i zdjęć klienta (patrz sekcja 0). Bodoni Moda + Work Sans
+to wartość domyślna, gdy brief milczy — nie wymóg. Display idzie tylko w główne nagłówki sekcji
+i hero, nigdy w body, cennik ani przyciski.
+
+Trzeci krój bywa uzasadniony wyłącznie wtedy, gdy klient prosi o inny font w długich opisach —
+wtedy traktuj go jako drugi „body", a nie jako trzeci głos, i nie podmieniaj nim nagłówków,
+nawigacji ani cennika.
 
 **The No-Eyebrow Rule.** Żadnych małych uppercase-trackowanych "kickerów" (ABOUT / PROCESS / PRICING) nad każdą sekcją — to saturowany AI-tell z 2023-25. Nagłówki sekcji stoją same, bez dekoracyjnego poprzedzenia.
 

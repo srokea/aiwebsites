@@ -21,13 +21,16 @@ Ten projekt korzysta z open-source'owego systemu projektowego **Impeccable** (gi
 
 `DESIGN.md` dzieli się na DWA rodzaje informacji — traktuj je zupełnie inaczej:
 
-**STAŁE — nigdy nie zmieniaj per klient:**
-- Kolory (tokeny: bg, surface, ink, accent, border)
-- Typografia (Bodoni Moda dla nagłówków, Work Sans dla reszty, skale clamp()) — Playfair Display u M.E.N. i Lidii oraz Fraunces u M.E.N.-for-real to strony dostarczone przed zmianą standardu, zostają bez zmian (patrz DESIGN.md)
-- Spacing, border-radius, motion
-- Named Rules (No-Cream Rule, One Accent Rule itd.)
+**STAŁE — obowiązują u każdego klienta, niezależnie od palety:**
+- Named Rules (No-Cream, One Accent, No-Eyebrow, Flat-By-Default, max dwa kroje pisma)
+- Skale spacingu, border-radius, zasady motion
+- Kontrast WCAG AA i 44 px na elementach dotykowych
 
-**ZMIENNE per klient — DESIGN.md to tylko punkt startowy, nie szablon:**
+**ZMIENNE per klient — DESIGN.md to punkt startowy, nie szablon:**
+- Paleta i typografia pochodzą z `brief.md`, logo i zdjęć klienta. Tokeny w `DESIGN.md` to
+  wartość domyślna na wypadek, gdy brief milczy — nie sztywny standard. Odstępstwo uzasadnione
+  briefem **nie jest błędem i nie wymaga dopisywania wyjątku**. Patrz „Hierarchia źródeł"
+  na górze `DESIGN.md`.
 - Układ sekcji (kolejność, proporcje, ile kolumn, jak hero wygląda)
 - Które komponenty z sekcji 5 użyć — i czy w ogóle
 - Struktura nawigacji
@@ -39,9 +42,11 @@ Sekcja 5 (Components) w DESIGN.md opisuje **możliwe wzorce** — nie obowiązko
 
 ```
 /design/PRODUCT.md          <- z /impeccable init, stałe dla całej agencji
-/design/DESIGN.md           <- z /impeccable init, stałe dla całej agencji
+/design/DESIGN.md           <- tokeny + Named Rules (patrz "Hierarchia źródeł" w tym pliku)
+/design/STYLES.md           <- lookbook stylów 00-15
+/design/SNIPPETS.md         <- KANONICZNE KOMPONENTY do wklejenia (lightbox, scroll-spy, header, "dziś"…)
 /scripts/screenshot.mjs     <- kanoniczny skrypt zrzutów ekranu (mobile+desktop) — używaj jego, nie pisz ad-hoc Puppeteera
-/clients/<nazwa-klienta>/
+/clients/<nisza>/<active|churned>/<nazwa-klienta>/
   brief.md                  <- dane klienta (patrz niżej)
   inspo/                    <- screeny CUDZYCH stron internetowych, tylko styl/kierunek do zainspirowania się
   anty-inspo/               <- screeny tego, czego UNIKAĆ — złe przykłady, w tym własne poprzednie próby
@@ -83,7 +88,7 @@ Ta pętla dotyczy nie tylko pierwszej budowy strony, ale KAŻDEJ zmiany w istnie
 3. Sprawdź folder `inspo/`. Jeśli są tam screeny — to LUŹNA inspiracja stylu z cudzych stron, NIE wzór do skopiowania 1:1 i NIE treść do wstawienia. Nie przejmuj układu, treści ani unikalnych elementów tych stron, tylko ogólny nastrój, przefiltrowany przez DESIGN.md.
 4. Sprawdź folder `anty-inspo/`. Jeśli są tam screeny — to przykłady tego, czego NIE robić dla tego klienta (może być np. poprzednia, odrzucona wersja tej samej strony). Świadomie odróżnij finalny projekt od tych przykładów — jeśli nie jesteś pewien czy jakiś element jest zbyt podobny do anty-inspo, zmień go.
 5. Wygeneruj `index.html` (Tailwind CSS przez CDN, jeden plik) zgodnie z tokenami z DESIGN.md i wariantem z Kroku 1.
-6. Zrób zrzuty ekranu: `node scripts/screenshot.mjs clients/<klient>` — robi automatycznie wersję mobilną I desktopową każdej podstrony (z przescrollowaniem, żeby lazy-loading zdążył wczytać zdjęcia). Nie pisz własnych skryptów Puppeteer do zrzutów.
+6. Zrób zrzuty ekranu: `node scripts/screenshot.mjs clients/<nisza>/<active|churned>/<klient>` — robi automatycznie wersję mobilną I desktopową każdej podstrony (z przescrollowaniem, żeby lazy-loading zdążył wczytać zdjęcia). Nie pisz własnych skryptów Puppeteer do zrzutów.
 7. Sprawdź każdy punkt:
    - Zgodność kolorów/fontów/odstępów z DESIGN.md — żadnych przypadkowych wartości.
    - `/impeccable audit` — automatyczne wykrywanie typowych błędów AI.
@@ -93,6 +98,33 @@ Ta pętla dotyczy nie tylko pierwszej budowy strony, ale KAŻDEJ zmiany w istnie
 9. Zrzut ekranu ponownie, porównaj od nowa. Minimum 2 pełne rundy zanim strona jest gotowa.
 10. Stop dopiero, gdy nie ma już niezgodności albo użytkownik powie, że wystarczy.
 11. Gdy strona jest gotowa (nie w trakcie, tylko RAZ na koniec) — uruchom subagenta `reviewer`, żeby ocenił gotowy kod świeżym okiem, bez znajomości procesu budowy. Popraw jego uwagi, jeśli są zasadne, zanim pokażesz stronę klientowi.
+
+## Standard wyposażenia strony (domyślnie, BEZ pytania)
+
+To są elementy, o które użytkownik prosił przy większości klientów z osobna, bo nie było ich
+w pierwszej wersji. Od teraz wchodzą **domyślnie na każdą stronę** — nie czekaj, aż ktoś poprosi,
+i nie pytaj, czy dodać. Gotowy kod: **`/design/SNIPPETS.md`**.
+
+1. **Galeria = lightbox.** Każda galeria (także złożona z samych placeholderów) jest klikalna:
+   klik otwiera podgląd, strzałki `←`/`→` i dwa przyciski w stałym miejscu przewijają, `Esc`
+   i klik poza zdjęciem zamykają, lista jest zapętlona, pod zdjęciem tylko licznik (żadnych
+   podpisów). Lightbox otwiera oryginał, nie przyciętą miniaturę. Galeria może zawierać więcej
+   zdjęć niż widocznych kafelków.
+2. **Scroll-spy w headerze.** Sekcja, w której aktualnie jest użytkownik, podświetla się w nawigacji.
+3. **Social media w headerze, obok telefonu** (nie obok sekcji) — z prawdziwymi linkami, w kolorach
+   strony, nie w oryginalnych barwach marek.
+4. **Header w jednej linii i bez ścisku na mobile.** Logo + sekcje + social + CTA w jednym rzędzie.
+   Na telefonie numer znika, zostaje sama ikonka słuchawki. Żaden przycisk CTA nie może łamać się
+   na dwie linijki — to najczęściej zgłaszany błąd mobilny.
+5. **Godziny otwarcia z oznaczeniem „dziś"** — podpis + wyraźne podświetlenie wiersza (samo
+   pogrubienie to za mało).
+6. **Mapa przez całą szerokość strony**, na dole sekcji kontaktu, tuż nad stopką.
+7. **CTA „Zostaw opinię"** z ikoną Google, jeśli klient ma opinie w Google. Link do wystawienia
+   opinii zawsze podaje użytkownik — nie zgaduj `place_id`.
+8. **Ikona po lewej stronie tekstu** w każdym CTA, które ma ikonę („Wyznacz trasę", social, telefon).
+
+Odstępstwo od tej listy jest możliwe, ale musi wynikać z briefu i trzeba je nazwać w odpowiedzi
+(np. „bez galerii — klient nie ma i nie będzie miał zdjęć").
 
 ## Checklist konwersji (obowiązkowa)
 
@@ -111,10 +143,81 @@ Rzeczy, które użytkownik musiał poprawiać u więcej niż jednego klienta —
 1. **Kadry zdjęć.** Po wstawieniu prawdziwych zdjęć obejrzyj je na zrzutach mobile I desktop — twarz/fryzura nie może być ucięta przez `object-fit: cover`. Dobierz `object-position` świadomie (u M.E.N. hero wymagał `center 20%`, u Lidii kafel galerii dwóch rund poprawek). Zdjęcia pionowe w poziomych kadrach to główny winowajca.
 2. **Lightbox = pełne zdjęcie.** Jeśli miniatura w galerii jest przycięta (`-cropped.jpg`), lightbox musi otwierać ORYGINAŁ (`data-full`), nie tę samą przyciętą miniaturę.
 3. **Myślniki (—).** Impeccable wielokrotnie flagował "em-dash-overuse" u każdego klienta. W tekstach na stronę klienta pisz krótkie zdania z kropkami; maksymalnie 2-3 myślniki na całą stronę.
-4. **Funkcje spoza briefu.** Lightbox na stronie głównej Lidii został zbudowany i potem usunięty na prośbę użytkownika — to koszt podwójnej pracy. Zanim dodasz interaktywny bajer (lightbox, karuzela, animacja), sprawdź brief; jak go tam nie ma, nie dodawaj (twarda zasada z CLAUDE.md).
+4. **Funkcje spoza briefu.** Elementy ze „Standardu wyposażenia strony" (lightbox, scroll-spy,
+   social w headerze, „dziś", mapa full-width) są DOMYŚLNE i nie wymagają wzmianki w briefie —
+   dodawaj je zawsze. Zakaz dotyczy nietypowych bajerów spoza tej listy: karuzel 3D, parallaksy,
+   animacji scenowych, sliderów zespołu, efektów przewijania. Tych nie dodawaj bez briefu albo
+   wyraźnej prośby.
+5. **Kadry na szerokich ekranach.** Zdjęcia hero sprawdzaj także przy **2560×1440 i szerzej**, nie
+   tylko na 1512 px (MacBook). Hero ucięte po bokach na dużym monitorze wracało cztery razy pod rząd
+   u jednego klienta. Naprawiaj proporcje uniwersalnie, nie pod jedną konkretną rozdzielczość.
+6. **Ikony marek.** Nie rysuj z pamięci ikon Facebooka, Instagrama, Google ani Booksy — kształty
+   wychodzą krzywe i były odrzucane. Bierz gotowe ścieżki z `/design/SNIPPETS.md` albo plik od
+   klienta. Kolor dopasuj do palety strony **od razu**, bez czekania na przypomnienie.
+7. **Logo klienta ze zdjęcia telefonem.** Jeśli w `photos/` jest fotografia szyldu/wizytówki, a nie
+   plik graficzny — odtwórz logo płasko (SVG/czysty wektor), nie wklejaj zdjęcia. Sprawdź detale:
+   kropki nad literami, rozstaw znaków, kształt ornamentu.
 
 Dodatkowo w Website+: link/widget Booksy musi być widoczny, nie ukryty.
 Dodatkowo w Pro+: formularz rezerwacji/zapytania widoczny i prosty w użyciu.
+
+## Zasady treści (copy)
+
+**Strona najpierw trafia do wglądu właścicielce, dopiero potem do jej klientów.** To zmienia sposób
+pisania wszystkich tekstów roboczych i placeholderów:
+
+- Placeholdery i notatki na stronie mówią **do właścicielki**, nie o niej. Nie „Tu wstawimy kilka
+  zdań o Magdzie", tylko „Tu wstawimy kilka zdań o Pani".
+- **Zawsze per Pani/Pan.** Nigdy na Ty, chyba że użytkownik wyraźnie powie inaczej.
+- Opis „o mnie" / „o nas" pisz **w pierwszej osobie**, jakby pisała go sama właścicielka
+  („Prowadzę salon od 2015 roku…"), nie w trzeciej („Magda prowadzi salon…").
+- **Jednoosobowa firma = liczba pojedyncza.** Sprawdź w briefie, ile osób pracuje. Jeśli jedna:
+  „Jak mnie znaleźć", nie „Jak nas znaleźć"; „Pracuję", nie „Pracujemy".
+- **Zero przepraszających wypełniaczy.** Nie pisz „Pełny cennik pojawi się wkrótce", „Zdjęcia
+  zespołu wstawimy tutaj, gdy będą gotowe", „Do uzupełnienia". Brak danych → dashed placeholder
+  bez tekstu tłumaczącego, a brakujące informacje wypisz użytkownikowi w odpowiedzi, nie na stronie.
+- **Nie tłumacz na stronie, po co jest sekcja.** Zdania typu „Szukasz wizyty, a nie szkolenia?
+  Wróć do oferty salonu" albo „To osobna działalność edukacyjna" były usuwane za każdym razem.
+  Nawigacja ma to załatwiać sama.
+- Nie zmyślaj treści opinii, cen ani godzin. Statystyki (ocena, liczba opinii) możesz pokazać,
+  jeśli są prawdziwe — treść cytatu tylko od użytkownika.
+- Maksymalnie 2–3 myślniki (—) na całą stronę; krótkie zdania z kropkami.
+
+## Dyscyplina edycji
+
+Przy poprawkach użytkownik opisuje JEDEN element. Najczęstsze źródło dodatkowych rund to zmiany
+„przy okazji".
+
+- **Ruszasz wyłącznie to, o co proszono.** Prośba „przesuń miskę w górę" nie jest zgodą na
+  poprawienie odstępów sekcji, w której miska leży. Prośba „przesuń sekcje w headerze w lewo"
+  nie obejmuje ikon social media stojących obok.
+- Przy mikro-korektach pozycji zmieniaj tylko `transform`/`margin` tego jednego elementu.
+  Nie przebudowuj siatki ani nie zmieniaj paddingu sekcji.
+- Jeśli poprawka wymaga jednak ruszenia czegoś obok — **powiedz to w odpowiedzi**, zamiast zrobić
+  po cichu.
+- **Warianty pokazuj jako zrzuty ekranu, nie jako nazwy.** Prośba „daj 3 propozycje fontu" oznacza
+  3 obrazy do obejrzenia. Zapisz je do `clients/<...>/<klient>/warianty/` i podaj ścieżki.
+  Sama lista nazw fontów w tekście jest bezużyteczna — było zgłaszane dwa razy.
+- **Podmiana fontu „w opisach" = tylko długie teksty i akapity.** Nie nagłówki, nie nawigacja,
+  nie cennik, nie przyciski. Globalna podmiana była cofana dwa razy.
+
+## SEO i wydajność (obowiązkowe)
+
+Sprzedajemy lokalnym firmom widoczność — strona bez tego jest niekompletna.
+
+- `<html lang="pl">`
+- `<title>` = nazwa firmy + usługa + miasto (np. „NOVA — makijaż permanentny, Sulejów")
+- `<meta name="description">` — jedno zdanie, konkretnie, bez marketingowej waty
+- Open Graph: `og:title`, `og:description`, `og:image`, `og:url`.
+  **Nazwy plików obrazów bez spacji i nawiasów** — psują podgląd linku w komunikatorach.
+- JSON-LD `LocalBusiness` (albo węższy typ: `HairSalon`, `BeautySalon`, `ClothingStore`)
+  z nazwą, adresem, telefonem, godzinami otwarcia i linkiem do map
+- `favicon` — najlepiej element logo klienta
+- Każdy `<img>`: `loading="lazy"`, jawne `width` i `height` (chroni przed CLS), opisowy `alt`
+- Zdjęcia skompresowane do realnego rozmiaru wyświetlania. Zdjęcie 3777 px szerokości pod kafelek
+  450 px to błąd, nawet jeśli wygląda dobrze.
+- Obraz ukryty przez `hidden` / `display:none` **i tak się pobiera** — nie chowaj tak ciężkich
+  zdjęć przed mobile; użyj `<picture>` albo w ogóle go tam nie wstawiaj.
 
 ## RODO i prywatność (obowiązkowe na każdej stronie)
 
