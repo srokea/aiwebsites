@@ -9,6 +9,11 @@ const db = new Database(path.join(dataDir, "coldcall.db"));
 db.pragma("journal_mode = WAL");
 db.pragma("foreign_keys = ON");
 
+// Pomocnicza funkcja SQL: zostawia z tekstu same cyfry. Uzywana przy wyszukiwaniu leada po
+// numerze telefonu (GET /api/leads/search), zeby spacje/mysliki/plus w bazie i we wpisanym
+// numerze nie mialy znaczenia - odpowiednik frontendowego .replace(/\D/g, "").
+db.function("digits_only", (value) => String(value ?? "").replace(/\D/g, ""));
+
 db.exec(`
 CREATE TABLE IF NOT EXISTS niches (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -53,6 +58,53 @@ CREATE TABLE IF NOT EXISTS lead_notes (
 );
 
 CREATE INDEX IF NOT EXISTS idx_lead_notes_lead ON lead_notes(lead_id);
+
+-- #4 - "Proby": historia prob dzwonienia do leada. Liczba w kolumnie "Proby" to po prostu
+-- COUNT(*) wierszy dla danego leada (bez denormalizacji). happened_at to lokalny
+-- "YYYY-MM-DDTHH:MM" (jak google_term) - odczyt/zapis bez strefy czasowej.
+CREATE TABLE IF NOT EXISTS lead_call_attempts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  lead_id INTEGER NOT NULL REFERENCES leads(id) ON DELETE CASCADE,
+  happened_at TEXT NOT NULL,
+  created_by TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_lead_call_attempts_lead ON lead_call_attempts(lead_id);
+
+-- #6 - jedyna historia transakcji (Historia transakcji / Kasa). Wpisy: reczne (source_key
+-- NULL), auto-koszty subskrypcji (source_key 'sub:<nazwa>:<YYYY-MM>') i potwierdzone
+-- naleznosci klientow (source_key 'due:<id>'). amount_grosze zawsze dodatnie - znak wynika
+-- z category ('przychod' | 'wydatek'). occurred_on to lokalna data "YYYY-MM-DD".
+CREATE TABLE IF NOT EXISTS transactions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  occurred_on TEXT NOT NULL,
+  description TEXT NOT NULL DEFAULT '',
+  amount_grosze INTEGER NOT NULL,
+  category TEXT NOT NULL,
+  source_key TEXT,
+  created_by TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_transactions_date ON transactions(occurred_on);
+
+-- #6 - naleznosci klientow do POTWIERDZENIA. Generowane z dopietych leadow (jedno 'onetime'
+-- wdrozenie + 'monthly' za kazdy pelny miesiac od dopiete_at). status: pending -> confirmed
+-- (tworzy wpis w transactions) | skipped (klient nie zaplacil / zrezygnowal).
+CREATE TABLE IF NOT EXISTS client_dues (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  lead_id INTEGER NOT NULL REFERENCES leads(id) ON DELETE CASCADE,
+  kind TEXT NOT NULL,
+  period TEXT NOT NULL,
+  amount_grosze INTEGER NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  transaction_id INTEGER REFERENCES transactions(id) ON DELETE SET NULL,
+  resolved_at TEXT,
+  resolved_by TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_client_dues_uniq ON client_dues(lead_id, kind, period);
 
 -- Historia edycji notatki: przy kazdej zmianie tresci stara wersja ladowana jest tutaj
 -- (patrz PATCH /api/leads/:id/notes/:noteId), zeby nic nie ginelo po edycji.
@@ -172,6 +224,12 @@ addColumnIfMissing("leads", "tag_tiktok INTEGER NOT NULL DEFAULT 0");
 // znaczek "verified" przy ramce social - ustawiany raz, gdy ktos recznie poprawi tagi
 // platform (odroznia recznie zweryfikowane dane od tych prosto ze scrapera/importu CSV)
 addColumnIfMissing("leads", "social_verified INTEGER NOT NULL DEFAULT 0");
+// #6 - klucz dedup auto-postow w transactions (subskrypcje / potwierdzone naleznosci).
+// Musi byc dodany PRZED indeksem ponizej, bo starsze bazy maja tabele bez tej kolumny.
+addColumnIfMissing("transactions", "source_key TEXT");
+db.exec(
+  "CREATE UNIQUE INDEX IF NOT EXISTS idx_transactions_source ON transactions(source_key) WHERE source_key IS NOT NULL"
+);
 
 // Jednorazowy seed: stan jak dawna sztywna mapa NICHE_SCRIPTS (kosmetyczki mialy swoj plik,
 // reszta default). Idempotentne - po ustawieniu wartosci warunek '' juz nie zlapie.

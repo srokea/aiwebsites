@@ -39,6 +39,15 @@ const api = {
     if (!res.ok) return apiFail(res);
     return res.json();
   },
+  async put(url, body) {
+    const res = await fetch(url, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) return apiFail(res);
+    return res.json();
+  },
   async del(url) {
     const res = await fetch(url, { method: "DELETE" });
     if (!res.ok) return apiFail(res);
@@ -478,12 +487,16 @@ function closeCallbackPicker() {
   callbackPickerEl = null;
 }
 
-// value: "YYYY-MM-DD" albo "" | onPick(nowaWartosc) - wolane tez z "" przy czyszczeniu
+// value: "YYYY-MM-DD" | "YYYY-MM-DDTHH:MM" | "" | onPick(nowaWartosc) - wolane tez z "" przy
+// czyszczeniu. #8 - godzina opcjonalna: pole time w stopce; pusta = zapis samej daty (jak
+// dotad), wypelniona = zapis "data T godzina". Wybor dnia tylko zaznacza, zatwierdza "Zapisz".
 function openCallbackPicker({ anchor, value, onPick }) {
   closeCallbackPicker();
 
-  const start = value ? new Date(`${value}T00:00:00`) : new Date();
-  const state = { year: start.getFullYear(), month: start.getMonth(), day: value || "" };
+  const datePart = value ? value.slice(0, 10) : "";
+  const timePart = value && value.length > 10 ? value.slice(11, 16) : "";
+  const start = datePart ? new Date(`${datePart}T00:00:00`) : new Date();
+  const state = { year: start.getFullYear(), month: start.getMonth(), day: datePart, time: timePart };
 
   const pop = document.createElement("div");
   pop.className = "term-pop";
@@ -518,9 +531,14 @@ function openCallbackPicker({ anchor, value, onPick }) {
         ${MEET_WEEKDAYS.map((d) => `<span class="term-dow">${d}</span>`).join("")}
         ${cells.join("")}
       </div>
+      <label class="term-time-row">
+        <span>Godzina <span class="term-time-hint">(opcjonalnie)</span></span>
+        <input type="time" class="term-time-input" data-callback-time value="${state.time}">
+      </label>
       <div class="term-foot">
         <button type="button" class="btn" data-callback-clear>Wyczyść</button>
         <button type="button" class="btn" data-callback-close>Zamknij</button>
+        <button type="button" class="btn primary" data-callback-save ${state.day ? "" : "disabled"}>Zapisz</button>
       </div>
     `;
     position();
@@ -536,6 +554,13 @@ function openCallbackPicker({ anchor, value, onPick }) {
     pop.style.top = `${below + h > window.innerHeight - 8 ? Math.max(8, r.top - h - 6) : below}px`;
   }
 
+  // zmiana pola godziny nie przerysowuje kalendarza (tylko zapisuje do stanu), zeby wpisywana
+  // wartosc nie znikala przy nawigacji miesiacami / wyborze dnia
+  pop.addEventListener("input", (e) => {
+    const t = e.target.closest("[data-callback-time]");
+    if (t) state.time = t.value;
+  });
+
   pop.addEventListener("click", (e) => {
     e.stopPropagation(); // patrz ten sam komentarz w openTermPicker powyzej
 
@@ -550,7 +575,13 @@ function openCallbackPicker({ anchor, value, onPick }) {
 
     const day = e.target.closest("[data-callback-day]");
     if (day) {
-      onPick(day.dataset.callbackDay);
+      state.day = day.dataset.callbackDay; // tylko zaznacz - zatwierdza "Zapisz" (bo godzina opcjonalna)
+      return render();
+    }
+
+    if (e.target.closest("[data-callback-save]")) {
+      if (!state.day) return;
+      onPick(state.time ? `${state.day}T${state.time}` : state.day);
       return closeCallbackPicker();
     }
 
@@ -572,10 +603,15 @@ document.addEventListener("keydown", (e) => {
 });
 window.addEventListener("resize", closeCallbackPicker);
 
-// etykieta na guziku - jak termLabel powyzej, tylko bez godziny (callback_when to sama data)
+// etykieta na guziku. #8 - godzina jest OPCJONALNA: callback_when to "YYYY-MM-DD" (sama data,
+// jak dotychczas) albo "YYYY-MM-DDTHH:MM" gdy ustawiono też godzinę. Z godziną pokazujemy
+// pełne "DD.MM.YYYY, HH:MM", bez - krótką datę jak wcześniej.
 function callbackLabel(value) {
   if (!value) return "📅";
-  const d = new Date(`${value}T00:00:00`);
+  const hasTime = value.length > 10 && value.includes("T");
+  const d = new Date(hasTime ? value : `${value}T00:00:00`);
   if (isNaN(d.getTime())) return value;
-  return d.toLocaleDateString("pl-PL", { day: "numeric", month: "short" });
+  if (!hasTime) return d.toLocaleDateString("pl-PL", { day: "numeric", month: "short" });
+  const p = (n) => String(n).padStart(2, "0");
+  return `${p(d.getDate())}.${p(d.getMonth() + 1)}.${d.getFullYear()}, ${p(d.getHours())}:${p(d.getMinutes())}`;
 }

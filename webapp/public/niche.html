@@ -32,15 +32,17 @@
   <div class="section-title">Leady</div>
   <div class="filter-search-row">
     <div class="filter-bar" id="filter-bar"></div>
-    <div class="search-wrap">
-      <input type="text" id="lead-search" class="search-input" placeholder="🔍 Szukaj firmy lub telefonu...">
-      <button type="button" class="search-clear hidden" id="lead-search-clear" title="Wyczyść szukanie">✕</button>
-    </div>
     <button type="button" class="btn primary" id="add-lead-btn">+ Dodaj lead</button>
   </div>
 </div>
 
 <div class="leads-full">
+  <div class="sticky-search-bar">
+    <div class="search-wrap">
+      <input type="text" id="lead-search" class="search-input" placeholder="🔍 Szukaj leada...">
+      <button type="button" class="search-clear hidden" id="lead-search-clear" title="Wyczyść szukanie">✕</button>
+    </div>
+  </div>
   <div class="table-scroll-hint" id="table-scroll-hint">👉 Przesuń tabelę w bok, żeby zobaczyć Reminder, Notatki i resztę kolumn</div>
   <div class="leads-scroll" id="leads-scroll">
   <table class="leads">
@@ -55,6 +57,7 @@
         <th class="sortable" data-sort-id="answered" data-sort="answered">Odebrał?</th>
         <th class="sortable" data-sort-id="interested" data-sort="interested">Zainteresowany?</th>
         <th class="sortable" data-sort-id="caller" data-sort="caller">Kto dzwonił</th>
+        <th class="sortable" data-sort-id="attempts" data-sort="attempts_count">Próby</th>
         <th class="sortable" data-sort-id="reminder" data-sort="reminder_effective">Reminder</th>
         <th class="sortable" data-sort-id="callback" data-sort="callback_when">Kiedy oddzwonić</th>
         <th class="sortable" data-sort-id="gterm" data-sort="google_term">Termin Google</th>

@@ -180,7 +180,9 @@ document.getElementById("niche-stats").addEventListener("click", (e) => {
 // ktory jest blizej (chronologicznie pierwszy), z etykieta zalezna od tego ktory to termin.
 function reminderInfo(lead) {
   const candidates = [
-    lead.callback_when && { raw: lead.callback_when, kind: "Oddzwoń" },
+    // #8 - callback_when bywa teraz "YYYY-MM-DDTHH:MM" (opcjonalna godzina), Reminder patrzy
+    // na sam dzien, wiec obcinamy do 10 znakow tak samo jak google_term
+    lead.callback_when && { raw: lead.callback_when.slice(0, 10), kind: "Oddzwoń" },
     lead.google_term && { raw: lead.google_term.slice(0, 10), kind: "Google" },
   ]
     .filter(Boolean)
@@ -301,7 +303,10 @@ function sortValue(lead, field) {
     // kolumna Reminder pokazuje blizszy z dwoch terminow (patrz reminderInfo), wiec sortuje
     // sie po tym samym - nie tylko po callback_when, inaczej rozjezdza sie z tym co widac
     case "reminder_effective": {
-      const dates = [lead.callback_when, lead.google_term ? lead.google_term.slice(0, 10) : ""]
+      const dates = [
+        lead.callback_when ? lead.callback_when.slice(0, 10) : "",
+        lead.google_term ? lead.google_term.slice(0, 10) : "",
+      ]
         .filter(Boolean)
         .map((d) => new Date(d + "T00:00:00").getTime())
         .filter((t) => !isNaN(t));
@@ -311,9 +316,11 @@ function sortValue(lead, field) {
     // sortowanie jako string ustawialoby je losowo wsrod prawdziwych dat, wiec parsujemy
     // i wszystko nieprawidlowe/puste ladowanie na koniec, zamiast alfabetycznie
     case "callback_when": {
-      const t = lead.callback_when ? new Date(lead.callback_when + "T00:00:00").getTime() : NaN;
+      const t = lead.callback_when ? new Date(lead.callback_when.slice(0, 10) + "T00:00:00").getTime() : NaN;
       return isNaN(t) ? Number.MAX_SAFE_INTEGER : t;
     }
+    case "attempts_count":
+      return lead.attempts_count || 0;
     case "google_term": {
       const t = lead.google_term ? new Date(lead.google_term).getTime() : NaN;
       return isNaN(t) ? Number.MAX_SAFE_INTEGER : t;
@@ -328,8 +335,9 @@ function matchesSearch(lead, query) {
   const q = query.toLowerCase().trim();
   const digitsQuery = query.replace(/\D/g, "");
   const nameMatch = lead.company_name.toLowerCase().includes(q);
+  const cityMatch = (lead.city || "").toLowerCase().includes(q);
   const phoneMatch = digitsQuery.length > 0 && lead.phone.replace(/\D/g, "").includes(digitsQuery);
-  return nameMatch || phoneMatch;
+  return nameMatch || cityMatch || phoneMatch;
 }
 
 function getVisibleLeads() {
@@ -497,7 +505,7 @@ function renderLeads() {
   const visible = getVisibleLeads();
   if (!visible.length) {
     const msg = todoFilter ? "Nic do zrobienia — wszystko obdzwonione. 🎉" : "Brak leadow spelniajacych kryteria.";
-    tbody.innerHTML = `<tr><td colspan="14"><div class="empty-state">${msg}</div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="15"><div class="empty-state">${msg}</div></td></tr>`;
     updateScrollHint();
     return;
   }
@@ -697,6 +705,13 @@ function notesCellHtml(lead) {
   return `<button type="button" class="note-cell" title="Notatki (${notes.length})">${inner}</button>`;
 }
 
+// #4 - komorka "Proby": liczba prob dzwonienia. Klik otwiera popover z historia (godzina +
+// data kazdego polaczenia), reczna edycja liczby i przyciskiem "Dodaj polaczenie".
+function attemptsCellHtml(lead) {
+  const n = lead.attempts_count || 0;
+  return `<button type="button" class="attempts-cell ${n ? "has" : ""}" data-attempts-open title="Próby dzwonienia — kliknij, żeby zobaczyć i edytować historię">${n}</button>`;
+}
+
 function rowHtml(lead, index) {
   const reminder = reminderInfo(lead);
   const highlightClass = highlightStatuses.has(lead.interested) ? `row-glow-${lead.interested}` : "";
@@ -726,6 +741,7 @@ function rowHtml(lead, index) {
       <td>${answeredHtml(lead)}</td>
       <td>${fieldCsel("interested", meta.interestedOptions, lead.interested)}</td>
       <td>${fieldCsel("caller", callerOptions(), lead.caller, "—")}</td>
+      <td>${attemptsCellHtml(lead)}</td>
       <td><span class="reminder-badge ${reminder.cls}">${reminder.text}</span></td>
       <td><button type="button" class="term-btn ${lead.callback_when ? "set" : ""}" data-callback-open title="${lead.callback_when ? "" : "Ustaw dzień oddzwonienia"}">${escapeHtml(callbackLabel(lead.callback_when))}</button></td>
       <td><button type="button" class="term-btn ${lead.google_term ? "set" : ""}" data-term-open title="${lead.google_term ? "" : "Ustaw termin Google Meet"}">${escapeHtml(termLabel(lead.google_term))}</button></td>
@@ -821,6 +837,157 @@ tbody.addEventListener("click", (e) => {
     onPick: (value) => saveLead(lead.id, { callback_when: value }),
   });
 });
+
+// #4 - popover kolumny "Proby": historia polaczen (godzina + data), reczna edycja liczby,
+// dodawanie wpisu. Zrodlem prawdy jest tabela lead_call_attempts na serwerze; tu tylko
+// synchronizujemy lead.attempts_count i przerysowujemy wiersz.
+let attemptsPopEl = null;
+
+function closeAttemptsPop() {
+  if (attemptsPopEl) attemptsPopEl.remove();
+  attemptsPopEl = null;
+}
+
+function fmtAttempt(when) {
+  const hasTime = when.length > 10;
+  const d = new Date(hasTime ? when : `${when}T00:00:00`);
+  if (isNaN(d.getTime())) return when;
+  const p = (n) => String(n).padStart(2, "0");
+  const date = `${p(d.getDate())}.${p(d.getMonth() + 1)}.${d.getFullYear()}`;
+  return hasTime ? `${date}, ${p(d.getHours())}:${p(d.getMinutes())}` : date;
+}
+
+async function openAttemptsPopover(anchor, lead) {
+  closeAttemptsPop();
+  closeCallbackPicker?.();
+
+  const pop = document.createElement("div");
+  pop.className = "term-pop attempts-pop";
+  document.body.appendChild(pop);
+  attemptsPopEl = pop;
+
+  let attempts = [];
+  let adding = false;
+
+  function position() {
+    const r = anchor.getBoundingClientRect();
+    const w = pop.offsetWidth;
+    const h = pop.offsetHeight;
+    pop.style.left = `${Math.max(8, Math.min(r.left, window.innerWidth - w - 8))}px`;
+    const below = r.bottom + 6;
+    pop.style.top = `${below + h > window.innerHeight - 8 ? Math.max(8, r.top - h - 6) : below}px`;
+  }
+
+  function syncCount() {
+    lead.attempts_count = attempts.length;
+    const cell = document.querySelector(`tr[data-id="${lead.id}"] .attempts-cell`);
+    if (cell) {
+      cell.textContent = attempts.length;
+      cell.classList.toggle("has", attempts.length > 0);
+    }
+  }
+
+  function render() {
+    const now = new Date();
+    const p = (n) => String(n).padStart(2, "0");
+    const nowDate = `${now.getFullYear()}-${p(now.getMonth() + 1)}-${p(now.getDate())}`;
+    const nowTime = `${p(now.getHours())}:${p(now.getMinutes())}`;
+
+    const list = attempts.length
+      ? attempts
+          .map(
+            (a) => `
+        <li class="attempts-item">
+          <span>${fmtAttempt(a.happened_at)}${a.created_by ? ` · <span class="attempts-by">${escapeHtml(a.created_by)}</span>` : ""}</span>
+          <button type="button" class="attempts-del" data-attempt-del="${a.id}" title="Usuń wpis">✕</button>
+        </li>`
+          )
+          .join("")
+      : `<li class="attempts-empty">Brak zapisanych prób</li>`;
+
+    pop.innerHTML = `
+      <div class="attempts-head">
+        <span>Próby:</span>
+        <input type="number" class="attempts-count-input" min="0" max="999" value="${attempts.length}" data-attempts-count>
+        <button type="button" class="btn" data-attempts-count-save>OK</button>
+      </div>
+      <ul class="attempts-list">${list}</ul>
+      ${
+        adding
+          ? `<div class="attempts-add-form">
+               <input type="date" data-attempt-date value="${nowDate}">
+               <input type="time" data-attempt-time value="${nowTime}">
+               <button type="button" class="btn primary" data-attempt-add-save>Dodaj</button>
+             </div>`
+          : `<button type="button" class="btn attempts-add-btn" data-attempts-add>+ Dodaj połączenie</button>`
+      }
+    `;
+    position();
+  }
+
+  async function refetch() {
+    attempts = await api.get(`/api/leads/${lead.id}/attempts`);
+    syncCount();
+    render();
+  }
+
+  pop.addEventListener("click", async (e) => {
+    e.stopPropagation();
+    try {
+      if (e.target.closest("[data-attempts-add]")) {
+        adding = true;
+        return render();
+      }
+      const del = e.target.closest("[data-attempt-del]");
+      if (del) {
+        attempts = await api.del(`/api/leads/${lead.id}/attempts/${del.dataset.attemptDel}`);
+        syncCount();
+        return render();
+      }
+      if (e.target.closest("[data-attempts-count-save]")) {
+        const val = Number(pop.querySelector("[data-attempts-count]").value);
+        attempts = await api.put(`/api/leads/${lead.id}/attempts/count`, { count: val });
+        syncCount();
+        return render();
+      }
+      if (e.target.closest("[data-attempt-add-save]")) {
+        const date = pop.querySelector("[data-attempt-date]").value;
+        const time = pop.querySelector("[data-attempt-time]").value;
+        if (!date) return;
+        attempts = await api.post(`/api/leads/${lead.id}/attempts`, {
+          happened_at: time ? `${date}T${time}` : date,
+        });
+        adding = false;
+        syncCount();
+        return render();
+      }
+    } catch (err) {
+      alert("Blad: " + err.message);
+    }
+  });
+
+  render();
+  try {
+    await refetch();
+  } catch (err) {
+    pop.innerHTML = `<div class="attempts-empty">Nie udało się wczytać: ${escapeHtml(err.message)}</div>`;
+  }
+}
+
+tbody.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-attempts-open]");
+  if (!btn) return;
+  const lead = leads.find((l) => l.id === Number(btn.closest("tr").dataset.id));
+  if (lead) openAttemptsPopover(btn, lead);
+});
+
+document.addEventListener("click", (e) => {
+  if (attemptsPopEl && !attemptsPopEl.contains(e.target) && !e.target.closest("[data-attempts-open]")) closeAttemptsPop();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeAttemptsPop();
+});
+window.addEventListener("resize", closeAttemptsPop);
 
 tbody.addEventListener("click", (e) => {
   const noteBtn = e.target.closest(".note-cell");

@@ -85,7 +85,13 @@ router.get("/:slug/leads", (req, res) => {
   const niche = db.prepare("SELECT id FROM niches WHERE slug = ?").get(req.params.slug);
   if (!niche) return res.status(404).json({ error: "Nie znaleziono niszy" });
 
-  const leads = db.prepare("SELECT * FROM leads WHERE niche_id = ? ORDER BY id ASC").all(niche.id);
+  const leads = db
+    .prepare(
+      `SELECT leads.*,
+              (SELECT COUNT(*) FROM lead_call_attempts WHERE lead_call_attempts.lead_id = leads.id) AS attempts_count
+       FROM leads WHERE niche_id = ? ORDER BY id ASC`
+    )
+    .all(niche.id);
   const noteRows = db
     .prepare(
       `SELECT lead_notes.id, lead_notes.lead_id, lead_notes.content, lead_notes.created_at

@@ -96,6 +96,12 @@ const SITE_PROGRESS_OPTIONS = [
 const SMS_CONFIRM_TEMPLATE =
   "Dzień dobry, potwierdzam nasze spotkanie online jutro o {godzina}. Link do spotkania wyślę chwilę przed rozpoczęciem. Do usłyszenia ☺️";
 
+// #6 - kategorie wpisow w Historii transakcji. sign = kierunek dla bilansu.
+const TRANSACTION_CATEGORIES = [
+  { value: "przychod", label: "Przychód", sign: 1, color: "#5cb85c" },
+  { value: "wydatek", label: "Wydatek", sign: -1, color: "#e06050" },
+];
+
 const NICHE_COLORS = ["#6090e0", "#5cb85c", "#e06050", "#c0a050", "#a066e0", "#0e86d4", "#e0935c", "#e15a97"];
 
 const DAILY_GOAL = 20;
@@ -125,6 +131,7 @@ module.exports = {
   QUALITY_OPTIONS,
   SITE_PROGRESS_OPTIONS,
   SMS_CONFIRM_TEMPLATE,
+  TRANSACTION_CATEGORIES,
   NICHE_COLORS,
   DAILY_GOAL,
   PRICING,

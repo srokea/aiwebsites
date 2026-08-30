@@ -104,78 +104,56 @@ function renderGreetingPanel() {
   `;
 }
 
-// ---------- panel zarobkow ----------
+// ---------- #6: zmergowany panel finansowy ----------
+// Uklad ze starszej wersji panelu "Kasa" (4 kafelki + linijka "W grze"), ale liczby sa REALNE
+// z historii transakcji: Przychod / Koszty / "Juz zarobione na czysto" (= bilans). Caly panel
+// to jeden <a> -> klik gdziekolwiek prowadzi na /kasa.html.
 
-let lastRevenue = null;
+const money = (n) => `${Math.round(n).toLocaleString("pl-PL")} zł`;
+const plCount = (n, one, few, many) => (n === 1 ? one : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? few : many);
 
-const money = (n) => `${n.toLocaleString("pl-PL", { minimumFractionDigits: 0, maximumFractionDigits: 0 })} zł`;
-
-// Ile z abonamentu "utykalo" od poczatku biezacego miesiaca do teraz - czysto dla klimatu,
-// zeby liczba ruszala sie na zywo (jak w panelu powitalnym z zegarem).
-function monthTickerAmount(mrr) {
-  const now = new Date();
-  const start = new Date(now.getFullYear(), now.getMonth(), 1);
-  const end = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-  return mrr * ((now - start) / (end - start));
+function financePipelineHtml(f) {
+  if (!f.pipelineCount) return "";
+  const word = f.pipelineCount === 1 ? "Meet" : f.pipelineCount < 5 ? "Meety" : "Meetów";
+  const bonus = f.pipelineCount * (f.monthlyRate || 100);
+  return `<div class="finance-potential">🚀 W grze: <b>${f.pipelineCount}</b> ${word} — domknij wszystkie i abonament rośnie o <b>+${money(bonus)}</b>/mies.</div>`;
 }
 
-// "W grze": leady tuz przed finiszem (Meet odbyty/umowiony albo czekajace na podpis, patrz
-// pipelineCount w server/routes/stats.js) - motywacyjna linijka obok tykajacego abonamentu:
-// "gdybyscie domkneli WSZYSTKO co juz macie w toku, tyle wpadnie do abonamentu co miesiac".
-function pipelineHtml(r) {
-  if (!r.pipelineCount) return "";
-  const word = r.pipelineCount === 1 ? "Meet" : r.pipelineCount < 5 ? "Meety" : "Meetów";
-  const bonus = r.pipelineCount * r.pricing.monthly;
-  return `<div class="revenue-potential">🚀 W grze: <b>${r.pipelineCount}</b> ${word} — domknij wszystkie i abonament rośnie o <b>+${money(bonus)}</b>/mies.</div>`;
-}
+function renderFinancePanel(f) {
+  const panel = document.getElementById("finance-panel");
+  if (!panel || !f) return;
 
-function renderRevenuePanel() {
-  const panel = document.getElementById("revenue-panel");
-  if (!lastRevenue) return;
-  const r = lastRevenue;
   const today = new Date().toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" });
+  const alert = f.pendingDues
+    ? `<span class="finance-alert">⚠️ ${f.pendingDues} ${plCount(f.pendingDues, "płatność do potwierdzenia", "płatności do potwierdzenia", "płatności do potwierdzenia")}</span>`
+    : "";
 
   panel.innerHTML = `
-    <div class="revenue-head">
-      <div class="revenue-title">💰 Kasa</div>
-      <div class="revenue-asof">Stan na ${today}</div>
+    <div class="finance-head">
+      <span class="finance-title">💰 Kasa</span>
+      ${alert}
+      <span class="finance-asof">Stan na ${today}</span>
     </div>
-    <div class="revenue-row">
-      <div class="revenue-item">
-        <div class="revenue-num" data-count="${r.clients}">0</div>
-        <div class="revenue-lbl">Klientów</div>
+    <div class="finance-row">
+      <div class="finance-item">
+        <div class="finance-num">${f.clients}</div>
+        <div class="finance-lbl">Klientów</div>
       </div>
-      <div class="revenue-item">
-        <div class="revenue-num" data-count="${r.oneTime}" data-money>0 zł</div>
-        <div class="revenue-lbl">Jednorazowo (${r.pricing.oneTime} zł/klient)</div>
+      <div class="finance-item">
+        <div class="finance-num">${money(f.income)}</div>
+        <div class="finance-lbl">Przychód</div>
       </div>
-      <div class="revenue-item">
-        <div class="revenue-num" data-count="${r.mrr}" data-money>0 zł</div>
-        <div class="revenue-lbl">Miesięcznie (${r.pricing.monthly} zł/klient)</div>
+      <div class="finance-item">
+        <div class="finance-num">${money(f.expense)}</div>
+        <div class="finance-lbl">Koszty</div>
       </div>
-      <div class="revenue-item">
-        <div class="revenue-num" data-count="${r.net}" data-money>0 zł</div>
-        <div class="revenue-lbl">Już zarobione na czysto</div>
+      <div class="finance-item">
+        <div class="finance-num">${money(f.balance)}</div>
+        <div class="finance-lbl">Już zarobione na czysto</div>
       </div>
     </div>
-    <div class="revenue-ticker-row">
-      <div class="revenue-ticker" id="revenue-ticker"></div>
-      ${pipelineHtml(r)}
-    </div>
+    ${f.pipelineCount ? `<div class="finance-foot">${financePipelineHtml(f)}</div>` : ""}
   `;
-  updateRevenueTicker();
-  // dopaminowy "doliczanie do wartosci" tak samo jak % zrobienia na wykresie - patrz
-  // countUpValue/countUpPct nizej (ta sama sekcja animacji przy swiezych danych)
-  panel.querySelectorAll(".revenue-num[data-count]").forEach((el) => {
-    countUpValue(el, Number(el.dataset.count), "money" in el.dataset ? money : String);
-  });
-}
-
-function updateRevenueTicker() {
-  const el = document.getElementById("revenue-ticker");
-  if (!el || !lastRevenue) return;
-  const monthLabel = new Date().toLocaleDateString("pl-PL", { month: "long" });
-  el.textContent = `📈 Abonamenty za ${monthLabel}: ${monthTickerAmount(lastRevenue.mrr).toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} zł i tyka dalej...`;
 }
 
 // ---------- panel: najblizsze spotkania i callbacki ----------
@@ -529,8 +507,7 @@ async function loadStats() {
     <div class="stat-card"><div class="num">${isRestDay() ? "💤" : `${stats.calledToday}/${stats.dailyGoal}`}</div><div class="label">${statIcon("flame")}${isRestDay() ? "Rest day" : "Dzisiaj"}</div></div>
   `;
 
-  lastRevenue = stats.revenue;
-  renderRevenuePanel();
+  renderFinancePanel(stats.finance);
 
   const donutRow = document.getElementById("donut-row");
   const total = stats.interestedBreakdown.reduce((s, o) => s + o.count, 0);
@@ -861,10 +838,114 @@ document.getElementById("import-form").addEventListener("submit", async (e) => {
   }
 });
 
+// ---------- globalna sticky wyszukiwarka leadow ----------
+// Szuka po wszystkich niszach naraz (telefon / firma / miasto), klik w wynik = przejscie
+// prosto do scheme rozmowy tego leada. Use case: dzwoni nieznany numer -> wpisz -> scheme.
+(function initGlobalSearch() {
+  const input = document.getElementById("global-search");
+  const clearBtn = document.getElementById("global-search-clear");
+  const resultsBox = document.getElementById("global-search-results");
+  if (!input) return;
+
+  const debounce = (fn, ms) => {
+    let t;
+    return (...a) => {
+      clearTimeout(t);
+      t = setTimeout(() => fn(...a), ms);
+    };
+  };
+
+  let items = [];
+  let activeIdx = -1;
+  let seq = 0; // odrzuca wyniki starszych, wolniejszych zapytan
+
+  function close() {
+    resultsBox.classList.add("hidden");
+    resultsBox.innerHTML = "";
+    items = [];
+    activeIdx = -1;
+  }
+
+  function go(idx) {
+    const it = items[idx];
+    if (it) location.href = "/script.html?leadId=" + it.id;
+  }
+
+  function render() {
+    if (!items.length) {
+      resultsBox.innerHTML = `<div class="sr-empty">Brak wyników</div>`;
+    } else {
+      resultsBox.innerHTML = items
+        .map(
+          (it, i) => `
+        <button type="button" class="sr-item ${i === activeIdx ? "active" : ""}" data-idx="${i}">
+          <div class="sr-company">${escapeHtml(it.company_name || "—")}</div>
+          <div class="sr-meta">${escapeHtml(it.phone || "brak numeru")} · ${escapeHtml(it.city || "—")} · ${escapeHtml(it.niche_name)}</div>
+        </button>`
+        )
+        .join("");
+    }
+    resultsBox.classList.remove("hidden");
+  }
+
+  const search = debounce(async (q) => {
+    const mySeq = ++seq;
+    try {
+      const rows = await api.get("/api/leads/search?q=" + encodeURIComponent(q));
+      if (mySeq !== seq) return;
+      items = rows;
+      activeIdx = -1;
+      render();
+    } catch {
+      /* cicho - na dashboardzie lepszy brak podpowiedzi niz alert */
+    }
+  }, 200);
+
+  input.addEventListener("input", () => {
+    const q = input.value.trim();
+    clearBtn.classList.toggle("hidden", !q);
+    if (q.length < 2) return close();
+    search(q);
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      close();
+      input.blur();
+    } else if (e.key === "ArrowDown" && items.length) {
+      e.preventDefault();
+      activeIdx = (activeIdx + 1) % items.length;
+      render();
+    } else if (e.key === "ArrowUp" && items.length) {
+      e.preventDefault();
+      activeIdx = (activeIdx - 1 + items.length) % items.length;
+      render();
+    } else if (e.key === "Enter" && items.length) {
+      e.preventDefault();
+      go(activeIdx >= 0 ? activeIdx : 0);
+    }
+  });
+
+  resultsBox.addEventListener("click", (e) => {
+    const btn = e.target.closest(".sr-item");
+    if (btn) go(Number(btn.dataset.idx));
+  });
+
+  clearBtn.addEventListener("click", () => {
+    input.value = "";
+    clearBtn.classList.add("hidden");
+    close();
+    input.focus();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("#global-search-bar")) close();
+  });
+})();
+
 initParticles();
 renderGreetingPanel();
 setInterval(renderGreetingPanel, 1000);
-setInterval(updateRevenueTicker, 1000);
 loadWeather();
 setInterval(loadWeather, 20 * 60 * 1000); // dopasowane do cache serwera (server/routes/weather.js)
 
@@ -878,6 +959,52 @@ window.addEventListener("pageshow", (e) => {
   Promise.all([loadStats(), loadNiches(), loadUpcoming()]).catch(() => {});
 });
 
+// #5a - jednorazowy (raz na sesje, per dzien) alert po zalogowaniu z zadaniami na dzis:
+// Google Meety, oddzwonienia, SMS-y. "Jednorazowy" = flaga w sessionStorage, nie pokazuje
+// sie przy kazdym odswiezeniu. (NOTIF_KIND_LABEL zyje w auth-widget.js - tu wlasna nazwa,
+// bo oba skrypty dziela globalny scope i const by sie zderzyl.)
+const TASK_KIND_LABEL = { meet: "Meet", callback: "Oddzwoń", sms: "SMS" };
+
+async function showTodayTasksAlert() {
+  let data;
+  try {
+    data = await api.get("/api/notifications?days=1");
+  } catch {
+    return;
+  }
+  const todayGroup = data.days.find((d) => d.date === data.today);
+  if (!todayGroup || !todayGroup.items.length) return;
+
+  const key = `notif-alert-${data.today}`;
+  try {
+    if (sessionStorage.getItem(key)) return;
+  } catch {}
+
+  document.getElementById("today-tasks-list").innerHTML = todayGroup.items
+    .map(
+      (it) => `
+      <a class="today-task" href="/script.html?leadId=${it.lead_id}">
+        <span class="today-task-kind ${it.kind}">${TASK_KIND_LABEL[it.kind] || it.kind}</span>
+        <span class="today-task-body">
+          <span class="today-task-company">${escapeHtml(it.company)}</span>
+          <span class="today-task-meta">${escapeHtml(it.label)} · ${escapeHtml(it.niche_name)}</span>
+        </span>
+      </a>`
+    )
+    .join("");
+  document.getElementById("today-tasks-modal").classList.remove("hidden");
+  try {
+    sessionStorage.setItem(key, "1");
+  } catch {}
+}
+
+document.getElementById("today-tasks-ok").addEventListener("click", () => {
+  document.getElementById("today-tasks-modal").classList.add("hidden");
+});
+document.getElementById("today-tasks-modal").addEventListener("click", (e) => {
+  if (e.target.id === "today-tasks-modal") e.currentTarget.classList.add("hidden");
+});
+
 (async () => {
   const [metaRes, usersRes] = await Promise.all([api.get("/api/meta"), api.get("/api/users")]);
   meta = metaRes;
@@ -885,4 +1012,5 @@ window.addEventListener("pageshow", (e) => {
   await Promise.all([loadStats(), loadNiches(), loadUpcoming()]);
   startNichePresencePolling();
   startTeamStatusPolling();
+  showTodayTasksAlert();
 })();

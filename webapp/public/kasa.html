@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Historia transakcji — Cold Calls</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%93%9E</text></svg>">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="bg-particles" id="bg-particles" aria-hidden="true"></div>
+
+<div class="wrap">
+  <div class="topbar">
+    <div>
+      <h1>💰 Historia transakcji</h1>
+      <div class="topbar-sub">Ręczny rejestr — przychody i wydatki</div>
+    </div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <div id="user-widget"></div>
+      <a class="icon-btn icon-btn-back" href="/" title="Dashboard">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="ledger-summary" id="ledger-summary"></div>
+
+  <div class="dues-section" id="dues-section" hidden>
+    <div class="section-title">Płatności klientów do potwierdzenia</div>
+    <div class="dues-hint">Koniec miesiąca — sprawdź, czy klient wpłacił. Potwierdzenie dopisuje przychód do historii poniżej. „Pomiń” = nie wpłacił / zrezygnował.</div>
+    <div class="dues-list" id="dues-list"></div>
+  </div>
+
+  <div class="section-title">Dodaj wpis ręcznie</div>
+  <div class="tx-form-hint">Koszty subskrypcji (np. Claude) dopisują się same — nie trzeba ich dodawać.</div>
+  <form class="tx-form" id="tx-form">
+    <input type="date" id="tx-date" required>
+    <input type="text" id="tx-desc" placeholder="Opis (np. Strona dla Salon Naomi)">
+    <input type="text" id="tx-amount" inputmode="decimal" placeholder="Kwota zł" required>
+    <div class="tx-cat-toggle">
+      <label><input type="radio" name="tx-cat" value="przychod" checked> Przychód</label>
+      <label><input type="radio" name="tx-cat" value="wydatek"> Wydatek</label>
+    </div>
+    <button type="submit" class="btn primary">Dodaj wpis</button>
+    <div class="error" id="tx-error" style="display:none;"></div>
+  </form>
+
+  <div class="section-title">Wpisy</div>
+  <div class="tx-list" id="tx-list"></div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/auth-widget.js"></script>
+<script src="/js/kasa.js"></script>
+</body>
+</html>

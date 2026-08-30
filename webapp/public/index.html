@@ -23,9 +23,17 @@
     <div id="user-widget"></div>
   </div>
 
+  <div class="sticky-search-bar" id="global-search-bar">
+    <div class="search-wrap">
+      <input type="text" id="global-search" class="search-input" placeholder="🔍 Szukaj leada...">
+      <button type="button" class="search-clear hidden" id="global-search-clear" title="Wyczyść szukanie">✕</button>
+      <div class="sticky-search-results hidden" id="global-search-results"></div>
+    </div>
+  </div>
+
   <div class="greeting-panel" id="greeting-panel"></div>
 
-  <div class="revenue-panel" id="revenue-panel"></div>
+  <a class="finance-panel" id="finance-panel" href="/kasa.html"></a>
 
   <!-- statystyki + wykres w jednym kontenerze z jednym tlem (wewnetrzne podzialy hairline) -->
   <div class="overview-panel">
@@ -43,12 +51,23 @@
   </div>
   <div class="upcoming-panel" id="upcoming-panel"></div>
 
+  <div class="tools-nav">
+    <a class="tools-nav-btn" href="/kalendarz.html">📅 Kalendarz</a>
+  </div>
+
   <div class="section-title">Nisze</div>
-  <a href="/map.html" class="map-cta-btn">
-    🗺️ Mapa Miasta — Piotrków Trybunalski
-    <span class="map-cta-arrow">→</span>
-  </a>
   <div class="niche-panel" id="niche-grid"></div>
+</div>
+
+<div class="modal-overlay hidden" id="today-tasks-modal">
+  <div class="modal">
+    <h3>📌 Na dziś</h3>
+    <div class="today-tasks-sub">Zaplanowane na dzisiaj — Meety, oddzwonienia, SMS-y.</div>
+    <div class="today-tasks-list" id="today-tasks-list"></div>
+    <div class="actions">
+      <button type="button" class="btn primary" id="today-tasks-ok">Rozumiem</button>
+    </div>
+  </div>
 </div>
 
 <div class="modal-overlay hidden" id="import-modal">

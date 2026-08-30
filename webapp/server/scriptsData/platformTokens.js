@@ -31,9 +31,16 @@ const PLATFORM_INFO = {
     profileNoun: "kanał",
     objectionTitle: "Mam kanał na YouTube i mi wystarcza",
   },
+  tiktok: {
+    name: "TikTok",
+    accusative: "TikToka",
+    onPhrase: "na TikToku",
+    profileNoun: "profil",
+    objectionTitle: "Mam TikToka i mi wystarcza",
+  },
 };
 
-const DEFAULT_PRIORITY = ["instagram", "facebook", "booksy", "youtube"];
+const DEFAULT_PRIORITY = ["instagram", "facebook", "booksy", "youtube", "tiktok"];
 
 function activeTags(lead) {
   return PLATFORM_TAGS.filter((t) => lead[`tag_${t}`]);

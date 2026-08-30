@@ -39,15 +39,28 @@ function renderWidget() {
     </button>`
     : "";
 
+  // #5b - dzwonek "skrzynki powiadomien" tylko na dashboardzie (obok avatara), kropka gdy sa
+  // dzisiejsze zadania jeszcze nie przejrzane w skrzynce
+  const bellBtn = isMainPage
+    ? `
+    <button type="button" class="icon-btn notif-bell" id="notif-bell" title="Powiadomienia">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="notif-bell-dot hidden" id="notif-bell-dot"></span>
+    </button>`
+    : "";
+
   slot.innerHTML = `
     <button type="button" class="user-widget-btn" id="user-widget-open" title="Profil i ustawienia">
       ${avatarGlyphHtml(currentUser, 38)}
       <span class="user-widget-name">${escapeHtml(currentUser.display_name)}</span>
     </button>
+    ${bellBtn}
     ${logoutBtn}
   `;
   document.getElementById("user-widget-open").addEventListener("click", openProfileModal);
   document.getElementById("user-widget-logout")?.addEventListener("click", doLogout);
+  document.getElementById("notif-bell")?.addEventListener("click", toggleNotifPanel);
+  if (isMainPage) refreshNotifDot();
 }
 
 async function doLogout() {
@@ -340,5 +353,102 @@ async function submitPasswordForm(e) {
     errorEl.style.display = "block";
   }
 }
+
+// ---------- #5b: skrzynka powiadomien (dzwonek obok avatara na dashboardzie) ----------
+// Alerty nie sa nigdzie zapisywane - serwer liczy je z biezacego stanu leadow
+// (GET /api/notifications). "Przejrzane dzis" trzymamy w localStorage per dzien.
+
+let notifPanelEl = null;
+let notifData = null;
+
+const NOTIF_KIND_LABEL = { meet: "Meet", callback: "Oddzwoń", sms: "SMS" };
+
+function notifSeenKey(today) {
+  return `notif-bell-seen-${today}`;
+}
+
+async function fetchNotifications() {
+  try {
+    notifData = await api.get("/api/notifications?days=14");
+  } catch {
+    notifData = { today: "", days: [] };
+  }
+  return notifData;
+}
+
+async function refreshNotifDot() {
+  const dot = document.getElementById("notif-bell-dot");
+  if (!dot) return;
+  const data = await fetchNotifications();
+  const todayGroup = data.days.find((d) => d.date === data.today);
+  let seen = false;
+  try {
+    seen = localStorage.getItem(notifSeenKey(data.today)) === "1";
+  } catch {}
+  dot.classList.toggle("hidden", !(todayGroup && todayGroup.items.length && !seen));
+}
+
+function closeNotifPanel() {
+  if (notifPanelEl) notifPanelEl.remove();
+  notifPanelEl = null;
+}
+
+function notifDateLabel(iso, today) {
+  if (iso === today) return "Dziś";
+  const d = new Date(`${iso}T00:00:00`);
+  const p = (n) => String(n).padStart(2, "0");
+  const wd = d.toLocaleDateString("pl-PL", { weekday: "short" });
+  return `${wd} ${p(d.getDate())}.${p(d.getMonth() + 1)}`;
+}
+
+async function toggleNotifPanel() {
+  if (notifPanelEl) return closeNotifPanel();
+  const bell = document.getElementById("notif-bell");
+  if (!bell) return;
+
+  const data = notifData || (await fetchNotifications());
+
+  const pop = document.createElement("div");
+  pop.className = "notif-panel";
+  pop.innerHTML = data.days.length
+    ? data.days
+        .map(
+          (g) => `
+      <div class="notif-day">
+        <div class="notif-day-head">${notifDateLabel(g.date, data.today)}</div>
+        ${g.items
+          .map(
+            (it) => `
+          <a class="notif-item" href="/script.html?leadId=${it.lead_id}">
+            <span class="notif-item-kind ${it.kind}">${NOTIF_KIND_LABEL[it.kind] || it.kind}</span>
+            <span class="notif-item-company">${escapeHtml(it.company)}</span>
+            <span class="notif-item-meta">${escapeHtml(it.label)} · ${escapeHtml(it.niche_name)}</span>
+          </a>`
+          )
+          .join("")}
+      </div>`
+        )
+        .join("")
+    : `<div class="notif-empty">Brak zadań w ostatnich dniach.</div>`;
+
+  document.body.appendChild(pop);
+  notifPanelEl = pop;
+
+  const r = bell.getBoundingClientRect();
+  pop.style.top = `${r.bottom + 8}px`;
+  pop.style.right = `${Math.max(8, window.innerWidth - r.right)}px`;
+
+  try {
+    if (data.today) localStorage.setItem(notifSeenKey(data.today), "1");
+  } catch {}
+  document.getElementById("notif-bell-dot")?.classList.add("hidden");
+}
+
+document.addEventListener("click", (e) => {
+  if (notifPanelEl && !notifPanelEl.contains(e.target) && !e.target.closest("#notif-bell")) closeNotifPanel();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeNotifPanel();
+});
 
 initAuthWidget();
