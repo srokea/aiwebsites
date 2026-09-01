@@ -6,22 +6,22 @@
 <title>Polityka prywatności — Psia Łapka</title>
 <meta name="description" content="Polityka prywatności strony Psia Łapka, psi fryzjer w Piotrkowie Trybunalskim.">
 <meta name="robots" content="noindex, follow">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='10' fill='%23fdf8f5'/%3E%3Cellipse cx='16' cy='21' rx='6.6' ry='5.4' fill='%23a34a25'/%3E%3Cellipse cx='7' cy='14' rx='2.6' ry='3.4' fill='%23a34a25'/%3E%3Cellipse cx='13' cy='9' rx='2.6' ry='3.4' fill='%23a34a25'/%3E%3Cellipse cx='19' cy='9' rx='2.6' ry='3.4' fill='%23a34a25'/%3E%3Cellipse cx='25' cy='14' rx='2.6' ry='3.4' fill='%23a34a25'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23F2BE2C'/%3E%3Cg fill='%231A1A1A'%3E%3Cellipse cx='7' cy='12.5' rx='2.6' ry='3.4'/%3E%3Cellipse cx='13' cy='8' rx='2.6' ry='3.4'/%3E%3Cellipse cx='19' cy='8' rx='2.6' ry='3.4'/%3E%3Cellipse cx='25' cy='12.5' rx='2.6' ry='3.4'/%3E%3C/g%3E%3Cg fill='none' stroke='%231A1A1A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='10.5' y1='14' x2='22' y2='27'/%3E%3Cline x1='21.5' y1='13' x2='10' y2='26.5'/%3E%3C/g%3E%3Ccircle cx='9.9' cy='14.3' r='1.1' fill='%231A1A1A'/%3E%3Ccircle cx='22.1' cy='13' r='1.1' fill='%231A1A1A'/%3E%3Ccircle cx='21.6' cy='27.3' r='1.9' fill='none' stroke='%231A1A1A' stroke-width='1.6'/%3E%3Ccircle cx='10.4' cy='26.8' r='1.9' fill='none' stroke='%231A1A1A' stroke-width='1.6'/%3E%3C/svg%3E">
 <style>
   @font-face {
-    font-family: 'Young Serif';
+    font-family: 'Archivo Black';
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url('fonts/youngserif-latin.woff2') format('woff2');
+    src: url('fonts/archivoblack-latin.woff2') format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
   @font-face {
-    font-family: 'Young Serif';
+    font-family: 'Archivo Black';
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url('fonts/youngserif-latin-ext.woff2') format('woff2');
+    src: url('fonts/archivoblack-latin-ext.woff2') format('woff2');
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
   }
   @font-face {
@@ -43,22 +43,23 @@
 
   :root {
     --bg: #FFFFFF;
-    --surface: #F6F3F0;
-    --ink: #211C18;
-    --muted: #5C534C;
-    --accent: #A34A25;
-    --deep: #2A231E;
-    --line: rgba(33,28,24,0.12);
+    --surface: #FFF8E7;
+    --ink: #1A1A1A;
+    --muted: #57534C;
+    --accent: #F2BE2C;
+    --deep: #1A1A1A;
+    --line: rgba(26,26,26,0.14);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: var(--bg); color: var(--ink); font-family: 'Nunito', system-ui, sans-serif; line-height: 1.65; }
   .wrap { max-width: 46rem; margin: 0 auto; padding: 0 20px; }
-  .display { font-family: 'Young Serif', Georgia, serif; font-weight: 400; }
+  .display { font-family: 'Archivo Black', 'Arial Black', sans-serif; font-weight: 400; }
 
   header { border-bottom: 1px solid var(--line); background: var(--bg); }
   .head-in { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 14px 20px; max-width: 46rem; margin: 0 auto; }
   .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-weight: 800; }
-  .brand img { width: 36px; height: 36px; border-radius: 999px; object-fit: cover; }
+  .brand .mark { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 999px; background: var(--accent); flex-shrink: 0; }
+  .brand .mark svg { width: 24px; height: 24px; color: var(--ink); }
   .back { font-size: .9rem; font-weight: 700; color: var(--muted); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 4px; }
   .back:hover { color: var(--ink); }
 
@@ -71,7 +72,7 @@
   p + p { margin-top: 10px; }
   ul { color: var(--muted); margin: 10px 0 0 20px; }
   li { margin-bottom: 6px; }
-  a { color: var(--accent); }
+  a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
   .note { background: var(--surface); border: 1px solid var(--line); border-radius: 1rem; padding: 18px 20px; }
   .note p { color: var(--ink); }
 
@@ -87,7 +88,24 @@
 <header>
   <div class="head-in">
     <a class="brand" href="index.html">
-      <img src="photos/tabliczka-welcome.webp" alt="" width="36" height="36">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32">
+          <g fill="currentColor">
+            <ellipse cx="7" cy="12.5" rx="2.6" ry="3.4"/>
+            <ellipse cx="13" cy="8" rx="2.6" ry="3.4"/>
+            <ellipse cx="19" cy="8" rx="2.6" ry="3.4"/>
+            <ellipse cx="25" cy="12.5" rx="2.6" ry="3.4"/>
+          </g>
+          <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="10.5" y1="14" x2="22" y2="27"/>
+            <line x1="21.5" y1="13" x2="10" y2="26.5"/>
+          </g>
+          <circle cx="9.9" cy="14.3" r="1.1" fill="currentColor"/>
+          <circle cx="22.1" cy="13" r="1.1" fill="currentColor"/>
+          <circle cx="21.6" cy="27.3" r="1.9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <circle cx="10.4" cy="26.8" r="1.9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+      </span>
       <span>Psia Łapka</span>
     </a>
     <a class="back" href="index.html">Wróć na stronę</a>

@@ -14,8 +14,9 @@
     theme: {
       extend: {
         colors: {
-          char: '#101014', char2: '#16161c', ivory: '#F1ECE2', muted: '#A39D93',
-          gold: '#C9A35C', goldlt: '#E8CF9A', golddeep: '#B28A44',
+          /* Ta sama paleta co index.html — patrz komentarz tam po pełne uzasadnienie. */
+          bg: '#FFFFFF', surface: '#F1F6F5', ink: '#1A1816', muted: '#6B655F',
+          teal: '#1A6B70', tealdeep: '#124E52', pink: '#F1D0D8',
         },
         fontFamily: {
           display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
@@ -56,41 +57,34 @@
   }
   body { font-weight: 300; line-height: 1.75; -webkit-font-smoothing: antialiased;
          font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
-  ::selection { background: #C9A35C; color: #101014; }
-  .gold-text {
-    background-image: linear-gradient(105deg, #B28A44, #E8CF9A 40%, #B28A44 70%, #E8CF9A);
-    background-size: 200% auto;
-    -webkit-background-clip: text; background-clip: text;
-    color: transparent; -webkit-text-fill-color: transparent;
-    animation: shine 6s linear infinite;
-  }
-  @keyframes shine { to { background-position: 200% center; } }
-  @media (prefers-reduced-motion: reduce) { .gold-text { animation: none; } }
+  ::selection { background: #1A6B70; color: #FFFFFF; }
+  .teal-text { color: #1A6B70; }
 </style>
 </head>
 
-<body class="bg-char text-ivory font-body">
+<body class="bg-bg text-ink font-body">
 
-<header class="border-b border-gold/25 bg-char">
+<header class="border-b border-ink/10 bg-bg">
   <div class="mx-auto flex max-w-wide items-center justify-between gap-3 px-5 py-3 sm:px-8">
     <a href="index.html" class="flex items-center gap-3" aria-label="Piękne Sztuki — strona główna">
       <svg viewBox="0 0 64 68" class="h-9 w-auto shrink-0" role="img" aria-label="Logo Piękne Sztuki">
         <defs>
-          <linearGradient id="goldgrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#B28A44"/><stop offset=".5" stop-color="#E8CF9A"/><stop offset="1" stop-color="#C9A35C"/>
-          </linearGradient>
+          <clipPath id="heartclip-privacy">
+            <path d="M32 18.5C29.6 9.6 21.4 4.8 14.8 8.2 7.6 11.9 5.2 21.9 9.4 30.4 13.2 38.1 22.6 48.6 32 61 41.4 48.6 50.8 38.1 54.6 30.4 58.8 21.9 56.4 11.9 49.2 8.2 42.6 4.8 34.4 9.6 32 18.5Z"/>
+          </clipPath>
         </defs>
-        <g fill="none" stroke="url(#goldgrad)" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M32 18.5C29.6 9.6 21.4 4.8 14.8 8.2 7.6 11.9 5.2 21.9 9.4 30.4 13.2 38.1 22.6 48.6 32 61 41.4 48.6 50.8 38.1 54.6 30.4 58.8 21.9 56.4 11.9 49.2 8.2 42.6 4.8 34.4 9.6 32 18.5Z" stroke-width="2.6"/>
-          <path d="M32 21.5V50" stroke-width="1.6" opacity=".75"/>
-          <path d="M21 27.5C24.4 22.4 39.6 22.4 43 27.5 39.6 32.6 24.4 32.6 21 27.5Z" stroke-width="2"/>
-          <circle cx="32" cy="41.6" r="6.2" stroke-width="2"/>
+        <g clip-path="url(#heartclip-privacy)">
+          <rect x="0" y="0" width="32" height="68" fill="#1A6B70"/>
+          <rect x="32" y="0" width="32" height="68" fill="#F1D0D8"/>
         </g>
-        <circle cx="32" cy="27.5" r="3.1" fill="url(#goldgrad)"/>
+        <path d="M32 18.5C29.6 9.6 21.4 4.8 14.8 8.2 7.6 11.9 5.2 21.9 9.4 30.4 13.2 38.1 22.6 48.6 32 61 41.4 48.6 50.8 38.1 54.6 30.4 58.8 21.9 56.4 11.9 49.2 8.2 42.6 4.8 34.4 9.6 32 18.5Z" fill="none" stroke="#1A1816" stroke-width="2.2" stroke-linejoin="round"/>
+        <path d="M21 27.5C24.4 22.4 39.6 22.4 43 27.5 39.6 32.6 24.4 32.6 21 27.5Z" fill="#F1D0D8" stroke="#1A1816" stroke-width="1.5" stroke-linejoin="round"/>
+        <circle cx="32" cy="27.5" r="4.4" fill="#E8A87C"/>
+        <circle cx="32" cy="41.6" r="6.2" fill="#F0D28A" stroke="#1A1816" stroke-width="1.5"/>
       </svg>
-      <span class="hidden font-display text-[1.15rem] uppercase leading-none tracking-[.34em] gold-text sm:inline">Piękne Sztuki</span>
+      <span class="hidden font-display text-[1.15rem] uppercase leading-none tracking-[.34em] teal-text sm:inline">Piękne Sztuki</span>
     </a>
-    <a href="tel:+48575294571" class="inline-flex min-h-[44px] shrink-0 items-center bg-gradient-to-r from-golddeep via-goldlt to-golddeep px-5 text-[.78rem] uppercase tracking-[.18em] text-char transition hover:brightness-110 sm:px-7">
+    <a href="tel:+48575294571" class="inline-flex min-h-[44px] shrink-0 items-center bg-teal px-5 text-[.78rem] uppercase tracking-[.18em] text-white transition hover:bg-tealdeep sm:px-7">
       575 294 571
     </a>
   </div>
@@ -103,17 +97,17 @@
   <div class="mt-10 space-y-9 text-[1rem] leading-relaxed">
 
     <section>
-      <h2 class="font-display text-[1.4rem] tracking-wide text-goldlt">Kto odpowiada za Twoje dane</h2>
+      <h2 class="font-display text-[1.4rem] tracking-wide text-teal">Kto odpowiada za Twoje dane</h2>
       <p class="mt-3">
         Administratorem danych jest właścicielka firmy Piękne Sztuki Stylizacja&amp;Mani, Jana Matejki 5,
         97-300 Piotrków Trybunalski, telefon
-        <a href="tel:+48575294571" class="text-goldlt underline underline-offset-4 decoration-gold/50">575 294 571</a>.
+        <a href="tel:+48575294571" class="text-teal underline underline-offset-4 decoration-teal/50">575 294 571</a>.
         Dane zostają u niej. Nie trafiają do żadnej agencji ani firmy trzeciej w celach marketingowych.
       </p>
     </section>
 
     <section>
-      <h2 class="font-display text-[1.4rem] tracking-wide text-goldlt">Jakie dane zbiera ta strona</h2>
+      <h2 class="font-display text-[1.4rem] tracking-wide text-teal">Jakie dane zbiera ta strona</h2>
       <p class="mt-3">
         Ta strona nie ma formularza kontaktowego, nie zakłada kont i nie prowadzi rezerwacji online.
         Nie zbieramy przez nią żadnych danych osobowych. Nie używamy własnych plików cookies ani narzędzi analitycznych.
@@ -125,12 +119,12 @@
     </section>
 
     <section>
-      <h2 class="font-display text-[1.4rem] tracking-wide text-goldlt">Mapa Google</h2>
+      <h2 class="font-display text-[1.4rem] tracking-wide text-teal">Mapa Google</h2>
       <p class="mt-3">
         W sekcji „Wizyta i kontakt” osadzona jest mapa Google Maps. Kiedy przewiniesz stronę do mapy, wczytuje się ona
         z serwerów Google, a Google może wtedy odebrać Twój adres IP oraz informacje o przeglądarce.
         Dzieje się to na zasadach Google, opisanych w
-        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="text-goldlt underline underline-offset-4 decoration-gold/50">polityce prywatności Google</a>.
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="text-teal underline underline-offset-4 decoration-teal/50">polityce prywatności Google</a>.
       </p>
       <p class="mt-3">
         Jeśli wolisz tego uniknąć, zamiast mapy możesz skorzystać z przycisku „Wyznacz trasę” albo po prostu wpisać adres w swojej nawigacji.
@@ -138,7 +132,7 @@
     </section>
 
     <section>
-      <h2 class="font-display text-[1.4rem] tracking-wide text-goldlt">Linki do Instagrama i Facebooka</h2>
+      <h2 class="font-display text-[1.4rem] tracking-wide text-teal">Linki do Instagrama i Facebooka</h2>
       <p class="mt-3">
         Na stronie są zwykłe linki do profili firmy. To tylko odnośniki, nie wtyczki społecznościowe.
         Dopóki w nie nie klikniesz, ani Meta, ani nikt inny nie dostaje przy okazji Twoich danych.
@@ -146,7 +140,7 @@
     </section>
 
     <section>
-      <h2 class="font-display text-[1.4rem] tracking-wide text-goldlt">Fonty i pliki strony</h2>
+      <h2 class="font-display text-[1.4rem] tracking-wide text-teal">Fonty i pliki strony</h2>
       <p class="mt-3">
         Kroje pisma używane na stronie są przechowywane na jej serwerze. Przeglądarka nie łączy się w tym celu
         z serwerami Google, więc Twój adres IP nie jest przy okazji nikomu przekazywany.
@@ -159,24 +153,24 @@
     </section>
 
     <section>
-      <h2 class="font-display text-[1.4rem] tracking-wide text-goldlt">Twoje prawa</h2>
+      <h2 class="font-display text-[1.4rem] tracking-wide text-teal">Twoje prawa</h2>
       <p class="mt-3">
         Masz prawo poprosić o dostęp do swoich danych, ich poprawienie albo usunięcie. Wystarczy zadzwonić pod numer
-        <a href="tel:+48575294571" class="text-goldlt underline underline-offset-4 decoration-gold/50">575 294 571</a>.
+        <a href="tel:+48575294571" class="text-teal underline underline-offset-4 decoration-teal/50">575 294 571</a>.
         Przysługuje Ci też skarga do Prezesa Urzędu Ochrony Danych Osobowych.
       </p>
     </section>
 
   </div>
 
-  <p class="mt-12 border-t border-gold/20 pt-6">
-    <a href="index.html" class="text-[.8rem] uppercase tracking-[.2em] text-goldlt underline underline-offset-4 decoration-gold/50">Wróć na stronę główną</a>
+  <p class="mt-12 border-t border-ink/10 pt-6">
+    <a href="index.html" class="text-[.8rem] uppercase tracking-[.2em] text-teal underline underline-offset-4 decoration-teal/50">Wróć na stronę główną</a>
   </p>
 </main>
 
-<footer class="border-t border-gold/20 bg-char2">
+<footer class="border-t border-ink/10 bg-surface">
   <div class="mx-auto max-w-wide px-5 py-10 text-center sm:px-8">
-    <p class="font-display text-[1.25rem] uppercase leading-none tracking-[.3em] gold-text">Piękne Sztuki</p>
+    <p class="font-display text-[1.25rem] uppercase leading-none tracking-[.3em] teal-text">Piękne Sztuki</p>
     <p class="mt-3 text-[.75rem] text-muted">&copy; 2026 Piękne Sztuki Stylizacja&amp;Mani</p>
   </div>
 </footer>
