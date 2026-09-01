@@ -1,4 +1,4 @@
-FROM node:20-slim
+FROM node:22-slim
 
 RUN apt-get update && apt-get install -y \
     chromium \
@@ -14,4 +14,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["node", "server/index.js"]
+CMD ["node", "--env-file-if-exists=.env", "server/index.js"]

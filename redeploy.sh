@@ -28,6 +28,7 @@ docker rm callcenter || true
 docker run -d --name callcenter --restart unless-stopped \
   -p 3000:3000 \
   -v "$(pwd)/webapp/data:/app/data" \
+  -v "$(pwd)/webapp/.env:/app/.env" \
   aiwebsites-webapp:latest
 
 echo "5) Sprawdzam czy nowa wersja faktycznie dziala..."
@@ -57,6 +58,7 @@ if [ "$OK" -ne 1 ]; then
   docker run -d --name callcenter --restart unless-stopped \
     -p 3000:3000 \
     -v "$(pwd)/webapp/data:/app/data" \
+    -v "$(pwd)/webapp/.env:/app/.env" \
     aiwebsites-webapp:previous
   echo "Cofnieto do poprzedniej wersji - strona znow dziala."
   echo "Kod w gicie zostal jak jest (ten zepsuty) - trzeba go osobno naprawic/cofnac."
