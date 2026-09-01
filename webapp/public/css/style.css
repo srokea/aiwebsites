@@ -2626,6 +2626,21 @@ table.leads tr:hover .lead-delete-btn { opacity: 1; }
 }
 
 /* ---------- karty NFC (panel /reviews.html - review_links) ---------- */
+.review-form-hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.review-form-hint code {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 11px;
+  color: var(--text);
+  background: #141414;
+  border: 1px solid #232323;
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+.review-form-hint a { color: var(--blue); }
 .review-form {
   display: flex;
   flex-wrap: wrap;
@@ -2689,6 +2704,7 @@ table.leads tr:hover .lead-delete-btn { opacity: 1; }
 .review-link { color: var(--blue); font-size: 12px; word-break: break-all; }
 .review-tagline { color: var(--muted); font-size: 12.5px; font-style: italic; }
 .review-google { color: var(--green); font-size: 12.5px; align-self: flex-start; }
+.review-google--missing { color: var(--gold); }
 .review-stats { display: flex; gap: 14px; color: var(--muted-soft); font-size: 11.5px; }
 .review-actions { display: flex; gap: 8px; margin-top: 2px; }
 .review-actions .btn { padding: 7px 12px; font-size: 12px; flex: 1; }

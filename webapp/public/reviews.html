@@ -26,11 +26,15 @@
   </div>
 
   <div class="section-title">Nowa karta</div>
+  <div class="review-form-hint">
+    💡 Link do opinii powinien być postaci <code>search.google.com/local/writereview?placeid=...</code> — przenosi od razu do gwiazdek danej firmy, zamiast do wyszukiwarki. Place ID znajdziesz w
+    <a href="https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder" target="_blank" rel="noopener">Google Place ID Finder</a>.
+  </div>
   <form class="review-form" id="review-form">
     <input type="text" id="rv-slug" placeholder="slug (np. salon-naomi)" required>
     <input type="text" id="rv-business" placeholder="Nazwa firmy" required>
     <input type="text" id="rv-tagline" placeholder="Tagline (opcjonalnie)">
-    <input type="url" id="rv-google" placeholder="Link do opinii Google" required>
+    <input type="url" id="rv-google" placeholder="Link do opinii Google (opcjonalnie)">
     <input type="text" id="rv-emoji" placeholder="Emoji (np. 💈)" maxlength="4">
     <input type="url" id="rv-logo" placeholder="Logo URL (opcjonalnie)">
     <label class="review-file-btn">

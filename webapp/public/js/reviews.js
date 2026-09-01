@@ -26,13 +26,18 @@ function reviewCardHtml(r) {
       </div>
     </div>
     ${r.tagline ? `<div class="review-tagline">${escapeHtml(r.tagline)}</div>` : ""}
-    <a class="review-google" href="${escapeHtml(r.google_review_url)}" target="_blank" rel="noopener">↗ Opinia Google</a>
+    ${
+      r.google_review_url
+        ? `<a class="review-google" href="${escapeHtml(r.google_review_url)}" target="_blank" rel="noopener">↗ Opinia Google</a>`
+        : `<span class="review-google review-google--missing">⚠ Brak linku do opinii — CTA nie zadziała</span>`
+    }
     <div class="review-stats">
       <span>👆 ${r.scan_count} skanów</span>
       <span>🖱️ ${r.click_count} kliknięć</span>
     </div>
     <div class="review-actions">
       <button type="button" class="btn" data-edit="${escapeHtml(r.slug)}">Edytuj</button>
+      <button type="button" class="btn" data-duplicate="${escapeHtml(r.slug)}">Duplikuj</button>
       <button type="button" class="btn" data-toggle="${escapeHtml(r.slug)}">${r.active ? "Wyłącz" : "Włącz"}</button>
       <button type="button" class="btn danger" data-del="${escapeHtml(r.slug)}">Usuń</button>
     </div>
@@ -119,6 +124,7 @@ form.addEventListener("submit", async (e) => {
 
 gridEl.addEventListener("click", async (e) => {
   const editBtn = e.target.closest("[data-edit]");
+  const duplicateBtn = e.target.closest("[data-duplicate]");
   const cancelBtn = e.target.closest("[data-cancel]");
   const saveBtn = e.target.closest("[data-save]");
   const toggleBtn = e.target.closest("[data-toggle]");
@@ -127,6 +133,19 @@ gridEl.addEventListener("click", async (e) => {
   if (editBtn) {
     editingSlug = editBtn.dataset.edit;
     render();
+    return;
+  }
+  if (duplicateBtn) {
+    const source = cards.find((c) => c.slug === duplicateBtn.dataset.duplicate);
+    if (!source) return;
+    document.getElementById("rv-slug").value = "";
+    document.getElementById("rv-business").value = source.business_name;
+    document.getElementById("rv-tagline").value = source.tagline;
+    document.getElementById("rv-google").value = source.google_review_url;
+    document.getElementById("rv-emoji").value = source.logo_emoji;
+    document.getElementById("rv-logo").value = source.logo_url;
+    form.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById("rv-slug").focus();
     return;
   }
   if (cancelBtn) {

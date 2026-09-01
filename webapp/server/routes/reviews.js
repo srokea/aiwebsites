@@ -85,7 +85,6 @@ router.post("/", async (req, res) => {
   if (!business_name) return res.status(400).json({ error: "Nazwa firmy jest wymagana" });
 
   const google_review_url = String(req.body.google_url ?? req.body.google_review_url ?? "").trim();
-  if (!google_review_url) return res.status(400).json({ error: "Link do opinii Google jest wymagany" });
 
   db.prepare(
     `INSERT INTO review_links (slug, business_name, tagline, google_review_url, logo_emoji, logo_url)
@@ -134,7 +133,6 @@ router.patch("/:slug", async (req, res) => {
     active: req.body.active !== undefined ? (req.body.active ? 1 : 0) : existing.active,
   };
   if (!fields.business_name) return res.status(400).json({ error: "Nazwa firmy jest wymagana" });
-  if (!fields.google_review_url) return res.status(400).json({ error: "Link do opinii Google jest wymagany" });
 
   db.prepare(
     `UPDATE review_links SET business_name=@business_name, tagline=@tagline, google_review_url=@google_review_url,
