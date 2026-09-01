@@ -22,16 +22,9 @@ app.use(express.static(path.join(__dirname, "..", "public")));
 // wgrane zdjecia profilowe (patrz POST /api/users/:id/avatar-photo) - poza public/, bo to dane
 // uzytkownikow (jak data/coldcall.db), nie kod aplikacji pod git
 app.use("/avatars", express.static(path.join(__dirname, "..", "data", "avatars")));
-// wgrane logo klientow do kart NFC (patrz POST /api/reviews/:id/logo) - tez dane, nie kod,
-// wiec poza public/. Publiczne: strona-ladowania /r/:slug osadza je w <img>.
-app.use("/review-logos", express.static(path.join(__dirname, "..", "data", "review-logos")));
 
 // logowanie musi byc publiczne - montowane PRZED globalnym auth-gate ponizej
 app.use("/api/auth", require("./routes/auth"));
-
-// strony-ladowania kart NFC (/r/:slug) sa PUBLICZNE - klienci koncowi nie sa zalogowani.
-// Musi byc PRZED globalnym auth-gate. Panel CRUD jest osobno pod /api/reviews (chroniony).
-app.use("/r", require("./routes/reviews"));
 
 // wszystko dalej pod /api wymaga zalogowania (sesja z ciasteczka albo, w przyszlosci, API key)
 app.use("/api", requireAuth);
@@ -51,7 +44,6 @@ app.use("/api/transactions", require("./routes/transactions"));
 app.use("/api/finance", require("./routes/finance"));
 app.use("/api/calendar", require("./routes/calendar"));
 app.use("/api/notifications", require("./routes/notifications"));
-app.use("/api/reviews", require("./routes/reviewsAdmin"));
 
 // Frontend parsuje kazda odpowiedz API jako JSON, wiec bledy tez musza byc JSON-em -
 // domyslnie Express oddaje HTML-owa strone bledu i front pokazalby bezsensowny komunikat.
