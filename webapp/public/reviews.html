@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Review Linki — Cold Calls</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%93%9E</text></svg>">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="bg-particles" id="bg-particles" aria-hidden="true"></div>
+
+<div class="wrap">
+  <div class="topbar">
+    <div>
+      <h1>🔗 Review Linki</h1>
+      <div class="topbar-sub">Karty NFC — skany, kliknięcia, konwersja na opinię Google</div>
+    </div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <div id="user-widget"></div>
+      <a class="icon-btn icon-btn-back" href="/" title="Dashboard">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="rev-toolbar">
+    <button type="button" class="btn primary" id="rev-new-btn">+ Nowy link</button>
+  </div>
+
+  <div class="rev-list" id="rev-list"><div class="empty-state">Wczytuję…</div></div>
+</div>
+
+<div class="modal-overlay hidden" id="rev-modal">
+  <div class="modal">
+    <h3 id="rev-modal-title">Nowy link</h3>
+    <form id="rev-form">
+      <label for="rev-slug">Slug (adres karty: /r/…)</label>
+      <input type="text" id="rev-slug" autocomplete="off" placeholder="np. kawiarnia-rynek" maxlength="20">
+      <div class="hint">Tylko małe litery, cyfry i myślnik. Max 20 znaków. Nie da się zmienić po zapisaniu.</div>
+
+      <label for="rev-biz">Nazwa firmy</label>
+      <input type="text" id="rev-biz" autocomplete="off" placeholder="np. Kawiarnia Rynek">
+
+      <label for="rev-tagline">Tagline</label>
+      <input type="text" id="rev-tagline" autocomplete="off" placeholder="Dziękujemy za wizytę!">
+
+      <label for="rev-url">Google Review URL</label>
+      <input type="text" id="rev-url" autocomplete="off" placeholder="https://g.page/r/…/review">
+
+      <label for="rev-logo-file">Logo (plik PNG / JPG / WEBP)</label>
+      <div class="rev-logo-field">
+        <div class="rev-logo-preview" id="rev-logo-preview" aria-hidden="true"></div>
+        <div class="rev-logo-controls">
+          <input type="file" id="rev-logo-file" accept="image/png,image/jpeg,image/webp">
+          <button type="button" class="btn danger rev-btn-sm" id="rev-logo-remove" hidden>Usuń logo</button>
+        </div>
+      </div>
+      <div class="hint">Wgrane logo zastępuje emotkę na karcie. Max 2 MB.</div>
+
+      <label for="rev-emoji">Emoji na kartę (gdy brak logo)</label>
+      <input type="text" id="rev-emoji" autocomplete="off" inputmode="text" placeholder="np. ⭐  🐾  ☕  ✂️" maxlength="40">
+      <div class="hint">Jedna emotka (nie plik graficzny). Puste pole = domyślna ⭐.</div>
+
+      <label class="rev-active-row" id="rev-active-row" hidden>
+        <input type="checkbox" id="rev-active"> Aktywny (karta działa)
+      </label>
+
+      <div class="error" id="rev-error" style="display:none;"></div>
+      <div class="actions">
+        <button type="button" class="btn" id="rev-cancel">Anuluj</button>
+        <button type="submit" class="btn primary" id="rev-save">Zapisz</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/auth-widget.js"></script>
+<script src="/js/reviews.js"></script>
+</body>
+</html>

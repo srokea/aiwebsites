@@ -191,6 +191,26 @@ CREATE TABLE IF NOT EXISTS map_pins (
 CREATE INDEX IF NOT EXISTS idx_map_pins_status ON map_pins(status);
 CREATE INDEX IF NOT EXISTS idx_map_pins_street ON map_pins(street);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_map_pins_osm_id ON map_pins(osm_id);
+
+-- Karty NFC do zbierania opinii Google. Klient skanuje karte -> trafia na publiczna,
+-- brandowana strone /r/:slug (patrz server/routes/reviews.js) -> klika CTA -> serwer
+-- przekierowuje na google_review_url i liczy klikniecie. scan_count / click_count to
+-- caly tracking; panel /reviews.html (za auth) pokazuje konwersje.
+CREATE TABLE IF NOT EXISTS review_links (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  slug TEXT NOT NULL UNIQUE,
+  business_name TEXT NOT NULL DEFAULT '',
+  tagline TEXT NOT NULL DEFAULT 'Dziękujemy za wizytę!',
+  google_review_url TEXT NOT NULL DEFAULT '',
+  logo_emoji TEXT NOT NULL DEFAULT '⭐',
+  logo_path TEXT NOT NULL DEFAULT '',
+  scan_count INTEGER NOT NULL DEFAULT 0,
+  click_count INTEGER NOT NULL DEFAULT 0,
+  active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_review_links_slug ON review_links(slug);
 `);
 
 // Proste "migracje" dla kolumn dodanych po pierwszym wydaniu - ALTER TABLE ADD COLUMN
@@ -230,6 +250,9 @@ addColumnIfMissing("transactions", "source_key TEXT");
 db.exec(
   "CREATE UNIQUE INDEX IF NOT EXISTS idx_transactions_source ON transactions(source_key) WHERE source_key IS NOT NULL"
 );
+// wgrane logo karty NFC (/review-logos/<plik>, patrz server/routes/reviewsAdmin.js) - gdy
+// niepuste, strona-ladowania pokazuje obrazek zamiast logo_emoji
+addColumnIfMissing("review_links", "logo_path TEXT NOT NULL DEFAULT ''");
 
 // Jednorazowy seed: stan jak dawna sztywna mapa NICHE_SCRIPTS (kosmetyczki mialy swoj plik,
 // reszta default). Idempotentne - po ustawieniu wartosci warunek '' juz nie zlapie.

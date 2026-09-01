@@ -2624,3 +2624,64 @@ table.leads tr:hover .lead-delete-btn { opacity: 1; }
   .cal-detail-row { grid-template-columns: 60px 44px 1fr; }
   .cal-detail-niche { display: none; }
 }
+
+/* ================= Review Linki (karty NFC) — /reviews.html ================= */
+.rev-toolbar { display: flex; justify-content: flex-end; margin: 18px 0 14px; }
+.rev-list { overflow-x: auto; }
+.rev-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.rev-table th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.rev-table th.num, .rev-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.rev-table td {
+  padding: 12px 12px;
+  border-bottom: 1px solid var(--border-soft);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.rev-table tbody tr:hover td, .rev-table tbody tr:hover td { background: #131313; }
+.rev-row-off td { opacity: 0.5; }
+.rev-slug-link { color: var(--blue); font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
+.rev-slug-link:hover { text-decoration: underline; }
+.rev-badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; }
+.rev-badge.on { background: rgba(92,184,92,0.15); color: var(--green); }
+.rev-badge.off { background: rgba(224,96,80,0.13); color: var(--red); }
+.rev-actions { display: flex; gap: 6px; }
+.rev-btn-sm { padding: 5px 12px; font-size: 12px; }
+.rev-active-row { display: flex !important; align-items: center; gap: 8px; margin-top: 16px; color: var(--text) !important; font-size: 13px !important; }
+.rev-active-row input { width: auto !important; }
+
+@media (max-width: 600px) {
+  .rev-table { font-size: 12px; }
+  .rev-table th, .rev-table td { padding: 9px 8px; }
+  .rev-actions { flex-direction: column; }
+}
+
+/* Review Linki — logo (wgrany plik) */
+.rev-biz-cell { display: flex; align-items: center; gap: 10px; }
+.rev-thumb {
+  width: 28px; height: 28px; border-radius: 6px; flex-shrink: 0;
+  object-fit: contain; background: #fff; border: 1px solid var(--border);
+}
+.rev-thumb-emoji {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; background: var(--card-alt);
+}
+.rev-logo-field { display: flex; align-items: center; gap: 14px; margin-top: 4px; }
+.rev-logo-preview {
+  width: 64px; height: 64px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+  background: #fff; border: 1px solid var(--border);
+}
+.rev-logo-preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.rev-logo-none { font-size: 10px; color: var(--muted-soft); text-align: center; line-height: 1.3; padding: 0 4px; }
+.rev-logo-controls { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.rev-logo-controls input[type=file] { font-size: 12px; color: var(--muted); max-width: 100%; }

@@ -27,6 +27,10 @@ webapp/data/coldcall.db
 # automatyczne kopie zapasowe bazy (patrz server/backup.js) - tworzone lokalnie, nie w repo
 webapp/data/backups/
 
+# wgrane pliki uzytkownikow (avatary, logo klientow do kart NFC) - dane, nie kod
+webapp/data/avatars/
+webapp/data/review-logos/
+
 # Impeccable cache (stan sesji, nie kod)
 .impeccable/hook.cache.json
 **/.impeccable/hook.cache.json
