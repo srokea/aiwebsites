@@ -22,6 +22,9 @@ app.use(express.static(path.join(__dirname, "..", "public")));
 // wgrane zdjecia profilowe (patrz POST /api/users/:id/avatar-photo) - poza public/, bo to dane
 // uzytkownikow (jak data/coldcall.db), nie kod aplikacji pod git
 app.use("/avatars", express.static(path.join(__dirname, "..", "data", "avatars")));
+// wgrane logo kart NFC (patrz POST /api/reviews/:slug/logo) - MUSI byc publiczne bez sesji:
+// Cloudflare Worker obslugujacy mmates.pl/r/:slug pobiera ten obrazek z internetu
+app.use("/review-logos", express.static(path.join(__dirname, "..", "data", "review-logos")));
 
 // logowanie musi byc publiczne - montowane PRZED globalnym auth-gate ponizej
 app.use("/api/auth", require("./routes/auth"));
@@ -44,6 +47,7 @@ app.use("/api/transactions", require("./routes/transactions"));
 app.use("/api/finance", require("./routes/finance"));
 app.use("/api/calendar", require("./routes/calendar"));
 app.use("/api/notifications", require("./routes/notifications"));
+app.use("/api/reviews", require("./routes/reviews"));
 
 // Frontend parsuje kazda odpowiedz API jako JSON, wiec bledy tez musza byc JSON-em -
 // domyslnie Express oddaje HTML-owa strone bledu i front pokazalby bezsensowny komunikat.

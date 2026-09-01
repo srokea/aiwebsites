@@ -191,6 +191,22 @@ CREATE TABLE IF NOT EXISTS map_pins (
 CREATE INDEX IF NOT EXISTS idx_map_pins_status ON map_pins(status);
 CREATE INDEX IF NOT EXISTS idx_map_pins_street ON map_pins(street);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_map_pins_osm_id ON map_pins(osm_id);
+
+-- karty NFC z opiniami Google (mmates.pl/r/:slug) - kazda zmiana synchronizuje sie tez do
+-- Cloudflare KV (patrz routes/reviews.js), skad czyta ja Worker obslugujacy sam link
+CREATE TABLE IF NOT EXISTS review_links (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  slug TEXT NOT NULL UNIQUE,
+  business_name TEXT NOT NULL DEFAULT '',
+  tagline TEXT NOT NULL DEFAULT '',
+  google_review_url TEXT NOT NULL DEFAULT '',
+  logo_emoji TEXT NOT NULL DEFAULT '',
+  scan_count INTEGER NOT NULL DEFAULT 0,
+  click_count INTEGER NOT NULL DEFAULT 0,
+  active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
 `);
 
 // Proste "migracje" dla kolumn dodanych po pierwszym wydaniu - ALTER TABLE ADD COLUMN
@@ -230,6 +246,9 @@ addColumnIfMissing("transactions", "source_key TEXT");
 db.exec(
   "CREATE UNIQUE INDEX IF NOT EXISTS idx_transactions_source ON transactions(source_key) WHERE source_key IS NOT NULL"
 );
+// logo karty NFC jako pelny URL (Cloudflare Worker serwujacy /r/:slug czyta z KV, nie ma
+// dostepu do lokalnych wgranych plikow) - zastepuje starsze lokalne logo_path
+addColumnIfMissing("review_links", "logo_url TEXT NOT NULL DEFAULT ''");
 
 // Jednorazowy seed: stan jak dawna sztywna mapa NICHE_SCRIPTS (kosmetyczki mialy swoj plik,
 // reszta default). Idempotentne - po ustawieniu wartosci warunek '' juz nie zlapie.
