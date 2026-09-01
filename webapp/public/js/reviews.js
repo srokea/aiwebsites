@@ -17,8 +17,9 @@ function reviewCardHtml(r) {
     : `<span class="review-logo review-logo-emoji">${escapeHtml(r.logo_emoji || "🔗")}</span>`;
 
   return `
-  <div class="review-card ${r.active ? "" : "review-card--inactive"}" data-slug="${escapeHtml(r.slug)}">
+  <div class="review-card ${r.active ? "" : "review-card--inactive"}" data-slug="${escapeHtml(r.slug)}" draggable="true">
     <div class="review-card-head">
+      <span class="review-drag-handle" title="Przeciągnij, żeby zmienić kolejność">⠿</span>
       ${logo}
       <div class="review-card-title">
         <div class="review-name">${escapeHtml(r.business_name)}</div>
@@ -209,6 +210,64 @@ gridEl.addEventListener("click", async (e) => {
       alert("Błąd usuwania logo: " + err.message);
     }
   }
+});
+
+// przeciagnij i upusc: zmienia kolejnosc kart w panelu (sort_order), bez wplywu na
+// Cloudflare KV/publiczna strone - dziala tylko myszka (natywne HTML5 DnD, brak wsparcia dotyku)
+let draggedSlug = null;
+
+gridEl.addEventListener("dragstart", (e) => {
+  const card = e.target.closest(".review-card:not(.review-card--edit)");
+  if (!card) return;
+  draggedSlug = card.dataset.slug;
+  card.classList.add("review-card--dragging");
+  e.dataTransfer.effectAllowed = "move";
+});
+
+gridEl.addEventListener("dragover", (e) => {
+  const card = e.target.closest(".review-card:not(.review-card--edit)");
+  if (!card || card.dataset.slug === draggedSlug) return;
+  e.preventDefault();
+  const before = e.clientY < card.getBoundingClientRect().top + card.offsetHeight / 2;
+  card.classList.toggle("review-card--drop-before", before);
+  card.classList.toggle("review-card--drop-after", !before);
+});
+
+gridEl.addEventListener("dragleave", (e) => {
+  const card = e.target.closest(".review-card:not(.review-card--edit)");
+  card?.classList.remove("review-card--drop-before", "review-card--drop-after");
+});
+
+gridEl.addEventListener("drop", async (e) => {
+  const card = e.target.closest(".review-card:not(.review-card--edit)");
+  if (!card || !draggedSlug || card.dataset.slug === draggedSlug) return;
+  e.preventDefault();
+  const before = card.classList.contains("review-card--drop-before");
+  card.classList.remove("review-card--drop-before", "review-card--drop-after");
+
+  const fromIdx = cards.findIndex((c) => c.slug === draggedSlug);
+  const toIdx = cards.findIndex((c) => c.slug === card.dataset.slug);
+  if (fromIdx === -1 || toIdx === -1) return;
+
+  const [moved] = cards.splice(fromIdx, 1);
+  const insertAt = toIdx + (before ? 0 : 1) - (fromIdx < toIdx ? 1 : 0);
+  cards.splice(insertAt, 0, moved);
+  render();
+
+  try {
+    await api.patch("/api/reviews/reorder", { slugs: cards.map((c) => c.slug) });
+  } catch (err) {
+    alert("Błąd zapisu kolejności: " + err.message);
+    await load();
+  }
+});
+
+gridEl.addEventListener("dragend", () => {
+  draggedSlug = null;
+  gridEl.querySelectorAll(".review-card--dragging").forEach((el) => el.classList.remove("review-card--dragging"));
+  gridEl.querySelectorAll(".review-card--drop-before, .review-card--drop-after").forEach((el) =>
+    el.classList.remove("review-card--drop-before", "review-card--drop-after")
+  );
 });
 
 gridEl.addEventListener("change", async (e) => {

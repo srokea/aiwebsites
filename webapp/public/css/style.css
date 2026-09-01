@@ -2684,6 +2684,12 @@ table.leads tr:hover .lead-delete-btn { opacity: 1; }
 }
 .review-card--inactive { opacity: 0.55; }
 .review-card-head { display: flex; align-items: center; gap: 12px; }
+.review-card { cursor: grab; }
+.review-card:active { cursor: grabbing; }
+.review-card--dragging { opacity: 0.4; }
+.review-card--drop-before { box-shadow: inset 0 2px 0 var(--blue); }
+.review-card--drop-after { box-shadow: inset 0 -2px 0 var(--blue); }
+.review-drag-handle { color: var(--muted-soft); font-size: 16px; line-height: 1; cursor: grab; flex-shrink: 0; }
 .review-logo {
   width: 40px;
   height: 40px;
@@ -2709,7 +2715,7 @@ table.leads tr:hover .lead-delete-btn { opacity: 1; }
 .review-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 2px; }
 .review-actions .btn { padding: 7px 8px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-.review-card--edit { gap: 8px; border-color: rgba(96,144,224,0.4); }
+.review-card--edit { gap: 8px; border-color: rgba(96,144,224,0.4); cursor: default; }
 .review-card--edit input {
   background: #141414;
   border: 1px solid #232323;

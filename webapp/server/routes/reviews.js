@@ -66,9 +66,21 @@ function getBySlug(slug) {
   return db.prepare("SELECT * FROM review_links WHERE slug = ?").get(slug);
 }
 
-// GET /api/reviews
+// GET /api/reviews - kolejnosc reczna (patrz PATCH /reorder), nie chronologiczna
 router.get("/", (req, res) => {
-  res.json(db.prepare("SELECT * FROM review_links ORDER BY created_at DESC").all());
+  res.json(db.prepare("SELECT * FROM review_links ORDER BY sort_order ASC, created_at DESC").all());
+});
+
+// PATCH /api/reviews/reorder - przeciagnij i upusc w panelu. Body: { slugs: [...] } w nowej
+// kolejnosci od gory. Nie dotyka Cloudflare KV - to czysto kolejnosc widoku admina.
+router.patch("/reorder", (req, res) => {
+  const slugs = Array.isArray(req.body.slugs) ? req.body.slugs : [];
+  if (!slugs.length) return res.status(400).json({ error: "Brak listy slugow" });
+
+  const setOrder = db.prepare("UPDATE review_links SET sort_order = ? WHERE slug = ?");
+  db.transaction(() => slugs.forEach((slug, i) => setOrder.run(i, slug)))();
+
+  res.json(db.prepare("SELECT * FROM review_links ORDER BY sort_order ASC, created_at DESC").all());
 });
 
 // POST /api/reviews
@@ -86,11 +98,15 @@ router.post("/", async (req, res) => {
 
   const google_review_url = String(req.body.google_url ?? req.body.google_review_url ?? "").trim();
 
+  // nowa karta ląduje na górze listy (jak dawniej przy sortowaniu po dacie)
+  const minOrder = db.prepare("SELECT MIN(sort_order) m FROM review_links").get().m ?? 0;
+
   db.prepare(
-    `INSERT INTO review_links (slug, business_name, tagline, google_review_url, logo_emoji, logo_url)
-     VALUES (@slug, @business_name, @tagline, @google_review_url, @logo_emoji, @logo_url)`
+    `INSERT INTO review_links (slug, business_name, tagline, google_review_url, logo_emoji, logo_url, sort_order)
+     VALUES (@slug, @business_name, @tagline, @google_review_url, @logo_emoji, @logo_url, @sort_order)`
   ).run({
     slug,
+    sort_order: minOrder - 1,
     business_name,
     tagline: String(req.body.tagline || "").trim(),
     google_review_url,

@@ -249,6 +249,21 @@ db.exec(
 // logo karty NFC jako pelny URL (Cloudflare Worker serwujacy /r/:slug czyta z KV, nie ma
 // dostepu do lokalnych wgranych plikow) - zastepuje starsze lokalne logo_path
 addColumnIfMissing("review_links", "logo_url TEXT NOT NULL DEFAULT ''");
+// reczna kolejnosc kart w panelu /reviews.html (przeciagnij i upusc) - nie ma nic wspolnego
+// z Cloudflare KV, to czysto kosmetyczna kolejnosc widoku admina
+addColumnIfMissing("review_links", "sort_order INTEGER NOT NULL DEFAULT 0");
+// Jednorazowy backfill: istniejace karty (sprzed dodania tej kolumny) dostaja kolejnosc
+// zgodna z dotychczasowym sortowaniem (najnowsze pierwsze), zeby nic nie "skoczylo" po starcie.
+// Warunek na sort_order=0 dla wszystkich = po pierwszym uruchomieniu juz nie zlapie (nowe karty
+// dostaja realny numer przy tworzeniu, wiec nie beda mialy 0, chyba ze to jedyna karta).
+if (
+  db.prepare("SELECT COUNT(*) c FROM review_links WHERE sort_order != 0").get().c === 0 &&
+  db.prepare("SELECT COUNT(*) c FROM review_links").get().c > 1
+) {
+  const rows = db.prepare("SELECT id FROM review_links ORDER BY created_at DESC").all();
+  const setOrder = db.prepare("UPDATE review_links SET sort_order = ? WHERE id = ?");
+  db.transaction(() => rows.forEach((r, i) => setOrder.run(i, r.id)))();
+}
 
 // Jednorazowy seed: stan jak dawna sztywna mapa NICHE_SCRIPTS (kosmetyczki mialy swoj plik,
 // reszta default). Idempotentne - po ustawieniu wartosci warunek '' juz nie zlapie.
