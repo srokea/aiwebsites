@@ -34,14 +34,12 @@
   let leads = [];
   let statusMeta = new Map(); // 4 statusy OSM
   let statusList = [];
-  let leadStatusMeta = new Map(); // pelne 13 statusow leadow
   let callers = [];
   let selectedOsmId = null;
+  let selectedLeadId = null;
 
   const isDone = (p) => p.status !== "nieruszone" || !!p.last_visited_at;
   const statusColor = (v) => (statusMeta.get(v) || {}).color || "#888";
-  const leadColor = (v) => (leadStatusMeta.get(v) || {}).color || "#888";
-  const leadStatusLabel = (v) => (leadStatusMeta.get(v) || {}).label || v || "—";
 
   function fmtVisited(v) {
     if (!v) return "";
@@ -99,20 +97,27 @@
     return [l.lat, l.lng];
   }
 
+  // filtr "Stan" dotyczy tez leadów (maja wlasny status obchodu); ulica/kategoria - tylko OSM
+  function visibleLeads() {
+    const status = statusSel.value;
+    return leads.filter((l) => !status || l.status === status);
+  }
+
+  // Leady = te same kółka co OSM (kolor wg stanu obchodu z lead_pins, nie statusu cold-callowego).
   function renderLeads() {
     leadsLayer.clearLayers();
     if (!leadsToggle.checked) return updateCount();
-    for (const l of leads) {
-      const m = L.marker(leadLatLng(l), {
-        icon: L.divIcon({
-          className: "lead-pin",
-          html: `<span style="background:${leadColor(l.interested)}"></span>`,
-          iconSize: [16, 16],
-          iconAnchor: [8, 8],
-        }),
+    for (const l of visibleLeads()) {
+      const selected = l.lead_id === selectedLeadId;
+      const m = L.circleMarker(leadLatLng(l), {
+        radius: selected ? 10 : 7,
+        weight: selected ? 3 : 1.5,
+        color: selected ? "#fff" : "#0b0b0b",
+        fillColor: statusColor(l.status),
+        fillOpacity: 0.92,
       });
-      m.bindTooltip(escapeHtml(l.company_name || "—"), { direction: "top", offset: [0, -8] });
-      m.on("click", () => renderLeadDetail(l));
+      m.bindTooltip(escapeHtml(l.company_name || "—"), { direction: "top", offset: [0, -6] });
+      m.on("click", () => selectLead(l.lead_id));
       m.addTo(leadsLayer);
     }
     updateCount();
@@ -120,9 +125,10 @@
 
   function updateCount() {
     const osm = osmToggle.checked ? visiblePins().length : 0;
-    const ld = leadsToggle.checked ? leads.length : 0;
-    const done = pins.filter(isDone).length;
-    countEl.textContent = `OSM: ${osm} (${done} obrobionych) · Leady: ${ld}`;
+    const ld = leadsToggle.checked ? visibleLeads().length : 0;
+    const osmDone = pins.filter(isDone).length;
+    const ldDone = leads.filter(isDone).length;
+    countEl.textContent = `OSM: ${osm} (${osmDone} obr.) · Leady: ${ld} (${ldDone} obr.)`;
   }
 
   function renderLegend() {
@@ -136,13 +142,15 @@
             )}</span>`
         )
         .join("") +
-      `</div><div class="map-legend-note">◆ = lead z niszy (kolor = jego status)</div>`;
+      `</div>`;
   }
 
   // ---------- panel szczegółów: OSM ----------
   function selectPin(id) {
     selectedOsmId = id;
+    selectedLeadId = null;
     renderOsm();
+    renderLeads();
     const p = pins.find((x) => x.id === id);
     if (p) {
       renderDetail(p);
@@ -152,8 +160,10 @@
 
   function closeDetail() {
     selectedOsmId = null;
+    selectedLeadId = null;
     detailEl.hidden = true;
     renderOsm();
+    renderLeads();
   }
 
   function renderDetail(p) {
@@ -233,40 +243,93 @@
     if (selectedOsmId === id) renderDetail(updated);
   }
 
-  // ---------- panel szczegółów: lead ----------
-  function renderLeadDetail(l) {
+  // ---------- panel szczegółów: lead (identyczny UI co OSM) ----------
+  function selectLead(id) {
+    selectedLeadId = id;
     selectedOsmId = null;
+    renderOsm();
+    renderLeads();
+    const l = leads.find((x) => x.lead_id === id);
+    if (l) {
+      renderLeadDetail(l);
+      map.panTo(leadLatLng(l));
+    }
+  }
+
+  function renderLeadDetail(l) {
+    const statusOpts = statusList
+      .map((o) => `<option value="${o.value}" ${o.value === l.status ? "selected" : ""}>${escapeHtml(o.label)}</option>`)
+      .join("");
+    const callerOpts =
+      `<option value="">— nikt —</option>` +
+      callers
+        .map((c) => `<option value="${escapeHtml(c)}" ${c === l.caller ? "selected" : ""}>${escapeHtml(c)}</option>`)
+        .join("");
     const phone = l.phone
       ? `<a class="map-detail-link" href="tel:${escapeHtml(l.phone.replace(/\s/g, ""))}">${escapeHtml(l.phone)}</a>`
       : '<span class="map-detail-muted">brak telefonu</span>';
     const approx =
       l.precision === "city"
-        ? `<div class="map-detail-approx">⚠ pinezka orientacyjna (środek miasta — firma nieznana OSM)</div>`
+        ? `<div class="map-detail-approx">⚠ pinezka orientacyjna (środek miasta)</div>`
         : "";
+    const visited = l.last_visited_at
+      ? `<div class="map-detail-visited">✓ byłeś tu: ${escapeHtml(fmtVisited(l.last_visited_at))}
+           <button type="button" class="map-linkbtn" data-unvisit>cofnij</button></div>`
+      : `<button type="button" class="btn" data-visit>Byłem tu</button>`;
+
     detailEl.hidden = false;
     detailEl.innerHTML = `
       <button type="button" class="map-detail-close" data-close aria-label="Zamknij">✕</button>
       <div class="map-detail-head">
         <div class="map-detail-name">${escapeHtml(l.company_name || "—")}</div>
-        <div class="map-detail-cat">lead · ${escapeHtml(l.niche_name || l.niche_slug || "")}</div>
+        <div class="map-detail-cat">${escapeHtml(l.niche_name || l.niche_slug || "")}</div>
       </div>
       <div class="map-detail-addr">${escapeHtml(l.city || "—")}</div>
       <div class="map-detail-contact">${phone}</div>
       ${approx}
-      <div class="map-detail-field" style="margin-top:12px;">
+      <label class="map-detail-field">
         <span>Status</span>
-        <div><span class="map-lead-badge" style="background:${leadColor(l.interested)}">${escapeHtml(
-      leadStatusLabel(l.interested)
-    )}</span>${l.caller ? ` · ${escapeHtml(l.caller)}` : ""}</div>
+        <select data-status>${statusOpts}</select>
+      </label>
+      <label class="map-detail-field">
+        <span>Kto obrabia</span>
+        <select data-caller>${callerOpts}</select>
+      </label>
+      <label class="map-detail-field">
+        <span>Notatka</span>
+        <textarea data-notes rows="3" placeholder="np. wejść od podwórka, pytać o właściciela">${escapeHtml(
+          l.notes || ""
+        )}</textarea>
+      </label>
+      <div class="map-detail-actions">
+        <button type="button" class="btn primary" data-save-notes>Zapisz notatkę</button>
+        ${visited}
       </div>
-      <div class="map-detail-actions" style="margin-top:14px;">
-        <a class="btn primary" href="/script.html?leadId=${l.lead_id}" target="_blank" rel="noopener">Otwórz schemat rozmowy →</a>
-      </div>
+      <div class="map-detail-err error" hidden></div>
     `;
-    detailEl.querySelector("[data-close]").addEventListener("click", () => {
-      detailEl.hidden = true;
+
+    const errEl = detailEl.querySelector(".map-detail-err");
+    const fail = (e) => {
+      errEl.textContent = e.message || String(e);
+      errEl.hidden = false;
+    };
+
+    detailEl.querySelector("[data-close]").addEventListener("click", closeDetail);
+    detailEl.querySelector("[data-status]").addEventListener("change", (e) => patchLead(l.lead_id, { status: e.target.value }).catch(fail));
+    detailEl.querySelector("[data-caller]").addEventListener("change", (e) => patchLead(l.lead_id, { caller: e.target.value }).catch(fail));
+    detailEl.querySelector("[data-save-notes]").addEventListener("click", () => {
+      patchLead(l.lead_id, { notes: detailEl.querySelector("[data-notes]").value }).catch(fail);
     });
-    map.panTo(leadLatLng(l));
+    detailEl.querySelector("[data-visit]")?.addEventListener("click", () => patchLead(l.lead_id, { mark_visited: true }).catch(fail));
+    detailEl.querySelector("[data-unvisit]")?.addEventListener("click", () => patchLead(l.lead_id, { mark_visited: false }).catch(fail));
+  }
+
+  async function patchLead(leadId, body) {
+    const updated = await api.patch(`/api/map/leads/${leadId}`, body);
+    const i = leads.findIndex((x) => x.lead_id === leadId);
+    if (i >= 0) leads[i] = updated;
+    renderLeads();
+    if (selectedLeadId === leadId) renderLeadDetail(updated);
   }
 
   // ---------- filtry i przełączniki ----------
@@ -291,7 +354,11 @@
     }
   }
 
-  [streetSel, catSel, statusSel].forEach((el) => el.addEventListener("change", renderOsm));
+  function renderAll() {
+    renderOsm();
+    renderLeads();
+  }
+  [streetSel, catSel, statusSel].forEach((el) => el.addEventListener("change", renderAll));
   osmToggle.addEventListener("change", renderOsm);
   leadsToggle.addEventListener("change", renderLeads);
 
@@ -307,7 +374,6 @@
 
     statusList = data.statuses || [];
     statusMeta = new Map(statusList.map((o) => [o.value, o]));
-    leadStatusMeta = new Map((data.leadStatuses || []).map((o) => [o.value, o]));
     callers = data.callers || [];
     pins = data.pins || [];
     leads = data.leads || [];

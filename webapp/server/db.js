@@ -192,14 +192,19 @@ CREATE INDEX IF NOT EXISTS idx_map_pins_status ON map_pins(status);
 CREATE INDEX IF NOT EXISTS idx_map_pins_street ON map_pins(street);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_map_pins_osm_id ON map_pins(osm_id);
 
--- Wspolrzedne leadow na mapie NFC. Osobna tabela (leads nietkniete) - wypelnia ja jednorazowy
--- skrypt server/scripts/geocodeLeads.js (Nominatim). precision: 'exact' = trafiony po nazwie,
--- 'city' = tylko srodek miasta (firma nieznana OSM).
+-- Leady z niszy naniesione na mape NFC. Osobna tabela (leads nietkniete). Wspolrzedne wypelnia
+-- skrypt server/scripts/geocodeLeads.js. precision: 'exact' = z linku Google Maps ze scrapa,
+-- 'city' = tylko srodek miasta. status/notes/caller/last_visited_at = stan OBCHODU pod karty NFC
+-- (niezalezny od statusu cold-callowego leada) - dokladnie jak przy pinach OSM w map_pins.
 CREATE TABLE IF NOT EXISTS lead_pins (
   lead_id INTEGER PRIMARY KEY REFERENCES leads(id) ON DELETE CASCADE,
   lat REAL NOT NULL,
   lng REAL NOT NULL,
   precision TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'nieruszone',
+  notes TEXT NOT NULL DEFAULT '',
+  caller TEXT NOT NULL DEFAULT '',
+  last_visited_at TEXT,
   geocoded_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
@@ -259,6 +264,12 @@ db.exec(
 );
 // logo karty NFC jako pelny URL (Cloudflare Worker serwujacy /r/:slug czyta z KV, nie ma
 // dostepu do lokalnych wgranych plikow) - zastepuje starsze lokalne logo_path
+// lead_pins: stan obchodu (dodane po pierwszej wersji tabeli - stare bazy dostaja kolumny tu)
+addColumnIfMissing("lead_pins", "status TEXT NOT NULL DEFAULT 'nieruszone'");
+addColumnIfMissing("lead_pins", "notes TEXT NOT NULL DEFAULT ''");
+addColumnIfMissing("lead_pins", "caller TEXT NOT NULL DEFAULT ''");
+addColumnIfMissing("lead_pins", "last_visited_at TEXT");
+
 addColumnIfMissing("review_links", "logo_url TEXT NOT NULL DEFAULT ''");
 // reczna kolejnosc kart w panelu /reviews.html (przeciagnij i upusc) - nie ma nic wspolnego
 // z Cloudflare KV, to czysto kosmetyczna kolejnosc widoku admina

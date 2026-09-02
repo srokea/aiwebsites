@@ -106,13 +106,13 @@ router.get("/", (req, res) => {
     .map(([category, c]) => ({ category, c }))
     .sort((a, b) => b.c - a.c);
 
-  // Leady z niszy (fryzjer/kosmet. itd.) naniesione osobna warstwa - tylko te, ktore maja juz
-  // wspolrzedne w lead_pins (wypelnia je skrypt geocodeLeads.js). Kolor = realny status leada.
+  // Leady z niszy (fryzjer/kosmet. itd.) - te same pinezki co OSM, tylko zrodlem jest lead_pins.
+  // status/notes/caller/last_visited_at to stan OBCHODU (z lead_pins), NIE status cold-callowy leada.
   const leads = db
     .prepare(
-      `SELECT l.id AS lead_id, l.company_name, l.city, l.phone, l.interested, l.caller,
+      `SELECT l.id AS lead_id, l.company_name, l.city, l.phone,
               n.slug AS niche_slug, n.name AS niche_name,
-              lp.lat, lp.lng, lp.precision
+              lp.lat, lp.lng, lp.precision, lp.status, lp.notes, lp.caller, lp.last_visited_at
        FROM lead_pins lp
        JOIN leads l ON l.id = lp.lead_id
        JOIN niches n ON n.id = l.niche_id
@@ -126,9 +126,57 @@ router.get("/", (req, res) => {
     streets,
     categories,
     statuses: MAP_STATUSES.map((o) => ({ value: o.value, label: o.label, color: o.color })),
-    leadStatuses: INTERESTED_OPTIONS.map((o) => ({ value: o.value, label: o.label, color: o.color })),
     callers: getCallerNames(),
   });
+});
+
+// Wspolne pola stanu obchodu (status / caller / notes / mark_visited) - uzywane przez oba PATCH-e.
+// Zwraca { fields } albo { error, status }.
+function buildStateFields(body) {
+  const fields = {};
+  if (body.status !== undefined) {
+    const status = String(body.status);
+    if (!STATUS_VALUES.has(status)) return { error: `Nieprawidłowy status: "${status}"`, status: 400 };
+    fields.status = status;
+  }
+  if (body.caller !== undefined) {
+    const caller = String(body.caller);
+    if (caller && !getCallerNames().includes(caller)) return { error: `Nieznany dzwoniący: "${caller}"`, status: 400 };
+    fields.caller = caller;
+  }
+  if (body.notes !== undefined) fields.notes = String(body.notes);
+  if (body.mark_visited === true) fields.last_visited_at = localDateTime();
+  else if (body.mark_visited === false) fields.last_visited_at = null;
+  if (!Object.keys(fields).length) return { error: "Brak pól do zmiany", status: 400 };
+  return { fields };
+}
+
+const LEAD_PIN_COLUMNS = `l.id AS lead_id, l.company_name, l.city, l.phone,
+  n.slug AS niche_slug, n.name AS niche_name,
+  lp.lat, lp.lng, lp.precision, lp.status, lp.notes, lp.caller, lp.last_visited_at`;
+
+// PATCH /api/map/leads/:leadId - stan obchodu pinezki leada (osobne od statusu cold-callowego).
+router.patch("/leads/:leadId", (req, res) => {
+  const row = db.prepare("SELECT lead_id FROM lead_pins WHERE lead_id = ?").get(req.params.leadId);
+  if (!row) return res.status(404).json({ error: "Ten lead nie ma pinezki na mapie" });
+
+  const built = buildStateFields(req.body);
+  if (built.error) return res.status(built.status).json({ error: built.error });
+
+  const set = Object.keys(built.fields)
+    .map((f) => `${f} = @${f}`)
+    .join(", ");
+  db.prepare(`UPDATE lead_pins SET ${set} WHERE lead_id = @lead_id`).run({ ...built.fields, lead_id: row.lead_id });
+
+  res.json(
+    db
+      .prepare(
+        `SELECT ${LEAD_PIN_COLUMNS} FROM lead_pins lp
+         JOIN leads l ON l.id = lp.lead_id JOIN niches n ON n.id = l.niche_id
+         WHERE lp.lead_id = ?`
+      )
+      .get(row.lead_id)
+  );
 });
 
 // PATCH /api/map/:id - zmiana stanu jednego pinu. Wszystkie pola opcjonalne:
@@ -139,33 +187,13 @@ router.patch("/:id", (req, res) => {
   const pin = db.prepare("SELECT id, name, category FROM map_pins WHERE id = ?").get(req.params.id);
   if (!pin || !keepPin(pin)) return res.status(404).json({ error: "Nie znaleziono punktu na mapie" });
 
-  const fields = {};
+  const built = buildStateFields(req.body);
+  if (built.error) return res.status(built.status).json({ error: built.error });
 
-  if (req.body.status !== undefined) {
-    const status = String(req.body.status);
-    if (!STATUS_VALUES.has(status)) return res.status(400).json({ error: `Nieprawidłowy status: "${status}"` });
-    fields.status = status;
-  }
-
-  if (req.body.caller !== undefined) {
-    const caller = String(req.body.caller);
-    if (caller && !getCallerNames().includes(caller)) {
-      return res.status(400).json({ error: `Nieznany dzwoniący: "${caller}"` });
-    }
-    fields.caller = caller;
-  }
-
-  if (req.body.notes !== undefined) fields.notes = String(req.body.notes);
-
-  if (req.body.mark_visited === true) fields.last_visited_at = localDateTime();
-  else if (req.body.mark_visited === false) fields.last_visited_at = null;
-
-  if (!Object.keys(fields).length) return res.status(400).json({ error: "Brak pól do zmiany" });
-
-  const set = Object.keys(fields)
+  const set = Object.keys(built.fields)
     .map((f) => `${f} = @${f}`)
     .join(", ");
-  db.prepare(`UPDATE map_pins SET ${set}, updated_at = datetime('now') WHERE id = @id`).run({ ...fields, id: pin.id });
+  db.prepare(`UPDATE map_pins SET ${set}, updated_at = datetime('now') WHERE id = @id`).run({ ...built.fields, id: pin.id });
 
   res.json(db.prepare(`SELECT ${PIN_COLUMNS} FROM map_pins WHERE id = ?`).get(pin.id));
 });
