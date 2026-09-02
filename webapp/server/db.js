@@ -192,6 +192,17 @@ CREATE INDEX IF NOT EXISTS idx_map_pins_status ON map_pins(status);
 CREATE INDEX IF NOT EXISTS idx_map_pins_street ON map_pins(street);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_map_pins_osm_id ON map_pins(osm_id);
 
+-- Wspolrzedne leadow na mapie NFC. Osobna tabela (leads nietkniete) - wypelnia ja jednorazowy
+-- skrypt server/scripts/geocodeLeads.js (Nominatim). precision: 'exact' = trafiony po nazwie,
+-- 'city' = tylko srodek miasta (firma nieznana OSM).
+CREATE TABLE IF NOT EXISTS lead_pins (
+  lead_id INTEGER PRIMARY KEY REFERENCES leads(id) ON DELETE CASCADE,
+  lat REAL NOT NULL,
+  lng REAL NOT NULL,
+  precision TEXT NOT NULL DEFAULT '',
+  geocoded_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 -- karty NFC z opiniami Google (mmates.pl/r/:slug) - kazda zmiana synchronizuje sie tez do
 -- Cloudflare KV (patrz routes/reviews.js), skad czyta ja Worker obslugujacy sam link
 CREATE TABLE IF NOT EXISTS review_links (

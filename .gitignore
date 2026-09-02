@@ -43,3 +43,6 @@ screenshots/
 
 # Prywatne projekty, nie dla repo agencji
 personal/
+
+# Robocza kopia webappa (mapa) - NIE commitować (ma własne node_modules + kopię bazy)
+webapp-moje-mapka/

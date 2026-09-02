@@ -47,6 +47,7 @@ app.use("/api/transactions", require("./routes/transactions"));
 app.use("/api/finance", require("./routes/finance"));
 app.use("/api/calendar", require("./routes/calendar"));
 app.use("/api/notifications", require("./routes/notifications"));
+app.use("/api/map", require("./routes/map"));
 app.use("/api/reviews", require("./routes/reviews"));
 
 // Frontend parsuje kazda odpowiedz API jako JSON, wiec bledy tez musza byc JSON-em -
