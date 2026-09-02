@@ -204,7 +204,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 10.5px;
   line-height: 1;
   margin-right: 3px;
-  vertical-align: -2px;
+  vertical-align: 1px;
 }
 .finance-row {
   display: grid;
@@ -922,17 +922,8 @@ table.leads th {
   z-index: 5;
 }
 /* #iPad - kolumna Firma "przymrozona" (sticky w pionie i poziomie) - podczas przewijania
-   tabeli w bok zawsze widac KTOREGO leada dotyczy wiersz, nawet przy Reminder/Notatkach.
-   min-width + pelne, nieprzezroczyste tlo + mocniejszy cien = przyklejona nazwa jest
-   czytelnym blokiem, a kolumny przewijajace sie pod nia znikaja (nie "przebijaja" tekstem). */
-table.leads th[data-sort-id="company"] {
-  position: sticky;
-  left: 0;
-  z-index: 8;
-  min-width: 190px;
-  background: var(--bg) !important;
-  box-shadow: 6px 0 10px -3px rgba(0, 0, 0, 0.6);
-}
+   tabeli w bok zawsze widac KTOREGO leada dotyczy wiersz, nawet przy Reminder/Notatkach */
+table.leads th[data-sort-id="company"] { position: sticky; left: 0; z-index: 6; }
 table.leads th.sortable { cursor: pointer; user-select: none; }
 table.leads th.sortable:hover { color: var(--text); }
 table.leads th.sortable::after { content: ""; margin-left: 5px; opacity: 0.4; }
@@ -1829,11 +1820,10 @@ table.leads tr.row-active td.idx-col:hover .idx-unclick { display: inline; color
 table.leads td.company-cell {
   position: sticky;
   left: 0;
-  z-index: 7;
-  min-width: 190px;
+  z-index: 4;
   overflow: visible;
   background: var(--bg);
-  box-shadow: 6px 0 10px -3px rgba(0, 0, 0, 0.6);
+  box-shadow: 4px 0 8px -4px rgba(0,0,0,0.4);
 }
 /* #iPad-bug 2 - kolumna Firma MUSI zostac NIEPRZEZROCZYSTA, zeby zaslaniac Miasto/Telefon
    przewijajace sie pod nia. row-glow-*/row-active/tr:hover ustawiaja tlo jako polprzezroczyste
@@ -2395,7 +2385,6 @@ table.leads tr:hover .lead-delete-btn { opacity: 1; }
 }
 /* podzial zysku per osoba (Kasa) */
 .split-section { margin-bottom: 28px; }
-.split-hint { font-size: 12px; color: var(--muted); margin: -4px 0 12px; }
 .split-grid { display: flex; gap: 12px; flex-wrap: wrap; }
 .split-card {
   flex: 1 1 220px;
