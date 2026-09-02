@@ -297,18 +297,13 @@
         Mój salon działa w Sulejowie od 2015 roku. Zaczynałam od stylizacji paznokci,
         dziś to miejsce skupione na makijażu permanentnym, stylizacji rzęs i pielęgnacji.
       </p>
-      <p class="mt-3 text-[.85rem] text-muted">Prawdziwe zdjęcia wnętrza pojawią się tutaj po najbliższej sesji zdjęciowej.</p>
-      <div class="mt-5 grid grid-cols-3 gap-3 sm:gap-4">
-        <button type="button" data-group="salon" data-index="0" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
-          salon 1
+      <div class="mt-5 grid grid-cols-2 gap-3 sm:gap-4">
+        <button type="button" data-group="salon" data-index="0" class="gallery-tile group relative aspect-[4/3] overflow-hidden rounded-2xl">
+          <img src="photos/salon/salon.jpeg" alt="Budynek salonu NOVA w Sulejowie" width="2048" height="1480" loading="lazy" decoding="async" class="h-full w-full object-cover">
           <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
         </button>
-        <button type="button" data-group="salon" data-index="1" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
-          salon 2
-          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
-        </button>
-        <button type="button" data-group="salon" data-index="2" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
-          salon 3
+        <button type="button" data-group="salon" data-index="1" class="gallery-tile group relative aspect-[4/3] overflow-hidden rounded-2xl">
+          <img src="photos/salon/salon2.webp" alt="Wnętrze salonu NOVA — poczekalnia z neonem Hello Gorgeous" width="1360" height="1020" loading="lazy" decoding="async" class="h-full w-full object-cover">
           <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
         </button>
       </div>
@@ -505,49 +500,137 @@
 </section>
 
 <!-- ============ GALERIA EFEKTÓW ============ -->
-<section id="galeria" class="border-b border-hair bg-shell">
+<section id="galeria" class="marble border-b border-hair">
   <div class="mx-auto max-w-narrow px-5 pb-16 pt-6 sm:px-7 sm:pb-20 sm:pt-8">
 
     <h2 class="text-center font-script text-[clamp(2.8rem,11vw,4.2rem)] leading-[.95]">Efekty</h2>
+    <p class="mx-auto mt-6 max-w-[42ch] text-center text-[.98rem] text-muted">
+      Prawdziwe zdjęcia z zabiegów wykonanych w NOVA, podzielone na kategorie.
+    </p>
 
-    <!--
-      GALERIA: zdjęcia efektów wrzucamy do photos/galeria/. Kafelki są klikalne (lightbox
-      z podglądem, strzałkami i klawiaturą — patrz skrypt na dole strony). Każdy kafelek
-      podmieniamy w miejscu, bez zmiany siatki, i uzupełniamy src w tablicy GALERIA w JS:
-      <img src="photos/galeria/brwi-01.jpg" alt="Brwi metodą ..." width="1000" height="1250" loading="lazy" decoding="async" class="h-full w-full rounded-2xl object-cover">
-    -->
-    <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-      <button type="button" data-group="efekty" data-index="0" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
-        zdjęcie 1
-        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
-      </button>
-      <button type="button" data-group="efekty" data-index="1" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
-        zdjęcie 2
-        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
-      </button>
-      <button type="button" data-group="efekty" data-index="2" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
-        zdjęcie 3
-        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
-      </button>
-      <button type="button" data-group="efekty" data-index="3" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
-        zdjęcie 4
-        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
-      </button>
-      <button type="button" data-group="efekty" data-index="4" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
-        zdjęcie 5
-        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
-      </button>
-      <button type="button" data-group="efekty" data-index="5" class="ph gallery-tile group relative flex aspect-[4/5] items-center justify-center rounded-2xl p-2 text-center">
-        zdjęcie 6
-        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
-      </button>
+    <div class="mt-14 first:mt-10">
+      <h3 id="usta" class="cat text-[1.3rem] font-bold tracking-[-.02em]">Usta permanentne</h3>
+      <p class="mt-1.5 text-[.85rem] text-muted">Kliknij zdjęcie, żeby zobaczyć więcej — w tej kategorii jest ich 16.</p>
+      <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+        <button type="button" data-group="efekty-usta" data-index="0" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/usta/01.jpg" alt="Makijaż permanentny ust, zdjęcie 1" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-usta" data-index="1" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/usta/02.jpg" alt="Makijaż permanentny ust, zdjęcie 2" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-usta" data-index="2" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/usta/03.jpg" alt="Makijaż permanentny ust, zdjęcie 3" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-usta" data-index="3" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/usta/04.jpg" alt="Makijaż permanentny ust, zdjęcie 4" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-usta" data-index="4" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/usta/05.jpg" alt="Makijaż permanentny ust, zdjęcie 5" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-usta" data-index="5" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/usta/06.jpg" alt="Makijaż permanentny ust, zdjęcie 6" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+      </div>
     </div>
 
-    <p class="mt-7 text-center text-[.92rem] text-muted">
-      Tu staną zdjęcia efektów: brwi, usta, rzęsy i skóra po zabiegach.
-      Do czasu ich dosłania aktualne prace zobaczysz na
-      <a href="https://www.instagram.com/nova_magda_kowalska_/" target="_blank" rel="noopener" class="font-semibold text-accent underline underline-offset-4">Instagramie</a>.
-    </p>
+    <div class="mt-14 first:mt-10">
+      <h3 id="rzesy-lifting" class="cat text-[1.3rem] font-bold tracking-[-.02em]">Stylizacja rzęs i lifting koreański</h3>
+      <p class="mt-1.5 text-[.85rem] text-muted">Kliknij zdjęcie, żeby zobaczyć więcej — w tej kategorii jest ich 15.</p>
+      <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+        <button type="button" data-group="efekty-rzesy" data-index="0" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/rzesy-lifting/01.jpg" alt="Stylizacja rzęs i lifting koreański, zdjęcie 1" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-rzesy" data-index="1" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/rzesy-lifting/02.jpg" alt="Stylizacja rzęs i lifting koreański, zdjęcie 2" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-rzesy" data-index="2" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/rzesy-lifting/03.jpg" alt="Stylizacja rzęs i lifting koreański, zdjęcie 3" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-rzesy" data-index="3" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/rzesy-lifting/04.jpg" alt="Stylizacja rzęs i lifting koreański, zdjęcie 4" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-rzesy" data-index="4" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/rzesy-lifting/05.jpg" alt="Stylizacja rzęs i lifting koreański, zdjęcie 5" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-rzesy" data-index="5" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/rzesy-lifting/06.jpg" alt="Stylizacja rzęs i lifting koreański, zdjęcie 6" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mt-14 first:mt-10">
+      <h3 id="brwi" class="cat text-[1.3rem] font-bold tracking-[-.02em]">Brwi permanentne</h3>
+      <p class="mt-1.5 text-[.85rem] text-muted">Kliknij zdjęcie, żeby zobaczyć więcej — w tej kategorii jest ich 26.</p>
+      <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+        <button type="button" data-group="efekty-brwi" data-index="0" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/brwi/01.jpg" alt="Makijaż permanentny brwi, zdjęcie 1" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-brwi" data-index="1" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/brwi/02.jpg" alt="Makijaż permanentny brwi, zdjęcie 2" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-brwi" data-index="2" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/brwi/03.jpg" alt="Makijaż permanentny brwi, zdjęcie 3" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-brwi" data-index="3" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/brwi/04.jpg" alt="Makijaż permanentny brwi, zdjęcie 4" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-brwi" data-index="4" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/brwi/05.jpg" alt="Makijaż permanentny brwi, zdjęcie 5" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-brwi" data-index="5" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/brwi/06.jpg" alt="Makijaż permanentny brwi, zdjęcie 6" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mt-14">
+      <h3 id="lifting-twarzy" class="cat text-[1.3rem] font-bold tracking-[-.02em]">Zabiegi liftingujące i ujędrniające twarz</h3>
+      <p class="mt-1.5 text-[.85rem] text-muted">Kliknij zdjęcie, żeby zobaczyć więcej — w tej kategorii jest ich 9.</p>
+      <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+        <button type="button" data-group="efekty-lifting" data-index="0" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/lifting-twarzy/01.jpg" alt="Zabieg liftingująco-ujędrniający twarzy, efekt" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-lifting" data-index="1" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/lifting-twarzy/02.jpg" alt="Zabieg 42 Red Collagen w trakcie wykonywania" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-lifting" data-index="2" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/lifting-twarzy/03.jpg" alt="Zabieg oczyszczania twarzy w trakcie wykonywania" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-lifting" data-index="3" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/lifting-twarzy/04.jpg" alt="Ulotka producenta kosmetyków THESERA — lifting nićmi rozpuszczalnymi" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-lifting" data-index="4" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/lifting-twarzy/05.jpg" alt="Ulotka producenta kosmetyków THESERA — nawilżenie i wypełnienie" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" data-group="efekty-lifting" data-index="5" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/galeria/lifting-twarzy/06.jpg" alt="Ulotka producenta kosmetyków THESERA — bio-microneedling" loading="lazy" decoding="async" class="h-full w-full object-cover">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+        </button>
+      </div>
+    </div>
 
   </div>
 </section>
@@ -577,7 +660,7 @@
 </div>
 
 <!-- ============ WIZYTA: godziny, adres, mapa, kontakt ============ -->
-<section id="kontakt" class="marble border-b border-hair">
+<section id="kontakt" class="border-b border-hair bg-shell">
   <div class="mx-auto max-w-narrow px-5 py-16 sm:px-7 sm:py-24">
 
     <h2 class="text-center font-script text-[clamp(2.8rem,11vw,4.2rem)] leading-[.95]">Wizyta</h2>
@@ -729,20 +812,87 @@
   })();
 
   // Galerie: lightbox z podglądem, strzałkami i klawiaturą (wzorzec z clients/Patent-na-Pazur/index.html).
-  // Trzy niezależne grupy kafelków (Efekty, Certyfikaty, Salon) dzielą jeden modal — strzałki
-  // przewijają tylko w obrębie grupy, którą otworzono. Certyfikaty mają już prawdziwe zdjęcia
-  // (photos/o-niej/). Efekty i Salon czekają na sesję zdjęciową — src zostaje puste, dopóki
-  // zdjęcia nie trafią do photos/; wtedy wystarczy uzupełnić src poniżej i podmienić .ph na <img>
-  // w odpowiednim kafelku (grupę i indeks kafelka zostawiamy bez zmian).
+  // Niezależne grupy kafelków (4× Efekty wg kategorii zabiegu, Certyfikaty, Salon) dzielą jeden
+  // modal — strzałki przewijają tylko w obrębie grupy, którą otworzono. Każda grupa "Efekty" ma
+  // WIĘCEJ zdjęć w tablicy niż kafelków w siatce (6 widocznych na stronie) — resztę pokazuje się
+  // wyłącznie strzałkami w lightboxie, patrz photos/galeria/<kategoria>/. Sekcja "Zabiegi
+  // liftingujące" ma na razie tylko 1 prawdziwe zdjęcie — pozostałe src zostają puste, dopóki nie
+  // dojdą kolejne; wtedy wystarczy uzupełnić src poniżej i podmienić .ph na <img> w kafelku.
   (function () {
     var GALLERIES = {
-      efekty: [
-        { src: '', alt: 'zdjęcie 1' },
-        { src: '', alt: 'zdjęcie 2' },
-        { src: '', alt: 'zdjęcie 3' },
-        { src: '', alt: 'zdjęcie 4' },
-        { src: '', alt: 'zdjęcie 5' },
-        { src: '', alt: 'zdjęcie 6' }
+      'efekty-usta': [
+        { src: 'photos/galeria/usta/01.jpg', alt: 'Makijaż permanentny ust, zdjęcie 1' },
+        { src: 'photos/galeria/usta/02.jpg', alt: 'Makijaż permanentny ust, zdjęcie 2' },
+        { src: 'photos/galeria/usta/03.jpg', alt: 'Makijaż permanentny ust, zdjęcie 3' },
+        { src: 'photos/galeria/usta/04.jpg', alt: 'Makijaż permanentny ust, zdjęcie 4' },
+        { src: 'photos/galeria/usta/05.jpg', alt: 'Makijaż permanentny ust, zdjęcie 5' },
+        { src: 'photos/galeria/usta/06.jpg', alt: 'Makijaż permanentny ust, zdjęcie 6' },
+        { src: 'photos/galeria/usta/07.jpg', alt: 'Makijaż permanentny ust, zdjęcie 7' },
+        { src: 'photos/galeria/usta/08.jpg', alt: 'Makijaż permanentny ust, zdjęcie 8' },
+        { src: 'photos/galeria/usta/09.jpg', alt: 'Makijaż permanentny ust, zdjęcie 9' },
+        { src: 'photos/galeria/usta/10.jpg', alt: 'Makijaż permanentny ust, zdjęcie 10' },
+        { src: 'photos/galeria/usta/11.jpg', alt: 'Makijaż permanentny ust, zdjęcie 11' },
+        { src: 'photos/galeria/usta/12.jpg', alt: 'Makijaż permanentny ust, zdjęcie 12' },
+        { src: 'photos/galeria/usta/13.jpg', alt: 'Makijaż permanentny ust, zdjęcie 13' },
+        { src: 'photos/galeria/usta/14.jpg', alt: 'Makijaż permanentny ust, zdjęcie 14' },
+        { src: 'photos/galeria/usta/15.jpg', alt: 'Makijaż permanentny ust, zdjęcie 15' },
+        { src: 'photos/galeria/usta/16.jpg', alt: 'Makijaż permanentny ust, zdjęcie 16' }
+      ],
+      'efekty-rzesy': [
+        { src: 'photos/galeria/rzesy-lifting/01.jpg', alt: 'Stylizacja rzęs i lifting koreański, zdjęcie 1' },
+        { src: 'photos/galeria/rzesy-lifting/02.jpg', alt: 'Stylizacja rzęs i lifting koreański, zdjęcie 2' },
+        { src: 'photos/galeria/rzesy-lifting/03.jpg', alt: 'Stylizacja rzęs i lifting koreański, zdjęcie 3' },
+        { src: 'photos/galeria/rzesy-lifting/04.jpg', alt: 'Stylizacja rzęs i lifting koreański, zdjęcie 4' },
+        { src: 'photos/galeria/rzesy-lifting/05.jpg', alt: 'Stylizacja rzęs i lifting koreański, zdjęcie 5' },
+        { src: 'photos/galeria/rzesy-lifting/06.jpg', alt: 'Stylizacja rzęs i lifting koreański, zdjęcie 6' },
+        { src: 'photos/galeria/rzesy-lifting/07.jpg', alt: 'Stylizacja rzęs i lifting koreański, zdjęcie 7' },
+        { src: 'photos/galeria/rzesy-lifting/08.jpg', alt: 'Stylizacja rzęs i lifting koreański, zdjęcie 8' },
+        { src: 'photos/galeria/rzesy-lifting/09.jpg', alt: 'Stylizacja rzęs i lifting koreański, zdjęcie 9' },
+        { src: 'photos/galeria/rzesy-lifting/10.jpg', alt: 'Stylizacja rzęs i lifting koreański, zdjęcie 10' },
+        { src: 'photos/galeria/rzesy-lifting/11.jpg', alt: 'Stylizacja rzęs i lifting koreański, zdjęcie 11' },
+        { src: 'photos/galeria/rzesy-lifting/12.jpg', alt: 'Stylizacja rzęs i lifting koreański, zdjęcie 12' },
+        { src: 'photos/galeria/rzesy-lifting/13.jpg', alt: 'Stylizacja rzęs i lifting koreański, zdjęcie 13' },
+        { src: 'photos/galeria/rzesy-lifting/14.jpg', alt: 'Stylizacja rzęs i lifting koreański, zdjęcie 14' },
+        { src: 'photos/galeria/rzesy-lifting/15.jpg', alt: 'Stylizacja rzęs i lifting koreański, zdjęcie 15' }
+      ],
+      'efekty-brwi': [
+        { src: 'photos/galeria/brwi/01.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 1' },
+        { src: 'photos/galeria/brwi/02.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 2' },
+        { src: 'photos/galeria/brwi/03.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 3' },
+        { src: 'photos/galeria/brwi/04.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 4' },
+        { src: 'photos/galeria/brwi/05.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 5' },
+        { src: 'photos/galeria/brwi/06.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 6' },
+        { src: 'photos/galeria/brwi/07.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 7' },
+        { src: 'photos/galeria/brwi/08.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 8' },
+        { src: 'photos/galeria/brwi/09.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 9' },
+        { src: 'photos/galeria/brwi/10.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 10' },
+        { src: 'photos/galeria/brwi/11.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 11' },
+        { src: 'photos/galeria/brwi/12.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 12' },
+        { src: 'photos/galeria/brwi/13.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 13' },
+        { src: 'photos/galeria/brwi/14.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 14' },
+        { src: 'photos/galeria/brwi/15.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 15' },
+        { src: 'photos/galeria/brwi/16.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 16' },
+        { src: 'photos/galeria/brwi/17.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 17' },
+        { src: 'photos/galeria/brwi/18.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 18' },
+        { src: 'photos/galeria/brwi/19.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 19' },
+        { src: 'photos/galeria/brwi/20.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 20' },
+        { src: 'photos/galeria/brwi/21.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 21' },
+        { src: 'photos/galeria/brwi/22.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 22' },
+        { src: 'photos/galeria/brwi/23.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 23' },
+        { src: 'photos/galeria/brwi/24.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 24' },
+        { src: 'photos/galeria/brwi/25.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 25' },
+        { src: 'photos/galeria/brwi/26.jpg', alt: 'Makijaż permanentny brwi, zdjęcie 26' }
+      ],
+      'efekty-lifting': [
+        { src: 'photos/galeria/lifting-twarzy/01.jpg', alt: 'Zabieg liftingująco-ujędrniający twarzy, efekt' },
+        { src: 'photos/galeria/lifting-twarzy/02.jpg', alt: 'Zabieg 42 Red Collagen w trakcie wykonywania' },
+        { src: 'photos/galeria/lifting-twarzy/03.jpg', alt: 'Zabieg oczyszczania twarzy w trakcie wykonywania' },
+        { src: 'photos/galeria/lifting-twarzy/04.jpg', alt: 'Ulotka producenta kosmetyków THESERA — lifting nićmi rozpuszczalnymi' },
+        { src: 'photos/galeria/lifting-twarzy/05.jpg', alt: 'Ulotka producenta kosmetyków THESERA — nawilżenie i wypełnienie' },
+        { src: 'photos/galeria/lifting-twarzy/06.jpg', alt: 'Ulotka producenta kosmetyków THESERA — bio-microneedling' },
+        { src: 'photos/galeria/lifting-twarzy/07.jpg', alt: 'Produkty kosmetyczne marki THESERA używane w zabiegu' },
+        { src: 'photos/galeria/lifting-twarzy/08.jpg', alt: 'Ulotka producenta kosmetyków THESERA — mikroigłowa regeneracja' },
+        { src: 'photos/galeria/lifting-twarzy/09.jpg', alt: 'Magda Kowalska na targach kosmetycznych marki THESERA' }
       ],
       certyfikaty: [
         { src: 'photos/o-niej/dyplom-1.jpg', alt: 'Dyplom laureatki konkursu ORŁY Kosmetyki 2026 w Sulejowie' },
@@ -750,9 +900,8 @@
         { src: 'photos/o-niej/dyplom-3.jpg', alt: 'Statuetka Laureat Konkursu ORŁY Kosmetyki 2026 na recepcji NOVA' }
       ],
       salon: [
-        { src: '', alt: 'salon 1' },
-        { src: '', alt: 'salon 2' },
-        { src: '', alt: 'salon 3' }
+        { src: 'photos/salon/salon.jpeg', alt: 'Budynek salonu NOVA w Sulejowie' },
+        { src: 'photos/salon/salon2.webp', alt: 'Wnętrze salonu NOVA — poczekalnia z neonem Hello Gorgeous' }
       ]
     };
     var lightbox = document.getElementById('lightbox');
