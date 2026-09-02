@@ -86,11 +86,24 @@
   }
 
   // ---------- warstwa leadów ----------
+  // piny "środek miasta" (precision 'city') dostaja drobny, staly rozrzut ~±300 m po lead_id,
+  // zeby kilkadziesiat leadow z jednego miasta nie zlepilo sie w jeden nieklikany punkt
+  function jitter(id, seed, span) {
+    const r = Math.sin(id * seed) * 43758.5453;
+    return (r - Math.floor(r) - 0.5) * span;
+  }
+  function leadLatLng(l) {
+    if (l.precision === "city") {
+      return [l.lat + jitter(l.lead_id, 12.9898, 0.006), l.lng + jitter(l.lead_id, 78.233, 0.009)];
+    }
+    return [l.lat, l.lng];
+  }
+
   function renderLeads() {
     leadsLayer.clearLayers();
     if (!leadsToggle.checked) return updateCount();
     for (const l of leads) {
-      const m = L.marker([l.lat, l.lng], {
+      const m = L.marker(leadLatLng(l), {
         icon: L.divIcon({
           className: "lead-pin",
           html: `<span style="background:${leadColor(l.interested)}"></span>`,
@@ -253,7 +266,7 @@
     detailEl.querySelector("[data-close]").addEventListener("click", () => {
       detailEl.hidden = true;
     });
-    map.panTo([l.lat, l.lng]);
+    map.panTo(leadLatLng(l));
   }
 
   // ---------- filtry i przełączniki ----------
