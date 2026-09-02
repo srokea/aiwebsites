@@ -2,7 +2,7 @@ const express = require("express");
 const db = require("../db");
 const { TRANSACTION_CATEGORIES } = require("../constants");
 const { localDate } = require("../time");
-const { financeSync, summary, pendingDuesList } = require("../finance");
+const { financeSync, summary, perPerson, pendingDuesList } = require("../finance");
 
 const router = express.Router();
 
@@ -28,7 +28,12 @@ function listTransactions() {
 
 // Jedna paczka dla podstrony Kasy: historia + realne sumy + naleznosci do potwierdzenia.
 function bundle() {
-  return { transactions: listTransactions(), summary: summary(), pendingDues: pendingDuesList() };
+  return {
+    transactions: listTransactions(),
+    summary: summary(),
+    perPerson: perPerson(),
+    pendingDues: pendingDuesList(),
+  };
 }
 
 // GET /api/transactions - odswieza auto-posty (subskrypcje + naleznosci) i zwraca cala paczke

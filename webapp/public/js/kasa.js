@@ -8,6 +8,8 @@ initParticles();
 
 const listEl = document.getElementById("tx-list");
 const summaryEl = document.getElementById("ledger-summary");
+const splitSection = document.getElementById("split-section");
+const splitGridEl = document.getElementById("split-grid");
 const duesSection = document.getElementById("dues-section");
 const duesListEl = document.getElementById("dues-list");
 const form = document.getElementById("tx-form");
@@ -34,6 +36,34 @@ function renderSummary(s) {
     <div class="ledger-summary-item"><span class="ledger-lbl">Łączny przychód</span><span class="ledger-val pos">${zl(s.income)}</span></div>
     <div class="ledger-summary-item"><span class="ledger-lbl">Łączne koszty</span><span class="ledger-val neg">${zl(s.expense)}</span></div>
     <div class="ledger-summary-item"><span class="ledger-lbl">Bilans</span><span class="ledger-val ${s.balance >= 0 ? "pos" : "neg"}">${zl(s.balance)}</span></div>`;
+}
+
+function renderSplit(pp) {
+  if (!pp || !pp.people || pp.people.length < 2) {
+    splitSection.hidden = true;
+    splitGridEl.innerHTML = "";
+    return;
+  }
+  splitSection.hidden = false;
+  const frac = pp.splitCount === 2 ? "½" : `1/${pp.splitCount}`;
+  const cards = pp.people
+    .map(
+      (p) => `
+      <div class="split-card" style="--split-color:${escapeHtml(p.color || "var(--border)")}">
+        <div class="split-name">${escapeHtml(p.person)}</div>
+        <div class="split-profit ${p.profit >= 0 ? "pos" : "neg"}">${zl(p.profit)}</div>
+        <div class="split-lines">
+          <div><span>Wdrożenia (Twoi klienci)</span><span class="pos">+${zl(p.onetime)}</span></div>
+          <div><span>Wspólny przychód (${frac})</span><span class="pos">+${zl(p.sharedIncome)}</span></div>
+          <div><span>Wspólne koszty (${frac})</span><span class="neg">−${zl(p.sharedExpense)}</span></div>
+        </div>
+      </div>`
+    )
+    .join("");
+  const note = pp.unassignedOnetime
+    ? `<div class="split-note">+ ${zl(pp.unassignedOnetime)} z wdrożeń bez przypisanej osoby (lead bez „Kto dzwonił”) — nie wchodzi do żadnego udziału.</div>`
+    : "";
+  splitGridEl.innerHTML = cards + note;
 }
 
 function renderDues(dues) {
@@ -81,6 +111,7 @@ function renderList(rows) {
 
 function applyBundle(b) {
   renderSummary(b.summary);
+  renderSplit(b.perPerson);
   renderDues(b.pendingDues);
   renderList(b.transactions);
 }

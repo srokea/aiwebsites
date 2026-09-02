@@ -116,7 +116,7 @@ const PRICING = { oneTime: 300, monthly: 100 };
 // (np. zmiana planu), brak = koszt nadal aktywny.
 // UWAGA: data "from" ponizej jest przyblizona (~poczatek pierwszego miesiaca) - popraw na
 // faktyczna date startu subskrypcji, jesli chcesz dokladne wyliczenie w kafelku "Netto".
-const EXPENSES = [{ name: "Claude Code", amount: 75, from: "2026-07-01" }];
+const EXPENSES = [{ name: "Claude Code", amount: 99.96, from: "2026-07-01" }];
 
 module.exports = {
   INTERESTED_OPTIONS,

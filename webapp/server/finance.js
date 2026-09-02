@@ -10,6 +10,7 @@
 const db = require("./db");
 const { PRICING, EXPENSES } = require("./constants");
 const { localDate } = require("./time");
+const { getCallers } = require("./callers");
 
 const pad = (n) => String(n).padStart(2, "0");
 const ym = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
@@ -36,20 +37,26 @@ function syncSubscriptions() {
     `INSERT OR IGNORE INTO transactions (occurred_on, description, amount_grosze, category, source_key, created_by)
      VALUES (@occurred_on, @description, @amount_grosze, 'wydatek', @source_key, 'auto')`
   );
+  // Zmiana ceny subskrypcji w EXPENSES (np. Claude Code 75 -> 99,96) musi poprawic ROWNIEZ
+  // juz zaksiegowane miesiace - INSERT OR IGNORE ich nie ruszy (klucz source_key juz jest),
+  // wiec dociagamy kwote/opis wszystkich auto-wpisow danej subskrypcji do aktualnej stawki.
+  const reprice = db.prepare(
+    `UPDATE transactions SET amount_grosze = @amount_grosze, description = @description
+     WHERE created_by = 'auto' AND source_key LIKE @like
+       AND (amount_grosze <> @amount_grosze OR description <> @description)`
+  );
   for (const exp of EXPENSES) {
     const from = new Date(exp.from);
     if (Number.isNaN(from.getTime())) continue;
     const end = exp.to && new Date(exp.to) < now ? new Date(exp.to) : now;
     const months = fullMonthsElapsed(exp.from, end) + 1;
+    const amount_grosze = Math.round(exp.amount * 100);
+    const description = `Subskrypcja — ${exp.name}`;
     for (let k = 0; k < months; k++) {
       const when = addMonths(from, k);
-      insert.run({
-        occurred_on: localDate(when),
-        description: `Subskrypcja — ${exp.name}`,
-        amount_grosze: Math.round(exp.amount * 100),
-        source_key: `sub:${exp.name}:${ym(when)}`,
-      });
+      insert.run({ occurred_on: localDate(when), description, amount_grosze, source_key: `sub:${exp.name}:${ym(when)}` });
     }
+    reprice.run({ amount_grosze, description, like: `sub:${exp.name}:%` });
   }
 }
 
@@ -107,6 +114,96 @@ function summary() {
     pendingDues,
     clients,
     mrr: clients * PRICING.monthly,
+  };
+}
+
+// Rozdziela kwote w groszach rowno na n osob tak, zeby suma czesci == calosc (reszta z
+// dzielenia laduje po 1 groszu na pierwsze osoby).
+function splitEven(totalGrosze, n) {
+  if (n <= 0) return [];
+  const base = Math.trunc(totalGrosze / n);
+  let rem = totalGrosze - base * n; // znak zgodny z totalGrosze
+  const step = rem >= 0 ? 1 : -1;
+  return Array.from({ length: n }, (_, i) => {
+    if (rem !== 0) {
+      rem -= step;
+      return base + step;
+    }
+    return base;
+  });
+}
+
+// Podzial zysku per osoba wg umowy zespolu:
+//   DZIELI SIE 50/50 (a dokladniej rowno na wszystkich callerow):
+//     - abonamenty 100 zl/mies. od klientow (potwierdzone),
+//     - reczne przychody (nieprzypisane do konkretnej osoby),
+//     - wszystkie koszty (subskrypcja Claude, domeny, NFC z Allegro, ...).
+//   NIE DZIELI SIE (zostaje u tego, kto domknal klienta):
+//     - 300 zl za wdrozenie klienta (potwierdzone, przypisane po leads.caller).
+function perPerson() {
+  const people = getCallers(); // [{ display_name, color }]
+  const n = people.length;
+
+  const onetimeByPerson = new Map(
+    db
+      .prepare(
+        `SELECT l.caller AS caller, COALESCE(SUM(t.amount_grosze), 0) AS g
+         FROM client_dues d
+         JOIN transactions t ON t.id = d.transaction_id
+         JOIN leads l ON l.id = d.lead_id
+         WHERE d.kind = 'onetime' AND d.status = 'confirmed'
+         GROUP BY l.caller`
+      )
+      .all()
+      .map((r) => [r.caller, r.g])
+  );
+
+  const monthlyG = db
+    .prepare(
+      `SELECT COALESCE(SUM(t.amount_grosze), 0) g
+       FROM client_dues d JOIN transactions t ON t.id = d.transaction_id
+       WHERE d.kind = 'monthly' AND d.status = 'confirmed'`
+    )
+    .get().g;
+
+  const manualIncomeG = db
+    .prepare("SELECT COALESCE(SUM(amount_grosze), 0) g FROM transactions WHERE category = 'przychod' AND source_key IS NULL")
+    .get().g;
+
+  const expenseG = db.prepare("SELECT COALESCE(SUM(amount_grosze), 0) g FROM transactions WHERE category = 'wydatek'").get().g;
+
+  const sharedIncomeG = monthlyG + manualIncomeG;
+  const incShares = splitEven(sharedIncomeG, n);
+  const costShares = splitEven(expenseG, n);
+
+  // wdrozenia przypisane do callera spoza aktualnej listy (puste / stare dane) - nie dziela sie,
+  // pokazujemy osobno, zeby suma osob + to = bilans
+  let assignedOnetimeG = 0;
+  const rows = people.map((p, i) => {
+    const ownOnetimeG = onetimeByPerson.get(p.display_name) || 0;
+    assignedOnetimeG += ownOnetimeG;
+    const profitG = ownOnetimeG + incShares[i] - costShares[i];
+    return {
+      person: p.display_name,
+      color: p.color || "",
+      onetime: ownOnetimeG / 100,
+      sharedIncome: incShares[i] / 100,
+      sharedExpense: costShares[i] / 100,
+      profit: profitG / 100,
+    };
+  });
+
+  let totalOnetimeG = 0;
+  for (const g of onetimeByPerson.values()) totalOnetimeG += g;
+
+  return {
+    splitCount: n,
+    monthly: monthlyG / 100,
+    manualIncome: manualIncomeG / 100,
+    sharedIncome: sharedIncomeG / 100,
+    sharedExpense: expenseG / 100,
+    unassignedOnetime: (totalOnetimeG - assignedOnetimeG) / 100,
+    people: rows,
   };
 }
 
@@ -170,6 +267,7 @@ function skipDue(id, by) {
 module.exports = {
   financeSync,
   summary,
+  perPerson,
   pendingDuesList,
   confirmDue,
   skipDue,
