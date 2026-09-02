@@ -191,6 +191,7 @@ a { color: inherit; text-decoration: none; }
   border-radius: 999px;
   padding: 3px 10px;
 }
+.finance-alert-mark { font-weight: 900; font-size: 13px; }
 .finance-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -458,9 +459,9 @@ a { color: inherit; text-decoration: none; }
    w prawym brzegu bez zaburzania szerokosci/wysokosci samego inputu */
 .search-wrap { position: relative; width: 260px; max-width: 100%; margin-top: 24px; margin-bottom: 18px; }
 .search-input {
-  background: #141414;
-  border: 1px solid #232323;
-  color: var(--text);
+  background: #e9e9e9;
+  border: 1px solid #cdcdcd;
+  color: #14181e;
   border-radius: 9px;
   padding: 9px 30px 9px 14px;
   font-size: 13px;
@@ -468,8 +469,8 @@ a { color: inherit; text-decoration: none; }
   width: 100%;
   transition: border-color .15s, background .15s;
 }
-.search-input::placeholder { color: var(--muted-soft); }
-.search-input:focus { outline: none; border-color: var(--blue); background: #131a24; }
+.search-input::placeholder { color: #6a6f78; }
+.search-input:focus { outline: none; border-color: var(--blue); background: #fff; box-shadow: 0 0 0 3px rgba(96,144,224,0.25); }
 .search-clear {
   position: absolute;
   right: 6px;
@@ -840,6 +841,9 @@ a { color: inherit; text-decoration: none; }
    ⚙️, ale strzalka na hover przesuwa sie w lewo (krok wstecz), a nie obraca sie jak zebatka */
 .icon-btn.icon-btn-back { display: flex; align-items: center; justify-content: center; text-decoration: none; color: var(--text); }
 .icon-btn.icon-btn-back:hover { transform: translateX(-2px); }
+/* #1.3 - skrot do kalendarza w topbarze: kwadratowy jak reszta, ale nie obraca sie na hover */
+.icon-btn.icon-btn-cal { display: flex; align-items: center; justify-content: center; text-decoration: none; color: #b0b0b0; }
+.icon-btn.icon-btn-cal:hover { transform: none; color: #e8e8e8; }
 
 .color-swatches { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
 .color-swatch {
@@ -2470,18 +2474,20 @@ table.leads tr:hover .lead-delete-btn { opacity: 1; }
 .cal-dow { font-size: 10.5px; color: var(--muted-soft); text-transform: uppercase; letter-spacing: .5px; text-align: center; padding-bottom: 4px; }
 .cal-day {
   position: relative;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1 / 0.66;
+  min-height: 78px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 8px 4px 4px;
+  padding: 6px 4px 16px;
   background: var(--card);
   border: 1px solid var(--border-soft);
   border-radius: 10px;
   color: var(--text);
   font-size: 13px;
   cursor: pointer;
+  overflow: hidden;
   transition: border-color .12s, background .12s;
 }
 .cal-day:hover { border-color: var(--blue); }
@@ -2505,19 +2511,46 @@ table.leads tr:hover .lead-delete-btn { opacity: 1; }
 .cal-day--selected { border-color: var(--blue); box-shadow: 0 0 0 1px var(--blue) inset; }
 .cal-meet-count {
   position: absolute;
-  top: 5px;
+  top: 4px;
   right: 6px;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
   color: #f0c8c2;
 }
-.cal-dot-callback {
+.cal-callback-dots {
   position: absolute;
-  bottom: 7px;
-  width: 7px;
-  height: 7px;
+  bottom: 6px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+}
+.cal-dot-callback {
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: var(--blue);
+}
+.cal-callback-more { font-size: 9px; font-weight: 700; color: var(--blue); line-height: 1; }
+.cal-day-meta {
+  margin-top: 3px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 9px;
+  line-height: 1.25;
+  color: #e8bcb4;
+  text-align: center;
+}
+.cal-day-meta span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 .cal-day-detail { display: flex; flex-direction: column; gap: 6px; }
 .cal-detail-head { font-size: 13px; color: var(--muted); text-transform: capitalize; margin-bottom: 4px; }
@@ -2571,7 +2604,8 @@ table.leads tr:hover .lead-delete-btn { opacity: 1; }
 .today-task-meta { font-size: 11.5px; color: var(--muted); }
 
 /* #5b - dzwonek + panel skrzynki powiadomien */
-.notif-bell { position: relative; }
+.notif-bell { position: relative; color: #b0b0b0; }
+.notif-bell:hover { color: #e8e8e8; }
 .notif-bell-dot {
   position: absolute;
   top: 4px;

@@ -53,8 +53,12 @@ function syncSubscriptions() {
   }
 }
 
-// Generuje naleznosci (do potwierdzenia) dla kazdego dopietego klienta: jedno 'onetime'
-// wdrozenie + 'monthly' za kazdy pelny miesiac od dopiete_at.
+// Generuje naleznosci (do potwierdzenia) dla kazdego dopietego klienta wg umowy:
+//   - miesiac domkniecia: 300 zl (wdrozenie) + 100 zl (pierwszy abonament) - placone razem,
+//   - kazdy kolejny miesiac kalendarzowy: 100 zl.
+// Abonament liczymy po MIESIACACH KALENDARZOWYCH, nie po dniu-rocznicy: klient dopiety
+// kiedykolwiek w sierpniu ma 1 wrzesnia gotowa naleznosc za wrzesien (a 1. abonament -
+// sierpniowy - stoi razem z wdrozeniem w miesiacu domkniecia).
 function syncClientDues() {
   const clients = db
     .prepare("SELECT id, dopiete_at FROM leads WHERE interested = 'dopiete' AND dopiete_at IS NOT NULL")
@@ -68,9 +72,11 @@ function syncClientDues() {
     const start = new Date(c.dopiete_at);
     if (Number.isNaN(start.getTime())) continue;
     insert.run({ lead_id: c.id, kind: "onetime", period: ym(start), amount_grosze: PRICING.oneTime * 100 });
-    const months = fullMonthsElapsed(c.dopiete_at, now);
-    for (let k = 1; k <= months; k++) {
-      insert.run({ lead_id: c.id, kind: "monthly", period: ym(addMonths(start, k)), amount_grosze: PRICING.monthly * 100 });
+    // k=0 -> miesiac domkniecia (1. abonament, placony razem z wdrozeniem)
+    const monthsSince = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
+    for (let k = 0; k <= monthsSince; k++) {
+      const period = ym(new Date(start.getFullYear(), start.getMonth() + k, 1));
+      insert.run({ lead_id: c.id, kind: "monthly", period, amount_grosze: PRICING.monthly * 100 });
     }
   }
 }

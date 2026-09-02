@@ -104,7 +104,7 @@ const TRANSACTION_CATEGORIES = [
 
 const NICHE_COLORS = ["#6090e0", "#5cb85c", "#e06050", "#c0a050", "#a066e0", "#0e86d4", "#e0935c", "#e15a97"];
 
-const DAILY_GOAL = 20;
+const DAILY_GOAL = 10;
 
 // Cennik: tyle bierzemy za kazdego "Dopietego" klienta - jednorazowo za wdrozenie
 // i miesiecznie za utrzymanie/opieke. Uzywane do panelu zarobkow na stronie glownej.

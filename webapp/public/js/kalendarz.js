@@ -63,9 +63,30 @@ function renderGrid() {
     ]
       .filter(Boolean)
       .join(" ");
-    const dot = info && info.callbacks ? `<span class="cal-dot-callback" title="${info.callbacks} oddzwonień"></span>` : "";
-    const meetCount = info && info.meets > 1 ? `<span class="cal-meet-count">${info.meets}</span>` : "";
-    cells.push(`<button type="button" class="${cls}" data-day="${iso}"><span class="cal-daynum">${d}</span>${meetCount}${dot}</button>`);
+    // jedna kropka na oddzwonienie (3 telefony -> 3 kropki), max 6 + "+N"
+    let dots = "";
+    if (info && info.callbacks) {
+      const shown = Math.min(info.callbacks, 6);
+      dots =
+        `<span class="cal-callback-dots" title="${info.callbacks} oddzwonień">` +
+        '<span class="cal-dot-callback"></span>'.repeat(shown) +
+        (info.callbacks > 6 ? `<span class="cal-callback-more">+${info.callbacks - 6}</span>` : "") +
+        "</span>";
+    }
+    const meetCount = info && info.meets ? `<span class="cal-meet-count">${info.meets}</span>` : "";
+    // pod numerem dnia: godzina + firma kazdego Meeta (max 2 wiersze, reszta jako "+N")
+    let meta = "";
+    if (info && info.meets) {
+      const meetItems = info.items.filter((it) => it.kind === "meet");
+      const lines = meetItems
+        .slice(0, 2)
+        .map((it) => `<span>${escapeHtml((it.time ? it.time + " · " : "") + it.company)}</span>`);
+      if (meetItems.length > 2) lines.push(`<span>+${meetItems.length - 2} więcej</span>`);
+      meta = `<span class="cal-day-meta">${lines.join("")}</span>`;
+    }
+    cells.push(
+      `<button type="button" class="${cls}" data-day="${iso}"><span class="cal-daynum">${d}</span>${meetCount}${meta}${dots}</button>`
+    );
   }
   gridEl.innerHTML = cells.join("");
 }

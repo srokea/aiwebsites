@@ -125,7 +125,7 @@ function renderFinancePanel(f) {
 
   const today = new Date().toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" });
   const alert = f.pendingDues
-    ? `<span class="finance-alert">⚠️ ${f.pendingDues} ${plCount(f.pendingDues, "płatność do potwierdzenia", "płatności do potwierdzenia", "płatności do potwierdzenia")}</span>`
+    ? `<span class="finance-alert"><b class="finance-alert-mark">!</b> ${f.pendingDues} ${plCount(f.pendingDues, "płatność do potwierdzenia", "płatności do potwierdzenia", "płatności do potwierdzenia")}</span>`
     : "";
 
   panel.innerHTML = `
