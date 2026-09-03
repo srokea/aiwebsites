@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Justyna Pawlak Kosmetolog — mezoterapia, zabiegi twarzy, brwi, Bełchatów</title>
+<meta name="description" content="Gabinet kosmetologiczny w Bełchatowie, Pabianicka 28. Mezoterapia igłowa i mikroigłowa, stymulatory tkankowe, terapie skór problematycznych, stylizacja brwi, makijaż. Rezerwacja online przez Booksy.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#FFFFFF">
+<meta property="og:title" content="Justyna Pawlak Kosmetolog — Bełchatów">
+<meta property="og:description" content="Mezoterapia, stymulatory tkankowe, terapie skór problematycznych, brwi i makijaż. Pabianicka 28, Bełchatów. Rezerwacja online.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Justyna Pawlak Kosmetolog">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:image" content="img/og.jpg">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          /* Paleta z briefu + plików w photos/ — jasna, kliniczna, chłodna. */
+          shell:   '#FFFFFF',              /* tło bazowe */
+          surface: '#ECEDF1',              /* chłodny blue-gray — ściana gabinetu */
+          ink:     '#1A1A1A',
+          muted:   '#5A5A5A',
+          accent:  '#7A2030',              /* burgund — JEDYNY akcent */
+          hair:    'rgba(26,26,26,.12)',
+          sepia:   '#3D2B1F',              /* wyłącznie logo klientki */
+        },
+        fontFamily: {
+          display: ['"Bodoni Moda"', 'Georgia', 'serif'],
+          sans:    ['"Work Sans"', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        },
+        maxWidth: { content: '1080px', narrow: '720px' },
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO) — zero połączeń z serwerami Google. */
+  @font-face {
+    font-family: 'Bodoni Moda'; font-style: normal; font-weight: 400 600; font-display: swap;
+    src: url('fonts/bodoni-500-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Bodoni Moda'; font-style: normal; font-weight: 400 600; font-display: swap;
+    src: url('fonts/bodoni-500-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Work Sans'; font-style: normal; font-weight: 400 600; font-display: swap;
+    src: url('fonts/worksans-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Work Sans'; font-style: normal; font-weight: 400 600; font-display: swap;
+    src: url('fonts/worksans-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { font-family: 'Work Sans', Helvetica Neue, Arial, sans-serif; }
+  ::selection { background: #7A2030; color: #FFFFFF; }
+  :focus-visible { outline: 2px solid #7A2030; outline-offset: 3px; border-radius: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+
+  section[id] { scroll-margin-top: 80px; }
+
+  /* --- skala typograficzna (jedno miejsce dla całej strony) --- */
+  .t-display { font-size: clamp(2.05rem, 5.2vw + .8rem, 3.1rem); line-height: 1.08; }
+  .t-section { font-size: clamp(1.7rem, 2.4vw + 1.1rem, 2.5rem); line-height: 1.15; }
+  .t-sub     { font-size: 1.28rem; line-height: 1.3; }
+  .t-body    { font-size: 1.02rem; line-height: 1.65; }
+
+  /* --- nawigacja + scroll-spy --- */
+  .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+  /* na mobile sekcje przewijają się poziomo — miękka krawędź zamiast ucięcia w pół słowa */
+  .nav-fade { -webkit-mask-image: linear-gradient(to right, #000 88%, transparent 100%);
+              mask-image: linear-gradient(to right, #000 88%, transparent 100%); }
+  @media (min-width: 640px) { .nav-fade { -webkit-mask-image: none; mask-image: none; } }
+  .navlink {
+    display: inline-flex; align-items: center; min-height: 44px; flex-shrink: 0;
+    padding: 0 .55rem; border-radius: 999px; white-space: nowrap;
+    font-size: .88rem; font-weight: 500; letter-spacing: .01em;
+    color: #5A5A5A; transition: background-color .15s, color .15s;
+  }
+  @media (min-width: 640px) { .navlink { padding: 0 .7rem; } }
+  .navlink:hover { color: #1A1A1A; }
+  .navlink.active { background: #1A1A1A; color: #FFFFFF; }
+
+  /* --- panel szklany w hero --- */
+  .glass {
+    background: rgba(255,255,255,.74);
+    -webkit-backdrop-filter: blur(16px) saturate(1.15);
+    backdrop-filter: blur(16px) saturate(1.15);
+    border: 1px solid rgba(255,255,255,.7);
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass { background: rgba(255,255,255,.93); }
+  }
+
+  /* --- galeria + lightbox --- */
+  .gallery-tile { cursor: zoom-in; -webkit-tap-highlight-color: transparent; }
+  .gallery-hint {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    border-radius: inherit; background: rgba(26,26,26,.18); color: #FFFFFF;
+    opacity: 0; transition: opacity .2s ease;
+  }
+  .gallery-tile:hover .gallery-hint,
+  .gallery-tile:focus-visible .gallery-hint { opacity: 1; }
+
+  /* --- godziny: dzisiejszy wiersz --- */
+  tr.today th, tr.today td { background: rgba(122,32,48,.09); color: #1A1A1A; font-weight: 600; }
+  tr.today th { border-radius: 10px 0 0 10px; }
+  tr.today td { border-radius: 0 10px 10px 0; }
+  .today-badge {
+    display: inline-flex; align-items: center; margin-left: .5rem;
+    padding: .1rem .5rem; border-radius: 999px; background: #7A2030; color: #FFFFFF;
+    font-size: .62rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  /* --- mapa dostrojona do jasnego, chłodnego motywu --- */
+  .map { filter: grayscale(.62) contrast(1.03) brightness(1.02); }
+</style>
+</head>
+
+<body class="bg-shell text-ink antialiased">
+
+<a href="#tresc" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-5 focus:py-3 focus:text-[.88rem] focus:text-shell">Przejdź do treści</a>
+
+<!-- ============================ HEADER ============================ -->
+<header class="sticky top-0 z-40 border-b border-hair bg-[rgba(255,255,255,.9)] backdrop-blur">
+  <div class="mx-auto flex max-w-content items-center gap-3 px-4 py-2.5 sm:gap-5 sm:px-6">
+
+    <a href="#hero" aria-label="Justyna Pawlak Kosmetolog — początek strony" class="inline-flex shrink-0 items-center gap-2.5">
+      <svg viewBox="0 0 100 148" width="21" height="31" fill="none" stroke="#3D2B1F" stroke-linecap="butt" aria-hidden="true" class="h-[30px] w-auto">
+        <ellipse cx="50" cy="74" rx="41" ry="70" stroke-width="2"/>
+        <path d="M52 8V100" stroke-width="3.2"/>
+        <path d="M52 12c16 0 28 11 28 32s-12 32-28 32" stroke-width="3.2"/>
+        <path d="M24 38h28" stroke-width="2.4"/>
+        <path d="M44 38v94" stroke-width="3.6"/>
+        <path d="M36 132h16" stroke-width="2.4"/>
+      </svg>
+      <span class="hidden leading-none text-sepia xs:block sm:block">
+        <span class="block font-display text-[.82rem] font-medium tracking-[.2em]">JUSTYNA PAWLAK</span>
+        <span class="mt-[3px] block font-sans text-[.58rem] font-medium tracking-[.3em] text-muted">KOSMETOLOG</span>
+      </span>
+    </a>
+
+    <nav aria-label="Sekcje strony" class="scrollbar-none nav-fade flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto sm:justify-center sm:gap-1">
+      <a href="#o-mnie"  data-nav="o-mnie"  class="navlink">O mnie</a>
+      <a href="#uslugi"  data-nav="uslugi"  class="navlink">Zabiegi</a>
+      <a href="#galeria" data-nav="galeria" class="navlink">Efekty</a>
+      <a href="#opinie"  data-nav="opinie"  class="navlink">Opinie</a>
+      <a href="#godziny" data-nav="godziny" class="navlink">Godziny</a>
+      <a href="#kontakt" data-nav="kontakt" class="navlink">Kontakt</a>
+    </nav>
+
+    <div class="flex shrink-0 items-center gap-1.5">
+      <a href="https://www.instagram.com/justynapawlak_kosmetolog" target="_blank" rel="noopener" aria-label="Instagram Justyny Pawlak"
+         class="inline-flex h-11 w-11 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface hover:text-ink">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.62.07 4.81s0 3.56-.07 4.81c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.16-1.06.36-2.23.41-1.25.06-1.62.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.56 2.2 15.19 2.2 12s0-3.56.07-4.81c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.44 2.21 8.8 2.2 12 2.2m0 1.98c-3.14 0-3.51.01-4.75.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.05-1.15-.24-1.77-.4-2.18a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.75-.07m0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9m0 8.99a3.54 3.54 0 1 0 0-7.08 3.54 3.54 0 0 0 0 7.08m6.94-9.21a1.27 1.27 0 1 1-2.55 0 1.27 1.27 0 0 1 2.55 0"/></svg>
+      </a>
+      <a href="https://www.facebook.com/JustynaPawlakKosmetolog/" target="_blank" rel="noopener" aria-label="Facebook Justyny Pawlak"
+         class="inline-flex h-11 w-11 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface hover:text-ink">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
+      </a>
+      <a href="tel:+48516751624" aria-label="Zadzwoń: 516 751 624"
+         class="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-ink px-3.5 text-[.88rem] font-medium text-shell transition-colors hover:bg-accent sm:px-5">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+        <span class="hidden sm:inline">516 751 624</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="tresc">
+
+<!-- ============================ HERO ============================ -->
+<section id="hero" class="relative isolate flex min-h-[88svh] items-center justify-center overflow-hidden px-4 py-16 sm:px-6">
+  <img src="img/hero-justyna-pawlak.jpg" alt="Justyna Pawlak, kosmetolog, w gabinecie" width="1016" height="1058"
+       fetchpriority="high" decoding="async"
+       class="absolute inset-0 -z-20 h-full w-full object-cover [object-position:50%_15%]">
+  <div class="absolute inset-0 -z-10" style="background:radial-gradient(120% 78% at 50% 62%, rgba(255,255,255,.42) 0%, rgba(255,255,255,0) 62%), linear-gradient(to bottom, rgba(255,255,255,.18), rgba(255,255,255,0) 34%, rgba(255,255,255,.30))"></div>
+
+  <div class="glass mt-[7vh] w-full max-w-[29rem] rounded-[1.6rem] px-7 py-8 text-center sm:px-10 sm:py-9">
+    <h1 class="font-display t-display font-medium tracking-[.01em]">Justyna Pawlak</h1>
+    <p class="mt-2.5 text-[.68rem] font-medium uppercase tracking-[.32em] text-muted">Kosmetolog</p>
+    <p class="mx-auto mt-5 max-w-[24rem] t-body text-muted">
+      Mezoterapia, stymulatory tkankowe i terapie skór problematycznych. Bełchatów, Pabianicka 28.
+    </p>
+
+    <div class="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:justify-center">
+      <a href="https://booksy.com/pl-pl/331741_justyna-pawlak-kosmetolog_salon-kosmetyczny_25231_belchatow" target="_blank" rel="noopener"
+         class="inline-flex min-h-[48px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-accent px-6 text-[.92rem] font-semibold text-shell transition hover:brightness-110 motion-reduce:transition-none">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M8 3v4M16 3v4M3 10h18M9.5 15.5l1.8 1.8 3.4-3.6"/></svg>
+        Rezerwuj w Booksy
+      </a>
+      <a href="tel:+48516751624"
+         class="inline-flex min-h-[48px] items-center justify-center gap-2 whitespace-nowrap rounded-full border border-hair bg-[rgba(255,255,255,.6)] px-6 text-[.92rem] font-medium text-ink transition-colors hover:bg-ink hover:text-shell">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+        516 751 624
+      </a>
+    </div>
+
+    <p class="mt-6 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[.82rem] text-muted">
+      <span class="inline-flex items-center gap-1 text-accent" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+      </span>
+      <span>5,0 w Google · 8 opinii</span>
+    </p>
+  </div>
+</section>
+
+<!-- ============================ O MNIE ============================ -->
+<section id="o-mnie" class="bg-shell px-4 py-16 sm:px-6 sm:py-24">
+  <div class="mx-auto max-w-content">
+    <div class="grid items-start gap-10 md:grid-cols-[minmax(0,.85fr)_minmax(0,1fr)] md:gap-14">
+
+      <img src="img/justyna-pawlak-portret.jpg" alt="Justyna Pawlak — portret" width="900" height="898" loading="lazy" decoding="async"
+           class="w-full rounded-[1.4rem] object-cover [object-position:50%_22%] aspect-[4/5]">
+
+      <div>
+        <h2 class="font-display t-section font-medium">O mnie</h2>
+
+        <div class="mt-6 rounded-[1.1rem] border border-dashed border-hair p-6 sm:p-7" aria-hidden="true">
+          <span class="block h-3 w-full rounded-full bg-surface"></span>
+          <span class="mt-3 block h-3 w-[94%] rounded-full bg-surface"></span>
+          <span class="mt-3 block h-3 w-[88%] rounded-full bg-surface"></span>
+          <span class="mt-3 block h-3 w-[62%] rounded-full bg-surface"></span>
+        </div>
+
+        <dl class="mt-9 divide-y divide-hair border-y border-hair">
+          <div class="flex items-baseline justify-between gap-6 py-3.5">
+            <dt class="text-[.95rem] text-muted">Wykształcenie</dt>
+            <dd class="text-right text-[.95rem] font-medium">mgr kosmetologii</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-3.5">
+            <dt class="text-[.95rem] text-muted">Skóra</dt>
+            <dd class="text-right text-[.95rem] font-medium">mezoterapia, stymulatory, anti-aging</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-3.5">
+            <dt class="text-[.95rem] text-muted">Terapie</dt>
+            <dd class="text-right text-[.95rem] font-medium">skóry problematyczne i naczyniowe</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-3.5">
+            <dt class="text-[.95rem] text-muted">Uroda</dt>
+            <dd class="text-right text-[.95rem] font-medium">brwi, rzęsy, makijaż, lekcje makijażu</dd>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-3.5">
+            <dt class="text-[.95rem] text-muted">Śluby</dt>
+            <dd class="text-right text-[.95rem] font-medium">makijaż próbny i ślubny</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- pasmo ze zdjęciem gabinetu -->
+<div class="w-full">
+  <img src="img/gabinet-zabieg.jpg" alt="Justyna Pawlak podczas zabiegu na twarz w swoim gabinecie" width="1176" height="471" loading="lazy" decoding="async"
+       class="block h-auto w-full">
+</div>
+
+<!-- ============================ USŁUGI / CENNIK ============================ -->
+<section id="uslugi" class="bg-surface px-4 py-16 sm:px-6 sm:py-24">
+  <div class="mx-auto max-w-content">
+    <h2 class="font-display t-section font-medium">Zabiegi i ceny</h2>
+    <p class="mt-4 max-w-narrow t-body text-muted">
+      Wybrane pozycje z cennika. Pełna lista zabiegów i wolne terminy są w Booksy.
+    </p>
+
+    <div class="mt-11 grid gap-x-14 gap-y-11 sm:grid-cols-2">
+
+      <div>
+        <h3 class="font-display t-sub font-medium">Zabiegi twarzy</h3>
+        <dl class="mt-4 divide-y divide-hair border-y border-hair">
+          <div class="flex items-baseline justify-between gap-5 py-3.5"><dt class="text-[.97rem] text-muted">NANILI, terapia dobrana indywidualnie</dt><dd class="shrink-0 text-[.97rem] font-medium tabular-nums">270 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-5 py-3.5"><dt class="text-[.97rem] text-muted">Ferulac Glow</dt><dd class="shrink-0 text-[.97rem] font-medium tabular-nums">280 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-5 py-3.5"><dt class="text-[.97rem] text-muted">RETIX C</dt><dd class="shrink-0 text-[.97rem] font-medium tabular-nums">270 zł</dd></div>
+        </dl>
+      </div>
+
+      <div>
+        <h3 class="font-display t-sub font-medium">Mezoterapia</h3>
+        <dl class="mt-4 divide-y divide-hair border-y border-hair">
+          <div class="flex items-baseline justify-between gap-5 py-3.5"><dt class="text-[.97rem] text-muted">Igłowa: twarz</dt><dd class="shrink-0 text-[.97rem] font-medium tabular-nums">450 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-5 py-3.5"><dt class="text-[.97rem] text-muted">Igłowa: twarz i oczy</dt><dd class="shrink-0 text-[.97rem] font-medium tabular-nums">650 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-5 py-3.5"><dt class="text-[.97rem] text-muted">Mikroigłowa</dt><dd class="shrink-0 text-[.97rem] font-medium tabular-nums">450 zł</dd></div>
+        </dl>
+      </div>
+
+      <div>
+        <h3 class="font-display t-sub font-medium">Stymulatory i tropokolagen</h3>
+        <dl class="mt-4 divide-y divide-hair border-y border-hair">
+          <div class="flex items-baseline justify-between gap-5 py-3.5"><dt class="text-[.97rem] text-muted">Stymulatory tkankowe</dt><dd class="shrink-0 text-[.97rem] font-medium tabular-nums">550 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-5 py-3.5"><dt class="text-[.97rem] text-muted">Tropokolagen GUNA, twarz i oczy</dt><dd class="shrink-0 text-[.97rem] font-medium tabular-nums">750 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-5 py-3.5"><dt class="text-[.97rem] text-muted">Neuvia Hydro Deluxe</dt><dd class="shrink-0 text-[.97rem] font-medium tabular-nums">900 zł</dd></div>
+        </dl>
+      </div>
+
+      <div>
+        <h3 class="font-display t-sub font-medium">Brwi i rzęsy</h3>
+        <dl class="mt-4 divide-y divide-hair border-y border-hair">
+          <div class="flex items-baseline justify-between gap-5 py-3.5"><dt class="text-[.97rem] text-muted">Laminacja brwi</dt><dd class="shrink-0 text-[.97rem] font-medium tabular-nums">150 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-5 py-3.5"><dt class="text-[.97rem] text-muted">Lifting rzęs z farbowaniem</dt><dd class="shrink-0 text-[.97rem] font-medium tabular-nums">170 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-5 py-3.5"><dt class="text-[.97rem] text-muted">Pakiet: laminacja brwi + rzęs</dt><dd class="shrink-0 text-[.97rem] font-medium tabular-nums">300 zł</dd></div>
+        </dl>
+      </div>
+
+      <div>
+        <h3 class="font-display t-sub font-medium">Makijaż i lekcje</h3>
+        <dl class="mt-4 divide-y divide-hair border-y border-hair">
+          <div class="flex items-baseline justify-between gap-5 py-3.5"><dt class="text-[.97rem] text-muted">Makijaż ślubny</dt><dd class="shrink-0 text-[.97rem] font-medium tabular-nums">290 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-5 py-3.5"><dt class="text-[.97rem] text-muted">Makijaż okolicznościowy</dt><dd class="shrink-0 text-[.97rem] font-medium tabular-nums">250 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-5 py-3.5"><dt class="text-[.97rem] text-muted">Lekcja makijażu dziennego</dt><dd class="shrink-0 text-[.97rem] font-medium tabular-nums">550 zł</dd></div>
+        </dl>
+      </div>
+
+
+    </div>
+
+    <div class="mt-14 border-t border-hair pt-10 text-center">
+      <a href="https://booksy.com/pl-pl/331741_justyna-pawlak-kosmetolog_salon-kosmetyczny_25231_belchatow" target="_blank" rel="noopener"
+         class="inline-flex min-h-[56px] w-full max-w-[26rem] items-center justify-center gap-2.5 rounded-full bg-accent px-8 text-[1rem] font-semibold text-shell transition hover:brightness-110 motion-reduce:transition-none">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M8 3v4M16 3v4M3 10h18M9.5 15.5l1.8 1.8 3.4-3.6"/></svg>
+        Pełna oferta i rezerwacja w Booksy
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ GALERIA ============================ -->
+<section id="galeria" class="bg-shell px-4 py-16 sm:px-6 sm:py-24">
+  <div class="mx-auto max-w-content">
+    <h2 class="font-display t-section font-medium">Efekty</h2>
+    <p class="mt-4 max-w-narrow t-body text-muted">
+      Zdjęcia moich klientek i klientów, przed zabiegiem i po nim. Kliknij, żeby powiększyć.
+    </p>
+
+    <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-[1.1rem] bg-surface"
+              data-group="efekty" data-index="0" aria-label="Powiększ zdjęcie 1: Laminacja brwi i lifting rzęs — efekt przed i po">
+        <img src="img/galeria/efekt-01-mini.jpg" alt="Laminacja brwi i lifting rzęs — efekt przed i po" loading="lazy" decoding="async" width="600" height="750"
+             class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-[1.1rem] bg-surface"
+              data-group="efekty" data-index="1" aria-label="Powiększ zdjęcie 2: Makijaż — metamorfoza przed i po">
+        <img src="img/galeria/efekt-02-mini.jpg" alt="Makijaż — metamorfoza przed i po" loading="lazy" decoding="async" width="600" height="750"
+             class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-[1.1rem] bg-surface"
+              data-group="efekty" data-index="2" aria-label="Powiększ zdjęcie 3: Brwi po zabiegu — zbliżenie">
+        <img src="img/galeria/efekt-03-mini.jpg" alt="Brwi po zabiegu — zbliżenie" loading="lazy" decoding="async" width="600" height="750"
+             class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-[1.1rem] bg-surface"
+              data-group="efekty" data-index="3" aria-label="Powiększ zdjęcie 4: Skóra policzka przed i po serii zabiegów">
+        <img src="img/galeria/efekt-04-mini.jpg" alt="Skóra policzka przed i po serii zabiegów" loading="lazy" decoding="async" width="600" height="750"
+             class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-[1.1rem] bg-surface"
+              data-group="efekty" data-index="4" aria-label="Powiększ zdjęcie 5: Okolica oka przed i po zabiegu">
+        <img src="img/galeria/efekt-05-mini.jpg" alt="Okolica oka przed i po zabiegu" loading="lazy" decoding="async" width="600" height="750"
+             class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-[1.1rem] bg-surface"
+              data-group="efekty" data-index="5" aria-label="Powiększ zdjęcie 6: Skóra twarzy i szyi przed i po zabiegu">
+        <img src="img/galeria/efekt-06-mini.jpg" alt="Skóra twarzy i szyi przed i po zabiegu" loading="lazy" decoding="async" width="600" height="750"
+             class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-[1.1rem] bg-surface"
+              data-group="efekty" data-index="6" aria-label="Powiększ zdjęcie 7: Makijaż wieczorowy — przed i po">
+        <img src="img/galeria/efekt-07-mini.jpg" alt="Makijaż wieczorowy — przed i po" loading="lazy" decoding="async" width="600" height="750"
+             class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-[1.1rem] bg-surface"
+              data-group="efekty" data-index="7" aria-label="Powiększ zdjęcie 8: Cera problematyczna na czole — efekt od 10.04.2026 do 02.07.2026">
+        <img src="img/galeria/efekt-08-mini.jpg" alt="Cera problematyczna na czole — efekt od 10.04.2026 do 02.07.2026" loading="lazy" decoding="async" width="600" height="750"
+             class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-[1.1rem] bg-surface"
+              data-group="efekty" data-index="8" aria-label="Powiększ zdjęcie 9: Brwi i rzęsy po zabiegu — zbliżenie">
+        <img src="img/galeria/efekt-09-mini.jpg" alt="Brwi i rzęsy po zabiegu — zbliżenie" loading="lazy" decoding="async" width="600" height="750"
+             class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-[1.1rem] bg-surface"
+              data-group="efekty" data-index="9" aria-label="Powiększ zdjęcie 10: Makijaż okolicznościowy — przed i po">
+        <img src="img/galeria/efekt-10-mini.jpg" alt="Makijaż okolicznościowy — przed i po" loading="lazy" decoding="async" width="600" height="750"
+             class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-[1.1rem] bg-surface"
+              data-group="efekty" data-index="10" aria-label="Powiększ zdjęcie 11: Skóra czoła przed i po zabiegu">
+        <img src="img/galeria/efekt-13-mini.jpg" alt="Skóra czoła przed i po zabiegu" loading="lazy" decoding="async" width="600" height="750"
+             class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-[1.1rem] bg-surface"
+              data-group="efekty" data-index="11" aria-label="Powiększ zdjęcie 12: Makijaż — przed i po">
+        <img src="img/galeria/efekt-14-mini.jpg" alt="Makijaż — przed i po" loading="lazy" decoding="async" width="600" height="750"
+             class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ OPINIE ============================ -->
+<section id="opinie" class="bg-surface px-4 py-16 sm:px-6 sm:py-24">
+  <div class="mx-auto max-w-content">
+    <h2 class="font-display t-section font-medium">Opinie</h2>
+
+    <dl class="mt-8 grid gap-x-14 gap-y-4 border-y border-hair py-6 sm:grid-cols-2">
+      <div class="flex items-baseline justify-between gap-5">
+        <dt class="text-[.97rem] text-muted">Google</dt>
+        <dd class="text-[.97rem] font-medium">5,0 / 5 · 8 opinii</dd>
+      </div>
+      <div class="flex items-baseline justify-between gap-5">
+        <dt class="text-[.97rem] text-muted">Facebook</dt>
+        <dd class="text-[.97rem] font-medium">100% poleca · 64 opinie</dd>
+      </div>
+    </dl>
+
+    <div class="mt-10 grid gap-6 md:grid-cols-3">
+      <div class="rounded-[1.1rem] border border-dashed border-hair p-6" aria-hidden="true">
+        <span class="block h-3 w-full rounded-full bg-shell"></span>
+        <span class="mt-3 block h-3 w-[92%] rounded-full bg-shell"></span>
+        <span class="mt-3 block h-3 w-[78%] rounded-full bg-shell"></span>
+        <span class="mt-7 block h-3 w-[46%] rounded-full bg-shell"></span>
+      </div>
+      <div class="rounded-[1.1rem] border border-dashed border-hair p-6" aria-hidden="true">
+        <span class="block h-3 w-full rounded-full bg-shell"></span>
+        <span class="mt-3 block h-3 w-[88%] rounded-full bg-shell"></span>
+        <span class="mt-3 block h-3 w-[70%] rounded-full bg-shell"></span>
+        <span class="mt-7 block h-3 w-[46%] rounded-full bg-shell"></span>
+      </div>
+      <div class="rounded-[1.1rem] border border-dashed border-hair p-6" aria-hidden="true">
+        <span class="block h-3 w-full rounded-full bg-shell"></span>
+        <span class="mt-3 block h-3 w-[95%] rounded-full bg-shell"></span>
+        <span class="mt-3 block h-3 w-[64%] rounded-full bg-shell"></span>
+        <span class="mt-7 block h-3 w-[46%] rounded-full bg-shell"></span>
+      </div>
+    </div>
+
+    <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+      <a href="https://www.google.com/search?q=Justyna%20Pawlak%20Kosmetolog%20Be%C5%82chat%C3%B3w#lrd=0x471a17fa9cb77053:0xd0e97c0e4c721196,3" target="_blank" rel="noopener"
+         class="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-accent px-6 text-[.92rem] font-semibold text-shell transition hover:brightness-110 motion-reduce:transition-none">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+          <path d="M12 10.2v3.9h5.5a4.7 4.7 0 0 1-2 3.1v2.6h3.2c1.9-1.7 3-4.3 3-7.3 0-.7-.06-1.4-.18-2.05z"/>
+          <path d="M12 22c2.7 0 4.96-.9 6.62-2.42l-3.2-2.48c-.9.6-2.05.95-3.42.95-2.6 0-4.8-1.76-5.6-4.13H3.1v2.6A10 10 0 0 0 12 22"/>
+          <path d="M6.4 13.92a6 6 0 0 1 0-3.84V7.48H3.1a10 10 0 0 0 0 9.04z"/>
+          <path d="M12 5.98c1.47 0 2.79.5 3.83 1.5l2.84-2.84C16.95 3.03 14.7 2 12 2A10 10 0 0 0 3.1 7.48l3.3 2.6C7.2 7.74 9.4 5.98 12 5.98"/>
+        </svg>
+        Zostaw opinię w Google
+      </a>
+      <a href="https://www.facebook.com/JustynaPawlakKosmetolog/reviews" target="_blank" rel="noopener"
+         class="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-hair px-6 text-[.92rem] font-medium text-ink transition-colors hover:bg-ink hover:text-shell">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
+        Opinie na Facebooku
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ GODZINY ============================ -->
+<section id="godziny" class="bg-shell px-4 py-16 sm:px-6 sm:py-24">
+  <div class="mx-auto max-w-content">
+    <div class="grid gap-10 md:grid-cols-2 md:gap-16">
+      <div>
+        <h2 class="font-display t-section font-medium">Godziny otwarcia</h2>
+        <p class="mt-4 max-w-narrow t-body text-muted">
+          Terminy rezerwuję przez Booksy. Jeśli nie widzisz pasującej godziny, zadzwoń.
+        </p>
+        <a href="tel:+48516751624"
+           class="mt-7 inline-flex min-h-[48px] items-center gap-2 rounded-full border border-hair px-6 text-[.92rem] font-medium text-ink transition-colors hover:bg-ink hover:text-shell">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+          516 751 624
+        </a>
+      </div>
+
+      <table class="w-full border-separate border-spacing-y-1 text-[.97rem]">
+        <caption class="sr-only">Godziny otwarcia gabinetu</caption>
+        <tbody>
+          <tr data-day="0"><th scope="row" class="px-3 py-2.5 text-left font-normal text-muted">Poniedziałek</th><td class="px-3 py-2.5 text-right tabular-nums">08:00 – 20:00</td></tr>
+          <tr data-day="1"><th scope="row" class="px-3 py-2.5 text-left font-normal text-muted">Wtorek</th><td class="px-3 py-2.5 text-right tabular-nums">08:00 – 20:00</td></tr>
+          <tr data-day="2"><th scope="row" class="px-3 py-2.5 text-left font-normal text-muted">Środa</th><td class="px-3 py-2.5 text-right tabular-nums">08:00 – 20:00</td></tr>
+          <tr data-day="3"><th scope="row" class="px-3 py-2.5 text-left font-normal text-muted">Czwartek</th><td class="px-3 py-2.5 text-right tabular-nums">08:00 – 20:00</td></tr>
+          <tr data-day="4"><th scope="row" class="px-3 py-2.5 text-left font-normal text-muted">Piątek</th><td class="px-3 py-2.5 text-right tabular-nums">08:00 – 20:00</td></tr>
+          <tr data-day="5"><th scope="row" class="px-3 py-2.5 text-left font-normal text-muted">Sobota</th><td class="px-3 py-2.5 text-right tabular-nums">08:00 – 20:00</td></tr>
+          <tr data-day="6"><th scope="row" class="px-3 py-2.5 text-left font-normal text-muted">Niedziela</th><td class="px-3 py-2.5 text-right tabular-nums">08:00 – 15:00</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ KONTAKT ============================ -->
+<section id="kontakt" class="bg-surface pt-16 sm:pt-24">
+  <div class="mx-auto max-w-content px-4 pb-14 sm:px-6 sm:pb-20">
+    <h2 class="font-display t-section font-medium">Jak mnie znaleźć</h2>
+
+    <div class="mt-9 grid gap-10 md:grid-cols-2 md:gap-16">
+      <dl class="divide-y divide-hair border-y border-hair">
+        <div class="flex items-baseline justify-between gap-5 py-4">
+          <dt class="text-[.95rem] text-muted">Adres</dt>
+          <dd class="text-right text-[.97rem] font-medium"><address class="not-italic">Pabianicka 28 (Pabianicka Office)<br>97-400 Bełchatów</address></dd>
+        </div>
+        <div class="flex items-baseline justify-between gap-5 py-4">
+          <dt class="text-[.95rem] text-muted">Telefon</dt>
+          <dd class="text-right text-[.97rem] font-medium"><a href="tel:+48516751624" class="underline decoration-hair underline-offset-4 transition-colors hover:text-accent">516 751 624</a></dd>
+        </div>
+        <div class="flex items-baseline justify-between gap-5 py-4">
+          <dt class="text-[.95rem] text-muted">Rezerwacja</dt>
+          <dd class="text-right text-[.97rem] font-medium"><a href="https://booksy.com/pl-pl/331741_justyna-pawlak-kosmetolog_salon-kosmetyczny_25231_belchatow" target="_blank" rel="noopener" class="underline decoration-hair underline-offset-4 transition-colors hover:text-accent">Booksy</a></dd>
+        </div>
+      </dl>
+
+      <div class="flex flex-col gap-3">
+        <a href="https://booksy.com/pl-pl/331741_justyna-pawlak-kosmetolog_salon-kosmetyczny_25231_belchatow" target="_blank" rel="noopener"
+           class="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-accent px-6 text-[.92rem] font-semibold text-shell transition hover:brightness-110 motion-reduce:transition-none">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M8 3v4M16 3v4M3 10h18M9.5 15.5l1.8 1.8 3.4-3.6"/></svg>
+          Rezerwuj w Booksy
+        </a>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Pabianicka+28%2C+97-400+Be%C5%82chat%C3%B3w" target="_blank" rel="noopener"
+           class="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-hair px-6 text-[.92rem] font-medium text-ink transition-colors hover:bg-ink hover:text-shell">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7m0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5"/></svg>
+          Wyznacz trasę
+        </a>
+        <div class="mt-1 flex gap-3">
+          <a href="https://www.instagram.com/justynapawlak_kosmetolog" target="_blank" rel="noopener"
+             class="inline-flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-full border border-hair px-5 text-[.92rem] font-medium text-ink transition-colors hover:bg-ink hover:text-shell">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.62.07 4.81s0 3.56-.07 4.81c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.16-1.06.36-2.23.41-1.25.06-1.62.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.56 2.2 15.19 2.2 12s0-3.56.07-4.81c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.44 2.21 8.8 2.2 12 2.2m0 1.98c-3.14 0-3.51.01-4.75.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.05-1.15-.24-1.77-.4-2.18a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.75-.07m0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9m0 8.99a3.54 3.54 0 1 0 0-7.08 3.54 3.54 0 0 0 0 7.08m6.94-9.21a1.27 1.27 0 1 1-2.55 0 1.27 1.27 0 0 1 2.55 0"/></svg>
+            Instagram
+          </a>
+          <a href="https://www.facebook.com/JustynaPawlakKosmetolog/" target="_blank" rel="noopener"
+             class="inline-flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-full border border-hair px-5 text-[.92rem] font-medium text-ink transition-colors hover:bg-ink hover:text-shell">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-full">
+    <iframe src="https://www.google.com/maps?q=Pabianicka+28%2C+97-400+Be%C5%82chat%C3%B3w&hl=pl&z=16&output=embed"
+            title="Mapa dojazdu: Pabianicka 28, 97-400 Bełchatów"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            class="map block h-[300px] w-full border-0 sm:h-[400px]"></iframe>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================ STOPKA ============================ -->
+<footer class="bg-shell px-4 py-14 sm:px-6">
+  <div class="mx-auto flex max-w-content flex-col items-center gap-7 text-center">
+    <div class="flex flex-col items-center gap-3 text-sepia">
+      <svg viewBox="0 0 100 148" width="30" height="44" fill="none" stroke="currentColor" stroke-linecap="butt" aria-hidden="true">
+        <ellipse cx="50" cy="74" rx="41" ry="70" stroke-width="2"/>
+        <path d="M52 8V100" stroke-width="3.2"/>
+        <path d="M52 12c16 0 28 11 28 32s-12 32-28 32" stroke-width="3.2"/>
+        <path d="M24 38h28" stroke-width="2.4"/>
+        <path d="M44 38v94" stroke-width="3.6"/>
+        <path d="M36 132h16" stroke-width="2.4"/>
+      </svg>
+      <span class="block font-display text-[1.02rem] font-medium tracking-[.2em]">JUSTYNA PAWLAK</span>
+      <span class="-mt-1 block text-[.6rem] font-medium tracking-[.3em] text-muted">KOSMETOLOG</span>
+    </div>
+
+    <address class="text-[.92rem] not-italic leading-relaxed text-muted">
+      Pabianicka 28 (Pabianicka Office), 97-400 Bełchatów<br>
+      <a href="tel:+48516751624" class="transition-colors hover:text-accent">516 751 624</a>
+    </address>
+
+    <p class="text-[.82rem] text-muted">
+      <a href="privacy.html" class="underline decoration-hair underline-offset-4 transition-colors hover:text-ink">Polityka prywatności</a>
+      <span class="mx-2 text-hair">·</span>
+      <span>&copy; <span id="rok">2026</span> Justyna Pawlak Kosmetolog</span>
+    </p>
+  </div>
+</footer>
+
+<!-- ============================ LIGHTBOX ============================ -->
+<div id="lightbox"
+     class="fixed inset-0 z-50 hidden items-center justify-center bg-[rgba(26,26,26,.92)] p-4 backdrop-blur-sm"
+     role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia z galerii efektów">
+
+  <button type="button" id="lightboxClose" aria-label="Zamknij podgląd"
+          class="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(255,255,255,.15)] text-shell transition-colors hover:bg-[rgba(255,255,255,.25)] sm:right-6 sm:top-6">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+
+  <button type="button" id="lightboxPrev" aria-label="Poprzednie zdjęcie"
+          class="absolute left-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(255,255,255,.15)] text-shell transition-colors hover:bg-[rgba(255,255,255,.25)] sm:left-5">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+
+  <button type="button" id="lightboxNext" aria-label="Następne zdjęcie"
+          class="absolute right-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(255,255,255,.15)] text-shell transition-colors hover:bg-[rgba(255,255,255,.25)] sm:right-5">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+
+  <figure class="mx-auto flex max-h-full max-w-3xl flex-col items-center">
+    <img id="lightboxImg" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" class="max-h-[76vh] w-auto rounded-2xl object-contain">
+    <figcaption id="lightboxCounter" class="mt-5 text-[.78rem] font-medium uppercase tracking-[.15em] text-[rgba(255,255,255,.7)]" aria-live="polite"></figcaption>
+  </figure>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BeautySalon",
+  "name": "Justyna Pawlak Kosmetolog",
+  "description": "Gabinet kosmetologiczny w Bełchatowie: mezoterapia igłowa i mikroigłowa, stymulatory tkankowe, terapie skór problematycznych, stylizacja brwi i rzęs, makijaż.",
+  "image": "img/og.jpg",
+  "telephone": "+48516751624",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Pabianicka 28",
+    "addressLocality": "Bełchatów",
+    "postalCode": "97-400",
+    "addressCountry": "PL"
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], "opens": "08:00", "closes": "20:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "08:00", "closes": "15:00" }
+  ],
+  "hasMap": "https://www.google.com/maps/dir/?api=1&destination=Pabianicka+28%2C+97-400+Be%C5%82chat%C3%B3w",
+  "sameAs": [
+    "https://www.facebook.com/JustynaPawlakKosmetolog/",
+    "https://www.instagram.com/justynapawlak_kosmetolog",
+    "https://booksy.com/pl-pl/331741_justyna-pawlak-kosmetolog_salon-kosmetyczny_25231_belchatow"
+  ]
+}
+</script>
+
+<script>
+/* --- rok w stopce --- */
+document.getElementById('rok').textContent = new Date().getFullYear();
+
+/* --- scroll-spy --- */
+(function () {
+  if (!('IntersectionObserver' in window)) return;
+  var links = {};
+  document.querySelectorAll('.navlink[data-nav]').forEach(function (a) { links[a.dataset.nav] = a; });
+  var current = null;
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      if (current) current.classList.remove('active');
+      current = links[entry.target.id] || null;
+      if (current) current.classList.add('active');
+    });
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+  Object.keys(links).forEach(function (id) {
+    var section = document.getElementById(id);
+    if (section) observer.observe(section);
+  });
+})();
+
+/* --- godziny: podświetl dzisiejszy dzień --- */
+(function () {
+  var todayIdx = (new Date().getDay() + 6) % 7;
+  var row = document.querySelector('tr[data-day="' + todayIdx + '"]');
+  if (!row) return;
+  row.classList.add('today');
+  var th = row.querySelector('th');
+  if (th) {
+    var badge = document.createElement('span');
+    badge.className = 'today-badge';
+    badge.textContent = 'dziś';
+    th.appendChild(badge);
+  }
+})();
+
+/* --- lightbox galerii --- */
+(function () {
+  var GALLERIES = { efekty: [
+      { src: 'img/galeria/efekt-01.jpg', alt: 'Laminacja brwi i lifting rzęs — efekt przed i po' },
+      { src: 'img/galeria/efekt-02.jpg', alt: 'Makijaż — metamorfoza przed i po' },
+      { src: 'img/galeria/efekt-03.jpg', alt: 'Brwi po zabiegu — zbliżenie' },
+      { src: 'img/galeria/efekt-04.jpg', alt: 'Skóra policzka przed i po serii zabiegów' },
+      { src: 'img/galeria/efekt-05.jpg', alt: 'Okolica oka przed i po zabiegu' },
+      { src: 'img/galeria/efekt-06.jpg', alt: 'Skóra twarzy i szyi przed i po zabiegu' },
+      { src: 'img/galeria/efekt-07.jpg', alt: 'Makijaż wieczorowy — przed i po' },
+      { src: 'img/galeria/efekt-08.jpg', alt: 'Cera problematyczna na czole — efekt od 10.04.2026 do 02.07.2026' },
+      { src: 'img/galeria/efekt-09.jpg', alt: 'Brwi i rzęsy po zabiegu — zbliżenie' },
+      { src: 'img/galeria/efekt-10.jpg', alt: 'Makijaż okolicznościowy — przed i po' },
+      { src: 'img/galeria/efekt-13.jpg', alt: 'Skóra czoła przed i po zabiegu' },
+      { src: 'img/galeria/efekt-14.jpg', alt: 'Makijaż — przed i po' },
+      { src: 'img/galeria/efekt-11.jpg', alt: 'Skóra głowy — efekt uzyskany w półtora miesiąca' },
+      { src: 'img/galeria/efekt-12.jpg', alt: 'Okolica oka i policzek — efekt uzyskany w trzy tygodnie' },
+      { src: 'img/galeria/efekt-15.jpg', alt: 'Skóra twarzy przed i po zabiegu — zwężone pory' },
+      { src: 'img/galeria/efekt-16.jpg', alt: 'Makijaż dzienny — przed i po' },
+      { src: 'img/galeria/efekt-17.jpg', alt: 'Skóra dojrzała przed i po zabiegu' },
+      { src: 'img/galeria/efekt-18.jpg', alt: 'Skóra trądzikowa na policzku przed i po terapii' },
+      { src: 'img/galeria/efekt-19.jpg', alt: 'Makijaż okolicznościowy — gotowy efekt' }
+    ] };
+
+  var lightbox = document.getElementById('lightbox');
+  var tiles = document.querySelectorAll('.gallery-tile');
+  if (!lightbox || !tiles.length) return;
+
+  var img = document.getElementById('lightboxImg');
+  var counter = document.getElementById('lightboxCounter');
+  var btnClose = document.getElementById('lightboxClose');
+  var btnPrev = document.getElementById('lightboxPrev');
+  var btnNext = document.getElementById('lightboxNext');
+  var currentGroup = Object.keys(GALLERIES)[0];
+  var current = 0;
+  var lastFocused = null;
+
+  function items() { return GALLERIES[currentGroup] || []; }
+
+  function render() {
+    var item = items()[current];
+    if (!item) return;
+    img.src = item.src;
+    img.alt = item.alt;
+    counter.textContent = (current + 1) + ' / ' + items().length;
+  }
+
+  function open(group, index) {
+    currentGroup = group; current = index;
+    lastFocused = document.activeElement;
+    render();
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    btnClose.focus();
+  }
+
+  function close() {
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
+    document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
+  }
+
+  function next() { var n = items().length; current = (current + 1) % n; render(); }
+  function prev() { var n = items().length; current = (current - 1 + n) % n; render(); }
+
+  tiles.forEach(function (tile) {
+    tile.addEventListener('click', function () {
+      open(tile.getAttribute('data-group') || currentGroup,
+           parseInt(tile.getAttribute('data-index'), 10));
+    });
+  });
+
+  btnClose.addEventListener('click', close);
+  btnNext.addEventListener('click', next);
+  btnPrev.addEventListener('click', prev);
+  lightbox.addEventListener('click', function (e) { if (e.target === lightbox) close(); });
+
+  document.addEventListener('keydown', function (e) {
+    if (lightbox.classList.contains('hidden')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowRight') next();
+    if (e.key === 'ArrowLeft') prev();
+    if (e.key === 'Tab') {
+      // aria-modal wymaga, żeby Tab krążył wewnątrz modala
+      var focusable = [btnClose, btnPrev, btnNext];
+      var i = focusable.indexOf(document.activeElement);
+      var step = e.shiftKey ? -1 : 1;
+      var nextIdx = (i === -1 ? 0 : i + step + focusable.length) % focusable.length;
+      focusable[nextIdx].focus();
+      e.preventDefault();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
