@@ -264,6 +264,10 @@ db.exec(
 );
 // logo karty NFC jako pelny URL (Cloudflare Worker serwujacy /r/:slug czyta z KV, nie ma
 // dostepu do lokalnych wgranych plikow) - zastepuje starsze lokalne logo_path
+// nisza moze pokazywac tylko podzbior kolumn tabeli leadow (recznie zakladane nisze) - JSON
+// lista kluczy; pusty string = wszystkie kolumny (tak maja wszystkie dotychczasowe nisze)
+addColumnIfMissing("niches", "columns TEXT NOT NULL DEFAULT ''");
+
 // lead_pins: stan obchodu (dodane po pierwszej wersji tabeli - stare bazy dostaja kolumny tu)
 addColumnIfMissing("lead_pins", "status TEXT NOT NULL DEFAULT 'nieruszone'");
 addColumnIfMissing("lead_pins", "notes TEXT NOT NULL DEFAULT ''");

@@ -3,10 +3,19 @@ const multer = require("multer");
 const Papa = require("papaparse");
 const db = require("../db");
 const { mapRowsToLeads } = require("../csvImport");
-const { computeCalledAt, STATS_ELIGIBLE_SQL } = require("../leadStatus");
+const { computeCalledAt, computeDopieteAt, STATS_ELIGIBLE_SQL } = require("../leadStatus");
 const { listScriptFiles } = require("./scripts");
 const { stripDiacritics } = require("../text");
-const { NICHE_COLORS, INTERESTED_OPTIONS, PLATFORM_TAGS, PLATFORM_META } = require("../constants");
+const {
+  NICHE_COLORS,
+  INTERESTED_OPTIONS,
+  ANSWERED_OPTIONS,
+  WEBSITE_STATUS_OPTIONS,
+  QUALITY_OPTIONS,
+  PLATFORM_TAGS,
+  PLATFORM_META,
+  LEAD_COLUMN_KEYS,
+} = require("../constants");
 const { getCallerNames } = require("../callers");
 
 const router = express.Router();
@@ -17,6 +26,35 @@ function slugify(name) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
 }
+
+// niches.columns: '' w bazie = wszystkie kolumny. Front zawsze dostaje pelna, uporzadkowana liste.
+function parseColumns(raw) {
+  if (!raw) return LEAD_COLUMN_KEYS.slice();
+  try {
+    const arr = JSON.parse(raw);
+    if (!Array.isArray(arr)) return LEAD_COLUMN_KEYS.slice();
+    const want = new Set(arr.map(String));
+    const picked = LEAD_COLUMN_KEYS.filter((k) => want.has(k));
+    return picked.length ? picked : LEAD_COLUMN_KEYS.slice();
+  } catch {
+    return LEAD_COLUMN_KEYS.slice();
+  }
+}
+// Zapis: pelny zestaw (albo pusty/nieznany input) -> '' (== "wszystkie"); inaczej JSON w kolejnosci kanonicznej.
+function serializeColumns(input) {
+  if (!Array.isArray(input)) return "";
+  const want = new Set(input.map(String));
+  const picked = LEAD_COLUMN_KEYS.filter((k) => want.has(k));
+  if (!picked.length || picked.length === LEAD_COLUMN_KEYS.length) return "";
+  return JSON.stringify(picked);
+}
+
+const ENUM_VALUES = {
+  answered: new Set(ANSWERED_OPTIONS.map((o) => o.value)),
+  interested: new Set(INTERESTED_OPTIONS.map((o) => o.value)),
+  has_social: new Set(WEBSITE_STATUS_OPTIONS.map((o) => o.value)),
+  quality: new Set(QUALITY_OPTIONS.map((o) => o.value)),
+};
 
 // "called"/"eligible" pomijaja leady ze Strona = "Tak" (patrz STATS_ELIGIBLE_SQL) -
 // "total" to pelna liczba leadow w niszy.
@@ -49,9 +87,35 @@ router.get("/", (req, res) => {
   res.json(
     niches.map((n) => {
       const s = statsByNiche.get(n.id);
-      return { ...n, total: s?.total || 0, eligible: s?.eligible || 0, called: s?.called || 0 };
+      return {
+        ...n,
+        columns: parseColumns(n.columns),
+        total: s?.total || 0,
+        eligible: s?.eligible || 0,
+        called: s?.called || 0,
+      };
     })
   );
+});
+
+// POST /api/niches - recznie zalozona PUSTA nisza (bez pliku). `columns` opcjonalne (tablica
+// kluczy z LEAD_COLUMN_KEYS); brak / pelny zestaw => wszystkie kolumny.
+router.post("/", (req, res) => {
+  const name = String(req.body.name || "").trim();
+  if (!name) return res.status(400).json({ error: "Podaj nazwe niszy" });
+
+  const columns = serializeColumns(req.body.columns);
+
+  const baseSlug = slugify(name) || "nisza";
+  let slug = baseSlug;
+  let i = 2;
+  while (db.prepare("SELECT id FROM niches WHERE slug = ?").get(slug)) {
+    slug = `${baseSlug}-${i++}`;
+  }
+
+  const id = db.prepare("INSERT INTO niches (name, slug, columns) VALUES (?, ?, ?)").run(name, slug, columns).lastInsertRowid;
+  const niche = db.prepare("SELECT * FROM niches WHERE id = ?").get(id);
+  res.status(201).json({ ...niche, columns: parseColumns(niche.columns), ...nicheStats(id) });
 });
 
 // GET /api/niches/:slug - szczegoly niszy + statystyki per osoba + dzienny licznik
@@ -77,7 +141,16 @@ router.get("/:slug", (req, res) => {
     )
     .get(niche.id).c;
 
-  res.json({ ...niche, total, eligible, called, todo: eligible - called, byCaller, calledToday });
+  res.json({
+    ...niche,
+    columns: parseColumns(niche.columns),
+    total,
+    eligible,
+    called,
+    todo: eligible - called,
+    byCaller,
+    calledToday,
+  });
 });
 
 // GET /api/niches/:slug/leads - leady danej niszy, kazdy z lista notatek (najnowsza pierwsza)
@@ -118,14 +191,47 @@ router.post("/:slug/leads", (req, res) => {
   const companyName = String(req.body.company_name || "").trim();
   if (!companyName) return res.status(400).json({ error: "Podaj nazwe firmy" });
 
-  // "interested" ustawiamy JAWNIE: w bazach zalozonych przed zmiana defaultu kolumna nadal ma
-  // DEFAULT 'nie' (patrz migracja w db.js), wiec swiezy lead wygladalby jak juz odrzucony.
-  const info = db
-    .prepare("INSERT INTO leads (niche_id, company_name, city, phone, interested) VALUES (?, ?, ?, ?, 'nieruszone')")
-    .run(niche.id, companyName, String(req.body.city || "").trim(), String(req.body.phone || "").trim());
+  // Startujemy z tymi samymi domyslnymi wartosciami co import CSV; nadpisujemy tylko te pola,
+  // ktore przyszly w body i przechodza walidacje (enumy z constants.js).
+  const lead = {
+    niche_id: niche.id,
+    company_name: companyName,
+    city: String(req.body.city || "").trim(),
+    phone: String(req.body.phone || "").replace(/[^\d+]/g, ""),
+    website_url: String(req.body.website_url || "").trim(),
+    quality: "",
+    has_social: "",
+    answered: "",
+    interested: "nieruszone",
+    caller: "",
+    reminder: String(req.body.reminder || "").trim(),
+    callback_when: String(req.body.callback_when || "").trim(),
+    google_term: String(req.body.google_term || "").trim(),
+    open_time: String(req.body.open_time || "").trim(),
+    close_time: String(req.body.close_time || "").trim(),
+    research_notes: String(req.body.research_notes || "").trim(),
+  };
 
-  const lead = db.prepare("SELECT * FROM leads WHERE id = ?").get(info.lastInsertRowid);
-  res.status(201).json({ ...lead, notes_list: [] });
+  for (const field of ["quality", "has_social", "answered", "interested"]) {
+    if (req.body[field] === undefined) continue;
+    const value = String(req.body[field]);
+    if (value === "" || ENUM_VALUES[field].has(value)) lead[field] = value;
+    else return res.status(400).json({ error: `Nieprawidlowa wartosc "${value}" dla pola ${field}` });
+  }
+  if (req.body.caller !== undefined) {
+    const caller = String(req.body.caller);
+    if (caller && !getCallerNames().includes(caller)) return res.status(400).json({ error: `Nieznany dzwoniacy: "${caller}"` });
+    lead.caller = caller;
+  }
+  for (const tag of PLATFORM_TAGS) lead[`tag_${tag}`] = req.body[`tag_${tag}`] ? 1 : 0;
+
+  const cols = Object.keys(lead);
+  const info = db
+    .prepare(`INSERT INTO leads (${cols.join(", ")}, called_at, dopiete_at) VALUES (${cols.map((c) => `@${c}`).join(", ")}, @called_at, @dopiete_at)`)
+    .run({ ...lead, called_at: computeCalledAt(lead), dopiete_at: computeDopieteAt(lead) });
+
+  const saved = db.prepare("SELECT * FROM leads WHERE id = ?").get(info.lastInsertRowid);
+  res.status(201).json({ ...saved, notes_list: [] });
 });
 
 // GET /api/niches/:slug/export.csv - zrzut AKTUALNEGO stanu tabeli (po wszystkich edycjach),
@@ -202,7 +308,8 @@ router.post("/import", upload.single("file"), (req, res) => {
     slug = `${baseSlug}-${i++}`;
   }
 
-  const insertNiche = db.prepare("INSERT INTO niches (name, slug) VALUES (?, ?)");
+  const insertNiche = db.prepare("INSERT INTO niches (name, slug, columns) VALUES (?, ?, ?)");
+  const importColumns = serializeColumns(req.body.columns);
   const insertLead = db.prepare(`
     INSERT INTO leads (
       niche_id, company_name, city, phone, quality, has_social, website_url,
@@ -220,7 +327,7 @@ router.post("/import", upload.single("file"), (req, res) => {
   const insertNote = db.prepare("INSERT INTO lead_notes (lead_id, content) VALUES (?, ?)");
 
   const nicheId = db.transaction(() => {
-    const id = insertNiche.run(name.trim(), slug).lastInsertRowid;
+    const id = insertNiche.run(name.trim(), slug, importColumns).lastInsertRowid;
     for (const lead of leads) {
       // ta sama regula "zadzwoniony" co przy recznej edycji leada
       const leadId = insertLead.run({ ...lead, niche_id: id, called_at: computeCalledAt(lead) }).lastInsertRowid;
@@ -232,7 +339,7 @@ router.post("/import", upload.single("file"), (req, res) => {
   })();
 
   const niche = db.prepare("SELECT * FROM niches WHERE id = ?").get(nicheId);
-  res.status(201).json({ ...niche, ...nicheStats(nicheId), imported: leads.length });
+  res.status(201).json({ ...niche, columns: parseColumns(niche.columns), ...nicheStats(nicheId), imported: leads.length });
 });
 
 // PATCH /api/niches/:id - zmiana nazwy i/lub koloru niszy (ustawienia)
@@ -258,6 +365,7 @@ router.patch("/:id", (req, res) => {
     }
     updates.script_file = scriptFile;
   }
+  if ("columns" in req.body) updates.columns = serializeColumns(req.body.columns);
   if (!Object.keys(updates).length) return res.status(400).json({ error: "Brak pol do aktualizacji" });
 
   const setClauses = Object.keys(updates)
@@ -266,7 +374,7 @@ router.patch("/:id", (req, res) => {
   db.prepare(`UPDATE niches SET ${setClauses} WHERE id = @id`).run({ ...updates, id: req.params.id });
 
   const updated = db.prepare("SELECT * FROM niches WHERE id = ?").get(req.params.id);
-  res.json({ ...updated, ...nicheStats(updated.id) });
+  res.json({ ...updated, columns: parseColumns(updated.columns), ...nicheStats(updated.id) });
 });
 
 // DELETE /api/niches/:id - usuniecie niszy wraz z leadami (ON DELETE CASCADE)

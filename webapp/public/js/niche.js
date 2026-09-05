@@ -10,6 +10,10 @@ let sortState = { id: null, field: null, dir: "asc" };
 let filters = { interested: [], caller: [], answered: [], quality: [] };
 let searchQuery = "";
 let highlightStatuses = new Set();
+// klucze kolumn tabeli, ktore ta nisza pokazuje (data-sort-id). Ustawiane w loadNicheHeader z
+// currentNiche.columns; puste = wszystkie. "company" jest zawsze, wiec go tu nie trzymamy.
+let activeCols = new Set();
+const showCol = (k) => activeCols.size === 0 || activeCols.has(k);
 // wlaczany klikiem w karte "Do zrobienia" - pokazuje tylko leady, ktore licza sie do tej metryki
 let todoFilter = false;
 
@@ -94,6 +98,7 @@ async function init() {
 async function loadNicheHeader() {
   const niche = await api.get(`/api/niches/${encodeURIComponent(slug)}`);
   currentNiche = niche;
+  applyNicheColumns(niche.columns || []);
 
   const titleEl = document.getElementById("niche-title");
   titleEl.textContent = niche.name;
@@ -505,7 +510,8 @@ function renderLeads() {
   const visible = getVisibleLeads();
   if (!visible.length) {
     const msg = todoFilter ? "Nic do zrobienia — wszystko obdzwonione. 🎉" : "Brak leadow spelniajacych kryteria.";
-    tbody.innerHTML = `<tr><td colspan="15"><div class="empty-state">${msg}</div></td></tr>`;
+    const span = 3 + (activeCols.size || 12); // # + Firma + akcje + widoczne kolumny
+    tbody.innerHTML = `<tr><td colspan="${span}"><div class="empty-state">${msg}</div></td></tr>`;
     updateScrollHint();
     return;
   }
@@ -726,26 +732,42 @@ function rowHtml(lead, index) {
           <a class="company-link" href="${escapeHtml(companyGoogleSearchHref(lead))}" target="_blank" rel="noopener" title="${escapeHtml(lead.company_name)} — szukaj w Google">${escapeHtml(lead.company_name)}</a>
         </div>
       </td>
-      <td class="city-cell" title="${escapeHtml(lead.city)}">${escapeHtml(shortCity(lead.city))}</td>
-      <td class="phone-cell">
+      ${showCol("city") ? `<td class="city-cell" title="${escapeHtml(lead.city)}">${escapeHtml(shortCity(lead.city))}</td>` : ""}
+      ${
+        showCol("phone")
+          ? `<td class="phone-cell">
         <a class="phone-call-btn" href="/script.html?leadId=${lead.id}" target="_blank" rel="noopener" title="Scheme rozmowy (nowe okno)">📖</a>
         <span class="phone-text">${escapeHtml(formatPhone(lead.phone))}</span>
-      </td>
-      <td>${fieldCsel("quality", meta.qualityOptions, lead.quality, "—")}</td>
-      <td>
+      </td>`
+          : ""
+      }
+      ${showCol("quality") ? `<td>${fieldCsel("quality", meta.qualityOptions, lead.quality, "—")}</td>` : ""}
+      ${
+        showCol("social")
+          ? `<td>
         <div class="tags-popover">
           <div class="tags-trigger">${platformTriggerContent(lead)}</div>
           <div class="tags-menu">${platformMenuContent(lead)}</div>
         </div>
-      </td>
-      <td>${answeredHtml(lead)}</td>
-      <td>${fieldCsel("interested", meta.interestedOptions, lead.interested)}</td>
-      <td>${fieldCsel("caller", callerOptions(), lead.caller, "—")}</td>
-      <td>${attemptsCellHtml(lead)}</td>
-      <td><span class="reminder-badge ${reminder.cls}">${reminder.text}</span></td>
-      <td><button type="button" class="term-btn ${lead.callback_when ? "set" : ""}" data-callback-open title="${lead.callback_when ? "" : "Ustaw dzień oddzwonienia"}">${escapeHtml(callbackLabel(lead.callback_when))}</button></td>
-      <td><button type="button" class="term-btn ${lead.google_term ? "set" : ""}" data-term-open title="${lead.google_term ? "" : "Ustaw termin Google Meet"}">${escapeHtml(termLabel(lead.google_term))}</button></td>
-      <td>${notesCellHtml(lead)}</td>
+      </td>`
+          : ""
+      }
+      ${showCol("answered") ? `<td>${answeredHtml(lead)}</td>` : ""}
+      ${showCol("interested") ? `<td>${fieldCsel("interested", meta.interestedOptions, lead.interested)}</td>` : ""}
+      ${showCol("caller") ? `<td>${fieldCsel("caller", callerOptions(), lead.caller, "—")}</td>` : ""}
+      ${showCol("attempts") ? `<td>${attemptsCellHtml(lead)}</td>` : ""}
+      ${showCol("reminder") ? `<td><span class="reminder-badge ${reminder.cls}">${reminder.text}</span></td>` : ""}
+      ${
+        showCol("callback")
+          ? `<td><button type="button" class="term-btn ${lead.callback_when ? "set" : ""}" data-callback-open title="${lead.callback_when ? "" : "Ustaw dzień oddzwonienia"}">${escapeHtml(callbackLabel(lead.callback_when))}</button></td>`
+          : ""
+      }
+      ${
+        showCol("gterm")
+          ? `<td><button type="button" class="term-btn ${lead.google_term ? "set" : ""}" data-term-open title="${lead.google_term ? "" : "Ustaw termin Google Meet"}">${escapeHtml(termLabel(lead.google_term))}</button></td>`
+          : ""
+      }
+      ${showCol("notes") ? `<td>${notesCellHtml(lead)}</td>` : ""}
       <td class="row-actions"><button type="button" class="lead-delete-btn" title="Usuń lead">✕</button></td>
     </tr>
   `;
@@ -1437,6 +1459,67 @@ document.getElementById("filter-bar").addEventListener("keydown", (e) => {
 
 const addLeadModal = document.getElementById("add-lead-modal");
 
+// Pola modala "Nowy lead" = kolumny tej niszy (bez "#"/Firma/kosza oraz bez Prób i Notatek,
+// ktore uzupelnia sie w tabeli). Przebudowywane przy kazdym applyNicheColumns().
+function buildAddLeadFields() {
+  const box = document.getElementById("add-lead-fields");
+  if (!box || !meta) return;
+  const optList = (list, empty) =>
+    (empty ? `<option value="">${empty}</option>` : "") +
+    list.map((o) => `<option value="${escapeHtml(o.value)}">${escapeHtml(o.label)}</option>`).join("");
+  const has = (k) => activeCols.has(k);
+  const parts = [];
+  if (has("city")) parts.push(`<label>Miasto<input type="text" data-f="city" placeholder="np. Bełchatów"></label>`);
+  if (has("phone")) parts.push(`<label>Telefon<input type="text" data-f="phone" placeholder="np. 500600700"></label>`);
+  if (has("quality")) parts.push(`<label>Jakość<select data-f="quality">${optList(meta.qualityOptions, "—")}</select></label>`);
+  if (has("answered")) parts.push(`<label>Odebrał?<select data-f="answered">${optList(meta.answeredOptions, "—")}</select></label>`);
+  if (has("interested"))
+    parts.push(`<label>Zainteresowany?<select data-f="interested">${optList(meta.interestedOptions, "")}</select></label>`);
+  if (has("caller"))
+    parts.push(
+      `<label>Kto dzwonił<select data-f="caller"><option value="">—</option>${(meta.callers || [])
+        .map((c) => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`)
+        .join("")}</select></label>`
+    );
+  if (has("callback")) parts.push(`<label>Kiedy oddzwonić<input type="date" data-f="callback_when"></label>`);
+  if (has("gterm")) parts.push(`<label>Termin Google<input type="datetime-local" data-f="google_term"></label>`);
+  if (has("social"))
+    parts.push(
+      `<fieldset class="add-lead-tags"><legend>Social</legend>${(meta.platformTags || [])
+        .map(
+          (t) =>
+            `<label class="add-lead-tag"><input type="checkbox" data-tag="${t}"> ${escapeHtml(
+              (meta.platformMeta[t] && meta.platformMeta[t].name) || t
+            )}</label>`
+        )
+        .join("")}</fieldset>`
+    );
+  box.innerHTML = parts.join("");
+}
+
+// nisza pokazuje tylko wybrane kolumny: chowamy naglowki tabeli i przebudowujemy pola modala.
+function applyNicheColumns(cols) {
+  activeCols = new Set(cols && cols.length ? cols : []);
+  document.querySelectorAll("table.leads thead th[data-sort-id]").forEach((th) => {
+    const k = th.dataset.sortId;
+    if (k !== "company") th.hidden = !showCol(k);
+  });
+  buildAddLeadFields();
+}
+
+function collectAddLeadValues() {
+  const body = { company_name: document.getElementById("add-lead-name").value };
+  document.querySelectorAll("#add-lead-fields [data-f]").forEach((el) => {
+    let v = el.value;
+    if (el.dataset.f === "phone") v = v.replace(/\D/g, ""); // w bazie sam numer, jak przy edycji w tabeli
+    if (v !== "") body[el.dataset.f] = v;
+  });
+  document.querySelectorAll("#add-lead-fields [data-tag]").forEach((el) => {
+    if (el.checked) body[`tag_${el.dataset.tag}`] = 1;
+  });
+  return body;
+}
+
 function openAddLeadModal() {
   document.getElementById("add-lead-error").style.display = "none";
   document.getElementById("add-lead-form").reset();
@@ -1458,12 +1541,7 @@ document.getElementById("add-lead-form").addEventListener("submit", async (e) =>
   const submitBtn = e.target.querySelector("button[type=submit]");
   submitBtn.disabled = true;
   try {
-    const lead = await api.post(`/api/niches/${encodeURIComponent(slug)}/leads`, {
-      company_name: document.getElementById("add-lead-name").value,
-      city: document.getElementById("add-lead-city").value,
-      // telefon trzymamy w bazie samymi cyframi (tak samo jak przy edycji w tabeli)
-      phone: document.getElementById("add-lead-phone").value.replace(/\D/g, ""),
-    });
+    const lead = await api.post(`/api/niches/${encodeURIComponent(slug)}/leads`, collectAddLeadValues());
     leads.push(lead);
     addLeadModal.classList.add("hidden");
     renderLeads();
@@ -1512,11 +1590,27 @@ function renderColorSwatches() {
     .join("");
 }
 
+// checkboxy kolumn w ustawieniach niszy - zaznaczone = kolumna widoczna (klucze z meta.leadColumns)
+function renderColumnPicker() {
+  const box = document.getElementById("settings-columns");
+  if (!box || !meta) return;
+  const on = new Set(currentNiche.columns && currentNiche.columns.length ? currentNiche.columns : (meta.leadColumns || []).map((c) => c.key));
+  box.innerHTML = (meta.leadColumns || [])
+    .map(
+      (c) =>
+        `<label class="col-pick"><input type="checkbox" value="${c.key}" ${on.has(c.key) ? "checked" : ""}> ${escapeHtml(
+          c.label
+        )}</label>`
+    )
+    .join("");
+}
+
 async function openSettings() {
   document.getElementById("settings-error").style.display = "none";
   document.getElementById("settings-name").value = currentNiche.name;
   pendingColor = currentNiche.color || "";
   renderColorSwatches();
+  renderColumnPicker();
 
   // lista plikow schematow czytana przy kazdym otwarciu - swiezo dorzucony plik
   // w server/scriptsData/ pojawia sie bez przeladowania strony
@@ -1562,6 +1656,7 @@ document.getElementById("settings-form").addEventListener("submit", async (e) =>
     // pusta wartosc = lista sie nie wczytala - nie nadpisujemy wyboru w bazie
     const scriptFile = document.getElementById("settings-script-file").value;
     if (scriptFile) body.script_file = scriptFile;
+    body.columns = [...document.querySelectorAll("#settings-columns input:checked")].map((el) => el.value);
     await api.patch(`/api/niches/${currentNiche.id}`, body);
     closeSettings();
     await loadNicheHeader();

@@ -73,20 +73,32 @@
 
 <div class="modal-overlay hidden" id="import-modal">
   <div class="modal">
-    <h3>Nowa nisza — import CSV</h3>
+    <h3>Nowa nisza</h3>
+    <div class="niche-mode-tabs">
+      <button type="button" class="niche-mode-tab active" data-mode="csv">📄 Z pliku CSV</button>
+      <button type="button" class="niche-mode-tab" data-mode="empty">✏️ Pusta</button>
+    </div>
     <form id="import-form">
       <label for="niche-name">Nazwa niszy</label>
       <input type="text" id="niche-name" name="name" placeholder="np. Fryzjerzy" required>
 
-      <label for="niche-file">Plik CSV</label>
-      <input type="file" id="niche-file" name="file" accept=".csv,text/csv" required>
-      <div class="hint">Pierwszy wiersz pliku musi zawierac nazwy kolumn. Mapowanie kolumn (nazwa, telefon, tagi platform itd.) dobiera sie automatycznie.</div>
+      <div id="niche-mode-csv">
+        <label for="niche-file">Plik CSV</label>
+        <input type="file" id="niche-file" name="file" accept=".csv,text/csv">
+        <div class="hint">Pierwszy wiersz pliku musi zawierac nazwy kolumn. Mapowanie kolumn (nazwa, telefon, tagi platform itd.) dobiera sie automatycznie.</div>
+      </div>
+
+      <div id="niche-mode-empty" hidden>
+        <label>Kolumny tabeli</label>
+        <div class="col-picker" id="niche-columns"></div>
+        <div class="hint">Nisza powstanie pusta. Firma i kosz są zawsze; resztę zaznacz według potrzeb.</div>
+      </div>
 
       <div class="error" id="import-error" style="display:none;"></div>
 
       <div class="actions">
         <button type="button" class="btn" id="import-cancel">Anuluj</button>
-        <button type="submit" class="btn primary">Importuj</button>
+        <button type="submit" class="btn primary" id="import-submit">Importuj</button>
       </div>
     </form>
   </div>

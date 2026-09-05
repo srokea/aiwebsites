@@ -118,6 +118,24 @@ const PRICING = { oneTime: 300, monthly: 100 };
 // faktyczna date startu subskrypcji, jesli chcesz dokladne wyliczenie w kafelku "Netto".
 const EXPENSES = [{ name: "Claude Code", amount: 99.96, from: "2026-07-01" }];
 
+// Kolumny tabeli leadow, ktore mozna wlaczyc/wylaczyc per nisza (klucz = data-sort-id w
+// niche.html). "#", Firma i kosz sa zawsze. Pusta lista `columns` w niszy = wszystkie ponizsze.
+const LEAD_COLUMNS = [
+  { key: "city", label: "Miasto" },
+  { key: "phone", label: "Telefon" },
+  { key: "quality", label: "Jakość" },
+  { key: "social", label: "Social" },
+  { key: "answered", label: "Odebrał?" },
+  { key: "interested", label: "Zainteresowany?" },
+  { key: "caller", label: "Kto dzwonił" },
+  { key: "attempts", label: "Próby" },
+  { key: "reminder", label: "Reminder" },
+  { key: "callback", label: "Kiedy oddzwonić" },
+  { key: "gterm", label: "Termin Google" },
+  { key: "notes", label: "Notatki" },
+];
+const LEAD_COLUMN_KEYS = LEAD_COLUMNS.map((c) => c.key);
+
 module.exports = {
   INTERESTED_OPTIONS,
   INTERESTED_STATS_ORDER,
@@ -136,4 +154,6 @@ module.exports = {
   DAILY_GOAL,
   PRICING,
   EXPENSES,
+  LEAD_COLUMNS,
+  LEAD_COLUMN_KEYS,
 };

@@ -805,9 +805,37 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && callerModalEl) callerModalEl.classList.add("hidden");
 });
 
+let nicheMode = "csv"; // "csv" | "empty"
+
+function setNicheMode(mode) {
+  nicheMode = mode;
+  document.querySelectorAll(".niche-mode-tab").forEach((t) => t.classList.toggle("active", t.dataset.mode === mode));
+  document.getElementById("niche-mode-csv").hidden = mode !== "csv";
+  document.getElementById("niche-mode-empty").hidden = mode !== "empty";
+  document.getElementById("niche-file").required = mode === "csv";
+  document.getElementById("import-submit").textContent = mode === "csv" ? "Importuj" : "Utwórz niszę";
+}
+
+async function renderNicheColumnPicker() {
+  const box = document.getElementById("niche-columns");
+  if (!box) return;
+  if (!meta) {
+    try {
+      meta = await api.get("/api/meta");
+    } catch {
+      /* fallback: box zostaje pusty, serwer i tak przyjmie brak columns = wszystkie */
+    }
+  }
+  box.innerHTML = ((meta && meta.leadColumns) || [])
+    .map((c) => `<label class="col-pick"><input type="checkbox" value="${c.key}" checked> ${escapeHtml(c.label)}</label>`)
+    .join("");
+}
+
 function openModal() {
   document.getElementById("import-error").style.display = "none";
   document.getElementById("import-form").reset();
+  setNicheMode("csv");
+  renderNicheColumnPicker();
   document.getElementById("import-modal").classList.remove("hidden");
 }
 function closeModal() {
@@ -818,16 +846,25 @@ document.getElementById("import-cancel").addEventListener("click", closeModal);
 document.getElementById("import-modal").addEventListener("click", (e) => {
   if (e.target.id === "import-modal") closeModal();
 });
+document.querySelectorAll(".niche-mode-tab").forEach((tab) => {
+  tab.addEventListener("click", () => setNicheMode(tab.dataset.mode));
+});
 
 document.getElementById("import-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const errorEl = document.getElementById("import-error");
   errorEl.style.display = "none";
 
-  const submitBtn = e.target.querySelector("button[type=submit]");
+  const submitBtn = document.getElementById("import-submit");
   submitBtn.disabled = true;
   try {
-    const niche = await api.postForm("/api/niches/import", new FormData(e.target));
+    let niche;
+    if (nicheMode === "empty") {
+      const columns = [...document.querySelectorAll("#niche-columns input:checked")].map((el) => el.value);
+      niche = await api.post("/api/niches", { name: document.getElementById("niche-name").value.trim(), columns });
+    } else {
+      niche = await api.postForm("/api/niches/import", new FormData(e.target));
+    }
     closeModal();
     location.href = `/niche.html?slug=${encodeURIComponent(niche.slug)}`;
   } catch (err) {

@@ -8,19 +8,19 @@
 <meta property="og:title" content="Sklep Filiżanka — kawa i herbata, Wolbórz">
 <meta property="og:description" content="Sklep Filiżanka — kawa, herbata, miód i zestawy prezentowe w Wolbórzu. Odwiedź nas od poniedziałku do piątku 13:00–17:00.">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#1C1208">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%231C1208'/%3E%3Cg fill='none' stroke='%23C8922A' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M43 30q4-5 0-10M57 30q4-5 0-10'/%3E%3Cpath d='M28 40h34v10a17 17 0 0 1-34 0z'/%3E%3Cpath d='M62 44a8 8 0 0 1 0 14'/%3E%3Cpath d='M24 74h44'/%3E%3C/g%3E%3C/svg%3E">
+<meta name="theme-color" content="#130E06">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23130E06'/%3E%3Cg fill='none' stroke='%23A67828' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M43 30q4-5 0-10M57 30q4-5 0-10'/%3E%3Cpath d='M28 40h34v10a17 17 0 0 1-34 0z'/%3E%3Cpath d='M62 44a8 8 0 0 1 0 14'/%3E%3Cpath d='M24 74h44'/%3E%3C/g%3E%3C/svg%3E">
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Work+Sans:wght@400;500;600&display=swap');
 
 :root{
-  --bg:#1C1208;
-  --surface:#2A1E10;
+  --bg:#130E06;
+  --surface:#1E160A;
   --footer:#120D06;
-  --accent:#C8922A;
+  --accent:#A67828;
   --ink:#F2EBD9;
-  --muted:#B8A898;
+  --muted:#9A8878;
   --line:rgba(242,235,217,.10);
   --display:'Cormorant Garamond', Georgia, 'Times New Roman', serif;
   --body:'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
@@ -43,9 +43,9 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.15;margin:0}
 p{margin:0}
 
-.wrap{width:100%;max-width:1120px;margin:0 auto;padding:0 1.25rem}
+.wrap{width:100%;max-width:1100px;margin:0 auto;padding:0 2rem}
 section{padding:5rem 0;scroll-margin-top:76px}
-.sec-title{font-size:clamp(2rem,3.4vw,2.9rem);margin-bottom:2.5rem}
+.sec-title{font-size:clamp(2rem,3.4vw,2.9rem);margin-bottom:2.5rem;text-align:center}
 
 .skip{position:absolute;left:-9999px;top:0}
 .skip:focus{left:1rem;top:1rem;z-index:2000;background:var(--accent);color:var(--bg);padding:.75rem 1.25rem;border-radius:9999px}
@@ -66,11 +66,11 @@ section{padding:5rem 0;scroll-margin-top:76px}
 /* ---------- Navbar ---------- */
 .nav{
   position:sticky;top:0;z-index:100;
-  background:rgba(28,18,8,.85);
+  background:rgba(19,14,6,.85);
   -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
   border-bottom:1px solid rgba(242,235,217,.08);
 }
-.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:72px}
+.nav-inner{position:relative;display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:72px}
 .logo{display:flex;align-items:center;color:var(--ink);text-decoration:none}
 .logo svg{width:52px;height:52px;display:block}
 .nav-links{display:none;gap:2rem;align-items:center}
@@ -90,7 +90,7 @@ section{padding:5rem 0;scroll-margin-top:76px}
 
 .mobile-menu{
   position:fixed;inset:0;z-index:1000;
-  background:rgba(28,18,8,.98);
+  background:rgba(19,14,6,.98);
   -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;
   opacity:0;visibility:hidden;transition:opacity 250ms ease,visibility 250ms ease;
@@ -109,7 +109,7 @@ section{padding:5rem 0;scroll-margin-top:76px}
   padding:12px 20px;min-height:48px;border-radius:9999px;
   background:var(--accent);color:var(--bg);
   font-family:var(--body);font-size:.9rem;font-weight:600;text-decoration:none;
-  box-shadow:0 4px 24px rgba(200,146,42,.35);
+  box-shadow:0 4px 24px rgba(166,120,40,.35);
   transition:transform 200ms ease,filter 200ms ease;
 }
 .cart-fab:hover{filter:brightness(1.1);transform:scale(1.03)}
@@ -119,17 +119,19 @@ section{padding:5rem 0;scroll-margin-top:76px}
   /* 100vh minus sticky navbar — inaczej dolne CTA wypada pod krawędź ekranu */
   position:relative;min-height:calc(100vh - 72px);min-height:calc(100svh - 72px);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:4rem 1.25rem 4rem;
+  text-align:center;padding:2rem 1.25rem 4rem;
+  /* mniej pustki nad placeholderem + winieta po krawędziach */
+  box-shadow:inset 0 0 120px rgba(19,14,6,.8);
 }
 .hero::before{
   content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(circle at 50% 45%, rgba(200,146,42,.06) 0%, rgba(200,146,42,0) 62%);
+  background:radial-gradient(circle at 50% 45%, rgba(166,120,40,.06) 0%, rgba(166,120,40,0) 62%);
 }
 .hero > *{position:relative}
 .hero-anim{
   /* max-height trzyma hero w jednym ekranie na niskich oknach */
   width:100%;max-width:340px;max-height:46vh;aspect-ratio:3/4;
-  border:1px dashed rgba(200,146,42,.4);border-radius:1rem;
+  border:1px dashed rgba(166,120,40,.4);border-radius:1rem;
   display:flex;align-items:center;justify-content:center;text-align:center;padding:1rem;
   color:var(--accent);font-size:.8rem;letter-spacing:.02em;
 }
@@ -139,7 +141,7 @@ section{padding:5rem 0;scroll-margin-top:76px}
 
 @media (max-width:767px){
   /* dolny zapas, żeby CTA nie chowało się pod pływającym koszykiem */
-  .hero{padding:3rem 1.25rem 7.5rem}
+  .hero{padding:1.5rem 1.25rem 7.5rem}
   .hero-anim{max-height:30vh}
   .hero h1{margin-top:1.5rem}
   .hero-sub{font-size:1rem}
@@ -159,7 +161,7 @@ section{padding:5rem 0;scroll-margin-top:76px}
 .about-grid{display:grid;gap:2rem}
 .ph-photo{
   width:100%;aspect-ratio:4/5;border-radius:1rem;
-  border:1px dashed rgba(200,146,42,.3);
+  border:1px dashed rgba(166,120,40,.3);
   display:flex;align-items:center;justify-content:center;
   color:var(--muted);font-size:.8rem;letter-spacing:.02em;text-align:center;padding:1rem;
 }
@@ -178,66 +180,78 @@ section{padding:5rem 0;scroll-margin-top:76px}
 .tag:hover{border-color:var(--ink);color:var(--ink)}
 .tag.active{background:var(--accent);border-color:var(--accent);color:var(--bg)}
 
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* Karuzela + panel szczegółów: na desktopie dwie kolumny grida (karuzela / panel 320px),
+   panel stoi OBOK karuzeli, nie na karcie — dlatego nie może być position:absolute z ujemnym
+   przesunięciem poza .wrap (przy 1280–1440px zrobiłoby to poziomy scroll strony). Grid daje
+   ten sam efekt wizualny bez ryzyka przycięcia. */
+.carousel-shell{position:relative;display:grid;gap:1.5rem}
+
 .carousel{position:relative;overflow:hidden;border-radius:1.5rem;isolation:isolate}
 .carousel::before{
   content:'';position:absolute;z-index:0;top:50%;left:50%;
   width:100vw;height:100vw;
-  transform:translate(-50%,-50%) rotate(90deg) scale(1.5);
+  transform:translate(-50%,-50%) rotate(90deg) scale(1.6);
   background-image:url('photos/wood.jpg');
   background-size:cover;background-position:center;
 }
-.carousel::after{content:'';position:absolute;inset:0;z-index:1;background:rgba(28,18,8,.55)}
+.carousel::after{content:'';position:absolute;inset:0;z-index:1;background:rgba(19,14,6,.65)}
 .carousel-inner{position:relative;z-index:2;padding:2rem 0}
 
 .viewport{overflow:hidden}
 .track{display:flex;transition:transform 400ms cubic-bezier(.4,0,.2,1);will-change:transform}
-.slide{flex:0 0 100%;padding:0 .5rem}
+.slide{flex:0 0 100%;padding:0 .5rem;display:flex}
 
 .card{
-  background:rgba(28,18,8,.85);border-radius:1rem;padding:1.5rem;height:100%;
+  width:100%;display:flex;
   opacity:.5;transform:scale(.82);transform-origin:center;
   transition:opacity 400ms cubic-bezier(.4,0,.2,1),transform 400ms cubic-bezier(.4,0,.2,1);
 }
 .slide.is-active .card{opacity:1;transform:scale(1)}
 .slide:not(.is-active) .card{cursor:pointer}
 .card-img{
-  aspect-ratio:1/1;border-radius:.75rem;margin-bottom:1.1rem;
-  border:1px dashed rgba(200,146,42,.4);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--accent);font-size:.72rem;letter-spacing:.02em;text-align:center;padding:.75rem;
+  width:100%;aspect-ratio:3/4;border-radius:1rem;background:transparent;
+  border:2px dashed rgba(166,120,40,.5);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.65rem;
+  color:var(--accent);padding:1rem;
 }
-.card h3{font-size:1.3rem;color:var(--ink)}
-.card-desc{margin-top:.5rem;font-size:.875rem;color:var(--muted)}
-.card-price{margin-top:.9rem;color:var(--accent);font-weight:600;font-size:.95rem}
+.card-img svg{opacity:.85}
+.card-img span{font-size:.72rem;letter-spacing:.02em;text-align:center}
+.card-price{color:var(--accent);font-weight:600;font-size:.95rem}
+
+@media (min-width:900px){
+  .slide.is-active .card-img{min-width:280px}
+}
 
 .panel{
-  margin:1.25rem .5rem 0;padding:1.5rem;
-  background:rgba(42,30,16,.96);border-radius:1rem;
+  padding:2rem;background:var(--surface);border-radius:1rem;
+  border:1px solid rgba(166,120,40,.2);
   opacity:0;transition:opacity 300ms ease;
 }
 .panel.show{opacity:1}
 .panel h3{font-size:1.45rem;color:var(--ink)}
 .panel p{margin-top:.65rem;font-size:.9rem;color:var(--muted)}
-.panel .card-price{font-size:1.05rem}
+.panel .card-price{display:inline-block;margin-top:1rem;font-size:1.05rem}
+.panel-cta{margin-top:1.25rem}
 
-.carousel-shell{position:relative}
-.carousel-nav{display:flex;align-items:center;justify-content:center;gap:.35rem;margin-top:1rem}
+.carousel-nav{grid-column:1 / -1;display:flex;align-items:center;justify-content:center;gap:.35rem;margin-top:.25rem}
 
 .arrow{
   flex:0 0 auto;z-index:4;
   width:44px;height:44px;border-radius:9999px;
-  border:1px solid var(--accent);background:rgba(28,18,8,.7);
+  border:1px solid var(--accent);background:rgba(19,14,6,.7);
   display:flex;align-items:center;justify-content:center;
   transition:background-color 200ms ease;
 }
-.arrow:hover{background:rgba(28,18,8,.95)}
+.arrow:hover{background:rgba(19,14,6,.95)}
 .arrow svg{width:18px;height:18px;stroke:var(--accent)}
 
 .dots{display:flex;justify-content:center;gap:.15rem}
 .dot{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
 .dot::before{
   content:'';width:8px;height:8px;border-radius:9999px;
-  background:rgba(200,146,42,.3);transition:background-color 200ms ease,transform 200ms ease;
+  background:rgba(166,120,40,.3);transition:background-color 200ms ease,transform 200ms ease;
 }
 .dot.active::before{background:var(--accent);transform:scale(1.25)}
 
@@ -265,7 +279,7 @@ section{padding:5rem 0;scroll-margin-top:76px}
 .hours .row:first-child{border-top:1px solid rgba(242,235,217,.1)}
 .hours dt{color:var(--muted);font-size:.95rem;display:flex;align-items:center;gap:.5rem}
 .hours dd{margin:0;color:var(--ink);font-size:.95rem;font-variant-numeric:tabular-nums}
-.hours .row.today{background:rgba(200,146,42,.10)}
+.hours .row.today{background:rgba(166,120,40,.10)}
 .hours .row.today dt,.hours .row.today dd{color:var(--accent);font-weight:600}
 .today-badge{
   display:inline-flex;align-items:center;padding:.1rem .5rem;border-radius:9999px;
@@ -304,15 +318,20 @@ footer a:hover{color:var(--ink)}
 }
 
 @media (min-width:900px){
-  .nav-links{display:flex}
+  .nav-links{
+    display:flex;position:absolute;left:50%;top:50%;
+    transform:translate(-50%,-50%);
+  }
   .burger{display:none}
   section{scroll-margin-top:80px}
 
   .slide{flex:0 0 33.3333%}
   .carousel-inner{padding:2.5rem 0}
-  .panel{
-    position:absolute;top:1.25rem;right:1.25rem;width:34%;margin:0;z-index:3;
-  }
+
+  /* karuzela zajmuje resztę miejsca, panel ma stały pasek 320px obok */
+  .carousel-shell{grid-template-columns:minmax(0,1fr) 320px;align-items:start}
+  .panel{align-self:stretch}
+
   .arrow{position:absolute;top:calc(50% - 30px);transform:translateY(-50%)}
   .arrow-prev{left:1rem}
   .arrow-next{right:1rem}

@@ -12,6 +12,7 @@ const {
   TRANSACTION_CATEGORIES,
   NICHE_COLORS,
   DAILY_GOAL,
+  LEAD_COLUMNS,
 } = require("../constants");
 const { getCallers } = require("../callers");
 
@@ -36,6 +37,7 @@ router.get("/", (req, res) => {
     transactionCategories: TRANSACTION_CATEGORIES,
     nicheColors: NICHE_COLORS,
     dailyGoal: DAILY_GOAL,
+    leadColumns: LEAD_COLUMNS,
   });
 });
 

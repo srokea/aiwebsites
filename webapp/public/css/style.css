@@ -2948,3 +2948,65 @@ body.map-page { overflow: hidden; }
     width: auto; max-height: 58vh;
   }
 }
+
+/* ---------- reczne zakladanie niszy + wybor kolumn ---------- */
+.niche-mode-tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+.niche-mode-tab {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  background: var(--card-alt);
+  color: var(--muted);
+  border-radius: 9px;
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.niche-mode-tab:hover { color: var(--text); }
+.niche-mode-tab.active { border-color: var(--blue); color: var(--text); background: #17202e; }
+
+.col-picker {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px 12px;
+  margin: 4px 0 6px;
+}
+.col-pick,
+.add-lead-tag {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  color: var(--text);
+  cursor: pointer;
+}
+.col-pick input,
+.add-lead-tag input { accent-color: var(--blue); }
+
+#add-lead-fields { display: flex; flex-direction: column; gap: 10px; margin: 10px 0; }
+#add-lead-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .4px;
+}
+#add-lead-fields input,
+#add-lead-fields select {
+  background: #141414;
+  border: 1px solid #232323;
+  color: var(--text);
+  border-radius: 9px;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  text-transform: none;
+  letter-spacing: 0;
+}
+#add-lead-fields input:focus,
+#add-lead-fields select:focus { outline: none; border-color: var(--blue); }
+.add-lead-tags { border: 1px solid var(--border-soft); border-radius: 9px; padding: 8px 10px; display: flex; flex-wrap: wrap; gap: 10px; }
+.add-lead-tags legend { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; padding: 0 4px; }

@@ -86,6 +86,10 @@
       <select id="settings-script-file"></select>
       <div class="hint">Plik z <code>server/scriptsData/</code> — nowe pliki pojawiają się na liście automatycznie.</div>
 
+      <label>Kolumny tabeli</label>
+      <div class="col-picker" id="settings-columns"></div>
+      <div class="hint">Odznaczone kolumny znikają z tabeli i z formularza „Nowy lead". Firma i kosz są zawsze.</div>
+
       <div class="error" id="settings-error" style="display:none;"></div>
 
       <label>Dane</label>
@@ -110,13 +114,9 @@
       <label for="add-lead-name">Nazwa firmy</label>
       <input type="text" id="add-lead-name" placeholder="np. Barber King" required>
 
-      <label for="add-lead-city">Miasto</label>
-      <input type="text" id="add-lead-city" placeholder="np. Bełchatów">
+      <div id="add-lead-fields"></div>
 
-      <label for="add-lead-phone">Telefon</label>
-      <input type="text" id="add-lead-phone" placeholder="np. 500600700">
-
-      <div class="hint">Resztę (godziny, jakość, tagi) uzupełnisz od razu w tabeli — nowy lead ląduje na jej końcu.</div>
+      <div class="hint">Pola odpowiadają kolumnom tej niszy. Resztę uzupełnisz w tabeli — nowy lead ląduje na jej końcu.</div>
 
       <div class="error" id="add-lead-error" style="display:none;"></div>
 
