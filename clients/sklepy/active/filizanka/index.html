@@ -185,8 +185,14 @@ section{padding:5rem 0;scroll-margin-top:76px}
 /* Karuzela + panel szczegółów: na desktopie dwie kolumny grida (karuzela / panel 320px),
    panel stoi OBOK karuzeli, nie na karcie — dlatego nie może być position:absolute z ujemnym
    przesunięciem poza .wrap (przy 1280–1440px zrobiłoby to poziomy scroll strony). Grid daje
-   ten sam efekt wizualny bez ryzyka przycięcia. */
-.carousel-shell{position:relative;display:grid;gap:1.5rem}
+   ten sam efekt wizualny bez ryzyka przycięcia.
+   .carousel-col trzyma karuzelę i pasek nawigacji razem — dzięki temu strzałki (position:
+   absolute na desktopie) liczą swoje left/right względem szerokości SAMEJ karuzeli, a nie
+   całego grida z panelem obok. */
+.carousel-shell{display:grid;gap:1.5rem}
+/* min-width:0 — bez tego zagnieżdżona karuzela (flex bez zawijania) wymusza na komórce
+   grida szerokość swojej pełnej zawartości i strona dostaje poziomy scroll */
+.carousel-col{position:relative;min-width:0}
 
 .carousel{position:relative;overflow:hidden;border-radius:1.5rem;isolation:isolate}
 .carousel::before{
@@ -235,7 +241,7 @@ section{padding:5rem 0;scroll-margin-top:76px}
 .panel .card-price{display:inline-block;margin-top:1rem;font-size:1.05rem}
 .panel-cta{margin-top:1.25rem}
 
-.carousel-nav{grid-column:1 / -1;display:flex;align-items:center;justify-content:center;gap:.35rem;margin-top:.25rem}
+.carousel-nav{display:flex;align-items:center;justify-content:center;gap:.35rem;margin-top:1rem}
 
 .arrow{
   flex:0 0 auto;z-index:4;
@@ -331,6 +337,7 @@ footer a:hover{color:var(--ink)}
   /* karuzela zajmuje resztę miejsca, panel ma stały pasek 320px obok */
   .carousel-shell{grid-template-columns:minmax(0,1fr) 320px;align-items:start}
   .panel{align-self:stretch}
+  .carousel-nav{margin-top:1.25rem}
 
   .arrow{position:absolute;top:calc(50% - 30px);transform:translateY(-50%)}
   .arrow-prev{left:1rem}
@@ -424,9 +431,9 @@ footer a:hover{color:var(--ink)}
         <div class="ph-photo">[ZDJĘCIE WŁAŚCICIELKI]</div>
         <!-- TODO: zastąpić prawdziwym tekstem od właścicielki -->
         <div class="about-text">
-          <p>Filiżankę otworzyłam z prostego powodu — chciałam mieć u nas w okolicy miejsce, w którym kupi się herbatę wybraną z sercem, a nie zdjętą z półki w hipermarkecie.</p>
-          <p>Każdą kawę i każdą herbatę przywożę z niewielkich palarni i plantacji. Sama je parzę, próbuję i dopiero wtedy trafiają do sklepu — jeśli czegoś nie postawiłabym na własnym stole, nie znajdziecie tego u mnie.</p>
-          <p>Najbardziej lubię, kiedy ktoś wchodzi bez pomysłu, a wychodzi z czymś, o czym potem opowiada znajomym. Wpadnijcie — doradzę, opowiem i pozwolę powąchać wszystko, co mam na półkach.</p>
+          <p>Filiżankę otworzyłam z prostego powodu: chciałam mieć u nas w okolicy miejsce, w którym kupi się herbatę wybraną z sercem, a nie zdjętą z półki w hipermarkecie.</p>
+          <p>Każdą kawę i każdą herbatę przywożę z niewielkich palarni i plantacji. Sama je parzę, próbuję i dopiero wtedy trafiają do sklepu. Jeśli czegoś nie postawiłabym na własnym stole, nie znajdziecie tego u mnie.</p>
+          <p>Najbardziej lubię, kiedy ktoś wchodzi bez pomysłu, a wychodzi z czymś, o czym potem opowiada znajomym. Wpadnijcie, doradzę, opowiem i pozwolę powąchać wszystko, co mam na półkach.</p>
           <p class="about-sign">Właścicielka Filiżanki</p>
         </div>
       </div>
@@ -448,62 +455,62 @@ footer a:hover{color:var(--ink)}
       </div>
 
       <div class="carousel-shell">
+      <div class="carousel-col">
       <div class="carousel">
         <div class="carousel-inner">
           <div class="viewport" id="viewport" tabindex="0" role="region" aria-label="Karuzela produktów">
             <div class="track" id="track">
 
               <div class="slide"><article class="card">
-                <div class="card-img">[ZDJĘCIE PRODUKTU]</div>
-                <h3>Herbata z hibiskusem</h3>
-                <p class="card-desc">Kwiatowa, lekko kwaśna, idealna na zimno i ciepło</p>
-                <p class="card-price">od 18 zł</p>
+                <div class="card-img">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.2h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"></path><circle cx="12" cy="13.5" r="3.4"></circle></svg>
+                  <span>[ZDJĘCIE PRODUKTU]</span>
+                </div>
+                <h3 class="sr-only">Herbata z hibiskusem</h3>
               </article></div>
 
               <div class="slide"><article class="card">
-                <div class="card-img">[ZDJĘCIE PRODUKTU]</div>
-                <h3>Kawa Arabica Etiopia</h3>
-                <p class="card-desc">Owocowa, delikatna, z nutą jagód i cytrusów</p>
-                <p class="card-price">od 32 zł</p>
+                <div class="card-img">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.2h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"></path><circle cx="12" cy="13.5" r="3.4"></circle></svg>
+                  <span>[ZDJĘCIE PRODUKTU]</span>
+                </div>
+                <h3 class="sr-only">Kawa Arabica Etiopia</h3>
               </article></div>
 
               <div class="slide"><article class="card">
-                <div class="card-img">[ZDJĘCIE PRODUKTU]</div>
-                <h3>Miód kremowy z mango</h3>
-                <p class="card-desc">Naturalny, kremowy, wyjątkowo łagodny smak</p>
-                <p class="card-price">od 24 zł</p>
+                <div class="card-img">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.2h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"></path><circle cx="12" cy="13.5" r="3.4"></circle></svg>
+                  <span>[ZDJĘCIE PRODUKTU]</span>
+                </div>
+                <h3 class="sr-only">Miód kremowy z mango</h3>
               </article></div>
 
               <div class="slide"><article class="card">
-                <div class="card-img">[ZDJĘCIE PRODUKTU]</div>
-                <h3>Zestaw prezentowy</h3>
-                <p class="card-desc">Starannie zapakowany zestaw na każdą okazję</p>
-                <p class="card-price">od 89 zł</p>
+                <div class="card-img">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.2h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"></path><circle cx="12" cy="13.5" r="3.4"></circle></svg>
+                  <span>[ZDJĘCIE PRODUKTU]</span>
+                </div>
+                <h3 class="sr-only">Zestaw prezentowy</h3>
               </article></div>
 
               <div class="slide"><article class="card">
-                <div class="card-img">[ZDJĘCIE PRODUKTU]</div>
-                <h3>Syrop z czarnego bzu</h3>
-                <p class="card-desc">Domowy smak, naturalny skład, 250 ml</p>
-                <p class="card-price">od 16 zł</p>
+                <div class="card-img">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.2h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"></path><circle cx="12" cy="13.5" r="3.4"></circle></svg>
+                  <span>[ZDJĘCIE PRODUKTU]</span>
+                </div>
+                <h3 class="sr-only">Syrop z czarnego bzu</h3>
               </article></div>
 
               <div class="slide"><article class="card">
-                <div class="card-img">[ZDJĘCIE PRODUKTU]</div>
-                <h3>Czekolada biała</h3>
-                <p class="card-desc">Ręcznie robiona, receptura własna, 200 g</p>
-                <p class="card-price">od 22 zł</p>
+                <div class="card-img">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.2h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"></path><circle cx="12" cy="13.5" r="3.4"></circle></svg>
+                  <span>[ZDJĘCIE PRODUKTU]</span>
+                </div>
+                <h3 class="sr-only">Czekolada biała</h3>
               </article></div>
 
             </div>
           </div>
-
-          <aside class="panel" id="panel" aria-live="polite">
-            <h3 id="panel-name"></h3>
-            <p id="panel-desc"></p>
-            <p class="card-price" id="panel-price"></p>
-          </aside>
-
         </div>
       </div>
 
@@ -516,6 +523,14 @@ footer a:hover{color:var(--ink)}
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"></path></svg>
           </button>
         </div>
+      </div>
+
+      <aside class="panel" id="panel" aria-live="polite">
+        <h3 id="panel-name"></h3>
+        <p id="panel-desc"></p>
+        <p class="card-price" id="panel-price"></p>
+        <a class="btn btn-ghost panel-cta" href="#">Zobacz w sklepie →</a>
+      </aside>
       </div>
 
       <div class="products-more">

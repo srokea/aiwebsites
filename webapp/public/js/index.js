@@ -805,38 +805,23 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && callerModalEl) callerModalEl.classList.add("hidden");
 });
 
-let nicheMode = "csv"; // "csv" | "empty"
+// Nowa nisza: nazwa + opcjonalny plik CSV. Plik -> import; bez pliku -> pusta nisza
+// (wszystkie kolumny; zestaw kolumn zawezisz potem w ustawieniach niszy).
+const nicheFileInput = document.getElementById("niche-file");
 
-function setNicheMode(mode) {
-  nicheMode = mode;
-  document.querySelectorAll(".niche-mode-tab").forEach((t) => t.classList.toggle("active", t.dataset.mode === mode));
-  document.getElementById("niche-mode-csv").hidden = mode !== "csv";
-  document.getElementById("niche-mode-empty").hidden = mode !== "empty";
-  document.getElementById("niche-file").required = mode === "csv";
-  document.getElementById("import-submit").textContent = mode === "csv" ? "Importuj" : "Utwórz niszę";
-}
-
-async function renderNicheColumnPicker() {
-  const box = document.getElementById("niche-columns");
-  if (!box) return;
-  if (!meta) {
-    try {
-      meta = await api.get("/api/meta");
-    } catch {
-      /* fallback: box zostaje pusty, serwer i tak przyjmie brak columns = wszystkie */
-    }
-  }
-  box.innerHTML = ((meta && meta.leadColumns) || [])
-    .map((c) => `<label class="col-pick"><input type="checkbox" value="${c.key}" checked> ${escapeHtml(c.label)}</label>`)
-    .join("");
+function resetNicheFile() {
+  nicheFileInput.value = "";
+  document.getElementById("niche-file-name").textContent = "Bez pliku — nisza powstanie pusta";
+  document.getElementById("niche-file-btn").textContent = "Wybierz plik CSV…";
+  document.getElementById("niche-file-clear").hidden = true;
 }
 
 function openModal() {
   document.getElementById("import-error").style.display = "none";
   document.getElementById("import-form").reset();
-  setNicheMode("csv");
-  renderNicheColumnPicker();
+  resetNicheFile();
   document.getElementById("import-modal").classList.remove("hidden");
+  document.getElementById("niche-name").focus();
 }
 function closeModal() {
   document.getElementById("import-modal").classList.add("hidden");
@@ -846,8 +831,15 @@ document.getElementById("import-cancel").addEventListener("click", closeModal);
 document.getElementById("import-modal").addEventListener("click", (e) => {
   if (e.target.id === "import-modal") closeModal();
 });
-document.querySelectorAll(".niche-mode-tab").forEach((tab) => {
-  tab.addEventListener("click", () => setNicheMode(tab.dataset.mode));
+
+document.getElementById("niche-file-btn").addEventListener("click", () => nicheFileInput.click());
+document.getElementById("niche-file-clear").addEventListener("click", resetNicheFile);
+nicheFileInput.addEventListener("change", () => {
+  const f = nicheFileInput.files[0];
+  if (!f) return resetNicheFile();
+  document.getElementById("niche-file-name").textContent = f.name;
+  document.getElementById("niche-file-btn").textContent = "Zmień plik";
+  document.getElementById("niche-file-clear").hidden = false;
 });
 
 document.getElementById("import-form").addEventListener("submit", async (e) => {
@@ -858,13 +850,10 @@ document.getElementById("import-form").addEventListener("submit", async (e) => {
   const submitBtn = document.getElementById("import-submit");
   submitBtn.disabled = true;
   try {
-    let niche;
-    if (nicheMode === "empty") {
-      const columns = [...document.querySelectorAll("#niche-columns input:checked")].map((el) => el.value);
-      niche = await api.post("/api/niches", { name: document.getElementById("niche-name").value.trim(), columns });
-    } else {
-      niche = await api.postForm("/api/niches/import", new FormData(e.target));
-    }
+    const name = document.getElementById("niche-name").value.trim();
+    const niche = nicheFileInput.files[0]
+      ? await api.postForm("/api/niches/import", new FormData(e.target))
+      : await api.post("/api/niches", { name });
     closeModal();
     location.href = `/niche.html?slug=${encodeURIComponent(niche.slug)}`;
   } catch (err) {
