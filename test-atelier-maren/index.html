@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atelier Maren — Interior Design Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F3F1EC;
+    --ink:#26241F;
+    --ink-soft:#46433C;
+    --muted:#736F66;
+    --btn:#1A1917;
+    --btn-ink:#F7F5F1;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  .icon{width:1em;height:1em;flex:none}
+
+  /* ---------- Header ---------- */
+  .site-header{
+    position:absolute;
+    inset:0 0 auto 0;
+    z-index:10;
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+    padding:34px 52px;
+  }
+  .brand{
+    font-family:"Fraunces",Georgia,"Times New Roman",serif;
+    font-weight:400;
+    font-size:1.4rem;
+    letter-spacing:.01em;
+    color:var(--ink);
+    text-decoration:none;
+  }
+  .nav{
+    display:flex;
+    gap:44px;
+    justify-self:center;
+  }
+  .nav a{
+    color:var(--ink-soft);
+    text-decoration:none;
+    font-size:.95rem;
+    font-weight:400;
+    letter-spacing:.005em;
+    transition:color .18s ease;
+  }
+  .nav a:hover{color:var(--ink)}
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:var(--btn);
+    color:var(--btn-ink);
+    border:0;
+    border-radius:999px;
+    font-family:inherit;
+    text-decoration:none;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:transform .18s ease,background .18s ease;
+  }
+  .btn:hover{background:#000;transform:translateY(-1px)}
+
+  .btn--header{
+    justify-self:end;
+    padding:14px 26px;
+    font-size:.92rem;
+    font-weight:500;
+  }
+  .btn--header .icon{width:15px;height:15px}
+
+  .btn--cta{
+    padding:12px 12px 12px 34px;
+    font-size:1rem;
+    font-weight:500;
+  }
+  .btn--cta .cta-dot{
+    display:grid;
+    place-items:center;
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:rgba(247,245,241,.14);
+    border:1px solid rgba(247,245,241,.28);
+  }
+  .btn--cta .icon{width:16px;height:16px}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    overflow:hidden;
+    background:var(--bg);
+  }
+  .hero__photo{
+    position:absolute;
+    inset:0;
+    background:url("https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=2400&q=80") center 60% / cover no-repeat;
+    filter:brightness(1.3) saturate(.55) contrast(.94);
+    -webkit-mask-image:radial-gradient(112% 78% at 50% 44%,#000 20%,rgba(0,0,0,.45) 52%,rgba(0,0,0,.08) 74%,transparent 86%);
+    mask-image:radial-gradient(112% 78% at 50% 44%,#000 20%,rgba(0,0,0,.45) 52%,rgba(0,0,0,.08) 74%,transparent 86%);
+  }
+  .hero__veil{
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(56% 46% at 50% 40%,rgba(255,255,255,.94),rgba(255,255,255,.35) 55%,rgba(255,255,255,0) 78%),
+      linear-gradient(to bottom,rgba(243,241,236,.55),rgba(243,241,236,.42) 38%,rgba(243,241,236,.9) 86%,var(--bg));
+  }
+
+  .hero__inner{
+    position:relative;
+    z-index:2;
+    width:100%;
+    max-width:1180px;
+    margin:0 auto;
+    padding:150px 32px 96px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+
+  .eyebrow{
+    display:inline-block;
+    padding:11px 24px;
+    border-radius:999px;
+    background:#FBFAF8;
+    border:1px solid rgba(38,36,31,.06);
+    box-shadow:0 1px 3px rgba(38,36,31,.06);
+    color:var(--muted);
+    font-size:.72rem;
+    font-weight:500;
+    letter-spacing:.19em;
+    text-transform:uppercase;
+    margin-bottom:30px;
+  }
+
+  .hero h1{
+    margin:0 0 30px;
+    font-family:"Fraunces",Georgia,"Times New Roman",serif;
+    font-weight:400;
+    font-size:clamp(2.65rem,7vw,7.5rem);
+    line-height:1.07;
+    letter-spacing:-.018em;
+    color:var(--ink);
+  }
+
+  .hero p{
+    margin:0 0 42px;
+    max-width:72ch;
+    color:var(--muted);
+    font-size:1.16rem;
+    line-height:1.62;
+  }
+
+  @media (max-width:820px){
+    .hero h1 br,.hero p br{display:none}
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:820px){
+    .site-header{padding:24px 22px}
+    .nav{display:none}
+    .site-header{grid-template-columns:1fr auto}
+    .hero__inner{padding:132px 22px 80px}
+    .hero p{font-size:1.05rem}
+    .btn--cta{padding-left:26px}
+
+    /* Phone: photo box == the rendered image, so the mask fades its real
+       top + bottom edges to nothing. No point where cream "ends" and photo "starts". */
+    .hero__photo{
+      top:50%;
+      bottom:auto;
+      left:0;
+      right:0;
+      width:100%;
+      aspect-ratio:1.35;
+      transform:translateY(-50%);
+      background-position:center center;
+      background-size:cover;
+      -webkit-mask-image:linear-gradient(to bottom,
+        transparent 0%,rgba(0,0,0,.10) 16%,#000 42%,#000 58%,rgba(0,0,0,.10) 84%,transparent 100%);
+      -webkit-mask-composite:add;
+      mask-image:linear-gradient(to bottom,
+        transparent 0%,rgba(0,0,0,.10) 16%,#000 42%,#000 58%,rgba(0,0,0,.10) 84%,transparent 100%);
+      mask-composite:add;
+    }
+    .hero__veil{
+      background:
+        radial-gradient(66% 40% at 50% 44%,rgba(255,255,255,.5),rgba(255,255,255,0) 76%),
+        linear-gradient(to bottom,
+          var(--bg) 0%,
+          rgba(243,241,236,.1) 36%,
+          rgba(243,241,236,.1) 62%,
+          var(--bg) 100%);
+    }
+  }
+</style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="brand" href="#">Atelier Maren</a>
+    <nav class="nav">
+      <a href="#">Projects</a>
+      <a href="#">Studio</a>
+      <a href="#">Services</a>
+      <a href="#">Contact</a>
+    </nav>
+    <a class="btn btn--header" href="#">
+      Book Consultation
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+    </a>
+  </header>
+
+  <section class="hero">
+    <div class="hero__photo"></div>
+    <div class="hero__veil"></div>
+
+    <div class="hero__inner">
+      <span class="eyebrow">Interior Design Studio</span>
+      <h1>Spaces shaped <br>by light and <br>intention</h1>
+      <p>We create residential interiors that balance refined materiality with the rhythm of <br>daily life. Every project begins with listening.</p>
+      <a class="btn btn--cta" href="#">
+        Explore Our Work
+        <span class="cta-dot">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+        </span>
+      </a>
+    </div>
+  </section>
+
+</body>
+</html>

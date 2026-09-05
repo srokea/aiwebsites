@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sklep Filiżanka — kawa i herbata, Wolbórz</title>
+<meta name="description" content="Sklep Filiżanka — kawa, herbata, miód i zestawy prezentowe w Wolbórzu. Odwiedź nas od poniedziałku do piątku 13:00–17:00.">
+<meta property="og:title" content="Sklep Filiżanka — kawa i herbata, Wolbórz">
+<meta property="og:description" content="Sklep Filiżanka — kawa, herbata, miód i zestawy prezentowe w Wolbórzu. Odwiedź nas od poniedziałku do piątku 13:00–17:00.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#1C1208">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%231C1208'/%3E%3Cg fill='none' stroke='%23C8922A' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M43 30q4-5 0-10M57 30q4-5 0-10'/%3E%3Cpath d='M28 40h34v10a17 17 0 0 1-34 0z'/%3E%3Cpath d='M62 44a8 8 0 0 1 0 14'/%3E%3Cpath d='M24 74h44'/%3E%3C/g%3E%3C/svg%3E">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Work+Sans:wght@400;500;600&display=swap');
+
+:root{
+  --bg:#1C1208;
+  --surface:#2A1E10;
+  --footer:#120D06;
+  --accent:#C8922A;
+  --ink:#F2EBD9;
+  --muted:#B8A898;
+  --line:rgba(242,235,217,.10);
+  --display:'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --body:'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:1rem;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.15;margin:0}
+p{margin:0}
+
+.wrap{width:100%;max-width:1120px;margin:0 auto;padding:0 1.25rem}
+section{padding:5rem 0;scroll-margin-top:76px}
+.sec-title{font-size:clamp(2rem,3.4vw,2.9rem);margin-bottom:2.5rem}
+
+.skip{position:absolute;left:-9999px;top:0}
+.skip:focus{left:1rem;top:1rem;z-index:2000;background:var(--accent);color:var(--bg);padding:.75rem 1.25rem;border-radius:9999px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+/* ---------- Przyciski ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.55rem;
+  min-height:48px;padding:.75rem 1.6rem;border-radius:9999px;
+  font-size:.9rem;font-weight:600;letter-spacing:.01em;text-decoration:none;
+  transition:background-color 200ms ease,color 200ms ease,border-color 200ms ease,filter 200ms ease;
+}
+.btn-primary{background:var(--accent);color:var(--bg)}
+.btn-primary:hover{filter:brightness(1.1)}
+.btn-ghost{border:1px solid var(--muted);color:var(--muted)}
+.btn-ghost:hover{border-color:var(--ink);color:var(--ink)}
+
+/* ---------- Navbar ---------- */
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(28,18,8,.85);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(242,235,217,.08);
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:72px}
+.logo{display:flex;align-items:center;color:var(--ink);text-decoration:none}
+.logo svg{width:52px;height:52px;display:block}
+.nav-links{display:none;gap:2rem;align-items:center}
+.navlink{
+  font-size:.9rem;color:var(--muted);text-decoration:none;
+  display:inline-flex;align-items:center;min-height:44px;
+  transition:color 200ms ease;
+}
+.navlink:hover{color:var(--ink)}
+.navlink.active{color:var(--accent)}
+
+.burger{display:inline-flex;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;align-items:center}
+.burger span{display:block;width:22px;height:1.5px;background:var(--ink);transition:transform 250ms ease,opacity 200ms ease}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+.mobile-menu{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(28,18,8,.98);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;
+  opacity:0;visibility:hidden;transition:opacity 250ms ease,visibility 250ms ease;
+}
+.mobile-menu.open{opacity:1;visibility:visible}
+.mobile-menu a{
+  font-family:var(--display);font-size:2rem;color:var(--ink);text-decoration:none;
+  padding:.75rem 1.5rem;min-height:44px;display:flex;align-items:center;
+}
+.mobile-menu .m-close{position:absolute;top:12px;right:1.25rem}
+
+/* ---------- Koszyk pływający ---------- */
+.cart-fab{
+  position:fixed;bottom:24px;right:24px;z-index:999;
+  display:inline-flex;align-items:center;gap:.55rem;
+  padding:12px 20px;min-height:48px;border-radius:9999px;
+  background:var(--accent);color:var(--bg);
+  font-family:var(--body);font-size:.9rem;font-weight:600;text-decoration:none;
+  box-shadow:0 4px 24px rgba(200,146,42,.35);
+  transition:transform 200ms ease,filter 200ms ease;
+}
+.cart-fab:hover{filter:brightness(1.1);transform:scale(1.03)}
+
+/* ---------- Hero ---------- */
+.hero{
+  /* 100vh minus sticky navbar — inaczej dolne CTA wypada pod krawędź ekranu */
+  position:relative;min-height:calc(100vh - 72px);min-height:calc(100svh - 72px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:4rem 1.25rem 4rem;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 50% 45%, rgba(200,146,42,.06) 0%, rgba(200,146,42,0) 62%);
+}
+.hero > *{position:relative}
+.hero-anim{
+  /* max-height trzyma hero w jednym ekranie na niskich oknach */
+  width:100%;max-width:340px;max-height:46vh;aspect-ratio:3/4;
+  border:1px dashed rgba(200,146,42,.4);border-radius:1rem;
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:1rem;
+  color:var(--accent);font-size:.8rem;letter-spacing:.02em;
+}
+.hero h1{margin-top:2rem;font-size:clamp(2.4rem,4vw,3.8rem);color:var(--ink)}
+.hero-sub{margin-top:1rem;max-width:34rem;color:var(--muted);font-size:1.05rem}
+.hero-cta{display:flex;flex-direction:column;gap:12px;margin-top:2.25rem;width:100%;max-width:300px}
+
+@media (max-width:767px){
+  /* dolny zapas, żeby CTA nie chowało się pod pływającym koszykiem */
+  .hero{padding:3rem 1.25rem 7.5rem}
+  .hero-anim{max-height:30vh}
+  .hero h1{margin-top:1.5rem}
+  .hero-sub{font-size:1rem}
+  .hero-cta{margin-top:1.75rem}
+}
+
+/* niskie telefony — hero nadal ma się zmieścić na jednym ekranie */
+@media (max-width:767px) and (max-height:720px){
+  .hero-anim{max-height:24vh}
+  .hero h1{margin-top:1rem}
+  .hero-sub{margin-top:.75rem}
+  .hero-cta{margin-top:1.25rem}
+}
+
+/* ---------- O nas ---------- */
+.about{background:var(--surface)}
+.about-grid{display:grid;gap:2rem}
+.ph-photo{
+  width:100%;aspect-ratio:4/5;border-radius:1rem;
+  border:1px dashed rgba(200,146,42,.3);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:.8rem;letter-spacing:.02em;text-align:center;padding:1rem;
+}
+.about-text p{color:var(--muted);margin-bottom:1.1rem;max-width:38rem}
+.about-text p:last-child{margin-bottom:0}
+.about-sign{font-family:var(--display);font-size:1.35rem;color:var(--ink)}
+
+/* ---------- Produkty ---------- */
+.tags{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:2rem}
+.tag{
+  min-height:44px;padding:.5rem 1.15rem;border-radius:9999px;
+  border:1px solid var(--muted);color:var(--muted);
+  font-size:.85rem;font-weight:500;
+  transition:background-color 200ms ease,color 200ms ease,border-color 200ms ease;
+}
+.tag:hover{border-color:var(--ink);color:var(--ink)}
+.tag.active{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+
+.carousel{position:relative;overflow:hidden;border-radius:1.5rem;isolation:isolate}
+.carousel::before{
+  content:'';position:absolute;z-index:0;top:50%;left:50%;
+  width:100vw;height:100vw;
+  transform:translate(-50%,-50%) rotate(90deg) scale(1.5);
+  background-image:url('photos/wood.jpg');
+  background-size:cover;background-position:center;
+}
+.carousel::after{content:'';position:absolute;inset:0;z-index:1;background:rgba(28,18,8,.55)}
+.carousel-inner{position:relative;z-index:2;padding:2rem 0}
+
+.viewport{overflow:hidden}
+.track{display:flex;transition:transform 400ms cubic-bezier(.4,0,.2,1);will-change:transform}
+.slide{flex:0 0 100%;padding:0 .5rem}
+
+.card{
+  background:rgba(28,18,8,.85);border-radius:1rem;padding:1.5rem;height:100%;
+  opacity:.5;transform:scale(.82);transform-origin:center;
+  transition:opacity 400ms cubic-bezier(.4,0,.2,1),transform 400ms cubic-bezier(.4,0,.2,1);
+}
+.slide.is-active .card{opacity:1;transform:scale(1)}
+.slide:not(.is-active) .card{cursor:pointer}
+.card-img{
+  aspect-ratio:1/1;border-radius:.75rem;margin-bottom:1.1rem;
+  border:1px dashed rgba(200,146,42,.4);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--accent);font-size:.72rem;letter-spacing:.02em;text-align:center;padding:.75rem;
+}
+.card h3{font-size:1.3rem;color:var(--ink)}
+.card-desc{margin-top:.5rem;font-size:.875rem;color:var(--muted)}
+.card-price{margin-top:.9rem;color:var(--accent);font-weight:600;font-size:.95rem}
+
+.panel{
+  margin:1.25rem .5rem 0;padding:1.5rem;
+  background:rgba(42,30,16,.96);border-radius:1rem;
+  opacity:0;transition:opacity 300ms ease;
+}
+.panel.show{opacity:1}
+.panel h3{font-size:1.45rem;color:var(--ink)}
+.panel p{margin-top:.65rem;font-size:.9rem;color:var(--muted)}
+.panel .card-price{font-size:1.05rem}
+
+.carousel-shell{position:relative}
+.carousel-nav{display:flex;align-items:center;justify-content:center;gap:.35rem;margin-top:1rem}
+
+.arrow{
+  flex:0 0 auto;z-index:4;
+  width:44px;height:44px;border-radius:9999px;
+  border:1px solid var(--accent);background:rgba(28,18,8,.7);
+  display:flex;align-items:center;justify-content:center;
+  transition:background-color 200ms ease;
+}
+.arrow:hover{background:rgba(28,18,8,.95)}
+.arrow svg{width:18px;height:18px;stroke:var(--accent)}
+
+.dots{display:flex;justify-content:center;gap:.15rem}
+.dot{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+.dot::before{
+  content:'';width:8px;height:8px;border-radius:9999px;
+  background:rgba(200,146,42,.3);transition:background-color 200ms ease,transform 200ms ease;
+}
+.dot.active::before{background:var(--accent);transform:scale(1.25)}
+
+.products-more{display:flex;justify-content:center;margin-top:2rem}
+.carousel-nav .dots{margin:0 .35rem}
+
+/* ---------- Kontakt ---------- */
+.contact{background:var(--surface)}
+.contact-grid{display:grid;gap:2.5rem}
+.c-label{font-size:.78rem;letter-spacing:.06em;color:var(--muted);margin-bottom:.35rem}
+.c-address{font-family:var(--display);font-size:1.5rem;color:var(--ink)}
+.c-phone{
+  display:inline-flex;align-items:center;gap:.5rem;min-height:44px;
+  font-size:1.4rem;font-family:var(--display);color:var(--accent);text-decoration:none;
+}
+.c-phone:hover{text-decoration:underline;text-underline-offset:4px}
+.c-block{margin-bottom:2rem}
+
+.hours{margin:0}
+.hours .row{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.85rem .75rem;border-bottom:1px solid rgba(242,235,217,.1);
+  border-radius:.5rem;
+}
+.hours .row:first-child{border-top:1px solid rgba(242,235,217,.1)}
+.hours dt{color:var(--muted);font-size:.95rem;display:flex;align-items:center;gap:.5rem}
+.hours dd{margin:0;color:var(--ink);font-size:.95rem;font-variant-numeric:tabular-nums}
+.hours .row.today{background:rgba(200,146,42,.10)}
+.hours .row.today dt,.hours .row.today dd{color:var(--accent);font-weight:600}
+.today-badge{
+  display:inline-flex;align-items:center;padding:.1rem .5rem;border-radius:9999px;
+  background:var(--accent);color:var(--bg);
+  font-size:.62rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+}
+
+.socials{display:flex;gap:.5rem;margin-top:1.5rem}
+.social{
+  width:44px;height:44px;border-radius:9999px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--accent);transition:filter 200ms ease;
+}
+.social:hover{filter:brightness(1.2)}
+.social svg{width:22px;height:22px}
+
+.map-wrap{overflow:hidden;border-radius:1rem;line-height:0}
+.map-wrap iframe{
+  display:block;width:100%;height:260px;border:0;
+  filter:sepia(50%) brightness(.65) hue-rotate(5deg) contrast(1.1);
+}
+.map-cta{margin-top:1rem;display:flex}
+
+/* ---------- Stopka ---------- */
+footer{background:var(--footer);padding:2rem 1.25rem;text-align:center;padding-bottom:6rem}
+footer p{font-size:.8rem;color:var(--muted)}
+footer a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+footer a:hover{color:var(--ink)}
+
+/* ---------- Desktop ---------- */
+@media (min-width:768px){
+  .contact-grid{grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+  .map-wrap iframe{height:320px}
+  .hero-cta{flex-direction:row;justify-content:center;max-width:none;width:auto}
+  .about-grid{grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+}
+
+@media (min-width:900px){
+  .nav-links{display:flex}
+  .burger{display:none}
+  section{scroll-margin-top:80px}
+
+  .slide{flex:0 0 33.3333%}
+  .carousel-inner{padding:2.5rem 0}
+  .panel{
+    position:absolute;top:1.25rem;right:1.25rem;width:34%;margin:0;z-index:3;
+  }
+  .arrow{position:absolute;top:calc(50% - 30px);transform:translateY(-50%)}
+  .arrow-prev{left:1rem}
+  .arrow-next{right:1rem}
+}
+
+/* ---------- Ograniczony ruch ---------- */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    transition:none !important;
+    animation:none !important;
+  }
+  .track{transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#tresc">Przejdź do treści</a>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="logo" href="#top" aria-label="Sklep Filiżanka — strona główna">
+      <svg viewBox="0 0 100 100" role="img" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4">
+        <defs>
+          <path id="arcTop" d="M 14.5,50 A 35.5,35.5 0 0 1 85.5,50"></path>
+        </defs>
+        <circle cx="50" cy="50" r="48"></circle>
+        <circle cx="50" cy="50" r="42" stroke-width="0.9"></circle>
+        <text fill="currentColor" stroke="none" font-family="'Work Sans',sans-serif" font-size="8" font-weight="500" letter-spacing="1.25">
+          <textPath href="#arcTop" startOffset="50%" text-anchor="middle">KAWA &amp; HERBATA</textPath>
+        </text>
+        <path d="M 43,36 q 3.5,-4 0,-8" stroke-width="1.2" stroke-linecap="round"></path>
+        <path d="M 50,36 q 3.5,-4 0,-8" stroke-width="1.2" stroke-linecap="round"></path>
+        <path d="M 57,36 q 3.5,-4 0,-8" stroke-width="1.2" stroke-linecap="round"></path>
+        <path d="M 34,42 h 26 v 7 a 13,13 0 0 1 -26,0 z" stroke-linejoin="round"></path>
+        <path d="M 60,45 a 7,7 0 0 1 0,12" stroke-linecap="round"></path>
+        <path d="M 28,64 h 38" stroke-linecap="round"></path>
+        <path d="M 20,70 h 60 l -6,7 6,7 h -60 l 6,-7 z" stroke-width="1"></path>
+        <text x="50" y="80.5" fill="currentColor" stroke="none" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-size="9" font-weight="600" letter-spacing="0.6">FILIŻANKA</text>
+      </svg>
+    </a>
+
+    <nav class="nav-links" aria-label="Nawigacja główna">
+      <a class="navlink" data-nav="o-nas" href="#o-nas">O nas</a>
+      <a class="navlink" data-nav="produkty" href="#produkty">Produkty</a>
+      <a class="navlink" data-nav="kontakt" href="#kontakt">Kontakt</a>
+    </nav>
+
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="mobile-menu" aria-label="Otwórz menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu" hidden>
+  <button class="burger m-close" id="burger-close" aria-label="Zamknij menu" aria-expanded="true">
+    <span></span><span></span><span></span>
+  </button>
+  <a href="#o-nas">O nas</a>
+  <a href="#produkty">Produkty</a>
+  <a href="#kontakt">Kontakt</a>
+</div>
+
+<a class="cart-fab" href="#" aria-label="Przejdź do sklepu internetowego">
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.55L21 8H6"></path>
+    <circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"></circle>
+    <circle cx="18" cy="20" r="1.4" fill="currentColor" stroke="none"></circle>
+  </svg>
+  Sklep
+</a>
+
+<main id="tresc">
+
+  <section class="hero" id="top">
+    <div class="hero-anim">[ANIMACJA — torebka herbaty / kawy]</div>
+    <h1>Kawa &amp; Herbata z pasją</h1>
+    <p class="hero-sub">Wybrane smaki z całego świata. Znajdź nas w Wolbórzu.</p>
+    <div class="hero-cta">
+      <a class="btn btn-ghost" href="#kontakt">Odwiedź nas</a>
+      <a class="btn btn-primary" href="#produkty">Zobacz produkty</a>
+    </div>
+  </section>
+
+  <section class="about" id="o-nas">
+    <div class="wrap">
+      <h2 class="sec-title">O nas</h2>
+      <div class="about-grid">
+        <div class="ph-photo">[ZDJĘCIE WŁAŚCICIELKI]</div>
+        <!-- TODO: zastąpić prawdziwym tekstem od właścicielki -->
+        <div class="about-text">
+          <p>Filiżankę otworzyłam z prostego powodu — chciałam mieć u nas w okolicy miejsce, w którym kupi się herbatę wybraną z sercem, a nie zdjętą z półki w hipermarkecie.</p>
+          <p>Każdą kawę i każdą herbatę przywożę z niewielkich palarni i plantacji. Sama je parzę, próbuję i dopiero wtedy trafiają do sklepu — jeśli czegoś nie postawiłabym na własnym stole, nie znajdziecie tego u mnie.</p>
+          <p>Najbardziej lubię, kiedy ktoś wchodzi bez pomysłu, a wychodzi z czymś, o czym potem opowiada znajomym. Wpadnijcie — doradzę, opowiem i pozwolę powąchać wszystko, co mam na półkach.</p>
+          <p class="about-sign">Właścicielka Filiżanki</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="produkty">
+    <div class="wrap">
+      <h2 class="sec-title">Nasze produkty</h2>
+
+      <!-- Tagi na razie dekoracyjne — filtrowanie do podpięcia razem ze sklepem -->
+      <div class="tags" role="group" aria-label="Kategorie produktów">
+        <button class="tag" type="button" aria-pressed="false">Kawa</button>
+        <button class="tag" type="button" aria-pressed="false">Herbata</button>
+        <button class="tag" type="button" aria-pressed="false">Miód</button>
+        <button class="tag" type="button" aria-pressed="false">Czekolada</button>
+        <button class="tag" type="button" aria-pressed="false">Zestawy</button>
+        <button class="tag" type="button" aria-pressed="false">Akcesoria</button>
+      </div>
+
+      <div class="carousel-shell">
+      <div class="carousel">
+        <div class="carousel-inner">
+          <div class="viewport" id="viewport" tabindex="0" role="region" aria-label="Karuzela produktów">
+            <div class="track" id="track">
+
+              <div class="slide"><article class="card">
+                <div class="card-img">[ZDJĘCIE PRODUKTU]</div>
+                <h3>Herbata z hibiskusem</h3>
+                <p class="card-desc">Kwiatowa, lekko kwaśna, idealna na zimno i ciepło</p>
+                <p class="card-price">od 18 zł</p>
+              </article></div>
+
+              <div class="slide"><article class="card">
+                <div class="card-img">[ZDJĘCIE PRODUKTU]</div>
+                <h3>Kawa Arabica Etiopia</h3>
+                <p class="card-desc">Owocowa, delikatna, z nutą jagód i cytrusów</p>
+                <p class="card-price">od 32 zł</p>
+              </article></div>
+
+              <div class="slide"><article class="card">
+                <div class="card-img">[ZDJĘCIE PRODUKTU]</div>
+                <h3>Miód kremowy z mango</h3>
+                <p class="card-desc">Naturalny, kremowy, wyjątkowo łagodny smak</p>
+                <p class="card-price">od 24 zł</p>
+              </article></div>
+
+              <div class="slide"><article class="card">
+                <div class="card-img">[ZDJĘCIE PRODUKTU]</div>
+                <h3>Zestaw prezentowy</h3>
+                <p class="card-desc">Starannie zapakowany zestaw na każdą okazję</p>
+                <p class="card-price">od 89 zł</p>
+              </article></div>
+
+              <div class="slide"><article class="card">
+                <div class="card-img">[ZDJĘCIE PRODUKTU]</div>
+                <h3>Syrop z czarnego bzu</h3>
+                <p class="card-desc">Domowy smak, naturalny skład, 250 ml</p>
+                <p class="card-price">od 16 zł</p>
+              </article></div>
+
+              <div class="slide"><article class="card">
+                <div class="card-img">[ZDJĘCIE PRODUKTU]</div>
+                <h3>Czekolada biała</h3>
+                <p class="card-desc">Ręcznie robiona, receptura własna, 200 g</p>
+                <p class="card-price">od 22 zł</p>
+              </article></div>
+
+            </div>
+          </div>
+
+          <aside class="panel" id="panel" aria-live="polite">
+            <h3 id="panel-name"></h3>
+            <p id="panel-desc"></p>
+            <p class="card-price" id="panel-price"></p>
+          </aside>
+
+        </div>
+      </div>
+
+        <div class="carousel-nav">
+          <button class="arrow arrow-prev" id="prev" type="button" aria-label="Poprzedni produkt">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5 8 12l7 7"></path></svg>
+          </button>
+          <div class="dots" id="dots" role="tablist" aria-label="Wybierz produkt"></div>
+          <button class="arrow arrow-next" id="next" type="button" aria-label="Następny produkt">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="products-more">
+        <a class="btn btn-ghost" href="#" target="_blank" rel="noopener">Zobacz więcej na Facebooku →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="kontakt">
+    <div class="wrap">
+      <h2 class="sec-title">Znajdź nas</h2>
+      <div class="contact-grid">
+
+        <div>
+          <div class="c-block">
+            <p class="c-label">Adres</p>
+            <p class="c-address">Psary Stare 39A<br>97-320 Wolbórz</p>
+          </div>
+
+          <div class="c-block">
+            <p class="c-label">Telefon</p>
+            <a class="c-phone" href="tel:515313127">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+              515 313 127
+            </a>
+          </div>
+
+          <div class="c-block">
+            <p class="c-label">Godziny otwarcia</p>
+            <dl class="hours">
+              <div class="row" data-days="1,2,3,4,5">
+                <dt>Poniedziałek–Piątek</dt>
+                <dd>13:00–17:00</dd>
+              </div>
+              <div class="row" data-days="6,0">
+                <dt>Sobota–Niedziela</dt>
+                <dd>Zamknięte</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div>
+            <p class="c-label">Social media</p>
+            <div class="socials">
+              <a class="social" href="#" target="_blank" rel="noopener" aria-label="Facebook — Sklep Filiżanka">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
+              </a>
+              <a class="social" href="#" target="_blank" rel="noopener" aria-label="Instagram — Sklep Filiżanka">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.62.07 4.81s0 3.56-.07 4.81c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.16-1.06.36-2.23.41-1.25.06-1.62.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.56 2.2 15.19 2.2 12s0-3.56.07-4.81c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.44 2.21 8.8 2.2 12 2.2m0 1.98c-3.14 0-3.51.01-4.75.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.05-1.15-.24-1.77-.4-2.18a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.75-.07m0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9m0 8.99a3.54 3.54 0 1 0 0-7.08 3.54 3.54 0 0 0 0 7.08m6.94-9.21a1.27 1.27 0 1 1-2.55 0 1.27 1.27 0 0 1 2.55 0"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="map-wrap">
+            <iframe
+              src="https://www.google.com/maps?q=Psary%20Stare%2039A%2C%2097-320%20Wolb%C3%B3rz&hl=pl&z=15&output=embed"
+              title="Mapa dojazdu — Psary Stare 39A, 97-320 Wolbórz"
+              loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+          <div class="map-cta">
+            <a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&destination=Psary%20Stare%2039A%2C%2097-320%20Wolb%C3%B3rz" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7m0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5"/></svg>
+              Wyznacz trasę →
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>© 2025 Sklep Filiżanka · <a href="#">Polityka prywatności</a> · Psary Stare, Wolbórz</p>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- Menu mobilne ---------- */
+  var burger = document.getElementById('burger');
+  var menu = document.getElementById('mobile-menu');
+  var closeBtn = document.getElementById('burger-close');
+
+  function setMenu(open) {
+    if (open) menu.hidden = false;
+    requestAnimationFrame(function () { menu.classList.toggle('open', open); });
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Zamknij menu' : 'Otwórz menu');
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (!open) window.setTimeout(function () { if (!menu.classList.contains('open')) menu.hidden = true; }, 260);
+  }
+  burger.addEventListener('click', function () { setMenu(burger.getAttribute('aria-expanded') !== 'true'); });
+  closeBtn.addEventListener('click', function () { setMenu(false); burger.focus(); });
+  menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && menu.classList.contains('open')) { setMenu(false); burger.focus(); }
+  });
+
+  /* ---------- Scroll-spy ---------- */
+  if ('IntersectionObserver' in window) {
+    var links = {};
+    document.querySelectorAll('.navlink[data-nav]').forEach(function (a) { links[a.dataset.nav] = a; });
+    var current = null;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        if (current) current.classList.remove('active');
+        current = links[entry.target.id] || null;
+        if (current) current.classList.add('active');
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    Object.keys(links).forEach(function (id) {
+      var section = document.getElementById(id);
+      if (section) observer.observe(section);
+    });
+  }
+
+  /* ---------- Tagi (na razie dekoracyjne) ---------- */
+  document.querySelectorAll('.tag').forEach(function (tag) {
+    tag.addEventListener('click', function () {
+      var wasActive = tag.classList.contains('active');
+      document.querySelectorAll('.tag').forEach(function (t) {
+        t.classList.remove('active');
+        t.setAttribute('aria-pressed', 'false');
+      });
+      if (!wasActive) { tag.classList.add('active'); tag.setAttribute('aria-pressed', 'true'); }
+    });
+  });
+
+  /* ---------- Karuzela ---------- */
+  var details = [
+    { n: 'Herbata z hibiskusem',  d: 'Kwiatowa, lekko kwaśna herbata o głębokiej rubinowej barwie. Smakuje równie dobrze na ciepło zimowym wieczorem, jak i schłodzona z plasterkiem cytryny.', p: 'od 18 zł' },
+    { n: 'Kawa Arabica Etiopia',  d: 'Owocowa i delikatna, z wyraźną nutą leśnych jagód i cytrusów. Palona w małych partiach, mielimy ją na miejscu pod Twój sposób parzenia.', p: 'od 32 zł' },
+    { n: 'Miód kremowy z mango',  d: 'Naturalny miód kremowany z dodatkiem mango, o wyjątkowo łagodnym smaku. Nie krystalizuje, więc bez trudu rozsmarujesz go na pieczywie.', p: 'od 24 zł' },
+    { n: 'Zestaw prezentowy',     d: 'Starannie zapakowany zestaw, który składamy z herbat, kaw i słodkości do wyboru. Dobierzemy zawartość na każdą okazję — od imienin po podziękowanie dla nauczyciela.', p: 'od 89 zł' },
+    { n: 'Syrop z czarnego bzu',  d: 'Domowy smak i naturalny skład, bez sztucznych dodatków. Butelka 250 ml wystarcza na kilkanaście szklanek lemoniady albo gorącej herbaty.', p: 'od 16 zł' },
+    { n: 'Czekolada biała',       d: 'Ręcznie robiona czekolada z własnej receptury, w tabliczce 200 g. Kremowa, nie za słodka, z wyraźną nutą wanilii.', p: 'od 22 zł' }
+  ];
+
+  var viewport = document.getElementById('viewport');
+  var track = document.getElementById('track');
+  var dotsBox = document.getElementById('dots');
+  var panel = document.getElementById('panel');
+  var pName = document.getElementById('panel-name');
+  var pDesc = document.getElementById('panel-desc');
+  var pPrice = document.getElementById('panel-price');
+
+  var real = Array.prototype.slice.call(track.children);
+  var total = real.length;
+
+  // Klony na końcach — karuzela zapętla się bez pustych miejsc po bokach.
+  var head = real[total - 1].cloneNode(true);
+  var tail = real[0].cloneNode(true);
+  head.setAttribute('aria-hidden', 'true');
+  tail.setAttribute('aria-hidden', 'true');
+  track.insertBefore(head, real[0]);
+  track.appendChild(tail);
+
+  var slides = Array.prototype.slice.call(track.children);
+  var pos = 1;                 // pozycja w torze (0 i 7 to klony)
+  var animating = false;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function slotsVisible() { return window.matchMedia('(min-width: 900px)').matches ? 3 : 1; }
+  function realIndex() { return ((pos - 1) % total + total) % total; }
+
+  function layout(animate) {
+    var slotW = viewport.clientWidth / slotsVisible();
+    var offset = slotsVisible() === 3 ? slotW : 0;
+    track.style.transition = (animate && !reduce.matches) ? '' : 'none';
+    track.style.transform = 'translateX(' + (offset - pos * slotW) + 'px)';
+    if (!animate || reduce.matches) {
+      void track.offsetWidth;          // wymuś reflow, żeby wyłączenie animacji zadziałało
+      track.style.transition = '';
+    }
+    slides.forEach(function (s, i) { s.classList.toggle('is-active', i === pos); });
+  }
+
+  function renderPanel() {
+    var d = details[realIndex()];
+    panel.classList.remove('show');
+    window.setTimeout(function () {
+      pName.textContent = d.n;
+      pDesc.textContent = d.d;
+      pPrice.textContent = d.p;
+      panel.classList.add('show');
+    }, reduce.matches ? 0 : 160);
+  }
+
+  function renderDots() {
+    var active = realIndex();
+    Array.prototype.forEach.call(dotsBox.children, function (b, i) {
+      b.classList.toggle('active', i === active);
+      b.setAttribute('aria-selected', String(i === active));
+    });
+  }
+
+  function go(next, animate) {
+    pos = next;
+    layout(animate !== false);
+    renderDots();
+    renderPanel();
+  }
+
+  function goToReal(i) {
+    if (animating) return;
+    go(i + 1);
+  }
+
+  track.addEventListener('transitionend', function (e) {
+    if (e.propertyName !== 'transform') return;
+    animating = false;
+    if (pos === 0) { pos = total; layout(false); }
+    else if (pos === total + 1) { pos = 1; layout(false); }
+  });
+
+  document.getElementById('prev').addEventListener('click', function () {
+    if (animating) return; animating = true; go(pos - 1);
+    if (reduce.matches) { animating = false; if (pos === 0) { pos = total; layout(false); } }
+  });
+  document.getElementById('next').addEventListener('click', function () {
+    if (animating) return; animating = true; go(pos + 1);
+    if (reduce.matches) { animating = false; if (pos === total + 1) { pos = 1; layout(false); } }
+  });
+
+  slides.forEach(function (s, i) {
+    s.addEventListener('click', function () { if (i !== pos) go(i); });
+  });
+
+  viewport.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); document.getElementById('prev').click(); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); document.getElementById('next').click(); }
+  });
+
+  // Przesuwanie palcem
+  var x0 = null;
+  viewport.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+  viewport.addEventListener('touchend', function (e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    x0 = null;
+    if (Math.abs(dx) < 40) return;
+    document.getElementById(dx < 0 ? 'next' : 'prev').click();
+  }, { passive: true });
+
+  for (var i = 0; i < total; i++) {
+    (function (idx) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'dot';
+      b.setAttribute('role', 'tab');
+      b.setAttribute('aria-label', 'Produkt ' + (idx + 1) + ' z ' + total);
+      b.addEventListener('click', function () { goToReal(idx); });
+      dotsBox.appendChild(b);
+    })(i);
+  }
+
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(function () { layout(false); }, 120);
+  });
+
+  go(1, false);
+
+  /* ---------- Dzisiejszy dzień w godzinach ---------- */
+  var today = new Date().getDay();   // 0 = niedziela
+  document.querySelectorAll('.hours .row').forEach(function (row) {
+    var days = row.dataset.days.split(',').map(Number);
+    if (days.indexOf(today) === -1) return;
+    row.classList.add('today');
+    var badge = document.createElement('span');
+    badge.className = 'today-badge';
+    badge.textContent = 'Dziś';
+    row.querySelector('dt').appendChild(badge);
+  });
+
+})();
+</script>
+
+</body>
+</html>
