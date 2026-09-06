@@ -816,10 +816,30 @@ function resetNicheFile() {
   document.getElementById("niche-file-clear").hidden = true;
 }
 
+async function renderNicheColumnPicker() {
+  const box = document.getElementById("niche-columns");
+  if (!box) return;
+  if (!meta) {
+    try {
+      meta = await api.get("/api/meta");
+    } catch {
+      /* serwer i tak przyjmie brak columns = wszystkie */
+    }
+  }
+  box.innerHTML = ((meta && meta.leadColumns) || [])
+    .map((c) => `<label class="col-pick"><input type="checkbox" value="${c.key}" checked> ${escapeHtml(c.label)}</label>`)
+    .join("");
+}
+
+function selectedNicheColumns() {
+  return [...document.querySelectorAll("#niche-columns input:checked")].map((el) => el.value);
+}
+
 function openModal() {
   document.getElementById("import-error").style.display = "none";
   document.getElementById("import-form").reset();
   resetNicheFile();
+  renderNicheColumnPicker();
   document.getElementById("import-modal").classList.remove("hidden");
   document.getElementById("niche-name").focus();
 }
@@ -851,9 +871,15 @@ document.getElementById("import-form").addEventListener("submit", async (e) => {
   submitBtn.disabled = true;
   try {
     const name = document.getElementById("niche-name").value.trim();
-    const niche = nicheFileInput.files[0]
-      ? await api.postForm("/api/niches/import", new FormData(e.target))
-      : await api.post("/api/niches", { name });
+    const columns = selectedNicheColumns();
+    let niche;
+    if (nicheFileInput.files[0]) {
+      const fd = new FormData(e.target);
+      fd.append("columns", JSON.stringify(columns));
+      niche = await api.postForm("/api/niches/import", fd);
+    } else {
+      niche = await api.post("/api/niches", { name, columns });
+    }
     closeModal();
     location.href = `/niche.html?slug=${encodeURIComponent(niche.slug)}`;
   } catch (err) {

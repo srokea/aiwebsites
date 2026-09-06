@@ -144,6 +144,17 @@
     vertical-align: middle;
   }
 
+  /* Suwak "przed i po": input[type=range] jest niewidoczny (opacity:0) ale rozciagniety
+     na cala kafelke — steruje clip-path na zdjeciu "przed" nalozonym na "po". Linia +
+     okragly uchwyt to czysto wizualna warstwa, zsynchronizowana z JS przy evencie input. */
+  .ba-line { width: 3px; background: #fff; box-shadow: 0 0 0 1px rgba(26,26,26,.15); transform: translateX(-50%); }
+  .ba-knob {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 2.5rem; height: 2.5rem; border-radius: 999px; background: #fff;
+    box-shadow: 0 2px 10px rgba(26,26,26,.3);
+    display: flex; align-items: center; justify-content: center; color: #1A1A1A;
+  }
+
   /* Ambientowe, nieruchome poswiaty w kolorze akcentu, plus delikatny wzor odbitych
      lapek w tle — dokladnie taki motyw jak blade watermarki na ulotce klientki. */
   .glow { position: relative; isolation: isolate; }
@@ -461,6 +472,46 @@
              loading="lazy" width="495" height="900"
              class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 28%;">
       </button>
+      <button type="button" class="tile block overflow-hidden rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2" aria-label="Powiększ zdjęcie: biały piesek po strzyżeniu, z dużymi uszami">
+        <img src="photos/maltanczyk-uszy.webp" alt="Biały piesek po strzyżeniu, z dużymi, różowymi w środku uszami"
+             loading="lazy" width="675" height="900"
+             class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 30%;">
+      </button>
+      <button type="button" class="tile block overflow-hidden rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2" aria-label="Powiększ zdjęcie: dwa rude szpice po pielęgnacji">
+        <img src="photos/pomeraniany-dwa.webp" alt="Dwa rude szpice pomorskie po pielęgnacji"
+             loading="lazy" width="405" height="900"
+             class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 55%;">
+      </button>
+      <button type="button" class="tile block overflow-hidden rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2" aria-label="Powiększ zdjęcie: kot maine coon po pielęgnacji">
+        <img src="photos/kot-mainecoon-glowa.webp" alt="Kot maine coon po pielęgnacji, zbliżenie na pysk"
+             loading="lazy" width="675" height="900"
+             class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 30%;">
+      </button>
+      <button type="button" class="tile block overflow-hidden rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2" aria-label="Powiększ zdjęcie: szczeniak buldoga francuskiego na stole groomerskim">
+        <img src="photos/francuski-buldog-szczeniak.webp" alt="Szczeniak buldoga francuskiego na stole groomerskim"
+             loading="lazy" width="900" height="900"
+             class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 35%;">
+      </button>
+      <button type="button" class="tile block overflow-hidden rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2" aria-label="Powiększ zdjęcie: cocker spaniel po pielęgnacji, z wywieszonym językiem">
+        <img src="photos/cocker-spaniel-jezyk.webp" alt="Cocker spaniel po pielęgnacji, z wywieszonym językiem"
+             loading="lazy" width="675" height="900"
+             class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 25%;">
+      </button>
+      <button type="button" class="tile block overflow-hidden rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2" aria-label="Powiększ zdjęcie: długowłosy kot szylkretowy po wyczesaniu sierści">
+        <img src="photos/kot-szylkretowy.webp" alt="Długowłosy kot szylkretowy po wyczesaniu sierści"
+             loading="lazy" width="506" height="900"
+             class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 38%;">
+      </button>
+      <button type="button" class="tile block overflow-hidden rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2" aria-label="Powiększ zdjęcie: mały piesek po strzyżeniu, z różową obrożką">
+        <img src="photos/yorek-szczeniak.webp" alt="Mały piesek po strzyżeniu, z różową obrożką"
+             loading="lazy" width="506" height="900"
+             class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 25%;">
+      </button>
+      <button type="button" class="tile block overflow-hidden rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2" aria-label="Powiększ zdjęcie: jack russell terrier siedzi po strzyżeniu">
+        <img src="photos/jack-russell-siedzi.webp" alt="Jack russell terrier po strzyżeniu, siedzi na stole groomerskim"
+             loading="lazy" width="405" height="900"
+             class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 18%;">
+      </button>
     </div>
 
     <div class="mt-8 flex flex-wrap gap-3">
@@ -479,6 +530,61 @@
         Zobacz na Facebooku
       </a>
     </div>
+
+    <!-- Przed i po: suwak porównujący dwa zdjęcia tego samego psa (przed-i-po/).
+         Input type="range" steruje clip-path na zdjęciu "przed", nalozonym na "po". -->
+    <h3 class="mt-16 text-xl font-extrabold">Przed i po</h3>
+    <p class="mt-2 max-w-[58ch] text-inkmuted">Przeciągnij suwak, żeby zobaczyć różnicę.</p>
+    <div class="mt-6 grid gap-6 sm:grid-cols-2">
+      <div class="ba-slider relative overflow-hidden rounded-3xl bg-surface" style="aspect-ratio: 4/5;">
+        <img class="absolute inset-0 h-full w-full object-cover" src="photos/przed-i-po/po1.webp" alt="Airedale terrier po strzyżeniu, z wywieszonym językiem" loading="lazy" width="750" height="1000" style="object-position: center 22%;">
+        <img class="ba-before absolute inset-0 h-full w-full object-cover" src="photos/przed-i-po/przed1.webp" alt="Ten sam airedale terrier przed strzyżeniem" loading="lazy" width="750" height="1000" style="object-position: center 22%; clip-path: inset(0 50% 0 0);">
+        <div class="ba-line pointer-events-none absolute inset-y-0" style="left: 50%;">
+          <span class="ba-knob">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M4 12h16"/></svg>
+          </span>
+        </div>
+        <span class="pointer-events-none absolute left-3 top-3 rounded-full bg-deep/70 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">Przed</span>
+        <span class="pointer-events-none absolute right-3 top-3 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wide text-ink">Po</span>
+        <input type="range" class="ba-range absolute inset-0 h-full w-full cursor-ew-resize opacity-0" min="0" max="100" value="50" aria-label="Przesuń, aby porównać zdjęcie airedale teriera przed i po strzyżeniu">
+      </div>
+      <div class="ba-slider relative overflow-hidden rounded-3xl bg-surface" style="aspect-ratio: 4/5;">
+        <img class="absolute inset-0 h-full w-full object-cover" src="photos/przed-i-po/po2.webp" alt="Rudy pudel po strzyżeniu" loading="lazy" width="750" height="1000" style="object-position: center 20%;">
+        <img class="ba-before absolute inset-0 h-full w-full object-cover" src="photos/przed-i-po/przed2.webp" alt="Ten sam pudel przed strzyżeniem" loading="lazy" width="750" height="1000" style="object-position: center 20%; clip-path: inset(0 50% 0 0);">
+        <div class="ba-line pointer-events-none absolute inset-y-0" style="left: 50%;">
+          <span class="ba-knob">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M4 12h16"/></svg>
+          </span>
+        </div>
+        <span class="pointer-events-none absolute left-3 top-3 rounded-full bg-deep/70 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">Przed</span>
+        <span class="pointer-events-none absolute right-3 top-3 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wide text-ink">Po</span>
+        <input type="range" class="ba-range absolute inset-0 h-full w-full cursor-ew-resize opacity-0" min="0" max="100" value="50" aria-label="Przesuń, aby porównać zdjęcie pudla przed i po strzyżeniu">
+      </div>
+      <div class="ba-slider relative overflow-hidden rounded-3xl bg-surface" style="aspect-ratio: 4/5;">
+        <img class="absolute inset-0 h-full w-full object-cover" src="photos/przed-i-po/po3.webp" alt="Biały szpic miniaturowy po strzyżeniu, z uformowaną sierścią" loading="lazy" width="1000" height="1000" style="object-position: center 30%;">
+        <img class="ba-before absolute inset-0 h-full w-full object-cover" src="photos/przed-i-po/przed3.webp" alt="Ten sam szpic przed strzyżeniem, z bardzo puszystą sierścią" loading="lazy" width="1000" height="1000" style="object-position: center 30%; clip-path: inset(0 50% 0 0);">
+        <div class="ba-line pointer-events-none absolute inset-y-0" style="left: 50%;">
+          <span class="ba-knob">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M4 12h16"/></svg>
+          </span>
+        </div>
+        <span class="pointer-events-none absolute left-3 top-3 rounded-full bg-deep/70 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">Przed</span>
+        <span class="pointer-events-none absolute right-3 top-3 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wide text-ink">Po</span>
+        <input type="range" class="ba-range absolute inset-0 h-full w-full cursor-ew-resize opacity-0" min="0" max="100" value="50" aria-label="Przesuń, aby porównać zdjęcie szpica przed i po strzyżeniu">
+      </div>
+      <div class="ba-slider relative overflow-hidden rounded-3xl bg-surface" style="aspect-ratio: 4/5;">
+        <img class="absolute inset-0 h-full w-full object-cover" src="photos/przed-i-po/po4.webp" alt="Airedale terrier po strzyżeniu, stoi na stole groomerskim" loading="lazy" width="1000" height="1000" style="object-position: center 20%;">
+        <img class="ba-before absolute inset-0 h-full w-full object-cover" src="photos/przed-i-po/przed4.webp" alt="Ten sam airedale terrier przed strzyżeniem, zbliżenie na pysk" loading="lazy" width="750" height="1000" style="object-position: center 15%; clip-path: inset(0 50% 0 0);">
+        <div class="ba-line pointer-events-none absolute inset-y-0" style="left: 50%;">
+          <span class="ba-knob">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M4 12h16"/></svg>
+          </span>
+        </div>
+        <span class="pointer-events-none absolute left-3 top-3 rounded-full bg-deep/70 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">Przed</span>
+        <span class="pointer-events-none absolute right-3 top-3 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wide text-ink">Po</span>
+        <input type="range" class="ba-range absolute inset-0 h-full w-full cursor-ew-resize opacity-0" min="0" max="100" value="50" aria-label="Przesuń, aby porównać zdjęcie airedale teriera przed i po strzyżeniu">
+      </div>
+    </div>
   </div>
 </section>
 
@@ -487,11 +593,10 @@
   <div class="mx-auto grid max-w-content items-center gap-10 px-5 py-16 md:grid-cols-[0.85fr_1.15fr] md:gap-14 md:py-24">
 
     <figure class="mx-auto w-full max-w-[20rem]">
-      <!-- TODO: podmienić na prawdziwe zdjęcie Aldony, gdy je dostaniemy od klientki. -->
-      <img src="https://placehold.co/600x750/FFF8E7/57534C?text=Zdj%C4%99cie+Aldony"
-           alt="Miejsce na zdjęcie Aldony, właścicielki salonu — wkrótce"
-           loading="lazy" width="600" height="750"
-           class="frame-sm aspect-[4/5] w-full object-cover" style="object-position: center 40%;">
+      <img src="photos/aldona.webp"
+           alt="Aldona, właścicielka salonu Psia Łapka"
+           loading="lazy" width="750" height="1000"
+           class="frame-sm aspect-[4/5] w-full object-cover" style="object-position: center 25%;">
     </figure>
 
     <div>
@@ -601,22 +706,34 @@
           781 214 342
         </a>
 
-        <dl class="mt-9 divide-y divide-line border-y border-line">
+        <dl id="godziny-dl" class="mt-9 divide-y divide-line border-y border-line">
           <div class="py-4">
             <dt class="text-sm font-semibold text-inkmuted">Adres</dt>
             <dd class="mt-1 font-bold">ul. Wyzwolenia 46<br>97-300 Piotrków Trybunalski</dd>
-          </div>
-          <div class="py-4">
-            <dt class="text-sm font-semibold text-inkmuted">Telefon</dt>
-            <dd class="mt-1 font-bold"><a href="tel:+48781214342" class="transition hover:underline hover:decoration-accent hover:decoration-2 hover:underline-offset-4 motion-reduce:transition-none">781 214 342</a></dd>
           </div>
           <div class="py-4">
             <dt class="text-sm font-semibold text-inkmuted">Godziny otwarcia</dt>
             <dd class="mt-2">
               <table class="w-full text-sm">
                 <tbody>
-                  <tr data-days="0,1,2,3,4" class="hours-row">
-                    <th scope="row" class="py-1 pr-3 text-left font-bold">Pon–Pt</th>
+                  <tr data-days="0" class="hours-row">
+                    <th scope="row" class="py-1 pr-3 text-left font-bold">Poniedziałek</th>
+                    <td class="py-1 text-right font-bold tabular-nums">9:00–17:00</td>
+                  </tr>
+                  <tr data-days="1" class="hours-row">
+                    <th scope="row" class="py-1 pr-3 text-left font-bold">Wtorek</th>
+                    <td class="py-1 text-right font-bold tabular-nums">9:00–17:00</td>
+                  </tr>
+                  <tr data-days="2" class="hours-row">
+                    <th scope="row" class="py-1 pr-3 text-left font-bold">Środa</th>
+                    <td class="py-1 text-right font-bold tabular-nums">9:00–17:00</td>
+                  </tr>
+                  <tr data-days="3" class="hours-row">
+                    <th scope="row" class="py-1 pr-3 text-left font-bold">Czwartek</th>
+                    <td class="py-1 text-right font-bold tabular-nums">9:00–17:00</td>
+                  </tr>
+                  <tr data-days="4" class="hours-row">
+                    <th scope="row" class="py-1 pr-3 text-left font-bold">Piątek</th>
                     <td class="py-1 text-right font-bold tabular-nums">9:00–17:00</td>
                   </tr>
                   <tr data-days="5" class="hours-row">
@@ -651,17 +768,21 @@
         </div>
       </div>
 
-      <div>
-        <!-- Mapa Google osadzona wprost (patrz privacy.html: informacja o przekazywaniu IP do Google). -->
-        <div class="map-frame overflow-hidden rounded-3xl border border-line bg-bg" style="height: 330px;">
+      <div class="flex flex-col">
+        <!-- Mapa Google osadzona wprost (patrz privacy.html: informacja o przekazywaniu IP do Google).
+             Kolumna lewa i prawa w gridzie maja rowna wysokosc (domyslne align-items:stretch),
+             wiec mapa jako flex-1 wypelnia cala te wysokosc (do "Niedziela" + ikonki social) —
+             bez JS, samo sie przelicza na kazdej szerokosci i przy kazdej tresci. Na mobile
+             (kolumny w slupku, bez wspolnej wysokosci) wraca do stalej wysokosci h-[280px]. -->
+        <div class="map-frame h-[280px] overflow-hidden rounded-3xl border border-line bg-bg md:h-auto md:flex-1">
           <iframe title="Mapa dojazdu do salonu Psia Łapka, ul. Wyzwolenia 46, Piotrków Trybunalski"
                   src="https://www.google.com/maps?q=Wyzwolenia%2046,%2097-300%20Piotrk%C3%B3w%20Trybunalski&z=16&output=embed"
-                  width="100%" height="330" style="border:0; display:block;"
+                  style="border:0; display:block; width:100%; height:100%;"
                   loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
         <a href="https://www.google.com/maps/dir/?api=1&destination=Wyzwolenia+46,+97-300+Piotrk%C3%B3w+Trybunalski"
            target="_blank" rel="noopener"
-           class="mt-4 inline-flex min-h-[48px] items-center rounded-full border border-line px-6 py-3 text-sm font-bold text-inkmuted transition hover:border-ink hover:text-ink motion-reduce:transition-none">
+           class="mt-4 inline-flex min-h-[48px] shrink-0 items-center rounded-full border border-line px-6 py-3 text-sm font-bold text-inkmuted transition hover:border-ink hover:text-ink motion-reduce:transition-none">
           Wyznacz trasę
         </a>
       </div>
@@ -773,6 +894,26 @@
       if (e.target.closest('[data-close]') || e.target === lb) close();
       else if (e.target.closest('[data-next]')) show(idx + 1);
       else if (e.target.closest('[data-prev]')) show(idx - 1);
+    });
+  })();
+</script>
+
+<script>
+  // Suwaki "przed i po": input[type=range] steruje clip-path na zdjeciu "przed".
+  (function () {
+    var sliders = Array.prototype.slice.call(document.querySelectorAll('.ba-slider'));
+    sliders.forEach(function (el) {
+      var before = el.querySelector('.ba-before');
+      var line = el.querySelector('.ba-line');
+      var range = el.querySelector('.ba-range');
+      if (!before || !line || !range) return;
+      function update() {
+        var v = range.value;
+        before.style.clipPath = 'inset(0 ' + (100 - v) + '% 0 0)';
+        line.style.left = v + '%';
+      }
+      range.addEventListener('input', update);
+      update();
     });
   })();
 </script>

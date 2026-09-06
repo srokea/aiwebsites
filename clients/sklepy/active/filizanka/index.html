@@ -12,7 +12,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23130E06'/%3E%3Cg fill='none' stroke='%23A67828' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M43 30q4-5 0-10M57 30q4-5 0-10'/%3E%3Cpath d='M28 40h34v10a17 17 0 0 1-34 0z'/%3E%3Cpath d='M62 44a8 8 0 0 1 0 14'/%3E%3Cpath d='M24 74h44'/%3E%3C/g%3E%3C/svg%3E">
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Work+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;600&display=swap');
 
 :root{
   --bg:#130E06;
@@ -23,7 +23,8 @@
   --muted:#9A8878;
   --line:rgba(242,235,217,.10);
   --display:'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-  --body:'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --body:'Space Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  --sans:'Work Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;   /* tylko dla gridu produktów — brief wprost wymaga Work Sans, nie monospace body */
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -64,15 +65,21 @@ section{padding:5rem 0;scroll-margin-top:76px}
 .btn-ghost:hover{border-color:var(--ink);color:var(--ink)}
 
 /* ---------- Navbar ---------- */
-.nav{
-  position:sticky;top:0;z-index:100;
-  background:rgba(19,14,6,.85);
-  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
-  border-bottom:1px solid rgba(242,235,217,.08);
-}
+/* Bez tła/blura/obwódki — sam "prostokąt" paska zniknął, ale position:sticky nadal
+   trzyma linki i logo widoczne przez cały czas scrollowania, tylko bez podkładu pod nimi. */
+.nav{position:sticky;top:0;z-index:100}
+/* min-height 72px: top logo (1.25rem=20px) + wysokość logo (52px) = dokładnie 72px,
+   więc pasek dokładnie mieści logo bez zachodzenia na hero poniżej. */
 .nav-inner{position:relative;display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:72px}
-.logo{display:flex;align-items:center;color:var(--ink);text-decoration:none}
-.logo svg{width:52px;height:52px;display:block}
+/* Logo wyjęte z przepływu flex i przyklejone do prawdziwej lewej krawędzi paska —
+   position:absolute liczy się od padding-box .nav-inner, więc ignoruje padding .wrap
+   (inaczej logo siedziałoby wsunięte o 2rem jak reszta treści sekcji). Odstęp
+   1.25rem od lewej i od góry — mniejszy niż padding .wrap, bliżej rogu. */
+.logo{
+  position:absolute;left:1.25rem;top:1.25rem;
+  display:flex;align-items:center;color:var(--ink);text-decoration:none;
+}
+.logo img{height:52px;width:auto;display:block}
 .nav-links{display:none;gap:2rem;align-items:center}
 .navlink{
   font-size:.9rem;color:var(--muted);text-decoration:none;
@@ -82,7 +89,10 @@ section{padding:5rem 0;scroll-margin-top:76px}
 .navlink:hover{color:var(--ink)}
 .navlink.active{color:var(--accent)}
 
-.burger{display:inline-flex;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;align-items:center}
+/* margin-left:auto — logo jest teraz position:absolute (poza przepływem flex), więc
+   burger zostałby jedynym dzieckiem flex i justify-content:space-between wypchnęłoby
+   go w lewo zamiast w prawo; auto-margin trzyma go przy prawej krawędzi niezależnie */
+.burger{margin-left:auto;display:inline-flex;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;align-items:center}
 .burger span{display:block;width:22px;height:1.5px;background:var(--ink);transition:transform 250ms ease,opacity 200ms ease}
 .burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
 .burger[aria-expanded="true"] span:nth-child(2){opacity:0}
@@ -125,7 +135,7 @@ section{padding:5rem 0;scroll-margin-top:76px}
 }
 .hero::before{
   content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(circle at 50% 45%, rgba(166,120,40,.06) 0%, rgba(166,120,40,0) 62%);
+  background:radial-gradient(circle at 50% 45%, rgba(6,4,1,.55) 0%, rgba(6,4,1,0) 62%);
 }
 .hero > *{position:relative}
 .hero-anim{
@@ -135,16 +145,12 @@ section{padding:5rem 0;scroll-margin-top:76px}
   display:flex;align-items:center;justify-content:center;text-align:center;padding:1rem;
   color:var(--accent);font-size:.8rem;letter-spacing:.02em;
 }
-.hero h1{margin-top:2rem;font-size:clamp(2.4rem,4vw,3.8rem);color:var(--ink)}
-.hero-sub{margin-top:1rem;max-width:34rem;color:var(--muted);font-size:1.05rem}
 .hero-cta{display:flex;flex-direction:column;gap:12px;margin-top:2.25rem;width:100%;max-width:300px}
 
 @media (max-width:767px){
   /* dolny zapas, żeby CTA nie chowało się pod pływającym koszykiem */
   .hero{padding:1.5rem 1.25rem 7.5rem}
   .hero-anim{max-height:30vh}
-  .hero h1{margin-top:1.5rem}
-  .hero-sub{font-size:1rem}
   .hero-cta{margin-top:1.75rem}
 }
 
@@ -170,78 +176,99 @@ section{padding:5rem 0;scroll-margin-top:76px}
 .about-sign{font-family:var(--display);font-size:1.35rem;color:var(--ink)}
 
 /* ---------- Produkty ---------- */
-.tags{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:2rem}
-.tag{
-  min-height:44px;padding:.5rem 1.15rem;border-radius:9999px;
-  border:1px solid var(--muted);color:var(--muted);
-  font-size:.85rem;font-weight:500;
-  transition:background-color 200ms ease,color 200ms ease,border-color 200ms ease;
-}
-.tag:hover{border-color:var(--ink);color:var(--ink)}
-.tag.active{background:var(--accent);border-color:var(--accent);color:var(--bg)}
-
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
-/* Karuzela + panel szczegółów: na desktopie dwie kolumny grida (karuzela / panel 320px),
-   panel stoi OBOK karuzeli, nie na karcie — dlatego nie może być position:absolute z ujemnym
-   przesunięciem poza .wrap (przy 1280–1440px zrobiłoby to poziomy scroll strony). Grid daje
-   ten sam efekt wizualny bez ryzyka przycięcia.
-   .carousel-col trzyma karuzelę i pasek nawigacji razem — dzięki temu strzałki (position:
-   absolute na desktopie) liczą swoje left/right względem szerokości SAMEJ karuzeli, a nie
-   całego grida z panelem obok. */
-.carousel-shell{display:grid;gap:1.5rem}
-/* min-width:0 — bez tego zagnieżdżona karuzela (flex bez zawijania) wymusza na komórce
-   grida szerokość swojej pełnej zawartości i strona dostaje poziomy scroll */
-.carousel-col{position:relative;min-width:0}
+/* Karuzela wyśrodkowana — bez panelu opisu każda "deska" to teraz tło pojedynczej karty
+   (.card-img::before), a nie jeden wspólny wielki obraz pod spodem.
 
-.carousel{position:relative;overflow:hidden;border-radius:1.5rem;isolation:isolate}
-.carousel::before{
-  content:'';position:absolute;z-index:0;top:50%;left:50%;
-  width:100vw;height:100vw;
-  transform:translate(-50%,-50%) rotate(90deg) scale(1.6);
-  background-image:url('photos/wood.jpg');
-  background-size:cover;background-position:center;
+   Rozmiar kart NIE jest już robiony przez transform:scale() w równych slotach — przy
+   trzech różnych rozmiarach w slotach o tej samej szerokości odstępy między kartami
+   siłą matematyki wychodzą różne (im mniejsza karta, tym więcej pustki wokół niej w tym
+   samym slocie). Zamiast tego każda rola (far/near/active) ma WŁASNĄ, stałą szerokość
+   slotu, a stały odstęp między wszystkimi kartami daje `gap` na .track — z definicji
+   równy niezależnie od tego, jak szerokie są sąsiadujące karty. */
+.carousel-shell{max-width:1280px;margin:0 auto;padding:0 1.25rem}
+.carousel-col{position:relative}
+
+.carousel{position:relative;border-radius:1.5rem}
+.carousel-inner{position:relative;padding:2rem 0}
+
+/* Zdjęcie produktu celowo wystaje poza deskę (patrz .card-img.has-photo img) — dlatego
+   .viewport potrzebuje pionowego zapasu w samym sobie: overflow:hidden przycina na
+   granicy PADDING BOX, więc taki zapas (nie zwykły margines na .carousel-inner, który
+   jest już POZA obszarem przycinania) chroni górę/dół produktu przed ucięciem.
+   Wartości procentowe (nie px) — w trybie jednej pełnej karty (<1400px) szerokość
+   .viewport === szerokość karty, więc % skaluje się poprawnie z każdą szerokością;
+   dokładna wartość px dla trybu stałych slotów desktopowych jest nadpisana niżej. */
+.viewport{overflow:hidden;padding:26% 0 12%}
+/* align-items:center (nie domyślny stretch!) — inaczej flex wymusza na WSZYSTKICH kartach
+   wysokość tej najwyższej (aktywnej), nadpisując aspect-ratio, i różnica szerokości
+   (jedyna, jaka by została widoczna) jest za mało wyrazista, żeby czytać się jako "mniejsza karta" */
+.track{
+  display:flex;align-items:center;gap:1.5rem;will-change:transform;
+  transition:transform 700ms cubic-bezier(.33,1,.68,1);   /* easeOutCubic — łagodniejsze niż poprzednia (za bardzo "z kopyta") krzywa, więc widać samo przesuwanie, nie tylko skok na starcie */
 }
-.carousel::after{content:'';position:absolute;inset:0;z-index:1;background:rgba(19,14,6,.65)}
-.carousel-inner{position:relative;z-index:2;padding:2rem 0}
-
-.viewport{overflow:hidden}
-.track{display:flex;transition:transform 400ms cubic-bezier(.4,0,.2,1);will-change:transform}
-.slide{flex:0 0 100%;padding:0 .5rem;display:flex}
+.slide{flex:0 0 100%;display:flex}    /* mobile: jedna pełna karta na slajd */
 
 .card{
   width:100%;display:flex;
-  opacity:.5;transform:scale(.82);transform-origin:center;
-  transition:opacity 400ms cubic-bezier(.4,0,.2,1),transform 400ms cubic-bezier(.4,0,.2,1);
+  opacity:.5;
+  transition:opacity 700ms cubic-bezier(.33,1,.68,1);   /* ten sam czas/krzywa co .track — opacity i przesunięcie muszą kończyć się razem */
 }
-.slide.is-active .card{opacity:1;transform:scale(1)}
+.slide.is-active .card{opacity:1}
+/* Wyłącza WSZYSTKIE animacje karuzeli naraz — używane przy cichym zapętleniu (skok
+   z klonu na odpowiadający mu realny slajd) i przy starcie, żeby nic nie mrugnęło. */
+.viewport.no-anim .track,
+.viewport.no-anim .slide,
+.viewport.no-anim .card{transition:none !important}
+/* Dwa skrajne z pięciu widocznych slotów — jeszcze bardziej przygaszone niż sąsiedzi środka */
+.slide.is-far .card{opacity:.32}
 .slide:not(.is-active) .card{cursor:pointer}
+
+/* Osobna "deska" na kartę: tło dokładnie w rozmiarze ramki placeholdera, słoje pionowe.
+   overflow:visible na .card-img (nie na desce!) — żeby zdjęcie produktu mogło lekko
+   wystawać poza krawędzie deski; sama deska (tekstura+obramowanie) jest przycięta
+   osobno, na .card-frame, więc słoje drewna nadal nie wylewają się poza kartę. */
 .card-img{
-  width:100%;aspect-ratio:3/4;border-radius:1rem;background:transparent;
-  border:2px dashed rgba(166,120,40,.5);
+  position:relative;overflow:visible;
+  width:100%;aspect-ratio:3/4;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.65rem;
   color:var(--accent);padding:1rem;
 }
-.card-img svg{opacity:.85}
-.card-img span{font-size:.72rem;letter-spacing:.02em;text-align:center}
-.card-price{color:var(--accent);font-weight:600;font-size:.95rem}
-
-@media (min-width:900px){
-  .slide.is-active .card-img{min-width:280px}
+/* Selektor ".card-img .card-frame" (nie samo ".card-frame") celowo dla specyficzności —
+   ".card-img span{position:relative}" niżej nadpisywałoby inaczej "position:absolute"
+   (obie reguły miały podobną specyficzność, a ta ze span wygrywała i zerowała rozmiar deski). */
+.card-img .card-frame{
+  position:absolute;inset:0;z-index:0;overflow:hidden;
+  border-radius:1rem;border:2px dashed rgba(166,120,40,.5);
+}
+.card-frame::before{
+  content:'';position:absolute;z-index:0;top:50%;left:50%;
+  width:220%;height:220%;
+  transform:translate(-50%,-50%) rotate(90deg);
+  background-image:url('photos/wood.jpg');
+  background-size:cover;background-position:center;
+}
+.card-frame::after{content:'';position:absolute;inset:0;z-index:1;background:rgba(19,14,6,.65)}
+.card-img svg{position:relative;z-index:2;opacity:.85}
+.card-img span{position:relative;z-index:2;font-size:.72rem;letter-spacing:.02em;text-align:center}
+/* Zdjęcie produktu (demo test) — bez tła (PNG z przezroczystością), więc deska
+   drewna spod .card-frame świeci przez brzegi produktu; drop-shadow zamiast
+   zwykłego box-shadow, bo cień ma podążać za kształtem wycięcia, nie za ramką karty.
+   UWAGA: <img> to element zastępowalny — position:absolute + inset ujemny + width/
+   height:auto NIE rozciąga go (w przeciwieństwie do zwykłych divów), tylko przesuwa
+   przy zachowaniu rozmiaru kontenera. Dlatego rozmiar wymuszony wprost przez
+   width/height:110% (nie inset), wyśrodkowany przez top/left:50%+translate. */
+.card-img.has-photo .card-frame{border-style:solid;border-color:rgba(166,120,40,.35)}
+.card-img.has-photo img{
+  position:absolute;top:44%;left:50%;z-index:2;    /* top:44% (nie 50%) — produkt podniesiony nad środek deski */
+  width:120%;height:120%;max-width:none;object-fit:contain;   /* max-width:none — inaczej globalny reset img{max-width:100%} ucina szerokość do rozmiaru deski */
+  transform:translate(-50%,-50%);
+  filter:drop-shadow(0 14px 22px rgba(6,4,1,.55));
 }
 
-.panel{
-  padding:2rem;background:var(--surface);border-radius:1rem;
-  border:1px solid rgba(166,120,40,.2);
-  opacity:0;transition:opacity 300ms ease;
-}
-.panel.show{opacity:1}
-.panel h3{font-size:1.45rem;color:var(--ink)}
-.panel p{margin-top:.65rem;font-size:.9rem;color:var(--muted)}
-.panel .card-price{display:inline-block;margin-top:1rem;font-size:1.05rem}
-.panel-cta{margin-top:1.25rem}
-
-.carousel-nav{display:flex;align-items:center;justify-content:center;gap:.35rem;margin-top:1rem}
+/* Bez kropek — tylko para strzałek wyśrodkowana pod karuzelą, na wszystkich szerokościach */
+.carousel-nav{display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-top:1.5rem}
 
 .arrow{
   flex:0 0 auto;z-index:4;
@@ -253,16 +280,100 @@ section{padding:5rem 0;scroll-margin-top:76px}
 .arrow:hover{background:rgba(19,14,6,.95)}
 .arrow svg{width:18px;height:18px;stroke:var(--accent)}
 
-.dots{display:flex;justify-content:center;gap:.15rem}
-.dot{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
-.dot::before{
-  content:'';width:8px;height:8px;border-radius:9999px;
-  background:rgba(166,120,40,.3);transition:background-color 200ms ease,transform 200ms ease;
-}
-.dot.active::before{background:var(--accent);transform:scale(1.25)}
-
 .products-more{display:flex;justify-content:center;margin-top:2rem}
 .carousel-nav .dots{margin:0 .35rem}
+
+/* ---------- Cały asortyment (grid) ---------- */
+/* Cienki separator między trybem "karuzela" a trybem "cały katalog" — reset <hr>
+   do gołej linii, bo domyślne obramowanie przeglądarki nie pasuje do reszty stylu. */
+.section-divider{
+  width:100%;max-width:200px;height:1px;margin:3rem auto;
+  border:0;background:rgba(242,235,217,.08);
+}
+
+.assortment-head{background:#1C1208}
+.assortment-head .wrap{padding-top:3rem;padding-bottom:2.5rem}
+
+/* Grid w normalnym kontenerze strony (.wrap w HTML, max-width 1100px) — jak każda
+   inna sekcja, bez przełamywania na pełną szerokość ekranu. */
+.product-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:0;                 /* kafelki przylegają do siebie — bez linii/obramowań między nimi */
+  background:#1E160A;    /* jeden kolor dla całego gridu i kafelków, więc bez gap nic ich nie odróżnia */
+}
+@media (max-width:768px){ .product-grid{grid-template-columns:repeat(3,1fr)} }
+@media (max-width:480px){ .product-grid{grid-template-columns:repeat(2,1fr)} }
+.grid-tile{
+  position:relative;display:block;width:100%;padding:0;text-align:left;
+  aspect-ratio:3/4;overflow:hidden;cursor:pointer;
+  background:#1E160A;
+  transition:filter 200ms ease;
+}
+.grid-tile:hover,.grid-tile:focus-visible{filter:brightness(1.15)}
+.grid-tile img{width:100%;height:100%;object-fit:cover;display:block}
+/* Placeholder = ciemna "fotografia" (tło #2A1E10) z samą ikoną, bez tekstu w spoczynku —
+   nazwa produktu żyje tylko w overlayu (patrz JS/.grid-preview), nie pod kafelkiem.
+   Ikona jako data-URI w ::before (raz w CSS) zamiast powtarzać ten sam <svg> 18 razy w HTML. */
+.grid-tile-placeholder{
+  width:100%;height:100%;background:#2A1E10;
+  display:flex;align-items:center;justify-content:center;
+}
+.grid-tile-placeholder::before{
+  content:'';width:34px;height:34px;
+  background-repeat:no-repeat;background-position:center;background-size:contain;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F2EBD9' stroke-opacity='0.08' stroke-width='1'%3E%3Cpath d='M4 8h13v6a6 6 0 0 1-6 6H8a4 4 0 0 1-4-4V8z'/%3E%3Cpath d='M17 10h1.5a2.5 2.5 0 0 1 0 5H17'/%3E%3Cpath d='M8 5q1-1.4 0-2.8M12 5q1-1.4 0-2.8'/%3E%3C/svg%3E");
+}
+
+/* Podgląd przy hoverze (desktop) — CELOWO poza kafelkiem: position:fixed + JS liczy
+   pozycję z getBoundingClientRect, żeby mógł nachodzić na grid i inne sekcje. */
+.grid-preview{
+  position:fixed;top:0;left:0;z-index:500;width:280px;
+  background:rgba(19,14,6,.97);border:1px solid rgba(166,120,40,.25);
+  border-radius:.75rem;padding:1.25rem;
+  box-shadow:0 8px 40px rgba(0,0,0,.6);
+  opacity:0;pointer-events:none;
+  transition:opacity 150ms ease;
+}
+.grid-preview.visible{opacity:1}
+.grid-preview-img{
+  width:100%;aspect-ratio:3/4;border-radius:.5rem;overflow:hidden;
+  background:var(--surface);
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:.5rem;
+  font-family:var(--sans);font-size:.7rem;color:rgba(242,235,217,.3);
+}
+.grid-preview-img img{width:100%;height:100%;object-fit:cover;display:block}
+.grid-preview-name{font-family:var(--display);font-size:1.1rem;color:var(--ink);margin-top:.75rem}
+.grid-preview-desc{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-top:.35rem}
+.grid-preview-price{font-family:var(--sans);font-size:.9rem;font-weight:600;color:var(--accent);margin-top:.5rem}
+
+/* Bottom sheet (mobile/dotyk) — zastępuje hover-preview tam, gdzie nie ma kursora. */
+.grid-sheet-backdrop{
+  position:fixed;inset:0;z-index:600;background:rgba(6,4,1,.6);
+  opacity:0;visibility:hidden;transition:opacity 200ms ease,visibility 200ms ease;
+}
+.grid-sheet-backdrop.open{opacity:1;visibility:visible}
+.grid-sheet{
+  position:fixed;left:0;right:0;bottom:0;z-index:601;
+  max-height:80vh;overflow-y:auto;
+  background:var(--surface);border-radius:1.25rem 1.25rem 0 0;
+  padding:1.5rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom));
+  transform:translateY(100%);transition:transform 250ms ease;
+}
+.grid-sheet.open{transform:translateY(0)}
+.grid-sheet-img{
+  width:100%;aspect-ratio:3/4;max-width:220px;margin:0 auto;border-radius:.5rem;overflow:hidden;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:.5rem;
+  font-family:var(--sans);font-size:.7rem;color:rgba(242,235,217,.3);
+}
+.grid-sheet-img img{width:100%;height:100%;object-fit:cover;display:block}
+.grid-sheet-name{font-family:var(--display);font-size:1.3rem;color:var(--ink);margin-top:1rem;text-align:center}
+.grid-sheet-desc{font-family:var(--sans);font-size:.85rem;color:var(--muted);margin-top:.5rem;text-align:center}
+.grid-sheet-price{font-family:var(--sans);font-size:1rem;font-weight:600;color:var(--accent);margin-top:.6rem;text-align:center}
+
+@media (prefers-reduced-motion:reduce){
+  .grid-tile,.grid-preview,.grid-sheet-backdrop,.grid-sheet{transition:none !important}
+}
 
 /* ---------- Kontakt ---------- */
 .contact{background:var(--surface)}
@@ -330,18 +441,22 @@ footer a:hover{color:var(--ink)}
   }
   .burger{display:none}
   section{scroll-margin-top:80px}
+}
 
-  .slide{flex:0 0 33.3333%}
+/* 5 powiększonych slotów karuzeli potrzebuje więcej miejsca niż nawigacja — próg wyżej
+   niż 900px, żeby skrajne karty nigdy nie były przycięte przy węższym oknie. Poniżej tego
+   progu karuzela zostaje w trybie mobilnym (jedna pełna karta na slajd). Strzałki NIE są
+   już przypięte do boków obrazu — zostają w przepływie, wyśrodkowane w .carousel-nav
+   (tam, gdzie wcześniej były kropki), na wszystkich szerokościach. */
+@media (min-width:1400px){
+  .slide{flex:0 0 180px}              /* domyślnie/skrajne (far) — proporcje 3:4:5 zachowane */
+  .slide.is-near{flex:0 0 240px}
+  .slide.is-active{flex:0 0 300px}
+
   .carousel-inner{padding:2.5rem 0}
-
-  /* karuzela zajmuje resztę miejsca, panel ma stały pasek 320px obok */
-  .carousel-shell{grid-template-columns:minmax(0,1fr) 320px;align-items:start}
-  .panel{align-self:stretch}
-  .carousel-nav{margin-top:1.25rem}
-
-  .arrow{position:absolute;top:calc(50% - 30px);transform:translateY(-50%)}
-  .arrow-prev{left:1rem}
-  .arrow-next{right:1rem}
+  /* px zamiast % — tu sloty mają stałą, znaną szerokość (300/240/180), więc zapas na
+     wystający produkt liczony wprost z geometrii najwyższej (aktywnej) karty 300x400. */
+  .viewport{padding:100px 0 40px}
 }
 
 /* ---------- Ograniczony ruch ---------- */
@@ -360,28 +475,14 @@ footer a:hover{color:var(--ink)}
 <a class="skip" href="#tresc">Przejdź do treści</a>
 
 <header class="nav">
-  <div class="wrap nav-inner">
-    <a class="logo" href="#top" aria-label="Sklep Filiżanka — strona główna">
-      <svg viewBox="0 0 100 100" role="img" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4">
-        <defs>
-          <path id="arcTop" d="M 14.5,50 A 35.5,35.5 0 0 1 85.5,50"></path>
-        </defs>
-        <circle cx="50" cy="50" r="48"></circle>
-        <circle cx="50" cy="50" r="42" stroke-width="0.9"></circle>
-        <text fill="currentColor" stroke="none" font-family="'Work Sans',sans-serif" font-size="8" font-weight="500" letter-spacing="1.25">
-          <textPath href="#arcTop" startOffset="50%" text-anchor="middle">KAWA &amp; HERBATA</textPath>
-        </text>
-        <path d="M 43,36 q 3.5,-4 0,-8" stroke-width="1.2" stroke-linecap="round"></path>
-        <path d="M 50,36 q 3.5,-4 0,-8" stroke-width="1.2" stroke-linecap="round"></path>
-        <path d="M 57,36 q 3.5,-4 0,-8" stroke-width="1.2" stroke-linecap="round"></path>
-        <path d="M 34,42 h 26 v 7 a 13,13 0 0 1 -26,0 z" stroke-linejoin="round"></path>
-        <path d="M 60,45 a 7,7 0 0 1 0,12" stroke-linecap="round"></path>
-        <path d="M 28,64 h 38" stroke-linecap="round"></path>
-        <path d="M 20,70 h 60 l -6,7 6,7 h -60 l 6,-7 z" stroke-width="1"></path>
-        <text x="50" y="80.5" fill="currentColor" stroke="none" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-size="9" font-weight="600" letter-spacing="0.6">FILIŻANKA</text>
-      </svg>
-    </a>
+  <!-- Logo POZA .wrap, bezpośrednio w .nav (pełna szerokość, bez max-width:1100px) —
+       inaczej position:absolute liczyłby się od wyśrodkowanej kolumny .wrap, a nie od
+       prawdziwej krawędzi strony, i na szerokich ekranach logo i tak nie byłoby w rogu. -->
+  <a class="logo" href="#top" aria-label="Sklep Filiżanka — strona główna">
+    <img src="photos/logo-navbar.png" alt="Sklep Filiżanka — Kawa &amp; Herbata" loading="eager">
+  </a>
 
+  <div class="wrap nav-inner">
     <nav class="nav-links" aria-label="Nawigacja główna">
       <a class="navlink" data-nav="o-nas" href="#o-nas">O nas</a>
       <a class="navlink" data-nav="produkty" href="#produkty">Produkty</a>
@@ -416,8 +517,6 @@ footer a:hover{color:var(--ink)}
 
   <section class="hero" id="top">
     <div class="hero-anim">[ANIMACJA — torebka herbaty / kawy]</div>
-    <h1>Kawa &amp; Herbata z pasją</h1>
-    <p class="hero-sub">Wybrane smaki z całego świata. Znajdź nas w Wolbórzu.</p>
     <div class="hero-cta">
       <a class="btn btn-ghost" href="#kontakt">Odwiedź nas</a>
       <a class="btn btn-primary" href="#produkty">Zobacz produkty</a>
@@ -442,18 +541,12 @@ footer a:hover{color:var(--ink)}
 
   <section id="produkty">
     <div class="wrap">
-      <h2 class="sec-title">Nasze produkty</h2>
+      <h2 class="sec-title">Bestsellery</h2>
+    </div>
 
-      <!-- Tagi na razie dekoracyjne — filtrowanie do podpięcia razem ze sklepem -->
-      <div class="tags" role="group" aria-label="Kategorie produktów">
-        <button class="tag" type="button" aria-pressed="false">Kawa</button>
-        <button class="tag" type="button" aria-pressed="false">Herbata</button>
-        <button class="tag" type="button" aria-pressed="false">Miód</button>
-        <button class="tag" type="button" aria-pressed="false">Czekolada</button>
-        <button class="tag" type="button" aria-pressed="false">Zestawy</button>
-        <button class="tag" type="button" aria-pressed="false">Akcesoria</button>
-      </div>
-
+    <!-- Karuzela celowo POZA .wrap (limit 1100px) — przy 5 powiększonych slotach
+         potrzebuje więcej miejsca niż standardowa kolumna treści, ma więc własny,
+         szerszy kontener (.carousel-shell, patrz CSS). -->
       <div class="carousel-shell">
       <div class="carousel-col">
       <div class="carousel">
@@ -462,49 +555,49 @@ footer a:hover{color:var(--ink)}
             <div class="track" id="track">
 
               <div class="slide"><article class="card">
-                <div class="card-img">
-                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.2h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"></path><circle cx="12" cy="13.5" r="3.4"></circle></svg>
-                  <span>[ZDJĘCIE PRODUKTU]</span>
+                <div class="card-img has-photo">
+                  <span class="card-frame" aria-hidden="true"></span>
+                  <img src="photos/produkty-demo/1-removebg-preview.png" alt="" loading="lazy">
                 </div>
                 <h3 class="sr-only">Herbata z hibiskusem</h3>
               </article></div>
 
               <div class="slide"><article class="card">
-                <div class="card-img">
-                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.2h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"></path><circle cx="12" cy="13.5" r="3.4"></circle></svg>
-                  <span>[ZDJĘCIE PRODUKTU]</span>
+                <div class="card-img has-photo">
+                  <span class="card-frame" aria-hidden="true"></span>
+                  <img src="photos/produkty-demo/1-removebg-preview.png" alt="" loading="lazy">
                 </div>
                 <h3 class="sr-only">Kawa Arabica Etiopia</h3>
               </article></div>
 
               <div class="slide"><article class="card">
-                <div class="card-img">
-                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.2h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"></path><circle cx="12" cy="13.5" r="3.4"></circle></svg>
-                  <span>[ZDJĘCIE PRODUKTU]</span>
+                <div class="card-img has-photo">
+                  <span class="card-frame" aria-hidden="true"></span>
+                  <img src="photos/produkty-demo/1-removebg-preview.png" alt="" loading="lazy">
                 </div>
                 <h3 class="sr-only">Miód kremowy z mango</h3>
               </article></div>
 
               <div class="slide"><article class="card">
-                <div class="card-img">
-                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.2h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"></path><circle cx="12" cy="13.5" r="3.4"></circle></svg>
-                  <span>[ZDJĘCIE PRODUKTU]</span>
+                <div class="card-img has-photo">
+                  <span class="card-frame" aria-hidden="true"></span>
+                  <img src="photos/produkty-demo/1-removebg-preview.png" alt="" loading="lazy">
                 </div>
                 <h3 class="sr-only">Zestaw prezentowy</h3>
               </article></div>
 
               <div class="slide"><article class="card">
-                <div class="card-img">
-                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.2h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"></path><circle cx="12" cy="13.5" r="3.4"></circle></svg>
-                  <span>[ZDJĘCIE PRODUKTU]</span>
+                <div class="card-img has-photo">
+                  <span class="card-frame" aria-hidden="true"></span>
+                  <img src="photos/produkty-demo/1-removebg-preview.png" alt="" loading="lazy">
                 </div>
                 <h3 class="sr-only">Syrop z czarnego bzu</h3>
               </article></div>
 
               <div class="slide"><article class="card">
-                <div class="card-img">
-                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.2h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"></path><circle cx="12" cy="13.5" r="3.4"></circle></svg>
-                  <span>[ZDJĘCIE PRODUKTU]</span>
+                <div class="card-img has-photo">
+                  <span class="card-frame" aria-hidden="true"></span>
+                  <img src="photos/produkty-demo/1-removebg-preview.png" alt="" loading="lazy">
                 </div>
                 <h3 class="sr-only">Czekolada biała</h3>
               </article></div>
@@ -518,24 +611,104 @@ footer a:hover{color:var(--ink)}
           <button class="arrow arrow-prev" id="prev" type="button" aria-label="Poprzedni produkt">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5 8 12l7 7"></path></svg>
           </button>
-          <div class="dots" id="dots" role="tablist" aria-label="Wybierz produkt"></div>
           <button class="arrow arrow-next" id="next" type="button" aria-label="Następny produkt">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"></path></svg>
           </button>
         </div>
       </div>
-
-      <aside class="panel" id="panel" aria-live="polite">
-        <h3 id="panel-name"></h3>
-        <p id="panel-desc"></p>
-        <p class="card-price" id="panel-price"></p>
-        <a class="btn btn-ghost panel-cta" href="#">Zobacz w sklepie →</a>
-      </aside>
       </div>
 
+    <div class="wrap">
       <div class="products-more">
         <a class="btn btn-ghost" href="#" target="_blank" rel="noopener">Zobacz więcej na Facebooku →</a>
       </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <div class="assortment-head">
+      <div class="wrap"><h2 class="sec-title">Cały asortyment</h2></div>
+    </div>
+
+    <!-- Grid w .wrap (jak reszta strony) — bez zdjęć na razie, więc placeholder to
+         sama ikona (patrz CSS .grid-tile-placeholder::before), bez nazwy pod spodem:
+         nazwa/opis/cena żyją tylko w podglądzie na hover/tap (data-* + JS niżej), a
+         aria-label na przycisku daje dostępną nazwę czytnikom ekranu mimo braku tekstu. -->
+    <div class="wrap">
+    <div class="product-grid" id="productGrid">
+      <button class="grid-tile" type="button" aria-label="Herbata z hibiskusem, od 18 zł" data-name="Herbata z hibiskusem" data-price="od 18 zł" data-desc="Kwiatowo-owocowa nuta, świetna na chłodny wieczór.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+      <button class="grid-tile" type="button" aria-label="Herbata Earl Grey, od 16 zł" data-name="Herbata Earl Grey" data-price="od 16 zł" data-desc="Klasyczna, z bergamotką — dobra o każdej porze dnia.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+      <button class="grid-tile" type="button" aria-label="Herbata zielona jaśminowa, od 20 zł" data-name="Herbata zielona jaśminowa" data-price="od 20 zł" data-desc="Delikatna, kwiatowa, najlepsza parzona na ciepło.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+      <button class="grid-tile" type="button" aria-label="Kawa Arabica Etiopia, od 32 zł" data-name="Kawa Arabica Etiopia" data-price="od 32 zł" data-desc="Owocowa i delikatna, z nutą cytrusów.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+      <button class="grid-tile" type="button" aria-label="Kawa Brazylia Santos, od 28 zł" data-name="Kawa Brazylia Santos" data-price="od 28 zł" data-desc="Intensywna, orzechowa, z czekoladowym finiszem.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+      <button class="grid-tile" type="button" aria-label="Kawa Gwatemala, od 34 zł" data-name="Kawa Gwatemala" data-price="od 34 zł" data-desc="Zbalansowana, lekko słodka, o aksamitnej strukturze.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+      <button class="grid-tile" type="button" aria-label="Miód kremowy z mango, od 24 zł" data-name="Miód kremowy z mango" data-price="od 24 zł" data-desc="Kremowy, naturalny skład, bez dodatku cukru.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+      <button class="grid-tile" type="button" aria-label="Miód gryczany, od 22 zł" data-name="Miód gryczany" data-price="od 22 zł" data-desc="Ciemny i intensywny, z charakterystyczną goryczką.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+      <button class="grid-tile" type="button" aria-label="Miód kremowy z porzeczką, od 24 zł" data-name="Miód kremowy z porzeczką" data-price="od 24 zł" data-desc="Kremowy, lekko kwaśny, idealny do herbaty.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+      <button class="grid-tile" type="button" aria-label="Syrop z czarnego bzu, od 16 zł" data-name="Syrop z czarnego bzu" data-price="od 16 zł" data-desc="Domowy smak, świetny na ciepło i na zimno.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+      <button class="grid-tile" type="button" aria-label="Syrop z pigwy, od 18 zł" data-name="Syrop z pigwy" data-price="od 18 zł" data-desc="Lekko kwaśny, aromatyczny, na jesienne wieczory.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+      <button class="grid-tile" type="button" aria-label="Czekolada biała, od 22 zł" data-name="Czekolada biała" data-price="od 22 zł" data-desc="Delikatna i słodka, idealna do gorącej herbaty.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+      <button class="grid-tile" type="button" aria-label="Zestaw prezentowy „Od serca”, od 89 zł" data-name="Zestaw prezentowy „Od serca”" data-price="od 89 zł" data-desc="Starannie zapakowany, gotowy do wręczenia.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+      <button class="grid-tile" type="button" aria-label="Zestaw prezentowy „Dla niej”, od 110 zł" data-name="Zestaw prezentowy „Dla niej”" data-price="od 110 zł" data-desc="Starannie zapakowany, gotowy do wręczenia.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+      <button class="grid-tile" type="button" aria-label="Filiżanka ceramiczna, od 45 zł" data-name="Filiżanka ceramiczna" data-price="od 45 zł" data-desc="Ręcznie dobrana, pasuje do każdej herbaty.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+      <button class="grid-tile" type="button" aria-label="Zaparzacz do herbaty, od 35 zł" data-name="Zaparzacz do herbaty" data-price="od 35 zł" data-desc="Praktyczny i estetyczny, sprawdzi się na co dzień.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+      <button class="grid-tile" type="button" aria-label="Puszka na herbatę, od 29 zł" data-name="Puszka na herbatę" data-price="od 29 zł" data-desc="Ręcznie dobrana, utrzymuje aromat na dłużej.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+      <button class="grid-tile" type="button" aria-label="Kubek termiczny, od 55 zł" data-name="Kubek termiczny" data-price="od 55 zł" data-desc="Pasuje do każdej kawy, sprawdzi się w podróży.">
+        <span class="grid-tile-placeholder" aria-hidden="true"></span>
+      </button>
+    </div>
+    </div>
+
+    <!-- Podgląd hover (desktop) — jeden reużywalny element, POZA kafelkami (position:fixed),
+         wypełniany i pozycjonowany przez JS na podstawie najechanego kafelka. -->
+    <div class="grid-preview" id="gridPreview" aria-hidden="true">
+      <div class="grid-preview-img" id="gridPreviewImg"></div>
+      <h3 class="grid-preview-name" id="gridPreviewName"></h3>
+      <p class="grid-preview-desc" id="gridPreviewDesc"></p>
+      <p class="grid-preview-price" id="gridPreviewPrice"></p>
+    </div>
+
+    <!-- Bottom sheet (dotyk/mobile) — zastępuje hover-preview tam, gdzie nie ma kursora. -->
+    <div class="grid-sheet-backdrop" id="gridSheetBackdrop"></div>
+    <div class="grid-sheet" id="gridSheet" role="dialog" aria-modal="true" aria-label="Szczegóły produktu" aria-hidden="true">
+      <div class="grid-sheet-img" id="gridSheetImg"></div>
+      <h3 class="grid-sheet-name" id="gridSheetName"></h3>
+      <p class="grid-sheet-desc" id="gridSheetDesc"></p>
+      <p class="grid-sheet-price" id="gridSheetPrice"></p>
     </div>
   </section>
 
@@ -653,112 +826,130 @@ footer a:hover{color:var(--ink)}
     });
   }
 
-  /* ---------- Tagi (na razie dekoracyjne) ---------- */
-  document.querySelectorAll('.tag').forEach(function (tag) {
-    tag.addEventListener('click', function () {
-      var wasActive = tag.classList.contains('active');
-      document.querySelectorAll('.tag').forEach(function (t) {
-        t.classList.remove('active');
-        t.setAttribute('aria-pressed', 'false');
-      });
-      if (!wasActive) { tag.classList.add('active'); tag.setAttribute('aria-pressed', 'true'); }
-    });
-  });
-
   /* ---------- Karuzela ---------- */
-  var details = [
-    { n: 'Herbata z hibiskusem',  d: 'Kwiatowa, lekko kwaśna herbata o głębokiej rubinowej barwie. Smakuje równie dobrze na ciepło zimowym wieczorem, jak i schłodzona z plasterkiem cytryny.', p: 'od 18 zł' },
-    { n: 'Kawa Arabica Etiopia',  d: 'Owocowa i delikatna, z wyraźną nutą leśnych jagód i cytrusów. Palona w małych partiach, mielimy ją na miejscu pod Twój sposób parzenia.', p: 'od 32 zł' },
-    { n: 'Miód kremowy z mango',  d: 'Naturalny miód kremowany z dodatkiem mango, o wyjątkowo łagodnym smaku. Nie krystalizuje, więc bez trudu rozsmarujesz go na pieczywie.', p: 'od 24 zł' },
-    { n: 'Zestaw prezentowy',     d: 'Starannie zapakowany zestaw, który składamy z herbat, kaw i słodkości do wyboru. Dobierzemy zawartość na każdą okazję — od imienin po podziękowanie dla nauczyciela.', p: 'od 89 zł' },
-    { n: 'Syrop z czarnego bzu',  d: 'Domowy smak i naturalny skład, bez sztucznych dodatków. Butelka 250 ml wystarcza na kilkanaście szklanek lemoniady albo gorącej herbaty.', p: 'od 16 zł' },
-    { n: 'Czekolada biała',       d: 'Ręcznie robiona czekolada z własnej receptury, w tabliczce 200 g. Kremowa, nie za słodka, z wyraźną nutą wanilii.', p: 'od 22 zł' }
-  ];
-
   var viewport = document.getElementById('viewport');
   var track = document.getElementById('track');
-  var dotsBox = document.getElementById('dots');
-  var panel = document.getElementById('panel');
-  var pName = document.getElementById('panel-name');
-  var pDesc = document.getElementById('panel-desc');
-  var pPrice = document.getElementById('panel-price');
-
   var real = Array.prototype.slice.call(track.children);
   var total = real.length;
 
-  // Klony na końcach — karuzela zapętla się bez pustych miejsc po bokach.
-  var head = real[total - 1].cloneNode(true);
-  var tail = real[0].cloneNode(true);
-  head.setAttribute('aria-hidden', 'true');
-  tail.setAttribute('aria-hidden', 'true');
-  track.insertBefore(head, real[0]);
-  track.appendChild(tail);
+  // 5 widocznych slotów na desktopie = 2 karty zapasowe po każdej stronie aktywnej,
+  // więc potrzeba PO DWA klony z każdego końca (nie jeden), żeby podczas zapętlenia
+  // zawsze było czym wypełnić oba skrajne miejsca.
+  var CLONES = 2;
+  var firstReal = real[0];   // stałe odniesienie — insertBefore(track.firstChild) w pętli
+                              // wstawiałoby klony w odwrotnej kolejności
+  for (var c = CLONES; c >= 1; c--) {
+    var headClone = real[(total - c) % total].cloneNode(true);
+    headClone.setAttribute('aria-hidden', 'true');
+    track.insertBefore(headClone, firstReal);
+  }
+  for (var t = 0; t < CLONES; t++) {
+    var tailClone = real[t].cloneNode(true);
+    tailClone.setAttribute('aria-hidden', 'true');
+    track.appendChild(tailClone);
+  }
 
   var slides = Array.prototype.slice.call(track.children);
-  var pos = 1;                 // pozycja w torze (0 i 7 to klony)
+  var pos = CLONES;             // pozycja w torze — realne slajdy zajmują [CLONES, CLONES+total-1]
   var animating = false;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var desktopMQ = window.matchMedia('(min-width:1400px)');
 
-  function slotsVisible() { return window.matchMedia('(min-width: 900px)').matches ? 3 : 1; }
-  function realIndex() { return ((pos - 1) % total + total) % total; }
+  // Stałe muszą się zgadzać z CSS (far/near/active flex-basis i .track gap) — licząc
+  // przesunięcie analitycznie zamiast mierzyć DOM, unikamy zależności od tego, czy
+  // layout już się przeliczył po zmianie klas.
+  var TIER_FAR = 180, TIER_NEAR = 240, TIER_ACTIVE = 300, GAP = 24;
+
+  function slotWidth(i) {
+    if (!desktopMQ.matches) return viewport.clientWidth;   // mobile: jedna pełna karta
+    var d = Math.abs(i - pos);
+    if (d === 0) return TIER_ACTIVE;
+    if (d === 1) return TIER_NEAR;
+    return TIER_FAR;
+  }
+
+  // FLIP (First-Last-Invert-Play) na SZEROKOŚCI karty — sama pozycja/tor zostaje dokładnie
+  // tak liczona jak dotychczas (żadnego ryzyka dryfu: to zwykły, natychmiastowy skok klas +
+  // jeden CSS transition na transform toru, sprawdzone). Problemem był tylko WYGLĄD samego
+  // resize'u karty: zmiana flex-basis jest natychmiastowa (z layoutu), więc karta "mrugała"
+  // do nowego rozmiaru w jednej klatce. FLIP maskuje to transformem scale() na .card-img
+  // (element BEZ własnego przejścia — nie koliduje z opacity, które ma .card) — czysto
+  // wizualny trik, nie dotyka layoutu ani przesunięcia toru, więc nie może wprowadzić dryfu
+  // (próbowaliśmy wcześniej animować sam flex-basis przez CSS — dryf do ~290px, bo pozycja
+  // i szerokość liczą się wtedy z dwóch NIEZALEŻNYCH punktów odniesienia).
+  function flipCardSizes(fn) {
+    var imgs = slides.map(function (s) { return s.querySelector('.card-img'); });
+    var firstW = imgs.map(function (el) { return el.getBoundingClientRect().width; });   // First
+
+    fn();   // przełącza klasy is-active/is-near/is-far -> szerokości zmieniają się NATYCHMIAST
+
+    var lastW = imgs.map(function (el) { return el.getBoundingClientRect().width; });    // Last (już docelowe)
+    imgs.forEach(function (el, i) {
+      var scale = lastW[i] ? firstW[i] / lastW[i] : 1;
+      if (Math.abs(scale - 1) < .001) return;
+      el.style.transition = 'none';
+      el.style.transform = 'scale(' + scale + ')';        // Invert — wygląda jak przed zmianą
+    });
+    void track.offsetWidth;   // wymuś zaaplikowanie inverta, zanim odpalimy przejście
+    requestAnimationFrame(function () {
+      imgs.forEach(function (el) {
+        if (!el.style.transform) return;
+        el.style.transition = 'transform 700ms cubic-bezier(.33,1,.68,1)';
+        el.style.transform = '';                            // Play — z powrotem do scale(1)
+      });
+    });
+  }
 
   function layout(animate) {
-    var slotW = viewport.clientWidth / slotsVisible();
-    var offset = slotsVisible() === 3 ? slotW : 0;
-    track.style.transition = (animate && !reduce.matches) ? '' : 'none';
-    track.style.transform = 'translateX(' + (offset - pos * slotW) + 'px)';
-    if (!animate || reduce.matches) {
-      void track.offsetWidth;          // wymuś reflow, żeby wyłączenie animacji zadziałało
-      track.style.transition = '';
+    var instant = !animate || reduce.matches;
+    if (instant) viewport.classList.add('no-anim');
+
+    function toggleRoles() {
+      // Role (far/near/active) — od nich zależy szerokość każdego slajdu (patrz CSS).
+      slides.forEach(function (s, i) {
+        var d = i - pos;
+        s.classList.toggle('is-active', d === 0);
+        s.classList.toggle('is-near', Math.abs(d) === 1);
+        s.classList.toggle('is-far', Math.abs(d) === 2);
+      });
     }
-    slides.forEach(function (s, i) { s.classList.toggle('is-active', i === pos); });
-  }
+    if (instant) toggleRoles(); else flipCardSizes(toggleRoles);
 
-  function renderPanel() {
-    var d = details[realIndex()];
-    panel.classList.remove('show');
-    window.setTimeout(function () {
-      pName.textContent = d.n;
-      pDesc.textContent = d.d;
-      pPrice.textContent = d.p;
-      panel.classList.add('show');
-    }, reduce.matches ? 0 : 160);
-  }
+    var left = 0;
+    for (var i = 0; i < pos; i++) left += slotWidth(i) + GAP;
+    var activeCenter = left + slotWidth(pos) / 2;
+    var offsetPx = viewport.clientWidth / 2 - activeCenter;
+    track.style.transform = 'translateX(' + offsetPx + 'px)';
 
-  function renderDots() {
-    var active = realIndex();
-    Array.prototype.forEach.call(dotsBox.children, function (b, i) {
-      b.classList.toggle('active', i === active);
-      b.setAttribute('aria-selected', String(i === active));
-    });
+    if (instant) {
+      void track.offsetWidth;          // wymuś reflow, żeby transition:none zdążyło zadziałać
+      viewport.classList.remove('no-anim');
+    }
   }
 
   function go(next, animate) {
     pos = next;
     layout(animate !== false);
-    renderDots();
-    renderPanel();
   }
 
-  function goToReal(i) {
-    if (animating) return;
-    go(i + 1);
+  function snapIfOutOfRange() {
+    if (pos < CLONES) { pos += total; layout(false); }
+    else if (pos >= CLONES + total) { pos -= total; layout(false); }
   }
 
   track.addEventListener('transitionend', function (e) {
     if (e.propertyName !== 'transform') return;
     animating = false;
-    if (pos === 0) { pos = total; layout(false); }
-    else if (pos === total + 1) { pos = 1; layout(false); }
+    snapIfOutOfRange();
   });
 
   document.getElementById('prev').addEventListener('click', function () {
     if (animating) return; animating = true; go(pos - 1);
-    if (reduce.matches) { animating = false; if (pos === 0) { pos = total; layout(false); } }
+    if (reduce.matches) { animating = false; snapIfOutOfRange(); }
   });
   document.getElementById('next').addEventListener('click', function () {
     if (animating) return; animating = true; go(pos + 1);
-    if (reduce.matches) { animating = false; if (pos === total + 1) { pos = 1; layout(false); } }
+    if (reduce.matches) { animating = false; snapIfOutOfRange(); }
   });
 
   slides.forEach(function (s, i) {
@@ -781,17 +972,18 @@ footer a:hover{color:var(--ink)}
     document.getElementById(dx < 0 ? 'next' : 'prev').click();
   }, { passive: true });
 
-  for (var i = 0; i < total; i++) {
-    (function (idx) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'dot';
-      b.setAttribute('role', 'tab');
-      b.setAttribute('aria-label', 'Produkt ' + (idx + 1) + ' z ' + total);
-      b.addEventListener('click', function () { goToReal(idx); });
-      dotsBox.appendChild(b);
-    })(i);
-  }
+  // Przewijanie touchpadem (poziomy gest dwoma palcami → deltaX) — reagujemy TYLKO gdy
+  // deltaX wyraźnie przeważa nad deltaY, inaczej zwykły pionowy scroll strony (kółko
+  // myszy nad karuzelą) zostałby złapany tutaj i użytkownik utknąłby na tej sekcji.
+  // { passive:false } konieczne, żeby móc warunkowo wywołać preventDefault().
+  viewport.addEventListener('wheel', function (e) {
+    if (Math.abs(e.deltaX) < 6 || Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+    e.preventDefault();
+    if (animating) return;   // jeden gest = jeden krok; kolejne delty tego samego swipe'a są ignorowane do końca animacji
+    animating = true;
+    go(e.deltaX > 0 ? pos + 1 : pos - 1);
+    if (reduce.matches) { animating = false; snapIfOutOfRange(); }
+  }, { passive: false });
 
   var resizeTimer;
   window.addEventListener('resize', function () {
@@ -799,7 +991,7 @@ footer a:hover{color:var(--ink)}
     resizeTimer = window.setTimeout(function () { layout(false); }, 120);
   });
 
-  go(1, false);
+  go(CLONES, false);
 
   /* ---------- Dzisiejszy dzień w godzinach ---------- */
   var today = new Date().getDay();   // 0 = niedziela
@@ -812,6 +1004,92 @@ footer a:hover{color:var(--ink)}
     badge.textContent = 'Dziś';
     row.querySelector('dt').appendChild(badge);
   });
+
+  /* ---------- Grid "Cały asortyment" — podgląd hover / bottom sheet ---------- */
+  var grid = document.getElementById('productGrid');
+  if (grid) {
+    var tiles = Array.prototype.slice.call(grid.querySelectorAll('.grid-tile'));
+    var hasHover = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+    function fillPreviewNode(prefix, tile) {
+      var img = document.getElementById(prefix + 'Img');
+      var name = document.getElementById(prefix + 'Name');
+      var desc = document.getElementById(prefix + 'Desc');
+      var price = document.getElementById(prefix + 'Price');
+      img.textContent = tile.dataset.name;   // na razie placeholder tekstowy zamiast <img> — brak realnych zdjęć produktów
+      name.textContent = tile.dataset.name;
+      desc.textContent = tile.dataset.desc;
+      price.textContent = tile.dataset.price;
+    }
+
+    if (hasHover) {
+      var preview = document.getElementById('gridPreview');
+      var previewTimer = null;
+      var PREVIEW_W = 280;
+
+      function positionPreview(tile) {
+        var rect = tile.getBoundingClientRect();
+        var spaceRight = window.innerWidth - rect.right;
+        var left = (spaceRight >= PREVIEW_W + 16) ? rect.right + 12 : rect.left - PREVIEW_W - 12;
+        left = Math.max(8, Math.min(left, window.innerWidth - PREVIEW_W - 8));
+        preview.style.left = left + 'px';
+        preview.style.top = rect.top + 'px';
+      }
+
+      function showPreview(tile) {
+        window.clearTimeout(previewTimer);
+        previewTimer = window.setTimeout(function () {
+          fillPreviewNode('gridPreview', tile);
+          positionPreview(tile);
+          preview.classList.add('visible');
+          preview.setAttribute('aria-hidden', 'false');
+          // dopiero po pokazaniu znamy prawdziwą wysokość — doklejamy, żeby nie wystawał pod ekran
+          requestAnimationFrame(function () {
+            var pr = preview.getBoundingClientRect();
+            if (pr.bottom > window.innerHeight - 8) {
+              preview.style.top = Math.max(8, window.innerHeight - pr.height - 8) + 'px';
+            }
+          });
+        }, 80);   // małe opóźnienie — żeby podgląd nie mrugał przy szybkim przejeżdżaniu myszą po gridzie
+      }
+
+      function hidePreview() {
+        window.clearTimeout(previewTimer);
+        preview.classList.remove('visible');
+        preview.setAttribute('aria-hidden', 'true');
+      }
+
+      tiles.forEach(function (tile) {
+        tile.addEventListener('mouseenter', function () { showPreview(tile); });
+        tile.addEventListener('mouseleave', hidePreview);
+        tile.addEventListener('focus', function () { showPreview(tile); });
+        tile.addEventListener('blur', hidePreview);
+      });
+    } else {
+      var sheetBackdrop = document.getElementById('gridSheetBackdrop');
+      var sheet = document.getElementById('gridSheet');
+
+      function openSheet(tile) {
+        fillPreviewNode('gridSheet', tile);
+        sheetBackdrop.classList.add('open');
+        sheet.classList.add('open');
+        sheet.setAttribute('aria-hidden', 'false');
+      }
+      function closeSheet() {
+        sheetBackdrop.classList.remove('open');
+        sheet.classList.remove('open');
+        sheet.setAttribute('aria-hidden', 'true');
+      }
+
+      tiles.forEach(function (tile) {
+        tile.addEventListener('click', function () { openSheet(tile); });
+      });
+      sheetBackdrop.addEventListener('click', closeSheet);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeSheet();
+      });
+    }
+  }
 
 })();
 </script>

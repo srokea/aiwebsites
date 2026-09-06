@@ -41,9 +41,18 @@ function parseColumns(raw) {
   }
 }
 // Zapis: pelny zestaw (albo pusty/nieznany input) -> '' (== "wszystkie"); inaczej JSON w kolejnosci kanonicznej.
+// input moze byc tablica (JSON body) albo JSON-string (pole formularza przy imporcie CSV).
 function serializeColumns(input) {
-  if (!Array.isArray(input)) return "";
-  const want = new Set(input.map(String));
+  let arr = input;
+  if (typeof arr === "string") {
+    try {
+      arr = JSON.parse(arr);
+    } catch {
+      arr = [];
+    }
+  }
+  if (!Array.isArray(arr)) return "";
+  const want = new Set(arr.map(String));
   const picked = LEAD_COLUMN_KEYS.filter((k) => want.has(k));
   if (!picked.length || picked.length === LEAD_COLUMN_KEYS.length) return "";
   return JSON.stringify(picked);

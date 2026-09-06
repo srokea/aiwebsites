@@ -1523,6 +1523,7 @@ function collectAddLeadValues() {
 function openAddLeadModal() {
   document.getElementById("add-lead-error").style.display = "none";
   document.getElementById("add-lead-form").reset();
+  buildAddLeadFields(); // odbuduj na wypadek, gdyby applyNicheColumns nie zdazylo (np. meta)
   addLeadModal.classList.remove("hidden");
   document.getElementById("add-lead-name").focus();
 }
