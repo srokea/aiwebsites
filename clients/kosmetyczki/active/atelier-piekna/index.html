@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atelier Piękna Izabela Iskierka — makijaż permanentny, rzęsy, depilacja laserowa, Tomaszów Mazowiecki</title>
+<meta name="description" content="Atelier Piękna przy Słonecznej 1/3 w Tomaszowie Mazowieckim. Makijaż permanentny, stylizacja rzęs i brwi, depilacja laserowa, paznokcie i zabiegi na twarz. Ponad 15 000 zabiegów, 5,0 na Booksy. Rezerwacja online.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#e2ded2">
+<meta property="og:title" content="Atelier Piękna Izabela Iskierka — Tomaszów Mazowiecki">
+<meta property="og:description" content="Makijaż permanentny, rzęsy i brwi, depilacja laserowa, paznokcie. Słoneczna 1/3, Tomaszów Mazowiecki. Rezerwacja online przez Booksy.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:site_name" content="Atelier Piękna Izabela Iskierka">
+<!-- Po podpieciu domeny zamien na adresy BEZWZGLEDNE, inaczej podglad linku
+     w Messengerze/WhatsAppie bedzie pusty:
+     og:url   = https://DOMENA/
+     og:image = https://DOMENA/photos/salon-stanowisko.jpg -->
+<meta property="og:image" content="photos/salon-stanowisko.jpg">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          /* Cztery kolory z ksiegi znaku Atelier Piekna (identyfikacja-wizualna.pdf, str. Kolorystyka marki).
+             Wartosci uzyte doslownie, bez przyblizen. */
+          shell: '#e2ded2',   /* Off-White  — tlo strony */
+          beige: '#b7a995',   /* Warm Beige — pasy sekcji */
+          warm:  '#afa89b',   /* Warm Gray  — wypelnienia pomocnicze */
+          ink:   '#473427',   /* Chocolate  — tekst ORAZ przyciski */
+          muted: '#6e5e52',   /* Chocolate 75% na Off-White, kontrast 4,6:1 */
+          hair:  'rgba(71,52,39,.18)',
+          hair2: 'rgba(71,52,39,.30)',
+        },
+        fontFamily: {
+          display: ['Butler', 'Georgia', 'Times New Roman', 'serif'],
+          body:    ['"Poiret One"', 'Century Gothic', 'Futura', 'sans-serif'],
+        },
+        maxWidth: { content: '1120px', narrow: '740px' },
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO) — zero polaczen z serwerami Google.
+     Butler: CC BY-SA 4.0 (Fabian De Smet). Poiret One: SIL OFL 1.1.
+     Oba wskazane w ksiedze znaku klientki. */
+  @font-face {
+    font-family: 'Butler'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/butler-regular.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Butler'; font-style: normal; font-weight: 500; font-display: swap;
+    src: url('fonts/butler-medium.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Poiret One'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/poiret-one-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Poiret One'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/poiret-one-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { -webkit-font-smoothing: antialiased; }
+  ::selection { background: #473427; color: #e2ded2; }
+  :focus-visible { outline: 2px solid #473427; outline-offset: 3px; border-radius: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+
+  section[id] { scroll-margin-top: 84px; }
+
+  /* Poiret One jest bardzo lekki i geometryczny — dluga tresc dostaje wieksza
+     interlinie i lekki tracking, inaczej akapity sie zlewaja. */
+  .prose-brand p { line-height: 1.95; letter-spacing: .012em; }
+
+  .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+
+  /* ---------- LOGO ----------
+     Proporcje zdjete wprost z ksiegi znaku (strony "proporcje i budowa"):
+     wysokosc wersalikow ATELIER PIEKNA = C.
+       sygnet:            szer. 3,929 C   wys. 4,079 C
+       odstep sygnet→C:   0,542 C
+       podpis:            wys. wersalikow 0,468 C
+       odstep baseline→podpis: 0,606 C
+     Napis: Butler Medium (zweryfikowane wobec szerokosci znakow w PDF), tracking 0,0318em.
+     Tracking policzony wobec szerokosci tuszu Z KERNINGIEM, tak jak sklada Illustrator.
+     Podpis: Poiret One, tracking 0,0156em.
+     Zmiana tych wartosci = niedopuszczalna modyfikacja znaku (ksiega znaku, str. 09). */
+  .lockup { display: flex; flex-direction: column; align-items: center; color: #473427; line-height: 1; }
+  .lockup__mark { display: block; width: 2.8717em; height: auto; }
+  .lockup__name {
+    font-family: 'Butler', Georgia, serif; font-weight: 500; font-size: 1em;
+    text-transform: uppercase; line-height: 1; letter-spacing: .0318em;
+  }
+  .lockup__sign {
+    font-family: 'Poiret One', sans-serif; font-weight: 400; line-height: 1;
+    font-size: .4398em; margin-top: .2452em; letter-spacing: .0182em;
+  }
+  /* Odstepy licza sie od krawedzi TUSZU, nie od pudelka wiersza, dlatego uwzgledniaja
+     metryki krojow: Butler ma baseline na 0,735 em i wersaliki 0,704 em,
+     Poiret One (line-height 1) ma wersaliki 0,127 em ponizej gory pudelka. */
+  .lockup__mark + .lockup__name { margin-top: .3503em; }
+
+  /* ---------- Przyciski ----------
+     Marka nie ma osobnego koloru akcentu — Chocolate pelni role ink i CTA. */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
+    min-height: 48px; padding: 0 1.6rem; border-radius: 999px;
+    font-family: 'Poiret One', sans-serif; font-size: .84rem;
+    letter-spacing: .16em; text-transform: uppercase; white-space: nowrap;
+    transition: background-color .18s ease, color .18s ease, border-color .18s ease;
+  }
+  .btn--solid  { background: #473427; color: #e2ded2; }
+  .btn--solid:hover  { background: #2f2119; }
+  .btn--line   { border: 1px solid rgba(71,52,39,.30); color: #473427; }
+  .btn--line:hover   { background: #473427; color: #e2ded2; border-color: #473427; }
+  .btn--onink  { border: 1px solid rgba(226,222,210,.35); color: #e2ded2; }
+  .btn--onink:hover  { background: #e2ded2; color: #473427; border-color: #e2ded2; }
+
+  /* ---------- Nawigacja ---------- */
+  .navlink {
+    display: inline-flex; align-items: center; min-height: 44px; flex-shrink: 0;
+    padding: 0 .7rem; border-radius: 999px; white-space: nowrap;
+    font-family: 'Poiret One', sans-serif; font-size: .8rem;
+    letter-spacing: .1em; text-transform: uppercase; color: #6e5e52;
+    transition: background-color .15s, color .15s;
+  }
+  .navlink:hover { color: #473427; }
+  .navlink.active { background: #473427; color: #e2ded2; }
+
+  .iconbtn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 44px; min-width: 44px; border-radius: 999px;
+    color: #473427; transition: background-color .18s ease, color .18s ease;
+  }
+  .iconbtn:hover { background: #473427; color: #e2ded2; }
+
+  /* ---------- Zakladki uslug ---------- */
+  .tab {
+    display: inline-flex; align-items: center; min-height: 44px; flex-shrink: 0;
+    padding: 0 1.1rem; border-radius: 999px; white-space: nowrap;
+    border: 1px solid rgba(71,52,39,.18);
+    font-family: 'Poiret One', sans-serif; font-size: .82rem;
+    letter-spacing: .1em; text-transform: uppercase; color: #6e5e52;
+    transition: background-color .18s, color .18s, border-color .18s;
+  }
+  .tab:hover { color: #473427; border-color: rgba(71,52,39,.30); }
+  .tab[aria-selected="true"] { background: #473427; color: #e2ded2; border-color: #473427; }
+
+  /* ---------- Galeria ---------- */
+  .gallery-tile { cursor: zoom-in; -webkit-tap-highlight-color: transparent; }
+  .gallery-hint {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    border-radius: inherit; background: rgba(71,52,39,.10); color: #473427;
+    opacity: 0; transition: opacity .2s ease;
+  }
+  .gallery-tile:hover .gallery-hint,
+  .gallery-tile:focus-visible .gallery-hint { opacity: 1; }
+
+  /* ---------- Mapa ---------- */
+  .map { filter: grayscale(.6) sepia(.28) contrast(1.03) brightness(1.02); }
+</style>
+</head>
+
+<body class="bg-shell font-body text-ink antialiased">
+
+<a href="#tresc" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-5 focus:py-3 focus:text-shell">Przejdź do treści</a>
+
+<!-- ============ HEADER — wersja pozioma znaku (ksiega znaku, str. 16: "pasek nawigacji na stronie internetowej") ============ -->
+<header class="sticky top-0 z-40 border-b border-hair bg-shell/90 backdrop-blur">
+  <div class="mx-auto flex max-w-content items-center gap-3 px-4 py-3 sm:gap-5 sm:px-7">
+
+    <a href="#top" aria-label="Atelier Piękna Izabela Iskierka, początek strony" class="lockup shrink-0 text-[15px] sm:text-[17px]">
+      <span class="lockup__name">Atelier&nbsp;Piękna</span>
+      <span class="lockup__sign">Izabela Iskierka</span>
+    </a>
+
+    <nav aria-label="Sekcje strony" class="scrollbar-none flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto sm:justify-center">
+      <a href="#o-nas"   data-nav="o-nas"   class="navlink">O nas</a>
+      <a href="#uslugi"  data-nav="uslugi"  class="navlink">Usługi</a>
+      <a href="#zespol"  data-nav="zespol"  class="navlink">Zespół</a>
+      <a href="#galeria" data-nav="galeria" class="navlink">Galeria</a>
+      <a href="#opinie"  data-nav="opinie"  class="navlink">Opinie</a>
+      <a href="#kontakt" data-nav="kontakt" class="navlink">Kontakt</a>
+    </nav>
+
+    <div class="flex shrink-0 items-center gap-1">
+      <a href="https://www.instagram.com/atelierpiekna_ig/" target="_blank" rel="noopener" aria-label="Atelier Piękna na Instagramie" class="iconbtn hidden sm:inline-flex">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.62.07 4.81s0 3.56-.07 4.81c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.16-1.06.36-2.23.41-1.25.06-1.62.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.56 2.2 15.19 2.2 12s0-3.56.07-4.81c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.44 2.21 8.8 2.2 12 2.2m0 1.98c-3.14 0-3.51.01-4.75.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.05-1.15-.24-1.77-.4-2.18a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.75-.07m0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9m0 8.99a3.54 3.54 0 1 0 0-7.08 3.54 3.54 0 0 0 0 7.08m6.94-9.21a1.27 1.27 0 1 1-2.55 0 1.27 1.27 0 0 1 2.55 0"/></svg>
+      </a>
+      <a href="https://www.facebook.com/AtelierPieknaIzabelaGozdzik/" target="_blank" rel="noopener" aria-label="Atelier Piękna na Facebooku" class="iconbtn hidden sm:inline-flex">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
+      </a>
+      <a href="tel:+48512013405" class="btn btn--line ml-1 !min-h-[44px] !gap-2 !px-3 sm:!px-4" aria-label="Zadzwoń: 512 013 405">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+        <span class="hidden sm:inline">512 013 405</span>
+      </a>
+      <a href="https://booksy.com/pl-pl/113660_atelier-piekna-izabela-gozdzik-makijaz-permanentny-laminacja-brwi-depilacja-laserowa-paznokcie-tomaszow-maz_salon-kosmetyczny_25178_tomaszow-mazowiecki" target="_blank" rel="noopener" class="btn btn--solid !min-h-[44px] !gap-2 !px-3 md:!px-5" aria-label="Umów wizytę online przez Booksy">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg>
+        <span class="hidden md:inline">Umów wizytę</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="tresc" tabindex="-1" class="outline-none">
+
+<!-- ============ HERO — pelna wersja znaku (ksiega znaku: "glowny element reprezentacyjny") ============ -->
+<section id="top" class="relative overflow-hidden">
+  <div class="mx-auto grid max-w-content items-center gap-10 px-5 py-14 sm:px-7 sm:py-20 lg:grid-cols-[1.05fr_.95fr] lg:gap-16 lg:py-24">
+
+    <div class="text-center lg:text-left">
+      <h1 class="lockup !items-center text-[30px] sm:text-[38px] lg:!items-start lg:text-[43px]">
+        <svg class="lockup__mark" viewBox="814.7 330.08 290.6 290.6" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="currentColor" stroke-width="2.523" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="960" cy="475.3714" rx="70.8005" ry="119.1094"/>
+            <ellipse cx="960" cy="475.3714" rx="82.7813" ry="87.0899"/>
+          </g>
+          <path fill="currentColor" d="M 960 360.19 C 959.27 379.01 958.31 397.82 957.64 416.64 C 957.32 425.43 956.93 434.25 955.39 442.92 C 953.52 453.56 948.91 461.75 938.52 466.34 C 935.64 467.62 932.98 468.3 931.78 468.6 C 929.56 469.16 927.21 469.57 924.34 469.86 C 900.93 472.27 881.67 472.3 864.87 472.99 C 860.98 473.16 854.76 473.45 847.03 474.02 C 854.59 474.5 860.76 474.76 864.88 474.9 C 865.12 474.91 865.54 474.93 866.14 474.95 C 866.27 474.95 868.02 475.01 868.02 475.01 C 869.04 475.05 897.33 475.76 924.5 477.77 C 927.89 478.02 932.79 478.43 938.34 481.05 C 940.33 481.99 944.86 484.19 948.79 488.86 C 953.26 494.18 954.7 499.72 955.69 505.59 C 956.44 510.05 956.75 514.56 956.99 519.05 C 958.06 542.88 958.98 566.72 960 590.55 C 961.02 566.72 961.94 542.88 963.01 519.05 C 963.25 514.56 963.56 510.05 964.31 505.59 C 965.3 499.72 966.74 494.18 971.21 488.86 C 975.14 484.19 979.67 481.99 981.66 481.05 C 987.21 478.43 992.11 478.02 995.5 477.77 C 1022.67 475.76 1050.96 475.05 1051.98 475.01 C 1051.98 475.01 1053.73 474.95 1053.86 474.95 C 1054.46 474.93 1054.88 474.91 1055.12 474.9 C 1059.24 474.76 1065.41 474.5 1072.97 474.02 C 1065.24 473.45 1059.02 473.16 1055.13 472.99 C 1038.33 472.3 1019.07 472.27 995.66 469.86 C 992.79 469.57 990.44 469.16 988.22 468.6 C 987.02 468.3 984.36 467.62 981.48 466.34 C 971.09 461.75 966.48 453.56 964.61 442.92 C 963.07 434.25 962.68 425.43 962.36 416.64 C 961.69 397.82 960.73 379.01 960 360.19"/>
+          <g fill="currentColor">
+            <circle cx="960" cy="334.943" r="4.867"/>
+            <circle cx="960" cy="615.801" r="4.867"/>
+            <circle cx="824.994" cy="475.3714" r="4.867"/>
+            <circle cx="1095.006" cy="475.3714" r="4.867"/>
+          </g>
+        </svg>
+        <span class="lockup__name">Atelier&nbsp;Piękna</span>
+        <span class="lockup__sign">Izabela Iskierka</span>
+      </h1>
+
+      <p class="mx-auto mt-9 max-w-[34rem] text-[1.06rem] leading-[1.95] tracking-[.012em] lg:mx-0">
+        Salon kosmetyczny w Tomaszowie Mazowieckim. Makijaż permanentny, oprawa oka,
+        stylizacja paznokci, zabiegi na twarz i ciało oraz depilacja laserowa.
+        Subtelne, naturalne efekty bez przerysowania.
+      </p>
+
+      <div class="mt-9 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+        <a href="https://booksy.com/pl-pl/113660_atelier-piekna-izabela-gozdzik-makijaz-permanentny-laminacja-brwi-depilacja-laserowa-paznokcie-tomaszow-maz_salon-kosmetyczny_25178_tomaszow-mazowiecki" target="_blank" rel="noopener" class="btn btn--solid">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg>
+          Umów wizytę
+        </a>
+        <a href="tel:+48512013405" class="btn btn--line">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+          512 013 405
+        </a>
+      </div>
+
+      <dl class="mt-12 flex flex-wrap items-baseline justify-center gap-x-10 gap-y-5 border-t border-hair pt-8 lg:justify-start">
+        <div>
+          <dt class="sr-only">Ocena na Booksy</dt>
+          <dd class="font-display text-[1.7rem] font-medium leading-none">5,0</dd>
+          <p class="mt-2 text-[.78rem] uppercase tracking-[.14em] text-muted">1179 opinii</p>
+        </div>
+        <div>
+          <dt class="sr-only">Lata doświadczenia</dt>
+          <dd class="font-display text-[1.7rem] font-medium leading-none">6+</dd>
+          <p class="mt-2 text-[.78rem] uppercase tracking-[.14em] text-muted">lat na rynku</p>
+        </div>
+        <div>
+          <dt class="sr-only">Wykonane zabiegi</dt>
+          <dd class="font-display text-[1.7rem] font-medium leading-none">15 000</dd>
+          <p class="mt-2 text-[.78rem] uppercase tracking-[.14em] text-muted">zabiegów</p>
+        </div>
+      </dl>
+    </div>
+
+    <figure class="relative mx-auto w-full max-w-[26rem] lg:max-w-none">
+      <img src="photos/salon-stanowisko.jpg" alt="Stanowisko do stylizacji paznokci w Atelier Piękna: lampy kosmetyczne, podnóżek na złotych nóżkach i drewniane lamele na ścianie"
+           width="1100" height="1650" fetchpriority="high" decoding="async"
+           class="aspect-[4/5] w-full rounded-[1.75rem] object-cover object-[center_35%] lg:aspect-[3/4]">
+    </figure>
+  </div>
+</section>
+
+<!-- ============ O NAS ============ -->
+<section id="o-nas" class="border-t border-hair">
+  <div class="mx-auto max-w-narrow px-5 py-16 sm:px-7 sm:py-24">
+    <h2 class="font-display text-[clamp(1.9rem,1.2rem+3vw,2.9rem)] font-normal leading-[1.15] tracking-[.02em]">
+      Miejsce stworzone z pasji do naturalnego piękna
+    </h2>
+    <div class="prose-brand mt-8 space-y-6 text-[1.06rem]">
+      <p>
+        Od ponad 6 lat upiększamy naszych klientów. Wykonałyśmy ponad 15 000 zabiegów
+        i zdobyłyśmy zaufanie potwierdzone przez ponad 1000 opinii.
+      </p>
+      <p>
+        Specjalizujemy się w makijażu permanentnym, oprawie oka, stylizacji paznokci,
+        zabiegach na twarz i ciało oraz depilacji laserowej. W naszym Atelier stawiamy
+        na perfekcyjną czystość, sterylność oraz pełne bezpieczeństwo każdej wizyty.
+        Naszą specjalnością są subtelne, naturalne efekty bez przerysowania, tak aby
+        podkreślić Twoje piękno.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ USLUGI — zakladki kategorii. Ceny pobrane z profilu Booksy klientki. ============ -->
+<section id="uslugi" class="border-t border-hair">
+  <div class="mx-auto max-w-content px-5 py-16 sm:px-7 sm:py-24">
+
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <h2 class="font-display text-[clamp(1.9rem,1.2rem+3vw,2.9rem)] font-normal leading-[1.15] tracking-[.02em]">Usługi</h2>
+      <a href="https://booksy.com/pl-pl/113660_atelier-piekna-izabela-gozdzik-makijaz-permanentny-laminacja-brwi-depilacja-laserowa-paznokcie-tomaszow-maz_salon-kosmetyczny_25178_tomaszow-mazowiecki" target="_blank" rel="noopener" class="btn btn--line">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg>
+        Pełna oferta na Booksy
+      </a>
+    </div>
+
+    <div class="scrollbar-none mt-10 flex gap-2 overflow-x-auto pb-1 lg:flex-wrap lg:overflow-x-visible" role="tablist" aria-label="Kategorie usług">
+      <button type="button" class="tab" role="tab" id="tab-best"    aria-controls="panel-best"    aria-selected="true"  tabindex="0">Bestsellery</button>
+      <button type="button" class="tab" role="tab" id="tab-twarz"   aria-controls="panel-twarz"   aria-selected="false" tabindex="-1">Twarz i ciało</button>
+      <button type="button" class="tab" role="tab" id="tab-rzesy"   aria-controls="panel-rzesy"   aria-selected="false" tabindex="-1">Rzęsy i brwi</button>
+      <button type="button" class="tab" role="tab" id="tab-pmu"     aria-controls="panel-pmu"     aria-selected="false" tabindex="-1">Makijaż permanentny</button>
+      <button type="button" class="tab" role="tab" id="tab-laser"   aria-controls="panel-laser"   aria-selected="false" tabindex="-1">Depilacja laserowa</button>
+      <button type="button" class="tab" role="tab" id="tab-dlonie"  aria-controls="panel-dlonie"  aria-selected="false" tabindex="-1">Dłonie i stopy</button>
+      <button type="button" class="tab" role="tab" id="tab-dodatki" aria-controls="panel-dodatki" aria-selected="false" tabindex="-1">Laser i dodatki</button>
+    </div>
+
+    <div class="mt-10">
+
+      <div id="panel-best" role="tabpanel" aria-labelledby="tab-best" tabindex="0">
+        <dl class="divide-y divide-hair border-y border-hair">
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Express Set, rzęsy w godzinę</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">140 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Laminacja brwi z koloryzacją</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">150 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Koreańska laminacja rzęs</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">170 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Peeling węglowy Black Doll z maską algową</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">250–350 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Manicure hybrydowy z nadbudową</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">140 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Pedicure hybrydowy SPA</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">170 zł</dd></div>
+        </dl>
+      </div>
+
+      <div id="panel-twarz" role="tabpanel" aria-labelledby="tab-twarz" tabindex="0" hidden>
+        <dl class="divide-y divide-hair border-y border-hair">
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Terapia trądzik Basic</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">320 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Terapia głębokiego nawilżenia</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">300 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Zabieg Gładka Skóra</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">280 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Peeling kawitacyjny z sonoforezą, ampułką i maską</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">130–170 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Body Reset, endermologia Primelle</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">od 170 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Face Lift, endermologia Primelle</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">od 130 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Pakiety serii endermologii, 5 lub 10 zabiegów</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">750–1800 zł</dd></div>
+        </dl>
+      </div>
+
+      <div id="panel-rzesy" role="tabpanel" aria-labelledby="tab-rzesy" tabindex="0" hidden>
+        <dl class="divide-y divide-hair border-y border-hair">
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Przedłużanie rzęs metodą 1:1</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">150 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Przedłużanie rzęs metodą 2/3D</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">170 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Przedłużanie rzęs metodą 4/5D</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">190 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Lifting z keratyną, botoksem i koloryzacją rzęs</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">150 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Henna pudrowa z geometrią brwi</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">120 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Laminacja brwi bez koloryzacji</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">130 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Regulacja brwi: nitkowanie, pęseta lub wosk</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">40 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Pakiet: laminacja rzęs i laminacja brwi z kolorem</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">270–290 zł</dd></div>
+        </dl>
+      </div>
+
+      <div id="panel-pmu" role="tabpanel" aria-labelledby="tab-pmu" tabindex="0" hidden>
+        <dl class="divide-y divide-hair border-y border-hair">
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Makijaż permanentny brwi Ombre</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">1000 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Makijaż permanentny brwi metodą włosa maszynowego</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">1000 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Makijaż permanentny ust Juicy Lips</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">1000 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Dopigmentowanie</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">od 100 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Odświeżenie makijażu permanentnego</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">wycena na wizycie</dd></div>
+        </dl>
+      </div>
+
+      <div id="panel-laser" role="tabpanel" aria-labelledby="tab-laser" tabindex="0" hidden>
+        <dl class="divide-y divide-hair border-y border-hair">
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Wąsik, broda, baki lub szyja</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">100 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Pachy</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">150 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Bikini płytkie</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">200 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Bikini głębokie</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">250 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Łydki lub całe uda, kolana gratis</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">300 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Całe nogi</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">400 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Plecy lub tors</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">400 zł</dd></div>
+        </dl>
+      </div>
+
+      <div id="panel-dlonie" role="tabpanel" aria-labelledby="tab-dlonie" tabindex="0" hidden>
+        <dl class="divide-y divide-hair border-y border-hair">
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Manicure hybrydowy z nadbudową</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">140 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Express Mani, manicure hybrydowy na samej bazie</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">140 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Manicure klasyczny z odżywką</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">80 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Przedłużanie żelem</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">190–230 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Żel na naturalnej płytce</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">170–210 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Pedicure hybrydowy SPA</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">170 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Pedicure klasyczny SPA</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">130–160 zł</dd></div>
+        </dl>
+      </div>
+
+      <div id="panel-dodatki" role="tabpanel" aria-labelledby="tab-dodatki" tabindex="0" hidden>
+        <dl class="divide-y divide-hair border-y border-hair">
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Laserowe usuwanie makijażu permanentnego</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">200 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Laserowe usuwanie tatuażu</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">od 200 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Laminacja paznokci</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">70 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Nitkowanie twarzy</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">70 zł</dd></div>
+          <div class="flex items-baseline justify-between gap-6 py-4"><dt class="text-[1.02rem] text-muted">Nitkowanie lub wosk: broda albo górna warga</dt><dd class="shrink-0 text-[1.02rem] tracking-[.02em]">20 zł</dd></div>
+        </dl>
+      </div>
+
+    </div>
+
+    <p class="mt-8 text-[.92rem] leading-relaxed text-muted">
+      Ceny orientacyjne. Pełny cennik z czasem trwania każdego zabiegu znajdzie Pani w profilu na Booksy.
+    </p>
+  </div>
+</section>
+
+<!-- ============ ZESPOL — pas na Warm Beige, tekst w pelnym Chocolate (kontrast 5,1:1) ============ -->
+<section id="zespol" class="bg-beige">
+  <div class="mx-auto max-w-content px-5 py-16 sm:px-7 sm:py-24">
+    <h2 class="font-display text-[clamp(1.9rem,1.2rem+3vw,2.9rem)] font-normal leading-[1.15] tracking-[.02em]">Zespół</h2>
+    <p class="mt-5 max-w-narrow text-[1.02rem] leading-[1.9] tracking-[.012em]">
+      Sześć osób, jeden standard pracy. Umawiając wizytę na Booksy wybierze Pani osobę, u której chce się umówić.
+    </p>
+
+    <ul class="mt-12 grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-3 lg:grid-cols-6">
+      <li class="text-center">
+        <img src="photos/zespol/izabela.jpg" alt="Izabela Iskierka, właścicielka Atelier Piękna" width="560" height="560" loading="lazy" decoding="async" class="aspect-square w-full rounded-full object-cover">
+        <p class="mt-4 font-display text-[1.06rem] font-medium">Izabela Iskierka</p>
+        <p class="mt-1 text-[.78rem] uppercase tracking-[.14em]">Właścicielka</p>
+      </li>
+      <li class="text-center">
+        <img src="photos/zespol/monika.jpg" alt="Monika P. z zespołu Atelier Piękna" width="560" height="560" loading="lazy" decoding="async" class="aspect-square w-full rounded-full object-cover">
+        <p class="mt-4 font-display text-[1.06rem] font-medium">Monika P.</p>
+      </li>
+      <li class="text-center">
+        <img src="photos/zespol/martyna.jpg" alt="Martyna S. z zespołu Atelier Piękna" width="560" height="560" loading="lazy" decoding="async" class="aspect-square w-full rounded-full object-cover">
+        <p class="mt-4 font-display text-[1.06rem] font-medium">Martyna S.</p>
+      </li>
+      <li class="text-center">
+        <img src="photos/zespol/wiktoria-b.jpg" alt="Wiktoria B. z zespołu Atelier Piękna" width="560" height="560" loading="lazy" decoding="async" class="aspect-square w-full rounded-full object-cover">
+        <p class="mt-4 font-display text-[1.06rem] font-medium">Wiktoria B.</p>
+      </li>
+      <li class="text-center">
+        <img src="photos/zespol/ania.jpg" alt="Ania S. z zespołu Atelier Piękna" width="560" height="560" loading="lazy" decoding="async" class="aspect-square w-full rounded-full object-cover">
+        <p class="mt-4 font-display text-[1.06rem] font-medium">Ania S.</p>
+      </li>
+      <li class="text-center">
+        <img src="photos/zespol/wiktoria-s.jpg" alt="Wiktoria S. z zespołu Atelier Piękna" width="560" height="560" loading="lazy" decoding="async" class="aspect-square w-full rounded-full object-cover">
+        <p class="mt-4 font-display text-[1.06rem] font-medium">Wiktoria S.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ GALERIA — kafelki dashed do czasu przyslania zdjec przez klientke ============ -->
+<section id="galeria" class="border-t border-hair">
+  <div class="mx-auto max-w-content px-5 py-16 sm:px-7 sm:py-24">
+    <h2 class="font-display text-[clamp(1.9rem,1.2rem+3vw,2.9rem)] font-normal leading-[1.15] tracking-[.02em]">Galeria</h2>
+
+    <ul class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      <li><button type="button" class="gallery-tile group relative block aspect-square w-full rounded-[1.25rem] border border-dashed border-hair2" data-group="efekty" data-index="0" aria-label="Miejsce na zdjęcie 1"><span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span></button></li>
+      <li><button type="button" class="gallery-tile group relative block aspect-square w-full rounded-[1.25rem] border border-dashed border-hair2" data-group="efekty" data-index="1" aria-label="Miejsce na zdjęcie 2"><span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span></button></li>
+      <li><button type="button" class="gallery-tile group relative block aspect-square w-full rounded-[1.25rem] border border-dashed border-hair2" data-group="efekty" data-index="2" aria-label="Miejsce na zdjęcie 3"><span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span></button></li>
+      <li><button type="button" class="gallery-tile group relative block aspect-square w-full overflow-hidden rounded-[1.25rem]" data-group="efekty" data-index="3" aria-label="Powiększ zdjęcie: stanowisko w salonie">
+        <img src="photos/salon-stanowisko.jpg" alt="Stanowisko do stylizacji paznokci w Atelier Piękna" width="1100" height="1650" loading="lazy" decoding="async" class="h-full w-full object-cover object-[center_35%] transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span></button></li>
+      <li><button type="button" class="gallery-tile group relative block aspect-square w-full rounded-[1.25rem] border border-dashed border-hair2" data-group="efekty" data-index="4" aria-label="Miejsce na zdjęcie 5"><span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span></button></li>
+      <li><button type="button" class="gallery-tile group relative block aspect-square w-full rounded-[1.25rem] border border-dashed border-hair2" data-group="efekty" data-index="5" aria-label="Miejsce na zdjęcie 6"><span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span></button></li>
+      <li class="hidden sm:block"><button type="button" class="gallery-tile group relative block aspect-square w-full rounded-[1.25rem] border border-dashed border-hair2" data-group="efekty" data-index="6" aria-label="Miejsce na zdjęcie 7"><span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span></button></li>
+      <li class="hidden lg:block"><button type="button" class="gallery-tile group relative block aspect-square w-full rounded-[1.25rem] border border-dashed border-hair2" data-group="efekty" data-index="7" aria-label="Miejsce na zdjęcie 8"><span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span></button></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ OPINIE ============ -->
+<section id="opinie" class="bg-beige">
+  <div class="mx-auto max-w-content px-5 py-16 sm:px-7 sm:py-24">
+    <h2 class="font-display text-[clamp(1.9rem,1.2rem+3vw,2.9rem)] font-normal leading-[1.15] tracking-[.02em]">Opinie</h2>
+
+    <dl class="mt-10 grid divide-y divide-hair2 border-y border-hair2 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+      <div class="px-6 py-8 text-center">
+        <dt class="text-[.78rem] uppercase tracking-[.14em]">Booksy</dt>
+        <dd class="mt-3 font-display text-[2rem] font-medium leading-none">5,0</dd>
+        <p class="mt-3 text-[.92rem]">1179 opinii</p>
+      </div>
+      <div class="px-6 py-8 text-center">
+        <dt class="text-[.78rem] uppercase tracking-[.14em]">Google</dt>
+        <dd class="mt-3 font-display text-[2rem] font-medium leading-none">5,0</dd>
+        <p class="mt-3 text-[.92rem]">106 opinii</p>
+      </div>
+      <div class="px-6 py-8 text-center">
+        <dt class="text-[.78rem] uppercase tracking-[.14em]">Facebook</dt>
+        <dd class="mt-3 font-display text-[2rem] font-medium leading-none">100%</dd>
+        <p class="mt-3 text-[.92rem]">24 osoby polecają</p>
+      </div>
+    </dl>
+
+    <!-- Miejsce na 3 cytaty. Tresc opinii wstawia uzytkownik, nie generujemy jej. -->
+    <ul class="mt-12 grid gap-8 sm:grid-cols-3">
+      <li class="min-h-[9.5rem] rounded-[1.25rem] border border-dashed border-hair2"></li>
+      <li class="min-h-[9.5rem] rounded-[1.25rem] border border-dashed border-hair2"></li>
+      <li class="min-h-[9.5rem] rounded-[1.25rem] border border-dashed border-hair2"></li>
+    </ul>
+
+    <div class="mt-10">
+      <a href="https://booksy.com/pl-pl/113660_atelier-piekna-izabela-gozdzik-makijaz-permanentny-laminacja-brwi-depilacja-laserowa-paznokcie-tomaszow-maz_salon-kosmetyczny_25178_tomaszow-mazowiecki" target="_blank" rel="noopener" class="btn btn--line">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.11 6.47L12 17.35l-5.81 3.05 1.11-6.47-4.7-4.58 6.5-.95z"/></svg>
+        Przeczytaj opinie na Booksy
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KONTAKT ============ -->
+<section id="kontakt">
+  <div class="mx-auto max-w-content px-5 pb-14 pt-16 sm:px-7 sm:pb-16 sm:pt-24">
+    <h2 class="font-display text-[clamp(1.9rem,1.2rem+3vw,2.9rem)] font-normal leading-[1.15] tracking-[.02em]">Jak nas znaleźć</h2>
+
+    <div class="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-16">
+
+      <div>
+        <dl class="divide-y divide-hair border-y border-hair">
+          <div class="py-5">
+            <dt class="text-[.78rem] uppercase tracking-[.14em] text-muted">Adres</dt>
+            <dd class="mt-2 text-[1.06rem]"><address class="not-italic">Słoneczna 1/3<br>97-200 Tomaszów Mazowiecki</address></dd>
+          </div>
+          <div class="py-5">
+            <dt class="text-[.78rem] uppercase tracking-[.14em] text-muted">Telefon</dt>
+            <dd class="mt-2 text-[1.06rem]"><a href="tel:+48512013405" class="underline decoration-hair2 underline-offset-4 transition-colors hover:decoration-ink">512 013 405</a></dd>
+          </div>
+          <div class="py-5">
+            <dt class="text-[.78rem] uppercase tracking-[.14em] text-muted">Na miejscu</dt>
+            <dd class="mt-2 text-[1.06rem]">Parking. Płatność kartą.</dd>
+          </div>
+        </dl>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="https://booksy.com/pl-pl/113660_atelier-piekna-izabela-gozdzik-makijaz-permanentny-laminacja-brwi-depilacja-laserowa-paznokcie-tomaszow-maz_salon-kosmetyczny_25178_tomaszow-mazowiecki" target="_blank" rel="noopener" class="btn btn--solid">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg>
+            Umów wizytę
+          </a>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=S%C5%82oneczna%201%2F3%2C%2097-200%20Tomasz%C3%B3w%20Mazowiecki" target="_blank" rel="noopener" class="btn btn--line">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7m0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5"/></svg>
+            Wyznacz trasę
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-[.78rem] uppercase tracking-[.14em] text-muted">Godziny otwarcia</h3>
+        <!-- Godziny do potwierdzenia przez klientke. Do tego czasu bez zmyslonych wartosci. -->
+        <div class="mt-4 min-h-[15rem] rounded-[1.25rem] border border-dashed border-hair2"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="w-full">
+    <iframe src="https://www.google.com/maps?q=S%C5%82oneczna%201%2F3%2C%2097-200%20Tomasz%C3%B3w%20Mazowiecki&z=16&output=embed"
+            title="Mapa dojazdu: Słoneczna 1/3, 97-200 Tomaszów Mazowiecki"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            class="map block h-[320px] w-full border-0 sm:h-[420px]"></iframe>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ STOPKA — wersja salonowa znaku (ksiega znaku, str. 13: "stopka na stronie internetowej") ============ -->
+<footer class="bg-ink text-shell">
+  <div class="mx-auto max-w-content px-5 py-14 sm:px-7 sm:py-16">
+
+    <div class="lockup mx-auto text-[20px] text-shell">
+      <svg class="lockup__mark" viewBox="814.7 330.08 290.6 290.6" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" stroke-width="2.523" stroke-linecap="round" stroke-linejoin="round">
+          <ellipse cx="960" cy="475.3714" rx="70.8005" ry="119.1094"/>
+          <ellipse cx="960" cy="475.3714" rx="82.7813" ry="87.0899"/>
+        </g>
+        <path fill="currentColor" d="M 960 360.19 C 959.27 379.01 958.31 397.82 957.64 416.64 C 957.32 425.43 956.93 434.25 955.39 442.92 C 953.52 453.56 948.91 461.75 938.52 466.34 C 935.64 467.62 932.98 468.3 931.78 468.6 C 929.56 469.16 927.21 469.57 924.34 469.86 C 900.93 472.27 881.67 472.3 864.87 472.99 C 860.98 473.16 854.76 473.45 847.03 474.02 C 854.59 474.5 860.76 474.76 864.88 474.9 C 865.12 474.91 865.54 474.93 866.14 474.95 C 866.27 474.95 868.02 475.01 868.02 475.01 C 869.04 475.05 897.33 475.76 924.5 477.77 C 927.89 478.02 932.79 478.43 938.34 481.05 C 940.33 481.99 944.86 484.19 948.79 488.86 C 953.26 494.18 954.7 499.72 955.69 505.59 C 956.44 510.05 956.75 514.56 956.99 519.05 C 958.06 542.88 958.98 566.72 960 590.55 C 961.02 566.72 961.94 542.88 963.01 519.05 C 963.25 514.56 963.56 510.05 964.31 505.59 C 965.3 499.72 966.74 494.18 971.21 488.86 C 975.14 484.19 979.67 481.99 981.66 481.05 C 987.21 478.43 992.11 478.02 995.5 477.77 C 1022.67 475.76 1050.96 475.05 1051.98 475.01 C 1051.98 475.01 1053.73 474.95 1053.86 474.95 C 1054.46 474.93 1054.88 474.91 1055.12 474.9 C 1059.24 474.76 1065.41 474.5 1072.97 474.02 C 1065.24 473.45 1059.02 473.16 1055.13 472.99 C 1038.33 472.3 1019.07 472.27 995.66 469.86 C 992.79 469.57 990.44 469.16 988.22 468.6 C 987.02 468.3 984.36 467.62 981.48 466.34 C 971.09 461.75 966.48 453.56 964.61 442.92 C 963.07 434.25 962.68 425.43 962.36 416.64 C 961.69 397.82 960.73 379.01 960 360.19"/>
+        <g fill="currentColor">
+          <circle cx="960" cy="334.943" r="4.867"/>
+          <circle cx="960" cy="615.801" r="4.867"/>
+          <circle cx="824.994" cy="475.3714" r="4.867"/>
+          <circle cx="1095.006" cy="475.3714" r="4.867"/>
+        </g>
+      </svg>
+      <span class="lockup__name">Atelier&nbsp;Piękna</span>
+    </div>
+
+    <div class="mt-12 grid gap-10 border-t border-shell/20 pt-10 sm:grid-cols-3">
+      <div>
+        <p class="text-[.78rem] uppercase tracking-[.14em] text-shell/70">Salon</p>
+        <address class="mt-3 not-italic leading-[1.9]">Słoneczna 1/3<br>97-200 Tomaszów Mazowiecki</address>
+      </div>
+      <div>
+        <p class="text-[.78rem] uppercase tracking-[.14em] text-shell/70">Kontakt</p>
+        <p class="mt-3 leading-[1.9]"><a href="tel:+48512013405" class="underline decoration-shell/40 underline-offset-4 transition-colors hover:decoration-shell">512 013 405</a></p>
+      </div>
+      <div>
+        <p class="text-[.78rem] uppercase tracking-[.14em] text-shell/70">Znajdź nas</p>
+        <div class="mt-2 flex flex-wrap gap-1">
+          <a href="https://www.instagram.com/atelierpiekna_ig/" target="_blank" rel="noopener" aria-label="Atelier Piękna na Instagramie" class="iconbtn !text-shell hover:!bg-shell hover:!text-ink">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.62.07 4.81s0 3.56-.07 4.81c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.16-1.06.36-2.23.41-1.25.06-1.62.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.56 2.2 15.19 2.2 12s0-3.56.07-4.81c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.44 2.21 8.8 2.2 12 2.2m0 1.98c-3.14 0-3.51.01-4.75.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.05-1.15-.24-1.77-.4-2.18a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.75-.07m0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9m0 8.99a3.54 3.54 0 1 0 0-7.08 3.54 3.54 0 0 0 0 7.08m6.94-9.21a1.27 1.27 0 1 1-2.55 0 1.27 1.27 0 0 1 2.55 0"/></svg>
+          </a>
+          <a href="https://www.facebook.com/AtelierPieknaIzabelaGozdzik/" target="_blank" rel="noopener" aria-label="Atelier Piękna na Facebooku" class="iconbtn !text-shell hover:!bg-shell hover:!text-ink">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-shell/20 pt-8 text-[.85rem] text-shell/70">
+      <p>© <span id="rok">2026</span> Atelier Piękna Izabela Iskierka</p>
+      <a href="privacy.html" class="underline decoration-shell/40 underline-offset-4 transition-colors hover:decoration-shell">Polityka prywatności</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ LIGHTBOX ============ -->
+<div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-[rgba(71,52,39,.93)] p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia z galerii">
+  <button type="button" id="lightboxClose" aria-label="Zamknij podgląd" class="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(226,222,210,.16)] text-shell transition-colors hover:bg-[rgba(226,222,210,.30)] sm:right-6 sm:top-6">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <button type="button" id="lightboxPrev" aria-label="Poprzednie zdjęcie" class="absolute left-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(226,222,210,.16)] text-shell transition-colors hover:bg-[rgba(226,222,210,.30)] sm:left-5">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+  <button type="button" id="lightboxNext" aria-label="Następne zdjęcie" class="absolute right-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(226,222,210,.16)] text-shell transition-colors hover:bg-[rgba(226,222,210,.30)] sm:right-5">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <figure class="mx-auto flex max-h-full max-w-3xl flex-col items-center">
+    <img id="lightboxImg" alt="" class="hidden max-h-[75vh] w-auto rounded-[1.25rem] object-contain">
+    <div id="lightboxPh" class="flex aspect-[4/5] max-h-[75vh] w-[min(80vw,420px)] flex-col items-center justify-center gap-3 rounded-[1.25rem] border border-dashed border-shell/40 p-8 text-center text-shell/80">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-5-9 9"/></svg>
+      <span id="lightboxPhText" class="text-[.78rem] uppercase tracking-[.15em]"></span>
+    </div>
+    <figcaption id="lightboxCounter" class="mt-5 text-[.8rem] uppercase tracking-[.15em] text-shell/70" aria-live="polite"></figcaption>
+  </figure>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BeautySalon",
+  "name": "Atelier Piękna Izabela Iskierka",
+  "description": "Salon kosmetyczny w Tomaszowie Mazowieckim: makijaż permanentny, stylizacja rzęs i brwi, depilacja laserowa, paznokcie oraz zabiegi na twarz i ciało.",
+  "telephone": "+48512013405",
+  "image": "photos/salon-stanowisko.jpg",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Słoneczna 1/3",
+    "postalCode": "97-200",
+    "addressLocality": "Tomaszów Mazowiecki",
+    "addressRegion": "łódzkie",
+    "addressCountry": "PL"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": 51.52485, "longitude": 20.00763 },
+  "sameAs": [
+    "https://www.facebook.com/AtelierPieknaIzabelaGozdzik/",
+    "https://www.instagram.com/atelierpiekna_ig/",
+    "https://booksy.com/pl-pl/113660_atelier-piekna-izabela-gozdzik-makijaz-permanentny-laminacja-brwi-depilacja-laserowa-paznokcie-tomaszow-maz_salon-kosmetyczny_25178_tomaszow-mazowiecki"
+  ]
+}
+</script>
+
+<script>
+/* ---------- Zakladki uslug ---------- */
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  if (!tabs.length) return;
+
+  function select(tab) {
+    tabs.forEach(function (t) {
+      var panel = document.getElementById(t.getAttribute('aria-controls'));
+      var on = (t === tab);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;          // roving tabindex: Tab omija nieaktywne zakladki
+      if (panel) panel.hidden = !on;
+    });
+  }
+
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener('click', function () { select(tab); });
+    tab.addEventListener('keydown', function (e) {
+      var next = null;
+      if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+      else if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+      else if (e.key === 'Home') next = tabs[0];
+      else if (e.key === 'End') next = tabs[tabs.length - 1];
+      if (!next) return;
+      e.preventDefault();
+      next.focus(); select(next);
+    });
+  });
+})();
+
+/* ---------- Scroll-spy ---------- */
+(function () {
+  if (!('IntersectionObserver' in window)) return;
+  var links = {};
+  document.querySelectorAll('.navlink[data-nav]').forEach(function (a) { links[a.dataset.nav] = a; });
+  var current = null;
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      if (current) current.classList.remove('active');
+      current = links[entry.target.id] || null;
+      if (current) current.classList.add('active');
+    });
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+  Object.keys(links).forEach(function (id) {
+    var section = document.getElementById(id);
+    if (section) observer.observe(section);
+  });
+})();
+
+/* ---------- Lightbox galerii ---------- */
+(function () {
+  var GALLERIES = {
+    efekty: [
+      { src: '', alt: 'zdjęcie 1' },
+      { src: '', alt: 'zdjęcie 2' },
+      { src: '', alt: 'zdjęcie 3' },
+      { src: 'photos/salon-stanowisko.jpg', alt: 'Stanowisko do stylizacji paznokci w Atelier Piękna' },
+      { src: '', alt: 'zdjęcie 5' },
+      { src: '', alt: 'zdjęcie 6' },
+      { src: '', alt: 'zdjęcie 7' },
+      { src: '', alt: 'zdjęcie 8' }
+    ]
+  };
+
+  var lightbox = document.getElementById('lightbox');
+  var tiles = document.querySelectorAll('.gallery-tile');
+  if (!lightbox || !tiles.length) return;
+
+  var img = document.getElementById('lightboxImg');
+  var ph = document.getElementById('lightboxPh');
+  var phText = document.getElementById('lightboxPhText');
+  var counter = document.getElementById('lightboxCounter');
+  var btnClose = document.getElementById('lightboxClose');
+  var btnPrev = document.getElementById('lightboxPrev');
+  var btnNext = document.getElementById('lightboxNext');
+  var currentGroup = Object.keys(GALLERIES)[0];
+  var current = 0;
+  var lastFocused = null;
+
+  function items() { return GALLERIES[currentGroup] || []; }
+
+  function render() {
+    var item = items()[current];
+    if (!item) return;
+    if (item.src) {
+      img.setAttribute('src', item.src); img.alt = item.alt;
+      img.classList.remove('hidden'); ph.classList.add('hidden');
+    } else {
+      phText.textContent = item.alt;
+      img.removeAttribute('src'); img.alt = '';
+      img.classList.add('hidden'); ph.classList.remove('hidden');
+    }
+    counter.textContent = (current + 1) + ' / ' + items().length;
+  }
+
+  function open(group, index) {
+    currentGroup = group; current = index;
+    lastFocused = document.activeElement;
+    render();
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    btnClose.focus();
+  }
+
+  function close() {
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
+    document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
+  }
+
+  function next() { var n = items().length; current = (current + 1) % n; render(); }
+  function prev() { var n = items().length; current = (current - 1 + n) % n; render(); }
+
+  tiles.forEach(function (tile) {
+    tile.addEventListener('click', function () {
+      open(tile.getAttribute('data-group') || currentGroup,
+           parseInt(tile.getAttribute('data-index'), 10));
+    });
+  });
+
+  btnClose.addEventListener('click', close);
+  btnNext.addEventListener('click', next);
+  btnPrev.addEventListener('click', prev);
+  lightbox.addEventListener('click', function (e) { if (e.target === lightbox) close(); });
+
+  document.addEventListener('keydown', function (e) {
+    if (lightbox.classList.contains('hidden')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowRight') next();
+    if (e.key === 'ArrowLeft') prev();
+    // Pulapka fokusu: Tab kraży miedzy trzema przyciskami dialogu i nie ucieka pod spod.
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var stops = [btnClose, btnPrev, btnNext];
+      var at = stops.indexOf(document.activeElement);
+      var step = e.shiftKey ? -1 : 1;
+      stops[(at + step + stops.length) % stops.length].focus();
+    }
+  });
+})();
+
+/* ---------- Rok w stopce ---------- */
+document.getElementById('rok').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
