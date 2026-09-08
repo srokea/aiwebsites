@@ -472,47 +472,23 @@
              loading="lazy" width="495" height="900"
              class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 28%;">
       </button>
-      <button type="button" class="tile block overflow-hidden rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2" aria-label="Powiększ zdjęcie: biały piesek po strzyżeniu, z dużymi uszami">
-        <img src="photos/maltanczyk-uszy.webp" alt="Biały piesek po strzyżeniu, z dużymi, różowymi w środku uszami"
-             loading="lazy" width="675" height="900"
-             class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 30%;">
-      </button>
-      <button type="button" class="tile block overflow-hidden rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2" aria-label="Powiększ zdjęcie: dwa rude szpice po pielęgnacji">
-        <img src="photos/pomeraniany-dwa.webp" alt="Dwa rude szpice pomorskie po pielęgnacji"
-             loading="lazy" width="405" height="900"
-             class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 55%;">
-      </button>
-      <button type="button" class="tile block overflow-hidden rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2" aria-label="Powiększ zdjęcie: kot maine coon po pielęgnacji">
-        <img src="photos/kot-mainecoon-glowa.webp" alt="Kot maine coon po pielęgnacji, zbliżenie na pysk"
-             loading="lazy" width="675" height="900"
-             class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 30%;">
-      </button>
-      <button type="button" class="tile block overflow-hidden rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2" aria-label="Powiększ zdjęcie: szczeniak buldoga francuskiego na stole groomerskim">
-        <img src="photos/francuski-buldog-szczeniak.webp" alt="Szczeniak buldoga francuskiego na stole groomerskim"
-             loading="lazy" width="900" height="900"
-             class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 35%;">
-      </button>
-      <button type="button" class="tile block overflow-hidden rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2" aria-label="Powiększ zdjęcie: cocker spaniel po pielęgnacji, z wywieszonym językiem">
-        <img src="photos/cocker-spaniel-jezyk.webp" alt="Cocker spaniel po pielęgnacji, z wywieszonym językiem"
-             loading="lazy" width="675" height="900"
-             class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 25%;">
-      </button>
-      <button type="button" class="tile block overflow-hidden rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2" aria-label="Powiększ zdjęcie: długowłosy kot szylkretowy po wyczesaniu sierści">
-        <img src="photos/kot-szylkretowy.webp" alt="Długowłosy kot szylkretowy po wyczesaniu sierści"
-             loading="lazy" width="506" height="900"
-             class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 38%;">
-      </button>
-      <button type="button" class="tile block overflow-hidden rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2" aria-label="Powiększ zdjęcie: mały piesek po strzyżeniu, z różową obrożką">
-        <img src="photos/yorek-szczeniak.webp" alt="Mały piesek po strzyżeniu, z różową obrożką"
-             loading="lazy" width="506" height="900"
-             class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 25%;">
-      </button>
-      <button type="button" class="tile block overflow-hidden rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2" aria-label="Powiększ zdjęcie: jack russell terrier siedzi po strzyżeniu">
-        <img src="photos/jack-russell-siedzi.webp" alt="Jack russell terrier po strzyżeniu, siedzi na stole groomerskim"
-             loading="lazy" width="405" height="900"
-             class="aspect-square w-full bg-surface object-cover transition duration-300 hover:scale-[1.03] motion-reduce:transition-none" style="object-position: center 18%;">
-      </button>
     </div>
+
+    <!-- Wiecej zdjec niz kafelkow: te 8 nie sa renderowane jako osobne kafelki (kafelkow
+         ma byc tylko 6, 3x2), ale lightbox dolacza je do items po zdjeciach z kafelkow —
+         wiec po otwarciu galerii mozna przewinac strzalkami do wszystkich 14. -->
+    <script type="application/json" id="galeria-wiecej">
+      [
+        {"src": "photos/maltanczyk-uszy.webp", "alt": "Biały piesek po strzyżeniu, z dużymi, różowymi w środku uszami"},
+        {"src": "photos/pomeraniany-dwa.webp", "alt": "Dwa rude szpice pomorskie po pielęgnacji"},
+        {"src": "photos/kot-mainecoon-glowa.webp", "alt": "Kot maine coon po pielęgnacji, zbliżenie na pysk"},
+        {"src": "photos/francuski-buldog-szczeniak.webp", "alt": "Szczeniak buldoga francuskiego na stole groomerskim"},
+        {"src": "photos/cocker-spaniel-jezyk.webp", "alt": "Cocker spaniel po pielęgnacji, z wywieszonym językiem"},
+        {"src": "photos/kot-szylkretowy.webp", "alt": "Długowłosy kot szylkretowy po wyczesaniu sierści"},
+        {"src": "photos/yorek-szczeniak.webp", "alt": "Mały piesek po strzyżeniu, z różową obrożką"},
+        {"src": "photos/jack-russell-siedzi.webp", "alt": "Jack russell terrier po strzyżeniu, siedzi na stole groomerskim"}
+      ]
+    </script>
 
     <div class="mt-8 flex flex-wrap gap-3">
       <a href="https://www.instagram.com/lapkapsia_fryzjer/" target="_blank" rel="noopener"
@@ -842,6 +818,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
       </button>
     </div>
+    <p class="lb-counter text-sm font-semibold text-white/70" aria-live="polite"></p>
   </div>
 </div>
 
@@ -855,8 +832,15 @@
       var img = t.querySelector('img');
       return { src: img.getAttribute('src'), alt: img.getAttribute('alt') || '' };
     });
+    // Kafelkow ma byc tylko 6 (3x2) — reszta zdjec dolaczona tu, dostepna w lightboxie
+    // przez strzalki < >, bez wlasnego kafelka w siatce (patrz #galeria-wiecej).
+    var extraEl = document.getElementById('galeria-wiecej');
+    if (extraEl) {
+      try { items = items.concat(JSON.parse(extraEl.textContent)); } catch (e) {}
+    }
     var lb = document.getElementById('lb');
     var lbImg = lb.querySelector('.lb-img');
+    var lbCounter = lb.querySelector('.lb-counter');
     var focusables = lb.querySelectorAll('button');
     var idx = 0, lastFocus = null;
 
@@ -864,6 +848,7 @@
       idx = (i + items.length) % items.length;
       lbImg.src = items[idx].src;
       lbImg.alt = items[idx].alt;
+      if (lbCounter) lbCounter.textContent = (idx + 1) + ' / ' + items.length;
     }
     function open(i) {
       lastFocus = document.activeElement;

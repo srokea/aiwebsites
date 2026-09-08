@@ -45,7 +45,7 @@
   }
   ::selection { background:#473427; color:#e2ded2; }
   :focus-visible { outline:2px solid #473427; outline-offset:3px; border-radius:2px; }
-  body p { line-height: 1.95; letter-spacing: .012em; }
+  body p { line-height: 1.85; letter-spacing: .01em; }
 
   .lockup { display:flex; flex-direction:column; align-items:center; color:#473427; line-height:1; }
   .lockup__name { font-family:'Butler',Georgia,serif; font-weight:500; font-size:1em; text-transform:uppercase; line-height:1; letter-spacing:.0318em; }
@@ -61,23 +61,30 @@
 <body class="bg-shell font-body text-ink antialiased">
 
 <header class="sticky top-0 z-40 border-b border-hair bg-shell/90 backdrop-blur">
-  <div class="mx-auto flex max-w-content items-center justify-between gap-4 px-4 py-3 sm:px-7">
-    <a href="index.html" aria-label="Atelier Piękna Izabela Iskierka, strona główna" class="lockup shrink-0 text-[15px] sm:text-[17px]">
-      <span class="lockup__name">Atelier&nbsp;Piękna</span>
-      <span class="lockup__sign">Izabela Iskierka</span>
-    </a>
-    <a href="tel:+48512013405" class="btn btn--solid !min-h-[44px] !px-4 sm:!px-5" aria-label="Zadzwoń: 512 013 405">
-      <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
-      <span class="hidden sm:inline">512 013 405</span>
+  <div class="flex items-center px-5 py-3 sm:px-7 lg:px-8 xl:px-10">
+    <a href="index.html" aria-label="Atelier Piękna Izabela Iskierka, strona główna" class="inline-flex h-11 w-11 shrink-0 items-center justify-center text-ink transition-opacity hover:opacity-75">
+      <svg viewBox="814.7 330.08 290.6 290.6" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" stroke-width="2.523" stroke-linecap="round" stroke-linejoin="round">
+          <ellipse cx="960" cy="475.3714" rx="70.8005" ry="119.1094"/>
+          <ellipse cx="960" cy="475.3714" rx="82.7813" ry="87.0899"/>
+        </g>
+        <path fill="currentColor" d="M 960 360.19 C 959.27 379.01 958.31 397.82 957.64 416.64 C 957.32 425.43 956.93 434.25 955.39 442.92 C 953.52 453.56 948.91 461.75 938.52 466.34 C 935.64 467.62 932.98 468.3 931.78 468.6 C 929.56 469.16 927.21 469.57 924.34 469.86 C 900.93 472.27 881.67 472.3 864.87 472.99 C 860.98 473.16 854.76 473.45 847.03 474.02 C 854.59 474.5 860.76 474.76 864.88 474.9 C 865.12 474.91 865.54 474.93 866.14 474.95 C 866.27 474.95 868.02 475.01 868.02 475.01 C 869.04 475.05 897.33 475.76 924.5 477.77 C 927.89 478.02 932.79 478.43 938.34 481.05 C 940.33 481.99 944.86 484.19 948.79 488.86 C 953.26 494.18 954.7 499.72 955.69 505.59 C 956.44 510.05 956.75 514.56 956.99 519.05 C 958.06 542.88 958.98 566.72 960 590.55 C 961.02 566.72 961.94 542.88 963.01 519.05 C 963.25 514.56 963.56 510.05 964.31 505.59 C 965.3 499.72 966.74 494.18 971.21 488.86 C 975.14 484.19 979.67 481.99 981.66 481.05 C 987.21 478.43 992.11 478.02 995.5 477.77 C 1022.67 475.76 1050.96 475.05 1051.98 475.01 C 1051.98 475.01 1053.73 474.95 1053.86 474.95 C 1054.46 474.93 1054.88 474.91 1055.12 474.9 C 1059.24 474.76 1065.41 474.5 1072.97 474.02 C 1065.24 473.45 1059.02 473.16 1055.13 472.99 C 1038.33 472.3 1019.07 472.27 995.66 469.86 C 992.79 469.57 990.44 469.16 988.22 468.6 C 987.02 468.3 984.36 467.62 981.48 466.34 C 971.09 461.75 966.48 453.56 964.61 442.92 C 963.07 434.25 962.68 425.43 962.36 416.64 C 961.69 397.82 960.73 379.01 960 360.19"/>
+        <g fill="currentColor">
+          <circle cx="960" cy="334.943" r="4.867"/>
+          <circle cx="960" cy="615.801" r="4.867"/>
+          <circle cx="824.994" cy="475.3714" r="4.867"/>
+          <circle cx="1095.006" cy="475.3714" r="4.867"/>
+        </g>
+      </svg>
     </a>
   </div>
 </header>
 
-<main class="mx-auto max-w-[46rem] px-5 py-14 sm:px-7 sm:py-20">
+<main class="mx-auto max-w-[38rem] px-5 py-14 sm:px-7 sm:py-20">
   <h1 class="font-display text-[clamp(2.1rem,1.3rem+3.4vw,3.2rem)] font-normal leading-[1.12] tracking-[.02em]">Polityka prywatności</h1>
   <p class="mt-5 text-[.78rem] uppercase tracking-[.14em] text-muted">Ostatnia aktualizacja: wrzesień 2026</p>
 
-  <div class="mt-12 space-y-10 text-[1.02rem]">
+  <div class="mt-12 space-y-10 text-[1.3rem]">
 
     <section>
       <h2 class="border-t border-hair pt-5 font-display text-[1.3rem] font-medium text-ink">Kto odpowiada za dane</h2>
@@ -181,6 +188,30 @@
     <span>Słoneczna 1/3, 97-200 Tomaszów Mazowiecki</span>
   </div>
 </footer>
+
+<!-- CTA telefonu: trwale przypiete w prawym dolnym rogu, widoczne przez cala podroz po stronie (jak header). -->
+<a href="tel:+48512013405" id="stickyCta"
+   class="btn btn--solid fixed bottom-4 right-4 z-40 !min-h-[50px] !min-w-[50px] !gap-2 !px-0 shadow-[0_10px_28px_rgba(71,52,39,.32)] transition-opacity duration-300 motion-reduce:transition-none sm:bottom-6 sm:right-6 sm:!min-w-0 sm:!px-6"
+   aria-label="Zadzwoń: 512 013 405">
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+  <span class="hidden sm:inline">512 013 405</span>
+</a>
+
+<script>
+/* Trwaly CTA telefonu: chowa sie, gdy stopka wjezdza w widok (nie zasklania linku "Wroc na strone glowna"). */
+(function () {
+  var cta = document.getElementById('stickyCta');
+  var footer = document.querySelector('footer');
+  if (!cta || !footer || !('IntersectionObserver' in window)) return;
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      cta.classList.toggle('opacity-0', entry.isIntersecting);
+      cta.classList.toggle('pointer-events-none', entry.isIntersecting);
+    });
+  }, { rootMargin: '0px 0px -15% 0px' });
+  observer.observe(footer);
+})();
+</script>
 
 </body>
 </html>
