@@ -88,10 +88,37 @@ function syncClientDues() {
   }
 }
 
+// #4 - data wpisu potwierdzonej naleznosci: wdrozenie + pierwszy abonament (miesiac domkniecia)
+// dostaja REALNY dzien dopiecia klienta (nie 1. dnia miesiaca); kolejne miesiace zostaja na "-01"
+// jako umowna data "abonament za miesiac X".
+function dueOccurredOn(due, dopieteAt) {
+  const start = new Date(dopieteAt);
+  if (Number.isNaN(start.getTime())) return `${due.period}-01`;
+  if (due.kind === "onetime" || due.period === ym(start)) return localDate(start);
+  return `${due.period}-01`;
+}
+
+// Jednorazowo (i idempotentnie) prostuje daty juz potwierdzonych naleznosci, ktore wpisaly sie
+// jako <period>-01 zanim doszedl fix z pkt 4 (np. Psia Lapka: 01.09 -> realne 09.09).
+function syncDueDates() {
+  const rows = db
+    .prepare(
+      `SELECT t.id AS tx_id, d.kind, d.period, l.dopiete_at
+       FROM client_dues d
+       JOIN transactions t ON t.id = d.transaction_id
+       JOIN leads l ON l.id = d.lead_id
+       WHERE d.status = 'confirmed' AND d.transaction_id IS NOT NULL AND l.dopiete_at IS NOT NULL`
+    )
+    .all();
+  const upd = db.prepare("UPDATE transactions SET occurred_on = @on WHERE id = @id AND occurred_on <> @on");
+  for (const r of rows) upd.run({ on: dueOccurredOn(r, r.dopiete_at), id: r.tx_id });
+}
+
 function financeSync() {
   db.transaction(() => {
     syncSubscriptions();
     syncClientDues();
+    syncDueDates();
   })();
 }
 
@@ -235,8 +262,9 @@ function confirmDue(id, by) {
   if (!due) return { error: "Nie znaleziono należności", status: 404 };
   if (due.status !== "pending") return { error: "Ta należność jest już rozliczona", status: 400 };
 
-  const lead = db.prepare("SELECT company_name FROM leads WHERE id = ?").get(due.lead_id);
+  const lead = db.prepare("SELECT company_name, dopiete_at FROM leads WHERE id = ?").get(due.lead_id);
   const label = due.kind === "onetime" ? "Wdrożenie" : `Abonament ${due.period}`;
+  const occurredOn = lead && lead.dopiete_at ? dueOccurredOn(due, lead.dopiete_at) : `${due.period}-01`;
 
   db.transaction(() => {
     const txId = db
@@ -244,7 +272,7 @@ function confirmDue(id, by) {
         `INSERT INTO transactions (occurred_on, description, amount_grosze, category, source_key, created_by)
          VALUES (?, ?, ?, 'przychod', ?, ?)`
       )
-      .run(`${due.period}-01`, `${label} — ${lead ? lead.company_name : "klient"}`, due.amount_grosze, `due:${due.id}`, by || "")
+      .run(occurredOn, `${label} — ${lead ? lead.company_name : "klient"}`, due.amount_grosze, `due:${due.id}`, by || "")
       .lastInsertRowid;
     db.prepare(
       "UPDATE client_dues SET status='confirmed', transaction_id=?, resolved_at=datetime('now'), resolved_by=? WHERE id=?"

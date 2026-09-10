@@ -153,7 +153,7 @@ async function loadNicheHeader() {
   badge.style.display = "block";
   badge.innerHTML = isRestDay()
     ? `<span class="n">💤</span> rest day`
-    : `<span class="n">${niche.calledToday}</span>/${meta.dailyGoal} dzisiaj`;
+    : `<span class="n">${niche.myCalledToday ?? niche.calledToday}</span>/${meta.dailyGoal} dzisiaj`;
 }
 
 async function loadLeads() {
@@ -1677,22 +1677,105 @@ document.getElementById("settings-delete-btn").addEventListener("click", async (
   }
 });
 
-// #7 - "x" po prawej stronie searchbara czysci cale pole (widoczny tylko gdy jest co czyscic)
+// Search w niszy robi DWIE rzeczy naraz:
+//   1) filtruje lokalna tabele tej niszy (searchQuery -> renderLeads),
+//   2) #2 - podpowiada leady ze WSZYSTKICH nisz (/api/leads/search) w dropdownie pod polem;
+//      klik -> scheme rozmowy tego leada. Strzalki / Enter / Esc jak w wyszukiwarce dashboardu.
 const leadSearchInput = document.getElementById("lead-search");
 const leadSearchClear = document.getElementById("lead-search-clear");
 
-leadSearchInput.addEventListener("input", (e) => {
-  searchQuery = e.target.value;
-  leadSearchClear.classList.toggle("hidden", !searchQuery);
-  renderLeads();
-});
+(function initNicheLeadSearch() {
+  const resultsBox = document.getElementById("lead-search-results");
+  const searchBar = document.getElementById("lead-search-bar");
+  let items = [];
+  let activeIdx = -1;
+  let seq = 0;
+  let debounceT;
 
-leadSearchClear.addEventListener("click", () => {
-  searchQuery = "";
-  leadSearchInput.value = "";
-  leadSearchClear.classList.add("hidden");
-  leadSearchInput.focus();
-  renderLeads();
-});
+  function closeResults() {
+    resultsBox.classList.add("hidden");
+    resultsBox.innerHTML = "";
+    items = [];
+    activeIdx = -1;
+  }
+  function go(idx) {
+    const it = items[idx];
+    if (it) location.href = "/script.html?leadId=" + it.id;
+  }
+  function render() {
+    resultsBox.innerHTML = items.length
+      ? items
+          .map(
+            (it, i) => `
+        <button type="button" class="sr-item ${i === activeIdx ? "active" : ""}" data-idx="${i}">
+          <div class="sr-company">${escapeHtml(it.company_name || "—")}</div>
+          <div class="sr-meta">${escapeHtml(it.phone || "brak numeru")} · ${escapeHtml(it.city || "—")} · ${escapeHtml(it.niche_name || "")}</div>
+        </button>`
+          )
+          .join("")
+      : `<div class="sr-empty">Brak wyników w innych niszach</div>`;
+    resultsBox.classList.remove("hidden");
+  }
+  async function runSearch(q) {
+    const mySeq = ++seq;
+    try {
+      const rows = await api.get("/api/leads/search?q=" + encodeURIComponent(q));
+      if (mySeq !== seq) return;
+      items = rows;
+      activeIdx = -1;
+      render();
+    } catch {
+      /* cicho */
+    }
+  }
+
+  leadSearchInput.addEventListener("input", (e) => {
+    const q = e.target.value;
+    searchQuery = q;
+    leadSearchClear.classList.toggle("hidden", !q);
+    renderLeads(); // lokalna tabela
+
+    clearTimeout(debounceT);
+    const trimmed = q.trim();
+    if (trimmed.length < 2) return closeResults();
+    debounceT = setTimeout(() => runSearch(trimmed), 200);
+  });
+
+  leadSearchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeResults();
+      leadSearchInput.blur();
+    } else if (e.key === "ArrowDown" && items.length) {
+      e.preventDefault();
+      activeIdx = (activeIdx + 1) % items.length;
+      render();
+    } else if (e.key === "ArrowUp" && items.length) {
+      e.preventDefault();
+      activeIdx = (activeIdx - 1 + items.length) % items.length;
+      render();
+    } else if (e.key === "Enter" && items.length) {
+      e.preventDefault();
+      go(activeIdx >= 0 ? activeIdx : 0);
+    }
+  });
+
+  resultsBox.addEventListener("click", (e) => {
+    const btn = e.target.closest(".sr-item");
+    if (btn) go(Number(btn.dataset.idx));
+  });
+
+  leadSearchClear.addEventListener("click", () => {
+    searchQuery = "";
+    leadSearchInput.value = "";
+    leadSearchClear.classList.add("hidden");
+    closeResults();
+    leadSearchInput.focus();
+    renderLeads();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("#lead-search-bar") && !searchBar.contains(e.target)) closeResults();
+  });
+})();
 
 init();

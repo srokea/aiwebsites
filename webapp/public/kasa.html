@@ -25,6 +25,27 @@
     </div>
   </div>
 
+  <div class="networth-card" id="networth-card">
+    <div class="networth-head">
+      <div>
+        <div class="networth-title">Net worth w czasie</div>
+        <div class="networth-caption" id="networth-caption"></div>
+      </div>
+      <div class="networth-gran" id="networth-gran">
+        <button type="button" data-g="day">Dni</button>
+        <button type="button" data-g="week">Tygodnie</button>
+        <button type="button" data-g="month" class="active">Miesiące</button>
+        <button type="button" data-g="year">Lata</button>
+      </div>
+    </div>
+    <div class="networth-range" id="networth-range">
+      <label>Od <input type="date" id="nw-from"></label>
+      <label>Do <input type="date" id="nw-to"></label>
+      <button type="button" id="nw-range-clear" hidden>Cały okres</button>
+    </div>
+    <div class="networth-plot" id="networth-plot"></div>
+  </div>
+
   <div class="ledger-summary" id="ledger-summary"></div>
 
   <div class="split-section" id="split-section" hidden>

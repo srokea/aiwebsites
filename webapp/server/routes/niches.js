@@ -150,9 +150,21 @@ router.get("/:slug", (req, res) => {
     )
     .get(niche.id).c;
 
+  // #1 - licznik "x/10 dzisiaj" w niszy jest UNIWERSALNY: telefony zalogowanego usera z DZIS
+  // ze WSZYSTKICH nisz (nie resetuje sie przy przejsciu do innej niszy). Liczone po leads.caller
+  // = po tym, kto jest wpisany jako dzwoniacy (ta sama zasada co /api/stats/caller/:name).
+  const myCalledToday = db
+    .prepare(
+      `SELECT COUNT(*) c FROM leads
+       WHERE caller = ? AND called_at IS NOT NULL AND ${STATS_ELIGIBLE_SQL}
+         AND date(called_at, 'localtime') = date('now', 'localtime')`
+    )
+    .get(req.user.display_name).c;
+
   res.json({
     ...niche,
     columns: parseColumns(niche.columns),
+    myCalledToday,
     total,
     eligible,
     called,

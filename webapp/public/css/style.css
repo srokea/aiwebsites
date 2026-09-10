@@ -3029,3 +3029,91 @@ body.map-page { overflow: hidden; }
 #add-lead-fields select:focus { outline: none; border-color: var(--blue); }
 .add-lead-tags { border: 1px solid var(--border-soft); border-radius: 9px; padding: 8px 10px; display: flex; flex-wrap: wrap; gap: 10px; }
 .add-lead-tags legend { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; padding: 0 4px; }
+
+/* ---------- Kasa: wykres net worth w czasie (jeden szereg = skumulowany bilans) ---------- */
+.networth-card {
+  background: linear-gradient(160deg, var(--card-alt), var(--card));
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px 8px;
+  margin-bottom: 22px;
+}
+.networth-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 6px; }
+.networth-title { font-size: 13px; font-weight: 700; letter-spacing: .2px; }
+.networth-caption { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.networth-caption .pos { color: var(--green); }
+.networth-caption .neg { color: var(--red); }
+.networth-gran { display: flex; gap: 4px; }
+.networth-gran button {
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  background: var(--card-alt);
+  color: var(--muted);
+  border-radius: 7px;
+  font: inherit;
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: border-color .12s, color .12s, background .12s;
+}
+.networth-gran button:hover { color: var(--text); }
+.networth-gran button.active { border-color: var(--green); color: var(--text); background: rgba(92,184,92,0.12); }
+
+.networth-range { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+.networth-range label { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--muted); }
+.networth-range input[type="date"] {
+  background: var(--card-alt);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 7px;
+  padding: 4px 8px;
+  font: inherit;
+  font-size: 11.5px;
+  color-scheme: dark;
+}
+.networth-range input[type="date"]:focus { outline: none; border-color: var(--green); }
+#nw-range-clear {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--muted);
+  border-radius: 7px;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+#nw-range-clear:hover { color: var(--text); border-color: #3a3a3a; }
+
+.networth-plot { position: relative; margin-top: 10px; }
+.networth-empty { padding: 30px 0; text-align: center; color: var(--muted); font-size: 12.5px; }
+.nw-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.nw-grid { stroke: var(--border-soft); stroke-width: 1; }
+.nw-zero { stroke: var(--muted-soft); stroke-width: 1; stroke-dasharray: 3 3; }
+.nw-area { fill: rgba(92,184,92,0.10); stroke: none; }
+.nw-line { fill: none; stroke: var(--green); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.nw-ylabel { fill: var(--muted-soft); font-size: 9px; text-anchor: end; dominant-baseline: middle; }
+.nw-xlabel { fill: var(--muted-soft); font-size: 9px; text-anchor: middle; }
+.nw-dot { stroke: var(--card); stroke-width: 1.5; }
+.nw-dot.peak { fill: var(--green); }
+.nw-dot.dip { fill: var(--red); }
+.nw-mlabel { fill: var(--muted); font-size: 9px; font-weight: 600; }
+.nw-cross { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 2; }
+.nw-hoverdot { fill: var(--green); stroke: var(--bg); stroke-width: 2; }
+.nw-tip[hidden] { display: none; }
+.nw-tip {
+  position: absolute;
+  top: 2px;
+  transform: translateX(-50%);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px 9px;
+  font-size: 11px;
+  white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.nw-tip-k { color: var(--muted); }
+.nw-tip-v { color: var(--text); font-weight: 700; }
