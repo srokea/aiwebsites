@@ -341,4 +341,57 @@ db.transaction(() => {
   db.prepare(`UPDATE leads SET notes = '' WHERE notes <> ''`).run();
 })();
 
+// Naprawa buga: "leads", "lead_notes", "lead_note_edits" i "api_keys" istnialy juz w bazie
+// zanim ich CREATE TABLE powyzej dostal klauzule "ON DELETE CASCADE" - a CREATE TABLE IF
+// NOT EXISTS nie modyfikuje istniejacej tabeli, wiec ograniczenie nigdy realnie nie
+// zadzialalo. Efekt: usuniecie niszy kasowalo sama nisze, ale jej leady zostawaly w bazie
+// jako osierocone (niche_id wskazujacy donikad) i na zawsze zawyzaly globalne liczniki
+// (total/eligible) na dashboardzie, zanizajac % wykonanych polaczen. SQLite nie pozwala
+// dodac ograniczenia FK przez ALTER TABLE, wiec jedyne wyjscie to przebudowa tabeli wg
+// oficjalnej procedury (foreign_keys=OFF, kopia do nowej tabeli z poprawnym constraintem,
+// podmiana, foreign_key_check, foreign_keys=ON). Idempotentne - kolejne starty to no-op.
+function ensureCascadeDelete(table, fkColumn, refTable) {
+  const already = db
+    .pragma(`foreign_key_list(${table})`)
+    .some((fk) => fk.table === refTable && fk.from === fkColumn && String(fk.on_delete).toUpperCase() === "CASCADE");
+  if (already) return;
+
+  // Sprzatamy wiersze juz osierocone przez ten sam bug - inaczej rebuild wywroci sie na
+  // foreign_key_check (te wiersze i tak byly niewidoczne/nieuzywalne z poziomu UI).
+  db.prepare(`DELETE FROM ${table} WHERE ${fkColumn} NOT IN (SELECT id FROM ${refTable})`).run();
+
+  const cols = db.pragma(`table_info(${table})`);
+  const colDefs = cols.map((c) => {
+    if (c.pk) return `${c.name} ${c.type} PRIMARY KEY AUTOINCREMENT`;
+    let def = `${c.name} ${c.type}`;
+    if (c.notnull) def += " NOT NULL";
+    if (c.dflt_value !== null) def += ` DEFAULT (${c.dflt_value})`;
+    if (c.name === fkColumn) def += ` REFERENCES ${refTable}(id) ON DELETE CASCADE`;
+    return def;
+  });
+  const colNames = cols.map((c) => c.name).join(", ");
+  const tmpTable = `${table}__rebuild`;
+  const indexSqls = db
+    .prepare("SELECT sql FROM sqlite_master WHERE type='index' AND tbl_name=? AND sql IS NOT NULL")
+    .pluck()
+    .all(table);
+
+  db.pragma("foreign_keys = OFF");
+  db.transaction(() => {
+    db.exec(`CREATE TABLE ${tmpTable} (${colDefs.join(", ")})`);
+    db.exec(`INSERT INTO ${tmpTable} (${colNames}) SELECT ${colNames} FROM ${table}`);
+    db.exec(`DROP TABLE ${table}`);
+    db.exec(`ALTER TABLE ${tmpTable} RENAME TO ${table}`);
+    for (const sql of indexSqls) db.exec(sql);
+  })();
+  db.pragma("foreign_keys = ON");
+
+  const problems = db.pragma("foreign_key_check");
+  if (problems.length) throw new Error(`foreign_key_check nie przeszedl po przebudowie ${table}: ${JSON.stringify(problems)}`);
+}
+ensureCascadeDelete("leads", "niche_id", "niches");
+ensureCascadeDelete("lead_notes", "lead_id", "leads");
+ensureCascadeDelete("lead_note_edits", "note_id", "lead_notes");
+ensureCascadeDelete("api_keys", "user_id", "users");
+
 module.exports = db;
