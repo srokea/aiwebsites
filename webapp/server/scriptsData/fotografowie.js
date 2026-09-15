@@ -24,21 +24,7 @@ function buildScript(lead) {
       title: "Opener",
       content: [
         { type: "text", speaker: "you", html: `Dzień dobry, dodzwoniłem się do ${company}?` },
-        { type: "text", speaker: "you", html: "Super. A mogę rozmawiać z właścicielem / właścicielką?" },
-        { type: "flowArrow" },
-        {
-          type: "branch",
-          dot: "no",
-          title: "NIE – to nie właściciel/ka",
-          open: false,
-          content: [
-            { type: "text", speaker: "you", html: "Jasne, a kiedy mogę się z nim / z nią skontaktować?" },
-            { type: "text", speaker: "them", html: "Proszę zadzwonić później / to ja robię zdjęcia, ale numer jest firmowy." },
-            { type: "divider" },
-            { type: "text", speaker: "them", html: "A w jakiej sprawie Pan dzwoni?" },
-            { type: "text", speaker: "you", html: `Dzwonię w sprawie strony internetowej / ${platform}.` },
-          ],
-        },
+        { type: "text", speaker: "you", html: "Super. A mogę rozmawiać z <em>właścicielem / właścicielką</em>?" },
         {
           type: "branch",
           dot: "yes",
@@ -49,7 +35,7 @@ function buildScript(lead) {
             {
               type: "text",
               speaker: "you",
-              html: `Super. Trafiłem ostatnio na ${foundPhrase}${otherPlatforms} i bardzo spodobały mi się realizacje. Zauważyłem też, że nie ma Pan/Pani obecnie własnej strony internetowej. Jestem studentem, zajmuję się tworzeniem stron i rozbudowuję teraz swoje portfolio, dlatego przygotowałem dla Pana/Pani szybki koncept strony z portfolio, pakietami, opiniami i kontaktem. Zamiast opowiadać o tym przez telefon, wolałbym po prostu to pokazać. Umówilibyśmy się na krótkie spotkanie online, wysłałbym Panu/Pani link, udostępnił ekran i pokazał koncept. W trakcie może Pan/Pani powiedzieć, co warto zmienić, a ja na bieżąco bym to dopracował. Miałby/Miałaby Pan/Pani 10–15 minut w którymś dniu?`,
+              html: `Super. Trafiłem ostatnio na ${foundPhrase}${otherPlatforms} i bardzo spodobały mi się realizacje. Zauważyłem też, że nie ma <em>Pan/Pani</em> obecnie własnej strony internetowej. Jestem studentem, zajmuję się tworzeniem stron i rozbudowuję teraz swoje portfolio, dlatego przygotowałem dla <em>Pana/Pani</em> szybki koncept strony z portfolio, pakietami, opiniami i kontaktem. Zamiast opowiadać o tym przez telefon, wolałbym po prostu to pokazać. Umówilibyśmy się na krótkie spotkanie online, wysłałbym <em>Panu/Pani</em> link, udostępnił ekran i pokazał koncept. W trakcie może <em>Pan/Pani</em> powiedzieć, co warto zmienić, a ja na bieżąco bym to dopracował. <em>Miałby/Miałaby Pan/Pani</em> 10–15 minut w którymś dniu?`,
             },
           ],
         },
