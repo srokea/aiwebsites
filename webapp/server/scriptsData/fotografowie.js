@@ -6,11 +6,16 @@ function buildScript(lead) {
   const p = PLATFORM_INFO[primary];
   const active = activeTags(lead);
   const hasYoutubeToo = active.includes("youtube") && primary !== "youtube";
+  // brak jakichkolwiek tagow social -> nie zmyslamy platformy (pickPrimaryTag domyslnie
+  // dawalby Instagram), tylko ogolne "w Internecie"; profileNoun/onPhrase zawsze przez
+  // <em> - tak samo jak company/city/platform - zeby podswietlenie na niebiesko bylo spojne
+  const noSocial = active.length === 0;
 
   const company = lead.company_name ? `<em>${escapeHtml(lead.company_name)}</em>` : "<em>nazwa firmy</em>";
   const city = lead.city ? `<em>${escapeHtml(lead.city)}</em>` : "<em>miejscowość</em>";
   const platform = `<em>${p.name}</em>`;
   const otherPlatforms = otherPlatformsMention(lead, primary);
+  const foundPhrase = noSocial ? "Was <em>w Internecie</em>" : `Wasz <em>${p.profileNoun}</em> <em>${p.onPhrase}</em>`;
 
   const sections = [
     {
@@ -44,21 +49,7 @@ function buildScript(lead) {
             {
               type: "text",
               speaker: "you",
-              html: `Świetnie. Dzwonię dosłownie na minutkę — trafiłem ostatnio na Wasz ${p.profileNoun} ${p.onPhrase}${otherPlatforms} i bardzo spodobały mi się Wasze zdjęcia. Zajmuję się stronami internetowymi dla lokalnych firm i przygotowałem dla Was szybki koncept strony, która zbierałaby w jednym miejscu portfolio, cennik pakietów, opinie i możliwość kontaktu. I pomyślałem, że zamiast opowiadać o tym przez telefon, po prostu ją pokażę — ma Pan / ma Pani może 10 minut któregoś dnia na krótkiego Google Meeta?`,
-            },
-            { type: "divider" },
-            { type: "hookTag", variant: "backup", label: "Backup – szukam fotografa" },
-            {
-              type: "text",
-              speaker: "you",
-              html: `Wie Pan / wie Pani co, szukałem ostatnio fotografa na sesję i trafiłem na Wasz ${platform}, ale nie mogłem nigdzie znaleźć strony z pełnym portfolio i cennikiem pakietów. Nie dzwonię jednak jako klient — zajmuję się stronami internetowymi dla lokalnych firm i przygotowałem już jedną specjalnie dla Was. Ma Pan / ma Pani może 10 minut, żebym pokazał gotowy koncept?`,
-            },
-            { type: "divider" },
-            { type: "hookTag", variant: "backup", label: "Backup – polecenie" },
-            {
-              type: "text",
-              speaker: "you",
-              html: `Ktoś polecił mi Wasze zdjęcia i próbowałem znaleźć więcej przykładów prac w internecie, ale ciężko było cokolwiek znaleźć poza ${platform}. Zajmuję się stronami internetowymi dla lokalnych firm i przygotowałem jedną specjalnie dla Was. Ma Pan / ma Pani 10 minut, żebym pokazał koncept?`,
+              html: `Super. Trafiłem ostatnio na ${foundPhrase}${otherPlatforms} i bardzo spodobały mi się realizacje. Zauważyłem też, że nie ma Pan/Pani obecnie własnej strony internetowej. Jestem studentem, zajmuję się tworzeniem stron i rozbudowuję teraz swoje portfolio, dlatego przygotowałem dla Pana/Pani szybki koncept strony z portfolio, pakietami, opiniami i kontaktem. Zamiast opowiadać o tym przez telefon, wolałbym po prostu to pokazać. Umówilibyśmy się na krótkie spotkanie online, wysłałbym Panu/Pani link, udostępnił ekran i pokazał koncept. W trakcie może Pan/Pani powiedzieć, co warto zmienić, a ja na bieżąco bym to dopracował. Miałby/Miałaby Pan/Pani 10–15 minut w którymś dniu?`,
             },
           ],
         },
@@ -190,19 +181,6 @@ function buildScript(lead) {
       ],
     },
     {
-      phase: 3,
-      phaseClass: "phase-3",
-      title: "Closer",
-      content: [
-        { type: "text", speaker: "you", html: "Super, w takim razie kiedy byłoby Panu / Pani wygodnie?" },
-        {
-          type: "text",
-          speaker: "you",
-          html: "Świetnie. To w <em>[data]</em> wyślę link na ten numer o <em>[godzina]</em>, wystarczy kliknąć i wszystko się samo otworzy. Do usłyszenia!",
-        },
-      ],
-    },
-    {
       phase: 4,
       phaseClass: "phase-4",
       title: "Call Back",
@@ -234,18 +212,11 @@ function buildScript(lead) {
     },
   ];
 
-  const differences = [
-    { title: "Hook", html: "Bez wzmianki o studenckim portfolio – od razu profesjonalne wejście („zajmuję się stronami dla lokalnych firm\"), bo fotografowie to często jednoosobowe marki, dla których liczy się fachowość" },
-    { title: "Backup hooki", html: "„Szukam fotografa\" i „polecenie\" – naturalne pretekst dla kogoś dzwoniącego w sprawie sesji zdjęciowej" },
-    { title: "Główna obiekcja", html: `„${p.objectionTitle}" – odpowiedź kładzie nacisk na wyszukiwania „fotograf + miasto" w Google, nie na social media` },
-    { title: "Branżowa obiekcja", html: "„Klienci i tak przychodzą z polecenia\" – bardzo częsta w tej niszy, mocno opartej na word-of-mouth" },
-  ];
-
   return {
     title: "Cold Call – Fotografowie",
     subtitle: `Scheme rozmowy · Hook oparty na ${p.name}`,
     sections,
-    differences,
+    differences: [],
   };
 }
 
