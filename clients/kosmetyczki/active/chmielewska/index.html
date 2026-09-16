@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chmielewska Beauty Studio · makijaż ślubny i okolicznościowy, Tomaszów Mazowiecki</title>
+<meta name="description" content="Makijaż ślubny i okolicznościowy, stylizacja brwi i rzęs w Tomaszowie Mazowieckim, Warszawska 33. Dojazd do Panien Młodych w całej Polsce. Rezerwacja przez Booksy lub pod numerem 577 220 491.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#FFFFFF">
+<meta property="og:title" content="Chmielewska Beauty Studio · makijaż ślubny, Tomaszów Mazowiecki">
+<meta property="og:description" content="Makijaż ślubny z dojazdem w całej Polsce. Studio przy Warszawskiej 33 w Tomaszowie Mazowieckim. 5,0 w Booksy (56 opinii).">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:image" content="photos/beata-chmielewska.jpg">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          /* Paleta z brief.md. Akcent #C09563 to JEDEN ton pośredni między żółtym złotem szyldu
+             a różowym złotem grafiki „o niej". Przy tekście go nie używamy (2,7:1 na bieli),
+             tylko jako wypełnienie przycisków (z tekstem w ink, 5,6:1), linie, ikonki i gwiazdki. */
+          bg:      '#FFFFFF',
+          surface: '#F7F1EF',   /* ciepły neutral sekcji, OKLCH hue 39,5: poza pasmem kremu z No-Cream Rule */
+          ink:     '#2A2420',
+          muted:   '#6B5E57',   /* 6,2:1 na bieli, 5,6:1 na surface */
+          accent:  '#C09563',
+          hair:    'rgba(42,36,32,.14)',
+        },
+        fontFamily: {
+          /* Świadome odstępstwo od Work Sans (brief.md): jej materiały konsekwentnie używają serifu. */
+          serif:  ['"Cormorant Garamond"', 'Garamond', 'Georgia', 'serif'],
+          /* Logo: Mrs Saint Delafield to PRZYBLIŻENIE skryptu z szyldu. Porównane z Alex Brush
+             i Give You Glory: ma najbliższą cienką, monolinearną kreskę i wysokie pętle wydłużeń.
+             Oryginał jest bardziej wyprostowany, stąd lekkie skewX w .script-logo. */
+          script: ['"Mrs Saint Delafield"', 'cursive'],
+        },
+        maxWidth: { content: '1120px', narrow: '760px' },
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO), bez połączenia z serwerami Google. */
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 400 700; font-display: swap;
+    src: url('fonts/cormorant-garamond-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 400 700; font-display: swap;
+    src: url('fonts/cormorant-garamond-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 400 700; font-display: swap;
+    src: url('fonts/cormorant-garamond-italic-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 400 700; font-display: swap;
+    src: url('fonts/cormorant-garamond-italic-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Mrs Saint Delafield'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/mrs-saint-delafield-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  body { font-variant-numeric: lining-nums; }
+  ::selection { background: #C09563; color: #2A2420; }
+  :focus-visible { outline: 2px solid #2A2420; outline-offset: 3px; border-radius: 2px; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; }
+  }
+
+  /* ---- Logo odtworzone w HTML: skrypt + linia + BEAUTY•STUDIO (jak na szyldzie) ---- */
+  .script-logo { font-family: 'Mrs Saint Delafield', cursive; font-weight: 400; display: inline-block; transform: skewX(8deg); }
+  .lockup { display: inline-flex; flex-direction: column; align-items: center; color: #C09563; }
+  .lockup .script-logo { line-height: 1; padding: 0 .12em; position: relative; z-index: 1; }
+  .lockup-rule { display: block; width: 118%; height: 1px; background: currentColor; margin-top: -.34em; }
+  .lockup-sub {
+    display: inline-flex; align-items: center; gap: .55em; margin-top: .9em;
+    font-family: 'Cormorant Garamond', serif; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .42em; margin-right: -.42em; /* równoważy tracking ostatniej litery */
+    color: #2A2420;
+  }
+  .lockup-sub i { width: .32em; height: .32em; border-radius: 50%; background: #C09563; display: inline-block; margin-right: .42em; }
+
+  /* ---- Header: sekcje + social + telefon w jednej linii ---- */
+  section[id] { scroll-margin-top: 72px; }
+  .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+  .navlink {
+    display: inline-flex; align-items: center; min-height: 44px; flex-shrink: 0;
+    padding: 0 .75rem; border-radius: 999px; white-space: nowrap;
+    font-size: 1.0625rem; font-weight: 600; color: #6B5E57;
+    transition: background-color .15s, color .15s;
+  }
+  .navlink:hover { color: #2A2420; }
+  .navlink.active { background: #2A2420; color: #FFFFFF; }
+
+  /* ---- Przyciski ---- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
+    min-height: 52px; padding: 0 1.6rem; border-radius: 999px; white-space: nowrap;
+    font-size: 1.1875rem; font-weight: 700; letter-spacing: .01em;
+    transition: background-color .15s, border-color .15s, color .15s, filter .15s;
+  }
+  .btn-accent { background: #C09563; color: #2A2420; }
+  .btn-accent:hover { filter: brightness(1.06); }
+  .btn-ghost { border: 1px solid rgba(42,36,32,.28); color: #2A2420; }
+  .btn-ghost:hover { border-color: #2A2420; background: #2A2420; color: #FFFFFF; }
+
+  /* ---- Bio: cienkie ikonki liniowe w kolorze akcentu przy wyróżnionych fragmentach ---- */
+  .bio p { display: grid; grid-template-columns: 1.9rem 1fr; column-gap: 1rem; }
+  .bio p > span:first-child { padding-top: .2rem; color: #C09563; }
+  .bio strong { font-weight: 700; }
+
+  /* ---- Cennik ---- */
+  .price-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1.25rem; padding: .85rem 0; border-bottom: 1px solid rgba(42,36,32,.14); }
+  .price-row .pr { flex: none; font-weight: 700; font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
+
+  /* ---- Godziny: wiersz „dziś" ---- */
+  .hours th, .hours td { padding: .62rem .8rem; }
+  .hours th { text-align: left; font-weight: 500; }
+  .hours td { text-align: right; font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
+  tr.today th, tr.today td { background: rgba(192,149,99,.2); color: #2A2420; font-weight: 700; }
+  tr.today th { border-radius: 10px 0 0 10px; }
+  tr.today td { border-radius: 0 10px 10px 0; }
+  .today-badge {
+    display: inline-flex; align-items: center; margin-left: .5rem;
+    padding: .05rem .5rem; border-radius: 999px;
+    background: #2A2420; color: #FFFFFF;
+    font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  /* ---- Galeria ---- */
+  .gallery-tile { cursor: zoom-in; -webkit-tap-highlight-color: transparent; }
+  .gallery-hint {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    border-radius: inherit; background: rgba(42,36,32,.08); color: #2A2420;
+    opacity: 0; transition: opacity .2s ease;
+  }
+  .gallery-tile:hover .gallery-hint, .gallery-tile:focus-visible .gallery-hint { opacity: 1; }
+
+  #lightbox :focus-visible { outline-color: #FFFFFF; }
+
+  .map { filter: grayscale(.6) sepia(.22) contrast(1.02); }
+</style>
+</head>
+
+<body class="bg-bg font-serif text-[1.1875rem] font-medium leading-[1.65] text-ink antialiased">
+
+<!-- Ikony wielokrotnego użytku. Każdy <svg><use> niżej ma własny viewBox i wymiary. -->
+<svg width="0" height="0" class="absolute" aria-hidden="true">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.62.07 4.81s0 3.56-.07 4.81c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.16-1.06.36-2.23.41-1.25.06-1.62.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.56 2.2 15.19 2.2 12s0-3.56.07-4.81c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.44 2.21 8.8 2.2 12 2.2m0 1.98c-3.14 0-3.51.01-4.75.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.05-1.15-.24-1.77-.4-2.18a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.75-.07m0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9m0 8.99a3.54 3.54 0 1 0 0-7.08 3.54 3.54 0 0 0 0 7.08m6.94-9.21a1.27 1.27 0 1 1-2.55 0 1.27 1.27 0 0 1 2.55 0"/></symbol>
+  <symbol id="i-fb" viewBox="0 0 24 24"><path fill="currentColor" d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></symbol>
+  <!-- Booksy: prawdziwe logo od klientki (logo/booksy-source.svg), fill zamieniony na currentColor. -->
+  <symbol id="i-booksy" viewBox="0 0 256 256"><path fill="currentColor" transform="translate(0,256) scale(0.1,-0.1)" d="M1268 2109 c-17 -9 -18 -44 -18 -504 l0 -493 41 -35 c22 -20 65 -48 94 -63 74 -39 82 -31 87 99 5 117 27 174 100 253 62 67 135 98 233 98 106 1 166 -25 239 -105 76 -82 100 -146 100 -274 1 -175 -54 -269 -200 -342 -130 -64 -279 -57 -451 22 -93 43 -173 95 -371 243 -90 68 -186 134 -213 147 -144 73 -339 73 -496 -1 -107 -51 -245 -209 -260 -298 -8 -48 15 -57 134 -54 l97 3 40 60 c56 81 117 118 205 123 114 6 201 -40 516 -272 156 -115 296 -188 420 -217 75 -18 110 -20 215 -16 151 6 239 32 343 103 158 108 247 285 247 491 0 180 -59 331 -175 449 -112 114 -233 164 -395 164 -100 0 -170 -18 -256 -66 -34 -18 -64 -31 -68 -27 -3 3 -6 114 -6 245 0 287 3 278 -112 278 -40 0 -81 -5 -90 -11z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7m0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></symbol>
+  <symbol id="i-google" viewBox="0 0 24 24"><g fill="currentColor"><path d="M12 10.2v3.9h5.5a4.7 4.7 0 0 1-2 3.1v2.6h3.2c1.9-1.7 3-4.3 3-7.3 0-.7-.06-1.4-.18-2.05z"/><path d="M12 22c2.7 0 4.96-.9 6.62-2.42l-3.2-2.48c-.9.6-2.05.95-3.42.95-2.6 0-4.8-1.76-5.6-4.13H3.1v2.6A10 10 0 0 0 12 22"/><path d="M6.4 13.92a6 6 0 0 1 0-3.84V7.48H3.1a10 10 0 0 0 0 9.04z"/><path d="M12 5.98c1.47 0 2.79.5 3.83 1.5l2.84-2.84C16.95 3.03 14.7 2 12 2A10 10 0 0 0 3.1 7.48l3.3 2.6C7.2 7.74 9.4 5.98 12 5.98"/></g></symbol>
+  <!-- Cienkie ikonki bio: echo charakteru grafiki „o niej", narysowane od nowa (nie kopia z biblioteki). -->
+  <symbol id="b-profil" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.6" r="3.6"/><path d="M8.4 8.6c0-3.4 1.5-5.4 3.6-5.4s3.6 2 3.6 5.4c0 3.6.6 5.4 1.8 6.6M8.4 8.6c0 3.6-.6 5.4-1.8 6.6"/><path d="M5 21c.7-3.2 3.6-5.2 7-5.2s6.3 2 7 5.2"/></g></symbol>
+  <symbol id="b-serce" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" d="M12 20.2S3.8 15.4 3.8 9.3A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 8.2 2.1c0 6.1-8.2 10.9-8.2 10.9z"/></symbol>
+  <symbol id="b-auto" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16.5v-3.3l1.9-4.1a2 2 0 0 1 1.8-1.2h10.6a2 2 0 0 1 1.8 1.2l1.9 4.1v3.3"/><path d="M3 13.2h18M3 16.5h1.6M9.4 16.5h5.2M19.4 16.5H21"/><circle cx="7" cy="16.8" r="1.9"/><circle cx="17" cy="16.8" r="1.9"/></g></symbol>
+  <symbol id="b-kosmetyki" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 21v-8.5h4.6V21z"/><path d="M6.4 12.5V8.3l2.8-2.4v6.6"/><path d="M16.5 21v-6.3"/><path d="M14.7 14.7h3.6"/><path d="M15 14.7l.3-6.4c.1-2 2.3-2 2.4 0l.3 6.4"/></g></symbol>
+  <symbol id="b-kwiat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 18.5c-1.8-2.2-2.4-6.6 0-11 2.4 4.4 1.8 8.8 0 11z"/><path d="M12 18.5c-2.7-.4-5.8-2.8-6.3-7.3 3 .4 5 2.3 5.9 4.4"/><path d="M12 18.5c2.7-.4 5.8-2.8 6.3-7.3-3 .4-5 2.3-5.9 4.4"/><path d="M12 18.5c-3.6.6-7.2-.6-9-3.2M12 18.5c3.6.6 7.2-.6 9-3.2"/></g></symbol>
+</svg>
+
+<a href="#tresc" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-3 focus:font-bold focus:text-bg">Przejdź do treści</a>
+
+<!-- ============ HEADER ============ -->
+<header class="sticky top-0 z-40 border-b border-hair bg-bg/90 backdrop-blur">
+  <div class="mx-auto flex max-w-content items-center gap-2 px-4 py-2 sm:gap-4 sm:px-7">
+    <a href="index.html" aria-label="Chmielewska Beauty Studio, strona główna" class="inline-flex shrink-0 items-center pr-1">
+      <img src="logo/logo-script-ink.png" alt="Chmielewska Beauty Studio" width="833" height="180" class="h-[26px] w-auto sm:h-[34px]">
+    </a>
+
+    <nav aria-label="Sekcje strony" class="scrollbar-none flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto lg:justify-center lg:gap-1">
+      <a href="#o-mnie"   data-nav="o-mnie"   class="navlink">O mnie</a>
+      <a href="#cennik"   data-nav="cennik"   class="navlink">Cennik</a>
+      <a href="#vouchery" data-nav="vouchery" class="navlink">Vouchery</a>
+      <a href="#galeria"  data-nav="galeria"  class="navlink">Galeria</a>
+      <a href="#opinie"   data-nav="opinie"   class="navlink">Opinie</a>
+      <a href="#kontakt"  data-nav="kontakt"  class="navlink">Kontakt</a>
+    </nav>
+
+    <div class="flex shrink-0 items-center gap-1 sm:gap-1.5">
+      <a href="https://www.instagram.com/beata_chmielewska.makeup/" target="_blank" rel="noopener" aria-label="Instagram"
+         class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-ink transition-colors hover:bg-surface">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><use href="#i-ig"/></svg>
+      </a>
+      <a href="https://www.facebook.com/beatachmielewskamakeup/" target="_blank" rel="noopener" aria-label="Facebook"
+         class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-ink transition-colors hover:bg-surface">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><use href="#i-fb"/></svg>
+      </a>
+      <a href="https://booksy.com/pl-pl/260639_chmielewska-beauty-studio_makijaz_25178_tomaszow-mazowiecki" target="_blank" rel="noopener"
+         class="hidden min-h-[44px] items-center gap-2 whitespace-nowrap rounded-full bg-accent px-5 text-[1.0625rem] font-bold text-ink transition hover:brightness-105 sm:inline-flex">
+        <svg viewBox="0 0 256 256" width="17" height="17" aria-hidden="true"><use href="#i-booksy"/></svg>
+        Booksy
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="tresc">
+
+<!-- ============ HERO ============
+     Brief przewidywał tu zdjęcie klientki przed podświetlanym szyldem, ale w photos/ go nie ma.
+     Do tego czasu hero niesie prawdziwe logo klientki (photos/logo.jpeg, przycięte na dwa
+     warstwy: skrypt+linia i BEAUTY•STUDIO, tło rozbite na przezroczyste). Gdy zdjęcie dojdzie,
+     może stanąć obok treści w siatce dwukolumnowej. -->
+<section class="border-b border-hair bg-surface">
+  <div class="mx-auto max-w-narrow px-5 pb-16 pt-14 text-center sm:px-7 sm:pb-24 sm:pt-20">
+
+    <div class="mx-auto flex flex-col items-center" style="--lw: clamp(17rem, 60vw, 26rem)" role="img" aria-label="Logo Chmielewska Beauty Studio">
+      <img src="logo/logo-script-gold.png" alt="" width="915" height="204" style="width:var(--lw); height:auto" aria-hidden="true">
+      <img src="logo/logo-subtext-ink.png" alt="" width="725" height="45" style="width:calc(var(--lw) * .79); height:auto; margin-top:calc(var(--lw) * .05)" aria-hidden="true">
+    </div>
+
+    <h1 class="mx-auto mt-12 max-w-[28ch] text-[clamp(2.1rem,6.6vw,3.4rem)] font-semibold leading-[1.1]">
+      Makijaż ślubny i&nbsp;okolicznościowy <span class="sm:block">w&nbsp;Tomaszowie Mazowieckim</span>
+    </h1>
+
+    <p class="mx-auto mt-7 flex max-w-[34rem] items-center justify-center gap-3 border-y border-hair py-4 text-[clamp(1.3rem,4.6vw,1.6rem)] font-semibold italic leading-snug">
+      <svg viewBox="0 0 24 24" width="34" height="34" class="shrink-0 text-accent" aria-hidden="true"><use href="#b-auto"/></svg>
+      <span class="text-left">Mobilna obsługa ślubów w&nbsp;całej Polsce</span>
+    </p>
+
+    <p class="mx-auto mt-6 max-w-[34rem] text-muted">
+      <span class="block sm:whitespace-nowrap">Na co dzień przyjmuję w studiu przy Warszawskiej&nbsp;33.</span>
+      <span class="block">W dniu ślubu dojeżdżam do Panny Młodej.</span>
+    </p>
+
+    <div class="mx-auto mt-9 flex max-w-[22rem] flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center">
+      <a href="https://booksy.com/pl-pl/260639_chmielewska-beauty-studio_makijaz_25178_tomaszow-mazowiecki" target="_blank" rel="noopener" class="btn btn-accent">
+        <svg viewBox="0 0 256 256" width="19" height="19" aria-hidden="true"><use href="#i-booksy"/></svg>
+        Zarezerwuj w Booksy
+      </a>
+      <a href="tel:+48577220491" class="btn btn-ghost">
+        <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><use href="#i-phone"/></svg>
+        577 220 491
+      </a>
+    </div>
+
+    <a href="#opinie" class="mt-7 inline-flex min-h-[44px] items-center gap-2 text-[1.0625rem] text-muted transition-colors hover:text-ink">
+      <span class="inline-flex text-accent" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="16" height="16"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="16" height="16"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="16" height="16"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="16" height="16"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="16" height="16"><use href="#i-star"/></svg>
+      </span>
+      <span><b class="font-bold text-ink">5,0</b> · 56 opinii w Booksy</span>
+    </a>
+  </div>
+</section>
+
+<!-- ============ O MNIE ============
+     Tekst przepisany dosłownie z grafiki klientki (brief.md). Pogrubienia i ikonki to tylko
+     wyróżnienie, bez zmiany ani jednego słowa. -->
+<!-- Zdjęcie jako kafelek (rounded, odsunięte od lewej krawędzi paddingiem), ale NIE w
+     max-w-content — to by je pomniejszyło na szerokich ekranach względem wcześniejszej wersji.
+     Siatka zostaje bez górnego capu szerokości, dokładnie jak w wersji full-bleed, tylko z
+     lewym marginesem. Zdjęcie na 1/3 szerokości, wyśrodkowane w pionie względem tekstu po
+     prawej (dłuższego od niego). Na mobile wraca do zwykłego stosu, bez lewego marginesu. -->
+<section id="o-mnie" class="border-b border-hair">
+  <div class="grid md:grid-cols-[1fr_2fr] md:items-center md:gap-10 md:pl-8 lg:gap-14 lg:pl-14">
+
+    <div class="aspect-[4/5] overflow-hidden rounded-2xl bg-surface md:aspect-[3/4]">
+      <img src="photos/beata-chmielewska.jpg" alt="Beata Chmielewska-Pazurek, makijażystka, uśmiechnięta, w białej bluzce z dużym kwiatem"
+           width="960" height="958" loading="lazy" decoding="async" class="h-full w-full object-cover object-[center_25%]">
+    </div>
+
+    <div class="px-5 py-16 sm:px-7 sm:py-24 md:py-20 md:pl-0 md:pr-7 lg:pr-10">
+      <h2 class="text-[clamp(2.2rem,5.5vw,3.1rem)] font-semibold leading-[1.1]">O mnie</h2>
+
+      <div class="bio mt-8 max-w-[46rem] space-y-5 leading-[1.7]">
+        <p><span aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30"><use href="#b-profil"/></svg></span><span>Nazywam się Beata Chmielewska-Pazurek i <strong>od ponad 6 lat</strong> mam przyjemność towarzyszyć kobietom w najpiękniejszych momentach ich życia, tworząc makijaże, które podkreślają ich naturalne piękno i dodają pewności siebie.</span></p>
+        <p><span></span><span>Tworząc Chmielewska Beauty Studio, kierowałam się jedną myślą – każda kobieta zasługuje na to, by wyglądać jak najlepsza wersja siebie. Dlatego moją specjalnością są eleganckie, ponadczasowe makijaże, które wydobywają urodę, nie zmieniając rysów twarzy. To styl dopracowany przez lata pracy, doświadczeń i setek godzin spędzonych z pędzlami w dłoni.</span></p>
+        <p><span aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30"><use href="#b-serce"/></svg></span><span>Największym wyróżnieniem jest dla mnie zaufanie, którym obdarzyły mnie setki klientek, a przede wszystkim <strong>Panie Młode</strong>. Świadomość, że mogę być częścią jednego z najważniejszych dni w ich życiu, to ogromny zaszczyt i odpowiedzialność, którą za każdym razem przyjmuję z pełnym zaangażowaniem.</span></p>
+        <p><span aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30"><use href="#b-auto"/></svg></span><span>Obecnie specjalizuję się przede wszystkim w <strong>kompleksowej obsłudze pakietów ślubnych z dojazdem</strong>, zapewniając komfort przygotowań zarówno w soboty i niedziele, jak i w dni powszednie. Na co dzień przyjmuję w swoim studiu przy ul. Warszawskiej 33 w Tomaszowie Mazowieckim, natomiast na życzenie dojeżdżam do klientek <strong>na terenie całej Polski</strong>.</span></p>
+        <p><span aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30"><use href="#b-kosmetyki"/></svg></span><span>Pracuję wyłącznie na starannie wyselekcjonowanych <strong>kosmetykach marek premium</strong>, takich jak YSL, Dior, Armani Beauty, Gucci Beauty, Lancôme, Estée Lauder oraz innych światowych producentów. Dzięki temu makijaż zachwyca nie tylko swoim wyglądem, ale również trwałością i komfortem noszenia – od pierwszych przygotowań aż po ostatni taniec.</span></p>
+        <p><span aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30"><use href="#b-kwiat"/></svg></span><span>Wierzę, że profesjonalny makijaż to coś więcej niż perfekcyjnie dobrane kosmetyki. To <strong>atmosfera, spokój i poczucie zaopiekowania</strong> w dniu pełnym emocji. Dlatego dokładam wszelkich starań, aby nasze spotkanie było nie tylko usługą, ale pięknym doświadczeniem i wspomnieniem, do którego z uśmiechem będziesz wracać.</span></p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Zamykający gest, jak w jej grafice: ostatnie zdanie kursywą + logo i podpis.
+       Wyśrodkowany na całej szerokości strony, nie w obrębie prawej kolumny gridu. -->
+  <figure class="mx-auto max-w-content border-t border-hair px-5 pb-16 pt-12 text-center sm:px-7 sm:pb-24">
+    <blockquote class="mx-auto max-w-[30ch] text-[clamp(1.55rem,4.6vw,2rem)] font-medium italic leading-[1.35]">
+      Z największą przyjemnością zadbam o Twój makijaż w dniu, który pozostanie z Tobą na całe życie.
+    </blockquote>
+    <figcaption class="mt-9 flex flex-col items-center">
+      <span class="lockup text-[3.4rem]" aria-hidden="true">
+        <span class="script-logo">Chmielewska</span>
+        <span class="lockup-rule"></span>
+        <span class="lockup-sub text-[.72rem]">Beauty<i></i>Studio</span>
+      </span>
+      <span class="mt-4 text-[1.0625rem] text-muted">Beata Chmielewska-Pazurek</span>
+    </figcaption>
+  </figure>
+</section>
+
+<!-- ============ CENNIK ============ (przepisany dosłownie z grafiki cennika, brief.md) -->
+<section id="cennik" class="border-b border-hair bg-surface">
+  <div class="mx-auto max-w-content px-5 py-16 sm:px-7 sm:py-24">
+    <h2 class="text-center text-[clamp(2.2rem,5.5vw,3.1rem)] font-semibold leading-[1.1]">Cennik</h2>
+
+    <div class="mx-auto mt-12 grid max-w-[60rem] gap-x-16 gap-y-12 md:grid-cols-2">
+      <div class="space-y-12">
+        <div>
+          <h3 class="border-b border-ink/20 pb-3 text-[1.6rem] font-semibold leading-tight">Makijaż</h3>
+          <div class="price-row"><span>Makijaż okolicznościowy</span><span class="pr">220 zł</span></div>
+          <div class="price-row"><span>Makijaż ślubny</span><span class="pr">220 zł</span></div>
+          <div class="price-row"><span>Makijaż niedziele i święta</span><span class="pr">250 zł</span></div>
+        </div>
+        <div>
+          <h3 class="border-b border-ink/20 pb-3 text-[1.6rem] font-semibold leading-tight">Stylizacja rzęs</h3>
+          <div class="price-row"><span>Lifting rzęs z botoxem + koloryzacja</span><span class="pr">150 zł</span></div>
+        </div>
+      </div>
+
+      <div class="space-y-12">
+        <div>
+          <h3 class="border-b border-ink/20 pb-3 text-[1.6rem] font-semibold leading-tight">Stylizacja brwi</h3>
+          <div class="price-row"><span>Henna pudrowa, regulacja</span><span class="pr">90 zł</span></div>
+          <div class="price-row"><span>Laminacja brwi, botox, regulacja</span><span class="pr">100 zł</span></div>
+          <div class="price-row"><span>Laminacja brwi, botox, farbka, regulacja</span><span class="pr">130 zł</span></div>
+          <div class="price-row"><span>Regulacja brwi woskiem</span><span class="pr">40 zł</span></div>
+        </div>
+        <div>
+          <h3 class="border-b border-ink/20 pb-3 text-[1.6rem] font-semibold leading-tight">Pakiety Beauty</h3>
+          <div class="price-row">
+            <span>Pakiet LIFT <span class="block text-[1.0625rem] leading-snug text-muted">lifting rzęs + laminacja brwi z botoxem i koloryzacją</span></span>
+            <span class="pr">250 zł</span>
+          </div>
+          <div class="price-row"><span>Lifting rzęs + henna pudrowa</span><span class="pr">210 zł</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mx-auto mt-14 flex max-w-[60rem] flex-col items-center gap-8 text-center">
+      <a href="https://booksy.com/pl-pl/260639_chmielewska-beauty-studio_makijaz_25178_tomaszow-mazowiecki" target="_blank" rel="noopener" class="btn btn-accent w-full max-w-[22rem] sm:w-auto">
+        <svg viewBox="0 0 256 256" width="19" height="19" aria-hidden="true"><use href="#i-booksy"/></svg>
+        Zobacz pełny cennik na Booksy
+      </a>
+
+      <!-- Ambasadorka Lami Cosmetics: kod rabatowy z bio w social media. Umiarkowanie, bez linku (adres sklepu do potwierdzenia). -->
+      <p class="inline-flex flex-col items-center gap-x-3 rounded-2xl border border-hair bg-bg px-6 py-3 text-[1.0625rem] leading-snug sm:flex-row sm:rounded-full">
+        <span class="text-muted">Ambasadorka Lami Cosmetics</span>
+        <span aria-hidden="true" class="hidden h-1 w-1 rounded-full bg-accent sm:inline-block"></span>
+        <span>kod rabatowy <b class="font-bold tracking-[.04em]">Beata</b></span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VOUCHERY ============ -->
+<section id="vouchery" class="border-b border-hair">
+  <div class="mx-auto grid max-w-content items-center gap-12 px-5 py-16 sm:px-7 sm:py-24 md:grid-cols-2 md:gap-16">
+    <div class="order-2 md:order-1">
+      <h2 class="text-[clamp(2.2rem,5.5vw,3.1rem)] font-semibold leading-[1.1]">Voucher podarunkowy</h2>
+      <p class="mt-6 max-w-[40ch]">
+        Prezent dla przyszłej Panny Młodej, świadkowej albo mamy przed wielkim dniem.
+        Voucher na makijaż lub stylizację brwi i rzęs można zamówić telefonicznie.
+      </p>
+      <div class="mt-8 flex max-w-[22rem] flex-col gap-3 sm:max-w-none sm:flex-row">
+        <a href="tel:+48577220491" class="btn btn-accent">
+          <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><use href="#i-phone"/></svg>
+          Zamów voucher
+        </a>
+        <a href="https://www.facebook.com/beatachmielewskamakeup/" target="_blank" rel="noopener" class="btn btn-ghost">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><use href="#i-fb"/></svg>
+          Napisz na Facebooku
+        </a>
+      </div>
+    </div>
+
+    <!-- Prawdziwe zdjęcie vouchera klientki (photos/voucher.jpeg to kolaż obu stron karty na białym płótnie) —
+         wycięte na przód i tył (photos/voucher-front.jpg, photos/voucher-back.jpg), bez białego marginesu kolażu,
+         i nałożone na siebie tak, żeby tył wystawał zza przodu jak dwie odłożone karty. -->
+    <div class="order-1 md:order-2">
+      <div class="relative mx-auto max-w-[25rem] pb-7 pr-7 sm:pb-9 sm:pr-9">
+        <div class="relative" style="aspect-ratio: 930 / 506">
+          <img src="photos/voucher-back.jpg" alt="" aria-hidden="true"
+               width="942" height="461" loading="lazy" decoding="async"
+               class="absolute inset-0 h-full w-full rotate-[5deg] translate-x-[9%] translate-y-[11%] rounded-2xl object-cover shadow-[0_14px_30px_rgba(42,36,32,.16)]">
+          <img src="photos/voucher-front.jpg" alt="Voucher podarunkowy Chmielewska Beauty Studio, trzymany w dłoni"
+               width="930" height="506" loading="lazy" decoding="async"
+               class="absolute inset-0 h-full w-full -rotate-2 rounded-2xl object-cover shadow-[0_20px_45px_rgba(42,36,32,.22)]">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALERIA ============
+     Zdjęcia efektów klientki (photos/galeria/, 10 szt.). Widoczne 6 kafelków, pozostałe 4
+     dostępne po otwarciu lightboxa i przewinięciu strzałkami (lista GALLERIES na dole strony). -->
+<section id="galeria" class="border-b border-hair bg-surface">
+  <div class="mx-auto max-w-content px-5 py-16 sm:px-7 sm:py-24">
+    <h2 class="text-center text-[clamp(2.2rem,5.5vw,3.1rem)] font-semibold leading-[1.1]">Galeria</h2>
+    <div class="mx-auto mt-12 grid max-w-[60rem] grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl" data-group="efekty" data-index="0" aria-label="Powiększ zdjęcie 1">
+        <img src="photos/galeria/01.jpg" alt="Makijaż wieczorowy z delikatnym rozświetleniem, efekt przed i po" loading="lazy" width="1440" height="1440" class="h-full w-full object-cover object-[center_18%] transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl" data-group="efekty" data-index="1" aria-label="Powiększ zdjęcie 2">
+        <img src="photos/galeria/02.jpg" alt="Makijaż z naturalnie modelowanymi falami włosów" loading="lazy" width="1284" height="2282" class="h-full w-full object-cover object-[center_18%] transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl" data-group="efekty" data-index="2" aria-label="Powiększ zdjęcie 3">
+        <img src="photos/galeria/03.jpg" alt="Makijaż z wyrazistym spojrzeniem i delikatnym konturowaniem" loading="lazy" width="1206" height="2144" class="h-full w-full object-cover object-[center_18%] transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl" data-group="efekty" data-index="3" aria-label="Powiększ zdjęcie 4">
+        <img src="photos/galeria/04.jpg" alt="Makijaż z ciepłym, rozświetlonym kolorytem skóry" loading="lazy" width="2178" height="2340" class="h-full w-full object-cover object-[center_18%] transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl" data-group="efekty" data-index="4" aria-label="Powiększ zdjęcie 5">
+        <img src="photos/galeria/05.jpg" alt="Makijaż wieczorowy z eleganckim, stonowanym efektem" loading="lazy" width="1755" height="2340" class="h-full w-full object-cover object-[center_18%] transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl" data-group="efekty" data-index="5" aria-label="Powiększ zdjęcie 6">
+        <img src="photos/galeria/06.jpg" alt="Makijaż o subtelnym, dziennym wykończeniu" loading="lazy" width="1495" height="2340" class="h-full w-full object-cover object-[center_18%] transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+    </div>
+    <div class="mt-10 text-center">
+      <a href="https://www.instagram.com/beata_chmielewska.makeup/" target="_blank" rel="noopener" class="btn btn-ghost">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><use href="#i-ig"/></svg>
+        Zobacz wszystkie efekty na Instagramie
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OPINIE ============ -->
+<section id="opinie" class="border-b border-hair">
+  <div class="mx-auto max-w-content px-5 py-16 sm:px-7 sm:py-24">
+    <h2 class="text-center text-[clamp(2.2rem,5.5vw,3.1rem)] font-semibold leading-[1.1]">Opinie</h2>
+
+    <div class="mx-auto mt-12 grid max-w-[60rem] gap-4 sm:grid-cols-3">
+      <a href="https://booksy.com/pl-pl/260639_chmielewska-beauty-studio_makijaz_25178_tomaszow-mazowiecki" target="_blank" rel="noopener"
+         class="flex flex-col items-center rounded-2xl bg-surface px-6 py-8 text-center transition-colors hover:bg-[#F1E8E4]">
+        <span class="inline-flex items-center gap-2 font-bold"><svg viewBox="0 0 256 256" width="17" height="17" aria-hidden="true"><use href="#i-booksy"/></svg>Booksy</span>
+        <span class="mt-2 text-[3.4rem] font-semibold leading-none">5,0</span>
+        <span class="mt-3 inline-flex text-accent" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="17" height="17"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="17" height="17"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="17" height="17"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="17" height="17"><use href="#i-star"/></svg></span>
+        <span class="mt-2 text-muted">56 opinii</span>
+      </a>
+      <a href="https://www.facebook.com/beatachmielewskamakeup/reviews" target="_blank" rel="noopener"
+         class="flex flex-col items-center rounded-2xl bg-surface px-6 py-8 text-center transition-colors hover:bg-[#F1E8E4]">
+        <span class="inline-flex items-center gap-2 font-bold"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><use href="#i-fb"/></svg>Facebook</span>
+        <span class="mt-2 text-[3.4rem] font-semibold leading-none">100%</span>
+        <span class="mt-3 leading-[17px]">poleca</span>
+        <span class="mt-2 text-muted">28 opinii</span>
+      </a>
+      <a href="https://www.google.com/maps/place/?q=place_id:ChIJBQ4yT0KFGUcRU2FchODP1zA" target="_blank" rel="noopener"
+         class="flex flex-col items-center rounded-2xl bg-surface px-6 py-8 text-center transition-colors hover:bg-[#F1E8E4]">
+        <span class="inline-flex items-center gap-2 font-bold"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><use href="#i-google"/></svg>Google</span>
+        <span class="mt-2 text-[3.4rem] font-semibold leading-none">5,0</span>
+        <span class="mt-3 inline-flex text-accent" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="17" height="17"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="17" height="17"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="17" height="17"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="17" height="17"><use href="#i-star"/></svg></span>
+        <span class="mt-2 text-muted">6 opinii</span>
+      </a>
+    </div>
+
+    <div class="mx-auto mt-12 grid max-w-[60rem] gap-10 sm:grid-cols-3 sm:gap-8">
+      <blockquote class="border-t border-hair pt-6">
+        <p class="inline-flex text-accent" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="15" height="15"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="15" height="15"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="15" height="15"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="15" height="15"><use href="#i-star"/></svg></p>
+        <p class="mt-5 leading-relaxed">„Z całego serca polecam Beatkę 🥰 Makijaż na mój ślub, jak i na poprawiny był przepiękny, dokładnie taki, o jakim marzyłam. 🙈 Był elegancki, trwały i idealnie dopasowany do mnie. Czułam się w nim wyjątkowo przez całą uroczystość. Do samego końca mimo upału makijaż wyglądał perfekcyjnie! ❤️❤️❤️”</p>
+        <footer class="mt-5 text-[.9rem] text-muted">
+          <span class="font-semibold text-ink">Natalia Wiewiura</span> · Facebook
+          <span class="mt-1 block">20 sierpnia 2026</span>
+        </footer>
+      </blockquote>
+      <blockquote class="border-t border-hair pt-6">
+        <p class="inline-flex text-accent" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="15" height="15"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="15" height="15"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="15" height="15"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="15" height="15"><use href="#i-star"/></svg></p>
+        <p class="mt-5 leading-relaxed">„Brwi wykonane z niezwykłą precyzją i starannością. Polecam z całego serca ♥️”</p>
+        <footer class="mt-5 text-[.9rem] text-muted">
+          <span class="font-semibold text-ink">Wiktoria Gensieniec</span> · Google
+          <span class="mt-1 block">Stylizacja brwi</span>
+        </footer>
+      </blockquote>
+      <blockquote class="border-t border-hair pt-6">
+        <p class="inline-flex text-accent" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="15" height="15"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="15" height="15"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="15" height="15"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" width="15" height="15"><use href="#i-star"/></svg></p>
+        <p class="mt-5 leading-relaxed">„Polecam bardzo serdecznie to miejsce, była to moja pierwsza wizyta ale z pewnością nie ostatnia. Profesjonalne wykonanie usługi jak i bardzo miła atmosfera, warto odwiedzić to miejsce.”</p>
+        <footer class="mt-5 text-[.9rem] text-muted">
+          <span class="font-semibold text-ink">Kamila</span> · Booksy, potwierdzony klient
+          <span class="mt-1 block">Laminacja/lifting rzęs + botox + farbowanie · 6 grudnia 2025</span>
+        </footer>
+      </blockquote>
+    </div>
+
+    <div class="mt-10 text-center">
+      <!-- Link do wystawienia opinii: place_id odczytany z wizytówki w Google Maps (5,0 · 6 opinii, Warszawska 33). -->
+      <a href="https://search.google.com/local/writereview?placeid=ChIJBQ4yT0KFGUcRU2FchODP1zA" target="_blank" rel="noopener" class="btn btn-ghost">
+        <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><use href="#i-google"/></svg>
+        Zostaw opinię w Google
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GODZINY + KONTAKT + MAPA ============ -->
+<section id="kontakt" class="bg-surface">
+  <div class="mx-auto max-w-content px-5 py-16 sm:px-7 sm:py-24">
+    <h2 class="text-center text-[clamp(2.2rem,5.5vw,3.1rem)] font-semibold leading-[1.1]">Godziny i kontakt</h2>
+
+    <div class="mx-auto mt-12 grid max-w-[60rem] gap-12 md:grid-cols-2 md:gap-16">
+      <div>
+        <h3 class="text-[1.6rem] font-semibold leading-tight">Godziny</h3>
+        <table class="hours mt-4 w-full border-collapse">
+          <tbody>
+            <tr data-day="0"><th scope="row">Poniedziałek</th><td>09:00–17:00</td></tr>
+            <tr data-day="1"><th scope="row">Wtorek</th><td>12:00–20:00</td></tr>
+            <tr data-day="2"><th scope="row">Środa</th><td>09:00–18:00</td></tr>
+            <tr data-day="3"><th scope="row">Czwartek</th><td>12:00–20:00</td></tr>
+            <tr data-day="4"><th scope="row">Piątek</th><td>09:00–17:00</td></tr>
+            <tr data-day="5"><th scope="row">Sobota</th><td>07:00–16:30</td></tr>
+            <tr data-day="6"><th scope="row">Niedziela</th><td>06:30–12:00</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="space-y-8">
+        <div>
+          <h3 class="text-[1.6rem] font-semibold leading-tight">Studio</h3>
+          <address class="mt-3 not-italic">Warszawska 33<br>97-200 Tomaszów Mazowiecki</address>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=Chmielewska+Beauty+Studio,+Warszawska+33,+97-200+Tomasz%C3%B3w+Mazowiecki" target="_blank" rel="noopener" class="btn btn-ghost mt-4">
+            <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><use href="#i-pin"/></svg>
+            Wyznacz trasę
+          </a>
+        </div>
+
+        <div>
+          <h3 class="text-[1.6rem] font-semibold leading-tight">Rezerwacja</h3>
+          <div class="mt-4 flex max-w-[22rem] flex-col gap-3">
+            <a href="https://booksy.com/pl-pl/260639_chmielewska-beauty-studio_makijaz_25178_tomaszow-mazowiecki" target="_blank" rel="noopener" class="btn btn-accent">
+              <svg viewBox="0 0 256 256" width="19" height="19" aria-hidden="true"><use href="#i-booksy"/></svg>
+              Zarezerwuj w Booksy
+            </a>
+            <a href="tel:+48577220491" class="btn btn-ghost">
+              <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><use href="#i-phone"/></svg>
+              577 220 491
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-[1.6rem] font-semibold leading-tight">Social media</h3>
+          <div class="mt-2 flex flex-col">
+            <a href="https://www.instagram.com/beata_chmielewska.makeup/" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center gap-3 font-semibold transition-colors hover:text-muted">
+              <svg viewBox="0 0 24 24" width="19" height="19" class="text-accent" aria-hidden="true"><use href="#i-ig"/></svg>
+              beata_chmielewska.makeup
+            </a>
+            <a href="https://www.facebook.com/beatachmielewskamakeup/" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center gap-3 font-semibold transition-colors hover:text-muted">
+              <svg viewBox="0 0 24 24" width="19" height="19" class="text-accent" aria-hidden="true"><use href="#i-fb"/></svg>
+              Facebook
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mapa Google (iframe) na pełną szerokość, tuż nad stopką. Opisana w polityce prywatności. -->
+  <div class="border-t border-hair">
+    <iframe title="Mapa dojazdu: Chmielewska Beauty Studio, Warszawska 33, Tomaszów Mazowiecki"
+            src="https://www.google.com/maps?q=Chmielewska+Beauty+Studio,+Warszawska+33,+97-200+Tomasz%C3%B3w+Mazowiecki&output=embed"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            class="map block h-[320px] w-full border-0 sm:h-[420px]"></iframe>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ STOPKA ============ -->
+<footer class="border-t border-hair">
+  <div class="mx-auto flex max-w-content flex-col items-center gap-3 px-5 py-9 text-center text-[1.0625rem] text-muted sm:flex-row sm:justify-between sm:px-7 sm:text-left">
+    <span><b class="font-bold text-ink">Chmielewska Beauty Studio</b> · makijaż ślubny i okolicznościowy</span>
+    <span>Warszawska 33, 97-200 Tomaszów Mazowiecki</span>
+    <a href="privacy.html" class="inline-flex min-h-[44px] items-center font-semibold text-ink underline decoration-accent underline-offset-4">Polityka prywatności</a>
+  </div>
+</footer>
+
+<!-- CTA telefonu: trwale przypięte w prawym dolnym rogu, widoczne przez całą podróż po stronie (wzorzec z atelier-piekna/index.html). Zastępuje przycisk telefonu w navbarze. -->
+<a href="tel:+48577220491" id="stickyCta"
+   class="btn btn-accent fixed bottom-4 right-4 z-40 !min-h-[52px] !min-w-[52px] !gap-2 !px-0 shadow-[0_10px_28px_rgba(42,36,32,.28)] transition-opacity duration-300 motion-reduce:transition-none sm:bottom-6 sm:right-6 sm:!min-w-0 sm:!px-6"
+   aria-label="Zadzwoń: 577 220 491">
+  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><use href="#i-phone"/></svg>
+  <span class="hidden sm:inline">577 220 491</span>
+</a>
+
+<script>
+  // Sticky CTA telefonu: chowa się, gdy stopka wjeżdża w widok (nie zasłania "Polityka prywatności").
+  (function () {
+    var cta = document.getElementById('stickyCta');
+    var footer = document.querySelector('footer');
+    if (!cta || !footer || !('IntersectionObserver' in window)) return;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        cta.classList.toggle('opacity-0', entry.isIntersecting);
+        cta.classList.toggle('pointer-events-none', entry.isIntersecting);
+      });
+    }, { rootMargin: '0px 0px -15% 0px' });
+    observer.observe(footer);
+  })();
+</script>
+
+<!-- Lightbox galerii (SNIPPETS.md §1) -->
+<div id="lightbox"
+     class="fixed inset-0 z-50 hidden items-center justify-center bg-[rgba(42,36,32,.9)] p-4 backdrop-blur-sm"
+     role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia z galerii">
+  <button type="button" id="lightboxClose" aria-label="Zamknij podgląd"
+          class="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(255,255,255,.15)] text-bg transition-colors hover:bg-[rgba(255,255,255,.25)] sm:right-6 sm:top-6">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <button type="button" id="lightboxPrev" aria-label="Poprzednie zdjęcie"
+          class="absolute left-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(255,255,255,.15)] text-bg transition-colors hover:bg-[rgba(255,255,255,.25)] sm:left-5">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+  <button type="button" id="lightboxNext" aria-label="Następne zdjęcie"
+          class="absolute right-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(255,255,255,.15)] text-bg transition-colors hover:bg-[rgba(255,255,255,.25)] sm:right-5">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <figure class="mx-auto flex max-h-full max-w-3xl flex-col items-center">
+    <img id="lightboxImg" src="" alt="" class="hidden max-h-[75vh] w-auto rounded-2xl object-contain">
+    <div id="lightboxPh" class="flex aspect-[4/5] max-h-[75vh] w-[min(80vw,420px)] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-white/40 p-8 text-center text-white/80">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-5-9 9"/></svg>
+      <span id="lightboxPhText" class="sr-only"></span>
+    </div>
+    <figcaption id="lightboxCounter" class="mt-5 text-[1rem] font-semibold tracking-[.1em] text-white/75" aria-live="polite"></figcaption>
+  </figure>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BeautySalon",
+  "name": "Chmielewska Beauty Studio",
+  "description": "Makijaż ślubny i okolicznościowy z dojazdem w całej Polsce, stylizacja brwi i rzęs.",
+  "image": "photos/beata-chmielewska.jpg",
+  "telephone": "+48577220491",
+  "priceRange": "40–250 zł",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Warszawska 33",
+    "postalCode": "97-200",
+    "addressLocality": "Tomaszów Mazowiecki",
+    "addressCountry": "PL"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": 51.5381372, "longitude": 20.0102594 },
+  "areaServed": "PL",
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Friday"], "opens": "09:00", "closes": "17:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday","Thursday"], "opens": "12:00", "closes": "20:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "09:00", "closes": "18:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "07:00", "closes": "16:30" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "06:30", "closes": "12:00" }
+  ],
+  "sameAs": [
+    "https://www.instagram.com/beata_chmielewska.makeup/",
+    "https://www.facebook.com/beatachmielewskamakeup/",
+    "https://booksy.com/pl-pl/260639_chmielewska-beauty-studio_makijaz_25178_tomaszow-mazowiecki"
+  ],
+  "hasMap": "https://www.google.com/maps/place/?q=place_id:ChIJBQ4yT0KFGUcRU2FchODP1zA"
+}
+</script>
+
+<script>
+  // Godziny: podświetlenie dzisiejszego dnia.
+  (function () {
+    var todayIdx = (new Date().getDay() + 6) % 7; // poniedziałek = 0
+    var row = document.querySelector('tr[data-day="' + todayIdx + '"]');
+    if (!row) return;
+    row.classList.add('today');
+    var th = row.querySelector('th');
+    if (th) {
+      var badge = document.createElement('span');
+      badge.className = 'today-badge';
+      badge.textContent = 'dziś';
+      th.appendChild(badge);
+    }
+  })();
+
+  // Scroll-spy: aktywna sekcja w nawigacji.
+  (function () {
+    if (!('IntersectionObserver' in window)) return;
+    var links = {};
+    document.querySelectorAll('.navlink[data-nav]').forEach(function (a) { links[a.dataset.nav] = a; });
+    var current = null;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        if (current) current.classList.remove('active');
+        current = links[entry.target.id] || null;
+        if (current) {
+          current.classList.add('active');
+          // Na telefonie nawigacja przewija się poziomo; aktywny link ma być widoczny.
+          var nav = current.parentNode;
+          if (nav.scrollWidth > nav.clientWidth) nav.scrollTo({ left: current.offsetLeft - nav.offsetLeft - 8, behavior: reduceMotion ? 'auto' : 'smooth' });
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    Object.keys(links).forEach(function (id) {
+      var section = document.getElementById(id);
+      if (section) observer.observe(section);
+    });
+  })();
+
+  // Lightbox galerii (SNIPPETS.md §1).
+  (function () {
+    var GALLERIES = {
+      // 6 kafelków w siatce (patrz sekcja Galeria) + 4 kolejne dostępne tylko strzałkami w lightboxie.
+      efekty: [
+        { src: 'photos/galeria/01.jpg', alt: 'Makijaż wieczorowy z delikatnym rozświetleniem, efekt przed i po' },
+        { src: 'photos/galeria/02.jpg', alt: 'Makijaż z naturalnie modelowanymi falami włosów' },
+        { src: 'photos/galeria/03.jpg', alt: 'Makijaż z wyrazistym spojrzeniem i delikatnym konturowaniem' },
+        { src: 'photos/galeria/04.jpg', alt: 'Makijaż z ciepłym, rozświetlonym kolorytem skóry' },
+        { src: 'photos/galeria/05.jpg', alt: 'Makijaż wieczorowy z eleganckim, stonowanym efektem' },
+        { src: 'photos/galeria/06.jpg', alt: 'Makijaż o subtelnym, dziennym wykończeniu' },
+        { src: 'photos/galeria/07.jpg', alt: 'Makijaż z wyrazistymi rzęsami i upiętymi lokami' },
+        { src: 'photos/galeria/08.jpg', alt: 'Makijaż o naturalnym, rozświetlonym efekcie' },
+        { src: 'photos/galeria/09.jpg', alt: 'Makijaż z wyrazistym spojrzeniem, efekt przed i po' },
+        { src: 'photos/galeria/10.jpg', alt: 'Makijaż z ciepłym, złocistym wykończeniem' }
+      ]
+    };
+
+    var lightbox = document.getElementById('lightbox');
+    var tiles = document.querySelectorAll('.gallery-tile');
+    if (!lightbox || !tiles.length) return;
+
+    var img = document.getElementById('lightboxImg');
+    var ph = document.getElementById('lightboxPh');
+    var phText = document.getElementById('lightboxPhText');
+    var counter = document.getElementById('lightboxCounter');
+    var btnClose = document.getElementById('lightboxClose');
+    var btnPrev = document.getElementById('lightboxPrev');
+    var btnNext = document.getElementById('lightboxNext');
+    var currentGroup = Object.keys(GALLERIES)[0];
+    var current = 0;
+    var lastFocused = null;
+
+    function items() { return GALLERIES[currentGroup] || []; }
+
+    function render() {
+      var item = items()[current];
+      if (!item) return;
+      if (item.src) {
+        img.src = item.src; img.alt = item.alt;
+        img.classList.remove('hidden'); ph.classList.add('hidden');
+      } else {
+        phText.textContent = item.alt;
+        img.classList.add('hidden'); ph.classList.remove('hidden');
+      }
+      counter.textContent = (current + 1) + ' / ' + items().length;
+    }
+
+    function open(group, index) {
+      currentGroup = group; current = index;
+      lastFocused = document.activeElement;
+      render();
+      lightbox.classList.remove('hidden');
+      lightbox.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      btnClose.focus();
+    }
+
+    function close() {
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+      document.body.style.overflow = '';
+      if (lastFocused) lastFocused.focus();
+    }
+
+    function next() { var n = items().length; current = (current + 1) % n; render(); }
+    function prev() { var n = items().length; current = (current - 1 + n) % n; render(); }
+
+    tiles.forEach(function (tile) {
+      tile.addEventListener('click', function () {
+        open(tile.getAttribute('data-group') || currentGroup, parseInt(tile.getAttribute('data-index'), 10));
+      });
+    });
+    btnClose.addEventListener('click', close);
+    btnNext.addEventListener('click', next);
+    btnPrev.addEventListener('click', prev);
+    lightbox.addEventListener('click', function (e) { if (e.target === lightbox) close(); });
+    document.addEventListener('keydown', function (e) {
+      if (lightbox.classList.contains('hidden')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+      // Fokus zostaje w oknie podglądu (aria-modal): Tab krąży między trzema przyciskami.
+      if (e.key === 'Tab') {
+        var order = [btnClose, btnPrev, btnNext];
+        var i = order.indexOf(document.activeElement);
+        e.preventDefault();
+        order[(i + (e.shiftKey ? order.length - 1 : 1)) % order.length].focus();
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
