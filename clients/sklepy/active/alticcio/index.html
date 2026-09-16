@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alticcio — włoska kuchnia i wine bar, Hala Targowa Gdańsk</title>
+<meta name="description" content="A new kind of Italian. Makaron robiony na miejscu, pizza, aperitivo i obszerna karta win. Plac Dominikański 1, Hala Targowa w Gdańsku. Rezerwacja: 531 122 360.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<meta property="og:type" content="restaurant">
+<meta property="og:title" content="Alticcio — A new kind of Italian, Gdańsk">
+<meta property="og:description" content="Makaron robiony na miejscu, pizza, aperitivo i karta win. Hala Targowa, Plac Dominikański 1, Gdańsk.">
+<!-- TODO przy deployu: pełne adresy absolutne w og:image i og:url (https://domena/...).
+     og:image czeka na zdjęcie od klienta — na razie logo. -->
+<meta property="og:image" content="logo/alticcio.svg">
+<meta property="og:locale" content="pl_PL">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Alticcio",
+  "description": "Nowoczesna włoska restauracja i wine bar w Hali Targowej w Gdańsku. Makarony robione na miejscu, pizza, aperitivo i obszerna karta win.",
+  "servesCuisine": ["Włoska", "Wine bar"],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Plac Dominikański 1",
+    "postalCode": "80-844",
+    "addressLocality": "Gdańsk",
+    "addressCountry": "PL"
+  },
+  "telephone": "+48531122360",
+  "priceRange": "10–862 zł",
+  "sameAs": [
+    "https://www.facebook.com/profile.php?id=61575473254882",
+    "https://www.instagram.com/alticciogdansk/"
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "105",
+    "bestRating": "5"
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday"], "opens": "12:00", "closes": "23:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Friday","Saturday"], "opens": "12:00", "closes": "00:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "12:00", "closes": "22:00" }
+  ]
+}
+</script>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          /* Paleta dostrojona pikselowo z materiałów klienta (photos/): logo + karta.
+             Mediana czerwieni z logo #C21111, z karty #C50807 i #BD1112 — marka #C41E1E.
+             Kremowe tło logo #FBF3E8, papier karty #F2E9DE — marka #F5EFE3.
+             Kontrasty: krem/czerwień 5,16:1 · ink/krem 16,42:1 · muted/krem 6,50:1 (WCAG AA).
+             UWAGA: czerwień na czerni to tylko 3,18:1 — wolno jej być wyłącznie dużym tekstem. */
+          red:     '#C41E1E',
+          reddeep: '#8E1414',  /* hover / warstwowanie w czerwonych pasmach */
+          cream:   '#F5EFE3',
+          surface: '#EDE4D3',  /* cieplejszy krem — warstwowanie sekcji */
+          border:  '#DDD1BD',
+          ink:     '#14110F',
+          muted:   '#5F5349',
+        },
+        fontFamily: {
+          /* Two-Typeface Rule: PT Serif do tekstu i haseł, Archivo Narrow do etykiet/cen.
+             Dokładnie tak działa drukowana karta klienta — serif w opisach,
+             wąski grotesk wersalikami w nazwach pozycji. Logo jest wektorem, nie fontem. */
+          serif: ['"PT Serif"', 'Georgia', 'serif'],
+          ui:    ['"Archivo Narrow"', 'system-ui', 'sans-serif'],
+        },
+        maxWidth: { content: '46rem', wide: '72rem' },
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO) — bez połączenia z fonts.googleapis.com. */
+  @font-face { font-family:'PT Serif'; font-style:normal; font-weight:400; font-display:swap;
+    src:url('fonts/ptserif-normal-400-latin.woff2') format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family:'PT Serif'; font-style:normal; font-weight:400; font-display:swap;
+    src:url('fonts/ptserif-normal-400-latin-ext.woff2') format('woff2');
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family:'PT Serif'; font-style:normal; font-weight:700; font-display:swap;
+    src:url('fonts/ptserif-normal-700-latin.woff2') format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family:'PT Serif'; font-style:normal; font-weight:700; font-display:swap;
+    src:url('fonts/ptserif-normal-700-latin-ext.woff2') format('woff2');
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family:'PT Serif'; font-style:italic; font-weight:400; font-display:swap;
+    src:url('fonts/ptserif-italic-400-latin.woff2') format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family:'PT Serif'; font-style:italic; font-weight:400; font-display:swap;
+    src:url('fonts/ptserif-italic-400-latin-ext.woff2') format('woff2');
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family:'Archivo Narrow'; font-style:normal; font-weight:400 700; font-display:swap;
+    src:url('fonts/archivonarrow-normal-400-700-latin.woff2') format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family:'Archivo Narrow'; font-style:normal; font-weight:400 700; font-display:swap;
+    src:url('fonts/archivonarrow-normal-400-700-latin-ext.woff2') format('woff2');
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body { line-height: 1.75; -webkit-font-smoothing: antialiased; }
+  ::selection { background: #C41E1E; color: #F5EFE3; }
+
+  section[id] { scroll-margin-top: 72px; }
+
+  :focus-visible { outline: 2px solid #C41E1E; outline-offset: 3px; border-radius: 2px; }
+  .on-red :focus-visible { outline-color: #F5EFE3; }
+
+  .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+
+  /* ——— Header ——— */
+  .navlink {
+    /* DESIGN.md wymaga 44px celów dotykowych; kanoniczny snippet z SNIPPETS.md ma 36px.
+       Trzymamy 44px — i tak nie podnosi headera, bo CTA telefoniczne ma już 44px. */
+    display:inline-flex; align-items:center; min-height:44px; flex-shrink:0;
+    padding:0 .6rem; border-radius:999px; white-space:nowrap;
+    font-family:'Archivo Narrow',system-ui,sans-serif;
+    font-size:.86rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+    color:#5F5349; transition:background-color .15s, color .15s;
+  }
+  .navlink:hover { color:#14110F; }
+  .navlink.active { background:#C41E1E; color:#F5EFE3; }
+
+  /* ——— Etykieta sekcji (eyebrow) ——— */
+  .eyebrow {
+    font-family:'Archivo Narrow',system-ui,sans-serif;
+    font-size:.74rem; font-weight:700; letter-spacing:.24em; text-transform:uppercase;
+  }
+
+  /* ——— Karta: zakładki kategorii ——— */
+  .tab {
+    display:inline-flex; align-items:center; min-height:44px; flex-shrink:0;
+    padding:0 1.05rem; border:1px solid #DDD1BD; border-radius:999px; white-space:nowrap;
+    font-family:'Archivo Narrow',system-ui,sans-serif;
+    font-size:.86rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+    color:#5F5349; background:transparent; cursor:pointer;
+    transition:background-color .15s, color .15s, border-color .15s;
+  }
+  .tab:hover { color:#14110F; border-color:#14110F; }
+  .tab[aria-selected="true"] { background:#C41E1E; border-color:#C41E1E; color:#F5EFE3; }
+
+  /* ——— Karta: wiersz pozycji ——— */
+  .item-name {
+    font-family:'Archivo Narrow',system-ui,sans-serif;
+    font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+    color:#C41E1E; font-size:1rem; line-height:1.35;
+  }
+  .item-meta { font-size:.86rem; line-height:1.55; color:#5F5349; }
+  .price {
+    font-family:'Archivo Narrow',system-ui,sans-serif;
+    font-weight:700; font-size:1rem; color:#14110F; white-space:nowrap;
+  }
+  .price small { font-weight:400; font-size:.74rem; letter-spacing:.08em; color:#5F5349; margin-left:.15rem; }
+  .price-head {
+    font-family:'Archivo Narrow',system-ui,sans-serif;
+    font-size:.74rem; font-weight:400; letter-spacing:.1em; color:#5F5349; text-transform:lowercase;
+  }
+  /* wykropkowanie jak w drukowanej karcie */
+  .leader { flex:1 1 auto; min-width:1.5rem; border-bottom:1px dotted #C9B99F; transform:translateY(-.3rem); }
+
+  /* ——— Godziny: „dziś" ——— */
+  tr.today th, tr.today td { background:#EDE4D3; color:#14110F; font-weight:700; }
+  tr.today th { border-radius:8px 0 0 8px; }
+  tr.today td { border-radius:0 8px 8px 0; }
+  .today-badge {
+    display:inline-flex; align-items:center; margin-left:.5rem; padding:.1rem .5rem;
+    border-radius:999px; background:#C41E1E; color:#F5EFE3;
+    font-family:'Archivo Narrow',system-ui,sans-serif;
+    font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+    vertical-align:middle;
+  }
+
+  /* ——— FAQ ——— */
+  .faq summary { list-style:none; cursor:pointer; }
+  .faq summary::-webkit-details-marker { display:none; }
+  .faq summary .chev { transition:transform .2s ease; }
+  .faq details[open] summary .chev { transform:rotate(180deg); }
+  @media (prefers-reduced-motion: reduce) { .faq summary .chev { transition:none; } }
+
+  /* ——— Sloty na zdjęcia od klienta ———
+     Dopóki nie ma zdjęć, slot rysuje się jako oznaczona ramka.
+     Po wklejeniu <img> do środka ramka znika sama (:has). */
+  .photo-slot {
+    display:flex; align-items:center; justify-content:center;
+    background:#EDE4D3; border:1px dashed #C9B99F; color:#5F5349; text-align:center; padding:1.5rem;
+  }
+  .photo-slot:has(img) { border:0; padding:0; background:transparent; }
+  .photo-slot img { width:100%; height:100%; object-fit:cover; display:block; }
+
+  .map { filter:grayscale(.7) contrast(1.05); }
+</style>
+</head>
+
+<body class="bg-cream font-serif text-ink">
+
+<!-- Wordmark „ALTICCIO" — wektor odrysowany 1:1 z photos/ (logo klienta).
+     Kontur wytrasowany z bitmapy, wyprostowany do czystej geometrii (pionowe/poziome
+     krawędzie wyrównane, pochylenie 12,82°, „O" jako superelipsa n=1,6).
+     Zgodność z oryginałem: IoU 97,3%. Źródło również w logo/alticcio.svg. -->
+<svg width="0" height="0" class="absolute" aria-hidden="true" focusable="false">
+  <symbol id="wordmark" viewBox="0 0 4380.6 1000">
+    <path fill="currentColor" fill-rule="evenodd" d="M650.5 0L530.2 0L483.7 40.8L477.7 67.2L19.2 871.3L1.7 948.1L0 980.3L18.1 1000L130.7 1000L142.2 984.1L166.5 877.6L201.7 814.9L240.7 803.5L357.8 803.5L378.8 817.2L378 865.1L351.3 982.2L354.3 1000L474 1000L497.9 978L714.6 26.2L706 0ZM486.7 332.6L493.1 346.2L424.8 646.2L412.7 658.8L337.2 658.8L308.6 643.9L321 589.1L364.5 532.4L462.3 352.7ZM1028.6 0L971.7 0L940.3 57.5L729.9 981.6L753.1 1000L1129 1000L1141.5 1000L1160.2 918.2L1138.9 882.8L917.2 882.8L901.2 863L1090.1 33.1L1087.8 0ZM1446.6 0L1391.4 0L1372.5 83.3L1374.4 102.7L1400.8 118.1L1572.4 118.1L1588.3 136.6L1390.4 488.1L1360.8 618.2L1349.8 731.2L1384.7 929.7L1410.6 1000L1532.3 1000L1540.1 1000L1543.4 963.2L1474.1 654L1488.4 591L1751.2 127.6L1792.3 117.2L1903.8 117.2L1923.9 107.7L1934.3 93.1L1949 28.2L1929 0L1897 0ZM2199.3 0L2138.2 0L2120.1 34.5L1907 970.5L1930.3 1000L2022.3 1000L2048.5 982.8L2077.2 856.7L2084 814.4L2095.7 789.7L2261.9 59.6L2264.5 0ZM2759.3 0L2687.1 0L2619 23.6L2559.1 72.6L2524 137L2337.1 958.4L2336 980.1L2364.6 1000L2593.4 1000L2608.6 1000L2627 919L2618.3 885.3L2527.5 885.3L2507 863L2671.2 141.8L2695.8 115.6L2793.3 115.6L2822.5 83.7L2827.3 0L2806.4 0ZM3314.1 0L3210.2 0L3163.1 18.4L3097.7 63.8L3051.1 137L2861.6 969.7L2872.5 1000L2894.7 1000L3112.3 1000L3137 982.2L3150.2 947.3L3149.3 892.3L3136.9 882.7L3053.2 882.7L3035 863L3196.9 151.7L3220.8 115.2L3331.4 115.2L3338.4 95.4L3360.2 0ZM3691.3 0L3631.5 0L3605.6 32.4L3402 926.8L3390.1 979.1L3398.7 1000L3512.7 1000L3537.5 975.9L3563.2 863L3742.7 74.3L3748.6 0ZM4216.8 857.7L4209.4 876.2L4194.5 900.6L4173.7 926L4148.7 950L4121.4 970.7L4093.9 986.6L4068.7 996.6L4050.5 1000L3897.8 1000L3881.2 996.6L3860.6 986.6L3830.9 960.9L3808.4 926L3796.6 888.1L3796.3 857.7L3959.2 142.3L3973.2 111.9L3991.3 86.7L4014.3 61.7L4040.7 39.1L4068.4 20.7L4107.3 3.4L4125.4 0L4285.3 0.9L4304.9 7.6L4325.7 20.7L4353.6 50L4367.6 74L4376.8 99.4L4380.6 123.8L4379.7 142.3ZM4103.4 721.8L4083.4 803.9L4069.4 849.2L4056.9 876L4050.9 882.7L4043.3 884.9L3959.6 884.9L3955.3 884.4L3951.2 879.9L3949 864.8L3952.1 829L3973.7 721.8L4086 229.6L4101.4 173.1L4117.7 131.2L4126.7 119.4L4134.3 117.2L4218 117.2L4222.3 117.7L4226.4 122.2L4228.5 137.3L4225.4 173.1L4203.9 280.3Z"/>
+  </symbol>
+</svg>
+
+<a href="#karta" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-red focus:px-5 focus:py-3 focus:text-cream">Przejdź do karty</a>
+
+<!-- ============================== HEADER ============================== -->
+<header class="sticky top-0 z-40 border-b border-border bg-cream/95 backdrop-blur">
+  <div class="mx-auto flex max-w-wide items-center gap-3 px-4 py-3 sm:gap-5 sm:px-7">
+
+    <a href="#top" aria-label="Alticcio, początek strony" class="inline-flex min-h-[44px] shrink-0 items-center text-red">
+      <svg class="h-[15px] w-auto sm:h-[17px]" viewBox="0 0 4380.6 1000" aria-hidden="true"><use href="#wordmark"/></svg>
+    </a>
+
+    <nav aria-label="Sekcje strony"
+         class="scrollbar-none flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto sm:justify-center sm:gap-1.5">
+      <a href="#o-nas"      data-nav="o-nas"      class="navlink">O nas</a>
+      <a href="#karta"      data-nav="karta"      class="navlink">Karta</a>
+      <a href="#rezerwacja" data-nav="rezerwacja" class="navlink">Rezerwacja</a>
+      <a href="#faq"        data-nav="faq"        class="navlink">FAQ</a>
+      <a href="#kontakt"    data-nav="kontakt"    class="navlink">Kontakt</a>
+    </nav>
+
+    <div class="flex shrink-0 items-center gap-1.5">
+      <a href="https://www.instagram.com/alticciogdansk/" target="_blank" rel="noopener" aria-label="Instagram Alticcio"
+         class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-ink transition-colors hover:bg-ink hover:text-cream">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.62.07 4.81s0 3.56-.07 4.81c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.16-1.06.36-2.23.41-1.25.06-1.62.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.56 2.2 15.19 2.2 12s0-3.56.07-4.81c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.44 2.21 8.8 2.2 12 2.2m0 1.98c-3.14 0-3.51.01-4.75.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.05-1.15-.24-1.77-.4-2.18a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.75-.07m0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9m0 8.99a3.54 3.54 0 1 0 0-7.08 3.54 3.54 0 0 0 0 7.08m6.94-9.21a1.27 1.27 0 1 1-2.55 0 1.27 1.27 0 0 1 2.55 0"/></svg>
+      </a>
+      <a href="https://www.facebook.com/profile.php?id=61575473254882" target="_blank" rel="noopener" aria-label="Facebook Alticcio"
+         class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-ink transition-colors hover:bg-ink hover:text-cream">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
+      </a>
+      <a href="tel:+48531122360" aria-label="Zadzwoń: 531 122 360"
+         class="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-red px-3 font-ui text-[.86rem] font-bold tracking-[.06em] text-cream transition-colors hover:bg-reddeep sm:px-5">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+        <span class="hidden sm:inline">531 122 360</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============================== HERO ============================== -->
+<section class="border-b border-border px-5 pb-16 pt-14 sm:px-8 sm:pb-24 sm:pt-20">
+  <div class="mx-auto max-w-wide">
+
+    <p class="eyebrow text-red">Hala Targowa &middot; Plac Dominikański 1 &middot; Gdańsk</p>
+
+    <h1 class="mt-7 sm:mt-9">
+      <span class="sr-only">Alticcio</span>
+      <svg class="block w-full max-w-[1100px] text-red" viewBox="0 0 4380.6 1000" aria-hidden="true"><use href="#wordmark"/></svg>
+    </h1>
+
+    <p class="mt-8 font-serif text-[clamp(1.6rem,5.2vw,2.9rem)] italic leading-[1.2] sm:mt-10">
+      A new kind of Italian.
+    </p>
+
+    <p class="mt-6 max-w-content text-[1.08rem] leading-[1.8] text-muted">
+      Makaron robimy u nas na miejscu. Do tego pizza, aperitivo o każdej porze
+      i karta win, która nie kończy się na prosecco.
+    </p>
+
+    <div class="mt-9 flex flex-wrap items-center gap-3">
+      <a href="#rezerwacja"
+         class="inline-flex min-h-[48px] items-center rounded-full bg-red px-7 font-ui text-[1rem] font-bold uppercase tracking-[.12em] text-cream transition-colors hover:bg-reddeep">
+        Zarezerwuj stolik
+      </a>
+      <a href="#karta"
+         class="inline-flex min-h-[48px] items-center rounded-full border border-ink px-7 font-ui text-[1rem] font-bold uppercase tracking-[.12em] text-ink transition-colors hover:bg-ink hover:text-cream">
+        Zobacz kartę
+      </a>
+    </div>
+
+    <p class="mt-9 font-ui text-[.86rem] tracking-[.06em] text-muted">
+      <span id="open-state" class="font-bold text-ink">Dziś otwarte 12:00 – 23:00</span>
+    </p>
+
+  </div>
+</section>
+
+<!-- ——— Pasmo hasła: slajd przejściowy z Instagrama marki ——— -->
+<section class="on-red bg-red px-5 py-16 text-cream sm:py-24">
+  <p class="mx-auto max-w-wide text-[clamp(2rem,7vw,4.4rem)] italic leading-[1.1]">
+    The night starts here.
+  </p>
+</section>
+
+<!-- ============================== O NAS ============================== -->
+<!-- PLACEHOLDER: klient dośle własny tekst „o nas".
+     Poniższe zdania są zbudowane wyłącznie z faktów z brief.md (makaron robiony na miejscu,
+     pizza, aperitivo, karta win, lokalizacja w Hali Targowej) — nic nie jest zmyślone.
+     Do podmiany w całości, gdy przyjdzie tekst od klienta. -->
+<section id="o-nas" class="border-b border-border px-5 py-20 sm:px-8 sm:py-28">
+  <div class="mx-auto max-w-wide">
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-20">
+
+      <div>
+        <p class="eyebrow text-red">O nas</p>
+        <h2 class="mt-5 font-serif text-[clamp(2rem,5vw,3.1rem)] font-bold leading-[1.15]">
+          Włoska kuchnia<br>w środku Hali&nbsp;Targowej
+        </h2>
+      </div>
+
+      <div class="space-y-5 text-[1.08rem] leading-[1.85]">
+        <p>
+          Alticcio działa w Hali Targowej w Gdańsku — pod tym samym dachem, pod którym
+          od lat kupuje się tu jedzenie. Makaron powstaje u nas na miejscu, każdego dnia.
+        </p>
+        <p>
+          Obok niego pizza, karta aperitivo i wina z Włoch, Hiszpanii, Australii,
+          Nowej Zelandii, Chile, Mołdawii i Szampanii: od kieliszka za 19 zł
+          po butelkę, którą otwiera się przy specjalnej okazji.
+        </p>
+        <p class="font-serif text-[1.35rem] italic leading-[1.5] text-red">
+          To nie jest trattoria z ceratą w kratkę.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ——— Przerywnik fotograficzny 1 (pełna szerokość) ——— -->
+<!-- ZDJĘCIE OD KLIENTA: wklej <img src="photos/NAZWA.jpg" alt="…" loading="lazy" width="…" height="…">
+     do środka .photo-slot — ramka placeholdera zniknie sama. -->
+<figure class="photo-slot h-[240px] w-full sm:h-[420px]">
+  <figcaption class="eyebrow">Miejsce na zdjęcie &middot; makaron / pizza &middot; pełna szerokość</figcaption>
+</figure>
+
+<!-- ============================== KARTA ============================== -->
+<section id="karta" class="border-y border-border px-5 py-20 sm:px-8 sm:py-28">
+  <!-- Karta jest węższa niż reszta strony (56rem zamiast 72rem): przy 1440px nazwa wina
+       i cena rozjeżdżały się na ~900px, co zabijało skanowanie wzrokiem. Kolumna
+       dokumentu, tak jak w drukowanej karcie klienta. -->
+  <div class="mx-auto max-w-[56rem]">
+
+    <p class="eyebrow text-red">Karta</p>
+    <h2 class="mt-5 font-serif text-[clamp(2rem,5vw,3.1rem)] font-bold leading-[1.15]">Wina, aperitivo i reszta</h2>
+    <p class="mt-4 max-w-content text-[1.08rem] leading-[1.8] text-muted">
+      Ceny w złotych. Kartę aktualizujemy razem z sezonem. O dostępność
+      konkretnej butelki najlepiej zapytać na miejscu.
+    </p>
+
+    <!-- Zakładki kategorii: karta jest bardzo długa, jedna lista byłaby nieczytelna na telefonie. -->
+    <div role="tablist" aria-label="Kategorie karty"
+         class="scrollbar-none -mx-5 mt-10 flex gap-2 overflow-x-auto px-5 sm:mx-0 sm:flex-wrap sm:px-0">
+      <button type="button" role="tab" id="tab-wina"      aria-controls="panel-wina"      aria-selected="true"  class="tab">Wina</button>
+      <button type="button" role="tab" id="tab-aperitivo" aria-controls="panel-aperitivo" aria-selected="false" class="tab" tabindex="-1">Aperitivo</button>
+      <button type="button" role="tab" id="tab-napoje"    aria-controls="panel-napoje"    aria-selected="false" class="tab" tabindex="-1">Piwa i napoje</button>
+      <button type="button" role="tab" id="tab-kawy"      aria-controls="panel-kawy"      aria-selected="false" class="tab" tabindex="-1">Kawa i herbata</button>
+      <button type="button" role="tab" id="tab-mocne"     aria-controls="panel-mocne"     aria-selected="false" class="tab" tabindex="-1">Alkohole mocne</button>
+    </div>
+
+    <!-- ——— WINA ——— -->
+    <div role="tabpanel" id="panel-wina" aria-labelledby="tab-wina" class="mt-12">
+
+      <h3 class="font-serif text-[1.75rem] font-bold uppercase tracking-[.04em] text-red">Białe</h3>
+      <div class="mt-4 flex items-end justify-end gap-3 border-b border-border pb-2">
+        <span class="price-head w-[4.2rem] text-right">kieliszek</span>
+        <span class="price-head w-[4.2rem] text-right">butelka</span>
+      </div>
+      <ul class="divide-y divide-border">
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">Spier Discover Medium Sweet</p><p class="item-meta">RPA &middot; Chenin Blanc</p></div>
+          <span class="price w-[4.2rem] text-right">19</span><span class="price w-[4.2rem] text-right">95</span>
+        </li>
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">Casa Solis Chardonnay</p><p class="item-meta">Chile &middot; Chardonnay</p></div>
+          <span class="price w-[4.2rem] text-right">22</span><span class="price w-[4.2rem] text-right">110</span>
+        </li>
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">Canyon Road Pinot Grigio</p><p class="item-meta">USA (Kalifornia) &middot; Pinot Grigio</p></div>
+          <span class="price w-[4.2rem] text-right">26</span><span class="price w-[4.2rem] text-right">128</span>
+        </li>
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">Pulpo Sauvignon Blanc</p><p class="item-meta">Nowa Zelandia &middot; Sauvignon Blanc</p></div>
+          <span class="price w-[4.2rem] text-right">30</span><span class="price w-[4.2rem] text-right">146</span>
+        </li>
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">Nocturne Viorica Crudo</p><p class="item-meta">Mołdawia &middot; Viorica</p></div>
+          <span class="price w-[4.2rem] text-right text-muted" aria-label="niedostępne na kieliszki">&ndash;</span><span class="price w-[4.2rem] text-right">161</span>
+        </li>
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">Crudo Catarratto Zibibbo</p><p class="item-meta">Włochy (Sycylia) &middot; Catarratto / Zibibbo</p></div>
+          <span class="price w-[4.2rem] text-right text-muted" aria-label="niedostępne na kieliszki">&ndash;</span><span class="price w-[4.2rem] text-right">190</span>
+        </li>
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">Penfolds Autumn Riesling</p><p class="item-meta">Australia &middot; Riesling</p></div>
+          <span class="price w-[4.2rem] text-right text-muted" aria-label="niedostępne na kieliszki">&ndash;</span><span class="price w-[4.2rem] text-right">313</span>
+        </li>
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">Jean Leon Chardonnay</p><p class="item-meta">Hiszpania &middot; Chardonnay</p></div>
+          <span class="price w-[4.2rem] text-right text-muted" aria-label="niedostępne na kieliszki">&ndash;</span><span class="price w-[4.2rem] text-right">231</span>
+        </li>
+      </ul>
+
+      <h3 class="mt-14 font-serif text-[1.75rem] font-bold uppercase tracking-[.04em] text-red">Czerwone</h3>
+      <div class="mt-4 flex items-end justify-end gap-3 border-b border-border pb-2">
+        <span class="price-head w-[4.2rem] text-right">kieliszek</span>
+        <span class="price-head w-[4.2rem] text-right">butelka</span>
+      </div>
+      <ul class="divide-y divide-border">
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">Casa Solis Carmenere</p><p class="item-meta">Chile &middot; Carmenère</p></div>
+          <span class="price w-[4.2rem] text-right">19</span><span class="price w-[4.2rem] text-right">95</span>
+        </li>
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">White Zinfandel</p><p class="item-meta">USA (Kalifornia) &middot; Zinfandel</p></div>
+          <span class="price w-[4.2rem] text-right">26</span><span class="price w-[4.2rem] text-right">128</span>
+        </li>
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">Canyon Road Merlot</p><p class="item-meta">USA (Kalifornia) &middot; Merlot</p></div>
+          <span class="price w-[4.2rem] text-right">26</span><span class="price w-[4.2rem] text-right">128</span>
+        </li>
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">Nocturne Rara Neagra</p><p class="item-meta">Mołdawia &middot; Rara Neagră</p></div>
+          <span class="price w-[4.2rem] text-right">34</span><span class="price w-[4.2rem] text-right">161</span>
+        </li>
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">Mauro Primitivo</p><p class="item-meta">Włochy &middot; Primitivo</p></div>
+          <span class="price w-[4.2rem] text-right">34</span><span class="price w-[4.2rem] text-right">170</span>
+        </li>
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">Jean Leon Merlot</p><p class="item-meta">Hiszpania &middot; Merlot</p></div>
+          <span class="price w-[4.2rem] text-right text-muted" aria-label="niedostępne na kieliszki">&ndash;</span><span class="price w-[4.2rem] text-right">237</span>
+        </li>
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">Penfolds Shiraz</p><p class="item-meta">Australia &middot; Shiraz</p></div>
+          <span class="price w-[4.2rem] text-right text-muted" aria-label="niedostępne na kieliszki">&ndash;</span><span class="price w-[4.2rem] text-right">236</span>
+        </li>
+      </ul>
+
+      <h3 class="mt-14 font-serif text-[1.75rem] font-bold uppercase tracking-[.04em] text-red">Musujące</h3>
+      <div class="mt-4 flex items-end justify-end gap-3 border-b border-border pb-2">
+        <span class="price-head w-[4.2rem] text-right">kieliszek</span>
+        <span class="price-head w-[4.2rem] text-right">butelka</span>
+      </div>
+      <ul class="divide-y divide-border">
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">Lamia 0.0%</p><p class="item-meta">Włochy &middot; bezalkoholowe</p></div>
+          <span class="price w-[4.2rem] text-right">30</span><span class="price w-[4.2rem] text-right">148</span>
+        </li>
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">Lamia Prosecco</p><p class="item-meta">Włochy &middot; Glera</p></div>
+          <span class="price w-[4.2rem] text-right">33</span><span class="price w-[4.2rem] text-right">161</span>
+        </li>
+        <li class="flex items-start gap-3 py-4">
+          <div class="min-w-0 flex-1"><p class="item-name">Palmer La Reserve</p><p class="item-meta">Francja (Szampania) &middot; Chardonnay, Pinot Noir, Pinot Meunier</p></div>
+          <span class="price w-[4.2rem] text-right text-muted" aria-label="niedostępne na kieliszki">&ndash;</span><span class="price w-[4.2rem] text-right">862</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ——— APERITIVO ——— -->
+    <div role="tabpanel" id="panel-aperitivo" aria-labelledby="tab-aperitivo" class="mt-12" hidden>
+      <h3 class="font-serif text-[1.75rem] font-bold uppercase tracking-[.04em] text-red">Aperitivo</h3>
+      <p class="mt-2 text-[1.08rem] italic text-muted">Nowe spojrzenie na ponadczasową tradycję</p>
+      <ul class="mt-6 divide-y divide-border border-t border-border">
+        <li class="flex items-start gap-4 py-5">
+          <div class="min-w-0 flex-1">
+            <p class="item-name">Cascara Spritz</p>
+            <p class="item-meta italic">lekki, cytrusowy, orzeźwiający</p>
+            <p class="item-meta mt-1">Cascara / Pierre Ferrand Dry Curaçao Yuzu / cydr</p>
+          </div>
+          <span class="price shrink-0">38 <small>PLN</small></span>
+        </li>
+        <li class="flex items-start gap-4 py-5">
+          <div class="min-w-0 flex-1">
+            <p class="item-name">Alticcio Limoncello Spritz</p>
+            <p class="item-meta italic">cytrusowy, elegancki, zbalansowany</p>
+            <p class="item-meta mt-1">Botega Limoncino / 3cents mandarin &amp; bergamot / soda</p>
+          </div>
+          <span class="price shrink-0">38 <small>PLN</small></span>
+        </li>
+        <li class="flex items-start gap-4 py-5">
+          <div class="min-w-0 flex-1">
+            <p class="item-name">Alticcio Hugo Spritz</p>
+            <p class="item-meta italic">świeży, kwiatowy, ziołowy</p>
+            <p class="item-meta mt-1">likier z kwiatu bzu / dill syrop / limonka / mięta / Lamia prosecco</p>
+          </div>
+          <span class="price shrink-0">38 <small>PLN</small></span>
+        </li>
+        <li class="flex items-start gap-4 py-5">
+          <div class="min-w-0 flex-1">
+            <p class="item-name">Garibaldi Spritz</p>
+            <p class="item-meta italic">aromatyczny, cytrusowy, lekki</p>
+            <p class="item-meta mt-1">Campari / pomarańcza / kwiat pomarańczy / Lamia prosecco</p>
+          </div>
+          <span class="price shrink-0">38 <small>PLN</small></span>
+        </li>
+        <li class="flex items-start gap-4 py-5">
+          <div class="min-w-0 flex-1">
+            <p class="item-name">Jasmine Peach Spritz</p>
+            <p class="item-meta italic">żywy, soczysty, kwiatowy</p>
+            <p class="item-meta mt-1">likier brzoskwiniowy / jaśmin / Lamia prosecco</p>
+          </div>
+          <span class="price shrink-0">38 <small>PLN</small></span>
+        </li>
+        <li class="flex items-start gap-4 py-5">
+          <div class="min-w-0 flex-1">
+            <p class="item-name">Aperol Spritz</p>
+            <p class="item-meta italic">gorzko-słodki, promienny, musujący</p>
+            <p class="item-meta mt-1">Aperol / Lamia prosecco / soda</p>
+          </div>
+          <span class="price shrink-0">36 <small>PLN</small></span>
+        </li>
+        <li class="flex items-start gap-4 py-5">
+          <div class="min-w-0 flex-1">
+            <p class="item-name">Americano</p>
+            <p class="item-meta italic">idealny aperitif, wytrawny, ziołowy</p>
+            <p class="item-meta mt-1">Campari / Dolin Rouge Vermouth / kwiat pomarańczy / soda</p>
+          </div>
+          <span class="price shrink-0">32 <small>PLN</small></span>
+        </li>
+        <li class="flex items-start gap-4 py-5">
+          <div class="min-w-0 flex-1">
+            <p class="item-name">Sarti Sbagliato</p>
+            <p class="item-meta italic">kwiatowy, aromatyczny, elegancki</p>
+            <p class="item-meta mt-1">Sarti / Dolin Dry Vermouth / Lamia prosecco</p>
+          </div>
+          <span class="price shrink-0">32 <small>PLN</small></span>
+        </li>
+        <li class="flex items-start gap-4 py-5">
+          <div class="min-w-0 flex-1">
+            <p class="item-name">Bellini</p>
+            <p class="item-meta italic">owocowy, lekki, soczysty</p>
+            <p class="item-meta mt-1">brzoskwinia / Lamia prosecco</p>
+          </div>
+          <span class="price shrink-0">34 <small>PLN</small></span>
+        </li>
+        <li class="flex items-start gap-4 py-5">
+          <div class="min-w-0 flex-1">
+            <p class="item-name">Rubino</p>
+            <p class="item-meta italic">aromatyczny, soczysty, herbaciany</p>
+            <p class="item-meta mt-1">Campari / cacao / wiśnia / gryka</p>
+          </div>
+          <span class="price shrink-0">39 <small>PLN</small></span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ——— PIWA I NAPOJE ——— -->
+    <div role="tabpanel" id="panel-napoje" aria-labelledby="tab-napoje" class="mt-12" hidden>
+      <h3 class="font-serif text-[1.75rem] font-bold uppercase tracking-[.04em] text-red">Piwa</h3>
+      <ul class="mt-5 space-y-3">
+        <li class="flex items-baseline gap-2"><span class="item-name">Peroni</span><span class="leader"></span><span class="price">23 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Peroni 0%</span><span class="leader"></span><span class="price">23 <small>PLN</small></span></li>
+      </ul>
+
+      <h3 class="mt-14 font-serif text-[1.75rem] font-bold uppercase leading-[1.15] tracking-[.04em] text-red">Napoje bezalkoholowe</h3>
+      <ul class="mt-5 space-y-3">
+        <li class="flex items-baseline gap-2"><span class="item-name">Crodino Spritz</span><span class="leader"></span><span class="price">39 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Cappy Lemoniada Cytrusowa</span><span class="leader"></span><span class="price">23 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Coca-Cola</span><span class="leader"></span><span class="price">15 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Coca-Cola Zero</span><span class="leader"></span><span class="price">15 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Sprite / Fanta</span><span class="leader"></span><span class="price">15 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Cappy Sok Pomarańczowy</span><span class="leader"></span><span class="price">23 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Cappy Nektar Grejpfrutowy</span><span class="leader"></span><span class="price">23 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Sok świeżo wyciskany pomarańczowy</span><span class="leader"></span><span class="price">25 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Burn Energy Drink</span><span class="leader"></span><span class="price">19 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Fuze Tea Cytrynowe</span><span class="leader"></span><span class="price">26 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Fuze Tea Brzoskwinia Hibiskus</span><span class="leader"></span><span class="price">26 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">3 Cents Tonic Water</span><span class="leader"></span><span class="price">24 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">3 Cents Mandarin &amp; Bergamot Tonic</span><span class="leader"></span><span class="price">24 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">San Pellegrino</span><span class="leader"></span><span class="price">23 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Acqua Panna</span><span class="leader"></span><span class="price">23 <small>PLN</small></span></li>
+      </ul>
+    </div>
+
+    <!-- ——— KAWA I HERBATA ——— -->
+    <div role="tabpanel" id="panel-kawy" aria-labelledby="tab-kawy" class="mt-12" hidden>
+      <h3 class="font-serif text-[1.75rem] font-bold uppercase tracking-[.04em] text-red">Kawy</h3>
+      <p class="mt-2 max-w-content text-[1.08rem] leading-[1.75] text-muted">
+        Nasza kawa powstaje na ziarnach z palarni COFFEELAB, starannie selekcjonowanych
+        i wypalanych z włoską dbałością o detale.
+      </p>
+      <ul class="mt-6 space-y-3">
+        <li class="flex items-baseline gap-2"><span class="item-name">Espresso</span><span class="leader"></span><span class="price">10 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Espresso Doppio</span><span class="leader"></span><span class="price">14 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Cappuccino</span><span class="leader"></span><span class="price">18 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Americano</span><span class="leader"></span><span class="price">17 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Flat White</span><span class="leader"></span><span class="price">20 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Latte</span><span class="leader"></span><span class="price">21 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Espresso Tonic</span><span class="leader"></span><span class="price">27 <small>PLN</small></span></li>
+        <li class="flex items-baseline gap-2"><span class="item-name">Espresso Tonic Luxardo Maraschino</span><span class="leader"></span><span class="price">37 <small>PLN</small></span></li>
+      </ul>
+      <p class="mt-5 text-[.86rem] text-muted">Mleko: 2%, bez laktozy, owsiane, grochowe, migdałowe.</p>
+
+      <h3 class="mt-14 font-serif text-[1.75rem] font-bold uppercase tracking-[.04em] text-red">Herbaty</h3>
+      <p class="mt-4 text-[1.08rem] leading-[1.8]">
+        <span class="item-name">Harney &amp; Sons</span>
+      </p>
+      <p class="mt-2 max-w-content text-[1.08rem] leading-[1.8] text-muted">
+        Daily &middot; Green &middot; English Breakfast &middot; Sunny Sencha &middot; Fresh Berries &middot; Rooibos Orange Melody
+      </p>
+      <p class="mt-4 flex items-baseline gap-2 border-t border-border pt-4">
+        <span class="item-name">Każda</span><span class="leader"></span><span class="price">18 <small>PLN</small></span>
+      </p>
+    </div>
+
+    <!-- ——— ALKOHOLE MOCNE ——— -->
+    <div role="tabpanel" id="panel-mocne" aria-labelledby="tab-mocne" class="mt-12" hidden>
+      <h3 class="font-serif text-[1.75rem] font-bold uppercase tracking-[.04em] text-red">Alkohole mocne</h3>
+
+      <div class="mt-8 grid gap-x-14 gap-y-11 sm:grid-cols-2">
+
+        <div>
+          <h4 class="eyebrow border-b border-border pb-2 text-ink">Wódka</h4>
+          <ul class="mt-4 space-y-3">
+            <li class="flex items-baseline gap-2"><span class="item-name">Żubrówka Black</span><span class="leader"></span><span class="price">17 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Żubrówka Bison Grass</span><span class="leader"></span><span class="price">17 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Belvedere</span><span class="leader"></span><span class="price">35 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Beluga Noble Vodka</span><span class="leader"></span><span class="price">27 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Titos Vodka</span><span class="leader"></span><span class="price">27 <small>PLN</small></span></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="eyebrow border-b border-border pb-2 text-ink">Gin</h4>
+          <ul class="mt-4 space-y-3">
+            <li class="flex items-baseline gap-2"><span class="item-name">Whitley Neill</span><span class="leader"></span><span class="price">19 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Hendricks</span><span class="leader"></span><span class="price">29 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Hendricks Another</span><span class="leader"></span><span class="price">32 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Gunpowder Citrus</span><span class="leader"></span><span class="price">33 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Gunpowder Orange</span><span class="leader"></span><span class="price">33 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Gunpowder Fig</span><span class="leader"></span><span class="price">33 <small>PLN</small></span></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="eyebrow border-b border-border pb-2 text-ink">Tequila</h4>
+          <ul class="mt-4 space-y-3">
+            <li class="flex items-baseline gap-2"><span class="item-name">Jose Cuervo Silver</span><span class="leader"></span><span class="price">19 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Jose Cuervo Reposado</span><span class="leader"></span><span class="price">21 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">1800 Silver</span><span class="leader"></span><span class="price">26 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">1800 Reposado</span><span class="leader"></span><span class="price">28 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">1800 Anejo</span><span class="leader"></span><span class="price">29 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Clase Azul Plata</span><span class="leader"></span><span class="price">85 <small>PLN</small></span></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="eyebrow border-b border-border pb-2 text-ink">Whisky</h4>
+          <p class="mt-4 font-ui text-[.74rem] font-bold uppercase tracking-[.16em] text-muted">Scotch</p>
+          <ul class="mt-3 space-y-3">
+            <li class="flex items-baseline gap-2"><span class="item-name">Glenfiddich 12</span><span class="leader"></span><span class="price">37 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Highland Park 12</span><span class="leader"></span><span class="price">37 <small>PLN</small></span></li>
+          </ul>
+          <p class="mt-5 font-ui text-[.74rem] font-bold uppercase tracking-[.16em] text-muted">Bourbon</p>
+          <ul class="mt-3 space-y-3">
+            <li class="flex items-baseline gap-2"><span class="item-name">Buffalo Trace</span><span class="leader"></span><span class="price">24 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Elijah Craig</span><span class="leader"></span><span class="price">33 <small>PLN</small></span></li>
+          </ul>
+          <p class="mt-5 font-ui text-[.74rem] font-bold uppercase tracking-[.16em] text-muted">Irish</p>
+          <ul class="mt-3 space-y-3">
+            <li class="flex items-baseline gap-2"><span class="item-name">Tullamore Dew</span><span class="leader"></span><span class="price">19 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Bushmills 10</span><span class="leader"></span><span class="price">27 <small>PLN</small></span></li>
+          </ul>
+          <p class="mt-5 font-ui text-[.74rem] font-bold uppercase tracking-[.16em] text-muted">Reszta świata</p>
+          <ul class="mt-3 space-y-3">
+            <li class="flex items-baseline gap-2"><span class="item-name">Nikka Days</span><span class="leader"></span><span class="price">30 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Nikka From The Barrel</span><span class="leader"></span><span class="price">37 <small>PLN</small></span></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="eyebrow border-b border-border pb-2 text-ink">Rum</h4>
+          <ul class="mt-4 space-y-3">
+            <li class="flex items-baseline gap-2"><span class="item-name">Planteray Dark</span><span class="leader"></span><span class="price">19 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Planteray 3*</span><span class="leader"></span><span class="price">21 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Mount Gay Eclipse</span><span class="leader"></span><span class="price">23 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Dictador 12</span><span class="leader"></span><span class="price">34 <small>PLN</small></span></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="eyebrow border-b border-border pb-2 text-ink">Cognac i brandy</h4>
+          <ul class="mt-4 space-y-3">
+            <li class="flex items-baseline gap-2"><span class="item-name">Remy Martin VSOP</span><span class="leader"></span><span class="price">39 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Metaxa 12</span><span class="leader"></span><span class="price">31 <small>PLN</small></span></li>
+            <!-- Pisownia „Metaca" przeniesiona 1:1 z karty klienta (photos/) — prawdopodobna literówka
+                 po stronie klienta (powinno być „Metaxa Grande Fine"). Do potwierdzenia u klienta. -->
+            <li class="flex items-baseline gap-2"><span class="item-name">Metaca Grande Fine</span><span class="leader"></span><span class="price">37 <small>PLN</small></span></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="eyebrow border-b border-border pb-2 text-ink">Aperitif</h4>
+          <ul class="mt-4 space-y-3">
+            <li class="flex items-baseline gap-2"><span class="item-name">Campari</span><span class="leader"></span><span class="price">19 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Sarti</span><span class="leader"></span><span class="price">17 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Disaronno Amaretto</span><span class="leader"></span><span class="price">18 <small>PLN</small></span></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="eyebrow border-b border-border pb-2 text-ink">Likiery</h4>
+          <ul class="mt-4 space-y-3">
+            <li class="flex items-baseline gap-2"><span class="item-name">Jagermeister</span><span class="leader"></span><span class="price">18 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Luxardo Maraschino</span><span class="leader"></span><span class="price">21 <small>PLN</small></span></li>
+            <li class="flex items-baseline gap-2"><span class="item-name">Cointreau</span><span class="leader"></span><span class="price">23 <small>PLN</small></span></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ——— Pasmo hasła ——— -->
+<section class="on-red bg-red px-5 py-16 text-cream sm:py-24">
+  <p class="mx-auto max-w-wide text-[clamp(2rem,7vw,4.4rem)] italic leading-[1.1]">
+    wine o'clock
+  </p>
+</section>
+
+<!-- ——— Przerywnik fotograficzny 2 (przesunięty, nie pełna szerokość) ——— -->
+<div class="px-5 py-20 sm:px-8 sm:py-24">
+  <div class="mx-auto max-w-wide">
+    <div class="grid items-center gap-10 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:gap-16">
+      <!-- ZDJĘCIE OD KLIENTA: wklej <img …> do środka .photo-slot -->
+      <figure class="photo-slot h-[260px] sm:h-[400px]">
+        <figcaption class="eyebrow">Miejsce na zdjęcie &middot; kieliszek / bar</figcaption>
+      </figure>
+      <p class="font-serif text-[clamp(1.5rem,3.6vw,2.2rem)] italic leading-[1.35] text-red">
+        Kieliszek od 19&nbsp;zł. Butelka, kiedy wieczór na to zasługuje.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== FAQ ============================== -->
+<section id="faq" class="faq border-y border-border px-5 py-20 sm:px-8 sm:py-28">
+  <div class="mx-auto max-w-wide">
+    <p class="eyebrow text-red">FAQ</p>
+    <h2 class="mt-5 font-serif text-[clamp(2rem,5vw,3.1rem)] font-bold leading-[1.15]">Krótkie odpowiedzi</h2>
+
+    <div class="mt-10 border-t border-border">
+
+      <details class="border-b border-border">
+        <summary class="flex min-h-[64px] items-center justify-between gap-5 py-5 font-serif text-[1.08rem] font-bold sm:text-[1.35rem]">
+          Jaką kuchnię serwujecie?
+          <svg class="chev shrink-0 text-red" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
+        </summary>
+        <p class="max-w-content pb-6 pr-10 text-[1.08rem] leading-[1.8] text-muted">
+          Włoską. Makaron robimy u nas na miejscu, do tego pizza, karta aperitivo
+          i wina z kilkunastu regionów. Aktualną kartę dnia znajdziesz
+          <a href="#karta" class="text-red underline decoration-border underline-offset-4 hover:decoration-red">wyżej na stronie</a>.
+        </p>
+      </details>
+
+      <details class="border-b border-border">
+        <summary class="flex min-h-[64px] items-center justify-between gap-5 py-5 font-serif text-[1.08rem] font-bold sm:text-[1.35rem]">
+          Czy można zarezerwować stolik?
+          <svg class="chev shrink-0 text-red" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
+        </summary>
+        <p class="max-w-content pb-6 pr-10 text-[1.08rem] leading-[1.8] text-muted">
+          Tak. Na razie rezerwujemy telefonicznie pod numerem
+          <a href="tel:+48531122360" class="text-red underline decoration-border underline-offset-4 hover:decoration-red">531&nbsp;122&nbsp;360</a>,
+          w godzinach otwarcia. Rezerwacja online jest w przygotowaniu.
+        </p>
+      </details>
+
+      <details class="border-b border-border">
+        <summary class="flex min-h-[64px] items-center justify-between gap-5 py-5 font-serif text-[1.08rem] font-bold sm:text-[1.35rem]">
+          Gdzie dokładnie jesteście?
+          <svg class="chev shrink-0 text-red" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
+        </summary>
+        <p class="max-w-content pb-6 pr-10 text-[1.08rem] leading-[1.8] text-muted">
+          W Hali Targowej w Gdańsku, Plac Dominikański 1. Mapa i dojazd są
+          <a href="#kontakt" class="text-red underline decoration-border underline-offset-4 hover:decoration-red">na dole strony</a>.
+        </p>
+      </details>
+
+      <details class="border-b border-border">
+        <summary class="flex min-h-[64px] items-center justify-between gap-5 py-5 font-serif text-[1.08rem] font-bold sm:text-[1.35rem]">
+          Czy macie coś bez alkoholu?
+          <svg class="chev shrink-0 text-red" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
+        </summary>
+        <p class="max-w-content pb-6 pr-10 text-[1.08rem] leading-[1.8] text-muted">
+          Sporo. Musujące Lamia 0.0% (także na kieliszki), Peroni 0%, Crodino Spritz,
+          świeżo wyciskany sok pomarańczowy, tonik 3 Cents, herbaty Harney &amp; Sons
+          i kawa na ziarnach COFFEELAB.
+        </p>
+      </details>
+
+      <!-- PLACEHOLDER: klient nie podał w briefie, jakie eventy organizuje.
+           Odpowiedź poniżej jest celowo ogólna i odsyła do kontaktu — do podmiany,
+           gdy klient prześle konkrety (rodzaje imprez, pojemność sali, menu grupowe). -->
+      <details class="border-b border-border">
+        <summary class="flex min-h-[64px] items-center justify-between gap-5 py-5 font-serif text-[1.08rem] font-bold sm:text-[1.35rem]">
+          Jakie eventy organizujecie?
+          <svg class="chev shrink-0 text-red" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
+        </summary>
+        <p class="max-w-content pb-6 pr-10 text-[1.08rem] leading-[1.8] text-muted">
+          O terminy, pojemność i menu na wydarzenia najlepiej zapytać bezpośrednio:
+          <a href="tel:+48531122360" class="text-red underline decoration-border underline-offset-4 hover:decoration-red">531&nbsp;122&nbsp;360</a>.
+          Bieżące wydarzenia pokazujemy na
+          <a href="https://www.instagram.com/alticciogdansk/" target="_blank" rel="noopener" class="text-red underline decoration-border underline-offset-4 hover:decoration-red">Instagramie</a>.
+        </p>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================== REZERWACJA ============================== -->
+<section id="rezerwacja" class="on-red bg-red px-5 py-20 text-cream sm:px-8 sm:py-28">
+  <div class="mx-auto max-w-wide">
+    <p class="eyebrow">Rezerwacja</p>
+    <h2 class="mt-5 max-w-content font-serif text-[clamp(2rem,5.4vw,3.4rem)] font-bold leading-[1.15]">
+      Zarezerwuj stolik
+    </h2>
+
+    <!-- ==================================================================
+         TYMCZASOWE ROZWIĄZANIE — do podmiany.
+         Docelowo w tym miejscu montuje się customowy system rezerwacji
+         (HTML/JS + Supabase: baza, realtime, auth; hosting Cloudflare Pages).
+         Zakres: strona gościa (kalendarz, liczba osób, sloty godzinowe, dane
+         kontaktowe, slot znika natychmiast po zajęciu) + panel właściciela
+         (lista rezerwacji dnia, dane gości, anulowanie, logowanie e-mail+hasło).
+         To osobny prompt / osobne zadanie — NIE budowane w tej iteracji.
+
+         Jak podmienić: zostaw <div id="booking-app">, usuń całą zawartość
+         .booking-fallback i zamontuj w nim widget. Do czasu wdrożenia
+         rezerwacja idzie przez telefon w godzinach otwarcia.
+         ================================================================== -->
+    <div id="booking-app">
+      <div class="booking-fallback mt-8 max-w-content">
+        <p class="text-[1.08rem] leading-[1.85]">
+          Rezerwacje przyjmujemy telefonicznie, w godzinach otwarcia.
+          Zadzwoń i powiedz, na kiedy i dla ilu osób — resztę ustawimy.
+          Rezerwacja online ruszy wkrótce.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a href="tel:+48531122360"
+             class="inline-flex min-h-[52px] items-center gap-2.5 rounded-full bg-cream px-8 font-ui text-[1rem] font-bold uppercase tracking-[.12em] text-red transition-colors hover:bg-ink hover:text-cream">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+            531 122 360
+          </a>
+          <a href="https://www.instagram.com/alticciogdansk/" target="_blank" rel="noopener"
+             class="inline-flex min-h-[52px] items-center gap-2.5 rounded-full border border-cream px-8 font-ui text-[1rem] font-bold uppercase tracking-[.12em] text-cream transition-colors hover:bg-cream hover:text-red">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.62.07 4.81s0 3.56-.07 4.81c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.16-1.06.36-2.23.41-1.25.06-1.62.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.56 2.2 15.19 2.2 12s0-3.56.07-4.81c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.44 2.21 8.8 2.2 12 2.2m0 1.98c-3.14 0-3.51.01-4.75.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.05-1.15-.24-1.77-.4-2.18a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.75-.07m0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9m0 8.99a3.54 3.54 0 1 0 0-7.08 3.54 3.54 0 0 0 0 7.08m6.94-9.21a1.27 1.27 0 1 1-2.55 0 1.27 1.27 0 0 1 2.55 0"/></svg>
+            Napisz na Instagramie
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================== OPINIE ============================== -->
+<section id="opinie" class="border-b border-border px-5 py-20 sm:px-8 sm:py-28">
+  <div class="mx-auto max-w-wide">
+    <p class="eyebrow text-red">Opinie</p>
+
+    <div class="mt-8 flex flex-wrap items-end gap-x-8 gap-y-5">
+      <p class="font-ui text-[clamp(4rem,15vw,8rem)] font-bold leading-[.85] text-red">4,8</p>
+      <div class="pb-2">
+        <div class="flex gap-1 text-red" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+        </div>
+        <p class="mt-3 font-ui text-[1.08rem] tracking-[.04em]">
+          <span class="font-bold">105 opinii</span> w Google
+        </p>
+      </div>
+    </div>
+
+    <!-- PLACEHOLDER: treści pojedynczych opinii klient dośle później.
+         Szablon karty do skopiowania (odkomentuj i powiel):
+         <blockquote class="border-l-2 border-red pl-5">
+           <p class="font-serif text-[1.08rem] italic leading-[1.8]">„TREŚĆ OPINII"</p>
+           <footer class="mt-3 font-ui text-[.86rem] uppercase tracking-[.12em] text-muted">IMIĘ &middot; Google</footer>
+         </blockquote>
+    -->
+
+    <!-- TODO: podmienić na bezpośredni link do wizytówki Google (place_id od klienta).
+         Poniżej celowo NIEzgadywane place_id, tylko zwykłe wyszukiwanie w Mapach. -->
+    <p class="mt-10">
+      <a href="https://www.google.com/maps/search/?api=1&amp;query=Alticcio%20Plac%20Dominika%C5%84ski%201%20Gda%C5%84sk"
+         target="_blank" rel="noopener"
+         class="inline-flex min-h-[48px] items-center rounded-full border border-ink px-7 font-ui text-[1rem] font-bold uppercase tracking-[.12em] text-ink transition-colors hover:bg-ink hover:text-cream">
+        Zobacz opinie w Google
+      </a>
+    </p>
+  </div>
+</section>
+
+<!-- ——— Przerywnik fotograficzny 3 (wąski, pionowy, przy tekście) ——— -->
+<div class="px-5 py-20 sm:px-8 sm:py-24">
+  <div class="mx-auto max-w-wide">
+    <div class="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-16">
+      <!-- ZDJĘCIE OD KLIENTA (pionowe): wklej <img …> do środka .photo-slot -->
+      <figure class="photo-slot h-[380px] sm:h-[520px]">
+        <figcaption class="eyebrow">Miejsce na zdjęcie &middot; pionowe &middot; zespół / wnętrze</figcaption>
+      </figure>
+      <div>
+        <p class="eyebrow text-red">Hala Targowa</p>
+        <p class="mt-5 font-serif text-[clamp(1.5rem,3.6vw,2.2rem)] leading-[1.35]">
+          Plac Dominikański 1. Wchodzisz do Hali Targowej i&nbsp;idziesz w&nbsp;stronę zapachu.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== KONTAKT ============================== -->
+<section id="kontakt" class="border-t border-border pt-20 sm:pt-28">
+  <div class="mx-auto max-w-wide px-5 sm:px-8">
+    <p class="eyebrow text-red">Kontakt</p>
+    <h2 class="mt-5 font-serif text-[clamp(2rem,5vw,3.1rem)] font-bold leading-[1.15]">Godziny i dojazd</h2>
+
+    <div class="mt-12 grid gap-14 lg:grid-cols-2 lg:gap-20">
+
+      <div>
+        <h3 class="eyebrow text-ink">Godziny otwarcia</h3>
+        <table class="mt-5 w-full border-collapse text-[1.08rem]">
+          <caption class="sr-only">Godziny otwarcia Alticcio</caption>
+          <tbody>
+            <tr data-day="0"><th scope="row" class="py-2.5 pl-3 pr-4 text-left font-normal">Poniedziałek</th><td class="py-2.5 pr-3 text-right font-ui tracking-[.03em]">12:00 – 23:00</td></tr>
+            <tr data-day="1"><th scope="row" class="py-2.5 pl-3 pr-4 text-left font-normal">Wtorek</th><td class="py-2.5 pr-3 text-right font-ui tracking-[.03em]">12:00 – 23:00</td></tr>
+            <tr data-day="2"><th scope="row" class="py-2.5 pl-3 pr-4 text-left font-normal">Środa</th><td class="py-2.5 pr-3 text-right font-ui tracking-[.03em]">12:00 – 23:00</td></tr>
+            <tr data-day="3"><th scope="row" class="py-2.5 pl-3 pr-4 text-left font-normal">Czwartek</th><td class="py-2.5 pr-3 text-right font-ui tracking-[.03em]">12:00 – 23:00</td></tr>
+            <tr data-day="4"><th scope="row" class="py-2.5 pl-3 pr-4 text-left font-normal">Piątek</th><td class="py-2.5 pr-3 text-right font-ui tracking-[.03em]">12:00 – 00:00</td></tr>
+            <tr data-day="5"><th scope="row" class="py-2.5 pl-3 pr-4 text-left font-normal">Sobota</th><td class="py-2.5 pr-3 text-right font-ui tracking-[.03em]">12:00 – 00:00</td></tr>
+            <tr data-day="6"><th scope="row" class="py-2.5 pl-3 pr-4 text-left font-normal">Niedziela</th><td class="py-2.5 pr-3 text-right font-ui tracking-[.03em]">12:00 – 22:00</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="space-y-9">
+        <div>
+          <h3 class="eyebrow text-ink">Adres</h3>
+          <address class="mt-4 not-italic text-[1.08rem] leading-[1.8]">
+            Alticcio<br>
+            Hala Targowa, Plac Dominikański 1<br>
+            80-844 Gdańsk
+          </address>
+        </div>
+
+        <div>
+          <h3 class="eyebrow text-ink">Telefon</h3>
+          <p class="mt-4">
+            <a href="tel:+48531122360" class="inline-flex min-h-[44px] items-center font-ui text-[1.75rem] font-bold tracking-[.02em] text-red hover:text-reddeep">531 122 360</a>
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Plac%20Dominika%C5%84ski%201%2C%2080-844%20Gda%C5%84sk"
+             target="_blank" rel="noopener"
+             class="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-ink px-6 font-ui text-[.86rem] font-bold uppercase tracking-[.1em] text-ink transition-colors hover:bg-ink hover:text-cream">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7m0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5"/></svg>
+            Wyznacz trasę
+          </a>
+          <a href="https://www.instagram.com/alticciogdansk/" target="_blank" rel="noopener" aria-label="Instagram Alticcio"
+             class="inline-flex min-h-[48px] min-w-[48px] items-center justify-center rounded-full bg-ink text-cream transition-colors hover:bg-red">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.62.07 4.81s0 3.56-.07 4.81c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.16-1.06.36-2.23.41-1.25.06-1.62.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.56 2.2 15.19 2.2 12s0-3.56.07-4.81c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.44 2.21 8.8 2.2 12 2.2m0 1.98c-3.14 0-3.51.01-4.75.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.05-1.15-.24-1.77-.4-2.18a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.75-.07m0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9m0 8.99a3.54 3.54 0 1 0 0-7.08 3.54 3.54 0 0 0 0 7.08m6.94-9.21a1.27 1.27 0 1 1-2.55 0 1.27 1.27 0 0 1 2.55 0"/></svg>
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61575473254882" target="_blank" rel="noopener" aria-label="Facebook Alticcio"
+             class="inline-flex min-h-[48px] min-w-[48px] items-center justify-center rounded-full bg-ink text-cream transition-colors hover:bg-red">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mapa na całą szerokość, tuż nad stopką. RODO: opisana w privacy.html -->
+  <div class="mt-16 w-full sm:mt-20">
+    <iframe src="https://www.google.com/maps?q=Plac%20Dominika%C5%84ski%201%2C%2080-844%20Gda%C5%84sk&amp;output=embed"
+            title="Mapa dojazdu do Alticcio, Plac Dominikański 1, Gdańsk"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            class="map block h-[320px] w-full border-0 sm:h-[400px]"></iframe>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================== STOPKA ============================== -->
+<footer class="bg-ink px-5 py-14 text-cream sm:px-8 sm:py-16">
+  <div class="mx-auto max-w-wide">
+    <svg class="h-[22px] w-auto text-cream sm:h-[26px]" viewBox="0 0 4380.6 1000" role="img" aria-label="Alticcio"><use href="#wordmark"/></svg>
+
+    <div class="mt-10 grid gap-8 text-[1rem] leading-[1.8] sm:grid-cols-3">
+      <p>
+        Hala Targowa<br>
+        Plac Dominikański 1<br>
+        80-844 Gdańsk
+      </p>
+      <p>
+        <a href="tel:+48531122360" class="inline-block py-1 hover:text-red">531 122 360</a><br>
+        <a href="https://www.instagram.com/alticciogdansk/" target="_blank" rel="noopener" class="inline-block py-1 hover:text-red">Instagram</a><br>
+        <a href="https://www.facebook.com/profile.php?id=61575473254882" target="_blank" rel="noopener" class="inline-block py-1 hover:text-red">Facebook</a>
+      </p>
+      <p>
+        <a href="privacy.html" class="inline-block py-1 hover:text-red">Polityka prywatności</a>
+      </p>
+    </div>
+
+    <p class="mt-12 font-ui text-[.74rem] uppercase tracking-[.14em] text-cream">
+      Sprzedaż alkoholu wyłącznie osobom powyżej 18 roku życia.
+    </p>
+  </div>
+</footer>
+
+<script>
+/* ——— Scroll-spy w headerze ——— */
+(function () {
+  if (!('IntersectionObserver' in window)) return;
+  var links = {};
+  document.querySelectorAll('.navlink[data-nav]').forEach(function (a) { links[a.dataset.nav] = a; });
+  /* Odchylenie od kanonicznego snippetu: trzymamy mapę widocznych sekcji zamiast
+     jednej zmiennej `current`. Sam snippet nigdy nie gasi podświetlenia, więc po
+     powrocie na samą górę strony (nad pierwszą sekcją) zostawał zapalony „Kontakt".
+     rootMargin bez zmian. */
+  var visible = {};
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) { visible[entry.target.id] = entry.isIntersecting; });
+    var activeId = null;
+    Object.keys(links).forEach(function (id) { if (visible[id]) activeId = id; });
+    Object.keys(links).forEach(function (id) {
+      links[id].classList.toggle('active', id === activeId);
+    });
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+  Object.keys(links).forEach(function (id) {
+    var section = document.getElementById(id);
+    if (section) observer.observe(section);
+  });
+})();
+
+/* ——— Godziny: podświetlenie dzisiejszego wiersza + stan „otwarte / zamknięte" ——— */
+(function () {
+  /* poniedziałek = 0; godzina zamknięcia 24 = północ */
+  var HOURS = [[12,23],[12,23],[12,23],[12,23],[12,24],[12,24],[12,22]];
+  var now = new Date();
+  var idx = (now.getDay() + 6) % 7;
+
+  var row = document.querySelector('tr[data-day="' + idx + '"]');
+  if (row) {
+    row.classList.add('today');
+    var th = row.querySelector('th');
+    if (th) {
+      var badge = document.createElement('span');
+      badge.className = 'today-badge';
+      badge.textContent = 'dziś';
+      th.appendChild(badge);
+    }
+  }
+
+  var el = document.getElementById('open-state');
+  if (!el) return;
+  var open = HOURS[idx][0], close = HOURS[idx][1];
+  var mins = now.getHours() * 60 + now.getMinutes();
+  var isOpen = mins >= open * 60 && mins < close * 60;
+  var fmt = function (h) { return (h === 24 ? '00' : String(h).padStart(2, '0')) + ':00'; };
+  el.textContent = (isOpen ? 'Otwarte teraz \u00b7 dziś do ' + fmt(close)
+                           : 'Zamknięte \u00b7 dziś ' + fmt(open) + ' – ' + fmt(close));
+})();
+
+/* ——— Karta: zakładki kategorii ——— */
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  if (!tabs.length) return;
+
+  function select(tab, focus) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      var panel = document.getElementById(t.getAttribute('aria-controls'));
+      if (panel) panel.hidden = !on;
+    });
+    if (focus) tab.focus();
+  }
+
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener('click', function () { select(tab); });
+    tab.addEventListener('keydown', function (e) {
+      var next = null;
+      if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+      else if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+      else if (e.key === 'Home') next = tabs[0];
+      else if (e.key === 'End') next = tabs[tabs.length - 1];
+      if (next) { e.preventDefault(); select(next, true); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
