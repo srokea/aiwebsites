@@ -9,10 +9,10 @@ import {
   formatShortDate, formatLongDate, formatMonth, formatPeople, formatDuration,
 } from './format.js';
 import { normalizePhone } from './phone.js';
+import { normalizeEmail } from './email.js';
 import { h } from './dom.js';
 import { RESTAURANT_PHONE, RESTAURANT_PHONE_HREF } from './config.js';
 
-const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 const WEEKDAY_HEADERS = ['Po', 'Wt', 'Śr', 'Cz', 'Pt', 'So', 'Ni'];
 const AUTO_ADVANCE_DAYS = 7;
 
@@ -90,9 +90,9 @@ const SHELL = `
           <p class="bk-hint" id="bk-phone-hint" data-phone-hint>Numer z kodem kraju, np. +48 600 100 200</p>
         </div>
         <div>
-          <label class="bk-sr" for="bk-email">E-mail (opcjonalnie)</label>
-          <input class="bk-input" id="bk-email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="E-mail (opcjonalnie)">
-          <p class="bk-hint is-alert" data-error="email" hidden>Ten adres e-mail wygląda na niepełny.</p>
+          <label class="bk-sr" for="bk-email">E-mail</label>
+          <input class="bk-input" id="bk-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="E-mail" required aria-describedby="bk-email-hint">
+          <p class="bk-hint" id="bk-email-hint" data-email-hint>Wyślemy potwierdzenie z linkiem do odwołania</p>
         </div>
         <div>
           <label class="bk-sr" for="bk-comment">Komentarz (opcjonalnie)</label>
@@ -165,7 +165,7 @@ export function mountBooking(root, api) {
       days: $('[data-days]'), summary: $('[data-summary]'), summaryHint: $('[data-summary-hint]'),
       minus: $('[data-minus]'), plus: $('[data-plus]'), party: $('[data-party]'), partyNote: $('[data-party-note]'),
       durations: $('[data-durations]'), slots: $('[data-slots]'),
-      form: $('[data-form]'), name: $('#bk-name'), phone: $('#bk-phone'), email: $('#bk-email'), comment: $('#bk-comment'),
+      form: $('[data-form]'), name: $('#bk-name'), phone: $('#bk-phone'), email: $('#bk-email'), emailHint: $('[data-email-hint]'), comment: $('#bk-comment'),
       phoneHint: $('[data-phone-hint]'), rules: $('[data-rules]'), rulesCheck: $('[data-rules-check]'),
       captcha: $('[data-captcha]'), submit: $('[data-submit]'), formStatus: $('[data-form-status]'),
     };
@@ -425,12 +425,11 @@ export function mountBooking(root, api) {
     // ——— Formularz ———
 
     function errors() {
-      const email = el.email.value.trim();
       return {
         time: !state.time,
         name: !el.name.value.trim(),
         phone: !normalizePhone(el.phone.value),
-        email: email !== '' && !EMAIL_RE.test(email),
+        email: !normalizeEmail(el.email.value),
         rules: !el.rulesCheck.checked,
         captcha: !state.token,
       };
@@ -450,7 +449,10 @@ export function mountBooking(root, api) {
         : 'Numer z kodem kraju, np. +48 600 100 200';
 
       el.email.setAttribute('aria-invalid', String(show('email')));
-      root.querySelector('[data-error="email"]').hidden = !show('email');
+      el.emailHint.classList.toggle('is-alert', show('email'));
+      el.emailHint.textContent = show('email')
+        ? (el.email.value.trim() ? 'Sprawdź adres, np. anna@gmail.com.' : 'Wpisz e-mail, wyślemy na niego potwierdzenie.')
+        : 'Wyślemy potwierdzenie z linkiem do odwołania';
 
       el.rulesCheck.setAttribute('aria-invalid', String(state.submitAttempted && err.rules));
     }
@@ -471,7 +473,7 @@ export function mountBooking(root, api) {
 
     for (const [input, field] of [[el.name, 'name'], [el.phone, 'phone'], [el.email, 'email']]) {
       input.addEventListener('blur', () => {
-        if (input.value.trim() || field !== 'email') state.touched.add(field);
+        state.touched.add(field);
         renderFieldErrors();
       });
       input.addEventListener('input', () => {
@@ -492,7 +494,7 @@ export function mountBooking(root, api) {
       if (err.time) names.push('godzina');
       if (err.name) names.push('imię');
       if (err.phone) names.push('telefon');
-      if (err.email) names.push('poprawny e-mail');
+      if (err.email) names.push('e-mail');
       if (err.rules) names.push('akceptacja zasad');
       if (err.captcha && !state.captchaFailed) names.push('weryfikacja „nie jestem botem” (chwilę trwa)');
       return names.length ? `Brakuje: ${names.join(', ')}.` : null;
@@ -552,7 +554,7 @@ export function mountBooking(root, api) {
         duration: state.duration,
         name: el.name.value.trim(),
         phone: el.phone.value,
-        email: el.email.value.trim() || null,
+        email: normalizeEmail(el.email.value),
         comment: el.comment.value.trim() || null,
         acceptedRules: el.rulesCheck.checked,
         turnstileToken: state.token,
@@ -562,7 +564,7 @@ export function mountBooking(root, api) {
 
       if (result?.ok) {
         teardown();
-        showConfirmation(result.reservation);
+        showConfirmation(result.reservation, result.email, normalizeEmail(el.email.value));
         return;
       }
 
@@ -586,14 +588,21 @@ export function mountBooking(root, api) {
 
     // ——— Potwierdzenie ———
 
-    function showConfirmation(r) {
+    function emailNote(status, address) {
+      if (status === 'sent') return `Potwierdzenie wysłaliśmy na ${address}. Jest w nim przycisk do odwołania rezerwacji.`;
+      if (status === 'failed') return 'Rezerwacja jest zapisana, tylko mail z potwierdzeniem nie wyszedł. Odwołać ją możesz telefonicznie.';
+      return `Potwierdzenie powinno już być na ${address}.`;
+    }
+
+    function showConfirmation(r, emailStatus, address) {
       const heading = h('h3', { tabindex: '-1', text: `Do zobaczenia, ${r.guest_name}.` });
       root.replaceChildren(h('div', { class: 'bk-card' }, h('div', { class: 'bk-done' }, [
         h('p', { class: 'bk-label', text: 'Rezerwacja przyjęta' }),
         heading,
         h('p', { class: 'bk-done-when', text: `${formatLongDate(r.date)} · ${r.time}–${r.end_time} · ${formatPeople(r.party_size)}` }),
         h('p', { text: 'Stolik czeka w Alticcio: Hala Targowa, Plac Dominikański 1, Gdańsk.' }),
-        h('p', {}, ['Chcesz coś zmienić albo odwołać? Zadzwoń: ', phoneLink(), '.']),
+        h('p', { text: emailNote(emailStatus, address) }),
+        h('p', {}, ['Chcesz coś zmienić? Zadzwoń: ', phoneLink(), '.']),
         h('button', { type: 'button', class: 'bk-again', text: 'Zarezerwuj kolejny stolik', onclick: start }),
       ])));
       heading.focus();

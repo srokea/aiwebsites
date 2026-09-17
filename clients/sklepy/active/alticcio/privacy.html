@@ -103,10 +103,11 @@
     <section>
       <h2 class="border-t border-border pt-6 font-serif text-[1.35rem] font-bold text-red">Rezerwacja stolika</h2>
       <p class="mt-4">
-        Rezerwując stolik online, podajesz imię i numer telefonu, a jeśli chcesz, także e-mail i komentarz.
+        Rezerwując stolik online, podajesz imię, numer telefonu i e-mail, a jeśli chcesz, także komentarz.
         Razem z nimi zapisujemy datę, godzinę, czas przy stoliku i liczbę osób. Przy rezerwacji telefonicznej
-        zapisujemy to samo. Wykorzystujemy te dane wyłącznie do obsługi rezerwacji: żeby przygotować stolik
-        i móc się z Tobą skontaktować, gdyby coś się zmieniło (podstawa prawna: art.&nbsp;6 ust.&nbsp;1 lit.&nbsp;b RODO).
+        zapisujemy to samo. Wykorzystujemy te dane wyłącznie do obsługi rezerwacji: żeby przygotować stolik,
+        wysłać Ci potwierdzenie z linkiem do odwołania i móc się z Tobą skontaktować, gdyby coś się zmieniło
+        (podstawa prawna: art.&nbsp;6 ust.&nbsp;1 lit.&nbsp;b RODO).
         Nie wysyłamy na podany adres e-mail ani numer żadnych reklam.
       </p>
       <p class="mt-4">
@@ -124,6 +125,14 @@
         Supabase przetwarza te dane wyłącznie na nasze zlecenie, na podstawie umowy powierzenia
         przetwarzania danych. Dostęp do listy rezerwacji ma tylko obsługa Alticcio, po zalogowaniu.
       </p>
+      <p class="mt-4">
+        Potwierdzenie rezerwacji wysyłamy z naszej skrzynki Gmail, więc Twój adres e-mail i treść
+        potwierdzenia trafiają też do Google, dostawcy tej poczty. Jeśli na nie odpowiesz, Twoja wiadomość
+        trafi do tej samej skrzynki.
+      </p>
+      <!-- TODO przy wdrożeniu: dla pełnej zgodności z RODO skrzynka powinna być w Google Workspace
+           (umowa powierzenia z Google). Zwykłe konto @gmail.com takiej umowy nie ma. Wpisać tu
+           dokładną nazwę podmiotu (np. Google Ireland Limited) zgodnie z umową. -->
       <p class="mt-4">
         Kalendarz rezerwacji wczytuje się dopiero, gdy przewiniesz stronę do sekcji rezerwacji. Wtedy
         przeglądarka łączy się z Supabase (wolne godziny) i z serwerem cdn.jsdelivr.net, z którego pobierana

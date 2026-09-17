@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Odwołanie rezerwacji — Alticcio</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+
+<style>
+  /* Fonty z serwera strony (RODO). Tylko latin + latin-ext, tylko używane grubości. */
+  @font-face { font-family:'PT Serif'; font-style:normal; font-weight:400; font-display:swap;
+    src:url('../fonts/ptserif-normal-400-latin.woff2') format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family:'PT Serif'; font-style:normal; font-weight:400; font-display:swap;
+    src:url('../fonts/ptserif-normal-400-latin-ext.woff2') format('woff2');
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family:'PT Serif'; font-style:normal; font-weight:700; font-display:swap;
+    src:url('../fonts/ptserif-normal-700-latin.woff2') format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family:'PT Serif'; font-style:normal; font-weight:700; font-display:swap;
+    src:url('../fonts/ptserif-normal-700-latin-ext.woff2') format('woff2');
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family:'Archivo Narrow'; font-style:normal; font-weight:400 700; font-display:swap;
+    src:url('../fonts/archivonarrow-normal-400-700-latin.woff2') format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family:'Archivo Narrow'; font-style:normal; font-weight:400 700; font-display:swap;
+    src:url('../fonts/archivonarrow-normal-400-700-latin-ext.woff2') format('woff2');
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+
+  /* Paleta strony: ink/krem 16,42:1 · muted/krem 6,50:1 · krem/czerwień 5,16:1. */
+  :root {
+    --red: #C41E1E; --red-deep: #8E1414; --cream: #F5EFE3; --surface: #EDE4D3;
+    --border: #DDD1BD; --ink: #14110F; --muted: #5F5349; --card: #FBF7EF;
+    --ui: 'Archivo Narrow', system-ui, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--cream); color: var(--ink);
+    font-family: 'PT Serif', Georgia, serif; font-size: 1.05rem; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+  button { font: inherit; color: inherit; }
+  p { margin: 0; }
+  a { color: var(--red); text-underline-offset: 4px; }
+
+  .od { max-width: 32rem; margin: 0 auto; padding: 24px 16px 64px; }
+  .od-brand { display: inline-flex; align-items: center; min-height: 44px; }
+  .od-brand img { display: block; width: 132px; height: auto; }
+
+  .od-card {
+    display: grid; gap: 16px; margin-top: 24px; padding: 28px 22px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 18px;
+  }
+  .od-center { padding: 48px 0; text-align: center; color: var(--muted); }
+  .od-label { font-family: var(--ui); font-size: .78rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  .od-title { margin: 0; font-size: 1.75rem; line-height: 1.2; }
+  .od-title:focus { outline: none; }
+
+  .od-details { padding: 14px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .od-when { font-size: 1.2rem; font-weight: 700; }
+  .od-when::first-letter { text-transform: uppercase; }
+  .od-hours { font-family: var(--ui); font-size: 1.15rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .od-muted { color: var(--muted); }
+  .od-note { font-size: .95rem; color: var(--muted); }
+  .od-status { color: var(--red); }
+  .od-status:empty { display: none; }
+
+  .od-actions { display: grid; gap: 8px; }
+  .od-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 20px;
+    border: 1px solid var(--red); border-radius: 999px; background: var(--red); color: var(--cream); cursor: pointer;
+    font-family: var(--ui); font-size: 1rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; text-decoration: none;
+  }
+  .od-btn:hover { background: var(--red-deep); border-color: var(--red-deep); }
+  .od-btn[aria-disabled="true"] { opacity: .6; cursor: default; }
+  .od-btn-ghost { background: transparent; border-color: var(--ink); color: var(--ink); }
+  .od-btn-ghost:hover { background: var(--ink); border-color: var(--ink); color: var(--cream); }
+  .od-spinner { width: 16px; height: 16px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 999px; animation: od-spin .8s linear infinite; }
+  @keyframes od-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .od-spinner { animation-duration: 2.4s; } }
+  .od-phone { font-family: var(--ui); font-weight: 700; white-space: nowrap; }
+</style>
+</head>
+<body>
+<main class="od">
+  <a class="od-brand" href="../"><img src="../logo/alticcio.svg" alt="Alticcio — strona główna" width="132" height="30"></a>
+  <div id="cancel-app">
+    <p class="od-center">Wczytuję rezerwację…</p>
+    <noscript><p class="od-center">Ta strona wymaga JavaScriptu. Żeby odwołać rezerwację, zadzwoń: <a class="od-phone" href="tel:+48531122360">531&nbsp;122&nbsp;360</a>.</p></noscript>
+  </div>
+</main>
+
+<script type="module">
+  const root = document.getElementById('cancel-app');
+  try {
+    const [{ mountCancel }, { createCancelApi }] = await Promise.all([import('../js/cancel.js'), import('../js/cancel-api.js')]);
+    mountCancel(root, createCancelApi(), location.hash.slice(1));
+  } catch (err) {
+    console.error('Odwołanie: nie wczytano skryptów', err);
+    root.innerHTML = '<div class="od-card"><p>Strona nie wczytała się do końca. Odśwież ją albo zadzwoń: <a class="od-phone" href="tel:+48531122360">531&nbsp;122&nbsp;360</a>.</p></div>';
+  }
+</script>
+</body>
+</html>

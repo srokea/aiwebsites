@@ -24,7 +24,7 @@ $$;
 update public.settings set
   timezone = 'Europe/Warsaw', slot_interval_min = 30, durations_min = '{90,120,150,180}',
   default_duration_min = 120, max_party = 8, booking_horizon_days = 60, min_lead_min = 60,
-  max_active_per_phone = 2, retention_days = 30
+  max_active_per_phone = 2, retention_days = 30, guest_cancel_min_before = 120
 where id;
 
 insert into public.opening_hours (weekday, opens_min, closes_min) values
@@ -62,6 +62,10 @@ declare
   v_anon_day      boolean;
   v_anon_slots    int;
   v_anon_party    int;
+  v_token         text;
+  v_anon_view     jsonb;
+  v_anon_cancel   jsonb;
+  v_now_id        uuid;
 begin
   perform pg_temp.ok(extract(isodow from v_fri) = 5, 'v_fri to piątek');
 
@@ -126,6 +130,7 @@ begin
   -- ------------------------------------------------------------------
   v_res := public.create_reservation(v_req, v_fri, '19:00', 2, 120, '  Anna ', '+48600100200', ' Anna@Example.com ', null);
   perform pg_temp.ok((v_res->>'ok')::boolean, 'rezerwacja 1: ' || v_res::text);
+  perform pg_temp.ok((v_res->>'created')::boolean and v_res->>'cancel_token' ~ '^[0-9a-f]{64}$', 'nowa rezerwacja: created + token');
   v_id := (v_res->'reservation'->>'id')::uuid;
 
   perform pg_temp.ok(
@@ -138,14 +143,15 @@ begin
     'odpowiedź zawiera godziny lokalne');
 
   -- ta sama próba jeszcze raz → ta sama rezerwacja, bez duplikatu
-  v_res2 := public.create_reservation(v_req, v_fri, '19:00', 2, 120, 'Anna', '+48600100200', null, null);
+  v_res2 := public.create_reservation(v_req, v_fri, '19:00', 2, 120, 'Anna', '+48600100200', 'anna@example.com', null);
   perform pg_temp.ok((v_res2->'reservation'->>'id')::uuid = v_id, 'ponowiony request_id zwraca tę samą rezerwację');
+  perform pg_temp.ok(not (v_res2->>'created')::boolean and not (v_res2 ? 'cancel_token'), 'ponowienie: created=false, bez tokenu (drugi mail nie wyjdzie)');
   perform pg_temp.ok((select count(*) from public.reservations where request_id = v_req) = 1, 'brak duplikatu po ponowieniu');
 
-  v_res := public.create_reservation(gen_random_uuid(), v_fri, '19:00', 2, 120, 'Bartek', '+48600100201', null, 'przy oknie');
+  v_res := public.create_reservation(gen_random_uuid(), v_fri, '19:00', 2, 120, 'Bartek', '+48600100201', 'bartek@example.com', 'przy oknie');
   perform pg_temp.ok((v_res->>'ok')::boolean, 'rezerwacja 2 (drugi stolik): ' || v_res::text);
 
-  v_res := public.create_reservation(gen_random_uuid(), v_fri, '19:00', 2, 120, 'Celina', '+48600100202', null, null);
+  v_res := public.create_reservation(gen_random_uuid(), v_fri, '19:00', 2, 120, 'Celina', '+48600100202', 'celina@example.com', null);
   perform pg_temp.ok(v_res->>'error' = 'slot_taken', 'trzecia para o 19:00 → slot_taken, jest ' || v_res::text);
 
   select array_agg(start_time) into v_slots from public.get_available_slots(v_fri, 2, 120);
@@ -166,18 +172,21 @@ begin
   end;
 
   -- walidacja danych gościa
-  perform pg_temp.ok(public.create_reservation(gen_random_uuid(), v_fri, '13:00', 2, 120, '   ', '+48600100203', null, null)->>'error' = 'invalid', 'puste imię');
-  perform pg_temp.ok(public.create_reservation(gen_random_uuid(), v_fri, '13:00', 2, 120, 'Ola', '600100203', null, null)->>'error' = 'invalid', 'telefon bez +48 (normalizuje funkcja Pages)');
+  perform pg_temp.ok(public.create_reservation(gen_random_uuid(), v_fri, '13:00', 2, 120, '   ', '+48600100203', 'ola@example.com', null)->>'error' = 'invalid', 'puste imię');
+  perform pg_temp.ok(public.create_reservation(gen_random_uuid(), v_fri, '13:00', 2, 120, 'Ola', '600100203', 'ola@example.com', null)->>'error' = 'invalid', 'telefon bez +48 (normalizuje funkcja Pages)');
   perform pg_temp.ok(public.create_reservation(gen_random_uuid(), v_fri, '13:00', 2, 120, 'Ola', '+48600100203', 'nie-mail', null)->>'error' = 'invalid', 'zły e-mail');
-  perform pg_temp.ok(public.create_reservation(gen_random_uuid(), v_fri, '25:00', 2, 120, 'Ola', '+48600100203', null, null)->>'error' = 'invalid', 'zła godzina');
-  perform pg_temp.ok(public.create_reservation(gen_random_uuid(), v_fri, '13:00', 2, 120, 'Ola', '+48600100203', null, repeat('x', 501))->>'error' = 'invalid', 'za długi komentarz');
+  perform pg_temp.ok(public.create_reservation(gen_random_uuid(), v_fri, '13:00', 2, 120, 'Ola', '+48600100203', null, null)->>'error' = 'invalid', 'brak e-maila');
+  perform pg_temp.ok(public.create_reservation(gen_random_uuid(), v_fri, '13:00', 2, 120, 'Ola', '+48600100203', '  ', null)->>'error' = 'invalid', 'pusty e-mail');
+  perform pg_temp.ok(public.create_reservation(gen_random_uuid(), v_fri, '13:00', 2, 120, 'Ola', '+48600100203', 'a<b>@example.com', null)->>'error' = 'invalid', 'e-mail ze znakami spoza adresu');
+  perform pg_temp.ok(public.create_reservation(gen_random_uuid(), v_fri, '25:00', 2, 120, 'Ola', '+48600100203', 'ola@example.com', null)->>'error' = 'invalid', 'zła godzina');
+  perform pg_temp.ok(public.create_reservation(gen_random_uuid(), v_fri, '13:00', 2, 120, 'Ola', '+48600100203', 'ola@example.com', repeat('x', 501))->>'error' = 'invalid', 'za długi komentarz');
 
   -- ------------------------------------------------------------------
   -- 5. Limit aktywnych rezerwacji na numer
   -- ------------------------------------------------------------------
-  perform pg_temp.ok((public.create_reservation(gen_random_uuid(), v_fri, '12:00', 1, 90, 'Darek', '+48600100204', null, null)->>'ok')::boolean, 'limit: 1. rezerwacja');
-  perform pg_temp.ok((public.create_reservation(gen_random_uuid(), v_fri, '14:00', 1, 90, 'Darek', '+48600100204', null, null)->>'ok')::boolean, 'limit: 2. rezerwacja');
-  perform pg_temp.ok(public.create_reservation(gen_random_uuid(), v_fri, '16:00', 1, 90, 'Darek', '+48600100204', null, null)->>'error' = 'limit', 'limit: 3. rezerwacja odrzucona');
+  perform pg_temp.ok((public.create_reservation(gen_random_uuid(), v_fri, '12:00', 1, 90, 'Darek', '+48600100204', 'darek@example.com', null)->>'ok')::boolean, 'limit: 1. rezerwacja');
+  perform pg_temp.ok((public.create_reservation(gen_random_uuid(), v_fri, '14:00', 1, 90, 'Darek', '+48600100204', 'darek@example.com', null)->>'ok')::boolean, 'limit: 2. rezerwacja');
+  perform pg_temp.ok(public.create_reservation(gen_random_uuid(), v_fri, '16:00', 1, 90, 'Darek', '+48600100204', 'darek@example.com', null)->>'error' = 'limit', 'limit: 3. rezerwacja odrzucona');
 
   -- ------------------------------------------------------------------
   -- 6. Panel: anulowanie i lista dnia
@@ -197,12 +206,15 @@ begin
   perform pg_temp.ok((public.cancel_reservation(v_id)->>'ok')::boolean, 'anulowanie przez obsługę');
   perform pg_temp.ok(public.cancel_reservation(v_id)->>'error' = 'not_found', 'drugie anulowanie → not_found');
   perform pg_temp.ok((select cancelled_by = v_staff and cancelled_at is not null from public.reservations where id = v_id), 'zapisano kto i kiedy anulował');
+  perform pg_temp.ok((select cancelled_via = 'staff' from public.reservations where id = v_id), 'anulowanie z panelu: cancelled_via = staff');
   perform pg_temp.ok(exists (select 1 from public.get_available_slots(v_fri, 2, 120) where start_time = '19:00'), 'po anulowaniu 19:00 wraca');
 
   select count(*) into v_count from public.staff_reservations(v_fri);
   perform pg_temp.ok(v_count = 4, 'lista dnia: 4 rezerwacje (w tym anulowana), jest ' || v_count);
   perform pg_temp.ok(exists (select 1 from public.staff_reservations(v_fri) where start_time = '19:00' and end_time = '21:00' and table_label = 'test-4' and comment = 'przy oknie'),
     'lista dnia: godziny lokalne, stolik, komentarz');
+  perform pg_temp.ok(exists (select 1 from public.staff_reservations(v_fri) where status = 'cancelled' and cancelled_via = 'staff'),
+    'lista dnia: kto odwołał');
 
   -- ------------------------------------------------------------------
   -- 7. Uprawnienia ról API
@@ -218,7 +230,7 @@ begin
   end;
 
   begin
-    perform public.create_reservation(gen_random_uuid(), v_fri, '13:00', 2, 120, 'Hacker', '+48600100299', null, null);
+    perform public.create_reservation(gen_random_uuid(), v_fri, '13:00', 2, 120, 'Hacker', '+48600100299', 'h@example.com', null);
     v_anon_create := true;
   exception when insufficient_privilege then v_anon_create := false;
   end;
@@ -269,6 +281,62 @@ begin
   perform pg_temp.ok(not exists (select 1 from public.reservations where guest_name = 'Stary'), 'retencja usuwa rezerwacje sprzed 30+ dni');
   perform pg_temp.ok((select count(*) from public.reservations r join public.dining_tables t on t.id = r.table_id where t.label like 'test-%') = 4,
     'retencja nie rusza przyszłych rezerwacji');
+
+  -- ------------------------------------------------------------------
+  -- 9. Odwołanie przez gościa (link z maila)
+  -- ------------------------------------------------------------------
+  v_res := public.create_reservation(gen_random_uuid(), v_fri, '13:00', 2, 120, 'Ewa', '+48600100206', 'ewa@example.com', null);
+  perform pg_temp.ok((v_res->>'created')::boolean, 'Ewa: rezerwacja utworzona ' || v_res::text);
+  perform pg_temp.ok((v_res->>'cancel_min_before')::int = 120, 'odpowiedź podaje termin odwołania');
+  perform pg_temp.ok((v_res->>'cancellable')::boolean, 'rezerwacja za kilka dni: odwołanie z maila możliwe');
+  v_token := v_res->>'cancel_token';
+  perform pg_temp.ok(
+    (select cancel_token_hash = sha256(convert_to(v_token, 'UTF8')) from public.reservations where guest_name = 'Ewa'),
+    'w bazie jest skrót tokenu, nie token');
+  perform pg_temp.ok(not exists (select 1 from public.get_available_slots(v_fri, 2, 120) where start_time = '13:00'),
+    '13:00 dla pary zajęte (stolik 2-os. ma Darek, 4-os. Ewa)');
+
+  perform pg_temp.ok(public.reservation_by_token(repeat('0', 64))->>'error' = 'not_found', 'obcy token → not_found');
+  perform pg_temp.ok(public.reservation_by_token('abc')->>'error' = 'not_found',           'śmieci zamiast tokenu → not_found');
+  perform pg_temp.ok(public.reservation_by_token(null)->>'error' = 'not_found',            'brak tokenu → not_found');
+  perform pg_temp.ok(public.cancel_reservation_by_token(upper(v_token))->>'error' = 'not_found', 'token wielkimi literami → not_found');
+
+  perform pg_temp.ok(
+    (select (private.guest_view(r, lower(r.period) - interval '121 minutes')->>'cancellable')::boolean
+       and not (private.guest_view(r, lower(r.period) - interval '120 minutes')->>'cancellable')::boolean
+     from public.reservations r where guest_name = 'Ewa'),
+    'odwołanie możliwe do 2 godz. przed, dokładnie 2 godz. przed już nie');
+
+  execute 'set local role anon';
+  v_anon_view   := public.reservation_by_token(v_token);
+  v_anon_cancel := public.cancel_reservation_by_token(v_token);
+  execute 'reset role';
+
+  perform pg_temp.ok((v_anon_view->>'ok')::boolean
+    and v_anon_view->'reservation'->>'time' = '13:00'
+    and v_anon_view->'reservation'->>'deadline_time' = '11:00'
+    and v_anon_view->'reservation'->>'deadline_date' = to_char(v_fri, 'YYYY-MM-DD')
+    and (v_anon_view->'reservation'->>'cancellable')::boolean
+    and not (v_anon_view->'reservation'->>'is_past')::boolean
+    and not (v_anon_view->'reservation' ? 'guest_phone'),
+    'anon z tokenem: podgląd bez telefonu ' || v_anon_view::text);
+  perform pg_temp.ok((v_anon_cancel->>'ok')::boolean and v_anon_cancel->'reservation'->>'status' = 'cancelled',
+    'anon z tokenem: odwołanie ' || v_anon_cancel::text);
+  perform pg_temp.ok((select cancelled_via = 'guest' and cancelled_by is null and cancelled_at is not null from public.reservations where guest_name = 'Ewa'),
+    'zapisano, że odwołał gość');
+  perform pg_temp.ok(exists (select 1 from public.get_available_slots(v_fri, 2, 120) where start_time = '13:00'), 'po odwołaniu 13:00 wraca');
+  perform pg_temp.ok(public.cancel_reservation_by_token(v_token)->>'error' = 'already_cancelled', 'drugie odwołanie → already_cancelled');
+  perform pg_temp.ok(public.reservation_by_token(v_token)->'reservation'->>'status' = 'cancelled', 'podgląd po odwołaniu pokazuje status');
+
+  -- rezerwacja za 90 minut: za późno na odwołanie z maila
+  insert into public.reservations (request_id, table_id, period, party_size, guest_name, guest_phone, guest_email, cancel_token_hash)
+  select gen_random_uuid(), id, tstzrange(now() + interval '90 minutes', now() + interval '210 minutes'), 2, 'Zenon', '+48600100207',
+         'zenon@example.com', sha256(convert_to(repeat('a', 64), 'UTF8'))
+  from public.dining_tables where label = 'test-2'
+  returning id into v_now_id;
+  perform pg_temp.ok(not (public.reservation_by_token(repeat('a', 64))->'reservation'->>'cancellable')::boolean, 'za 90 min: podgląd mówi, że za późno');
+  perform pg_temp.ok(public.cancel_reservation_by_token(repeat('a', 64))->>'error' = 'too_late', 'za 90 min: odwołanie → too_late');
+  perform pg_temp.ok((select status = 'confirmed' from public.reservations where id = v_now_id), 'za 90 min: rezerwacja nadal aktywna');
 
   raise notice 'WSZYSTKIE TESTY OK';
 end;

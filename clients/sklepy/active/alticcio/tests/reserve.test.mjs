@@ -1,8 +1,8 @@
-// Testy funkcji /api/reserve bez sieci: fetch do Turnstile i Supabase jest podmieniony.
+// Testy funkcji /api/reserve bez sieci: fetch do Turnstile i Supabase oraz wysyłka maila są podmienione.
 // Uruchom: node --test clients/sklepy/active/alticcio/tests/reserve.test.mjs
 import { test, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { onRequestPost, normalizePhone, parseInput } from '../functions/api/reserve.js';
+import { handleReserve, normalizePhone, normalizeEmail, parseInput } from '../lib/reserve-handler.js';
 
 const ORIGIN = 'https://alticcio.pl';
 const ENV = {
@@ -19,7 +19,7 @@ const valid = () => ({
   duration: 120,
   name: ' Anna ',
   phone: '600 100 200',
-  email: '',
+  email: ' Anna@Example.com ',
   comment: 'przy oknie',
   acceptedRules: true,
   turnstileToken: 'XXXX.DUMMY.TOKEN.XXXX',
@@ -38,12 +38,20 @@ function request(body, { origin = ORIGIN, contentType = 'application/json', raw 
 let calls;
 let turnstileSuccess;
 let rpcResponse;
+let mails;
+let mailError;
+const TOKEN = 'ab'.repeat(32);
 const realFetch = globalThis.fetch;
 
 beforeEach(() => {
   calls = [];
   turnstileSuccess = true;
-  rpcResponse = { status: 200, body: { ok: true, reservation: { id: 'r1', date: '2026-09-25', time: '19:00', end_time: '21:00', party_size: 2, guest_name: 'Anna' } } };
+  mails = [];
+  mailError = null;
+  rpcResponse = { status: 200, body: {
+    ok: true, created: true, cancel_token: TOKEN, cancel_min_before: 120,
+    reservation: { id: 'r1', date: '2026-09-25', time: '19:00', end_time: '21:00', party_size: 2, guest_name: 'Anna' },
+  } };
   globalThis.fetch = async (url, init) => {
     calls.push({ url: String(url), init });
     if (String(url).includes('turnstile')) {
@@ -55,7 +63,11 @@ beforeEach(() => {
 afterEach(() => { globalThis.fetch = realFetch; });
 
 const run = async (req, env = ENV) => {
-  const res = await onRequestPost({ request: req, env });
+  const sendConfirmation = async (e, mail) => {
+    mails.push({ env: e, ...mail });
+    if (mailError) throw mailError;
+  };
+  const res = await handleReserve({ request: req, env }, { sendConfirmation });
   return { status: res.status, body: await res.json(), res };
 };
 
@@ -69,12 +81,20 @@ test('normalizePhone', () => {
   assert.equal(normalizePhone(600100200), null);
 });
 
+test('normalizeEmail', () => {
+  assert.equal(normalizeEmail(' Anna.Kowalska+stolik@Example.COM '), 'anna.kowalska+stolik@example.com');
+  assert.equal(normalizeEmail("o'brien@mail.co.uk"), "o'brien@mail.co.uk");
+  for (const bad of ['', '   ', 'anna', 'anna@', 'anna@localhost', 'a b@x.pl', 'a<b>@x.pl', 'a@x.pl\r\nBcc: z@y.pl', `${'a'.repeat(250)}@x.pl`, null, 5]) {
+    assert.equal(normalizeEmail(bad), null, JSON.stringify(bad));
+  }
+});
+
 test('parseInput odrzuca złe dane', () => {
   assert.ok(parseInput(valid()));
   for (const [field, value] of [
     ['requestId', 'nie-uuid'], ['date', '25.09.2026'], ['time', '7:00'], ['party', 0], ['party', 2.5],
     ['duration', '120'], ['name', '   '], ['name', 'x'.repeat(81)], ['phone', 'abc'],
-    ['email', 'nie-mail'], ['comment', 'x'.repeat(501)], ['acceptedRules', false], ['turnstileToken', ''],
+    ['email', 'nie-mail'], ['email', ''], ['email', null], ['email', undefined], ['email', 'a<b>@x.pl'], ['comment', 'x'.repeat(501)], ['acceptedRules', false], ['turnstileToken', ''],
   ]) {
     assert.equal(parseInput({ ...valid(), [field]: value }), null, `${field} = ${JSON.stringify(value)}`);
   }
@@ -98,8 +118,46 @@ test('poprawna rezerwacja: Turnstile, potem RPC z oczyszczonymi danymi', async (
   assert.equal(calls[1].init.headers.authorization, undefined, 'klucz sb_secret nie idzie jako Bearer');
   assert.deepEqual(JSON.parse(calls[1].init.body), {
     p_request_id: valid().requestId, p_date: '2026-09-25', p_time: '19:00', p_party: 2, p_duration: 120,
-    p_name: 'Anna', p_phone: '+48600100200', p_email: null, p_comment: 'przy oknie',
+    p_name: 'Anna', p_phone: '+48600100200', p_email: 'anna@example.com', p_comment: 'przy oknie',
   });
+});
+
+test('nowa rezerwacja → mail z linkiem do odwołania', async () => {
+  const { status, body } = await run(request(valid()));
+  assert.equal(status, 200);
+  assert.equal(body.email, 'sent');
+  assert.equal(body.cancel_token, undefined, 'token nie wraca do przeglądarki');
+  assert.equal(mails.length, 1);
+  assert.equal(mails[0].to, 'anna@example.com');
+  assert.equal(mails[0].cancelUrl, `${ORIGIN}/odwolaj/#${TOKEN}`);
+  assert.equal(mails[0].cancelMinBefore, 120);
+  assert.equal(mails[0].cancellable, true);
+  assert.equal(mails[0].reservation.guest_name, 'Anna');
+});
+
+test('rezerwacja „na zaraz” (po terminie odwołania) → mail bez przycisku', async () => {
+  rpcResponse.body.cancellable = false;
+  await run(request(valid()));
+  assert.equal(mails[0].cancellable, false);
+});
+
+test('mail nie wyszedł → rezerwacja i tak potwierdzona, email: failed', async () => {
+  mailError = new Error('SMTP 535');
+  const orig = console.error; console.error = () => {};
+  try {
+    const { status, body } = await run(request(valid()));
+    assert.equal(status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(body.email, 'failed');
+  } finally { console.error = orig; }
+});
+
+test('ponowiona wysyłka (created: false) i zły token → bez drugiego maila', async () => {
+  rpcResponse.body = { ok: true, created: false, reservation: rpcResponse.body.reservation };
+  assert.equal((await run(request(valid()))).body.email, 'skipped');
+  rpcResponse.body = { ok: true, created: true, cancel_token: '../../evil', reservation: rpcResponse.body.reservation };
+  assert.equal((await run(request(valid()))).body.email, 'skipped');
+  assert.equal(mails.length, 0);
 });
 
 test('starszy klucz service_role (JWT) idzie też w Authorization', async () => {
@@ -146,6 +204,7 @@ test('mapowanie błędów z bazy', async () => {
     assert.equal(r.status, status, dbError);
     assert.equal(r.body.error, error, dbError);
   }
+  assert.equal(mails.length, 0, 'bez rezerwacji nie ma maila');
 });
 
 test('awaria Supabase → 502 server', async () => {

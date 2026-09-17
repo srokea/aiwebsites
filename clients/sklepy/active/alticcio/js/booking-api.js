@@ -8,14 +8,16 @@ import { TURNSTILE_SITE_KEY } from './config.js';
 let turnstileScript;
 
 const TIMEOUT_MS = 12000;
+// Rezerwacja czeka też na Turnstile i wysyłkę maila (limit SMTP w funkcji: 8 s).
+const RESERVE_TIMEOUT_MS = 25000;
 
 /** Zawieszone połączenie (np. wstrzymany projekt Supabase) ma skończyć się błędem, nie wiecznym „Sprawdzam…”. */
-function withTimeout(promise, label) {
+function withTimeout(promise, label, ms = TIMEOUT_MS) {
   let timer;
   return Promise.race([
     promise,
     new Promise((_, reject) => {
-      timer = setTimeout(() => reject(new Error(`${label}: brak odpowiedzi po ${TIMEOUT_MS / 1000} s`)), TIMEOUT_MS);
+      timer = setTimeout(() => reject(new Error(`${label}: brak odpowiedzi po ${ms / 1000} s`)), ms);
     }),
   ]).finally(() => clearTimeout(timer));
 }
@@ -66,7 +68,7 @@ export function createBookingApi() {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify(payload),
-        }), 'rezerwacja');
+        }), 'rezerwacja', RESERVE_TIMEOUT_MS);
       } catch {
         return { ok: false, error: 'network' };
       }

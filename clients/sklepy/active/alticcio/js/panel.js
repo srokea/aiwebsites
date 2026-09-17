@@ -315,7 +315,7 @@ export function mountPanel(root, api) {
           h('span', { class: 'pn-time', text: `${r.start_time}–${r.end_time}` }),
           h('span', { class: 'pn-meta', text: `${formatPeople(r.party_size)} · stolik ${r.table_label}${r.table_seats ? ` (${r.table_seats}-os.)` : ''}` }),
           fresh.has(r.id) ? h('span', { class: 'pn-badge', text: 'Nowa' }) : null,
-          isCancelled ? h('span', { class: 'pn-badge pn-badge-muted', text: 'Anulowana' }) : null,
+          isCancelled ? h('span', { class: 'pn-badge pn-badge-muted', text: r.cancelled_via === 'guest' ? 'Odwołana przez gościa' : 'Anulowana' }) : null,
         ]),
         h('div', { class: 'pn-who' }, [
           h('p', { class: 'pn-name', text: r.guest_name }),

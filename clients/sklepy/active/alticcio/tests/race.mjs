@@ -23,6 +23,7 @@ const one = (i) =>
       date, time, party: Number(party), duration: 120,
       name: `Wyścig ${i}`,
       phone: `+4860010${String(1000 + i).slice(-4)}`,   // różne numery, żeby nie trafić w limit
+      email: `wyscig${i}@example.com`,                   // uruchamiaj bez SMTP_* w .dev.vars, inaczej wyjdą maile
       acceptedRules: true,
       turnstileToken: 'XXXX.DUMMY.TOKEN.XXXX',
     }),

@@ -17,3 +17,14 @@
   X-Robots-Tag: noindex, nofollow
   Content-Security-Policy: frame-ancestors 'none'
   Cache-Control: no-store
+
+# Odwołanie rezerwacji z linku w mailu: jak panel.
+/odwolaj
+  X-Robots-Tag: noindex, nofollow
+  Content-Security-Policy: frame-ancestors 'none'
+  Cache-Control: no-store
+
+/odwolaj/*
+  X-Robots-Tag: noindex, nofollow
+  Content-Security-Policy: frame-ancestors 'none'
+  Cache-Control: no-store
