@@ -150,7 +150,7 @@
   </a>
 </main>
 
-<footer class="border-t border-hair bg-surface">
+<footer id="site-footer" class="border-t border-hair bg-surface">
   <div class="mx-auto flex max-w-content flex-col gap-2 px-5 py-8 text-center text-[1rem] text-muted sm:flex-row sm:justify-between sm:px-7 sm:text-left">
     <span><b class="font-bold text-ink">Chmielewska Beauty Studio</b> · makijaż ślubny i okolicznościowy</span>
     <span>Warszawska 33, 97-200 Tomaszów Mazowiecki</span>
@@ -168,7 +168,7 @@
 <script>
 (function () {
   var cta = document.getElementById('stickyCta');
-  var footer = document.querySelector('footer');
+  var footer = document.getElementById('site-footer');
   if (!cta || !footer || !('IntersectionObserver' in window)) return;
   var observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {

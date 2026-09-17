@@ -584,7 +584,7 @@
 </main>
 
 <!-- ============ STOPKA ============ -->
-<footer class="border-t border-hair">
+<footer id="site-footer" class="border-t border-hair">
   <div class="mx-auto flex max-w-content flex-col items-center gap-3 px-5 py-9 text-center text-[1.0625rem] text-muted sm:flex-row sm:justify-between sm:px-7 sm:text-left">
     <span><b class="font-bold text-ink">Chmielewska Beauty Studio</b> · makijaż ślubny i okolicznościowy</span>
     <span>Warszawska 33, 97-200 Tomaszów Mazowiecki</span>
@@ -604,7 +604,7 @@
   // Sticky CTA telefonu: chowa się, gdy stopka wjeżdża w widok (nie zasłania "Polityka prywatności").
   (function () {
     var cta = document.getElementById('stickyCta');
-    var footer = document.querySelector('footer');
+    var footer = document.getElementById('site-footer');
     if (!cta || !footer || !('IntersectionObserver' in window)) return;
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
