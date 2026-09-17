@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glamour — Gabinet Kosmetologii i Podologii w Przedborzu</title>
+<meta name="description" content="Glamour, gabinet kosmetologii i podologii w Przedborzu, ul. Leśna 39. Zabiegi estetyczne na twarz i ciało oraz specjalistyczna opieka nad stopami. Zadzwoń: 535 403 235.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#FFFFFF">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Glamour — Gabinet Kosmetologii i Podologii w Przedborzu">
+<meta property="og:description" content="Kosmetologia estetyczna i podologia w Przedborzu, ul. Leśna 39. Zapisy telefoniczne: 535 403 235.">
+<!-- TODO przy deployu: pelne adresy absolutne w og:image i og:url (https://domena/...). -->
+<meta property="og:image" content="logo/logo-lockup.png">
+<meta property="og:locale" content="pl_PL">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  /* PALETA — hexy zmierzone bezposrednio z pliku logo (photos/logo-zrodlo.jpg), nie przepisane z briefu.
+     Rdzeniowe piksele zlota z logo: hue 50,7 deg / sat 0,84. Percentyle jasnosci rdzenia:
+       p05 #C3A117 · p50 #EED239 · p95 #E8D876   -> zloto marki jest jasne i mocno nasycone.
+
+     Na BIALEJ bazie to zloto ma kontrast 1,5-2,5:1, wiec NIE nadaje sie na tekst.
+     Rozbite na trzy tokeny wzdluz tego samego odcienia, kazdy z wlasna rola:
+       gold    #C9A227  2,42:1  wylacznie linie 1px, dot-leadery, ornamenty, obwodki (nigdy tekst)
+       goldtxt #836819  5,30:1 na bieli / 4,79:1 na surface  -> maly tekst zloty, WCAG AA
+       goldmid #A98432  3,48:1 -> tylko jasny stop gradientu w DUZYM tekscie (AA large, >=3:1)
+       golddeep #7A5F1C 6,03:1 -> ciemny stop gradientu i hover przyciskow
+     Kontrast (WCAG AA): ink/bg 17,4 · ink/surface 15,7 · inkmuted/bg 5,8 · inkmuted/surface 5,2
+                         bialy/goldtxt 5,3 (przycisk) · bialy/golddeep 6,7 (hover) */
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg:       '#FFFFFF',
+          surface:  '#F5F3EF',
+          surface2: '#EFEBE3',
+          ink:      '#1C1A17',
+          inkmuted: '#6B655E',
+          gold:     '#C9A227',
+          goldtxt:  '#836819',
+          goldmid:  '#A98432',
+          golddeep: '#7A5F1C',
+          goldlt:   '#EAD9A6',
+          line:     'rgba(28,26,23,0.12)',
+        },
+        fontFamily: {
+          display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+          body:    ['"Barlow"', 'system-ui', 'sans-serif'],
+        },
+        maxWidth: { content: '68rem', prose: '40rem' },
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO: przegladarka nie odpytuje serwerow Google). */
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 300 700; font-display: swap;
+    src: url('fonts/cormorant-garamond-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 300 700; font-display: swap;
+    src: url('fonts/cormorant-garamond-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 300 700; font-display: swap;
+    src: url('fonts/cormorant-garamond-italic-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 300 700; font-display: swap;
+    src: url('fonts/cormorant-garamond-italic-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Barlow'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/barlow-400-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Barlow'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/barlow-400-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Barlow'; font-style: normal; font-weight: 600; font-display: swap;
+    src: url('fonts/barlow-600-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Barlow'; font-style: normal; font-weight: 600; font-display: swap;
+    src: url('fonts/barlow-600-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 86px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+  :focus-visible { outline: 2px solid #836819; outline-offset: 3px; border-radius: 6px; }
+
+  /* Szklany navbar na bialej bazie. */
+  .glass { background: rgba(255,255,255,.86); backdrop-filter: saturate(140%) blur(14px); -webkit-backdrop-filter: saturate(140%) blur(14px); }
+
+  /* Zlota typografia z gradientem "shine" (technika ze Stylu 04), przelozona na JASNA baze:
+     stopy przyciemnione tak, zeby najjasniejszy (#A98432) trzymal 3,48:1 na bieli.
+     Uzywana wylacznie na duzym tekscie (AA large >= 3:1) — nigdy na tekscie akapitowym. */
+  .gold-shine {
+    background: linear-gradient(105deg, #7A5F1C, #A98432 38%, #7A5F1C 66%, #A98432);
+    background-size: 220% auto;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: shine 7s linear infinite;
+  }
+  @keyframes shine { to { background-position: 220% center; } }
+  @media (prefers-reduced-motion: reduce) { .gold-shine { animation: none; } }
+
+  /* Cienkie zlote linie 1px + ornament jako separator (technika ze Stylu 04). */
+  .rule { display: flex; align-items: center; justify-content: center; gap: 15px; color: #C9A227; font-size: .95rem; line-height: 1; }
+  .rule::before, .rule::after { content: ""; height: 0; width: 58px; border-top: 1px solid rgba(201,162,39,.6); }
+  .rule-left { justify-content: flex-start; }
+  .rule-left::before { display: none; }
+  .rule-left::after { width: 44px; }
+
+  .label { font-size: .72rem; letter-spacing: .28em; text-transform: uppercase; font-weight: 600; }
+
+  /* Luk ze zdjeciem — miekki ksztalt lagodzacy prostokatny raster. */
+  .arch { border-radius: 160px 160px 18px 18px; overflow: hidden; }
+  .arch img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* Dot-leader w cenniku (technika ze Stylu 04). */
+  .leader { flex: 1 1 auto; min-width: 16px; border-bottom: 1px dotted rgba(201,162,39,.75); transform: translateY(-.32em); }
+
+  /* Sloty do uzupelnienia przez klientke — maja WYGLADAC jak miejsce do wpisania, nie jak dane. */
+  .slot { border-bottom: 1px dashed rgba(107,101,94,.55); color: #6B655E; }
+  .slot-price { border: 1px dashed rgba(131,104,25,.65); color: #836819; background: rgba(201,162,39,.07); }
+  .slot-box { border: 1px dashed rgba(201,162,39,.9); background: rgba(201,162,39,.06); }
+
+  .press { transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease, border-color .15s ease, color .15s ease; }
+  .press:active { transform: translateY(1px); }
+
+  /* Scrollspy: link aktywnej sekcji w nawigacji desktopowej. */
+  .nav-link.is-active { color: #836819; font-weight: 600; }
+
+  /* Galeria: powiekszenie zdjecia przy najechaniu + podpowiedz lupy. */
+  .gallery-tile { cursor: zoom-in; }
+  .gallery-hint {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: rgba(28,26,23,.34); color: #FFFFFF; opacity: 0; transition: opacity .2s ease;
+  }
+  .gallery-tile:hover .gallery-hint, .gallery-tile:focus-visible .gallery-hint { opacity: 1; }
+</style>
+</head>
+
+<body class="bg-bg font-body text-ink antialiased">
+
+<a href="#tresc" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-goldtxt focus:px-5 focus:py-3 focus:text-white">Przejdź do treści</a>
+
+<!-- ============ NAVBAR ============ -->
+<header class="glass sticky top-0 z-40 border-b border-[rgba(201,162,39,.4)]">
+  <div class="mx-auto grid max-w-content grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-3 sm:px-6">
+    <a href="#gora" class="flex min-h-[44px] shrink-0 items-center" aria-label="Glamour — strona główna">
+      <img src="logo/logo-glamour.png" alt="Glamour" width="560" height="199" class="h-9 w-auto sm:h-11">
+    </a>
+
+    <nav class="hidden items-center justify-center gap-7 lg:flex" aria-label="Główne">
+      <a href="#uslugi" data-navlink class="nav-link inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-goldtxt">Usługi</a>
+      <a href="#zespol" data-navlink class="nav-link inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-goldtxt">Zespół</a>
+      <a href="#opinie" data-navlink class="nav-link inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-goldtxt">Opinie</a>
+      <a href="#galeria" data-navlink class="nav-link inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-goldtxt">Galeria</a>
+      <a href="#kontakt" data-navlink class="nav-link inline-flex min-h-[44px] items-center text-sm font-medium text-inkmuted transition hover:text-goldtxt">Kontakt</a>
+    </nav>
+
+    <div class="flex shrink-0 items-center justify-end gap-2">
+      <a href="https://www.instagram.com/glamour_gabinet/" target="_blank" rel="noopener" aria-label="Instagram"
+         class="press inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line text-inkmuted transition hover:border-goldtxt hover:text-goldtxt">
+        <svg viewBox="0 0 24 24" class="h-[18px] w-[18px]" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.facebook.com/p/Glamour-Gabinet-Kosmetologii-i-Podologii-100063663846206/" target="_blank" rel="noopener" aria-label="Facebook"
+         class="press inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line text-inkmuted transition hover:border-goldtxt hover:text-goldtxt">
+        <svg viewBox="0 0 24 24" class="h-[18px] w-[18px]" fill="currentColor" aria-hidden="true"><path d="M14 9V7.2c0-.9.2-1.3 1.4-1.3H17V3h-2.6C11.5 3 10.4 4.5 10.4 7v2H8.5v3h1.9v9H14v-9h2.6l.4-3z"/></svg>
+      </a>
+      <a href="tel:+48535403235" aria-label="Zadzwoń: 535 403 235"
+         class="press inline-flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-full bg-goldtxt text-white hover:bg-golddeep sm:h-auto sm:w-auto sm:px-5 sm:py-2.5">
+        <svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+        <span class="hidden text-sm font-semibold sm:inline">535 403 235</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="tresc">
+
+<!-- ============ HERO ============ -->
+<section id="gora" class="overflow-hidden border-b border-line">
+  <div class="mx-auto grid max-w-content gap-12 px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16 lg:grid-cols-[1fr_1.35fr] lg:items-center lg:gap-10 lg:pb-24 lg:pt-20">
+
+    <div>
+      <img src="logo/logo-lockup.png" alt="Glamour — Gabinet Kosmetologii i Podologii"
+           width="900" height="403" fetchpriority="high" class="w-full max-w-[320px] sm:max-w-[380px]">
+
+      <div class="rule rule-left mt-8" aria-hidden="true">✦</div>
+
+      <h1 class="mt-6 font-display text-[2.3rem] font-medium leading-[1.14] sm:text-[3rem] lg:text-[3.4rem]">
+        Gabinet Glamour to miejsce powstałe&nbsp;z <em class="italic text-goldtxt">pasji</em>
+      </h1>
+
+      <p class="mt-6 max-w-prose text-[1.15rem] leading-relaxed text-inkmuted">
+        Kosmetologia estetyczna i podologia w Przedborzu, przy ulicy Leśnej 39.
+        Prowadzimy dwa osobne obszary i do każdego podchodzimy tak samo uważnie.
+      </p>
+
+      <!-- Dwa rzedy, kazdy flex o naturalnej szerokosci (nie grid o rownych kolumnach).
+           Profil Google ma teraz identyczny styl/rozmiar co Instagram i Facebook (border-gold,
+           min-h-52, px-6 py-3.5) — rozni sie tylko dlugoscia tekstu telefonu w rzedzie 1,
+           przez co rzad 1 (telefon+Profil Google) wychodzi szerszy niz rzad 2
+           (Instagram+Facebook). Zewnetrzny flex-col items-center wysrodkowuje wezszy
+           rzad 2 wzgledem szerszego rzedu 1 (w-fit, zeby caly blok kurczyl sie do
+           szerokosci najszerszego rzedu, nie rozciagal na cala kolumne tekstu). -->
+      <div class="mt-9 flex w-fit flex-col items-center gap-3">
+        <div class="flex items-center gap-2.5">
+          <a href="tel:+48535403235"
+             class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-goldtxt px-6 py-3.5 text-sm font-semibold text-white shadow-[0_10px_26px_rgba(131,104,25,.22)] hover:bg-golddeep">
+            <svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+            <span class="whitespace-nowrap">Zadzwoń: 535 403 235</span>
+          </a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Glamour%20Gabinet%20Kosmetologii%20i%20Podologii%2C%20Le%C5%9Bna%2039%2C%20Przedb%C3%B3rz" target="_blank" rel="noopener"
+             class="press inline-flex min-h-[52px] shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full border border-gold bg-bg px-6 py-3.5 text-sm font-semibold text-ink hover:bg-surface">
+            <span class="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-goldtxt/10 font-display text-[11px] font-semibold text-goldtxt" aria-hidden="true">G</span>
+            Profil Google
+          </a>
+        </div>
+        <div class="flex items-center gap-2.5">
+          <a href="https://www.instagram.com/glamour_gabinet/" target="_blank" rel="noopener"
+             class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-gold bg-bg px-6 py-3.5 text-sm font-semibold text-ink hover:bg-surface">
+            <svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
+            Instagram
+          </a>
+          <a href="https://www.facebook.com/p/Glamour-Gabinet-Kosmetologii-i-Podologii-100063663846206/" target="_blank" rel="noopener"
+             class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-gold bg-bg px-6 py-3.5 text-sm font-semibold text-ink hover:bg-surface">
+            <svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0" fill="currentColor" aria-hidden="true"><path d="M14 9V7.2c0-.9.2-1.3 1.4-1.3H17V3h-2.6C11.5 3 10.4 4.5 10.4 7v2H8.5v3h1.9v9H14v-9h2.6l.4-3z"/></svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+
+      <p class="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-inkmuted">
+        <span class="text-base tracking-[.16em] text-goldtxt" aria-hidden="true">★★★★★</span>
+        <span><strong class="font-semibold text-ink">5,0</strong> z 9 opinii w Google</span>
+      </p>
+    </div>
+
+    <!-- Zdjecia gabinetu. Oryginaly maja ok. 400-510 px szerokosci; na prosbe uzytkownika
+         (2026-08-26) kolumna jest wieksza niz oryginalna rozdzielczosc, wiec na duzych
+         ekranach lekko skaluje w gore (efekt swiadomy, nie blad) — lg:translate-x-12
+         dosuwa kafle w prawo wzgledem tekstu (zwiekszone z translate-x-6 na kolejna
+         prosbe uzytkownika), section ma overflow-hidden jako siatka bezpieczenstwa
+         przy tym przesunieciu.
+         recepcja.webp to kadr z "recepcja-oryginal.webp" przyciety tak, zeby wypadl z niego
+         magentowy pasek LED pod kontuarem (kolory: biel + cieple drewno, bez fioletu). -->
+    <div class="grid grid-cols-2 gap-3 sm:gap-4 lg:translate-x-12">
+      <div class="arch aspect-[4/5] border border-[rgba(201,162,39,.5)] shadow-[0_16px_40px_rgba(28,26,23,.10)]">
+        <img src="photos/recepcja.webp" alt="Recepcja gabinetu Glamour: biały kontuar i storczyk"
+             width="398" height="396" loading="lazy" style="object-position: 46% 50%;">
+      </div>
+      <div class="arch aspect-[4/5] translate-y-7 border border-[rgba(201,162,39,.5)] shadow-[0_16px_40px_rgba(28,26,23,.10)] sm:translate-y-10">
+        <img src="photos/zabieg-twarz.webp" alt="Kosmetolożka podczas zabiegu na twarz w gabinecie Glamour"
+             width="449" height="510" loading="lazy" style="object-position: 50% 50%;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ USLUGI — DWA FILARY ============ -->
+<section id="uslugi" class="bg-surface py-16 sm:py-20 lg:py-24">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+    <div class="text-center">
+      <h2 class="font-display text-[2rem] font-medium leading-tight sm:text-[2.6rem]">Co robimy</h2>
+      <div class="rule mt-5" aria-hidden="true">✦</div>
+      <p class="mx-auto mt-6 max-w-prose text-[1rem] leading-relaxed text-inkmuted">
+        Kosmetologia i podologia to dwie różne wizyty i dwa różne powody, żeby do nas przyjść.
+        Dlatego opisujemy je osobno.
+      </p>
+    </div>
+
+    <div class="mt-12 grid gap-6 lg:grid-cols-2 lg:gap-7">
+
+      <!-- ---- FILAR 1: KOSMETOLOGIA ---- -->
+      <article class="flex flex-col rounded-[24px] border border-[rgba(201,162,39,.45)] bg-bg p-6 sm:p-8">
+        <h3 class="font-display text-[1.7rem] font-medium leading-tight sm:text-[1.95rem]">Kosmetologia</h3>
+        <p class="mt-1.5 text-sm font-medium text-goldtxt">Zabiegi estetyczne na twarz i ciało</p>
+        <div class="mt-5 h-px w-full bg-[rgba(201,162,39,.4)]" aria-hidden="true"></div>
+
+        <p class="mt-5 text-[1rem] leading-relaxed text-inkmuted">
+          Ta część gabinetu jest o zadbaniu o siebie. Zabiegi na twarz i na ciało,
+          w spokojnym tempie i bez pośpiechu.
+        </p>
+        <p class="mt-4 text-[1rem] leading-relaxed text-inkmuted">
+          Pierwszą wizytę zaczynamy od rozmowy o tym, czego potrzebuje Twoja skóra, i dopiero
+          potem dobieramy zabieg. Nie namawiamy na pakiety, których nie potrzebujesz.
+        </p>
+
+        <!-- CENNIK: PLACEHOLDER. Klientka poda nazwy zabiegow i ceny.
+             Zeby uzupelnic: wpisz nazwe w <dt>, cene w <dd> i usun klasy "slot" / "slot-price". -->
+        <div class="mt-8">
+          <div class="flex items-baseline justify-between gap-4 border-b border-[rgba(201,162,39,.35)] pb-2">
+            <p class="label text-goldtxt">Zabieg</p>
+            <p class="label text-goldtxt">Cena</p>
+          </div>
+          <dl class="mt-4 space-y-4">
+            <div class="flex items-baseline gap-2">
+              <dt class="slot text-[1rem]">Nazwa zabiegu</dt>
+              <span class="leader" aria-hidden="true"></span>
+              <dd class="slot-price shrink-0 rounded-md px-2.5 py-1 text-sm font-semibold">… zł</dd>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <dt class="slot text-[1rem]">Nazwa zabiegu</dt>
+              <span class="leader" aria-hidden="true"></span>
+              <dd class="slot-price shrink-0 rounded-md px-2.5 py-1 text-sm font-semibold">… zł</dd>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <dt class="slot text-[1rem]">Nazwa zabiegu</dt>
+              <span class="leader" aria-hidden="true"></span>
+              <dd class="slot-price shrink-0 rounded-md px-2.5 py-1 text-sm font-semibold">… zł</dd>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <dt class="slot text-[1rem]">Nazwa zabiegu</dt>
+              <span class="leader" aria-hidden="true"></span>
+              <dd class="slot-price shrink-0 rounded-md px-2.5 py-1 text-sm font-semibold">… zł</dd>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <dt class="slot text-[1rem]">Nazwa zabiegu</dt>
+              <span class="leader" aria-hidden="true"></span>
+              <dd class="slot-price shrink-0 rounded-md px-2.5 py-1 text-sm font-semibold">… zł</dd>
+            </div>
+          </dl>
+        </div>
+
+        <p class="mt-auto pt-7 text-sm leading-relaxed text-inkmuted">
+          Cennik uzupełniamy. Do tego czasu aktualne ceny podajemy przez telefon:
+          <a href="tel:+48535403235" class="font-semibold text-goldtxt underline underline-offset-4">535 403 235</a>.
+        </p>
+      </article>
+
+      <!-- ---- FILAR 2: PODOLOGIA ---- -->
+      <!-- Ton celowo rzeczowy i spokojny: klient trafia tu z problemem zdrowotnym,
+           nie po przyjemnosc. Zero slownictwa "glamour" w tej karcie. -->
+      <article class="flex flex-col rounded-[24px] border border-line bg-bg p-6 sm:p-8">
+        <h3 class="font-display text-[1.7rem] font-medium leading-tight sm:text-[1.95rem]">Podologia</h3>
+        <p class="mt-1.5 text-sm font-medium text-inkmuted">Specjalistyczna opieka nad stopami</p>
+        <div class="mt-5 h-px w-full bg-line" aria-hidden="true"></div>
+
+        <p class="mt-5 text-[1rem] leading-relaxed text-inkmuted">
+          Podologia jest bliżej medycyny niż kosmetyki. Przychodzi się tu z konkretnym problemem:
+          wrastającym paznokciem, modzelem, odciskiem, stopą wymagającą stałej kontroli przy cukrzycy.
+        </p>
+        <p class="mt-4 text-[1rem] leading-relaxed text-inkmuted">
+          Wizytę zaczynamy od obejrzenia stopy i rozmowy o tym, co dolega. Potem mówimy, co da się
+          zrobić, ile to potrwa i czy potrzebna będzie kolejna wizyta.
+        </p>
+
+        <!-- CENNIK: PLACEHOLDER, patrz komentarz w karcie Kosmetologia. -->
+        <div class="mt-8">
+          <div class="flex items-baseline justify-between gap-4 border-b border-line pb-2">
+            <p class="label text-inkmuted">Zabieg</p>
+            <p class="label text-inkmuted">Cena</p>
+          </div>
+          <dl class="mt-4 space-y-4">
+            <div class="flex items-baseline gap-2">
+              <dt class="slot text-[1rem]">Nazwa zabiegu</dt>
+              <span class="leader" aria-hidden="true"></span>
+              <dd class="slot-price shrink-0 rounded-md px-2.5 py-1 text-sm font-semibold">… zł</dd>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <dt class="slot text-[1rem]">Nazwa zabiegu</dt>
+              <span class="leader" aria-hidden="true"></span>
+              <dd class="slot-price shrink-0 rounded-md px-2.5 py-1 text-sm font-semibold">… zł</dd>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <dt class="slot text-[1rem]">Nazwa zabiegu</dt>
+              <span class="leader" aria-hidden="true"></span>
+              <dd class="slot-price shrink-0 rounded-md px-2.5 py-1 text-sm font-semibold">… zł</dd>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <dt class="slot text-[1rem]">Nazwa zabiegu</dt>
+              <span class="leader" aria-hidden="true"></span>
+              <dd class="slot-price shrink-0 rounded-md px-2.5 py-1 text-sm font-semibold">… zł</dd>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <dt class="slot text-[1rem]">Nazwa zabiegu</dt>
+              <span class="leader" aria-hidden="true"></span>
+              <dd class="slot-price shrink-0 rounded-md px-2.5 py-1 text-sm font-semibold">… zł</dd>
+            </div>
+          </dl>
+        </div>
+
+        <p class="mt-auto pt-7 text-sm leading-relaxed text-inkmuted">
+          Zakres i cennik uzupełniamy. Jeśli nie masz pewności, czy Twój problem to sprawa
+          dla podologa, zadzwoń i zapytaj:
+          <a href="tel:+48535403235" class="font-semibold text-goldtxt underline underline-offset-4">535 403 235</a>.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ZESPOL ============ -->
+<section id="zespol" class="py-16 sm:py-20 lg:py-24">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+    <div class="grid items-center gap-10 lg:grid-cols-[.95fr_1fr] lg:gap-16">
+
+      <div class="overflow-hidden rounded-[24px] border border-[rgba(201,162,39,.45)] shadow-[0_16px_40px_rgba(28,26,23,.10)]">
+        <img src="photos/zespol.webp" alt="Zespół gabinetu Glamour: trzy kosmetolożki w białych fartuchach"
+             width="882" height="800" loading="lazy" class="block h-full w-full object-cover" style="object-position: 50% 28%;">
+      </div>
+
+      <div>
+        <h2 class="font-display text-[2rem] font-medium leading-tight sm:text-[2.6rem]">Zespół</h2>
+        <div class="rule rule-left mt-5" aria-hidden="true">✦</div>
+
+        <p class="mt-6 max-w-prose text-[1rem] leading-relaxed text-inkmuted">
+          Jest nas trzy. Gabinet prowadzi Agnieszka Piwowarczyk.
+        </p>
+        <!-- TODO: dopytac klientke o imiona i nazwiska pozostalych dwoch kosmetolozek
+             oraz o ewentualny podzial: kto prowadzi kosmetologie, kto podologie. -->
+        <p class="mt-4 max-w-prose text-[1rem] leading-relaxed text-inkmuted">
+          Pracujemy w Przedborzu i większość osób, które do nas przychodzą, znamy z imienia.
+          Nie spieszymy się przy zabiegu i nie oceniamy nikogo za to, w jakim stanie
+          przychodzi do nas skóra albo stopa. Po prostu bierzemy się do roboty.
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-2.5">
+          <a href="https://www.instagram.com/glamour_gabinet/" target="_blank" rel="noopener"
+             class="press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-line bg-bg px-4 py-2.5 text-sm font-semibold hover:border-goldtxt hover:text-goldtxt">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
+            Instagram
+          </a>
+          <a href="https://www.facebook.com/p/Glamour-Gabinet-Kosmetologii-i-Podologii-100063663846206/" target="_blank" rel="noopener"
+             class="press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-line bg-bg px-4 py-2.5 text-sm font-semibold hover:border-goldtxt hover:text-goldtxt">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true"><path d="M14 9V7.2c0-.9.2-1.3 1.4-1.3H17V3h-2.6C11.5 3 10.4 4.5 10.4 7v2H8.5v3h1.9v9H14v-9h2.6l.4-3z"/></svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OPINIE ============ -->
+<section id="opinie" class="bg-surface py-16 sm:py-20 lg:py-24">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+    <div class="text-center">
+      <h2 class="font-display text-[2rem] font-medium leading-tight sm:text-[2.6rem]">Opinie</h2>
+      <div class="rule mt-5" aria-hidden="true">✦</div>
+    </div>
+
+    <div class="mx-auto mt-10 flex max-w-prose flex-col items-center rounded-[24px] border border-[rgba(201,162,39,.45)] bg-bg px-6 py-8 text-center sm:px-10">
+      <p class="gold-shine font-display text-[4rem] font-medium leading-none sm:text-[4.75rem]">5,0</p>
+      <p class="mt-2 text-lg tracking-[.24em] text-goldtxt" aria-hidden="true">★★★★★</p>
+      <p class="mt-4 text-[1rem] text-inkmuted">Średnia ocena z <strong class="font-semibold text-ink">9 opinii</strong> w Google.</p>
+    </div>
+
+    <!-- OPINIE: prawdziwe cytaty z Google, wklejone przez uzytkownika 2026-08-26.
+         Uzytkownik dostarczyl 4 opinie, ale na prosbe wrocono do 3 kart (jeden rzad na desktopie).
+         Pominieta: Malgorzata Kochanowska (2 lata temu, "zabieg oczyszczenia twarzy") — tresciowo
+         nachodzi na opinie Weroniki ponizej (obie o oczyszczaniu twarzy), wiec zostal ten drugi
+         wariant. Gwiazdki per opinia nie byly podane w zrodle — przyjeto 5/5, spojnie ze srednia
+         5,0 gabinetu. -->
+    <div class="mt-8 grid gap-5 sm:gap-6 lg:grid-cols-3">
+
+      <article class="flex flex-col rounded-[24px] border border-line bg-bg p-6 sm:p-7">
+        <div class="flex items-center gap-3">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface font-display text-lg font-medium text-goldtxt" aria-hidden="true">G</span>
+          <div>
+            <p class="text-sm font-semibold">Google</p>
+            <p class="text-sm tracking-[.12em] text-goldtxt" aria-hidden="true">★★★★★</p>
+          </div>
+        </div>
+        <blockquote class="mt-6 flex-1 rounded-[16px] bg-surface px-5 py-5 text-sm italic leading-relaxed text-ink">
+          Polecam serdecznie, pełen profesjonalizm! Wszystko robione dokładnie, przemiła obsługa.
+        </blockquote>
+        <p class="mt-4 text-sm text-inkmuted"><span class="font-medium text-ink">Ewa Pik</span> · Google · 5 miesięcy temu</p>
+      </article>
+
+      <article class="flex flex-col rounded-[24px] border border-line bg-bg p-6 sm:p-7">
+        <div class="flex items-center gap-3">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface font-display text-lg font-medium text-goldtxt" aria-hidden="true">G</span>
+          <div>
+            <p class="text-sm font-semibold">Google</p>
+            <p class="text-sm tracking-[.12em] text-goldtxt" aria-hidden="true">★★★★★</p>
+          </div>
+        </div>
+        <blockquote class="mt-6 flex-1 rounded-[16px] bg-surface px-5 py-5 text-sm italic leading-relaxed text-ink">
+          Szczerze polecam, byłam u Pani Agnieszki na pedicure i manicure hybrydowym. Przemiła atmosfera, profesjonalne wykonanie. Mam nadzieję, że w przyszłości uda mi się jeszcze odwiedzić gabinet. Wszystko na 5+.
+        </blockquote>
+        <p class="mt-4 text-sm text-inkmuted"><span class="font-medium text-ink">Wioletta Bielecka</span> · Google · rok temu</p>
+      </article>
+
+      <article class="flex flex-col rounded-[24px] border border-line bg-bg p-6 sm:p-7">
+        <div class="flex items-center gap-3">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface font-display text-lg font-medium text-goldtxt" aria-hidden="true">G</span>
+          <div>
+            <p class="text-sm font-semibold">Google</p>
+            <p class="text-sm tracking-[.12em] text-goldtxt" aria-hidden="true">★★★★★</p>
+          </div>
+        </div>
+        <blockquote class="mt-6 flex-1 rounded-[16px] bg-surface px-5 py-5 text-sm italic leading-relaxed text-ink">
+          Miła atmosfera, dziewczyny bardzo profesjonalne, moja buzia po oczyszczaniu wodorowym jest odświeżona, czysta i wyciszona. Polecam ten salon w 100%.
+        </blockquote>
+        <p class="mt-4 text-sm text-inkmuted"><span class="font-medium text-ink">Weronika Kaźmierczak</span> · Google · 3 lata temu</p>
+      </article>
+    </div>
+
+    <div class="mt-10 text-center">
+      <!-- Brak zweryfikowanego Google Place ID dla tego gabinetu, wiec link prowadzi
+           do wyszukania wizytowki w Mapach Google zamiast wprost do formularza opinii. -->
+      <a href="https://www.google.com/maps/search/?api=1&query=Glamour%20Gabinet%20Kosmetologii%20i%20Podologii%2C%20Le%C5%9Bna%2039%2C%20Przedb%C3%B3rz" target="_blank" rel="noopener"
+         class="press inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full border border-gold bg-bg px-8 py-3.5 text-base font-semibold text-ink hover:bg-surface2">
+        Zobacz opinie w Google
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALERIA ============ -->
+<section id="galeria" class="py-16 sm:py-20 lg:py-24">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+    <div class="text-center">
+      <h2 class="font-display text-[2rem] font-medium leading-tight sm:text-[2.6rem]">Galeria</h2>
+      <div class="rule mt-5" aria-hidden="true">✦</div>
+      <p class="mx-auto mt-6 max-w-prose text-[1rem] leading-relaxed text-inkmuted">
+        Zdjęcia efektów zabiegów zbieramy i dodamy je tutaj. Na razie kilka kadrów z gabinetu.
+      </p>
+    </div>
+
+    <div class="mt-12 grid grid-cols-2 gap-3.5 sm:gap-5 lg:grid-cols-3">
+
+      <button type="button" data-index="0" class="gallery-tile group relative aspect-square overflow-hidden rounded-b-[18px] rounded-t-[70px] border border-[rgba(201,162,39,.5)] bg-surface">
+        <img src="photos/wizytowka.jpg" alt="Wizytówka gabinetu Glamour ze złoconym logo, na tle kwiatów" loading="lazy" class="h-full w-full object-cover transition duration-300 group-hover:scale-105" style="object-position: 50% 62%;">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+
+      <button type="button" data-index="1" class="gallery-tile group relative aspect-square overflow-hidden rounded-b-[18px] rounded-t-[70px] border border-[rgba(201,162,39,.5)] bg-surface">
+        <img src="photos/recepcja.webp" alt="Recepcja gabinetu Glamour: biały kontuar i storczyk" width="398" height="396" loading="lazy" class="h-full w-full object-cover transition duration-300 group-hover:scale-105" style="object-position: 46% 42%;">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+
+      <button type="button" data-index="2" class="gallery-tile group relative aspect-square overflow-hidden rounded-b-[18px] rounded-t-[70px] border border-[rgba(201,162,39,.5)] bg-surface">
+        <img src="photos/zabieg-twarz.webp" alt="Kosmetolożka podczas zabiegu na twarz w gabinecie Glamour" loading="lazy" class="h-full w-full object-cover transition duration-300 group-hover:scale-105" style="object-position: 50% 38%;">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+
+      <!-- SLOTY NA ZDJECIA EFEKTOW. Zeby uzupelnic: wstaw <button class="gallery-tile ..."> jak wyzej,
+           zdjecia wrzuc do photos/galeria/ i dopisz je do tablicy GALERIA w skrypcie na dole strony. -->
+      <div class="slot-box flex aspect-square flex-col items-center justify-center gap-2.5 rounded-b-[18px] rounded-t-[70px] px-4 text-center">
+        <svg viewBox="0 0 24 24" class="h-6 w-6 text-goldtxt" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="10.5" r="1.8"/><path d="m4 17 5-4.5 4 3.5 3-2.5 4 3.5"/></svg>
+        <p class="text-sm leading-snug text-inkmuted">Miejsce na zdjęcie efektu zabiegu</p>
+      </div>
+      <div class="slot-box flex aspect-square flex-col items-center justify-center gap-2.5 rounded-b-[18px] rounded-t-[70px] px-4 text-center">
+        <svg viewBox="0 0 24 24" class="h-6 w-6 text-goldtxt" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="10.5" r="1.8"/><path d="m4 17 5-4.5 4 3.5 3-2.5 4 3.5"/></svg>
+        <p class="text-sm leading-snug text-inkmuted">Miejsce na zdjęcie efektu zabiegu</p>
+      </div>
+      <div class="slot-box flex aspect-square flex-col items-center justify-center gap-2.5 rounded-b-[18px] rounded-t-[70px] px-4 text-center">
+        <svg viewBox="0 0 24 24" class="h-6 w-6 text-goldtxt" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="10.5" r="1.8"/><path d="m4 17 5-4.5 4 3.5 3-2.5 4 3.5"/></svg>
+        <p class="text-sm leading-snug text-inkmuted">Miejsce na zdjęcie efektu zabiegu</p>
+      </div>
+    </div>
+
+    <div class="mt-10 text-center">
+      <a href="https://www.instagram.com/glamour_gabinet/" target="_blank" rel="noopener"
+         class="press inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full border border-gold px-7 py-3.5 text-base font-semibold text-ink hover:bg-surface">
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
+        Zobacz nas na Instagramie
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LIGHTBOX GALERII ============ -->
+<div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-[rgba(28,26,23,.92)] p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia z galerii">
+  <button type="button" id="lightboxClose" aria-label="Zamknij podgląd"
+          class="press absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(255,255,255,.14)] text-white hover:bg-[rgba(255,255,255,.24)] sm:right-6 sm:top-6">
+    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <button type="button" id="lightboxPrev" aria-label="Poprzednie zdjęcie"
+          class="press absolute left-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(255,255,255,.14)] text-white hover:bg-[rgba(255,255,255,.24)] sm:left-5">
+    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+  <button type="button" id="lightboxNext" aria-label="Następne zdjęcie"
+          class="press absolute right-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(255,255,255,.14)] text-white hover:bg-[rgba(255,255,255,.24)] sm:right-5">
+    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <figure class="mx-auto flex max-h-full max-w-3xl flex-col items-center">
+    <img id="lightboxImg" src="" alt="" class="max-h-[75vh] w-auto rounded-2xl object-contain shadow-[0_20px_60px_rgba(0,0,0,.45)]">
+    <figcaption id="lightboxCounter" class="label mt-4 text-goldlt" aria-live="polite"></figcaption>
+  </figure>
+</div>
+
+<!-- ============ GODZINY + ADRES + MAPA + KONTAKT ============ -->
+<section id="kontakt" class="bg-surface py-16 sm:py-20 lg:py-24">
+  <div class="mx-auto max-w-content px-4 sm:px-6">
+    <div class="text-center">
+      <h2 class="font-display text-[2rem] font-medium leading-tight sm:text-[2.6rem]">Godziny i kontakt</h2>
+      <div class="rule mt-5" aria-hidden="true">✦</div>
+    </div>
+
+    <div class="mt-12 grid gap-6 lg:grid-cols-2 lg:gap-8">
+
+      <div class="rounded-[24px] border border-[rgba(201,162,39,.45)] bg-bg p-6 sm:p-8">
+        <h3 class="font-display text-[1.5rem] font-medium">Godziny otwarcia</h3>
+        <dl class="mt-6" id="godziny">
+          <div data-dzien="1" class="flex items-center justify-between gap-4 border-b border-line py-3">
+            <dt class="text-[1rem]">Poniedziałek</dt><dd class="text-[1rem] font-semibold tabular-nums">10:00 – 18:00</dd>
+          </div>
+          <div data-dzien="2" class="flex items-center justify-between gap-4 border-b border-line py-3">
+            <dt class="text-[1rem]">Wtorek</dt><dd class="text-[1rem] font-semibold tabular-nums">10:00 – 18:00</dd>
+          </div>
+          <div data-dzien="3" class="flex items-center justify-between gap-4 border-b border-line py-3">
+            <dt class="text-[1rem]">Środa</dt><dd class="text-[1rem] font-semibold tabular-nums">10:00 – 18:00</dd>
+          </div>
+          <div data-dzien="4" class="flex items-center justify-between gap-4 border-b border-line py-3">
+            <dt class="text-[1rem]">Czwartek</dt><dd class="text-[1rem] font-semibold tabular-nums">10:00 – 18:00</dd>
+          </div>
+          <div data-dzien="5" class="flex items-center justify-between gap-4 border-b border-line py-3">
+            <dt class="text-[1rem]">Piątek</dt><dd class="text-[1rem] font-semibold tabular-nums">10:00 – 18:00</dd>
+          </div>
+          <div data-dzien="6" class="flex items-center justify-between gap-4 border-b border-line py-3 text-inkmuted">
+            <dt class="text-[1rem]">Sobota</dt><dd class="text-[1rem] font-semibold">Zamknięte</dd>
+          </div>
+          <div data-dzien="0" class="flex items-center justify-between gap-4 py-3 text-inkmuted">
+            <dt class="text-[1rem]">Niedziela</dt><dd class="text-[1rem] font-semibold">Zamknięte</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="rounded-[24px] border border-[rgba(201,162,39,.45)] bg-bg p-6 sm:p-8">
+        <h3 class="font-display text-[1.5rem] font-medium">Gabinet</h3>
+
+        <p class="mt-6 text-[1rem] leading-relaxed">
+          <span class="font-semibold">Glamour Gabinet Kosmetologii i Podologii</span><br>
+          ul. Leśna 39<br>
+          97-570 Przedbórz
+        </p>
+
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <a href="tel:+48535403235"
+             class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-goldtxt px-7 py-3.5 text-base font-semibold text-white hover:bg-golddeep">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+            535 403 235
+          </a>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=Le%C5%9Bna+39,+97-570+Przedb%C3%B3rz" target="_blank" rel="noopener"
+             class="press inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-gold bg-bg px-7 py-3.5 text-base font-semibold text-ink hover:bg-surface">
+            <svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-7-6.4-7-11.5A7 7 0 0 1 19 9.5C19 14.6 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.4"/></svg>
+            Wyznacz trasę
+          </a>
+        </div>
+
+        <p class="label mt-8 text-goldtxt">Znajdziesz nas też tutaj</p>
+        <div class="mt-4 flex flex-wrap gap-2.5">
+          <a href="https://www.instagram.com/glamour_gabinet/" target="_blank" rel="noopener"
+             class="press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-line bg-bg px-4 py-2.5 text-sm font-semibold hover:border-goldtxt hover:text-goldtxt">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
+            Instagram
+          </a>
+          <a href="https://www.facebook.com/p/Glamour-Gabinet-Kosmetologii-i-Podologii-100063663846206/" target="_blank" rel="noopener"
+             class="press inline-flex min-h-[44px] items-center gap-2 rounded-full border border-line bg-bg px-4 py-2.5 text-sm font-semibold hover:border-goldtxt hover:text-goldtxt">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true"><path d="M14 9V7.2c0-.9.2-1.3 1.4-1.3H17V3h-2.6C11.5 3 10.4 4.5 10.4 7v2H8.5v3h1.9v9H14v-9h2.6l.4-3z"/></svg>
+            Facebook
+          </a>
+        </div>
+
+        <p class="mt-auto pt-8 text-sm leading-relaxed text-inkmuted">
+          Nie prowadzimy zapisów online. Termin ustalamy przez telefon, więc od razu możesz
+          zapytać o wszystko, co Cię zastanawia.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-6 overflow-hidden rounded-[24px] border border-[rgba(201,162,39,.45)] lg:mt-8">
+      <iframe
+        title="Mapa dojazdu: Glamour, Leśna 39, Przedbórz"
+        src="https://maps.google.com/maps?q=Le%C5%9Bna%2039%2C%2097-570%20Przedb%C3%B3rz&z=16&output=embed"
+        class="h-[300px] w-full sm:h-[380px]" style="border:0; filter: saturate(.85) contrast(1.02);"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ STOPKA ============ -->
+<footer class="border-t border-[rgba(201,162,39,.45)] bg-bg">
+  <div class="mx-auto max-w-content px-4 py-12 sm:px-6 sm:py-14">
+    <div class="grid gap-8 sm:grid-cols-2">
+      <div>
+        <img src="logo/logo-glamour.png" alt="Glamour" width="560" height="199" loading="lazy" class="h-12 w-auto">
+        <p class="mt-4 text-sm leading-relaxed text-inkmuted">
+          Gabinet Kosmetologii i Podologii<br>
+          ul. Leśna 39, 97-570 Przedbórz<br>
+          <a href="tel:+48535403235" class="inline-flex min-h-[44px] items-center font-semibold text-ink underline underline-offset-4 hover:text-goldtxt">535 403 235</a>
+        </p>
+      </div>
+      <div class="sm:text-right">
+        <p class="label text-goldtxt">Gabinet</p>
+        <ul class="mt-2 text-sm">
+          <li><a href="#uslugi" class="inline-flex min-h-[44px] items-center text-inkmuted hover:text-goldtxt">Usługi</a></li>
+          <li><a href="#zespol" class="inline-flex min-h-[44px] items-center text-inkmuted hover:text-goldtxt">Zespół</a></li>
+          <li><a href="#kontakt" class="inline-flex min-h-[44px] items-center text-inkmuted hover:text-goldtxt">Godziny i kontakt</a></li>
+        </ul>
+        <p class="label mt-6 text-goldtxt">Social media</p>
+        <ul class="mt-2 text-sm">
+          <li><a href="https://www.instagram.com/glamour_gabinet/" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center text-inkmuted hover:text-goldtxt">Instagram</a></li>
+          <li><a href="https://www.facebook.com/p/Glamour-Gabinet-Kosmetologii-i-Podologii-100063663846206/" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center text-inkmuted hover:text-goldtxt">Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-10 flex flex-col gap-3 border-t border-line pt-6 text-sm text-inkmuted sm:flex-row sm:items-center sm:justify-between">
+      <p>© <span id="rok">2026</span> Glamour Gabinet Kosmetologii i Podologii</p>
+      <a href="privacy.html" class="inline-flex min-h-[44px] items-center underline underline-offset-4 hover:text-goldtxt">Polityka prywatności</a>
+    </div>
+  </div>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BeautySalon",
+  "name": "Glamour Gabinet Kosmetologii i Podologii",
+  "description": "Gabinet kosmetologii estetycznej i podologii w Przedborzu. Zabiegi na twarz i ciało oraz specjalistyczna opieka nad stopami.",
+  "image": "logo/logo-lockup.png",
+  "telephone": "+48535403235",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Leśna 39",
+    "postalCode": "97-570",
+    "addressLocality": "Przedbórz",
+    "addressCountry": "PL"
+  },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+    "opens": "10:00",
+    "closes": "18:00"
+  }],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "reviewCount": "9"
+  },
+  "sameAs": [
+    "https://www.instagram.com/glamour_gabinet/",
+    "https://www.facebook.com/p/Glamour-Gabinet-Kosmetologii-i-Podologii-100063663846206/"
+  ],
+  "hasMap": "https://www.google.com/maps/dir/?api=1&destination=Le%C5%9Bna+39,+97-570+Przedb%C3%B3rz"
+}
+</script>
+
+<script>
+  document.getElementById('rok').textContent = new Date().getFullYear();
+
+  // Podswietlenie dzisiejszego dnia w tabeli godzin.
+  (function () {
+    var wiersz = document.querySelector('#godziny [data-dzien="' + new Date().getDay() + '"]');
+    if (!wiersz) return;
+    wiersz.classList.add('rounded-lg', 'bg-surface', 'px-3', 'font-semibold', 'text-ink');
+    var dt = wiersz.querySelector('dt');
+    dt.insertAdjacentHTML('beforeend', '<span class="ml-2 rounded-full bg-goldtxt px-2 py-0.5 text-[.72rem] font-semibold uppercase tracking-wider text-white">dziś</span>');
+  })();
+
+  // Scrollspy: podswietla w nawigacji link sekcji aktualnie widocznej na ekranie.
+  (function () {
+    var navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+    if (!navLinks.length) return;
+    var sections = [];
+    navLinks.forEach(function (link) {
+      var sec = document.querySelector(link.getAttribute('href'));
+      if (sec) sections.push({ link: link, el: sec });
+    });
+    if (!sections.length) return;
+    var headerH = document.querySelector('header').offsetHeight || 72;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var match = sections.find(function (s) { return s.el === entry.target; });
+        if (!match) return;
+        if (entry.isIntersecting) {
+          navLinks.forEach(function (l) { l.classList.remove('is-active'); });
+          match.link.classList.add('is-active');
+        }
+      });
+    }, { rootMargin: '-' + (headerH + 4) + 'px 0px -60% 0px', threshold: 0 });
+    sections.forEach(function (s) { observer.observe(s.el); });
+  })();
+
+  // Galeria: podglad zdjecia w pelnym rozmiarze.
+  // Kolejnosc MUSI odpowiadac atrybutom data-index na kaflach w sekcji galerii.
+  (function () {
+    var GALERIA = [
+      { src: 'photos/wizytowka.jpg', alt: 'Wizytówka gabinetu Glamour ze złoconym logo, na tle kwiatów' },
+      { src: 'photos/recepcja.webp', alt: 'Recepcja gabinetu Glamour: biały kontuar i storczyk' },
+      { src: 'photos/zabieg-twarz.webp', alt: 'Kosmetolożka podczas zabiegu na twarz w gabinecie Glamour' }
+    ];
+
+    var lightbox = document.getElementById('lightbox');
+    var img = document.getElementById('lightboxImg');
+    var counter = document.getElementById('lightboxCounter');
+    var btnClose = document.getElementById('lightboxClose');
+    var btnPrev = document.getElementById('lightboxPrev');
+    var btnNext = document.getElementById('lightboxNext');
+    var tiles = document.querySelectorAll('.gallery-tile');
+    var current = 0;
+    var lastFocused = null;
+
+    if (!lightbox || !tiles.length) return;
+    // Strzalki maja sens dopiero przy wiecej niz jednym zdjeciu.
+    if (GALERIA.length < 2) { btnPrev.hidden = true; btnNext.hidden = true; }
+
+    function render() {
+      img.src = GALERIA[current].src;
+      img.alt = GALERIA[current].alt;
+      counter.textContent = (current + 1) + ' / ' + GALERIA.length;
+    }
+    function open(index) {
+      current = index;
+      lastFocused = document.activeElement;
+      render();
+      lightbox.classList.remove('hidden');
+      lightbox.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      btnClose.focus();
+    }
+    function close() {
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+      document.body.style.overflow = '';
+      if (lastFocused) lastFocused.focus();
+    }
+    function next() { current = (current + 1) % GALERIA.length; render(); }
+    function prev() { current = (current - 1 + GALERIA.length) % GALERIA.length; render(); }
+
+    tiles.forEach(function (tile) {
+      tile.addEventListener('click', function () {
+        open(parseInt(tile.getAttribute('data-index'), 10));
+      });
+    });
+    btnClose.addEventListener('click', close);
+    btnNext.addEventListener('click', next);
+    btnPrev.addEventListener('click', prev);
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lightbox) close();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (lightbox.classList.contains('hidden')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    });
+  })();
+</script>
+
+</body>
+</html>

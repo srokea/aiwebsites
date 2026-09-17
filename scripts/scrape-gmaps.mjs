@@ -18,10 +18,23 @@
  */
 
 import puppeteer from 'puppeteer-core';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
-const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+// Sciezka do Chrome rozna per OS - najpierw override przez env (na wypadek niestandardowej
+// instalacji), potem typowe lokalizacje dla macOS/Windows.
+const CHROME_CANDIDATES = [
+  process.env.CHROME_PATH,
+  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+  'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+  'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+  process.env.LOCALAPPDATA ? join(process.env.LOCALAPPDATA, 'Google\\Chrome\\Application\\chrome.exe') : null,
+].filter(Boolean);
+const CHROME = CHROME_CANDIDATES.find((p) => existsSync(p));
+if (!CHROME) {
+  console.error('Nie znaleziono Chrome. Ustaw zmienna srodowiskowa CHROME_PATH na pelna sciezke do chrome.');
+  process.exit(1);
+}
 
 const args = process.argv.slice(2);
 const query = args.find((a) => !a.startsWith('--'));

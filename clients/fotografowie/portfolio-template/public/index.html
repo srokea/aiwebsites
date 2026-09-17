@@ -1,0 +1,322 @@
+<!doctype html>
+<!--
+  PLACEHOLDER PORTFOLIO — zastąp ten plik własnym frontendem klienta.
+  Jedyna zmienna do zaktualizowania: const API_BASE (URL workera).
+  API:
+    GET {API_BASE}/api/folders                → lista folderów (zakładki)
+    GET {API_BASE}/api/folders/{id}/content   → albumy folderu z kafelkami
+  Album:   { id, name, position, items: [...] }        (pusta nazwa = bez nagłówka)
+  Kafelek: wspólne pola id, type, grid_w (1–6), grid_h (1–4), position
+    type 'photo' → url, display_name
+    type 'text'  → html (b/i/u/br/div/p), style { font, size, align, color, bg }
+  Link do konkretnego folderu: /#f={id}  (używa go też podgląd w panelu admina)
+-->
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Work Sans = font strony. Reszta = fonty do wyboru w blokach tekstu (ta sama lista co w panelu). -->
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400;1,700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Great+Vibes&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/public.css">
+</head>
+<body>
+
+<header class="site-head">
+  <!-- PER KLIENT: nazwa i podpis fotografa -->
+  <h1>Imię Nazwisko</h1>
+  <p>Fotografia</p>
+</header>
+
+<!-- Zakładki = foldery z panelu admina, w kolejności ustawionej w panelu -->
+<nav class="tabs" id="tabs" aria-label="Kategorie"></nav>
+
+<main>
+  <div class="albums" id="albums"></div>
+  <p class="state" id="state">Ładowanie…</p>
+</main>
+
+<footer class="site-foot">
+  <!-- PER KLIENT: kontakt, telefon, Instagram -->
+  <p>kontakt@example.com</p>
+</footer>
+
+<script>
+/* ============================================================================
+   KONFIGURACJA — JEDYNA LINIA DO ZMIANY PER KLIENT
+   ========================================================================== */
+const API_BASE = 'https://WORKER_URL.workers.dev';
+
+/* ============================================================================
+   Fonty bloków tekstu — ta sama lista co w panelu admina
+   ========================================================================== */
+const FONT_FALLBACKS = {
+  'Work Sans': 'sans-serif',
+  'Montserrat': 'sans-serif',
+  'DM Sans': 'sans-serif',
+  'Playfair Display': 'serif',
+  'Cormorant Garamond': 'serif',
+  'Lora': 'serif',
+  'Great Vibes': 'cursive',
+  'Caveat': 'cursive',
+};
+
+/* ============================================================================
+   Stan
+   ========================================================================== */
+let folders = [];
+let activeFolderId = null;
+
+const tabs = document.getElementById('tabs');
+const albumsRoot = document.getElementById('albums');
+const state = document.getElementById('state');
+
+/** Odczyt z API. Endpointy publiczne — bez tokenu. */
+async function api(path) {
+  const response = await fetch(API_BASE + path);
+  const payload = await response.json();
+  if (!payload.ok) throw new Error(payload.error || 'Błąd API');
+  return payload.data;
+}
+
+function setState(text) {
+  state.textContent = text || '';
+  state.hidden = !text;
+}
+
+/* ============================================================================
+   Start — foldery → zakładki → zawartość folderu z adresu (#f=id) albo pierwszego
+   ========================================================================== */
+(async function init() {
+  try {
+    folders = await api('/api/folders');
+  } catch (error) {
+    setState('Nie udało się wczytać portfolio.');
+    return;
+  }
+
+  if (!folders.length) {
+    setState('Portfolio jest jeszcze puste.');
+    return;
+  }
+
+  const fromHash = new URLSearchParams(location.hash.slice(1)).get('f');
+  const start = folders.some((folder) => folder.id === fromHash) ? fromHash : folders[0].id;
+  await openFolder(start);
+})();
+
+function renderTabs() {
+  tabs.innerHTML = '';
+  folders.forEach((folder) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = folder.name;
+    button.setAttribute('role', 'tab');
+    button.setAttribute('aria-selected', String(folder.id === activeFolderId));
+    button.addEventListener('click', () => openFolder(folder.id));
+    tabs.append(button);
+  });
+}
+
+async function openFolder(id) {
+  if (id === activeFolderId) return;
+  activeFolderId = id;
+  history.replaceState(null, '', location.pathname + location.search + '#f=' + id);
+  renderTabs();
+
+  albumsRoot.innerHTML = '';
+  setState('Ładowanie…');
+
+  let albums;
+  try {
+    albums = await api('/api/folders/' + id + '/content');
+  } catch (error) {
+    setState('Nie udało się wczytać zdjęć.');
+    return;
+  }
+  if (id !== activeFolderId) return;   // w międzyczasie kliknięto inną zakładkę
+
+  const visible = albums.filter((album) => album.items.length);
+  setState(visible.length ? '' : 'Ta kategoria jest jeszcze pusta.');
+  visible.forEach((album) => albumsRoot.append(buildAlbum(album)));
+}
+
+/* ============================================================================
+   Album = nagłówek (jeśli ma nazwę) + siatka kafelków
+   ========================================================================== */
+function buildAlbum(album) {
+  const section = document.createElement('section');
+  section.className = 'album';
+
+  if (album.name) {
+    const heading = document.createElement('h2');
+    heading.textContent = album.name;
+    section.append(heading);
+  }
+
+  const wrap = document.createElement('div');
+  wrap.className = 'grid-wrap';
+  const grid = document.createElement('div');
+  grid.className = 'grid';
+
+  // Lightbox przewija tylko zdjęcia z tego albumu.
+  const photos = album.items.filter((item) => item.type === 'photo');
+
+  album.items.forEach((item) => {
+    grid.append(item.type === 'photo'
+      ? buildPhoto(item, () => openLightbox(photos, photos.indexOf(item)))
+      : buildText(item));
+  });
+
+  wrap.append(grid);
+  section.append(wrap);
+  return section;
+}
+
+/**
+ * Rozmiar kafelka: --w/--h to siatka 6-kolumnowa (od 700 px),
+ * --mw/--mh to przeliczenie na 2 kolumny telefonu.
+ */
+function setGrid(node, item) {
+  const mobileWidth = item.type === 'text' || item.grid_w >= 4 ? 2 : 1;
+  const mobileHeight = item.type === 'text' ? 1 : Math.min(item.grid_h, 3);
+  node.style.setProperty('--w', item.grid_w);
+  node.style.setProperty('--h', item.grid_h);
+  node.style.setProperty('--mw', mobileWidth);
+  node.style.setProperty('--mh', mobileHeight);
+}
+
+function buildPhoto(item, onOpen) {
+  const figure = document.createElement('figure');
+  figure.className = 'item photo';
+  figure.style.margin = '0';
+  setGrid(figure, item);
+
+  const image = document.createElement('img');
+  image.src = item.url;
+  image.alt = item.display_name || '';
+  image.loading = 'lazy';
+  image.decoding = 'async';
+  image.dataset.loaded = 'false';
+  image.addEventListener('load', () => { image.dataset.loaded = 'true'; });
+
+  figure.append(image);
+  figure.addEventListener('click', onOpen);
+  return figure;
+}
+
+function buildText(item) {
+  const block = document.createElement('div');
+  block.className = 'item text';
+  setGrid(block, item);
+
+  const { font, size, align, color, bg } = item.style;
+  if (bg) block.style.backgroundColor = bg;
+
+  const frame = document.createElement('div');
+  frame.className = 'text-frame';
+  const body = document.createElement('div');
+  body.className = 'text-body';
+  body.style.setProperty('--fs', size);
+  body.style.fontFamily = `'${font}', ${FONT_FALLBACKS[font] || 'sans-serif'}`;
+  body.style.textAlign = align;
+  if (color) body.style.color = color;
+  // HTML jest oczyszczany przez workera przy zapisie (tylko b/i/u/br/div/p, bez atrybutów).
+  body.innerHTML = item.html;
+
+  frame.append(body);
+  block.append(frame);
+  return block;
+}
+
+/* ============================================================================
+   Lightbox — strzałki (klawiatura + klik), ESC, swipe, klik w tło
+   ========================================================================== */
+let lightbox = null;
+let lightboxPhotos = [];
+let lightboxIndex = 0;
+
+/** Nazwa zdjęcia pochodzi z panelu, więc nie wstrzykujemy jej surowo do HTML-a. */
+function escapeHtml(text) {
+  return String(text).replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  })[character]);
+}
+
+function openLightbox(photos, index) {
+  lightboxPhotos = photos;
+  lightboxIndex = index;
+  const photo = photos[index];
+
+  lightbox = document.createElement('div');
+  lightbox.className = 'lightbox';
+  // src i alt ustawiamy od razu, żeby nie mignął pusty kadr.
+  lightbox.innerHTML = `
+    <img src="${escapeHtml(photo.url)}" alt="${escapeHtml(photo.display_name || '')}">
+    <p class="caption">${escapeHtml(photo.display_name || '')}</p>
+    <button type="button" class="close" aria-label="Zamknij">✕</button>
+    <button type="button" class="prev" aria-label="Poprzednie">‹</button>
+    <button type="button" class="next" aria-label="Następne">›</button>
+  `;
+
+  lightbox.querySelector('.close').addEventListener('click', closeLightbox);
+  lightbox.querySelector('.prev').addEventListener('click', () => step(-1));
+  lightbox.querySelector('.next').addEventListener('click', () => step(1));
+
+  // Przy jednym zdjęciu strzałki nie mają czego przewijać.
+  if (photos.length < 2) {
+    lightbox.querySelector('.prev').hidden = true;
+    lightbox.querySelector('.next').hidden = true;
+  }
+
+  // Klik poza zdjęciem i przyciskami zamyka.
+  lightbox.addEventListener('click', (event) => {
+    if (event.target === lightbox) closeLightbox();
+  });
+
+  // Swipe na mobile.
+  let touchStartX = 0;
+  lightbox.addEventListener('touchstart', (event) => {
+    touchStartX = event.changedTouches[0].clientX;
+  }, { passive: true });
+  lightbox.addEventListener('touchend', (event) => {
+    const distance = event.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(distance) > 50) step(distance < 0 ? 1 : -1);
+  }, { passive: true });
+
+  document.addEventListener('keydown', onLightboxKey);
+  document.body.style.overflow = 'hidden';
+  document.body.append(lightbox);
+}
+
+function showPhoto() {
+  const photo = lightboxPhotos[lightboxIndex];
+  const image = lightbox.querySelector('img');
+  image.src = photo.url;
+  image.alt = photo.display_name || '';
+  lightbox.querySelector('.caption').textContent = photo.display_name || '';
+}
+
+/** Przewijanie w kółko: z ostatniego zdjęcia strzałka w prawo wraca na początek. */
+function step(direction) {
+  lightboxIndex = (lightboxIndex + direction + lightboxPhotos.length) % lightboxPhotos.length;
+  showPhoto();
+}
+
+function onLightboxKey(event) {
+  if (event.key === 'Escape') closeLightbox();
+  if (event.key === 'ArrowLeft') step(-1);
+  if (event.key === 'ArrowRight') step(1);
+}
+
+function closeLightbox() {
+  document.removeEventListener('keydown', onLightboxKey);
+  document.body.style.overflow = '';
+  lightbox.remove();
+  lightbox = null;
+}
+</script>
+</body>
+</html>

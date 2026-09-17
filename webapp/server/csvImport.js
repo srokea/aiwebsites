@@ -233,9 +233,18 @@ const NOTE_TAG_PATTERNS = {
   youtube: /\b(yt|youtube)\b/i,
   tiktok: /\b(tt|tiktok)\b/i,
 };
-const URL_PATTERN = /https?:\/\/[^\s")]+/i;
+const URL_PATTERN = /https?:\/\/[^\s")]+/gi;
 const BARE_DOMAIN_PATTERN = /\b([a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:pl|com|eu|net|org))\b/i;
-const PLATFORM_DOMAIN_BLACKLIST = /^(www\.)?(facebook|instagram|booksy|youtube|google|tiktok|maps|fresha)\./i;
+// dopasowuje tez subdomeny regionalne (np. pl-pl.facebook.com, m.facebook.com), nie tylko www.
+const PLATFORM_DOMAIN_BLACKLIST = /(^|\.)(facebook|instagram|booksy|youtube|google|tiktok|maps|fresha)\./i;
+
+function isPlatformUrl(url) {
+  try {
+    return PLATFORM_DOMAIN_BLACKLIST.test(new URL(url).hostname);
+  } catch {
+    return false;
+  }
+}
 // Przeczenie moze stac zarowno przed nazwa platformy ("brak FB", "nie potwierdzono IG"),
 // jak i po niej ("IG nie potwierdzony", "FB nie znaleziony") - sprawdzamy oba kierunki,
 // ale tylko w obrebie tej samej frazy (do najblizszego przecinka/kropki).
@@ -263,9 +272,14 @@ function detectTagsAndUrlFromNotes(lead) {
   }
 
   if (!lead.website_url) {
-    const match = text.match(URL_PATTERN);
-    if (match) {
-      lead.website_url = match[0].replace(/[.,;]+$/, "");
+    // moze byc kilka linkow w notatkach (np. "Maps: ... FB: ...") - bierzemy pierwszy, ktory
+    // NIE jest linkiem do platformy (Maps/FB/IG/Booksy/YT/TikTok/Fresha), zamiast slepo
+    // pierwszego z brzegu - inaczej link do Google Maps (ktory zawsze jest w notatkach z
+    // maps_url) nadpisywalby website_url nawet firmom bez wlasnej strony
+    const urls = text.match(URL_PATTERN) || [];
+    const realUrl = urls.find((u) => !isPlatformUrl(u));
+    if (realUrl) {
+      lead.website_url = realUrl.replace(/[.,;]+$/, "");
     } else {
       const bare = text.match(BARE_DOMAIN_PATTERN);
       if (bare && !PLATFORM_DOMAIN_BLACKLIST.test(bare[1])) lead.website_url = `https://${bare[1]}`;

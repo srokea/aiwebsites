@@ -191,11 +191,56 @@
   }
   .gallery-tile:hover .gallery-hint, .gallery-tile:focus-visible .gallery-hint { opacity: 1; }
 
+  /* ══ WARIANT index2: warstwa atmosfery ══
+     Trzy dodatki, wszystkie czysto dekoracyjne, zero zmian w tresci/ukladzie:
+     1) .ambient-glow — bardzo subtelna zlota poswiata w tle (5-8% krycia),
+        dozwolona wprost w DESIGN.md ("radialne poswiaty... to nie jest
+        gradientowe hero z ksztaltami, tylko ambientowe oswietlenie tla").
+     2) .ghost-mark — ogromny, prawie niewidoczny emblemat z logo jako
+        "wytloczenie" w tle sekcji (technika edytorska, nie SaaS-blob).
+     3) .shine-text — animowany zloty "shine" na kursywnych akcentach,
+        pozyczony ze Stylu 04 z lookbooku (wskazany w briefie jako technika
+        do pozyczenia). Gradient NIE wychodzi jasniej niz bazowe zloto
+        #7C6633 (4,99:1 na kremie) — przez cala animacje kontrast zostaje
+        rowny albo lepszy niz ustalony bazowy token, wiec AA jest zachowane
+        w kazdej klatce, nie tylko w spoczynku. */
+  .atmo { position: relative; overflow: hidden; }
+  .atmo > .atmo-content { position: relative; z-index: 1; }
+
+  .ambient-glow {
+    position: absolute; z-index: 0; pointer-events: none; border-radius: 9999px;
+    background: radial-gradient(circle, rgba(124,102,51,0.16) 0%, rgba(124,102,51,0) 72%);
+    filter: blur(10px);
+  }
+
+  .ghost-mark {
+    position: absolute; z-index: 0; pointer-events: none;
+    opacity: 0.05; filter: grayscale(1) contrast(0.9);
+  }
+
+  .shine-text {
+    background-image: linear-gradient(100deg, #5C4B26 0%, #5C4B26 35%, #7C6633 50%, #5C4B26 65%, #5C4B26 100%);
+    background-size: 260% auto;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: shine-sweep 6s ease-in-out infinite;
+  }
+
+  .btn-glow { transition: transform .2s ease, box-shadow .2s ease, filter .2s ease; }
+  .btn-glow:hover { box-shadow: 0 10px 28px -6px rgba(124,102,51,0.45); transform: translateY(-1px); }
+
+  @keyframes shine-sweep {
+    0%   { background-position: 0% center; }
+    50%  { background-position: 100% center; }
+    100% { background-position: 0% center; }
+  }
+
   :focus-visible { outline: 2px solid #7C6633; outline-offset: 3px; border-radius: 6px; }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    .shine-text { animation: none; background-position: 50% center; }
+    .btn-glow:hover { transform: none; }
   }
 </style>
 </head>
@@ -251,15 +296,20 @@
 <main>
 
 <!-- ══════════ HERO ══════════ -->
-<section id="hero" class="scroll-mt-20 px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-20">
-  <div class="mx-auto grid max-w-wide items-center gap-10 lg:grid-cols-[1fr_0.85fr] lg:gap-16">
+<section id="hero" class="atmo scroll-mt-20 px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-20">
+  <!-- index2: ogromny, ledwo widoczny emblemat jako wytloczenie w tle hero
+       (5% krycia) + jedna zlota poswiata w rogu. Czysto dekoracyjne. -->
+  <img src="photos/logo-mark.png" alt="" aria-hidden="true" class="ghost-mark" style="top:-8%; right:-6%; width:min(60vw,620px); height:min(60vw,620px);">
+  <div class="ambient-glow" style="bottom:-10%; left:-6%; width:420px; height:420px;" aria-hidden="true"></div>
+
+  <div class="atmo-content mx-auto grid max-w-wide items-center gap-10 lg:grid-cols-[1fr_0.85fr] lg:gap-16">
 
     <div>
       <h1 class="wordmark-l text-[2.2rem] leading-[1.18] sm:text-[2.75rem] lg:text-[3.05rem]">
         Nowoczesna<br>kosmetologia<br>estetyczna
       </h1>
 
-      <p class="mt-5 font-script text-[1.4rem] italic leading-snug text-gold sm:text-[1.75rem]">
+      <p class="mt-5 font-script shine-text text-[1.4rem] italic leading-snug sm:text-[1.75rem]">
         holistycznie o skórze i ciele
       </p>
 
@@ -271,7 +321,7 @@
 
       <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
         <a href="tel:+48511683488"
-           class="inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-gold px-7 py-3.5 text-[1.0625rem] font-medium tracking-wide text-bg transition hover:brightness-110 motion-reduce:transition-none">
+           class="btn-glow inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-gold px-7 py-3.5 text-[1.0625rem] font-medium tracking-wide text-bg transition hover:brightness-110 motion-reduce:transition-none">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[1.15rem] w-[1.15rem] shrink-0" aria-hidden="true">
             <path d="M6.5 3h3l1.5 4.5-2 1.5a12 12 0 0 0 6 6l1.5-2 4.5 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3Z" stroke-linejoin="round"/>
           </svg>
@@ -318,8 +368,9 @@
 </section>
 
 <!-- ══════════ ZABIEGI I TECHNOLOGIE ══════════ -->
-<section id="zabiegi" class="scroll-mt-20 bg-surface px-4 py-16 sm:px-6 sm:py-24">
-  <div class="mx-auto max-w-wide">
+<section id="zabiegi" class="atmo scroll-mt-20 bg-surface px-4 py-16 sm:px-6 sm:py-24">
+  <div class="ambient-glow" style="top:10%; right:-8%; width:460px; height:460px;" aria-hidden="true"></div>
+  <div class="atmo-content mx-auto max-w-wide">
 
     <h2 class="rule-heading wordmark text-[1.4rem] sm:text-[1.75rem]">
       <span class="shrink-0">Zabiegi i technologie</span>
@@ -532,8 +583,9 @@
 </section>
 
 <!-- ══════════ VOUCHER PODARUNKOWY ══════════ -->
-<section id="voucher" class="scroll-mt-20 border-t border-hairline bg-surface px-4 py-16 sm:px-6 sm:py-24">
-  <div class="mx-auto grid max-w-wide items-center gap-10 lg:grid-cols-[0.85fr_1fr] lg:gap-16">
+<section id="voucher" class="atmo scroll-mt-20 border-t border-hairline bg-surface px-4 py-16 sm:px-6 sm:py-24">
+  <div class="ambient-glow" style="top:-15%; right:2%; width:380px; height:380px;" aria-hidden="true"></div>
+  <div class="atmo-content mx-auto grid max-w-wide items-center gap-10 lg:grid-cols-[0.85fr_1fr] lg:gap-16">
 
     <!-- Prawdziwy voucher klientki. Kadr 4/5 trzyma czytelny napis "VOUCHER
          PODARUNKOWY" na karcie z przodu, nie ucina go u gory ani u dolu. -->
@@ -552,7 +604,7 @@
         <span class="shrink-0">Voucher podarunkowy</span>
       </h2>
 
-      <p class="mt-5 font-script text-[1.4rem] italic leading-snug text-gold">
+      <p class="mt-5 font-script shine-text text-[1.4rem] italic leading-snug">
         na urodziny, święta albo bez okazji
       </p>
 
@@ -563,7 +615,7 @@
 
       <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
         <a href="tel:+48511683488"
-           class="inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-gold px-7 py-3.5 text-[1.0625rem] font-medium tracking-wide text-bg transition hover:brightness-110 motion-reduce:transition-none">
+           class="btn-glow inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-gold px-7 py-3.5 text-[1.0625rem] font-medium tracking-wide text-bg transition hover:brightness-110 motion-reduce:transition-none">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[1.15rem] w-[1.15rem] shrink-0" aria-hidden="true">
             <path d="M6.5 3h3l1.5 4.5-2 1.5a12 12 0 0 0 6 6l1.5-2 4.5 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3Z" stroke-linejoin="round"/>
           </svg>
@@ -583,8 +635,9 @@
 </section>
 
 <!-- ══════════ OPINIE ══════════ -->
-<section id="opinie" class="scroll-mt-20 px-4 py-16 sm:px-6 sm:py-24">
-  <div class="mx-auto max-w-wide">
+<section id="opinie" class="atmo scroll-mt-20 px-4 py-16 sm:px-6 sm:py-24">
+  <div class="ambient-glow" style="bottom:-8%; left:-6%; width:400px; height:400px;" aria-hidden="true"></div>
+  <div class="atmo-content mx-auto max-w-wide">
 
     <h2 class="rule-heading wordmark text-[1.4rem] sm:text-[1.75rem]">
       <span class="shrink-0">Opinie</span>
@@ -614,7 +667,7 @@
     <div class="mt-7 flex flex-wrap items-center gap-4">
       <a href="https://www.google.com/maps/search/?api=1&query=Cosmetology%20Avenue%20Kostromska%2037%20Piotrk%C3%B3w%20Trybunalski"
          target="_blank" rel="noopener"
-         class="inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-gold px-6 py-3.5 text-sm font-medium tracking-wide text-bg transition hover:brightness-110 motion-reduce:transition-none">
+         class="btn-glow inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-gold px-6 py-3.5 text-sm font-medium tracking-wide text-bg transition hover:brightness-110 motion-reduce:transition-none">
         <svg viewBox="0 0 20 20" fill="currentColor" class="h-[1.1rem] w-[1.1rem] shrink-0" aria-hidden="true"><path d="M10 1.6l2.4 5.1 5.6.7-4.1 3.9 1.1 5.5L10 14.1 5 16.8l1.1-5.5L2 7.4l5.6-.7L10 1.6z"/></svg>
         Dodaj opinię
       </a>
@@ -816,7 +869,7 @@
 
         <div class="mt-7 flex flex-col gap-3 sm:flex-row">
           <a href="tel:+48511683488"
-             class="inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-gold px-7 py-3.5 text-[1.0625rem] font-medium tracking-wide text-bg transition hover:brightness-110 motion-reduce:transition-none">
+             class="btn-glow inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-gold px-7 py-3.5 text-[1.0625rem] font-medium tracking-wide text-bg transition hover:brightness-110 motion-reduce:transition-none">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[1.15rem] w-[1.15rem] shrink-0" aria-hidden="true">
               <path d="M6.5 3h3l1.5 4.5-2 1.5a12 12 0 0 0 6 6l1.5-2 4.5 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3Z" stroke-linejoin="round"/>
             </svg>

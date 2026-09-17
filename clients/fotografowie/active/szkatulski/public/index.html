@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Szkatulski Photography</title>
+<meta name="description" content="Filip Szkatulski. Fotografia sportowa, automotive, 18stki i eventy, koncerty. Wideo i rolki montowane od ręki. Sulejów, woj. łódzkie. Paczka zdjęć w 3 dni.">
+
+<!-- ============================================================================
+     Telefon (669 889 133), e-mail i social — uzupełnione realnymi danymi Filipa.
+     Cennik nadal pochodzi z Oferteo i wymaga potwierdzenia z Filipem (brief.md).
+     Adres Google Maps w sekcji kontaktu to uniwersalne wyszukiwanie — podmień
+     na link do Profilu Firmy w Google, jeśli Filip go założy.
+     ========================================================================== -->
+
+<link rel="canonical" href="https://szkatulskiphotography.pl/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Szkatulski Photography — fotograf i operator kamery">
+<meta property="og:description" content="Sport, auta, eventy, koncerty. Sulejów i całe woj. łódzkie.">
+<!-- TODO: og:image usunięty razem z photos/ — dodać z powrotem, gdy Filip
+     wgra zdjęcia przez panel (np. jedno z portfolio albo tło hero). -->
+<meta property="og:locale" content="pl_PL">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/archivo-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/worksans-latin.woff2" crossorigin>
+
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<a class="sr-only" href="#top">Przejdź do treści</a>
+
+<!-- ============================================================== NAWIGACJA -->
+<header class="nav" id="nav">
+  <a class="wordmark" href="#top" aria-label="Szkatulski Photography, strona główna">
+    <span class="wordmark__name">Szkatulski</span>
+    <span class="wordmark__sub">PHOTOGRAPHY</span>
+  </a>
+
+  <nav class="nav__links" aria-label="Sekcje strony">
+    <a href="#warsztat">O mnie</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="cennik.html">Cennik</a>
+    <a href="kontakt.html">Kontakt</a>
+  </nav>
+
+  <div class="nav__right">
+    <!-- Social widoczne od razu w nagłówku (desktop) — nie trzeba scrollować
+         do stopki, żeby je znaleźć. -->
+    <a class="nav__social" href="https://www.instagram.com/szkatulski_photography/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/>
+      </svg>
+    </a>
+    <a class="nav__social" href="https://www.facebook.com/profile.php?id=61569980133400" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.25-1.5 1.5-1.5h1.7V3.9c-.3-.04-1.3-.13-2.5-.13-2.5 0-4.2 1.5-4.2 4.3V10H7.3v3H10v8h3.5z" fill="currentColor"/>
+      </svg>
+    </a>
+    <!-- Telefon widoczny zawsze, też na mobile. -->
+    <a class="btn btn--primary" href="tel:+48669889133"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.5 3.5h3l1.5 4-2 1.5a12 12 0 006 6l1.5-2 4 1.5v3c0 .8-.7 1.5-1.5 1.4C10.8 18.6 5.4 13.2 5.1 5C5 4.2 5.7 3.5 6.5 3.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Zadzwoń</a>
+    <button class="nav__burger" type="button" id="burger"
+            aria-expanded="false" aria-controls="navpanel" aria-label="Otwórz menu">
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<div class="navpanel" id="navpanel" role="dialog" aria-modal="true" aria-label="Menu">
+  <button class="navpanel__close" type="button" id="navClose" aria-label="Zamknij menu">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.5"/>
+    </svg>
+  </button>
+  <a href="#warsztat">O mnie</a>
+  <a href="portfolio.html">Portfolio</a>
+  <a href="cennik.html">Cennik</a>
+  <a href="kontakt.html">Kontakt</a>
+
+  <div class="navpanel__social">
+    <a href="https://www.instagram.com/szkatulski_photography/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/>
+      </svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=61569980133400" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.25-1.5 1.5-1.5h1.7V3.9c-.3-.04-1.3-.13-2.5-.13-2.5 0-4.2 1.5-4.2 4.3V10H7.3v3H10v8h3.5z" fill="currentColor"/>
+      </svg>
+    </a>
+  </div>
+</div>
+
+<main id="top">
+
+<!-- =================================================================== HERO -->
+<section class="hero">
+  <div class="hero__media">
+    <picture>
+      <!-- Bez domyslnego zdjecia: photos/ zostalo wyczyszczone, Filip wgra
+           tlo (osobne na komputer i telefon) przez panel -> Ustawienia strony.
+           site.js pobiera je z /api/settings i ustawia src/srcset tutaj —
+           dopoki tego nie zrobi, hero zostaje na samym gradiencie w tle. -->
+      <source id="heroSourceDesktop" media="(min-width: 768px)">
+      <img id="heroImg" alt=""
+           width="800" height="1200" fetchpriority="high" decoding="async">
+    </picture>
+  </div>
+
+  <div class="hero__inner">
+    <p class="label hero__kicker">Photography <span aria-hidden="true">&middot;</span> Montage <span aria-hidden="true">&middot;</span> Camera Operator <span aria-hidden="true">&middot;</span> Visual Creator</p>
+    <h1 class="display hero__title">Szkatulski</h1>
+
+    <button type="button" class="btn btn--square hero__more" id="heroMore">
+      Dowiedz się więcej
+    </button>
+
+    <!-- Prawdziwe liczby z Instagrama, nie fikcyjne — subtelnie, tuz pod CTA,
+         zanim odwiedzajacy zdazy zwatpic. Animacja liczenia jak w Warsztacie. -->
+    <div class="hero__proof" id="igProof">
+      <span><span class="stat__num" data-count="213">213</span> obserwujących na Instagramie</span>
+      <span><span class="stat__num" data-count="740" data-suffix=" tys.">740 tys.</span> wyświetleń w ostatnim roku</span>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================== WARSZTAT -->
+<section class="section glow glow--right grain" id="warsztat">
+  <div class="wrap workshop">
+    <img class="workshop__photo" src="photos/warsztat/3.webp"
+         alt="Biurko z MacBookiem, kubkiem kawy, aparatem Canon z obiektywem 50 mm, mikrofonem nakamerowym i gimbalem DJI."
+         width="690" height="1095" loading="lazy" decoding="async" data-reveal>
+
+    <div data-reveal data-reveal-delay="110">
+      <h2 class="section-title">Warsztat</h2>
+
+      <div class="prose" style="margin-top: 1.5rem;">
+        <p>Robię wszystko sam. Przyjeżdżam, ustawiam światło jak trzeba, strzelam, a wieczorem siadam do montażu. Nie ma ekipy i nie ma podwykonawców. Jest jeden człowiek, który odpowiada za całość.</p>
+        <p>Na stadionie pracuję w deszczu, z obiektywem w folii. W hali łapię kosza przy kiepskim świetle. Na 18stce stoję tam, gdzie akurat coś się dzieje, a nie tam, gdzie wypada stanąć.</p>
+        <p>Paczka zdjęć jest u Ciebie po 3 dniach. Jak potrzebujesz kilku kadrów na już, wybrane wysyłam jeszcze tego samego wieczoru.</p>
+      </div>
+
+      <ul class="gear">
+        <li>Canon EOS R8</li>
+        <li>RF 50mm f/1.8</li>
+        <li>teleobiektyw</li>
+        <li>gimbal DJI</li>
+        <li>dron</li>
+        <li>mikrofon nakamerowy</li>
+        <li>softbox</li>
+        <li>Premiere Pro</li>
+        <li>After Effects</li>
+        <li>Photoshop</li>
+        <li>Lightroom</li>
+      </ul>
+
+      <div class="stats" id="stats">
+        <div>
+          <span class="stat__num" data-count="3" data-suffix=" lata">3 lata</span>
+          <span class="stat__label">doświadczenia</span>
+        </div>
+        <div>
+          <span class="stat__num" data-count="3" data-suffix=" dni">3 dni</span>
+          <span class="stat__label">na oddanie paczki</span>
+        </div>
+        <div>
+          <span class="stat__num" data-count="5" data-suffix=",0">5,0</span>
+          <span class="stat__label">na Oferteo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================== ZAUFALI -->
+<!-- TODO: placeholdery. Podmienić na prawdziwe loga/avatary firm i linki,
+     kiedy Filip poda, kogo chce tu pokazać. -->
+<section class="section section--surface" id="zaufali">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <h2 class="section-title">Zaufali mi do tej pory</h2>
+    </div>
+
+    <div class="trusted">
+      <a class="trusted__item" href="#">
+        <span class="trusted__avatar" aria-hidden="true"></span>
+        <span class="trusted__name">Nazwa firmy</span>
+      </a>
+      <a class="trusted__item" href="#">
+        <span class="trusted__avatar" aria-hidden="true"></span>
+        <span class="trusted__name">Nazwa firmy</span>
+      </a>
+      <a class="trusted__item" href="#">
+        <span class="trusted__avatar" aria-hidden="true"></span>
+        <span class="trusted__name">Nazwa firmy</span>
+      </a>
+      <a class="trusted__item" href="#">
+        <span class="trusted__avatar" aria-hidden="true"></span>
+        <span class="trusted__name">Nazwa firmy</span>
+      </a>
+      <a class="trusted__item" href="#">
+        <span class="trusted__avatar" aria-hidden="true"></span>
+        <span class="trusted__name">Nazwa firmy</span>
+      </a>
+      <a class="trusted__item" href="#">
+        <span class="trusted__avatar" aria-hidden="true"></span>
+        <span class="trusted__name">Nazwa firmy</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================= OPINIE -->
+<section class="section section--surface glow glow--left" id="opinie">
+  <div class="wrap">
+    <div class="section-head section-head--split" data-reveal>
+      <div>
+        <h2 class="section-title">Co mówią klienci</h2>
+        <p class="section-intro">Nie moje słowa. Ich.</p>
+      </div>
+      <div class="rating-badge">
+        <span class="rating-badge__num">5,0<span class="rating-badge__max">/5</span></span>
+        <span class="rating-badge__label">3 opinie na <a href="https://www.oferteo.pl/" target="_blank" rel="noopener">Oferteo</a></span>
+      </div>
+    </div>
+
+    <!-- Slider na mobile (swipe/scroll-snap), statyczna siatka od 900px —
+         przy trzech opiniach karuzela na desktopie nie miałaby czego przewijać. -->
+    <div class="reviews-carousel" data-reveal data-reveal-delay="100">
+      <div class="reviews__track" id="reviewsTrack">
+        <blockquote class="review" role="group" aria-label="Opinia 1 z 3">
+          <p class="review__stars" aria-label="Ocena 5 na 5">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
+          <p>Współpraca z Filipem przebiegła bardzo sprawnie. Zdjęcia zostały wykonane starannie oraz z pasją. Mimo młodego wieku widać, że Filip ma już doświadczenie w tym, co robi, oraz najważniejsze, że czerpie z tego radość, co widać w jego pracy wkładanej w zdjęcia. Serdecznie polecam.</p>
+          <footer>K. &middot; Oferteo</footer>
+        </blockquote>
+
+        <blockquote class="review" role="group" aria-label="Opinia 2 z 3">
+          <p class="review__stars" aria-label="Ocena 5 na 5">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
+          <p>Usługa przebiegła pomyślnie, kontakt i profesjonalizm Pana Filipa jest na najwyższym poziomie. Jestem bardzo zadowolona ze zdjęć, które otrzymałam już po 3 dniach od imprezy!</p>
+          <footer>J. &middot; Oferteo</footer>
+        </blockquote>
+
+        <blockquote class="review" role="group" aria-label="Opinia 3 z 3">
+          <p class="review__stars" aria-label="Ocena 5 na 5">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
+          <p>Świetny projekt, dokładnie to, czego oczekiwałem i co opisałem, co jest zasługą świetnej komunikacji z Panem Filipem. Polecam serdecznie.</p>
+          <footer>S. &middot; Oferteo</footer>
+        </blockquote>
+      </div>
+
+      <div class="reviews__nav" aria-hidden="false">
+        <button type="button" class="reviews__arrow" id="reviewPrev" aria-label="Poprzednia opinia">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M14.5 5L8 12l6.5 7" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
+        <!-- role="group" + aria-pressed, nie tablist/aria-selected: to zwykle
+             przyciski przelaczajace slajd, nie zakladki z panelami — Lighthouse
+             słusznie flagował aria-selected na <button> bez role="tab". -->
+        <div class="reviews__dots" id="reviewDots" role="group" aria-label="Wybierz opinię">
+          <button type="button" class="reviews__dot" aria-pressed="true" aria-label="Opinia 1"></button>
+          <button type="button" class="reviews__dot" aria-pressed="false" aria-label="Opinia 2"></button>
+          <button type="button" class="reviews__dot" aria-pressed="false" aria-label="Opinia 3"></button>
+        </div>
+        <button type="button" class="reviews__arrow" id="reviewNext" aria-label="Następna opinia">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9.5 5L16 12l-6.5 7" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="reviews-cta" data-reveal data-reveal-delay="80">
+      <p class="reviews-cta__text">Podobała Ci się współpraca? Zostaw kilka słów. Pomagasz mi się rozwijać i docierać do kolejnych klientów.</p>
+      <a class="btn btn--ghost" href="https://ig.me/m/szkatulski_photography" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 48 48" aria-hidden="true">
+          <path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/>
+          <path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/>
+          <path fill="#FBBC05" d="M11.69 28.18c-.44-1.32-.69-2.73-.69-4.18s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z"/>
+          <path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/>
+        </svg>
+        Zostaw opinię
+      </a>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- ================================================================= STOPKA -->
+<footer class="foot">
+  <div class="foot__grid">
+    <div>
+      <a class="wordmark" href="#top" aria-label="Szkatulski Photography, na górę strony">
+        <span class="wordmark__name">Szkatulski</span>
+        <span class="wordmark__sub">PHOTOGRAPHY</span>
+      </a>
+      <p class="foot__copy">&copy; 2026 Filip Szkatulski</p>
+    </div>
+
+    <nav class="foot__links" aria-label="Stopka">
+      <a href="portfolio.html">Portfolio</a>
+      <a href="cennik.html">Cennik</a>
+      <a href="kontakt.html">Kontakt</a>
+    </nav>
+
+    <div class="foot__social">
+      <a href="https://www.instagram.com/szkatulski_photography/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/profile.php?id=61569980133400" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.25-1.5 1.5-1.5h1.7V3.9c-.3-.04-1.3-.13-2.5-.13-2.5 0-4.2 1.5-4.2 4.3V10H7.3v3H10v8h3.5z"
+                fill="currentColor"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <p class="foot__legal"><a href="privacy.html">Polityka prywatności</a></p>
+</footer>
+
+<script src="assets/js/site.js" defer></script>
+<script src="assets/js/widget.js" defer></script>
+</body>
+</html>
