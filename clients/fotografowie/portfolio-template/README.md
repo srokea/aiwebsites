@@ -1,5 +1,10 @@
 # portfolio-template — szablon portfolio dla fotografa
 
+**Budujesz frontend dla nowego klienta-fotografa? Przeczytaj najpierw
+[PLAYBOOK.md](PLAYBOOK.md)** — sprawdzone wzorce (mozaika, akordeon,
+paginacja) i błędy, które już raz popełniliśmy, żeby nie powtarzać ich
+na kolejnym kliencie. Ten plik (README) opisuje deployment i API.
+
 Jeden folder = jedna, całkowicie niezależna instancja dla jednego klienta:
 własne Cloudflare Pages, Worker, D1 i R2. Na darmowym planie Cloudflare
 koszt takiej instancji to **0 zł/mies.**
@@ -24,7 +29,10 @@ portfolio-template/
 │   ├── auth.js             ← logowanie + JWT (Web Crypto, zero bibliotek)
 │   ├── folders.js          ← CRUD folderów + odczyt całej zawartości folderu
 │   ├── albums.js           ← CRUD albumów (sekcji w folderze)
-│   └── items.js            ← kafelki: upload zdjęć do R2 + bloki tekstu
+│   ├── items.js            ← kafelki: upload zdjęć do R2 + bloki tekstu
+│   ├── settings.js         ← tło hero (statyczne + tryb) — patrz sekcja niżej
+│   ├── hero.js             ← opcjonalny slideshow tła hero (kilka zdjęć zamiast jednego)
+│   └── trusted.js          ← opcjonalna sekcja "Zaufali mi" (avatar + nazwa + link)
 ├── schema.sql
 ├── wrangler.toml
 ├── .dev.vars.example       ← hasło/sekret do `wrangler dev` (skopiuj do .dev.vars)
@@ -139,6 +147,25 @@ Zaloguj się hasłem z kroku 5, dodaj pierwszy folder i wrzuć zdjęcia.
 Podmieniasz **tylko** `public/index.html` (i ewentualnie `public/assets/public.css`).
 Reszta zostaje bez zmian. Frontend potrzebuje dwóch publicznych endpointów:
 
+**Ważne dla przyszłych zmian: mechanika ≠ motyw.** Ten szablon (i panel
+admina) ma dziś ciemny, "nowoczesny" wygląd — ale to tylko CSS. Kolejny
+klient może chcieć zupełnie inny motyw (np. biały, czysty, "fancy"), z inną
+typografią, inną siatką galerii, inaczej wyglądającym hero. To wszystko
+wolno zmienić dowolnie w `public/index.html`/`public/assets/public.css` —
+to bespoke frontend per klient, tak jak zawsze (patrz sekcja 0 wyżej).
+Czego NIE wolno przeprojektowywać przy okazji zmiany motywu: sam
+**mechanizm** — kontrakt API (`GET /api/folders`, `/api/folders/{id}/content`,
+`/api/settings`, `/api/hero-slides`, `/api/trusted`), kształt danych
+(`grid_w`/`grid_h`, `type: 'photo'|'text'`, pola hero/trusted) i panel
+admina (`public/admin/index.html`, patrz `.settings-card`, `.hero-mode`,
+`.trusted-row` w jego CSS — działają na zmiennych `var(--panel)`,
+`var(--line)`, `var(--accent)` itd., więc nowy motyw admina to też tylko
+podmiana zmiennych, nie przepisywanie logiki). Innymi słowy: galeria u
+kolejnego klienta może wyglądać zupełnie inaczej niż u Szkatulskiego, ale
+skąd bierze dane i jak się nimi zarządza w panelu — zostaje identyczne.
+Jeśli zmieniasz coś w `worker/` "żeby pasowało do nowego motywu" — to
+prawdopodobnie zły trop, bo motyw nie powinien w ogóle dotykać backendu.
+
 ```
 GET {API_BASE}/api/folders               → [{ id, name, position }]
 GET {API_BASE}/api/folders/{id}/content  → [{ id, name, position, items: [...] }]
@@ -185,9 +212,38 @@ Odpowiedzi zawsze w formacie `{ ok: true, data: ... }` albo `{ ok: false, error:
 | POST | `/api/items/text` | ✅ | `{ albumId, html?, style? }` → nowy blok tekstu |
 | PUT | `/api/items/:id` | ✅ | `{ grid_w?, grid_h?, position?, album_id?, display_name?, html?, style? }` |
 | DELETE | `/api/items/:id` | ✅ | usuwa kafelek (dla zdjęcia też plik z R2) |
+| GET | `/api/settings` | — | `{ hero_desktop?, hero_mobile?, hero_mode?, ... }` |
+| POST | `/api/settings/hero-desktop` | ✅ | FormData: `file` (WebP) — statyczne tło hero, komputer |
+| POST | `/api/settings/hero-mobile` | ✅ | FormData: `file` (WebP) — statyczne tło hero, telefon |
+| POST | `/api/settings/hero-mode` | ✅ | `{ mode: 'static' \| 'slideshow' }` |
+| GET | `/api/hero-slides` | — | lista slajdów tła hero (patrz `hero_mode`) |
+| POST | `/api/hero-slides` | ✅ | FormData: `file` (WebP), `portrait?` (`'1'`) |
+| PUT | `/api/hero-slides/:id` | ✅ | `{ position }` |
+| DELETE | `/api/hero-slides/:id` | ✅ | usuwa slajd + plik z R2 |
+| GET | `/api/trusted` | — | lista wpisów "Zaufali mi" (opcjonalna sekcja) |
+| POST | `/api/trusted` | ✅ | → nowy pusty wpis na końcu listy |
+| PUT | `/api/trusted/:id` | ✅ | `{ name?, link?, position? }` |
+| POST | `/api/trusted/:id/avatar` | ✅ | FormData: `file` (WebP) |
+| DELETE | `/api/trusted/:id` | ✅ | usuwa wpis + avatar z R2 |
 
 `album_id` w PUT-cie na `/api/items/:id` przenosi kafelek do innego albumu —
 tak działa przeciąganie zdjęcia między albumami w panelu.
+
+**Hero: statyczne zdjęcie vs slideshow.** Domyślnie (`hero_mode` nieustawiony
+albo `'static'`) hero pokazuje jedno stałe zdjęcie z `hero_desktop`/`hero_mobile`.
+Po przełączeniu na `'slideshow'` w panelu (Ustawienia strony), front powinien
+zamiast tego pobrać `/api/hero-slides` i pokazywać je po kolei z przenikaniem —
+**to podłączenie robisz sam w `public/index.html`/JS klienta**, bo szablon nie
+narzuca konkretnego designu hero. Gotowy, przetestowany wzorzec (krzyżowe
+przenikanie 5 s/slajd, dobór `isPortrait` pod telefon/komputer):
+`clients/fotografowie/active/szkatulski/public/assets/js/site.js` →
+`startHeroSlideshow()`.
+
+**"Zaufali mi"** to opcjonalna sekcja — dodaj ją do frontendu klienta tylko
+jeśli brief tego wymaga (logotypy/opinie zaufania). Panel i backend są już
+gotowe niezależnie od tego, czy klient jej używa. Wzorzec renderowania +
+strzałek nawigacji na telefonie: `active/szkatulski/public/assets/js/site.js`
+(sekcja „zaufali mi”) i `public/index.html` (`#trusted`, `.trusted__nav`).
 
 Auth = nagłówek `Authorization: Bearer <token>`.
 

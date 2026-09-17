@@ -73,6 +73,9 @@ const tabs = document.getElementById('tabs');
 const albumsRoot = document.getElementById('albums');
 const state = document.getElementById('state');
 
+const STAGGER = 25;
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 /** Odczyt z API. Endpointy publiczne — bez tokenu. */
 async function api(path) {
   const response = await fetch(API_BASE + path);
@@ -164,10 +167,16 @@ function buildAlbum(album) {
   // Lightbox przewija tylko zdjęcia z tego albumu.
   const photos = album.items.filter((item) => item.type === 'photo');
 
-  album.items.forEach((item) => {
-    grid.append(item.type === 'photo'
+  album.items.forEach((item, index) => {
+    const tile = item.type === 'photo'
       ? buildPhoto(item, () => openLightbox(photos, photos.indexOf(item)))
-      : buildText(item));
+      : buildText(item);
+    grid.append(tile);
+    if (reduceMotion) {
+      tile.classList.add('is-in');
+    } else {
+      setTimeout(() => tile.classList.add('is-in'), index * STAGGER);
+    }
   });
 
   wrap.append(grid);

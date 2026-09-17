@@ -235,14 +235,40 @@ button:disabled{opacity:.45;cursor:default;filter:none}
 #ask .row{display:flex;gap:8px;justify-content:flex-end}
 
 /* --- ustawienia strony (tlo hero) --- */
-#settings{position:fixed;inset:0;z-index:60;background:rgba(11,9,6,.8);display:grid;place-items:center;padding:24px}
-.settings-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;width:100%;max-width:420px;display:flex;flex-direction:column;gap:14px}
+#settings{position:fixed;inset:0;z-index:60;background:rgba(11,9,6,.8);display:flex;justify-content:center;padding:40px 24px;overflow-y:auto}
+.settings-stack{width:100%;max-width:440px;display:flex;flex-direction:column;gap:16px;margin:auto 0}
+.settings-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;width:100%;display:flex;flex-direction:column;gap:14px}
 .settings-head{display:flex;align-items:center;justify-content:space-between}
 .settings-head strong{font-size:15px;font-weight:600}
 .hero-slot{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:10px}
 .hero-slot__preview{flex:none;width:64px;height:64px;border-radius:8px;background:var(--raised) center/cover no-repeat}
 .hero-slot__body{display:flex;flex-direction:column;gap:4px;min-width:0}
 .hero-slot__status{font-size:12px;color:var(--muted)}
+
+/* --- tlo hero: przelacznik trybu (segmented control) + slajdy --- */
+.hero-mode{display:flex;gap:4px;background:var(--raised);border:1px solid var(--line);border-radius:10px;padding:4px}
+.hero-mode label{position:relative;flex:1;display:flex;align-items:center;justify-content:center;text-align:center;gap:6px;padding:9px 8px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--muted);transition:background 150ms,color 150ms}
+.hero-mode label:hover{color:var(--text)}
+.hero-mode label:has(input:checked){background:var(--panel);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.35)}
+.hero-mode input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.hero-slides-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px}
+.hero-slide-card{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--raised) center/cover no-repeat;border:1px solid var(--line)}
+.hero-slide-card__badge{position:absolute;left:4px;top:4px;font-size:9px;padding:2px 6px;border-radius:9999px;background:rgba(11,9,6,.75);color:var(--text)}
+.hero-slide-card__del{position:absolute;right:4px;top:4px;width:20px;height:20px;border-radius:9999px;background:rgba(11,9,6,.75);color:var(--text);display:grid;place-items:center;font-size:11px;line-height:1;border:none;cursor:pointer}
+.hero-slide-card__del:hover{color:var(--danger)}
+.hero-slide-card--empty{display:grid;place-items:center;gap:2px;color:var(--muted);font-size:10px;text-align:center;padding:4px;cursor:pointer;border-style:dashed;transition:border-color 150ms,color 150ms}
+.hero-slide-card--empty:hover{border-color:var(--accent);color:var(--text)}
+.settings-hint{font-size:12px;color:var(--muted);background:var(--raised);border:1px solid var(--line);border-radius:10px;padding:10px 12px;line-height:1.4}
+
+/* --- zaufali mi --- */
+.trusted-row{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:10px}
+.trusted-row__avatar{flex:none;width:48px;height:48px;border-radius:9999px;background:var(--raised) center/cover no-repeat;border:1px dashed var(--line);cursor:pointer;display:grid;place-items:center;color:var(--muted);font-size:16px;transition:border-color 150ms,color 150ms}
+.trusted-row__avatar:hover{border-color:var(--accent);color:var(--text)}
+.trusted-row__body{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:6px}
+.trusted-row__body input{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:13px;color:var(--text);outline:none;transition:border-color 150ms;font:inherit}
+.trusted-row__body input:focus{border-color:var(--accent)}
+.trusted-add{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;border:1px dashed var(--line);border-radius:10px;padding:11px;font-size:13px;color:var(--muted);cursor:pointer;transition:border-color 150ms,color 150ms}
+.trusted-add:hover{border-color:var(--accent);color:var(--text)}
 
 /* --- podgląd strony --- */
 #preview{position:fixed;inset:0;z-index:70;background:var(--bg);display:flex;flex-direction:column}
@@ -370,33 +396,56 @@ button:disabled{opacity:.45;cursor:default;filter:none}
 
 <!-- ============ USTAWIENIA STRONY (na razie: tlo hero) ============ -->
 <div id="settings" hidden>
+  <div class="settings-stack">
   <div class="settings-card">
     <div class="settings-head">
-      <strong>Ustawienia strony</strong>
+      <strong>Tło ekranu powitalnego</strong>
       <button class="icon-btn" id="settingsClose" aria-label="Zamknij ustawienia">✕</button>
     </div>
-    <p class="intro">Tło ekranu powitalnego — osobne zdjęcie na komputer i na telefon.</p>
 
-    <div class="hero-slot" data-slot="desktop">
-      <div class="hero-slot__preview" id="heroPreviewDesktop"></div>
-      <div class="hero-slot__body">
-        <strong>Komputer</strong>
-        <span class="hero-slot__status" id="heroStatusDesktop">Domyślne zdjęcie z repo</span>
-        <button type="button" class="btn-ghost sm" data-pick="desktop">Zmień zdjęcie</button>
+    <div class="hero-mode" id="heroMode">
+      <label><input type="radio" name="heroMode" value="static"> Statyczne zdjęcie</label>
+      <label><input type="radio" name="heroMode" value="slideshow"> Slajdy z albumu</label>
+    </div>
+
+    <div id="heroStaticPanel">
+      <div class="hero-slot" data-slot="desktop">
+        <div class="hero-slot__preview" id="heroPreviewDesktop"></div>
+        <div class="hero-slot__body">
+          <strong>Komputer</strong>
+          <span class="hero-slot__status" id="heroStatusDesktop">Domyślne zdjęcie z repo</span>
+          <button type="button" class="btn-ghost sm" data-pick="desktop">Zmień zdjęcie</button>
+        </div>
+      </div>
+
+      <div class="hero-slot" data-slot="mobile">
+        <div class="hero-slot__preview" id="heroPreviewMobile"></div>
+        <div class="hero-slot__body">
+          <strong>Telefon</strong>
+          <span class="hero-slot__status" id="heroStatusMobile">Domyślne zdjęcie z repo</span>
+          <button type="button" class="btn-ghost sm" data-pick="mobile">Zmień zdjęcie</button>
+        </div>
       </div>
     </div>
 
-    <div class="hero-slot" data-slot="mobile">
-      <div class="hero-slot__preview" id="heroPreviewMobile"></div>
-      <div class="hero-slot__body">
-        <strong>Telefon</strong>
-        <span class="hero-slot__status" id="heroStatusMobile">Domyślne zdjęcie z repo</span>
-        <button type="button" class="btn-ghost sm" data-pick="mobile">Zmień zdjęcie</button>
-      </div>
+    <div id="heroSlidesPanel" hidden>
+      <p class="settings-hint">Slajdy przełączają się co 5 sekund. Pionowe zdjęcia (z telefonu) pokażą się na telefonie, poziome na komputerze. Dodaj przynajmniej po jednym z obu rodzajów.</p>
+      <div class="hero-slides-grid" id="heroSlidesGrid"></div>
     </div>
+  </div>
+
+  <div class="settings-card">
+    <div class="settings-head"><strong>Zaufali mi</strong></div>
+    <p class="intro">Firmy i osoby pokazane na stronie głównej — avatar, nazwa i link, dokąd ma prowadzić kliknięcie.</p>
+    <div id="trustedEmpty" class="settings-hint" hidden>Nie masz jeszcze żadnych wpisów. Dodaj pierwszy przyciskiem poniżej — sekcja pojawi się na stronie głównej dopiero, gdy będzie tu coś wpisane.</div>
+    <div id="trustedList"></div>
+    <button type="button" class="trusted-add" id="trustedAdd">+ Dodaj wpis</button>
+  </div>
   </div>
 </div>
 <input type="file" id="heroInput" accept="image/*" hidden>
+<input type="file" id="heroSlideInput" accept="image/*" hidden>
+<input type="file" id="trustedAvatarInput" accept="image/*" hidden>
 
 <script>
 /* ============================================================================
@@ -517,7 +566,7 @@ async function api(path, { method = 'GET', body } = {}) {
 /* ============================================================================
    Auto-save — każda zmiana leci PUT-em po 800 ms ciszy. Bez przycisku „Zapisz”.
    ========================================================================== */
-const ENDPOINTS = { folder: '/api/folders/', album: '/api/albums/', item: '/api/items/' };
+const ENDPOINTS = { folder: '/api/folders/', album: '/api/albums/', item: '/api/items/', trusted: '/api/trusted/' };
 const pending = new Map();   // 'item:id' → { kind, id, patch }
 let saveTimer = null;
 
@@ -1651,9 +1700,11 @@ async function openSettings() {
         status.textContent = 'Domyślne zdjęcie z repo';
       }
     });
+    await loadHeroMode(data);
   } catch (error) {
     setStatus('Nie udało się wczytać ustawień: ' + error.message);
   }
+  await loadTrusted();
 }
 
 function closeSettings() { $('settings').hidden = true; }
@@ -1676,6 +1727,206 @@ function postHeroImage(file, slot) {
     request.send(form);
   });
 }
+
+/** Generyczny upload FormData przez XHR z tokenem — jak postHeroImage/postPhoto,
+    ale bez zaszytej z gory sciezki, zeby uzyc go dla slajdow i avatarow. */
+function postFile(url, formData) {
+  return new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest();
+    request.open('POST', API_BASE + url);
+    request.setRequestHeader('Authorization', 'Bearer ' + token);
+    request.addEventListener('load', () => {
+      let payload = null;
+      try { payload = JSON.parse(request.responseText); } catch (error) { /* pusta odpowiedź */ }
+      if (payload && payload.ok) resolve(payload.data);
+      else reject(new Error((payload && payload.error) || 'Upload nie powiódł się'));
+    });
+    request.addEventListener('error', () => reject(new Error('Brak połączenia z API')));
+    request.send(formData);
+  });
+}
+
+/* ============================================================================
+   Tło hero — tryb (statyczne / slajdy z albumu) i same slajdy.
+   Ten sam wzorzec konwersji co przy zdjęciach portfolio (toWebp wykrywa
+   pionowe/poziome), tylko bez albumu — slajdy siedzą we własnej tabeli,
+   z dala od normalnego portfolio.
+   ========================================================================== */
+async function loadHeroMode(data) {
+  const mode = data.hero_mode === 'slideshow' ? 'slideshow' : 'static';
+  document.querySelectorAll('#heroMode input').forEach((input) => { input.checked = input.value === mode; });
+  $('heroSlidesPanel').hidden = mode !== 'slideshow';
+  $('heroStaticPanel').hidden = mode === 'slideshow';
+  if (mode === 'slideshow') await loadHeroSlides();
+}
+
+document.querySelectorAll('#heroMode input').forEach((input) => {
+  input.addEventListener('change', async () => {
+    const mode = input.value;
+    $('heroSlidesPanel').hidden = mode !== 'slideshow';
+    $('heroStaticPanel').hidden = mode === 'slideshow';
+    try {
+      await api('/api/settings/hero-mode', { method: 'POST', body: { mode } });
+      if (mode === 'slideshow') await loadHeroSlides();
+      setStatus('Zapisano');
+    } catch (error) {
+      setStatus('Błąd: ' + error.message);
+    }
+  });
+});
+
+async function loadHeroSlides() {
+  try {
+    const response = await fetch(API_BASE + '/api/hero-slides');
+    const payload = await response.json();
+    renderHeroSlides((payload && payload.ok) ? payload.data : []);
+  } catch (error) {
+    setStatus('Nie udało się wczytać slajdów: ' + error.message);
+  }
+}
+
+function renderHeroSlides(slides) {
+  const grid = $('heroSlidesGrid');
+  grid.innerHTML = '';
+
+  slides.forEach((slide) => {
+    const card = el('div', 'hero-slide-card');
+    card.style.backgroundImage = 'url(' + JSON.stringify(slide.url) + ')';
+
+    const badge = el('span', 'hero-slide-card__badge', slide.isPortrait ? 'Pion' : 'Poziom');
+    const del = el('button', 'hero-slide-card__del', '✕');
+    del.type = 'button';
+    del.setAttribute('aria-label', 'Usuń slajd');
+    del.addEventListener('click', async () => {
+      try {
+        await api('/api/hero-slides/' + slide.id, { method: 'DELETE' });
+        await loadHeroSlides();
+      } catch (error) {
+        setStatus('Błąd: ' + error.message);
+      }
+    });
+
+    card.append(badge, del);
+    grid.append(card);
+  });
+
+  const add = el('button', 'hero-slide-card hero-slide-card--empty', '+ Dodaj');
+  add.type = 'button';
+  add.addEventListener('click', () => $('heroSlideInput').click());
+  grid.append(add);
+}
+
+$('heroSlideInput').addEventListener('change', async (event) => {
+  const file = event.target.files[0];
+  event.target.value = '';
+  if (!file) return;
+
+  setStatus('Wysyłam slajd…');
+  try {
+    const { file: webp, portrait } = await toWebp(file);
+    const form = new FormData();
+    form.append('file', webp);
+    if (portrait) form.append('portrait', '1');
+    await postFile('/api/hero-slides', form);
+    await loadHeroSlides();
+    setStatus('Gotowe');
+  } catch (error) {
+    setStatus('Błąd: ' + error.message);
+  }
+});
+
+/* ============================================================================
+   Zaufali mi — avatar + nazwa + link, edytowalne bez dotykania HTML.
+   Nazwa/link zapisują się jak wszystko inne w panelu: queueSave + auto-save
+   po 800 ms ciszy (patrz flushSaves wyżej).
+   ========================================================================== */
+let trustedAvatarTarget = null;
+
+async function loadTrusted() {
+  try {
+    const response = await fetch(API_BASE + '/api/trusted');
+    const payload = await response.json();
+    renderTrusted((payload && payload.ok) ? payload.data : []);
+  } catch (error) {
+    setStatus('Nie udało się wczytać wpisów: ' + error.message);
+  }
+}
+
+function renderTrusted(entries) {
+  const list = $('trustedList');
+  list.innerHTML = '';
+  $('trustedEmpty').hidden = entries.length > 0;
+
+  entries.forEach((entry) => {
+    const row = el('div', 'trusted-row');
+
+    const avatar = el('button', 'trusted-row__avatar', entry.url ? '' : '＋');
+    avatar.type = 'button';
+    avatar.setAttribute('aria-label', 'Zmień avatar');
+    if (entry.url) avatar.style.backgroundImage = 'url(' + JSON.stringify(entry.url) + ')';
+    avatar.addEventListener('click', () => {
+      trustedAvatarTarget = entry.id;
+      $('trustedAvatarInput').click();
+    });
+
+    const body = el('div', 'trusted-row__body');
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.placeholder = 'Nazwa firmy';
+    nameInput.value = entry.name || '';
+    nameInput.addEventListener('input', () => queueSave('trusted', entry.id, { name: nameInput.value }));
+
+    const linkInput = document.createElement('input');
+    linkInput.type = 'text';
+    linkInput.placeholder = 'https://... (dokąd ma prowadzić)';
+    linkInput.value = entry.link || '';
+    linkInput.addEventListener('input', () => queueSave('trusted', entry.id, { link: linkInput.value }));
+
+    body.append(nameInput, linkInput);
+
+    const del = el('button', 'icon-btn', '✕');
+    del.type = 'button';
+    del.setAttribute('aria-label', 'Usuń wpis');
+    del.addEventListener('click', async () => {
+      try {
+        await api('/api/trusted/' + entry.id, { method: 'DELETE' });
+        await loadTrusted();
+      } catch (error) {
+        setStatus('Błąd: ' + error.message);
+      }
+    });
+
+    row.append(avatar, body, del);
+    list.append(row);
+  });
+}
+
+$('trustedAdd').addEventListener('click', async () => {
+  try {
+    await api('/api/trusted', { method: 'POST' });
+    await loadTrusted();
+  } catch (error) {
+    setStatus('Błąd: ' + error.message);
+  }
+});
+
+$('trustedAvatarInput').addEventListener('change', async (event) => {
+  const file = event.target.files[0];
+  event.target.value = '';
+  if (!file || !trustedAvatarTarget) return;
+
+  setStatus('Wysyłam avatar…');
+  try {
+    const { file: webp } = await toWebp(file);
+    const form = new FormData();
+    form.append('file', webp);
+    await postFile('/api/trusted/' + trustedAvatarTarget + '/avatar', form);
+    await loadTrusted();
+    setStatus('Gotowe');
+  } catch (error) {
+    setStatus('Błąd: ' + error.message);
+  }
+});
 
 $('openSettings').addEventListener('click', openSettings);
 $('settingsClose').addEventListener('click', closeSettings);

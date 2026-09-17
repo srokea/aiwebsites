@@ -120,7 +120,14 @@ img{max-width:100%;display:block}
   min-height:0;
   grid-column:span var(--mw);
   grid-row:span var(--mh);
+  /* Wejscie kafla: przygasly, lekko przesuniety w dol, staje sie widoczny
+     ze stopniowym opoznieniem (patrz buildAlbum w index.html) — bez tego
+     caly album pojawial sie na raz jako "twardy" skok. */
+  opacity:0;
+  transform:translateY(6px);
+  transition:opacity 260ms ease,transform 260ms ease;
 }
+.item.is-in{opacity:1;transform:none}
 
 @media (min-width:700px){
   .grid{

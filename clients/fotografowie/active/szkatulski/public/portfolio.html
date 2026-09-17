@@ -19,6 +19,9 @@
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/worksans-latin.woff2" crossorigin>
 
 <link rel="stylesheet" href="assets/css/style.css">
+<!-- Fonty blokow tekstu z panelu (Playfair, Lora, Great Vibes...) — te same
+     pliki co w panelu, wczytywane tylko gdy faktycznie uzyte w tekscie. -->
+<link rel="stylesheet" href="assets/css/admin-fonts.css">
 </head>
 <body>
 
@@ -108,7 +111,7 @@
         <!-- Podfiltry albumów (np. konkretne auta pod "Auta") — puste i ukryte,
              dopóki w danej kategorii nie ma więcej niż jednego nazwanego albumu.
              Filip zarządza tym sam, dodając albumy w panelu. -->
-        <div class="filters filters--sub" id="subfilters" role="group" aria-label="Zawęź w obrębie kategorii" hidden></div>
+        <div class="filters filters--sub" id="subfilters" role="group" aria-label="Zawęź w obrębie kategorii"></div>
       </aside>
 
       <div class="portfolio-main">

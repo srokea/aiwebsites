@@ -52,3 +52,37 @@ CREATE TABLE IF NOT EXISTS items (
 CREATE INDEX IF NOT EXISTS idx_folders_position ON folders(position);
 CREATE INDEX IF NOT EXISTS idx_albums_folder ON albums(folder_id, position);
 CREATE INDEX IF NOT EXISTS idx_items_album ON items(album_id, position);
+
+-- Ustawienia strony spoza hierarchii folder/album/item — proste klucz-wartość,
+-- żeby dorzucenie kolejnego ustawienia nie wymagało migracji schematu. Dziś:
+-- tło hero (hero_desktop/hero_mobile) i tryb hero (hero_mode: static/slideshow).
+CREATE TABLE IF NOT EXISTS settings (
+  key TEXT PRIMARY KEY,
+  value TEXT
+);
+
+-- Slajdy tła hero (opcjonalny slideshow zamiast jednego statycznego zdjęcia,
+-- patrz settings.key='hero_mode' i worker/hero.js) — trzymane OSOBNO od
+-- folder/album/item: to treść USTAWIEŃ strony, nigdy nie trafia do publicznej
+-- galerii portfolio. is_portrait decyduje, czy slajd idzie na telefon czy
+-- na komputer (żeby pionowe "z telefonu" nie rozjeżdżały się na desktopie).
+CREATE TABLE IF NOT EXISTS hero_slides (
+  id TEXT PRIMARY KEY,
+  r2_key TEXT NOT NULL,
+  is_portrait INTEGER NOT NULL DEFAULT 0,
+  position INTEGER NOT NULL,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_hero_slides_position ON hero_slides(position);
+
+-- Sekcja "Zaufali mi" (jeśli klient jej używa): avatar + nazwa firmy + link,
+-- edytowalne z panelu zamiast wpisywane na sztywno we frontendzie klienta.
+CREATE TABLE IF NOT EXISTS trusted_entries (
+  id TEXT PRIMARY KEY,
+  r2_key TEXT,
+  name TEXT NOT NULL DEFAULT '',
+  link TEXT NOT NULL DEFAULT '',
+  position INTEGER NOT NULL,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_trusted_position ON trusted_entries(position);

@@ -10,7 +10,9 @@
  * Endpointy publiczne (bez tokenu):
  *   GET    /api/folders                → lista folderów
  *   GET    /api/folders/:id/content    → albumy folderu z kafelkami
- *   GET    /api/settings               → { hero_desktop?, hero_mobile?, ... }
+ *   GET    /api/settings               → { hero_desktop?, hero_mobile?, hero_mode?, ... }
+ *   GET    /api/hero-slides            → lista slajdów tła hero (patrz hero_mode)
+ *   GET    /api/trusted                → lista wpisów "Zaufali mi"
  *
  * Endpointy chronione (Authorization: Bearer <JWT>):
  *   POST   /api/folders                { name }
@@ -26,6 +28,14 @@
  *   DELETE /api/items/:id
  *   POST   /api/settings/hero-desktop  FormData: file (WebP)
  *   POST   /api/settings/hero-mobile   FormData: file (WebP)
+ *   POST   /api/settings/hero-mode     { mode: 'static' | 'slideshow' }
+ *   POST   /api/hero-slides            FormData: file, portrait?
+ *   PUT    /api/hero-slides/:id        { position }
+ *   DELETE /api/hero-slides/:id
+ *   POST   /api/trusted                → nowy pusty wpis
+ *   PUT    /api/trusted/:id            { name?, link?, position? }
+ *   POST   /api/trusted/:id/avatar     FormData: file (WebP)
+ *   DELETE /api/trusted/:id
  *
  * Logowanie:
  *   POST   /api/auth                   { password } → { token }
@@ -35,7 +45,9 @@ import { authenticate, checkPassword, createToken } from './auth.js';
 import { createAlbum, deleteAlbum, updateAlbum } from './albums.js';
 import { createFolder, deleteFolder, getFolderContent, listFolders, updateFolder } from './folders.js';
 import { createText, deleteItem, updateItem, uploadPhoto, uploadVideo } from './items.js';
-import { getSettings, uploadHeroImage } from './settings.js';
+import { getSettings, setHeroMode, uploadHeroImage } from './settings.js';
+import { deleteHeroSlide, listHeroSlides, updateHeroSlide, uploadHeroSlide } from './hero.js';
+import { createTrusted, deleteTrusted, listTrusted, updateTrusted, uploadTrustedAvatar } from './trusted.js';
 
 /* ---------- CORS ---------- */
 
@@ -122,6 +134,14 @@ async function route(request, env) {
     return ok(await getSettings(env), request, env);
   }
 
+  if (resource === 'hero-slides' && method === 'GET' && !param) {
+    return ok(await listHeroSlides(env), request, env);
+  }
+
+  if (resource === 'trusted' && method === 'GET' && !param) {
+    return ok(await listTrusted(env), request, env);
+  }
+
   /* --- od tego miejsca wymagany token --- */
   const session = await authenticate(request, env);
   if (!session) return fail('Wymagane logowanie', request, env, 401);
@@ -175,6 +195,40 @@ async function route(request, env) {
   if (resource === 'settings' && method === 'POST' && (param === 'hero-desktop' || param === 'hero-mobile')) {
     const slot = param === 'hero-desktop' ? 'desktop' : 'mobile';
     return ok(await uploadHeroImage(env, await request.formData(), slot), request, env);
+  }
+
+  if (resource === 'settings' && method === 'POST' && param === 'hero-mode') {
+    const { mode } = await readJson(request);
+    return ok(await setHeroMode(env, mode), request, env);
+  }
+
+  if (resource === 'hero-slides' && !action) {
+    if (method === 'POST' && !param) {
+      return ok(await uploadHeroSlide(env, await request.formData()), request, env);
+    }
+    if (method === 'PUT' && param) {
+      const slide = await updateHeroSlide(env, param, await readJson(request));
+      return slide ? ok(slide, request, env) : notFound('Slajd');
+    }
+    if (method === 'DELETE' && param) {
+      return (await deleteHeroSlide(env, param)) ? ok({ id: param }, request, env) : notFound('Slajd');
+    }
+  }
+
+  if (resource === 'trusted') {
+    if (method === 'POST' && !param) {
+      return ok(await createTrusted(env), request, env);
+    }
+    if (method === 'PUT' && param && !action) {
+      const entry = await updateTrusted(env, param, await readJson(request));
+      return entry ? ok(entry, request, env) : notFound('Wpis');
+    }
+    if (method === 'POST' && param && action === 'avatar') {
+      return ok(await uploadTrustedAvatar(env, param, await request.formData()), request, env);
+    }
+    if (method === 'DELETE' && param && !action) {
+      return (await deleteTrusted(env, param)) ? ok({ id: param }, request, env) : notFound('Wpis');
+    }
   }
 
   return fail('Nie znaleziono', request, env, 404);

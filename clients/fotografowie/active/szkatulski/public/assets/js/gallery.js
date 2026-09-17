@@ -53,7 +53,7 @@
   let videos = [];
   let activeFilter = 'all';
   let activeAlbum = 'all';
-  let shown = PAGE_SIZE;
+  let gridExpanded = false;
 
   const filtersEl = document.getElementById('filters');
   const subfiltersEl = document.getElementById('subfilters');
@@ -118,13 +118,11 @@
   /* ----------------------------------------------------------------- dane --- */
 
   /**
-   * Zdjęcia i rolki z workera: /api/folders + /api/folders/:id/content dla
-   * każdej kategorii. Bloki tekstu (type: 'text') z panelu świadomie NIE
-   * trafiają na tę stronę — ten frontend renderuje portfolio jako masonry,
-   * nie jako album-po-albumie jak generyczny szablon, więc nie ma dla nich
-   * miejsca w układzie. Panel dalej pozwala je dodać (dziedziczy to z
-   * portfolio-template) — jeśli Filip zacznie ich używać, da się je wesprzeć,
-   * ale na razie zostałyby ciche i niewidoczne, więc lepiej ich nie udawać.
+   * Zdjęcia, bloki tekstu i rolki z workera: /api/folders + /api/folders/:id/content
+   * dla każdej kategorii. Zdjęcia i teksty trafiają do wspólnej listy "photos"
+   * (z polem `type`) — obie renderowane są jako kafle mozaiki (patrz renderGrid),
+   * `grid_w`/`grid_h` z panelu decyduje o rozmiarze kafla dokladnie tak samo
+   * jak w samym panelu (patrz applyGridSize).
    */
   async function loadFromApi() {
     const response = await fetch(API_BASE + '/api/folders');
@@ -144,21 +142,29 @@
 
       return {
         photos: items
-          .filter(({ item }) => item.type === 'photo')
-          .map(({ item, album }) => ({
-            cat: folder.slug,
-            // Nazwa folderu z panelu = etykieta zakladki filtra — pokazujemy
-            // ja dokladnie tak, jak Filip ja napisal (patrz renderFilters).
-            catLabel: folder.name,
-            // Nazwa albumu z panelu napędza podfiltry ("BMW E30" pod "Auta") —
-            // pusta nazwa (sekcja bez nagłówka) po prostu nie tworzy podfiltra.
-            album: album.name || null,
-            url: item.url,
-            alt: item.display_name || 'Zdjecie z portfolio, kategoria ' + folder.name,
-            caption: item.display_name || '',
-            w: null,
-            h: null,
-          })),
+          .filter(({ item }) => item.type === 'photo' || item.type === 'text')
+          .map(({ item, album }) => {
+            const base = {
+              cat: folder.slug,
+              // Nazwa folderu z panelu = etykieta zakladki filtra — pokazujemy
+              // ja dokladnie tak, jak Filip ja napisal (patrz renderFilters).
+              catLabel: folder.name,
+              // Nazwa albumu z panelu napędza podfiltry ("BMW E30" pod "Auta") —
+              // pusta nazwa (sekcja bez nagłówka) po prostu nie tworzy podfiltra.
+              album: album.name || null,
+              gridW: item.grid_w,
+              gridH: item.grid_h,
+            };
+            return item.type === 'photo'
+              ? {
+                  ...base,
+                  type: 'photo',
+                  url: item.url,
+                  alt: item.display_name || 'Zdjecie z portfolio, kategoria ' + folder.name,
+                  caption: item.display_name || '',
+                }
+              : { ...base, type: 'text', html: item.html, style: item.style };
+          }),
         videos: items
           .filter(({ item }) => item.type === 'video')
           .map(({ item }) => ({
@@ -179,8 +185,10 @@
   // zdjec z portfolio po nazwie folderu, wiec `inGallery` zawsze jest prawda.
   // Pole zostaje (zamiast usuwac filtr .inGallery w kilku miejscach nizej),
   // gdyby kiedys wrocil pomysl na folder celowo niewidoczny w portfolio.
+  // `type` domyslnie 'photo' — LOCAL_PHOTOS (zapas, gdy API nie odpowiada)
+  // moze go nie miec.
   function decorate(list) {
-    return list.map((photo) => ({ ...photo, inGallery: true }));
+    return list.map((photo) => ({ ...photo, inGallery: true, type: photo.type || 'photo' }));
   }
 
   /* -------------------------------------------------------------- filtry --- */
@@ -226,7 +234,19 @@
       button.type = 'button';
       button.dataset.slug = entry.slug;
       button.setAttribute('aria-pressed', String(entry.slug === activeFilter));
-      button.innerHTML = entry.label
+
+      // Strzalka tylko tam, gdzie faktycznie jest co rozwinac (2+ nazwane
+      // albumy = te same warunki co przy pokazywaniu podfiltrow nizej).
+      // Obraca sie w dol, gdy kategoria jest aktywna (patrz CSS .filter--has-children).
+      const hasChildren = entry.slug !== 'all' && albumsInCategory(entry.slug).length >= 2;
+      if (hasChildren) button.classList.add('filter--has-children');
+      const chevron = hasChildren
+        ? '<svg class="filter__chevron" width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">'
+          + '<path d="M3 1.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.4" '
+          + 'stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        : '';
+
+      button.innerHTML = chevron + entry.label
         + ' <span class="filter__count">(' + entry.count + ')</span>';
       button.addEventListener('click', () => setFilter(entry.slug));
       filtersEl.append(button);
@@ -241,6 +261,68 @@
   }
 
   /**
+   * Rozwija/zwija #subfilters animujac RZECZYWISTA wysokosc tresci (zmierzona
+   * przez scrollHeight), nie zgadywany max-height. Zgadywany max-height (np.
+   * "480px, powinno wystarczyc") przeskakuje: przegladarka animuje cala
+   * zadeklarowana wartosc, wiec przy tresci krotszej niz cap ruch konczy sie
+   * dlugo przed uplywem czasu animacji i wyglada jak nagly skok zamiast
+   * plynnego rozwiniecia. Mierzac scrollHeight na biezaco dostajemy dokladny
+   * cel — animacja zawsze trwa cala zadeklarowana dlugosc.
+   */
+  // Sidebar (pionowa lista, patrz CSS) dostaje plynne rozwijanie WYSOKOSCI.
+  // Pigulki na telefonie (poziomy rzad z przewijaniem) — tylko fade opacity,
+  // patrz komentarz przy .filters--sub w CSS czemu height tam nie pasuje.
+  const isSidebarLayout = () => window.matchMedia('(min-width: 900px)').matches;
+
+  function setSubfiltersOpen(open) {
+    if (open) {
+      subfiltersEl.removeAttribute('aria-hidden');
+      subfiltersEl.classList.add('is-open');
+    } else {
+      subfiltersEl.classList.remove('is-open');
+      subfiltersEl.setAttribute('aria-hidden', 'true');
+    }
+
+    if (!isSidebarLayout()) return;
+
+    const current = subfiltersEl.getBoundingClientRect().height;
+
+    // Chromium ma quirk: scrollHeight kontenera flex-direction:column +
+    // overflow:hidden, gdy jego WLASNA wysokosc jest mala/zerowa, raportuje
+    // wysokosc TYLKO JEDNEJ "linii" tresci (np. 26px), nie sumy wszystkich
+    // dzieci (np. 95px) — mimo flex-shrink:0 na dzieciach. Przelaczanie
+    // display na chwile "naprawia" odczyt, ale zaburza zaraz potem wlasciwa
+    // animacje wysokosci (przegladarka gubi wtedy referencje do poprzedniej
+    // klatki, wiec transition juz sie nie odpala). Zamiast tego mierzymy
+    // rozpietosc od gory pierwszego do dolu ostatniego dziecka bezposrednio —
+    // dzieci maja stabilny, wlasny rozmiar (flex-shrink:0) niezalezny od
+    // ograniczenia rodzica, wiec to zawsze daje prawdziwa wartosc, bez
+    // dotykania stylu rodzica przed docelowa animacja.
+    let target = 0;
+    if (open && subfiltersEl.children.length) {
+      const kids = subfiltersEl.children;
+      target = kids[kids.length - 1].getBoundingClientRect().bottom - kids[0].getBoundingClientRect().top;
+    }
+
+    subfiltersEl.style.height = current + 'px';
+    // Wymuszony reflow — zeby przegladarka zdazyla "zobaczyc" wartosc
+    // startowa, zanim w tej samej klatce ustawimy docelowa (inaczej brak animacji).
+    void subfiltersEl.offsetHeight;
+    subfiltersEl.style.height = target + 'px';
+  }
+
+  // Po dojechaniu animacji przy otwarciu wracamy do height:auto, zeby np.
+  // zmiana szerokosci ekranu (i wysokosci zawinietego tekstu) nie zostala
+  // uwięziona w stalej wartosci px zmierzonej przy innej szerokosci.
+  if (subfiltersEl) {
+    subfiltersEl.addEventListener('transitionend', (event) => {
+      if (event.propertyName === 'height' && subfiltersEl.classList.contains('is-open')) {
+        subfiltersEl.style.height = 'auto';
+      }
+    });
+  }
+
+  /**
    * Podfiltry albumów — pojawiają się TYLKO gdy w aktywnej kategorii jest
    * więcej niż jeden nazwany album (np. Filip dodał w panelu osobne albumy
    * "BMW E30", "Nissan GT-R" pod folderem "Auta"). Jeden album albo brak
@@ -250,23 +332,33 @@
   function renderSubfilters() {
     if (!subfiltersEl) return;
 
-    // W sidebarze podfiltry maja sie pojawiac pod WLASNIE kliknieta
-    // kategoria, nie na sztywno na koncu calej listy kategorii.
+    // W SIDEBARZE (pionowa lista) podfiltry maja sie pojawiac pod WLASNIE
+    // kliknieta kategoria — wstawiamy #subfilters jako kolejny element
+    // WEWNATRZ #filters, zaraz po aktywnym przycisku.
+    // Na TELEFONIE (pozioma, przewijana lista pigulek) ta sama sztuczka
+    // wsadzalaby caly rzad podfiltrow JAKO KOLEJNA POZYCJE tego samego
+    // poziomego scrollera — trzeba by bylo przewinac pigulki w bok, zeby
+    // je zobaczyc (dokladnie ten zglaszany "slider lewo-prawo"). Na
+    // telefonie #subfilters wraca wiec na swoje stale miejsce z HTML:
+    // osobny, pelnoszerokosciowy rzad pod CALA lista kategorii.
     if (filtersEl) {
-      const activeButton = filtersEl.querySelector('.filter[data-slug="' + activeFilter + '"]');
-      if (activeButton) activeButton.after(subfiltersEl);
+      if (isSidebarLayout()) {
+        const activeButton = filtersEl.querySelector('.filter[data-slug="' + activeFilter + '"]');
+        if (activeButton) activeButton.after(subfiltersEl);
+      } else {
+        filtersEl.after(subfiltersEl);
+      }
     }
 
     const names = activeFilter === 'all' ? [] : albumsInCategory(activeFilter);
 
     if (names.length < 2) {
-      subfiltersEl.hidden = true;
-      subfiltersEl.innerHTML = '';
       if (activeAlbum !== 'all') activeAlbum = 'all';
+      subfiltersEl.innerHTML = '';
+      setSubfiltersOpen(false);
       return;
     }
 
-    subfiltersEl.hidden = false;
     subfiltersEl.innerHTML = '';
 
     const entries = [{ slug: 'all', label: 'Wszystkie' }]
@@ -285,6 +377,8 @@
       button.addEventListener('click', () => setAlbum(entry.slug));
       subfiltersEl.append(button);
     });
+
+    setSubfiltersOpen(true);
   }
 
   function syncSubfilterButtons() {
@@ -331,7 +425,7 @@
     if (!masonryEl || slug === activeFilter) return;
     activeFilter = slug;
     activeAlbum = 'all';
-    shown = PAGE_SIZE;
+    gridExpanded = false;
     syncFilterButtons();
     renderSubfilters();
     if (!skipUrl) writeUrl();
@@ -349,7 +443,7 @@
   function setAlbum(slug) {
     if (!masonryEl || slug === activeAlbum) return;
     activeAlbum = slug;
-    shown = PAGE_SIZE;
+    gridExpanded = false;
     syncSubfilterButtons();
     writeUrl();
 
@@ -364,25 +458,72 @@
 
   /* --------------------------------------------------------------- siatka --- */
 
+  /**
+   * Ustawia --w/--h (siatka 6-kolumnowa od 768px) i --mw/--mh (2 kolumny na
+   * telefonie) z grid_w/grid_h ustawionych w panelu — dokladnie ten sam
+   * mechanizm co w panelu (public/admin/index.html), zeby podglad tam byl
+   * wierny temu, co widac tutaj. Bloki tekstu na telefonie zawsze zajmuja
+   * pelna szerokosc i jeden wiersz (za malo miejsca na wielowierszowy uklad).
+   */
+  function applyGridSize(node, entry) {
+    const gridW = entry.gridW || 2;
+    const gridH = entry.gridH || 2;
+    const mobileWidth = entry.type === 'text' || gridW >= 4 ? 2 : 1;
+    const mobileHeight = entry.type === 'text' ? 1 : Math.min(gridH, 3);
+    node.style.setProperty('--w', gridW);
+    node.style.setProperty('--h', gridH);
+    node.style.setProperty('--mw', mobileWidth);
+    node.style.setProperty('--mh', mobileHeight);
+  }
+
   function buildShot(photo, index, list) {
     const button = el('button', 'shot');
     button.type = 'button';
     button.setAttribute('aria-label', 'Powiększ zdjęcie: ' + (photo.alt || 'zdjęcie z portfolio'));
+    applyGridSize(button, photo);
 
     const image = new Image();
     image.src = photo.url;
     image.alt = photo.alt || '';
     image.loading = index < 4 ? 'eager' : 'lazy';
     image.decoding = 'async';
-    // Wymiary z góry, żeby siatka nie skakała w trakcie ładowania.
-    if (photo.w && photo.h) {
-      image.width = photo.w;
-      image.height = photo.h;
-    }
 
     button.append(image);
     button.addEventListener('click', () => openLightbox(list, index));
     return button;
+  }
+
+  // Ta sama lista fontow co w panelu (patrz public/admin/index.html) —
+  // hostowane lokalnie w assets/fonts/admin/, wczytywane przez admin-fonts.css.
+  const TEXT_FONT_FALLBACKS = {
+    'Work Sans': 'sans-serif',
+    'Montserrat': 'sans-serif',
+    'DM Sans': 'sans-serif',
+    'Playfair Display': 'serif',
+    'Cormorant Garamond': 'serif',
+    'Lora': 'serif',
+    'Great Vibes': 'cursive',
+    'Caveat': 'cursive',
+  };
+
+  function buildText(entry) {
+    const tile = el('div', 'text-tile');
+    applyGridSize(tile, entry);
+
+    const { font, size, align, color, bg } = entry.style || {};
+    if (bg) tile.style.backgroundColor = bg;
+
+    const body = el('div', 'text-tile__body');
+    body.style.setProperty('--fs', size || 32);
+    body.style.fontFamily = "'" + (font || 'Work Sans') + "', " + (TEXT_FONT_FALLBACKS[font] || 'sans-serif');
+    body.style.textAlign = align || 'center';
+    if (color) body.style.color = color;
+    // HTML jest oczyszczany przez workera przy zapisie (tylko b/i/u/br/div/p,
+    // bez atrybutow) — bezpieczne do wstawienia przez innerHTML.
+    body.innerHTML = entry.html || '';
+
+    tile.append(body);
+    return tile;
   }
 
   function buildPlaceholder(text) {
@@ -394,10 +535,101 @@
     return box;
   }
 
+  // Lightbox przewija po calej (nie tylko widocznej) liscie zdjec — bloki
+  // tekstu nie maja podgladu i nie licza sie do numeracji "n / N".
+  function buildTile(entry, photoList) {
+    return entry.type === 'text'
+      ? buildText(entry)
+      : buildShot(entry, photoList.indexOf(entry), photoList);
+  }
+
+  // Wysokosc siatki w stanie zwinietym (px) — zmierzona przy ostatnim
+  // renderGrid, zeby "Pokaz mniej" mogl do niej wrocic bez ponownego mierzenia.
+  let collapsedHeight = 0;
+
+  const DESKTOP_GRID = window.matchMedia('(min-width: 768px)');
+
+  /**
+   * Wlasny "skyline" bin-packing zamiast polegania wylacznie na
+   * grid-auto-flow:dense. Dense skanuje wiersz po wierszu i wypelnia TYLKO
+   * dokladne dziury, na ktore trafi w kolejnosci DOM — nie szuka aktywnie
+   * globalnie najnizszego wolnego miejsca, wiec kilka kafli pod rzad o tym
+   * samym ksztalcie (np. seria pionowek z telefonu) potrafi zostawic duzy,
+   * pusty prostokat obok. Skyline sledzi wysokosc KAZDEJ kolumny osobno i
+   * dla kazdego kafla aktywnie szuka kolumny, w ktorej zacznie sie najwyzej
+   * (czyli najnizszy punkt startowy) — dokladnie tak dziala prawdziwy
+   * masonry (Pinterest/Packery), tylko wyrazony przez grid-column/grid-row
+   * zamiast bezwzglednego pozycjonowania.
+   *
+   * Gdy kafel w ogole nie miesci sie w pozostalej szerokosci (np. grid_w=4
+   * a zostaly 3 wolne kolumny z 6), przycinamy jego szerokosc do tego, co
+   * jest dostepne w NAJLEPSZEJ kolumnie — to jedyny sposob na gwarantowanie
+   * rownej prawej krawedzi bez dziur: czasem trzeba kafel zwezic, zamiast
+   * zostawiac po nim pustke.
+   */
+  function packTiles(list, tiles) {
+    const desktop = DESKTOP_GRID.matches;
+    const columns = desktop ? 6 : 2;
+    const heights = new Array(columns).fill(0);
+
+    list.forEach((entry, i) => {
+      const gridW = entry.gridW || 2;
+      const gridH = entry.gridH || 2;
+      const wantedW = desktop
+        ? gridW
+        : (entry.type === 'text' || gridW >= 4 ? 2 : 1);
+      const h = desktop ? gridH : (entry.type === 'text' ? 1 : Math.min(gridH, 3));
+      const w = Math.min(wantedW, columns);
+
+      // Szukamy kolumny startowej, w ktorej pas szerokosci w zaczyna sie
+      // najwyzej (najnizsza wartosc w heights) — to jest sedno skyline.
+      let bestCol = 0;
+      let bestTop = Infinity;
+      for (let col = 0; col <= columns - w; col++) {
+        let segTop = 0;
+        for (let c = col; c < col + w; c++) segTop = Math.max(segTop, heights[c]);
+        if (segTop < bestTop) { bestTop = segTop; bestCol = col; }
+      }
+
+      // Domykanie samotnej, JEDNOKOLUMNOWEJ reszty: gdy tuz za polozonym
+      // kaflem zostaje dokladnie jedna wolna kolumna na tej samej wysokosci
+      // (a dalej juz jest wyzej albo to koniec rzedu), praktycznie nic jej
+      // nie wypelni — zdjecia maja zwykle szerokosc 2+, wiec taka dziura
+      // zostalaby pusta na dobre (dokladnie to zglosil klient: 3+2 z 6
+      // kolumn zostawia samotna "6-ta" na zawsze). Poszerzamy WLASNIE
+      // polozony kafel o ta jedna kolumne zamiast zostawiac po nim dziure.
+      let finalW = w;
+      if (
+        bestCol + finalW < columns
+        && heights[bestCol + finalW] <= bestTop
+        && (bestCol + finalW + 1 >= columns || heights[bestCol + finalW + 1] > bestTop)
+      ) {
+        finalW += 1;
+      }
+
+      for (let c = bestCol; c < bestCol + finalW; c++) heights[c] = bestTop + h;
+
+      const tile = tiles[i];
+      tile.style.gridColumn = (bestCol + 1) + ' / span ' + finalW;
+      tile.style.gridRow = (bestTop + 1) + ' / span ' + h;
+    });
+  }
+
+  /**
+   * Renderuje ZAWSZE cala liste (nie tylko pierwsze PAGE_SIZE) — inaczej
+   * grid-auto-flow:dense nie ma z czego wypelniac luk po wiekszych kaflach:
+   * przy tylko 12 zdjeciach w DOM zostawaly czarne dziury, bo zdjecie, ktore
+   * mialoby je wypelnic, jeszcze nie istnialo w siatce (patrz zrzuty ekranu —
+   * dziury znikaly dopiero po "Pokaz wiecej"). Renderujac wszystko na raz i
+   * PRZYCINAJAC WYSOKOSC kontenera zamiast liczby kafli, packing zawsze ma
+   * pelny material do wypelniania luk, a "zwiniecie" to tylko kosmetyczne
+   * ograniczenie widoku, nie inny stan danych.
+   */
   function renderGrid() {
     if (!masonryEl) return;
     const list = visiblePhotos();
     masonryEl.innerHTML = '';
+    masonryEl.style.height = '';
 
     if (!list.length) {
       for (let i = 0; i < 3; i++) masonryEl.append(buildPlaceholder('miejsce na zdjęcia'));
@@ -405,23 +637,67 @@
       return;
     }
 
-    const slice = list.slice(0, shown);
-    slice.forEach((photo, index) => {
-      const tile = buildShot(photo, index, list);
+    const photoList = list.filter((entry) => entry.type !== 'text');
+    const tiles = list.map((entry, index) => {
+      const tile = buildTile(entry, photoList);
       masonryEl.append(tile);
       if (reduceMotion) {
         tile.classList.add('is-in');
       } else {
         setTimeout(() => tile.classList.add('is-in'), index % PAGE_SIZE * STAGGER);
       }
+      return tile;
     });
+
+    packTiles(list, tiles);
 
     if (list.length <= PAGE_SIZE) {
       moreWrap.hidden = true;
-    } else {
-      moreWrap.hidden = false;
-      moreBtn.textContent = slice.length >= list.length ? 'Pokaż mniej' : 'Pokaż więcej';
+      return;
     }
+
+    // Wysokosc "zwinieta" = najnizsza dolna krawedz spomiedzy pierwszych
+    // PAGE_SIZE kafli (w kolejnosci z API/panelu) — skyline moglo dociagnac
+    // tam tez pozniejszy, mniejszy kafelek, zeby wypelnic luke, i to jest
+    // pozadane. Mierzymy PO ustawieniu jawnych pozycji, bo dopiero wtedy
+    // przegladarka wie, jak faktycznie ulozylo sie cala siatka.
+    const gridTop = masonryEl.getBoundingClientRect().top;
+    collapsedHeight = Math.max(
+      ...tiles.slice(0, PAGE_SIZE).map((tile) => tile.getBoundingClientRect().bottom - gridTop),
+    );
+
+    if (collapsedHeight >= masonryEl.scrollHeight - 1) {
+      // Dense i tak upchnelo wszystko w obrebie pierwszych PAGE_SIZE wierszy
+      // (male kafelki, duzo wolnego miejsca) — nie ma czego pokazywac "wiecej".
+      moreWrap.hidden = true;
+      return;
+    }
+
+    moreWrap.hidden = false;
+    moreBtn.textContent = 'Pokaż więcej';
+    masonryEl.style.height = collapsedHeight + 'px';
+  }
+
+  /** Rozwija/zwija siatke tym samym mechanizmem co setSubfiltersOpen wyzej —
+      patrz ten komentarz po wyjasnienie, czemu height mierzony w JS, nie
+      zgadywany max-height. */
+  function setGridExpanded(open) {
+    const current = masonryEl.getBoundingClientRect().height;
+    masonryEl.style.height = current + 'px';
+    void masonryEl.offsetHeight;
+    masonryEl.style.height = (open ? masonryEl.scrollHeight : collapsedHeight) + 'px';
+    moreBtn.textContent = open ? 'Pokaż mniej' : 'Pokaż więcej';
+  }
+
+  // Po pelnym rozwinieciu wracamy do height:auto, zeby np. zmiana szerokosci
+  // ekranu (inny uklad dense, inna naturalna wysokosc) nie zostala uwięziona
+  // w nieaktualnej wartosci px zmierzonej przy innej szerokosci.
+  if (masonryEl) {
+    masonryEl.addEventListener('transitionend', (event) => {
+      if (event.propertyName === 'height' && gridExpanded) {
+        masonryEl.style.height = 'auto';
+      }
+    });
   }
 
   /* ------------------------------------------------------------ lightbox --- */
@@ -659,11 +935,18 @@
 
   if (moreBtn) {
     moreBtn.addEventListener('click', () => {
-      // Ten sam guzik dziala w obie strony: rozwija dalej albo, gdy siatka
-      // jest juz w pelni rozwinieta, zwija z powrotem do pierwszej strony.
-      shown = shown >= visiblePhotos().length ? PAGE_SIZE : shown + PAGE_SIZE;
-      renderGrid();
+      gridExpanded = !gridExpanded;
+      setGridExpanded(gridExpanded);
     });
+  }
+
+  // packTiles ustawia jawne grid-column/grid-row dla liczby kolumn z
+  // MOMENTU renderowania — w odroznieniu od auto-placement CSS, ktore samo
+  // przelicza sie po zmianie media query, jawne pozycje trzeba przeliczyc
+  // recznie, gdy telefon/desktop granica (768px) zostanie przekroczona
+  // (np. obrocenie tabletu, zmiana rozmiaru okna).
+  if (masonryEl) {
+    DESKTOP_GRID.addEventListener('change', () => renderGrid());
   }
 
   // Link z pasa nisz zmienia sam hash, więc filtr trzeba odświeżyć ręcznie.
@@ -677,7 +960,7 @@
 
       activeFilter = wanted.filter;
       activeAlbum = wanted.album;
-      shown = PAGE_SIZE;
+      gridExpanded = false;
       syncFilterButtons();
       renderSubfilters();
 

@@ -64,3 +64,29 @@ CREATE TABLE IF NOT EXISTS settings (
   key TEXT PRIMARY KEY,
   value TEXT
 );
+
+-- Slajdy tla hero (opcjonalny slideshow zamiast jednego statycznego zdjecia,
+-- patrz settings.key='hero_mode' i worker/hero.js) — trzymane OSOBNO od
+-- folder/album/item: to tresc USTAWIEN strony, nigdy nie trafia do publicznej
+-- galerii portfolio. is_portrait decyduje, czy slajd idzie na telefon czy
+-- na komputer (zeby pionowe "z telefonu" nie rozjezdzaly sie na desktopie).
+CREATE TABLE IF NOT EXISTS hero_slides (
+  id TEXT PRIMARY KEY,
+  r2_key TEXT NOT NULL,
+  is_portrait INTEGER NOT NULL DEFAULT 0,
+  position INTEGER NOT NULL,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_hero_slides_position ON hero_slides(position);
+
+-- Sekcja "Zaufali mi": avatar + nazwa firmy + link, edytowalne z panelu
+-- zamiast wpisywane na sztywno w public/index.html.
+CREATE TABLE IF NOT EXISTS trusted_entries (
+  id TEXT PRIMARY KEY,
+  r2_key TEXT,
+  name TEXT NOT NULL DEFAULT '',
+  link TEXT NOT NULL DEFAULT '',
+  position INTEGER NOT NULL,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_trusted_position ON trusted_entries(position);

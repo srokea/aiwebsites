@@ -179,15 +179,16 @@
 </section>
 
 <!-- =============================================================== ZAUFALI -->
-<!-- TODO: placeholdery. Podmienić na prawdziwe loga/avatary firm i linki,
-     kiedy Filip poda, kogo chce tu pokazać. -->
+<!-- Domyslnie placeholdery (widoczne dopoki Filip nic nie doda w panelu ->
+     Zaufali mi) — site.js podmienia je na prawdziwe wpisy z /api/trusted,
+     jesli jakies istnieja. -->
 <section class="section section--surface" id="zaufali">
   <div class="wrap">
     <div class="section-head" data-reveal>
       <h2 class="section-title">Zaufali mi do tej pory</h2>
     </div>
 
-    <div class="trusted">
+    <div class="trusted" id="trusted">
       <a class="trusted__item" href="#">
         <span class="trusted__avatar" aria-hidden="true"></span>
         <span class="trusted__name">Nazwa firmy</span>
@@ -212,6 +213,21 @@
         <span class="trusted__avatar" aria-hidden="true"></span>
         <span class="trusted__name">Nazwa firmy</span>
       </a>
+    </div>
+
+    <!-- Strzalki tylko na telefonie (rzad przewijany w bok) — na desktopie
+         .trusted zawija sie do siatki, wiec nie ma czego przewijac. -->
+    <div class="reviews__nav trusted__nav">
+      <button type="button" class="reviews__arrow" id="trustedPrev" aria-label="Poprzednie logo">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M14.5 5L8 12l6.5 7" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </button>
+      <button type="button" class="reviews__arrow" id="trustedNext" aria-label="Następne logo">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M9.5 5L16 12l-6.5 7" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </button>
     </div>
   </div>
 </section>
@@ -277,7 +293,12 @@
 
     <div class="reviews-cta" data-reveal data-reveal-delay="80">
       <p class="reviews-cta__text">Podobała Ci się współpraca? Zostaw kilka słów. Pomagasz mi się rozwijać i docierać do kolejnych klientów.</p>
-      <a class="btn btn--ghost" href="https://ig.me/m/szkatulski_photography" target="_blank" rel="noopener">
+      <!-- TODO: gdy Filip poda link do swojego Profilu Firmy w Google, podmień
+           poniższy href 1:1 (ten sam TODO co przy adresie w kontakt.html) —
+           teraz to uniwersalne wyszukiwanie, z ktorego "Napisz opinię" jest
+           o jeden klik. Wczesniej byl tu bledny link do Messengera IG
+           (ikona mowila "Google", href szedl gdzie indziej). -->
+      <a class="btn btn--ghost" href="https://www.google.com/maps/search/?api=1&amp;query=Szkatulski+Photography+Dobra+Woda+201+Sulej%C3%B3w" target="_blank" rel="noopener">
         <svg width="16" height="16" viewBox="0 0 48 48" aria-hidden="true">
           <path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/>
           <path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/>

@@ -1,9 +1,11 @@
 /**
  * worker/settings.js — ustawienia strony spoza hierarchii folder/album/item.
  *
- * Na razie tylko dwa klucze: tło hero na komputer i na telefon (osobne kadry,
- * jak w public/index.html). Prosty klucz-wartość w D1, żeby dorzucenie kolejnego
- * ustawienia w przyszłości nie wymagało migracji schematu.
+ * Dziś: tło hero na komputer i na telefon (osobne kadry), plus tryb hero
+ * (static/slideshow, patrz hero.js). Prosty klucz-wartość w D1, żeby
+ * dorzucenie kolejnego ustawienia w przyszłości nie wymagało migracji.
+ *
+ * PER KLIENT: nic tu nie zmieniasz.
  */
 
 const MAX_UPLOAD_BYTES = 15 * 1024 * 1024;
@@ -53,10 +55,10 @@ export async function uploadHeroImage(env, formData, slot) {
 }
 
 /**
- * Tryb tla hero: 'static' (domyslnie, zdjecia z uploadHeroImage powyzej) albo
- * 'slideshow' (slajdy z hero.js, patrz worker/hero.js). Osobny przelacznik,
- * zeby Filip mogl wrocic do statycznego zdjecia jednym klikiem bez utraty
- * niczego — oba tryby trzymaja swoje dane niezaleznie.
+ * Tryb tła hero: 'static' (domyślnie, zdjęcia z uploadHeroImage powyżej) albo
+ * 'slideshow' (slajdy z hero.js). Osobny przełącznik, żeby klient mógł wrócić
+ * do statycznego zdjęcia jednym klikiem bez utraty niczego — oba tryby
+ * trzymają swoje dane niezależnie.
  */
 export async function setHeroMode(env, mode) {
   if (!['static', 'slideshow'].includes(mode)) throw new Error('Nieprawidłowy tryb hero (static albo slideshow)');

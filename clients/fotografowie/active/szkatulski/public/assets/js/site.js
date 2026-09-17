@@ -30,16 +30,65 @@
   // Zaszyte w HTML zdjecia sa domyslne i zostaja, jesli API jeszcze nie
   // istnieje (backend niewdrozony) albo Filip niczego nie podmienil.
   const heroImg = document.getElementById('heroImg');
+  const heroMediaEl = document.querySelector('.hero__media');
   if (heroImg) {
     const heroSourceDesktop = document.getElementById('heroSourceDesktop');
     fetch(API_BASE + '/api/settings')
       .then((response) => response.json())
-      .then((body) => {
+      .then(async (body) => {
         if (!body.ok) return;
         if (body.data.hero_desktop && heroSourceDesktop) heroSourceDesktop.srcset = body.data.hero_desktop;
         if (body.data.hero_mobile) heroImg.src = body.data.hero_mobile;
+
+        // Slideshow (opcja z panelu, patrz worker/hero.js) — zdjecie statyczne
+        // wyzej zostaje jako natychmiast widoczna "plansza", dopoki slajdy
+        // sie nie doczytaja; jak sie nie doczytaja (API padnie), zostaje ono
+        // na stale, bez zadnej roznicy widocznej dla odwiedzajacego.
+        if (body.data.hero_mode === 'slideshow' && heroMediaEl) {
+          try {
+            const slidesRes = await fetch(API_BASE + '/api/hero-slides');
+            const slidesBody = await slidesRes.json();
+            if (slidesBody.ok && slidesBody.data.length) startHeroSlideshow(slidesBody.data, heroMediaEl);
+          } catch (error) { /* zostaje zdjecie statyczne */ }
+        }
       })
       .catch(() => {}); // brak API albo pusta baza — zostaja domyslne zdjecia
+  }
+
+  /**
+   * Krzyzowe przenikanie miedzy zdjeciami z wybranego albumu, 5 s na slajd.
+   * Pionowe zdjecia ("z telefonu") ida na telefon, poziome ("z aparatu/kompa")
+   * na komputer — zeby zadne nie bylo rozciagniete/przycinane w zly sposob.
+   * Jesli w wybranej orientacji nie ma zadnego zdjecia (Filip wgral tylko
+   * jeden typ), lecimy na tym, co jest — uczciwie widac cos, zamiast nic.
+   */
+  function startHeroSlideshow(slides, mediaEl) {
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+    const matching = slides.filter((slide) => slide.isPortrait === isMobile);
+    const list = matching.length ? matching : slides;
+
+    const container = document.createElement('div');
+    container.className = 'hero__slides';
+    list.forEach((slide, index) => {
+      const img = document.createElement('img');
+      img.className = 'hero__slide' + (index === 0 ? ' is-active' : '');
+      img.src = slide.url;
+      img.alt = '';
+      img.loading = index === 0 ? 'eager' : 'lazy';
+      img.decoding = 'async';
+      container.append(img);
+    });
+    mediaEl.append(container);
+
+    if (list.length < 2 || prefersReduce) return;
+
+    const frames = [...container.children];
+    let index = 0;
+    setInterval(() => {
+      frames[index].classList.remove('is-active');
+      index = (index + 1) % frames.length;
+      frames[index].classList.add('is-active');
+    }, 5000);
   }
 
   /* ------------------------------------------------------------ nawigacja --- */
@@ -49,16 +98,40 @@
   const panel = document.getElementById('navpanel');
   const navClose = document.getElementById('navClose');
 
-  // Tło nawigacji wjeżdża dopiero po wyjściu z hero, płynnie, bez skoku.
-  let lifted = false;
-  function onScroll() {
-    const shouldLift = window.scrollY > window.innerHeight * 0.8;
-    if (shouldLift === lifted) return;
-    lifted = shouldLift;
-    nav.classList.toggle('is-lifted', lifted);
+  // Tło nawigacji wjeżdża dopiero po wyjściu z pierwszej sekcji strony
+  // (hero na stronie głównej, krótki nagłówek z tytułem na podstronach).
+  // Wczesniej byl tu staly prog "80% wysokosci ekranu" dobrany pod
+  // pelnoekranowe hero strony glownej — na podstronach (portfolio, cennik,
+  // kontakt), gdzie naglowek jest dużo krotszy niz viewport, powodowalo to,
+  // ze nav wjezdzal na tresc (zdjecia w galerii) zanim zdazyl przestac byc
+  // przezroczysty. IntersectionObserver na pierwszej sekcji strony dziala
+  // poprawnie niezaleznie od jej wysokosci — bez zgadywania.
+  // .hero (strona glowna) to caly peloekranowy blok — ma zostac przezroczyste
+  // na CALYM hero. .section-head (podstrony) to tylko krotki naglowek z
+  // tytulem, NIE cala sekcja (ta zawiera tez galerie/formularz/cennik i
+  // jest wysoka na cala strone — obserwowanie jej dawalo isIntersecting=true
+  // przez caly scroll, wiec nav nigdy sie nie podnosil).
+  const firstSection = document.querySelector('.hero') || document.querySelector('.section-head');
+  if (firstSection && 'IntersectionObserver' in window) {
+    // Ujemny gorny rootMargin o wysokosc navu: "nie przecina" liczy sie
+    // dopiero, gdy sekcja schowa sie CALA za pasek nawigacji — czyli
+    // dokladnie w momencie, gdy nav zaczalby lezec na kolejnej tresci.
+    const navObserver = new IntersectionObserver(
+      ([entry]) => nav.classList.toggle('is-lifted', !entry.isIntersecting),
+      { rootMargin: `-${nav.offsetHeight}px 0px 0px 0px` },
+    );
+    navObserver.observe(firstSection);
+  } else {
+    let lifted = false;
+    const onScroll = () => {
+      const shouldLift = window.scrollY > window.innerHeight * 0.8;
+      if (shouldLift === lifted) return;
+      lifted = shouldLift;
+      nav.classList.toggle('is-lifted', lifted);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
 
   let panelOpener = null;
 
@@ -289,6 +362,68 @@
         }, 180);
       });
     });
+  }
+
+  /* --------------------------------------------------------- "zaufali mi" ---
+     Domyslnie w HTML siedza placeholdery ("Nazwa firmy", puste kolka) — jesli
+     Filip doda cokolwiek w panelu (Zaufali mi), podmieniamy je na prawdziwe
+     wpisy. Jesli API nie odpowie albo lista jest pusta, placeholdery zostaja
+     (ten sam wzorzec co LOCAL_PHOTOS w gallery.js). */
+  const trustedList = document.getElementById('trusted');
+  if (trustedList) {
+    fetch(API_BASE + '/api/trusted')
+      .then((response) => response.json())
+      .then((body) => {
+        if (!body.ok || !body.data.length) return;
+        trustedList.innerHTML = '';
+        body.data.forEach((entry) => {
+          const item = document.createElement('a');
+          item.className = 'trusted__item';
+          if (entry.link) {
+            item.href = entry.link;
+            item.target = '_blank';
+            item.rel = 'noopener';
+          } else {
+            // Bez linku pozostaje jako karta bez celu — sam avatar/nazwa,
+            // klikniecie nigdzie nie prowadzi (lepsze niz martwy href="#").
+            item.href = 'javascript:void(0)';
+            item.addEventListener('click', (event) => event.preventDefault());
+          }
+
+          const avatar = document.createElement('span');
+          avatar.className = 'trusted__avatar';
+          avatar.setAttribute('aria-hidden', 'true');
+          if (entry.url) {
+            avatar.style.backgroundImage = 'url(' + JSON.stringify(entry.url) + ')';
+            avatar.style.backgroundSize = 'cover';
+            avatar.style.backgroundPosition = 'center';
+          }
+
+          const name = document.createElement('span');
+          name.className = 'trusted__name';
+          name.textContent = entry.name || 'Klient';
+
+          item.append(avatar, name);
+          trustedList.append(item);
+        });
+      })
+      .catch(() => {}); // brak API — zostaja placeholdery
+
+    // Strzalki (tylko telefon, patrz CSS .trusted__nav) przewijaja o "jedna
+    // karte plus odstep" zamiast pelnej infinite-loop karuzeli jak w opiniach
+    // — to pasek logotypow, nie glowna tresc, wiec prostszy mechanizm wystarcza.
+    const trustedPrev = document.getElementById('trustedPrev');
+    const trustedNext = document.getElementById('trustedNext');
+    if (trustedPrev && trustedNext) {
+      const scrollTrusted = (direction) => {
+        const item = trustedList.querySelector('.trusted__item');
+        const gap = parseFloat(getComputedStyle(trustedList).gap) || 32;
+        const distance = item ? item.getBoundingClientRect().width + gap : 200;
+        trustedList.scrollBy({ left: direction * distance, behavior: prefersReduce ? 'auto' : 'smooth' });
+      };
+      trustedPrev.addEventListener('click', () => scrollTrusted(-1));
+      trustedNext.addEventListener('click', () => scrollTrusted(1));
+    }
   }
 
   /* ------------------------------------------------------- karuzela opinii ---
