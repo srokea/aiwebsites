@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piękna Sprawa Beauty Studio — manicure i pedicure, Rozprza</title>
+<meta name="description" content="Studio kosmetyczne w Rozprzy: manicure hybrydowy, pedicure, regulacja brwi i henna. Pełny cennik. Ocena 5,0 w Google. Telefon: 797 710 720.">
+<link rel="icon" href="favicon.png" type="image/png">
+<meta name="theme-color" content="#F5F1EC">
+<meta property="og:title" content="Piękna Sprawa Beauty Studio — manicure i pedicure, Rozprza">
+<meta property="og:description" content="Legionów Polskich 20, Rozprza. Pełny cennik zabiegów. Telefon: 797 710 720.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:image" content="photos/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          shell:   '#FFFFFF',
+          surface: '#F5F1EC',
+          ink:     '#1A1A1A',
+          muted:   '#6B625A',
+          accent:  '#C79A4B',
+          hair:    'rgba(26,26,26,.12)',
+        },
+        fontFamily: {
+          sans:    ['"Work Sans"', 'Helvetica Neue', 'Arial', 'sans-serif'],
+          display: ['"Bodoni Moda"', 'Georgia', 'serif'],
+          desc:    ['"Jost"', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        },
+        maxWidth: { content: '1080px', narrow: '720px' },
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO) — bez połączenia z serwerami Google. */
+  @font-face {
+    font-family: 'Bodoni Moda'; font-style: normal; font-weight: 400 700; font-display: swap;
+    src: url('fonts/bodoni-500-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Bodoni Moda'; font-style: normal; font-weight: 400 700; font-display: swap;
+    src: url('fonts/bodoni-500-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Work Sans'; font-style: normal; font-weight: 400 700; font-display: swap;
+    src: url('fonts/worksans-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Work Sans'; font-style: normal; font-weight: 400 700; font-display: swap;
+    src: url('fonts/worksans-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Jost'; font-style: normal; font-weight: 300 600; font-display: swap;
+    src: url('fonts/jost-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Jost'; font-style: normal; font-weight: 300 600; font-display: swap;
+    src: url('fonts/jost-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  ::selection { background: #C79A4B; color: #1A1A1A; }
+  :focus-visible { outline: 2px solid #C79A4B; outline-offset: 3px; border-radius: 2px; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition-duration: .01ms !important; }
+  }
+
+  .h2 { font-family: 'Bodoni Moda', Georgia, serif; font-weight: 500; font-size: clamp(1.75rem, 2.5vw + 1.1rem, 2.75rem); line-height: 1.15; }
+
+  /* ---- Wiersz cennika ---- */
+  .price-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: .65rem 0; font-family: 'Jost', Helvetica Neue, Arial, sans-serif; }
+  .price-row dt { min-width: 0; }
+  .price-row dd { flex: none; font-weight: 600; tabular-nums: true; font-variant-numeric: tabular-nums; }
+
+  /* ---- Nawigacja sekcji w headerze ---- */
+  section[id] { scroll-margin-top: 78px; }
+  .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+  .navlink {
+    display: inline-flex; align-items: center; min-height: 36px; flex-shrink: 0;
+    padding: 0 .7rem; border-radius: 999px; white-space: nowrap;
+    font-size: .84rem; font-weight: 600; letter-spacing: -.01em;
+    color: #6B625A; transition: background-color .15s, color .15s;
+  }
+  .navlink:hover { color: #1A1A1A; }
+  .navlink.active { background: #1A1A1A; color: #FFFFFF; }
+
+  /* ---- Wiersz "dziś" w godzinach otwarcia ---- */
+  tr.today th, tr.today td { background: rgba(199,154,75,.14); color: #1A1A1A; font-weight: 600; }
+  tr.today th { border-radius: 10px 0 0 10px; }
+  tr.today td { border-radius: 0 10px 10px 0; }
+  .today-badge {
+    display: inline-flex; align-items: center; margin-left: .5rem;
+    padding: .1rem .5rem; border-radius: 999px;
+    background: #C79A4B; color: #1A1A1A;
+    font-size: .64rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  /* ---- Galeria: lightbox ---- */
+  .gallery-tile { cursor: zoom-in; -webkit-tap-highlight-color: transparent; }
+  .gallery-hint {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    border-radius: inherit; background: rgba(26,26,26,.1); color: #1A1A1A; opacity: 0; transition: opacity .2s ease;
+  }
+  .gallery-tile:hover .gallery-hint, .gallery-tile:focus-visible .gallery-hint { opacity: 1; }
+
+  .map { filter: grayscale(.5) sepia(.2) saturate(1.1) contrast(1.02); }
+</style>
+</head>
+
+<body class="bg-shell font-sans text-[1rem] leading-relaxed text-ink antialiased">
+
+<a href="#tresc" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-3 focus:font-semibold focus:text-shell">Przejdź do treści</a>
+
+<!-- ============ NAVBAR ============ -->
+<header class="sticky top-0 z-40 border-b border-hair bg-shell/90 backdrop-blur">
+  <div class="mx-auto flex max-w-content items-center gap-3 px-5 py-3 sm:gap-5 sm:px-7">
+
+    <a href="index.html" aria-label="Piękna Sprawa Beauty Studio, strona główna" class="inline-flex shrink-0 items-center gap-2">
+      <img src="logo/monogram.png" alt="" aria-hidden="true" width="165" height="232" class="h-[27px] w-auto shrink-0">
+      <img src="logo/wordmark-header.png" alt="Piękna Sprawa" width="923" height="124" class="hidden h-[18px] w-auto md:block">
+    </a>
+
+    <nav aria-label="Sekcje strony" class="scrollbar-none flex min-w-0 flex-1 items-center gap-1 overflow-x-auto sm:justify-center sm:gap-2">
+      <a href="#onas"    data-nav="onas"    class="navlink">O studio</a>
+      <a href="#cennik"  data-nav="cennik"  class="navlink">Cennik</a>
+      <a href="#galeria" data-nav="galeria" class="navlink">Galeria</a>
+      <a href="#opinie"  data-nav="opinie"  class="navlink">Opinie</a>
+      <a href="#kontakt" data-nav="kontakt" class="navlink">Kontakt</a>
+    </nav>
+
+    <div class="flex shrink-0 items-center gap-2">
+      <a href="https://www.instagram.com/piekna_sprawa_beauty_studio/" target="_blank" rel="noopener" aria-label="Instagram"
+         class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-ink text-shell transition-colors hover:bg-accent hover:text-ink">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.62.07 4.81s0 3.56-.07 4.81c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.16-1.06.36-2.23.41-1.25.06-1.62.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.56 2.2 15.19 2.2 12s0-3.56.07-4.81c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.44 2.21 8.8 2.2 12 2.2m0 1.98c-3.14 0-3.51.01-4.75.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.05-1.15-.24-1.77-.4-2.18a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.75-.07m0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9m0 8.99a3.54 3.54 0 1 0 0-7.08 3.54 3.54 0 0 0 0 7.08m6.94-9.21a1.27 1.27 0 1 1-2.55 0 1.27 1.27 0 0 1 2.55 0"/></svg>
+      </a>
+      <a href="https://www.facebook.com/p/Pi%C4%99kna-Sprawa-Beauty-Studio-61586670171071/" target="_blank" rel="noopener" aria-label="Facebook"
+         class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-ink text-shell transition-colors hover:bg-accent hover:text-ink">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
+      </a>
+      <a href="tel:+48797710720"
+         class="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-ink px-5 text-[.9rem] font-semibold tracking-tight text-shell transition-colors hover:bg-accent hover:text-ink">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+        <span class="hidden sm:inline">797 710 720</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="tresc">
+
+<!-- ============ HERO ============ -->
+<section class="border-b border-hair">
+  <div class="flex flex-col md:flex-row md:items-stretch">
+  <div class="flex flex-1 flex-col items-center px-5 py-16 text-center sm:px-7 sm:py-24 md:text-left">
+  <div class="mx-auto w-full max-w-[420px]">
+
+    <img src="logo/monogram-gold.png" alt="" aria-hidden="true" width="165" height="232" class="mx-auto h-12 w-auto md:mx-0">
+
+    <h1 class="mt-6" aria-label="Piękna Sprawa Beauty Studio">
+      <img src="logo/wordmark-piekna.png" alt="" aria-hidden="true" width="256" height="82"
+           class="mx-auto h-auto md:mx-0" style="width:calc(min(88vw,460px) * .4252)">
+      <img src="logo/wordmark-sprawa.png" alt="" aria-hidden="true" width="602" height="124"
+           class="mx-auto mt-2 h-auto md:mx-0" style="width:min(88vw,460px)">
+    </h1>
+    <img src="logo/wordmark-beauty-studio.png" alt="" aria-hidden="true" width="239" height="37"
+         class="mx-auto mt-3 h-auto md:mx-0" style="width:calc(min(88vw,460px) * .3971)">
+
+    <p class="mx-auto mt-7 max-w-[42ch] font-desc text-[1.05rem] text-ink/85 md:mx-0">
+      Manicure hybrydowy, pedicure i pielęgnacja dłoni oraz stóp w Rozprzy,
+      przy Legionów Polskich 20.
+    </p>
+
+    <div class="mt-9 flex flex-col items-center gap-5 md:items-start">
+      <a href="tel:+48797710720"
+         class="inline-flex min-h-[54px] w-full max-w-[340px] items-center justify-center gap-2.5 rounded-full bg-ink px-8 text-[1.02rem] font-semibold tracking-tight text-shell transition-colors hover:bg-accent hover:text-ink">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+        Zadzwoń i umów wizytę
+      </a>
+      <div class="flex items-center gap-6 text-[.92rem] font-semibold">
+        <a href="https://www.instagram.com/piekna_sprawa_beauty_studio/" target="_blank" rel="noopener"
+           class="inline-flex min-h-[44px] items-center gap-2 text-ink transition-colors hover:text-accent">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.62.07 4.81s0 3.56-.07 4.81c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.16-1.06.36-2.23.41-1.25.06-1.62.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.56 2.2 15.19 2.2 12s0-3.56.07-4.81c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.44 2.21 8.8 2.2 12 2.2m0 1.98c-3.14 0-3.51.01-4.75.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.05-1.15-.24-1.77-.4-2.18a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.75-.07m0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9m0 8.99a3.54 3.54 0 1 0 0-7.08 3.54 3.54 0 0 0 0 7.08m6.94-9.21a1.27 1.27 0 1 1-2.55 0 1.27 1.27 0 0 1 2.55 0"/></svg>
+          Instagram
+        </a>
+        <a href="https://www.facebook.com/p/Pi%C4%99kna-Sprawa-Beauty-Studio-61586670171071/" target="_blank" rel="noopener"
+           class="inline-flex min-h-[44px] items-center gap-2 text-ink transition-colors hover:text-accent">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
+          Facebook
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-8 inline-flex items-center gap-2 text-[.88rem] text-muted">
+      <span class="tracking-[2px] text-accent" aria-hidden="true">★★★★★</span>
+      <span>5,0 · 26 opinii w Google</span>
+    </div>
+
+  </div>
+  </div>
+  <div class="h-[380px] w-full sm:h-[480px] md:h-auto md:w-2/5">
+    <img src="photos/hero.jpg" alt="Manicure i biżuteria — zdjęcie promocyjne Piękna Sprawa Beauty Studio"
+         width="828" height="828" fetchpriority="high" class="h-full w-full object-cover object-[50%_35%]">
+  </div>
+  </div>
+</section>
+
+<!-- ============ O STUDIO ============
+     Zdjęcie recepcji jest prawdziwe (photos/). Notatka o właścicielce czeka na treść —
+     świadomie zero wypełniacza tekstowego na stronie, patrz odpowiedź do użytkownika. -->
+<section id="onas" class="border-b border-hair bg-surface">
+  <div class="mx-auto max-w-content px-5 py-16 sm:px-7 sm:py-20">
+
+    <div class="grid gap-8 md:grid-cols-12 md:gap-10">
+      <div class="md:col-span-7">
+        <div class="aspect-[4/5] overflow-hidden rounded-2xl">
+          <img src="photos/recepcja-szyld.jpg" alt="Recepcja studia Piękna Sprawa z podświetlanym szyldem i złotymi akcentami"
+               width="1614" height="2048" loading="lazy" decoding="async" class="h-full w-full object-cover object-top">
+        </div>
+      </div>
+
+      <div class="md:col-span-5 md:pt-14">
+        <h2 class="h2 text-center md:text-right">O studio</h2>
+
+        <!-- TODO: kilka zdań o studio i jego właścicielce od klientki (1. osoba) -->
+        <div class="mx-auto mt-8 flex max-w-[420px] flex-col gap-3.5 rounded-2xl border border-dashed p-7 md:mx-0 md:ml-auto" style="border-color:rgba(26,26,26,.28)" aria-hidden="true">
+          <span class="block h-[.7rem] w-full rounded-full" style="background:rgba(26,26,26,.07)"></span>
+          <span class="block h-[.7rem] w-[88%] rounded-full" style="background:rgba(26,26,26,.07)"></span>
+          <span class="block h-[.7rem] w-[94%] rounded-full" style="background:rgba(26,26,26,.07)"></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ CENNIK ============ -->
+<section id="cennik" class="bg-shell">
+  <div class="mx-auto max-w-narrow px-5 py-16 sm:px-7 sm:py-24">
+
+    <h2 class="h2 text-center">Cennik</h2>
+    <p class="mx-auto mt-5 max-w-[44ch] font-desc text-center text-muted">Pełna oferta studia. Ceny w złotych, obowiązują od 1 kwietnia 2026.</p>
+
+    <!-- Manicure -->
+    <div class="mt-12">
+      <h3 class="text-[1.15rem] font-bold tracking-[-.01em]">Manicure</h3>
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full min-w-[400px] border-t border-hair font-desc text-[.95rem]">
+          <thead>
+            <tr class="border-b border-hair text-muted">
+              <th scope="col" class="py-2.5 text-left font-medium">Usługa</th>
+              <th scope="col" class="w-14 py-2.5 text-right font-medium">S</th>
+              <th scope="col" class="w-14 py-2.5 text-right font-medium">M</th>
+              <th scope="col" class="w-14 py-2.5 text-right font-medium">L</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-hair">
+              <th scope="row" class="py-2.5 text-left font-normal">Manicure hybrydowy</th>
+              <td class="py-2.5 text-right tabular-nums">120 zł</td>
+              <td class="py-2.5 text-right tabular-nums">130 zł</td>
+              <td class="py-2.5 text-right tabular-nums text-muted">—</td>
+            </tr>
+            <tr class="border-b border-hair">
+              <th scope="row" class="py-2.5 text-left font-normal">Uzupełnienie żelowe</th>
+              <td class="py-2.5 text-right tabular-nums">130 zł</td>
+              <td class="py-2.5 text-right tabular-nums">140 zł</td>
+              <td class="py-2.5 text-right tabular-nums">150 zł</td>
+            </tr>
+            <tr class="border-b border-hair">
+              <th scope="row" class="py-2.5 text-left font-normal">Przedłużenie paznokcia</th>
+              <td class="py-2.5 text-right tabular-nums">170 zł</td>
+              <td class="py-2.5 text-right tabular-nums">180 zł</td>
+              <td class="py-2.5 text-right tabular-nums">190 zł</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Dodatki do manicure -->
+    <div class="mt-10">
+      <h3 class="text-[1rem] font-bold tracking-[-.01em] text-muted">Dodatki do manicure</h3>
+      <dl class="mt-3 divide-y divide-hair border-y border-hair text-[.95rem]">
+        <div class="price-row"><dt>Dodatkowe utwardzanie płytki aktyżelem</dt><dd>+10 zł</dd></div>
+        <div class="price-row"><dt>Manicure męski (klasyczny, japoński)</dt><dd>70 zł</dd></div>
+        <div class="price-row"><dt>Naprawa złamanego paznokcia</dt><dd>+15 zł</dd></div>
+        <div class="price-row"><dt>Zdobienia (french, ombre, baby boomer)</dt><dd>+10 zł</dd></div>
+        <div class="price-row"><dt>Zdobienia malowane ręcznie, cyrkonie</dt><dd>+10 zł</dd></div>
+        <div class="price-row"><dt>Usunięcie stylizacji + manicure klasyczny</dt><dd>70 zł</dd></div>
+        <div class="price-row"><dt>Rekonstrukcja paznokcia (dłoni, stóp)</dt><dd>+10 zł</dd></div>
+        <div class="price-row"><dt>Ściąganie stylizacji po innej stylistce</dt><dd>30 zł</dd></div>
+        <div class="price-row"><dt>Przedłużenie paznokcia na wizycie</dt><dd>+5 zł</dd></div>
+      </dl>
+    </div>
+
+    <!-- Pedicure -->
+    <div class="mt-10">
+      <h3 class="text-[1.15rem] font-bold tracking-[-.01em]">Pedicure</h3>
+      <dl class="mt-4 divide-y divide-hair border-y border-hair text-[.95rem]">
+        <div class="price-row"><dt>Pedicure hybrydowy</dt><dd>120 zł</dd></div>
+        <div class="price-row"><dt>Pedicure klasyczny</dt><dd>130 zł</dd></div>
+        <div class="price-row"><dt>Pedicure Complex</dt><dd>160 zł</dd></div>
+      </dl>
+    </div>
+
+    <!-- Pozostałe -->
+    <div class="mt-10">
+      <h3 class="text-[1.15rem] font-bold tracking-[-.01em]">Pozostałe</h3>
+      <dl class="mt-4 divide-y divide-hair border-y border-hair text-[.95rem]">
+        <div class="price-row"><dt>Regulacja brwi</dt><dd>20 zł</dd></div>
+        <div class="price-row"><dt>Regulacja wąsika</dt><dd>10 zł</dd></div>
+        <div class="price-row"><dt>Henna brwi / rzęs</dt><dd>20 zł</dd></div>
+        <div class="price-row"><dt>Depilacja brody</dt><dd>30 zł</dd></div>
+        <div class="price-row"><dt>Opalanie natryskowe</dt><dd>120 zł</dd></div>
+      </dl>
+    </div>
+
+    <p class="mt-8 text-center font-desc text-[.88rem] italic text-muted">Długości niestandardowe oraz wzory wyceniamy indywidualnie przed rozpoczęciem pracy.</p>
+
+    <div class="mt-10 text-center">
+      <a href="tel:+48797710720"
+         class="inline-flex min-h-[54px] w-full max-w-[340px] items-center justify-center gap-2.5 rounded-full bg-ink px-8 text-[1.02rem] font-semibold tracking-tight text-shell transition-colors hover:bg-accent hover:text-ink">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+        Zadzwoń i umów wizytę
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ GALERIA ============
+     Klientka nie dosłała jeszcze zdjęć — same dashed placeholdery, patrz odpowiedź do użytkownika. -->
+<section id="galeria" class="border-b border-hair bg-surface">
+  <div class="mx-auto max-w-content px-5 py-16 sm:px-7 sm:py-20">
+
+    <h2 class="h2 text-center">Galeria</h2>
+
+    <div class="mx-auto mt-10 grid max-w-[820px] grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+      <button type="button" data-group="galeria" data-index="0" class="gallery-tile group relative aspect-square overflow-hidden rounded-2xl" aria-label="Powiększ zdjęcie 1">
+        <img src="photos/galeria/efekt-01.jpg" alt="Manicure hybrydowy w lawendowym odcieniu z efektem chrome" width="1050" height="1400" loading="lazy" decoding="async" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" data-group="galeria" data-index="1" class="gallery-tile group relative aspect-square overflow-hidden rounded-2xl" aria-label="Powiększ zdjęcie 2">
+        <img src="photos/galeria/efekt-02.jpg" alt="Manicure w zieleni ze złotym zdobieniem botanicznym" width="1400" height="1400" loading="lazy" decoding="async" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" data-group="galeria" data-index="2" class="gallery-tile group relative aspect-square overflow-hidden rounded-2xl" aria-label="Powiększ zdjęcie 3">
+        <img src="photos/galeria/efekt-03.jpg" alt="Pedicure z białym french tipem" width="1050" height="1400" loading="lazy" decoding="async" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" data-group="galeria" data-index="3" class="gallery-tile group relative aspect-square overflow-hidden rounded-2xl" aria-label="Powiększ zdjęcie 4">
+        <img src="photos/galeria/efekt-04.jpg" alt="Manicure w pomarańczu z minimalistycznym zdobieniem kropek i linii" width="1227" height="1400" loading="lazy" decoding="async" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" data-group="galeria" data-index="4" class="gallery-tile group relative aspect-square overflow-hidden rounded-2xl" aria-label="Powiększ zdjęcie 5">
+        <img src="photos/galeria/efekt-05.jpg" alt="Manicure french w miętowym odcieniu z różowym zdobieniem kwiatowym" width="1050" height="1400" loading="lazy" decoding="async" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" data-group="galeria" data-index="5" class="gallery-tile group relative aspect-square overflow-hidden rounded-2xl" aria-label="Powiększ zdjęcie 6">
+        <img src="photos/galeria/efekt-06.jpg" alt="Manicure french w różu z wzorem w paski i wisienkami" width="1400" height="1400" loading="lazy" decoding="async" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+      </button>
+    </div>
+    <p class="mt-6 text-center">
+      <a href="https://www.facebook.com/profile.php?id=61586670171071&sk=photos" target="_blank" rel="noopener"
+         class="inline-flex min-h-[44px] items-center text-[.94rem] font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4 transition-colors hover:text-accent">Zobacz wszystko na Facebooku</a>
+    </p>
+
+  </div>
+</section>
+
+<!-- ============ LIGHTBOX GALERII ============ -->
+<div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-[rgba(26,26,26,.92)] p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia z galerii">
+  <button type="button" id="lightboxClose" aria-label="Zamknij podgląd"
+          class="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(255,255,255,.14)] text-shell transition-colors hover:bg-[rgba(255,255,255,.26)] sm:right-6 sm:top-6">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <button type="button" id="lightboxPrev" aria-label="Poprzednie zdjęcie"
+          class="absolute left-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(255,255,255,.14)] text-shell transition-colors hover:bg-[rgba(255,255,255,.26)] sm:left-5">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+  <button type="button" id="lightboxNext" aria-label="Następne zdjęcie"
+          class="absolute right-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(255,255,255,.14)] text-shell transition-colors hover:bg-[rgba(255,255,255,.26)] sm:right-5">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <figure class="mx-auto flex max-h-full max-w-3xl flex-col items-center">
+    <img id="lightboxImg" src="" alt="" class="hidden max-h-[75vh] w-auto rounded-2xl object-contain shadow-[0_20px_60px_rgba(0,0,0,.35)]">
+    <div id="lightboxPh" class="flex aspect-[4/5] max-h-[75vh] w-[min(80vw,420px)] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-shell/40 p-8 text-center text-shell/80">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-5-9 9"/></svg>
+      <span id="lightboxPhText" class="text-[.78rem] font-semibold uppercase tracking-[1.5px]"></span>
+    </div>
+    <figcaption id="lightboxCounter" class="mt-5 text-[.8rem] font-semibold uppercase tracking-[1.5px] text-shell/70" aria-live="polite"></figcaption>
+  </figure>
+</div>
+
+<!-- ============ OPINIE ============ -->
+<section id="opinie" class="bg-shell">
+  <div class="mx-auto max-w-content px-5 py-16 sm:px-7 sm:py-20">
+
+    <h2 class="h2 text-center">Opinie</h2>
+    <p class="mt-3 text-center font-desc text-[.95rem]"><span class="font-bold text-ink">5,0</span> <span class="text-muted">na podstawie 26 opinii w Google</span></p>
+
+    <div class="mx-auto mt-14 grid max-w-[820px] gap-10 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-10">
+      <blockquote class="border-t border-hair pt-6">
+        <p class="tracking-[.3em] text-accent" aria-hidden="true">★★★★★</p>
+        <p class="mt-5 font-desc text-[1rem] leading-relaxed text-ink">„Polecam, miła atmosfera i bardzo ładne paznokcie. Pomimo zamieszania z datą wizyty z mojej strony udało się to naprawić i znaleźć nowy, dogodny dla Wszystkich termin.”</p>
+        <footer class="mt-5 text-[.78rem] text-muted">
+          <span class="font-medium uppercase tracking-[.16em] text-ink">Aleksandra M.</span> · Google
+          <span class="mt-1 block font-desc text-[.82rem] normal-case tracking-normal text-muted">2 opinie · 2 miesiące temu</span>
+        </footer>
+      </blockquote>
+      <blockquote class="border-t border-hair pt-6">
+        <p class="tracking-[.3em] text-accent" aria-hidden="true">★★★★★</p>
+        <p class="mt-5 font-desc text-[1rem] leading-relaxed text-ink">„Obsługa przemiła, sama stylizacja paznokci za każdym razem wykonana jest z precyzją i dbałością o każdy detal. Polecam każdemu kto chce mieć piękne i profesjonalnie zrobione paznokcie❤️”</p>
+        <footer class="mt-5 text-[.78rem] text-muted">
+          <span class="font-medium uppercase tracking-[.16em] text-ink">Lena Goszcz</span> · Google
+          <span class="mt-1 block font-desc text-[.82rem] normal-case tracking-normal text-muted">2 opinie · 4 miesiące temu</span>
+        </footer>
+      </blockquote>
+      <blockquote class="border-t border-hair pt-6">
+        <p class="tracking-[.3em] text-accent" aria-hidden="true">★★★★★</p>
+        <p class="mt-5 font-desc text-[1rem] leading-relaxed text-ink">„Polecam ten salon! Przemiła atmosfera, paznokcie wykonane na najwyższym poziomie, pedicure wykonany perfekcyjnie! Polecam!!! ☺️”</p>
+        <footer class="mt-5 text-[.78rem] text-muted">
+          <span class="font-medium uppercase tracking-[.16em] text-ink">Agata Czerkawska</span> · Google
+          <span class="mt-1 block font-desc text-[.82rem] normal-case tracking-normal text-muted">2 opinie · miesiąc temu</span>
+        </footer>
+      </blockquote>
+      <blockquote class="border-t border-hair pt-6">
+        <p class="tracking-[.3em] text-accent" aria-hidden="true">★★★★★</p>
+        <p class="mt-5 font-desc text-[1rem] leading-relaxed text-ink">„Świetne miejsce 👌 super atmosfera paznokcie wrecz idealne na pewno każda będzie zadowolona z usługi polecam z całego ❤️”</p>
+        <footer class="mt-5 text-[.78rem] text-muted">
+          <span class="font-medium uppercase tracking-[.16em] text-ink">Żaneta Kaźmierczak</span> · Google
+          <span class="mt-1 block font-desc text-[.82rem] normal-case tracking-normal text-muted">6 opinii · 4 miesiące temu</span>
+        </footer>
+      </blockquote>
+    </div>
+
+    <div class="mt-12 text-center">
+      <a href="https://www.google.com/maps?cid=10126117453109126510&hl=pl" target="_blank" rel="noopener"
+         class="inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-ink px-8 text-[1rem] font-semibold tracking-tight text-shell transition-colors hover:bg-accent hover:text-ink">
+        <svg viewBox="0 0 48 48" width="18" height="18" fill="currentColor" aria-hidden="true">
+          <path d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+          <path d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+          <path d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+          <path d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+        </svg>
+        Zostaw opinię
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ KONTAKT: godziny, adres, mapa ============ -->
+<section id="kontakt" class="bg-surface">
+  <div class="mx-auto max-w-content px-5 py-16 sm:px-7 sm:py-24">
+
+    <h2 class="h2 text-center">Kontakt</h2>
+
+    <div class="mx-auto mt-12 grid max-w-[820px] gap-12 sm:grid-cols-2">
+
+      <div>
+        <h3 class="text-[1.05rem] font-bold tracking-[-.01em]">Godziny otwarcia</h3>
+        <table class="mt-4 w-full border-t border-hair font-desc text-[.96rem]">
+          <tbody>
+            <tr data-day="0" class="border-b border-hair"><th scope="row" class="py-2.5 text-left font-medium">Poniedziałek</th><td class="py-2.5 text-right tabular-nums">09:00–18:00</td></tr>
+            <tr data-day="1" class="border-b border-hair"><th scope="row" class="py-2.5 text-left font-medium">Wtorek</th><td class="py-2.5 text-right tabular-nums">09:00–18:00</td></tr>
+            <tr data-day="2" class="border-b border-hair"><th scope="row" class="py-2.5 text-left font-medium">Środa</th><td class="py-2.5 text-right tabular-nums">09:00–18:00</td></tr>
+            <tr data-day="3" class="border-b border-hair"><th scope="row" class="py-2.5 text-left font-medium">Czwartek</th><td class="py-2.5 text-right tabular-nums">09:00–18:00</td></tr>
+            <tr data-day="4" class="border-b border-hair"><th scope="row" class="py-2.5 text-left font-medium">Piątek</th><td class="py-2.5 text-right tabular-nums">09:00–18:00</td></tr>
+            <tr data-day="5" class="border-b border-hair"><th scope="row" class="py-2.5 text-left font-medium text-muted">Sobota</th><td class="py-2.5 text-right text-muted">Zamknięte</td></tr>
+            <tr data-day="6" class="border-b border-hair"><th scope="row" class="py-2.5 text-left font-medium text-muted">Niedziela</th><td class="py-2.5 text-right text-muted">Zamknięte</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid content-start gap-7">
+        <div>
+          <h3 class="text-[1.05rem] font-bold tracking-[-.01em]">Telefon</h3>
+          <a href="tel:+48797710720" class="mt-1 inline-flex min-h-[44px] items-center gap-2.5 font-desc text-[1.35rem] font-bold tracking-[-.02em] transition-colors hover:text-accent">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="#C79A4B" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+            797 710 720
+          </a>
+        </div>
+        <div>
+          <h3 class="text-[1.05rem] font-bold tracking-[-.01em]">Adres</h3>
+          <address class="mt-1 flex items-start gap-2.5 font-desc text-[1.35rem] font-bold not-italic leading-snug tracking-[-.02em]">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="#C79A4B" class="mt-[7px] shrink-0" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7m0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5"/></svg>
+            <span>Legionów Polskich 20<br>97-340 Rozprza</span>
+          </address>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=Legion%C3%B3w+Polskich+20%2C+97-340+Rozprza" target="_blank" rel="noopener"
+             class="mt-1 inline-flex min-h-[44px] items-center text-[.94rem] font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4 transition-colors hover:text-accent">Wyznacz trasę</a>
+        </div>
+        <div>
+          <h3 class="text-[1.05rem] font-bold tracking-[-.01em]">Social media</h3>
+          <div class="mt-1 flex flex-col gap-1 text-[1rem] font-semibold tracking-[-.01em]">
+            <a href="https://www.instagram.com/piekna_sprawa_beauty_studio/" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center gap-2.5 transition-colors hover:text-accent">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="#C79A4B" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.62.07 4.81s0 3.56-.07 4.81c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.16-1.06.36-2.23.41-1.25.06-1.62.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.56 2.2 15.19 2.2 12s0-3.56.07-4.81c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.44 2.21 8.8 2.2 12 2.2m0 1.98c-3.14 0-3.51.01-4.75.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.05-1.15-.24-1.77-.4-2.18a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.75-.07m0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9m0 8.99a3.54 3.54 0 1 0 0-7.08 3.54 3.54 0 0 0 0 7.08m6.94-9.21a1.27 1.27 0 1 1-2.55 0 1.27 1.27 0 0 1 2.55 0"/></svg>
+              Instagram
+            </a>
+            <a href="https://www.facebook.com/p/Pi%C4%99kna-Sprawa-Beauty-Studio-61586670171071/" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center gap-2.5 transition-colors hover:text-accent">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="#C79A4B" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
+              Facebook
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mapa Google (iframe) — pełna szerokość, opisana w polityce prywatności. -->
+  <div class="mt-12 border-t border-hair">
+    <iframe
+      title="Mapa dojazdu: Legionów Polskich 20, 97-340 Rozprza"
+      src="https://www.google.com/maps?q=Legion%C3%B3w+Polskich+20%2C+97-340+Rozprza&output=embed"
+      class="map block h-[320px] w-full sm:h-[440px]"
+      loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ STOPKA ============ -->
+<footer class="bg-shell">
+  <div class="mx-auto flex max-w-content flex-col items-center gap-3 px-5 py-8 text-center font-desc text-[.82rem] text-muted sm:flex-row sm:justify-between sm:px-7 sm:text-left">
+    <span class="inline-flex items-center gap-2">
+      <img src="logo/monogram.png" alt="" aria-hidden="true" width="165" height="232" class="h-4 w-auto shrink-0">
+      <b class="font-bold text-ink">Piękna Sprawa Beauty Studio</b>
+    </span>
+    <address class="not-italic">Legionów Polskich 20, 97-340 Rozprza</address>
+    <a href="privacy.html" class="font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4 transition-colors hover:text-accent">Polityka prywatności</a>
+  </div>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BeautySalon",
+  "name": "Piękna Sprawa Beauty Studio",
+  "description": "Manicure hybrydowy, pedicure, regulacja brwi, henna i depilacja w Rozprzy.",
+  "image": "photos/recepcja-szyld.jpg",
+  "telephone": "+48797710720",
+  "priceRange": "10–190 PLN",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Legionów Polskich 20",
+    "postalCode": "97-340",
+    "addressLocality": "Rozprza",
+    "addressCountry": "PL"
+  },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+    "opens": "09:00",
+    "closes": "18:00"
+  }],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "reviewCount": "26"
+  },
+  "sameAs": [
+    "https://www.instagram.com/piekna_sprawa_beauty_studio/",
+    "https://www.facebook.com/p/Pi%C4%99kna-Sprawa-Beauty-Studio-61586670171071/"
+  ],
+  "hasMap": "https://www.google.com/maps/dir/?api=1&destination=Legion%C3%B3w+Polskich+20,+97-340+Rozprza"
+}
+</script>
+
+<script>
+  // Podświetlenie dzisiejszego dnia w tabeli godzin otwarcia.
+  (function () {
+    var todayIdx = (new Date().getDay() + 6) % 7; // Poniedziałek=0 ... Niedziela=6
+    var row = document.querySelector('tr[data-day="' + todayIdx + '"]');
+    if (!row) return;
+    row.classList.add('today');
+    var th = row.querySelector('th');
+    if (th) {
+      var badge = document.createElement('span');
+      badge.className = 'today-badge';
+      badge.textContent = 'dziś';
+      th.appendChild(badge);
+    }
+  })();
+
+  // Podświetlenie aktywnej sekcji w nawigacji headera podczas przewijania.
+  (function () {
+    if (!('IntersectionObserver' in window)) return;
+    var links = {};
+    document.querySelectorAll('.navlink[data-nav]').forEach(function (a) {
+      links[a.dataset.nav] = a;
+    });
+    var current = null;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        if (current) current.classList.remove('active');
+        current = links[entry.target.id] || null;
+        if (current) current.classList.add('active');
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    Object.keys(links).forEach(function (id) {
+      var section = document.getElementById(id);
+      if (section) observer.observe(section);
+    });
+  })();
+
+  // Galeria: lightbox z podglądem, strzałkami i klawiaturą. Wszystkie kafelki to na razie
+  // placeholdery — src puste, dopóki klientka nie dośle zdjęć (patrz sekcja Galeria wyżej).
+  (function () {
+    var GALLERIES = {
+      // Kafelków w siatce jest 6, ale strzałkami można przewinąć przez wszystkie 11 zdjęć.
+      galeria: [
+        { src: 'photos/galeria/efekt-01.jpg', alt: 'Manicure hybrydowy w lawendowym odcieniu z efektem chrome' },
+        { src: 'photos/galeria/efekt-02.jpg', alt: 'Manicure w zieleni ze złotym zdobieniem botanicznym' },
+        { src: 'photos/galeria/efekt-03.jpg', alt: 'Pedicure z białym french tipem' },
+        { src: 'photos/galeria/efekt-04.jpg', alt: 'Manicure w pomarańczu z minimalistycznym zdobieniem kropek i linii' },
+        { src: 'photos/galeria/efekt-05.jpg', alt: 'Manicure french w miętowym odcieniu z różowym zdobieniem kwiatowym' },
+        { src: 'photos/galeria/efekt-06.jpg', alt: 'Manicure french w różu z wzorem w paski i wisienkami' },
+        { src: 'photos/galeria/efekt-07.jpg', alt: 'Klasyczny biały manicure french' },
+        { src: 'photos/galeria/efekt-08.jpg', alt: 'Manicure w beżu z kropkami i ręcznie malowanym kwiatowym zdobieniem' },
+        { src: 'photos/galeria/efekt-09.jpg', alt: 'Biały manicure z czarnym geometrycznym zdobieniem' },
+        { src: 'photos/galeria/efekt-10.jpg', alt: 'Manicure french w odcieniu różu' },
+        { src: 'photos/galeria/efekt-11.jpg', alt: 'Manicure w beżu z drobnymi czarnymi kropkami' }
+      ]
+    };
+
+    var lightbox = document.getElementById('lightbox');
+    var tiles = document.querySelectorAll('.gallery-tile');
+    if (!lightbox || !tiles.length) return;
+
+    var img = document.getElementById('lightboxImg');
+    var ph = document.getElementById('lightboxPh');
+    var phText = document.getElementById('lightboxPhText');
+    var counter = document.getElementById('lightboxCounter');
+    var btnClose = document.getElementById('lightboxClose');
+    var btnPrev = document.getElementById('lightboxPrev');
+    var btnNext = document.getElementById('lightboxNext');
+    var currentGroup = Object.keys(GALLERIES)[0];
+    var current = 0;
+    var lastFocused = null;
+
+    function items() { return GALLERIES[currentGroup] || []; }
+
+    function render() {
+      var item = items()[current];
+      if (!item) return;
+      if (item.src) {
+        img.src = item.src; img.alt = item.alt;
+        img.classList.remove('hidden'); ph.classList.add('hidden');
+      } else {
+        phText.textContent = item.alt;
+        img.classList.add('hidden'); ph.classList.remove('hidden');
+      }
+      counter.textContent = (current + 1) + ' / ' + items().length;
+    }
+
+    function open(group, index) {
+      currentGroup = group; current = index;
+      lastFocused = document.activeElement;
+      render();
+      lightbox.classList.remove('hidden');
+      lightbox.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      btnClose.focus();
+    }
+
+    function close() {
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+      document.body.style.overflow = '';
+      if (lastFocused) lastFocused.focus();
+    }
+
+    function next() { var n = items().length; current = (current + 1) % n; render(); }
+    function prev() { var n = items().length; current = (current - 1 + n) % n; render(); }
+
+    tiles.forEach(function (tile) {
+      tile.addEventListener('click', function () {
+        open(tile.getAttribute('data-group') || currentGroup,
+             parseInt(tile.getAttribute('data-index'), 10));
+      });
+    });
+
+    btnClose.addEventListener('click', close);
+    btnNext.addEventListener('click', next);
+    btnPrev.addEventListener('click', prev);
+
+    lightbox.addEventListener('click', function (e) { if (e.target === lightbox) close(); });
+
+    document.addEventListener('keydown', function (e) {
+      if (lightbox.classList.contains('hidden')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    });
+  })();
+</script>
+
+</body>
+</html>

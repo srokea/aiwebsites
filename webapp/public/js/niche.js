@@ -10,6 +10,10 @@ let sortState = { id: null, field: null, dir: "asc" };
 let filters = { interested: [], caller: [], answered: [], quality: [] };
 let searchQuery = "";
 let highlightStatuses = new Set();
+// klucze kolumn tabeli, ktore ta nisza pokazuje (data-sort-id). Ustawiane w loadNicheHeader z
+// currentNiche.columns; puste = wszystkie. "company" jest zawsze, wiec go tu nie trzymamy.
+let activeCols = new Set();
+const showCol = (k) => activeCols.size === 0 || activeCols.has(k);
 // wlaczany klikiem w karte "Do zrobienia" - pokazuje tylko leady, ktore licza sie do tej metryki
 let todoFilter = false;
 
@@ -94,6 +98,7 @@ async function init() {
 async function loadNicheHeader() {
   const niche = await api.get(`/api/niches/${encodeURIComponent(slug)}`);
   currentNiche = niche;
+  applyNicheColumns(niche.columns || []);
 
   const titleEl = document.getElementById("niche-title");
   titleEl.textContent = niche.name;
@@ -148,7 +153,7 @@ async function loadNicheHeader() {
   badge.style.display = "block";
   badge.innerHTML = isRestDay()
     ? `<span class="n">💤</span> rest day`
-    : `<span class="n">${niche.calledToday}</span>/${meta.dailyGoal} dzisiaj`;
+    : `<span class="n">${niche.myCalledToday ?? niche.calledToday}</span>/${meta.dailyGoal} dzisiaj`;
 }
 
 async function loadLeads() {
@@ -180,7 +185,9 @@ document.getElementById("niche-stats").addEventListener("click", (e) => {
 // ktory jest blizej (chronologicznie pierwszy), z etykieta zalezna od tego ktory to termin.
 function reminderInfo(lead) {
   const candidates = [
-    lead.callback_when && { raw: lead.callback_when, kind: "Oddzwoń" },
+    // #8 - callback_when bywa teraz "YYYY-MM-DDTHH:MM" (opcjonalna godzina), Reminder patrzy
+    // na sam dzien, wiec obcinamy do 10 znakow tak samo jak google_term
+    lead.callback_when && { raw: lead.callback_when.slice(0, 10), kind: "Oddzwoń" },
     lead.google_term && { raw: lead.google_term.slice(0, 10), kind: "Google" },
   ]
     .filter(Boolean)
@@ -301,7 +308,10 @@ function sortValue(lead, field) {
     // kolumna Reminder pokazuje blizszy z dwoch terminow (patrz reminderInfo), wiec sortuje
     // sie po tym samym - nie tylko po callback_when, inaczej rozjezdza sie z tym co widac
     case "reminder_effective": {
-      const dates = [lead.callback_when, lead.google_term ? lead.google_term.slice(0, 10) : ""]
+      const dates = [
+        lead.callback_when ? lead.callback_when.slice(0, 10) : "",
+        lead.google_term ? lead.google_term.slice(0, 10) : "",
+      ]
         .filter(Boolean)
         .map((d) => new Date(d + "T00:00:00").getTime())
         .filter((t) => !isNaN(t));
@@ -311,9 +321,11 @@ function sortValue(lead, field) {
     // sortowanie jako string ustawialoby je losowo wsrod prawdziwych dat, wiec parsujemy
     // i wszystko nieprawidlowe/puste ladowanie na koniec, zamiast alfabetycznie
     case "callback_when": {
-      const t = lead.callback_when ? new Date(lead.callback_when + "T00:00:00").getTime() : NaN;
+      const t = lead.callback_when ? new Date(lead.callback_when.slice(0, 10) + "T00:00:00").getTime() : NaN;
       return isNaN(t) ? Number.MAX_SAFE_INTEGER : t;
     }
+    case "attempts_count":
+      return lead.attempts_count || 0;
     case "google_term": {
       const t = lead.google_term ? new Date(lead.google_term).getTime() : NaN;
       return isNaN(t) ? Number.MAX_SAFE_INTEGER : t;
@@ -328,8 +340,9 @@ function matchesSearch(lead, query) {
   const q = query.toLowerCase().trim();
   const digitsQuery = query.replace(/\D/g, "");
   const nameMatch = lead.company_name.toLowerCase().includes(q);
+  const cityMatch = (lead.city || "").toLowerCase().includes(q);
   const phoneMatch = digitsQuery.length > 0 && lead.phone.replace(/\D/g, "").includes(digitsQuery);
-  return nameMatch || phoneMatch;
+  return nameMatch || cityMatch || phoneMatch;
 }
 
 function getVisibleLeads() {
@@ -497,7 +510,8 @@ function renderLeads() {
   const visible = getVisibleLeads();
   if (!visible.length) {
     const msg = todoFilter ? "Nic do zrobienia — wszystko obdzwonione. 🎉" : "Brak leadow spelniajacych kryteria.";
-    tbody.innerHTML = `<tr><td colspan="14"><div class="empty-state">${msg}</div></td></tr>`;
+    const span = 3 + (activeCols.size || 12); // # + Firma + akcje + widoczne kolumny
+    tbody.innerHTML = `<tr><td colspan="${span}"><div class="empty-state">${msg}</div></td></tr>`;
     updateScrollHint();
     return;
   }
@@ -697,6 +711,13 @@ function notesCellHtml(lead) {
   return `<button type="button" class="note-cell" title="Notatki (${notes.length})">${inner}</button>`;
 }
 
+// #4 - komorka "Proby": liczba prob dzwonienia. Klik otwiera popover z historia (godzina +
+// data kazdego polaczenia), reczna edycja liczby i przyciskiem "Dodaj polaczenie".
+function attemptsCellHtml(lead) {
+  const n = lead.attempts_count || 0;
+  return `<button type="button" class="attempts-cell ${n ? "has" : ""}" data-attempts-open title="Próby dzwonienia — kliknij, żeby zobaczyć i edytować historię">${n}</button>`;
+}
+
 function rowHtml(lead, index) {
   const reminder = reminderInfo(lead);
   const highlightClass = highlightStatuses.has(lead.interested) ? `row-glow-${lead.interested}` : "";
@@ -711,25 +732,42 @@ function rowHtml(lead, index) {
           <a class="company-link" href="${escapeHtml(companyGoogleSearchHref(lead))}" target="_blank" rel="noopener" title="${escapeHtml(lead.company_name)} — szukaj w Google">${escapeHtml(lead.company_name)}</a>
         </div>
       </td>
-      <td class="city-cell" title="${escapeHtml(lead.city)}">${escapeHtml(shortCity(lead.city))}</td>
-      <td class="phone-cell">
+      ${showCol("city") ? `<td class="city-cell" title="${escapeHtml(lead.city)}">${escapeHtml(shortCity(lead.city))}</td>` : ""}
+      ${
+        showCol("phone")
+          ? `<td class="phone-cell">
         <a class="phone-call-btn" href="/script.html?leadId=${lead.id}" target="_blank" rel="noopener" title="Scheme rozmowy (nowe okno)">📖</a>
         <span class="phone-text">${escapeHtml(formatPhone(lead.phone))}</span>
-      </td>
-      <td>${fieldCsel("quality", meta.qualityOptions, lead.quality, "—")}</td>
-      <td>
+      </td>`
+          : ""
+      }
+      ${showCol("quality") ? `<td>${fieldCsel("quality", meta.qualityOptions, lead.quality, "—")}</td>` : ""}
+      ${
+        showCol("social")
+          ? `<td>
         <div class="tags-popover">
           <div class="tags-trigger">${platformTriggerContent(lead)}</div>
           <div class="tags-menu">${platformMenuContent(lead)}</div>
         </div>
-      </td>
-      <td>${answeredHtml(lead)}</td>
-      <td>${fieldCsel("interested", meta.interestedOptions, lead.interested)}</td>
-      <td>${fieldCsel("caller", callerOptions(), lead.caller, "—")}</td>
-      <td><span class="reminder-badge ${reminder.cls}">${reminder.text}</span></td>
-      <td><button type="button" class="term-btn ${lead.callback_when ? "set" : ""}" data-callback-open title="${lead.callback_when ? "" : "Ustaw dzień oddzwonienia"}">${escapeHtml(callbackLabel(lead.callback_when))}</button></td>
-      <td><button type="button" class="term-btn ${lead.google_term ? "set" : ""}" data-term-open title="${lead.google_term ? "" : "Ustaw termin Google Meet"}">${escapeHtml(termLabel(lead.google_term))}</button></td>
-      <td>${notesCellHtml(lead)}</td>
+      </td>`
+          : ""
+      }
+      ${showCol("answered") ? `<td>${answeredHtml(lead)}</td>` : ""}
+      ${showCol("interested") ? `<td>${fieldCsel("interested", meta.interestedOptions, lead.interested)}</td>` : ""}
+      ${showCol("caller") ? `<td>${fieldCsel("caller", callerOptions(), lead.caller, "—")}</td>` : ""}
+      ${showCol("attempts") ? `<td>${attemptsCellHtml(lead)}</td>` : ""}
+      ${showCol("reminder") ? `<td><span class="reminder-badge ${reminder.cls}">${reminder.text}</span></td>` : ""}
+      ${
+        showCol("callback")
+          ? `<td><button type="button" class="term-btn ${lead.callback_when ? "set" : ""}" data-callback-open title="${lead.callback_when ? "" : "Ustaw dzień oddzwonienia"}">${escapeHtml(callbackLabel(lead.callback_when))}</button></td>`
+          : ""
+      }
+      ${
+        showCol("gterm")
+          ? `<td><button type="button" class="term-btn ${lead.google_term ? "set" : ""}" data-term-open title="${lead.google_term ? "" : "Ustaw termin Google Meet"}">${escapeHtml(termLabel(lead.google_term))}</button></td>`
+          : ""
+      }
+      ${showCol("notes") ? `<td>${notesCellHtml(lead)}</td>` : ""}
       <td class="row-actions"><button type="button" class="lead-delete-btn" title="Usuń lead">✕</button></td>
     </tr>
   `;
@@ -821,6 +859,157 @@ tbody.addEventListener("click", (e) => {
     onPick: (value) => saveLead(lead.id, { callback_when: value }),
   });
 });
+
+// #4 - popover kolumny "Proby": historia polaczen (godzina + data), reczna edycja liczby,
+// dodawanie wpisu. Zrodlem prawdy jest tabela lead_call_attempts na serwerze; tu tylko
+// synchronizujemy lead.attempts_count i przerysowujemy wiersz.
+let attemptsPopEl = null;
+
+function closeAttemptsPop() {
+  if (attemptsPopEl) attemptsPopEl.remove();
+  attemptsPopEl = null;
+}
+
+function fmtAttempt(when) {
+  const hasTime = when.length > 10;
+  const d = new Date(hasTime ? when : `${when}T00:00:00`);
+  if (isNaN(d.getTime())) return when;
+  const p = (n) => String(n).padStart(2, "0");
+  const date = `${p(d.getDate())}.${p(d.getMonth() + 1)}.${d.getFullYear()}`;
+  return hasTime ? `${date}, ${p(d.getHours())}:${p(d.getMinutes())}` : date;
+}
+
+async function openAttemptsPopover(anchor, lead) {
+  closeAttemptsPop();
+  closeCallbackPicker?.();
+
+  const pop = document.createElement("div");
+  pop.className = "term-pop attempts-pop";
+  document.body.appendChild(pop);
+  attemptsPopEl = pop;
+
+  let attempts = [];
+  let adding = false;
+
+  function position() {
+    const r = anchor.getBoundingClientRect();
+    const w = pop.offsetWidth;
+    const h = pop.offsetHeight;
+    pop.style.left = `${Math.max(8, Math.min(r.left, window.innerWidth - w - 8))}px`;
+    const below = r.bottom + 6;
+    pop.style.top = `${below + h > window.innerHeight - 8 ? Math.max(8, r.top - h - 6) : below}px`;
+  }
+
+  function syncCount() {
+    lead.attempts_count = attempts.length;
+    const cell = document.querySelector(`tr[data-id="${lead.id}"] .attempts-cell`);
+    if (cell) {
+      cell.textContent = attempts.length;
+      cell.classList.toggle("has", attempts.length > 0);
+    }
+  }
+
+  function render() {
+    const now = new Date();
+    const p = (n) => String(n).padStart(2, "0");
+    const nowDate = `${now.getFullYear()}-${p(now.getMonth() + 1)}-${p(now.getDate())}`;
+    const nowTime = `${p(now.getHours())}:${p(now.getMinutes())}`;
+
+    const list = attempts.length
+      ? attempts
+          .map(
+            (a) => `
+        <li class="attempts-item">
+          <span>${fmtAttempt(a.happened_at)}${a.created_by ? ` · <span class="attempts-by">${escapeHtml(a.created_by)}</span>` : ""}</span>
+          <button type="button" class="attempts-del" data-attempt-del="${a.id}" title="Usuń wpis">✕</button>
+        </li>`
+          )
+          .join("")
+      : `<li class="attempts-empty">Brak zapisanych prób</li>`;
+
+    pop.innerHTML = `
+      <div class="attempts-head">
+        <span>Próby:</span>
+        <input type="number" class="attempts-count-input" min="0" max="999" value="${attempts.length}" data-attempts-count>
+        <button type="button" class="btn" data-attempts-count-save>OK</button>
+      </div>
+      <ul class="attempts-list">${list}</ul>
+      ${
+        adding
+          ? `<div class="attempts-add-form">
+               <input type="date" data-attempt-date value="${nowDate}">
+               <input type="time" data-attempt-time value="${nowTime}">
+               <button type="button" class="btn primary" data-attempt-add-save>Dodaj</button>
+             </div>`
+          : `<button type="button" class="btn attempts-add-btn" data-attempts-add>+ Dodaj połączenie</button>`
+      }
+    `;
+    position();
+  }
+
+  async function refetch() {
+    attempts = await api.get(`/api/leads/${lead.id}/attempts`);
+    syncCount();
+    render();
+  }
+
+  pop.addEventListener("click", async (e) => {
+    e.stopPropagation();
+    try {
+      if (e.target.closest("[data-attempts-add]")) {
+        adding = true;
+        return render();
+      }
+      const del = e.target.closest("[data-attempt-del]");
+      if (del) {
+        attempts = await api.del(`/api/leads/${lead.id}/attempts/${del.dataset.attemptDel}`);
+        syncCount();
+        return render();
+      }
+      if (e.target.closest("[data-attempts-count-save]")) {
+        const val = Number(pop.querySelector("[data-attempts-count]").value);
+        attempts = await api.put(`/api/leads/${lead.id}/attempts/count`, { count: val });
+        syncCount();
+        return render();
+      }
+      if (e.target.closest("[data-attempt-add-save]")) {
+        const date = pop.querySelector("[data-attempt-date]").value;
+        const time = pop.querySelector("[data-attempt-time]").value;
+        if (!date) return;
+        attempts = await api.post(`/api/leads/${lead.id}/attempts`, {
+          happened_at: time ? `${date}T${time}` : date,
+        });
+        adding = false;
+        syncCount();
+        return render();
+      }
+    } catch (err) {
+      alert("Blad: " + err.message);
+    }
+  });
+
+  render();
+  try {
+    await refetch();
+  } catch (err) {
+    pop.innerHTML = `<div class="attempts-empty">Nie udało się wczytać: ${escapeHtml(err.message)}</div>`;
+  }
+}
+
+tbody.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-attempts-open]");
+  if (!btn) return;
+  const lead = leads.find((l) => l.id === Number(btn.closest("tr").dataset.id));
+  if (lead) openAttemptsPopover(btn, lead);
+});
+
+document.addEventListener("click", (e) => {
+  if (attemptsPopEl && !attemptsPopEl.contains(e.target) && !e.target.closest("[data-attempts-open]")) closeAttemptsPop();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeAttemptsPop();
+});
+window.addEventListener("resize", closeAttemptsPop);
 
 tbody.addEventListener("click", (e) => {
   const noteBtn = e.target.closest(".note-cell");
@@ -1270,9 +1459,71 @@ document.getElementById("filter-bar").addEventListener("keydown", (e) => {
 
 const addLeadModal = document.getElementById("add-lead-modal");
 
+// Pola modala "Nowy lead" = kolumny tej niszy (bez "#"/Firma/kosza oraz bez Prób i Notatek,
+// ktore uzupelnia sie w tabeli). Przebudowywane przy kazdym applyNicheColumns().
+function buildAddLeadFields() {
+  const box = document.getElementById("add-lead-fields");
+  if (!box || !meta) return;
+  const optList = (list, empty) =>
+    (empty ? `<option value="">${empty}</option>` : "") +
+    list.map((o) => `<option value="${escapeHtml(o.value)}">${escapeHtml(o.label)}</option>`).join("");
+  const has = (k) => activeCols.has(k);
+  const parts = [];
+  if (has("city")) parts.push(`<label>Miasto<input type="text" data-f="city" placeholder="np. Bełchatów"></label>`);
+  if (has("phone")) parts.push(`<label>Telefon<input type="text" data-f="phone" placeholder="np. 500600700"></label>`);
+  if (has("quality")) parts.push(`<label>Jakość<select data-f="quality">${optList(meta.qualityOptions, "—")}</select></label>`);
+  if (has("answered")) parts.push(`<label>Odebrał?<select data-f="answered">${optList(meta.answeredOptions, "—")}</select></label>`);
+  if (has("interested"))
+    parts.push(`<label>Zainteresowany?<select data-f="interested">${optList(meta.interestedOptions, "")}</select></label>`);
+  if (has("caller"))
+    parts.push(
+      `<label>Kto dzwonił<select data-f="caller"><option value="">—</option>${(meta.callers || [])
+        .map((c) => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`)
+        .join("")}</select></label>`
+    );
+  if (has("callback")) parts.push(`<label>Kiedy oddzwonić<input type="date" data-f="callback_when"></label>`);
+  if (has("gterm")) parts.push(`<label>Termin Google<input type="datetime-local" data-f="google_term"></label>`);
+  if (has("social"))
+    parts.push(
+      `<fieldset class="add-lead-tags"><legend>Social</legend>${(meta.platformTags || [])
+        .map(
+          (t) =>
+            `<label class="add-lead-tag"><input type="checkbox" data-tag="${t}"> ${escapeHtml(
+              (meta.platformMeta[t] && meta.platformMeta[t].name) || t
+            )}</label>`
+        )
+        .join("")}</fieldset>`
+    );
+  box.innerHTML = parts.join("");
+}
+
+// nisza pokazuje tylko wybrane kolumny: chowamy naglowki tabeli i przebudowujemy pola modala.
+function applyNicheColumns(cols) {
+  activeCols = new Set(cols && cols.length ? cols : []);
+  document.querySelectorAll("table.leads thead th[data-sort-id]").forEach((th) => {
+    const k = th.dataset.sortId;
+    if (k !== "company") th.hidden = !showCol(k);
+  });
+  buildAddLeadFields();
+}
+
+function collectAddLeadValues() {
+  const body = { company_name: document.getElementById("add-lead-name").value };
+  document.querySelectorAll("#add-lead-fields [data-f]").forEach((el) => {
+    let v = el.value;
+    if (el.dataset.f === "phone") v = v.replace(/\D/g, ""); // w bazie sam numer, jak przy edycji w tabeli
+    if (v !== "") body[el.dataset.f] = v;
+  });
+  document.querySelectorAll("#add-lead-fields [data-tag]").forEach((el) => {
+    if (el.checked) body[`tag_${el.dataset.tag}`] = 1;
+  });
+  return body;
+}
+
 function openAddLeadModal() {
   document.getElementById("add-lead-error").style.display = "none";
   document.getElementById("add-lead-form").reset();
+  buildAddLeadFields(); // odbuduj na wypadek, gdyby applyNicheColumns nie zdazylo (np. meta)
   addLeadModal.classList.remove("hidden");
   document.getElementById("add-lead-name").focus();
 }
@@ -1291,12 +1542,7 @@ document.getElementById("add-lead-form").addEventListener("submit", async (e) =>
   const submitBtn = e.target.querySelector("button[type=submit]");
   submitBtn.disabled = true;
   try {
-    const lead = await api.post(`/api/niches/${encodeURIComponent(slug)}/leads`, {
-      company_name: document.getElementById("add-lead-name").value,
-      city: document.getElementById("add-lead-city").value,
-      // telefon trzymamy w bazie samymi cyframi (tak samo jak przy edycji w tabeli)
-      phone: document.getElementById("add-lead-phone").value.replace(/\D/g, ""),
-    });
+    const lead = await api.post(`/api/niches/${encodeURIComponent(slug)}/leads`, collectAddLeadValues());
     leads.push(lead);
     addLeadModal.classList.add("hidden");
     renderLeads();
@@ -1345,11 +1591,27 @@ function renderColorSwatches() {
     .join("");
 }
 
+// checkboxy kolumn w ustawieniach niszy - zaznaczone = kolumna widoczna (klucze z meta.leadColumns)
+function renderColumnPicker() {
+  const box = document.getElementById("settings-columns");
+  if (!box || !meta) return;
+  const on = new Set(currentNiche.columns && currentNiche.columns.length ? currentNiche.columns : (meta.leadColumns || []).map((c) => c.key));
+  box.innerHTML = (meta.leadColumns || [])
+    .map(
+      (c) =>
+        `<label class="col-pick"><input type="checkbox" value="${c.key}" ${on.has(c.key) ? "checked" : ""}> ${escapeHtml(
+          c.label
+        )}</label>`
+    )
+    .join("");
+}
+
 async function openSettings() {
   document.getElementById("settings-error").style.display = "none";
   document.getElementById("settings-name").value = currentNiche.name;
   pendingColor = currentNiche.color || "";
   renderColorSwatches();
+  renderColumnPicker();
 
   // lista plikow schematow czytana przy kazdym otwarciu - swiezo dorzucony plik
   // w server/scriptsData/ pojawia sie bez przeladowania strony
@@ -1395,6 +1657,7 @@ document.getElementById("settings-form").addEventListener("submit", async (e) =>
     // pusta wartosc = lista sie nie wczytala - nie nadpisujemy wyboru w bazie
     const scriptFile = document.getElementById("settings-script-file").value;
     if (scriptFile) body.script_file = scriptFile;
+    body.columns = [...document.querySelectorAll("#settings-columns input:checked")].map((el) => el.value);
     await api.patch(`/api/niches/${currentNiche.id}`, body);
     closeSettings();
     await loadNicheHeader();
@@ -1414,22 +1677,105 @@ document.getElementById("settings-delete-btn").addEventListener("click", async (
   }
 });
 
-// #7 - "x" po prawej stronie searchbara czysci cale pole (widoczny tylko gdy jest co czyscic)
+// Search w niszy robi DWIE rzeczy naraz:
+//   1) filtruje lokalna tabele tej niszy (searchQuery -> renderLeads),
+//   2) #2 - podpowiada leady ze WSZYSTKICH nisz (/api/leads/search) w dropdownie pod polem;
+//      klik -> scheme rozmowy tego leada. Strzalki / Enter / Esc jak w wyszukiwarce dashboardu.
 const leadSearchInput = document.getElementById("lead-search");
 const leadSearchClear = document.getElementById("lead-search-clear");
 
-leadSearchInput.addEventListener("input", (e) => {
-  searchQuery = e.target.value;
-  leadSearchClear.classList.toggle("hidden", !searchQuery);
-  renderLeads();
-});
+(function initNicheLeadSearch() {
+  const resultsBox = document.getElementById("lead-search-results");
+  const searchBar = document.getElementById("lead-search-bar");
+  let items = [];
+  let activeIdx = -1;
+  let seq = 0;
+  let debounceT;
 
-leadSearchClear.addEventListener("click", () => {
-  searchQuery = "";
-  leadSearchInput.value = "";
-  leadSearchClear.classList.add("hidden");
-  leadSearchInput.focus();
-  renderLeads();
-});
+  function closeResults() {
+    resultsBox.classList.add("hidden");
+    resultsBox.innerHTML = "";
+    items = [];
+    activeIdx = -1;
+  }
+  function go(idx) {
+    const it = items[idx];
+    if (it) location.href = "/script.html?leadId=" + it.id;
+  }
+  function render() {
+    resultsBox.innerHTML = items.length
+      ? items
+          .map(
+            (it, i) => `
+        <button type="button" class="sr-item ${i === activeIdx ? "active" : ""}" data-idx="${i}">
+          <div class="sr-company">${escapeHtml(it.company_name || "—")}</div>
+          <div class="sr-meta">${escapeHtml(it.phone || "brak numeru")} · ${escapeHtml(it.city || "—")} · ${escapeHtml(it.niche_name || "")}</div>
+        </button>`
+          )
+          .join("")
+      : `<div class="sr-empty">Brak wyników w innych niszach</div>`;
+    resultsBox.classList.remove("hidden");
+  }
+  async function runSearch(q) {
+    const mySeq = ++seq;
+    try {
+      const rows = await api.get("/api/leads/search?q=" + encodeURIComponent(q));
+      if (mySeq !== seq) return;
+      items = rows;
+      activeIdx = -1;
+      render();
+    } catch {
+      /* cicho */
+    }
+  }
+
+  leadSearchInput.addEventListener("input", (e) => {
+    const q = e.target.value;
+    searchQuery = q;
+    leadSearchClear.classList.toggle("hidden", !q);
+    renderLeads(); // lokalna tabela
+
+    clearTimeout(debounceT);
+    const trimmed = q.trim();
+    if (trimmed.length < 2) return closeResults();
+    debounceT = setTimeout(() => runSearch(trimmed), 200);
+  });
+
+  leadSearchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeResults();
+      leadSearchInput.blur();
+    } else if (e.key === "ArrowDown" && items.length) {
+      e.preventDefault();
+      activeIdx = (activeIdx + 1) % items.length;
+      render();
+    } else if (e.key === "ArrowUp" && items.length) {
+      e.preventDefault();
+      activeIdx = (activeIdx - 1 + items.length) % items.length;
+      render();
+    } else if (e.key === "Enter" && items.length) {
+      e.preventDefault();
+      go(activeIdx >= 0 ? activeIdx : 0);
+    }
+  });
+
+  resultsBox.addEventListener("click", (e) => {
+    const btn = e.target.closest(".sr-item");
+    if (btn) go(Number(btn.dataset.idx));
+  });
+
+  leadSearchClear.addEventListener("click", () => {
+    searchQuery = "";
+    leadSearchInput.value = "";
+    leadSearchClear.classList.add("hidden");
+    closeResults();
+    leadSearchInput.focus();
+    renderLeads();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("#lead-search-bar") && !searchBar.contains(e.target)) closeResults();
+  });
+})();
 
 init();

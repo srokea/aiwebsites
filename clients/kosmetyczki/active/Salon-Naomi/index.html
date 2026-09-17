@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salon Naomi — makijaż permanentny i kosmetyka, Opoczno</title>
+<meta name="description" content="Salon Naomi w Opocznie, Partyzantów 29a. Makijaż permanentny, studio paznokci, pielęgnacja ciała i zabiegi kosmetyczne. Prowadzi Agnieszka Karasińska. Zapisy telefoniczne: 512 457 225.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Salon Naomi — makijaż permanentny i kosmetyka, Opoczno">
+<meta property="og:description" content="Makijaż permanentny, paznokcie, ciało i zabiegi kosmetyczne w jednym miejscu przy Partyzantów 29a w Opocznie.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:image" content="photos/logo.jpg">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          paper:   '#FFFFFF',
+          surface: '#F4F2EF',
+          ink:     '#1A1816',
+          inkmuted:'#5A5651',
+          border:  'rgba(26,24,22,0.14)',
+          accent:  '#255A50',
+          forest:  '#255A50',
+        },
+        fontFamily: {
+          display: ['Cinzel', 'serif'],
+          script:  ['"Cormorant Garamond"', 'Georgia', 'serif'],
+          body:    ['"Work Sans"', 'system-ui', 'sans-serif'],
+        },
+        maxWidth: { frame: '68rem', prose: '42rem' },
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO) — bez połączenia z serwerami Google. */
+  @font-face {
+    font-family: 'Cinzel'; font-style: normal; font-weight: 400 700; font-display: swap;
+    src: url('fonts/cinzel-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Cinzel'; font-style: normal; font-weight: 400 700; font-display: swap;
+    src: url('fonts/cinzel-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 400 600; font-display: swap;
+    src: url('fonts/cormorant-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 400 600; font-display: swap;
+    src: url('fonts/cormorant-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 400 600; font-display: swap;
+    src: url('fonts/cormorant-italic-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 400 600; font-display: swap;
+    src: url('fonts/cormorant-italic-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Work Sans'; font-style: normal; font-weight: 400 600; font-display: swap;
+    src: url('fonts/worksans-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Work Sans'; font-style: normal; font-weight: 400 600; font-display: swap;
+    src: url('fonts/worksans-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { background: #255A50; }
+  section[id] { scroll-margin-top: 5rem; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  }
+
+  :focus-visible { outline: 2px solid #255A50; outline-offset: 3px; border-radius: 2px; }
+
+  /* Zielony szyld nawigacji — na życzenie klientki żaden biały obszar poza ramą */
+  .navbar-forest { background: #255A50; border-bottom: 1px solid rgba(255, 255, 255, 0.18); }
+  .navbar-forest :focus-visible { outline-color: #FFFFFF; }
+
+  /* Podwójna rama afisza — technika ze Stylu 07, w czerni z logo, na leśnym tle */
+  .frame { border: 3px double #1A1816; background: #FFFFFF; }
+  .frame-page { box-shadow: 0 26px 64px -22px rgba(0, 0, 0, 0.45); }
+  .frame-inner { border: 1px solid rgba(26, 24, 22, 0.5); }
+
+  .topband {
+    font-family: 'Cinzel', serif; letter-spacing: 0.2em; text-transform: uppercase;
+    font-size: 0.6rem; text-align: center; color: #5A5651;
+    padding: 0.8rem 1rem; border-bottom: 1px solid rgba(26, 24, 22, 0.35);
+  }
+  @media (min-width: 640px) { .topband { letter-spacing: 0.26em; font-size: 0.64rem; } }
+
+  .h-line { font-family: 'Cinzel', serif; letter-spacing: 0.14em; text-transform: uppercase; }
+
+  .nav-link { padding-bottom: 2px; border-bottom: 1px solid transparent; }
+  .nav-link.is-active { color: #FFFFFF; border-bottom-color: rgba(255, 255, 255, 0.9); }
+
+  /* Odtworzony szyld (płaski, wektorowy — nie zdjęcie telefonem) */
+  .sign-orn { color: #1A1816; display: block; }
+  .sign-orn path { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .sign-orn .node { fill: #255A50; stroke: none; }
+  .sign-pmu {
+    font-family: 'Work Sans', sans-serif; font-weight: 400; text-transform: uppercase;
+    letter-spacing: 0.12em; color: #1A1816; font-size: clamp(0.88rem, 4vw, 1.35rem);
+    white-space: nowrap;
+  }
+  .sign-name {
+    font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; color: #1A1816;
+    font-size: clamp(1.5rem, 6.4vw, 2.15rem); line-height: 1.1;
+  }
+  .sign-tel {
+    font-family: 'Work Sans', sans-serif; font-weight: 400; text-transform: uppercase;
+    letter-spacing: 0.16em; color: #1A1816; font-size: clamp(0.82rem, 3.4vw, 1.1rem);
+  }
+
+  /* Ornamentalny zawijas sekcji — nawiązanie do scrollworku z szyldu */
+  .orn { color: rgba(26, 24, 22, 0.42); }
+  .orn path, .orn line { fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; }
+  .orn .node { fill: #255A50; stroke: none; }
+
+  /* Rejestr usług z dot-leaderami — technika ze Stylu 07 */
+  .reg-row { display: flex; align-items: baseline; gap: 0.6rem; padding: 0.85rem 0; }
+  .reg-row + .reg-row { border-top: 1px solid rgba(26, 24, 22, 0.1); }
+  .reg-name { font-weight: 500; }
+  .reg-name em { display: block; font-style: normal; font-size: 0.85rem; color: #5A5651; font-weight: 400; margin-top: 0.1rem; }
+  .reg-lead { flex: 1 1 auto; min-width: 1.5rem; border-bottom: 2px dotted rgba(26, 24, 22, 0.4); transform: translateY(-0.3rem); }
+  .reg-price {
+    font-family: 'Cinzel', serif; font-size: 0.66rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #5A5651; white-space: nowrap;
+  }
+
+  /* Kategorie usług — zawsze widoczne, bez zwijania */
+  .cat { border-top: 1px solid rgba(26, 24, 22, 0.2); }
+  .cat:last-child { border-bottom: 1px solid rgba(26, 24, 22, 0.2); }
+  .cat-head { display: flex; align-items: baseline; gap: 0.9rem; padding: 1.15rem 0 0.35rem; }
+  .cat-no { font-family: 'Cinzel', serif; font-size: 0.78rem; letter-spacing: 0.1em; color: #255A50; }
+  .cat-title { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: 1.55rem; line-height: 1; }
+  .cat-body { padding-bottom: 1.35rem; }
+
+  /* Kafle galerii (placeholder + wejście do lightboxa) */
+  .tile {
+    -webkit-appearance: none; appearance: none; font: inherit; color: #5A5651; background: #FFFFFF;
+    border: 1px dashed rgba(26, 24, 22, 0.32); width: 100%; aspect-ratio: 1 / 1; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.6rem; text-align: center; padding: 1rem;
+    transition: border-color 0.18s, color 0.18s;
+  }
+  .tile:hover, .tile:focus-visible { border-color: rgba(26, 24, 22, 0.6); color: #1A1816; }
+
+  /* Bilet kontaktowy — podwójna rama jak w Stylu 07 */
+  .ticket { border: 3px double #1A1816; }
+
+  .hours-row[data-today="true"] {
+    color: #1A1816; font-weight: 600;
+    background: rgba(37, 90, 80, 0.09); box-shadow: inset 3px 0 0 #255A50;
+    padding-left: 0.7rem; padding-right: 0.7rem;
+    margin-left: -0.7rem; margin-right: -0.7rem;
+  }
+  .hours-row[data-today="true"] dt::after {
+    content: " · dziś"; color: #255A50; font-family: 'Cinzel', serif;
+    font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .hours-row[data-today="true"] .hours-val { color: #255A50; font-weight: 700; }
+
+  .map-frame iframe { filter: grayscale(0.55) contrast(0.96) brightness(1.02); }
+
+  /* ── Lightbox galerii ── */
+  .lb[hidden] { display: none; }
+  .lb {
+    position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 20px;
+    background: rgba(26, 24, 22, 0.88); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    animation: lb-in 0.2s ease-out;
+  }
+  @keyframes lb-in { from { opacity: 0; } to { opacity: 1; } }
+  .lb-stage { position: relative; display: flex; flex-direction: column; align-items: center; gap: 16px; max-width: 1000px; width: 100%; }
+  .lb-fig { margin: 0; height: 74vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+  .lb-img {
+    max-width: min(92vw, 960px); max-height: calc(74vh - 66px); width: auto; height: auto; object-fit: contain;
+    background: #FFFFFF; border: 1px solid rgba(255, 255, 255, 0.16); animation: lb-pop 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  @keyframes lb-pop { from { transform: scale(0.96); opacity: 0.4; } to { transform: scale(1); opacity: 1; } }
+  .lb-ph {
+    width: min(84vw, 400px); aspect-ratio: 1 / 1; border: 1px dashed rgba(255, 255, 255, 0.42);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem;
+    color: rgba(255, 255, 255, 0.72); text-align: center; padding: 1.5rem;
+    animation: lb-pop 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .lb-ph-label { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: 1.5rem; color: #FFFFFF; }
+  .lb-ph-sub { font-size: 0.8rem; letter-spacing: 0.06em; }
+  .lb-cap { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255, 255, 255, 0.82); }
+  .lb-controls { display: flex; align-items: center; gap: 18px; }
+  .lb-count { font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.1em; color: rgba(255, 255, 255, 0.7); min-width: 3.5rem; text-align: center; }
+  .lb-btn {
+    border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(26, 24, 22, 0.4); color: #FFFFFF;
+    cursor: pointer; display: grid; place-items: center; line-height: 1;
+    transition: background 0.18s, border-color 0.18s;
+  }
+  .lb-btn:hover, .lb-btn:focus-visible { background: #255A50; border-color: #255A50; color: #FFFFFF; outline: none; }
+  .lb-close { position: absolute; top: -4px; right: 0; width: 44px; height: 44px; font-size: 1.1rem; z-index: 2; }
+  .lb-nav { width: 46px; height: 46px; font-size: 1.5rem; padding-bottom: 3px; border-radius: 999px; }
+  @media (min-width: 900px) { .lb-close { top: -52px; } }
+  @media (prefers-reduced-motion: reduce) { .lb, .lb-img, .lb-ph { animation: none; } }
+</style>
+</head>
+
+<body class="text-ink font-body antialiased">
+
+<!-- ══════════ HEADER (poza ramą — telefon zawsze pod ręką) ══════════ -->
+<header class="navbar-forest fixed top-0 inset-x-0 z-50">
+  <div class="max-w-frame mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+    <a href="#top" class="flex items-center gap-2 sm:gap-2.5 shrink-0 text-white">
+      <svg class="w-7 h-4 shrink-0" viewBox="0 0 60 26" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+          <path d="M30 13 C24 5 12 4 7 10 C3 15 6 22 13 19 C18 17 16 10 10 12"/>
+          <path d="M30 13 C36 5 48 4 53 10 C57 15 54 22 47 19 C42 17 44 10 50 12"/>
+        </g>
+        <path d="M30 7 L34 13 L30 19 L26 13 Z" fill="#FFFFFF"/>
+      </svg>
+      <span class="h-line text-[0.68rem] sm:text-[0.85rem] tracking-[0.14em] sm:tracking-[0.22em]">Salon Naomi</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-8 text-sm text-white/75">
+      <a href="#uslugi" class="nav-link hover:text-white transition-colors motion-reduce:transition-none">Usługi</a>
+      <a href="#galeria" class="nav-link hover:text-white transition-colors motion-reduce:transition-none">Galeria</a>
+      <a href="#kontakt" class="nav-link hover:text-white transition-colors motion-reduce:transition-none">Kontakt</a>
+    </nav>
+    <div class="flex items-center gap-1.5 sm:gap-4">
+      <a href="https://www.instagram.com/salonkosmetycznynaomi/" target="_blank" rel="noopener" aria-label="Instagram Salonu Naomi" class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center border border-white/35 text-white/80 hover:text-white hover:border-white transition-colors motion-reduce:transition-none">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.facebook.com/permanentnynaomi/" target="_blank" rel="noopener" aria-label="Facebook Salonu Naomi" class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center border border-white/35 text-white/80 hover:text-white hover:border-white transition-colors motion-reduce:transition-none">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.24-1.5 1.5-1.5H16.7V3.9c-.3-.04-1.3-.13-2.5-.13-2.5 0-4.2 1.5-4.2 4.3V10H7.3v3h2.7v8h3.5z"/></svg>
+      </a>
+      <a href="tel:+48512457225" class="bg-white text-accent h-line text-[0.68rem] sm:text-[0.72rem] tracking-[0.08em] sm:tracking-[0.12em] px-3 sm:px-5 py-2.5 min-h-[44px] flex items-center whitespace-nowrap hover:bg-white/90 transition motion-reduce:transition-none">
+        <span class="sm:hidden">Zadzwoń</span>
+        <span class="hidden sm:inline">512 457 225</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div id="top" class="max-w-frame mx-auto px-4 sm:px-8 lg:px-10 pt-24 sm:pt-28 pb-8 sm:pb-16">
+<div class="frame frame-page p-1.5 sm:p-2">
+<div class="frame-inner">
+
+  <p class="topband">Opoczno · Salon kosmetyczny · Est. Naomi</p>
+
+  <div class="px-5 sm:px-10 lg:px-16">
+
+  <!-- ══════════ HERO ══════════ -->
+  <section class="pt-12 pb-14 sm:pt-16 sm:pb-16 text-center">
+    <figure class="frame mx-auto max-w-[26rem] p-2" style="box-shadow: 9px 9px 0 rgba(26,24,22,0.07);">
+      <div class="border border-ink/25 px-4 py-9 sm:px-8 sm:py-10">
+        <svg class="sign-orn mx-auto w-56 max-w-full h-auto" viewBox="0 0 300 52" aria-hidden="true">
+          <g>
+            <path d="M150 28 C134 12 108 11 92 21 C80 29 84 42 98 38 C107 35 105 25 96 28"/>
+            <path d="M150 31 C122 31 92 33 66 28 C50 25 48 13 62 13 C72 13 73 23 63 24"/>
+            <path d="M150 34 C130 43 112 45 96 40"/>
+            <path d="M112 19 C108 9 118 5 122 15 C120 21 115 22 112 19"/>
+            <path d="M150 25 C144 19 138 21 136 27"/>
+          </g>
+          <g transform="translate(300,0) scale(-1,1)">
+            <path d="M150 28 C134 12 108 11 92 21 C80 29 84 42 98 38 C107 35 105 25 96 28"/>
+            <path d="M150 31 C122 31 92 33 66 28 C50 25 48 13 62 13 C72 13 73 23 63 24"/>
+            <path d="M150 34 C130 43 112 45 96 40"/>
+            <path d="M112 19 C108 9 118 5 122 15 C120 21 115 22 112 19"/>
+            <path d="M150 25 C144 19 138 21 136 27"/>
+          </g>
+          <path d="M150 22 C153 27 153 31 150 37 C147 31 147 27 150 22 Z" class="node"/>
+        </svg>
+
+        <p class="sign-pmu mt-5">Permanent Make Up</p>
+        <p class="sign-name mt-1">Agnieszka Karasińska</p>
+
+        <svg class="sign-orn mx-auto mt-4 w-56 max-w-full h-auto" viewBox="0 0 300 52" style="transform: scaleY(-1);" aria-hidden="true">
+          <g>
+            <path d="M150 28 C134 12 108 11 92 21 C80 29 84 42 98 38 C107 35 105 25 96 28"/>
+            <path d="M150 31 C122 31 92 33 66 28 C50 25 48 13 62 13 C72 13 73 23 63 24"/>
+            <path d="M150 34 C130 43 112 45 96 40"/>
+            <path d="M112 19 C108 9 118 5 122 15 C120 21 115 22 112 19"/>
+            <path d="M150 25 C144 19 138 21 136 27"/>
+          </g>
+          <g transform="translate(300,0) scale(-1,1)">
+            <path d="M150 28 C134 12 108 11 92 21 C80 29 84 42 98 38 C107 35 105 25 96 28"/>
+            <path d="M150 31 C122 31 92 33 66 28 C50 25 48 13 62 13 C72 13 73 23 63 24"/>
+            <path d="M150 34 C130 43 112 45 96 40"/>
+            <path d="M112 19 C108 9 118 5 122 15 C120 21 115 22 112 19"/>
+            <path d="M150 25 C144 19 138 21 136 27"/>
+          </g>
+          <path d="M150 22 C153 27 153 31 150 37 C147 31 147 27 150 22 Z" class="node"/>
+        </svg>
+
+        <p class="sign-tel mt-5">Tel. 512 457 225</p>
+      </div>
+    </figure>
+
+    <h1 class="mt-10 font-script font-semibold text-[2.7rem] sm:text-[3.5rem] leading-[1.04] tracking-[0.01em]">
+      Pełen salon kosmetyczny<br class="hidden sm:block"> w Opocznie
+    </h1>
+    <p class="mt-3 font-script italic text-[1.35rem] sm:text-[1.6rem] text-inkmuted">
+      makijaż permanentny · paznokcie · ciało · zabiegi
+    </p>
+
+    <p class="mt-7 mx-auto max-w-prose text-[1.02rem] leading-relaxed text-inkmuted">
+      Agnieszka Karasińska prowadzi Salon Naomi przy Partyzantów 29a. Makijaż permanentny to nasza
+      wizytówka, ale w jednym miejscu zadbasz też o paznokcie, stopy i skórę.
+    </p>
+
+    <div class="mt-9 flex flex-wrap justify-center gap-3">
+      <a href="tel:+48512457225" class="bg-accent text-paper h-line text-[0.8rem] tracking-[0.1em] px-7 py-3.5 min-h-[44px] flex items-center hover:brightness-110 transition motion-reduce:transition-none">
+        Zadzwoń: 512 457 225
+      </a>
+      <a href="#uslugi" class="border border-ink/45 text-ink h-line text-[0.8rem] tracking-[0.1em] px-7 py-3.5 min-h-[44px] flex items-center hover:border-ink hover:bg-surface transition motion-reduce:transition-none">
+        Zobacz usługi
+      </a>
+    </div>
+  </section>
+
+  </div>
+
+  <!-- ══════════ PASEK OCEN ══════════ -->
+  <section aria-label="Oceny klientek" class="bg-surface border-y border-border -mx-px px-5 sm:px-10 lg:px-16 py-4">
+    <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm">
+      <span class="flex items-center gap-2.5">
+        <span aria-hidden="true" class="tracking-[0.14em] text-[0.95rem]"><span class="text-accent">★★★★</span><span class="text-ink/20">★</span></span>
+        <span><span class="font-display text-[0.95rem]">4,2</span> <span class="text-inkmuted">/ 5 · 5 opinii w Google</span></span>
+      </span>
+      <span class="hidden sm:inline h-4 w-px bg-ink/20" aria-hidden="true"></span>
+      <span class="flex items-center gap-2">
+        <svg class="w-3.5 h-3.5 text-accent" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.24-1.5 1.5-1.5H16.7V3.9c-.3-.04-1.3-.13-2.5-.13-2.5 0-4.2 1.5-4.2 4.3V10H7.3v3h2.7v8h3.5z"/></svg>
+        <span class="text-inkmuted">3 opinie na Facebooku</span>
+      </span>
+    </div>
+  </section>
+
+  <!-- ══════════ USŁUGI ══════════ -->
+  <section id="uslugi" class="px-5 sm:px-10 lg:px-16 py-16 sm:py-24">
+    <h2 class="h-line text-center text-[1.5rem] sm:text-[1.9rem] tracking-[0.1em]">Rejestr usług</h2>
+    <svg class="orn mx-auto mt-5 w-40 h-5" viewBox="0 0 200 20" aria-hidden="true">
+      <line x1="4" y1="10" x2="70" y2="10" opacity="0.55"/>
+      <line x1="130" y1="10" x2="196" y2="10" opacity="0.55"/>
+      <path d="M100 10 C88 10 85 3 76 3 C68 3 67 13 75 13.6 C80 14 81 9 76.5 8.7"/>
+      <path d="M100 10 C112 10 115 3 124 3 C132 3 133 13 125 13.6 C120 14 119 9 123.5 8.7"/>
+      <path d="M100 5 L105 10 L100 15 L95 10 Z" class="node"/>
+    </svg>
+    <p class="mt-5 mx-auto max-w-prose text-center text-[0.98rem] leading-relaxed text-inkmuted">
+      Pełen zakres kosmetyki w czterech grupach. Ceny ustalamy przy zapisie, po wycenę i wolny
+      termin najlepiej zadzwonić.
+    </p>
+
+    <div class="mt-12 mx-auto max-w-prose">
+
+      <div class="cat">
+        <div class="cat-head">
+          <span class="cat-no">I.</span>
+          <span class="cat-title">Makijaż permanentny i brwi</span>
+        </div>
+        <div class="cat-body">
+          <div class="reg-row">
+            <span class="reg-name">Makijaż permanentny<em>Brwi, kreski i usta. Pigmentacja z korektą po gojeniu.</em></span>
+            <span class="reg-lead"></span>
+            <span class="reg-price">cena wkrótce</span>
+          </div>
+          <div class="reg-row">
+            <span class="reg-name">Henna i regulacja<em>Henna brwi oraz rzęs, nadanie kształtu.</em></span>
+            <span class="reg-lead"></span>
+            <span class="reg-price">cena wkrótce</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cat">
+        <div class="cat-head">
+          <span class="cat-no">II.</span>
+          <span class="cat-title">Twarz i zabiegi</span>
+        </div>
+        <div class="cat-body">
+          <div class="reg-row">
+            <span class="reg-name">Mezoterapia igłowa<em>Odżywienie i nawilżenie skóry twarzy, szyi, dekoltu.</em></span>
+            <span class="reg-lead"></span>
+            <span class="reg-price">cena wkrótce</span>
+          </div>
+          <div class="reg-row">
+            <span class="reg-name">Zabiegi odmładzające<em>Ujędrnienie i wygładzenie cery.</em></span>
+            <span class="reg-lead"></span>
+            <span class="reg-price">cena wkrótce</span>
+          </div>
+          <div class="reg-row">
+            <span class="reg-name">Makijaż okazjonalny<em>Śluby, wesela, sesje i wyjścia wieczorowe.</em></span>
+            <span class="reg-lead"></span>
+            <span class="reg-price">cena wkrótce</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cat">
+        <div class="cat-head">
+          <span class="cat-no">III.</span>
+          <span class="cat-title">Studio paznokci</span>
+        </div>
+        <div class="cat-body">
+          <div class="reg-row">
+            <span class="reg-name">Przedłużanie żelem<em>Budowa i stylizacja na formie.</em></span>
+            <span class="reg-lead"></span>
+            <span class="reg-price">cena wkrótce</span>
+          </div>
+          <div class="reg-row">
+            <span class="reg-name">Przedłużanie akrylem<em>Mocna, trwała konstrukcja płytki.</em></span>
+            <span class="reg-lead"></span>
+            <span class="reg-price">cena wkrótce</span>
+          </div>
+          <div class="reg-row">
+            <span class="reg-name">Manicure hybrydowy<em>Opracowanie skórek i kolor hybrydą.</em></span>
+            <span class="reg-lead"></span>
+            <span class="reg-price">cena wkrótce</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cat">
+        <div class="cat-head">
+          <span class="cat-no">IV.</span>
+          <span class="cat-title">Pielęgnacja ciała</span>
+        </div>
+        <div class="cat-body">
+          <div class="reg-row">
+            <span class="reg-name">Pedicure<em>Pielęgnacja i stylizacja stóp.</em></span>
+            <span class="reg-lead"></span>
+            <span class="reg-price">cena wkrótce</span>
+          </div>
+          <div class="reg-row">
+            <span class="reg-name">Depilacja ciała<em>Woskiem, wybrane partie.</em></span>
+            <span class="reg-lead"></span>
+            <span class="reg-price">cena wkrótce</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════ GALERIA (dashed placeholder + lightbox) ══════════ -->
+  <section id="galeria" class="bg-surface -mx-px px-5 sm:px-10 lg:px-16 py-16 sm:py-24 border-y border-border">
+    <h2 class="h-line text-center text-[1.5rem] sm:text-[1.9rem] tracking-[0.1em]">Galeria</h2>
+    <svg class="orn mx-auto mt-5 w-40 h-5" viewBox="0 0 200 20" aria-hidden="true">
+      <line x1="4" y1="10" x2="70" y2="10" opacity="0.55"/>
+      <line x1="130" y1="10" x2="196" y2="10" opacity="0.55"/>
+      <path d="M100 10 C88 10 85 3 76 3 C68 3 67 13 75 13.6 C80 14 81 9 76.5 8.7"/>
+      <path d="M100 10 C112 10 115 3 124 3 C132 3 133 13 125 13.6 C120 14 119 9 123.5 8.7"/>
+      <path d="M100 5 L105 10 L100 15 L95 10 Z" class="node"/>
+    </svg>
+    <p class="mt-5 mx-auto max-w-prose text-center text-[0.98rem] leading-relaxed text-inkmuted">
+      Zdjęcia efektów i wnętrza salonu pojawią się tutaj wkrótce. Kliknij kafel, żeby przejrzeć podgląd. Bieżące realizacje są na Instagramie.
+    </p>
+
+    <div class="mt-12 grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 mx-auto max-w-3xl">
+      <button type="button" class="tile" data-label="Makijaż permanentny" data-full="">
+        <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="9" cy="10" r="2"/><path d="M4 19l5-5 4 4 3-3 4 4"/></svg>
+        <span class="text-xs">Makijaż permanentny</span>
+      </button>
+      <button type="button" class="tile" data-label="Stylizacja paznokci" data-full="">
+        <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="9" cy="10" r="2"/><path d="M4 19l5-5 4 4 3-3 4 4"/></svg>
+        <span class="text-xs">Stylizacja paznokci</span>
+      </button>
+      <button type="button" class="tile" data-label="Zabiegi na twarz" data-full="">
+        <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="9" cy="10" r="2"/><path d="M4 19l5-5 4 4 3-3 4 4"/></svg>
+        <span class="text-xs">Zabiegi na twarz</span>
+      </button>
+      <button type="button" class="tile" data-label="Pedicure" data-full="">
+        <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="9" cy="10" r="2"/><path d="M4 19l5-5 4 4 3-3 4 4"/></svg>
+        <span class="text-xs">Pedicure</span>
+      </button>
+      <button type="button" class="tile" data-label="Wnętrze salonu" data-full="">
+        <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="9" cy="10" r="2"/><path d="M4 19l5-5 4 4 3-3 4 4"/></svg>
+        <span class="text-xs">Wnętrze salonu</span>
+      </button>
+      <button type="button" class="tile" data-label="Detale i klimat" data-full="">
+        <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="9" cy="10" r="2"/><path d="M4 19l5-5 4 4 3-3 4 4"/></svg>
+        <span class="text-xs">Detale i klimat</span>
+      </button>
+    </div>
+
+    <div class="mt-10 text-center">
+      <a href="https://www.instagram.com/salonkosmetycznynaomi/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 border border-ink/40 text-ink h-line text-[0.76rem] tracking-[0.1em] px-6 py-3.5 min-h-[44px] hover:border-ink hover:bg-paper transition motion-reduce:transition-none">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        Zobacz więcej na Instagramie
+      </a>
+    </div>
+  </section>
+
+  <div class="px-5 sm:px-10 lg:px-16">
+
+  <!-- ══════════ GODZINY / ADRES / MAPA / KONTAKT ══════════ -->
+  <section id="kontakt" class="py-16 sm:py-24">
+    <h2 class="h-line text-center text-[1.5rem] sm:text-[1.9rem] tracking-[0.1em]">Godziny i dojazd</h2>
+    <svg class="orn mx-auto mt-5 w-40 h-5" viewBox="0 0 200 20" aria-hidden="true">
+      <line x1="4" y1="10" x2="70" y2="10" opacity="0.55"/>
+      <line x1="130" y1="10" x2="196" y2="10" opacity="0.55"/>
+      <path d="M100 10 C88 10 85 3 76 3 C68 3 67 13 75 13.6 C80 14 81 9 76.5 8.7"/>
+      <path d="M100 10 C112 10 115 3 124 3 C132 3 133 13 125 13.6 C120 14 119 9 123.5 8.7"/>
+      <path d="M100 5 L105 10 L100 15 L95 10 Z" class="node"/>
+    </svg>
+
+    <div class="mt-12 grid gap-10 md:grid-cols-2 mx-auto max-w-4xl">
+
+      <div>
+        <h3 class="h-line text-[0.8rem] tracking-[0.16em] text-inkmuted">Godziny otwarcia</h3>
+        <dl class="mt-4 text-[0.98rem] border-t border-border">
+          <div class="hours-row flex justify-between py-3 border-b border-border text-inkmuted" data-day="1">
+            <dt>Poniedziałek</dt><dd class="hours-val">Zamknięte</dd>
+          </div>
+          <div class="hours-row flex justify-between py-3 border-b border-border text-inkmuted" data-day="2">
+            <dt>Wtorek</dt><dd class="hours-val">10:00 – 18:00</dd>
+          </div>
+          <div class="hours-row flex justify-between py-3 border-b border-border text-inkmuted" data-day="3">
+            <dt>Środa</dt><dd class="hours-val">10:00 – 18:00</dd>
+          </div>
+          <div class="hours-row flex justify-between py-3 border-b border-border text-inkmuted" data-day="4">
+            <dt>Czwartek</dt><dd class="hours-val">10:00 – 18:00</dd>
+          </div>
+          <div class="hours-row flex justify-between py-3 border-b border-border text-inkmuted" data-day="5">
+            <dt>Piątek</dt><dd class="hours-val">10:00 – 18:00</dd>
+          </div>
+          <div class="hours-row flex justify-between py-3 border-b border-border text-inkmuted" data-day="6">
+            <dt>Sobota</dt><dd class="hours-val">10:00 – 14:00</dd>
+          </div>
+          <div class="hours-row flex justify-between py-3 border-b border-border text-inkmuted" data-day="0">
+            <dt>Niedziela</dt><dd class="hours-val">Zamknięte</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div>
+        <h3 class="h-line text-[0.8rem] tracking-[0.16em] text-inkmuted">Adres i kontakt</h3>
+        <p class="mt-4 text-[1.02rem] leading-relaxed">
+          Salon Naomi<br>
+          ul. Partyzantów 29a<br>
+          26-300 Opoczno
+        </p>
+        <a href="tel:+48512457225" class="mt-4 inline-flex items-center font-display text-[1.35rem] tracking-[0.06em] hover:text-accent transition-colors motion-reduce:transition-none">
+          512 457 225
+        </a>
+        <div class="mt-5 flex flex-wrap gap-3">
+          <a href="https://www.instagram.com/salonkosmetycznynaomi/" target="_blank" rel="noopener" class="border border-border text-inkmuted px-5 py-3 min-h-[44px] flex items-center gap-2 hover:text-ink hover:border-ink transition motion-reduce:transition-none">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            Instagram
+          </a>
+          <a href="https://www.facebook.com/permanentnynaomi/" target="_blank" rel="noopener" class="border border-border text-inkmuted px-5 py-3 min-h-[44px] flex items-center gap-2 hover:text-ink hover:border-ink transition motion-reduce:transition-none">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.24-1.5 1.5-1.5H16.7V3.9c-.3-.04-1.3-.13-2.5-.13-2.5 0-4.2 1.5-4.2 4.3V10H7.3v3h2.7v8h3.5z"/></svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-10 mx-auto max-w-4xl map-frame border border-border overflow-hidden">
+      <iframe
+        title="Mapa: Salon Naomi, ul. Partyzantów 29a, Opoczno"
+        src="https://www.google.com/maps?q=Partyzant%C3%B3w%2029a%2C%2026-300%20Opoczno&hl=pl&z=16&output=embed"
+        width="100%" height="320" style="border:0; display:block;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div class="mt-4 text-center">
+      <a href="https://www.google.com/maps/dir/?api=1&destination=Partyzant%C3%B3w+29a+26-300+Opoczno" target="_blank" rel="noopener" class="border border-ink/40 text-ink h-line text-[0.74rem] tracking-[0.1em] px-6 py-3 min-h-[44px] inline-flex items-center hover:bg-surface transition motion-reduce:transition-none">
+        Wyznacz trasę
+      </a>
+    </div>
+
+    <!-- Bilet: wezwanie do kontaktu (wariant rezerwacji online do potwierdzenia z klientką) -->
+    <div class="ticket mx-auto max-w-xl mt-16 p-8 text-center bg-surface">
+      <h3 class="h-line text-[0.78rem] tracking-[0.18em] text-inkmuted">Umów wizytę</h3>
+      <a href="tel:+48512457225" class="mt-3 block font-display text-[1.9rem] sm:text-[2.2rem] tracking-[0.06em] hover:text-accent transition-colors motion-reduce:transition-none">
+        512 457 225
+      </a>
+      <p class="mt-3 font-script italic text-[1.15rem] text-inkmuted">
+        Zadzwoń, dobierzemy termin i zabieg pod Ciebie.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════ STOPKA ══════════ -->
+  <footer class="border-t-[3px] border-double border-ink px-5 sm:px-10 lg:px-16 py-10">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-5 text-sm text-inkmuted">
+      <div class="flex items-center gap-3">
+        <svg class="w-7 h-4 shrink-0 text-ink" viewBox="0 0 60 26" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+            <path d="M30 13 C24 5 12 4 7 10 C3 15 6 22 13 19 C18 17 16 10 10 12"/>
+            <path d="M30 13 C36 5 48 4 53 10 C57 15 54 22 47 19 C42 17 44 10 50 12"/>
+          </g>
+          <path d="M30 7 L34 13 L30 19 L26 13 Z" fill="#255A50"/>
+        </svg>
+        <span>Salon Naomi · Agnieszka Karasińska</span>
+      </div>
+      <nav class="flex flex-wrap gap-x-6 gap-y-2">
+        <span>ul. Partyzantów 29a, 26-300 Opoczno</span>
+        <a href="privacy.html" class="hover:text-ink transition-colors motion-reduce:transition-none underline underline-offset-4">Polityka prywatności</a>
+      </nav>
+    </div>
+  </footer>
+
+  </div>
+
+</div>
+</div>
+</div>
+
+<!-- ══════════ LIGHTBOX GALERII ══════════ -->
+<div class="lb" id="lb" hidden>
+  <div class="lb-stage" role="dialog" aria-modal="true" aria-label="Galeria Salonu Naomi">
+    <button type="button" class="lb-btn lb-close" data-close aria-label="Zamknij galerię">✕</button>
+    <figure class="lb-fig">
+      <img class="lb-img" alt="" hidden>
+      <div class="lb-ph" hidden>
+        <svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="9" cy="10" r="2"/><path d="M4 19l5-5 4 4 3-3 4 4"/></svg>
+        <p class="lb-ph-label"></p>
+        <p class="lb-ph-sub">Zdjęcie pojawi się wkrótce</p>
+      </div>
+      <figcaption class="lb-cap"></figcaption>
+    </figure>
+    <div class="lb-controls">
+      <button type="button" class="lb-btn lb-nav" data-prev aria-label="Poprzednie zdjęcie">‹</button>
+      <span class="lb-count" aria-hidden="true"></span>
+      <button type="button" class="lb-btn lb-nav" data-next aria-label="Następne zdjęcie">›</button>
+    </div>
+  </div>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BeautySalon",
+  "name": "Salon Naomi — Makijaż Permanentny",
+  "founder": "Agnieszka Karasińska",
+  "image": "photos/logo.jpg",
+  "telephone": "+48512457225",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "ul. Partyzantów 29a",
+    "postalCode": "26-300",
+    "addressLocality": "Opoczno",
+    "addressCountry": "PL"
+  },
+  "sameAs": [
+    "https://www.instagram.com/salonkosmetycznynaomi/",
+    "https://www.facebook.com/permanentnynaomi/"
+  ],
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday","Wednesday","Thursday","Friday"], "opens": "10:00", "closes": "18:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "10:00", "closes": "14:00" }
+  ]
+}
+</script>
+
+<script>
+  // Podświetlenie dzisiejszego dnia w tabeli godzin.
+  (function () {
+    var day = new Date().getDay();
+    document.querySelectorAll('.hours-row[data-day]').forEach(function (el) {
+      var days = el.getAttribute('data-day').split(' ').map(Number);
+      if (days.indexOf(day) !== -1) el.setAttribute('data-today', 'true');
+    });
+  })();
+
+  // Podświetlenie aktywnej sekcji w nawigacji (scroll-spy).
+  (function () {
+    var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+    var map = links.map(function (a) {
+      return { link: a, sec: document.getElementById(a.getAttribute('href').slice(1)) };
+    }).filter(function (m) { return m.sec; });
+    if (!map.length) return;
+    var cur = null;
+    function set(l) {
+      if (cur === l) return;
+      if (cur) cur.classList.remove('is-active');
+      if (l) l.classList.add('is-active');
+      cur = l;
+    }
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var m = map.find(function (x) { return x.sec === e.target; });
+        if (m) set(m.link);
+      });
+    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+    map.forEach(function (m) { obs.observe(m.sec); });
+  })();
+
+  // Lightbox galerii: klik otwiera, strzałki ‹ › / klawiatura / swipe przewijają, Esc lub tło zamyka.
+  (function () {
+    var tiles = Array.prototype.slice.call(document.querySelectorAll('#galeria .tile'));
+    if (!tiles.length) return;
+    var items = tiles.map(function (t) {
+      return { full: t.getAttribute('data-full') || '', label: t.getAttribute('data-label') || '' };
+    });
+    var lb = document.getElementById('lb');
+    var lbImg = lb.querySelector('.lb-img');
+    var lbPh = lb.querySelector('.lb-ph');
+    var lbPhLabel = lb.querySelector('.lb-ph-label');
+    var lbCap = lb.querySelector('.lb-cap');
+    var lbCount = lb.querySelector('.lb-count');
+    var focusables = lb.querySelectorAll('button');
+    var idx = 0, lastFocus = null;
+
+    function show(i) {
+      idx = (i + items.length) % items.length;
+      var it = items[idx];
+      lbCap.textContent = it.label;
+      lbCount.textContent = (idx + 1) + ' / ' + items.length;
+      if (it.full) {
+        lbImg.src = it.full; lbImg.alt = it.label; lbImg.hidden = false; lbPh.hidden = true;
+      } else {
+        lbImg.hidden = true; lbImg.removeAttribute('src');
+        lbPhLabel.textContent = it.label; lbPh.hidden = false;
+      }
+    }
+    function open(i) {
+      lastFocus = document.activeElement;
+      show(i);
+      lb.hidden = false;
+      document.body.style.overflow = 'hidden';
+      lb.querySelector('[data-next]').focus();
+      document.addEventListener('keydown', onKey);
+    }
+    function close() {
+      lb.hidden = true;
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', onKey);
+      if (lastFocus) lastFocus.focus();
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowRight') show(idx + 1);
+      else if (e.key === 'ArrowLeft') show(idx - 1);
+      else if (e.key === 'Tab') {
+        var first = focusables[0], last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+    tiles.forEach(function (t, i) { t.addEventListener('click', function () { open(i); }); });
+    lb.addEventListener('click', function (e) {
+      if (e.target.closest('[data-close]')) close();
+      else if (e.target.closest('[data-next]')) show(idx + 1);
+      else if (e.target.closest('[data-prev]')) show(idx - 1);
+      else if (!e.target.closest('.lb-fig') && !e.target.closest('.lb-controls')) close();
+    });
+    var sx = 0;
+    lb.addEventListener('touchstart', function (e) { sx = e.changedTouches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', function (e) {
+      var dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > 40) show(idx + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+  })();
+</script>
+
+</body>
+</html>

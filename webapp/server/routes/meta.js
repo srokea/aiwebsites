@@ -9,8 +9,10 @@ const {
   QUALITY_OPTIONS,
   SITE_PROGRESS_OPTIONS,
   SMS_CONFIRM_TEMPLATE,
+  TRANSACTION_CATEGORIES,
   NICHE_COLORS,
   DAILY_GOAL,
+  LEAD_COLUMNS,
 } = require("../constants");
 const { getCallers } = require("../callers");
 
@@ -32,8 +34,10 @@ router.get("/", (req, res) => {
     qualityOptions: QUALITY_OPTIONS,
     siteProgressOptions: SITE_PROGRESS_OPTIONS,
     smsConfirmTemplate: SMS_CONFIRM_TEMPLATE,
+    transactionCategories: TRANSACTION_CATEGORIES,
     nicheColors: NICHE_COLORS,
     dailyGoal: DAILY_GOAL,
+    leadColumns: LEAD_COLUMNS,
   });
 });
 

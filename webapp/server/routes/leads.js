@@ -3,8 +3,22 @@ const db = require("../db");
 const { INTERESTED_OPTIONS, ANSWERED_OPTIONS, WEBSITE_STATUS_OPTIONS, QUALITY_OPTIONS, SITE_PROGRESS_OPTIONS } = require("../constants");
 const { computeCalledAt, computeDopieteAt } = require("../leadStatus");
 const { getCallerNames } = require("../callers");
+const { localDateTime } = require("../time");
 
 const router = express.Router();
+
+// #4 - format "YYYY-MM-DDTHH:MM" albo sama data "YYYY-MM-DD" (godzina opcjonalna w UI historii)
+const ATTEMPT_WHEN_FORMAT = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$/;
+
+// Wpisy prob dzwonienia leada, najnowsza pierwsza - w tej kolejnosci pokazuje je popover
+// w kolumnie "Proby". Liczba w kolumnie = dlugosc tej listy.
+function attemptsForLead(leadId) {
+  return db
+    .prepare(
+      "SELECT id, happened_at, created_by FROM lead_call_attempts WHERE lead_id = ? ORDER BY happened_at DESC, id DESC"
+    )
+    .all(leadId);
+}
 
 // "notes" celowo nieobecne - notatki zyja w osobnej tabeli lead_notes (POST/DELETE ponizej),
 // stara kolumna leads.notes jest martwa po migracji w db.js.
@@ -46,6 +60,39 @@ function notesForLead(leadId) {
     )
     .all(leadId);
 }
+
+// GET /api/leads/search?q= - globalne wyszukiwanie leada (wszystkie nisze) po numerze
+// telefonu, nazwie firmy albo miescie. Zasila sticky wyszukiwarke na dashboardzie; klik w
+// wynik prowadzi prosto do scheme rozmowy (/script.html?leadId=). MUSI byc zdefiniowane przed
+// "/:id" - inaczej Express potraktowalby "search" jako id leada.
+router.get("/search", (req, res) => {
+  const q = String(req.query.q || "").trim();
+  if (q.length < 2) return res.json([]);
+
+  const like = `%${q.toLowerCase()}%`;
+  const prefix = `${q.toLowerCase()}%`;
+  const digits = q.replace(/\D/g, "");
+
+  const rows = db
+    .prepare(
+      `SELECT leads.id, leads.company_name, leads.city, leads.phone,
+              niches.name AS niche_name, niches.slug AS niche_slug
+         FROM leads JOIN niches ON niches.id = leads.niche_id
+        WHERE lower(leads.company_name) LIKE @like
+           OR lower(leads.city) LIKE @like
+           OR (@digits <> '' AND digits_only(leads.phone) LIKE '%' || @digits || '%')
+        ORDER BY CASE
+                   WHEN @digits <> '' AND digits_only(leads.phone) = @digits THEN 0
+                   WHEN lower(leads.company_name) LIKE @prefix THEN 1
+                   ELSE 2
+                 END,
+                 leads.company_name COLLATE NOCASE
+        LIMIT 20`
+    )
+    .all({ like, prefix, digits });
+
+  res.json(rows);
+});
 
 router.get("/:id", (req, res) => {
   const lead = db.prepare("SELECT * FROM leads WHERE id = ?").get(req.params.id);
@@ -102,6 +149,78 @@ router.delete("/:id/notes/:noteId", (req, res) => {
     .run(req.params.noteId, req.params.id);
   if (!info.changes) return res.status(404).json({ error: "Nie znaleziono notatki" });
   res.json(notesForLead(req.params.id));
+});
+
+// ===== #4 Proby (tracker telefonow) =====
+
+// GET /api/leads/:id/attempts - historia prob dzwonienia (godzina + data), najnowsza pierwsza
+router.get("/:id/attempts", (req, res) => {
+  const lead = db.prepare("SELECT id FROM leads WHERE id = ?").get(req.params.id);
+  if (!lead) return res.status(404).json({ error: "Nie znaleziono leada" });
+  res.json(attemptsForLead(lead.id));
+});
+
+// POST /api/leads/:id/attempts - dodaje jedna probe; happened_at opcjonalne (domyslnie teraz).
+// Zwraca pelna, aktualna liste prob leada.
+router.post("/:id/attempts", (req, res) => {
+  const lead = db.prepare("SELECT id FROM leads WHERE id = ?").get(req.params.id);
+  if (!lead) return res.status(404).json({ error: "Nie znaleziono leada" });
+
+  const happenedAt = req.body.happened_at ? String(req.body.happened_at) : localDateTime();
+  if (!ATTEMPT_WHEN_FORMAT.test(happenedAt)) {
+    return res.status(400).json({ error: `Nieprawidlowa data proby: "${happenedAt}"` });
+  }
+
+  db.prepare("INSERT INTO lead_call_attempts (lead_id, happened_at, created_by) VALUES (?, ?, ?)").run(
+    lead.id,
+    happenedAt,
+    req.user?.display_name || ""
+  );
+  res.status(201).json(attemptsForLead(lead.id));
+});
+
+// DELETE /api/leads/:id/attempts/:attemptId - usuwa jedna probe z historii; zwraca aktualna liste
+router.delete("/:id/attempts/:attemptId", (req, res) => {
+  const info = db
+    .prepare("DELETE FROM lead_call_attempts WHERE id = ? AND lead_id = ?")
+    .run(req.params.attemptId, req.params.id);
+  if (!info.changes) return res.status(404).json({ error: "Nie znaleziono proby" });
+  res.json(attemptsForLead(req.params.id));
+});
+
+// PUT /api/leads/:id/attempts/count - reczna edycja LICZBY prob (inline w tabeli). Uzgadnia
+// liczbe wierszy do podanej wartosci: brakujace dodaje z godzina "teraz", nadmiarowe kasuje
+// od najnowszych. Historia (popover) pozostaje zrodlem prawdy. Zwraca aktualna liste.
+router.put("/:id/attempts/count", (req, res) => {
+  const lead = db.prepare("SELECT id FROM leads WHERE id = ?").get(req.params.id);
+  if (!lead) return res.status(404).json({ error: "Nie znaleziono leada" });
+
+  const target = Number(req.body.count);
+  if (!Number.isInteger(target) || target < 0 || target > 999) {
+    return res.status(400).json({ error: `Nieprawidlowa liczba prob: "${req.body.count}"` });
+  }
+
+  const current = db.prepare("SELECT COUNT(*) c FROM lead_call_attempts WHERE lead_id = ?").get(lead.id).c;
+  const by = req.user?.display_name || "";
+
+  db.transaction(() => {
+    if (target > current) {
+      const insert = db.prepare(
+        "INSERT INTO lead_call_attempts (lead_id, happened_at, created_by) VALUES (?, ?, ?)"
+      );
+      const when = localDateTime();
+      for (let i = 0; i < target - current; i++) insert.run(lead.id, when, by);
+    } else if (target < current) {
+      db.prepare(
+        `DELETE FROM lead_call_attempts WHERE id IN (
+           SELECT id FROM lead_call_attempts WHERE lead_id = ?
+           ORDER BY happened_at DESC, id DESC LIMIT ?
+         )`
+      ).run(lead.id, current - target);
+    }
+  })();
+
+  res.json(attemptsForLead(lead.id));
 });
 
 router.patch("/:id", (req, res) => {

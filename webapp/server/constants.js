@@ -96,9 +96,15 @@ const SITE_PROGRESS_OPTIONS = [
 const SMS_CONFIRM_TEMPLATE =
   "Dzień dobry, potwierdzam nasze spotkanie online jutro o {godzina}. Link do spotkania wyślę chwilę przed rozpoczęciem. Do usłyszenia ☺️";
 
+// #6 - kategorie wpisow w Historii transakcji. sign = kierunek dla bilansu.
+const TRANSACTION_CATEGORIES = [
+  { value: "przychod", label: "Przychód", sign: 1, color: "#5cb85c" },
+  { value: "wydatek", label: "Wydatek", sign: -1, color: "#e06050" },
+];
+
 const NICHE_COLORS = ["#6090e0", "#5cb85c", "#e06050", "#c0a050", "#a066e0", "#0e86d4", "#e0935c", "#e15a97"];
 
-const DAILY_GOAL = 20;
+const DAILY_GOAL = 10;
 
 // Cennik: tyle bierzemy za kazdego "Dopietego" klienta - jednorazowo za wdrozenie
 // i miesiecznie za utrzymanie/opieke. Uzywane do panelu zarobkow na stronie glownej.
@@ -110,7 +116,25 @@ const PRICING = { oneTime: 300, monthly: 100 };
 // (np. zmiana planu), brak = koszt nadal aktywny.
 // UWAGA: data "from" ponizej jest przyblizona (~poczatek pierwszego miesiaca) - popraw na
 // faktyczna date startu subskrypcji, jesli chcesz dokladne wyliczenie w kafelku "Netto".
-const EXPENSES = [{ name: "Claude Code", amount: 75, from: "2026-07-01" }];
+const EXPENSES = [{ name: "Claude Code", amount: 99.96, from: "2026-07-01" }];
+
+// Kolumny tabeli leadow, ktore mozna wlaczyc/wylaczyc per nisza (klucz = data-sort-id w
+// niche.html). "#", Firma i kosz sa zawsze. Pusta lista `columns` w niszy = wszystkie ponizsze.
+const LEAD_COLUMNS = [
+  { key: "city", label: "Miasto" },
+  { key: "phone", label: "Telefon" },
+  { key: "quality", label: "Jakość" },
+  { key: "social", label: "Social" },
+  { key: "answered", label: "Odebrał?" },
+  { key: "interested", label: "Zainteresowany?" },
+  { key: "caller", label: "Kto dzwonił" },
+  { key: "attempts", label: "Próby" },
+  { key: "reminder", label: "Reminder" },
+  { key: "callback", label: "Kiedy oddzwonić" },
+  { key: "gterm", label: "Termin Google" },
+  { key: "notes", label: "Notatki" },
+];
+const LEAD_COLUMN_KEYS = LEAD_COLUMNS.map((c) => c.key);
 
 module.exports = {
   INTERESTED_OPTIONS,
@@ -125,8 +149,11 @@ module.exports = {
   QUALITY_OPTIONS,
   SITE_PROGRESS_OPTIONS,
   SMS_CONFIRM_TEMPLATE,
+  TRANSACTION_CATEGORIES,
   NICHE_COLORS,
   DAILY_GOAL,
   PRICING,
   EXPENSES,
+  LEAD_COLUMNS,
+  LEAD_COLUMN_KEYS,
 };

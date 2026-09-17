@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalendarz — Cold Calls</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%93%9E</text></svg>">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="bg-particles" id="bg-particles" aria-hidden="true"></div>
+
+<div class="wrap">
+  <div class="topbar">
+    <div>
+      <h1>📅 Kalendarz</h1>
+      <div class="topbar-sub">Google Meety i oddzwonienia ze wszystkich nisz</div>
+    </div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <div id="user-widget"></div>
+      <a class="icon-btn icon-btn-back" href="/" title="Dashboard">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="cal-bar">
+    <button type="button" class="term-nav" id="cal-prev" title="Poprzedni miesiąc">‹</button>
+    <span class="cal-month" id="cal-month"></span>
+    <button type="button" class="term-nav" id="cal-next" title="Następny miesiąc">›</button>
+    <div class="cal-legend">
+      <span class="cal-legend-item"><span class="cal-legend-swatch meet"></span>Google Meet</span>
+      <span class="cal-legend-item"><span class="cal-legend-swatch callback"></span>Oddzwonienie</span>
+    </div>
+  </div>
+
+  <div class="cal-grid" id="cal-grid"></div>
+
+  <div class="section-title">Wybrany dzień</div>
+  <div class="cal-day-detail" id="cal-day-detail"><div class="empty-state">Kliknij dzień w kalendarzu.</div></div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/auth-widget.js"></script>
+<script src="/js/kalendarz.js"></script>
+</body>
+</html>

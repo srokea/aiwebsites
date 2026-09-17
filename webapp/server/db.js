@@ -9,6 +9,11 @@ const db = new Database(path.join(dataDir, "coldcall.db"));
 db.pragma("journal_mode = WAL");
 db.pragma("foreign_keys = ON");
 
+// Pomocnicza funkcja SQL: zostawia z tekstu same cyfry. Uzywana przy wyszukiwaniu leada po
+// numerze telefonu (GET /api/leads/search), zeby spacje/mysliki/plus w bazie i we wpisanym
+// numerze nie mialy znaczenia - odpowiednik frontendowego .replace(/\D/g, "").
+db.function("digits_only", (value) => String(value ?? "").replace(/\D/g, ""));
+
 db.exec(`
 CREATE TABLE IF NOT EXISTS niches (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -53,6 +58,53 @@ CREATE TABLE IF NOT EXISTS lead_notes (
 );
 
 CREATE INDEX IF NOT EXISTS idx_lead_notes_lead ON lead_notes(lead_id);
+
+-- #4 - "Proby": historia prob dzwonienia do leada. Liczba w kolumnie "Proby" to po prostu
+-- COUNT(*) wierszy dla danego leada (bez denormalizacji). happened_at to lokalny
+-- "YYYY-MM-DDTHH:MM" (jak google_term) - odczyt/zapis bez strefy czasowej.
+CREATE TABLE IF NOT EXISTS lead_call_attempts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  lead_id INTEGER NOT NULL REFERENCES leads(id) ON DELETE CASCADE,
+  happened_at TEXT NOT NULL,
+  created_by TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_lead_call_attempts_lead ON lead_call_attempts(lead_id);
+
+-- #6 - jedyna historia transakcji (Historia transakcji / Kasa). Wpisy: reczne (source_key
+-- NULL), auto-koszty subskrypcji (source_key 'sub:<nazwa>:<YYYY-MM>') i potwierdzone
+-- naleznosci klientow (source_key 'due:<id>'). amount_grosze zawsze dodatnie - znak wynika
+-- z category ('przychod' | 'wydatek'). occurred_on to lokalna data "YYYY-MM-DD".
+CREATE TABLE IF NOT EXISTS transactions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  occurred_on TEXT NOT NULL,
+  description TEXT NOT NULL DEFAULT '',
+  amount_grosze INTEGER NOT NULL,
+  category TEXT NOT NULL,
+  source_key TEXT,
+  created_by TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_transactions_date ON transactions(occurred_on);
+
+-- #6 - naleznosci klientow do POTWIERDZENIA. Generowane z dopietych leadow (jedno 'onetime'
+-- wdrozenie + 'monthly' za kazdy pelny miesiac od dopiete_at). status: pending -> confirmed
+-- (tworzy wpis w transactions) | skipped (klient nie zaplacil / zrezygnowal).
+CREATE TABLE IF NOT EXISTS client_dues (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  lead_id INTEGER NOT NULL REFERENCES leads(id) ON DELETE CASCADE,
+  kind TEXT NOT NULL,
+  period TEXT NOT NULL,
+  amount_grosze INTEGER NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  transaction_id INTEGER REFERENCES transactions(id) ON DELETE SET NULL,
+  resolved_at TEXT,
+  resolved_by TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_client_dues_uniq ON client_dues(lead_id, kind, period);
 
 -- Historia edycji notatki: przy kazdej zmianie tresci stara wersja ladowana jest tutaj
 -- (patrz PATCH /api/leads/:id/notes/:noteId), zeby nic nie ginelo po edycji.
@@ -117,6 +169,60 @@ CREATE TABLE IF NOT EXISTS filter_sets (
 );
 
 CREATE INDEX IF NOT EXISTS idx_filter_sets_owner ON filter_sets(user_id, niche_id);
+
+CREATE TABLE IF NOT EXISTS map_pins (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  osm_id TEXT NOT NULL DEFAULT '',
+  name TEXT NOT NULL DEFAULT '',
+  category TEXT NOT NULL DEFAULT '',
+  lat REAL NOT NULL,
+  lng REAL NOT NULL,
+  address TEXT NOT NULL DEFAULT '',
+  street TEXT NOT NULL DEFAULT '',
+  phone TEXT NOT NULL DEFAULT '',
+  website TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'nieruszone',
+  notes TEXT NOT NULL DEFAULT '',
+  caller TEXT NOT NULL DEFAULT '',
+  last_visited_at TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_map_pins_status ON map_pins(status);
+CREATE INDEX IF NOT EXISTS idx_map_pins_street ON map_pins(street);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_map_pins_osm_id ON map_pins(osm_id);
+
+-- Leady z niszy naniesione na mape NFC. Osobna tabela (leads nietkniete). Wspolrzedne wypelnia
+-- skrypt server/scripts/geocodeLeads.js. precision: 'exact' = z linku Google Maps ze scrapa,
+-- 'city' = tylko srodek miasta. status/notes/caller/last_visited_at = stan OBCHODU pod karty NFC
+-- (niezalezny od statusu cold-callowego leada) - dokladnie jak przy pinach OSM w map_pins.
+CREATE TABLE IF NOT EXISTS lead_pins (
+  lead_id INTEGER PRIMARY KEY REFERENCES leads(id) ON DELETE CASCADE,
+  lat REAL NOT NULL,
+  lng REAL NOT NULL,
+  precision TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'nieruszone',
+  notes TEXT NOT NULL DEFAULT '',
+  caller TEXT NOT NULL DEFAULT '',
+  last_visited_at TEXT,
+  geocoded_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- karty NFC z opiniami Google (mmates.pl/r/:slug) - kazda zmiana synchronizuje sie tez do
+-- Cloudflare KV (patrz routes/reviews.js), skad czyta ja Worker obslugujacy sam link
+CREATE TABLE IF NOT EXISTS review_links (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  slug TEXT NOT NULL UNIQUE,
+  business_name TEXT NOT NULL DEFAULT '',
+  tagline TEXT NOT NULL DEFAULT '',
+  google_review_url TEXT NOT NULL DEFAULT '',
+  logo_emoji TEXT NOT NULL DEFAULT '',
+  scan_count INTEGER NOT NULL DEFAULT 0,
+  click_count INTEGER NOT NULL DEFAULT 0,
+  active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
 `);
 
 // Proste "migracje" dla kolumn dodanych po pierwszym wydaniu - ALTER TABLE ADD COLUMN
@@ -150,6 +256,40 @@ addColumnIfMissing("leads", "tag_tiktok INTEGER NOT NULL DEFAULT 0");
 // znaczek "verified" przy ramce social - ustawiany raz, gdy ktos recznie poprawi tagi
 // platform (odroznia recznie zweryfikowane dane od tych prosto ze scrapera/importu CSV)
 addColumnIfMissing("leads", "social_verified INTEGER NOT NULL DEFAULT 0");
+// #6 - klucz dedup auto-postow w transactions (subskrypcje / potwierdzone naleznosci).
+// Musi byc dodany PRZED indeksem ponizej, bo starsze bazy maja tabele bez tej kolumny.
+addColumnIfMissing("transactions", "source_key TEXT");
+db.exec(
+  "CREATE UNIQUE INDEX IF NOT EXISTS idx_transactions_source ON transactions(source_key) WHERE source_key IS NOT NULL"
+);
+// logo karty NFC jako pelny URL (Cloudflare Worker serwujacy /r/:slug czyta z KV, nie ma
+// dostepu do lokalnych wgranych plikow) - zastepuje starsze lokalne logo_path
+// nisza moze pokazywac tylko podzbior kolumn tabeli leadow (recznie zakladane nisze) - JSON
+// lista kluczy; pusty string = wszystkie kolumny (tak maja wszystkie dotychczasowe nisze)
+addColumnIfMissing("niches", "columns TEXT NOT NULL DEFAULT ''");
+
+// lead_pins: stan obchodu (dodane po pierwszej wersji tabeli - stare bazy dostaja kolumny tu)
+addColumnIfMissing("lead_pins", "status TEXT NOT NULL DEFAULT 'nieruszone'");
+addColumnIfMissing("lead_pins", "notes TEXT NOT NULL DEFAULT ''");
+addColumnIfMissing("lead_pins", "caller TEXT NOT NULL DEFAULT ''");
+addColumnIfMissing("lead_pins", "last_visited_at TEXT");
+
+addColumnIfMissing("review_links", "logo_url TEXT NOT NULL DEFAULT ''");
+// reczna kolejnosc kart w panelu /reviews.html (przeciagnij i upusc) - nie ma nic wspolnego
+// z Cloudflare KV, to czysto kosmetyczna kolejnosc widoku admina
+addColumnIfMissing("review_links", "sort_order INTEGER NOT NULL DEFAULT 0");
+// Jednorazowy backfill: istniejace karty (sprzed dodania tej kolumny) dostaja kolejnosc
+// zgodna z dotychczasowym sortowaniem (najnowsze pierwsze), zeby nic nie "skoczylo" po starcie.
+// Warunek na sort_order=0 dla wszystkich = po pierwszym uruchomieniu juz nie zlapie (nowe karty
+// dostaja realny numer przy tworzeniu, wiec nie beda mialy 0, chyba ze to jedyna karta).
+if (
+  db.prepare("SELECT COUNT(*) c FROM review_links WHERE sort_order != 0").get().c === 0 &&
+  db.prepare("SELECT COUNT(*) c FROM review_links").get().c > 1
+) {
+  const rows = db.prepare("SELECT id FROM review_links ORDER BY created_at DESC").all();
+  const setOrder = db.prepare("UPDATE review_links SET sort_order = ? WHERE id = ?");
+  db.transaction(() => rows.forEach((r, i) => setOrder.run(i, r.id)))();
+}
 
 // Jednorazowy seed: stan jak dawna sztywna mapa NICHE_SCRIPTS (kosmetyczki mialy swoj plik,
 // reszta default). Idempotentne - po ustawieniu wartosci warunek '' juz nie zlapie.
@@ -200,5 +340,58 @@ db.transaction(() => {
   ).run();
   db.prepare(`UPDATE leads SET notes = '' WHERE notes <> ''`).run();
 })();
+
+// Naprawa buga: "leads", "lead_notes", "lead_note_edits" i "api_keys" istnialy juz w bazie
+// zanim ich CREATE TABLE powyzej dostal klauzule "ON DELETE CASCADE" - a CREATE TABLE IF
+// NOT EXISTS nie modyfikuje istniejacej tabeli, wiec ograniczenie nigdy realnie nie
+// zadzialalo. Efekt: usuniecie niszy kasowalo sama nisze, ale jej leady zostawaly w bazie
+// jako osierocone (niche_id wskazujacy donikad) i na zawsze zawyzaly globalne liczniki
+// (total/eligible) na dashboardzie, zanizajac % wykonanych polaczen. SQLite nie pozwala
+// dodac ograniczenia FK przez ALTER TABLE, wiec jedyne wyjscie to przebudowa tabeli wg
+// oficjalnej procedury (foreign_keys=OFF, kopia do nowej tabeli z poprawnym constraintem,
+// podmiana, foreign_key_check, foreign_keys=ON). Idempotentne - kolejne starty to no-op.
+function ensureCascadeDelete(table, fkColumn, refTable) {
+  const already = db
+    .pragma(`foreign_key_list(${table})`)
+    .some((fk) => fk.table === refTable && fk.from === fkColumn && String(fk.on_delete).toUpperCase() === "CASCADE");
+  if (already) return;
+
+  // Sprzatamy wiersze juz osierocone przez ten sam bug - inaczej rebuild wywroci sie na
+  // foreign_key_check (te wiersze i tak byly niewidoczne/nieuzywalne z poziomu UI).
+  db.prepare(`DELETE FROM ${table} WHERE ${fkColumn} NOT IN (SELECT id FROM ${refTable})`).run();
+
+  const cols = db.pragma(`table_info(${table})`);
+  const colDefs = cols.map((c) => {
+    if (c.pk) return `${c.name} ${c.type} PRIMARY KEY AUTOINCREMENT`;
+    let def = `${c.name} ${c.type}`;
+    if (c.notnull) def += " NOT NULL";
+    if (c.dflt_value !== null) def += ` DEFAULT (${c.dflt_value})`;
+    if (c.name === fkColumn) def += ` REFERENCES ${refTable}(id) ON DELETE CASCADE`;
+    return def;
+  });
+  const colNames = cols.map((c) => c.name).join(", ");
+  const tmpTable = `${table}__rebuild`;
+  const indexSqls = db
+    .prepare("SELECT sql FROM sqlite_master WHERE type='index' AND tbl_name=? AND sql IS NOT NULL")
+    .pluck()
+    .all(table);
+
+  db.pragma("foreign_keys = OFF");
+  db.transaction(() => {
+    db.exec(`CREATE TABLE ${tmpTable} (${colDefs.join(", ")})`);
+    db.exec(`INSERT INTO ${tmpTable} (${colNames}) SELECT ${colNames} FROM ${table}`);
+    db.exec(`DROP TABLE ${table}`);
+    db.exec(`ALTER TABLE ${tmpTable} RENAME TO ${table}`);
+    for (const sql of indexSqls) db.exec(sql);
+  })();
+  db.pragma("foreign_keys = ON");
+
+  const problems = db.pragma("foreign_key_check");
+  if (problems.length) throw new Error(`foreign_key_check nie przeszedl po przebudowie ${table}: ${JSON.stringify(problems)}`);
+}
+ensureCascadeDelete("leads", "niche_id", "niches");
+ensureCascadeDelete("lead_notes", "lead_id", "leads");
+ensureCascadeDelete("lead_note_edits", "note_id", "lead_notes");
+ensureCascadeDelete("api_keys", "user_id", "users");
 
 module.exports = db;

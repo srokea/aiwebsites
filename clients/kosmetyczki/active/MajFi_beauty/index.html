@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MajFi_beauty — rzęsy, brwi i paznokcie w Sulejowie</title>
+<meta name="description" content="MajFi_beauty Kinga Bałecka, Sulejów, ul. Polna 32. Stylizacja i zagęszczanie rzęs, lifting rzęs, henna pudrowa brwi, stylizacja paznokci. Zapisy telefoniczne: 509 530 559.">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="favicon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="MajFi_beauty — rzęsy, brwi i paznokcie w Sulejowie">
+<meta property="og:description" content="Kosmetolog z pasji i wykształcenia. Rzęsy, lifting, henna pudrowa i paznokcie. Sulejów, ul. Polna 32.">
+<!-- TODO przy deployu: pełne adresy https://domena/... w og:image i og:url. -->
+<meta property="og:image" content="photos/logo.png">
+<meta property="og:locale" content="pl_PL">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  /* PALETA — hexy zmierzone z pliku logo w photos/, nie przepisane z briefu.
+       blush   #E1B5CA = różowa linia w ilustracji oczu, średnia 40 najbardziej
+                         nasyconych pikseli rdzenia linii (wiersze 258-264).
+                         Brief szacował ~#E6A8BF; plik mówi #E1B5CA. Odcień 331°.
+       ink     #1A1614 = niemal-czerń liter "MajFi" / "Beauty".
+     blush ma kontrast 1.75 na tle — to kolor OZDOBNY, nigdy tekst ani przycisk.
+     accent to ten sam odcień 331° pogłębiony do poziomu czytelnego (WCAG AA).
+
+     gold #BE9F4F: brief podawał ~#C9A227, ale ten hex jest zielonkawo-musztardowy
+     i przy pudrowym różu robił się kwaśny (widać to było na zrzucie ekranu).
+     Zszedłem na cieplejsze, mniej nasycone antyczne złoto. W logo złota nie ma
+     wcale, to wyłącznie technika ozdobna ze Stylu 04.
+
+     Kontrast (WCAG AA wymaga 4.5 dla tekstu):
+       ink/bg 17.5 · inkmuted/bg 5.5 · inkmuted/surface 5.0
+       accent/bg 5.9 · accent/surface 5.4 · biały-na-accent 6.1
+       gold/bg 2.5 i blush/bg 1.75 — tylko linie, ornamenty i tła, nigdy tekst.
+     inkmuted NA surface2 (#F7DCE0) daje 4.35 — dlatego na surface2 idzie
+     wyłącznie ink, nigdy tekst muted. */
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg:       '#FFFBF9',
+          surface:  '#FBEFF2',
+          surface2: '#F7DCE0',
+          blush:    '#E1B5CA',
+          ink:      '#1A1614',
+          inkmuted: '#7A6169',
+          accent:   '#9F416E',
+          gold:     '#BE9F4F',
+          border:   'rgba(26,22,20,0.12)',
+        },
+        fontFamily: {
+          display: ['"Bodoni Moda"', 'Georgia', 'serif'],
+          script:  ['"Great Vibes"', 'cursive'],
+          body:    ['"Quicksand"', 'system-ui', 'sans-serif'],
+          prose:   ['"Libre Caslon Text"', 'Georgia', 'serif'],
+        },
+        maxWidth: { content: '66rem', prose: '40rem' },
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Fonty hostowane lokalnie (RODO: przeglądarka nie odpytuje serwerów Google). */
+  @font-face {
+    font-family: 'Bodoni Moda'; font-style: normal; font-weight: 400 600; font-display: swap;
+    src: url('fonts/bodoni-500-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Bodoni Moda'; font-style: normal; font-weight: 400 600; font-display: swap;
+    src: url('fonts/bodoni-500-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Great Vibes'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/great-vibes-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Great Vibes'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/great-vibes-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Quicksand'; font-style: normal; font-weight: 400 700; font-display: swap;
+    src: url('fonts/quicksand-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Quicksand'; font-style: normal; font-weight: 400 700; font-display: swap;
+    src: url('fonts/quicksand-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  /* Libre Caslon Text: TYLKO do dłuższych tekstów opisowych (font-prose) — lead'y sekcji,
+     opisy usług, cytaty z opinii. UI (nawigacja, przyciski, etykiety, ceny, stopka) zostaje w Quicksand. */
+  @font-face {
+    font-family: 'Libre Caslon Text'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/libre-caslon-text-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Libre Caslon Text'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url('fonts/libre-caslon-text-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+  :focus-visible { outline: 2px solid #9F416E; outline-offset: 3px; border-radius: 8px; }
+  ::selection { background: #E1B5CA; color: #1A1614; }
+
+  /* Szklany navbar */
+  .glass { background: rgba(255,251,249,.86); backdrop-filter: saturate(150%) blur(14px); -webkit-backdrop-filter: saturate(150%) blur(14px); }
+
+  /* Łuk — główna forma ze Stylu 06 */
+  .arch { border-radius: 999px 999px 24px 24px; }
+
+  /* Cienka złota linia + ornament — detal ze Stylu 04, oszczędnie na jasnej bazie */
+  .rule { display: flex; align-items: center; justify-content: center; gap: 16px; }
+  .rule::before, .rule::after { content: ""; height: 0; width: 52px; border-top: 1px solid rgba(190,159,79,.55); }
+  .rule--wide::before, .rule--wide::after { width: min(24vw, 150px); }
+  .label { font-size: .72rem; letter-spacing: .3em; text-transform: uppercase; font-weight: 600; }
+
+  /* Dot-leader w cenniku — detal ze Stylu 04 */
+  .leader { flex: 1 1 auto; min-width: 20px; border-bottom: 1px dotted rgba(190,159,79,.75); transform: translateY(-.32em); }
+
+  /* Rozmyte plamy w tle hero — technika ze Stylu 06, mocno wyciszona */
+  .blob { position: absolute; border-radius: 9999px; filter: blur(85px); pointer-events: none; z-index: 0; }
+
+  /* Ornament z ilustracji oczu z logo klientki, powtórzony jako motyw strony. */
+  .eyes { display: block; height: 100%; width: auto; }
+
+  .press { transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease, border-color .16s ease, color .16s ease; }
+  .press:hover { transform: translateY(-2px); }
+  .press:active { transform: translateY(0); }
+
+  /* Miejsce na przyszłą treść — celowo widoczne, żeby Kinga wiedziała co uzupełnić. */
+  .todo { border: 1.5px dashed rgba(159,65,110,.45); }
+
+  /* Scrollspy: podświetla w nawigacji link sekcji aktualnie widocznej na ekranie. */
+  .nav-link { position: relative; padding-bottom: 4px; }
+  .nav-link::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px;
+    border-radius: 9999px; background: #9F416E;
+    transform: scaleX(0); transform-origin: center; transition: transform .3s ease;
+  }
+  .nav-link.is-active { color: #9F416E; font-weight: 600; }
+  .nav-link.is-active::after { transform: scaleX(1); }
+
+  /* Dzisiejszy dzień w tabeli godzin otwarcia. */
+  .today-row { background: #FBEFF2; border-radius: 12px; padding-left: .75rem; padding-right: .75rem; margin-left: -.75rem; margin-right: -.75rem; }
+  .today-badge {
+    margin-left: .5rem; display: inline-block; border-radius: 9999px; background: #9F416E;
+    padding: .15rem .55rem; font-size: .66rem; font-weight: 600; letter-spacing: .04em;
+    text-transform: uppercase; color: #fff;
+  }
+
+  /* Galeria: kafle otwierają lightbox (patrz sekcja LIGHTBOX niżej w body). */
+  .gallery-tile { cursor: zoom-in; transition: transform .2s ease; }
+  .gallery-tile:hover, .gallery-tile:focus-visible { transform: translateY(-3px); }
+  .gallery-hint {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: rgba(26,22,20,0); opacity: 0; color: #fff; border-radius: inherit;
+    transition: opacity .2s ease, background-color .2s ease; pointer-events: none;
+  }
+  .gallery-tile:hover .gallery-hint, .gallery-tile:focus-visible .gallery-hint {
+    opacity: 1; background: rgba(26,22,20,.32);
+  }
+</style>
+</head>
+
+<body class="bg-bg text-ink font-body antialiased">
+
+<a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-3 focus:left-3 focus:bg-accent focus:text-white focus:px-5 focus:py-3 focus:rounded-full focus:text-sm focus:font-semibold">Przejdź do treści</a>
+
+<!-- ══ NAVBAR ══ -->
+<header class="glass sticky top-0 z-50 border-b border-border">
+  <div class="max-w-content mx-auto px-5 sm:px-8 h-[72px] sm:h-[84px] flex items-center justify-between gap-4">
+
+    <a href="#top" aria-label="MajFi_beauty — strona główna" class="shrink-0">
+      <img src="photos/logo-nav.png" alt="MajFi_beauty" width="1496" height="848"
+           class="h-[46px] sm:h-[56px] w-auto">
+    </a>
+
+    <nav class="hidden md:flex items-center gap-8 text-[.9rem] font-medium text-inkmuted">
+      <a href="#uslugi"  data-navlink class="nav-link hover:text-accent press">Usługi</a>
+      <a href="#opinie"  data-navlink class="nav-link hover:text-accent press">Opinie</a>
+      <a href="#galeria" data-navlink class="nav-link hover:text-accent press">Galeria</a>
+      <a href="#kontakt" data-navlink class="nav-link hover:text-accent press">Kontakt</a>
+    </nav>
+
+    <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+      <a href="https://www.instagram.com/majfi_beauty/" target="_blank" rel="noopener noreferrer" aria-label="MajFi_beauty na Instagramie"
+         class="press inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border text-inkmuted hover:text-accent hover:border-accent">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-[17px] h-[17px]" aria-hidden="true">
+          <rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/>
+          <circle cx="12" cy="12" r="4.2"/>
+          <circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/p/MajFi_beauty-100077932627780/" target="_blank" rel="noopener noreferrer" aria-label="MajFi_beauty na Facebooku"
+         class="press inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border text-inkmuted hover:text-accent hover:border-accent">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="w-[17px] h-[17px]" aria-hidden="true">
+          <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.5-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.44-4.92 8.44-9.94Z"/>
+        </svg>
+      </a>
+
+      <a href="tel:+48509530559"
+         class="press inline-flex items-center gap-2 rounded-full bg-accent text-white font-semibold
+                text-[.85rem] sm:text-[.92rem] px-4 sm:px-6 h-11 shadow-[0_6px_18px_rgba(159,65,110,.28)]
+                hover:bg-[#8B3860] hover:shadow-[0_10px_24px_rgba(159,65,110,.38)]">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="w-[18px] h-[18px] shrink-0" aria-hidden="true">
+          <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>
+        </svg>
+        <span class="hidden sm:inline">509 530 559</span>
+        <span class="sm:hidden">Zadzwoń</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ══ HERO ══ -->
+<section id="top" class="relative overflow-hidden bg-bg">
+  <div class="blob w-[420px] h-[420px] bg-surface2 opacity-70 -top-40 -left-32"></div>
+  <div class="blob w-[380px] h-[380px] bg-blush opacity-40 -bottom-44 -right-24"></div>
+
+  <div class="relative z-10 max-w-content mx-auto px-5 sm:px-8 pt-14 pb-20 sm:pt-20 sm:pb-28
+              grid gap-12 lg:grid-cols-[1.15fr_.85fr] lg:gap-14 items-center">
+
+    <!-- Wordmark klientki jako plik, nie przepisany fontem. -->
+    <div class="order-1 lg:order-2 flex justify-center">
+      <div class="arch relative w-[min(80vw,340px)] lg:w-[340px] bg-surface px-8 pt-16 pb-7
+                  shadow-[0_20px_50px_rgba(26,22,20,.09)] ring-1 ring-blush/60">
+        <img src="photos/logo.png" alt="MajFi_beauty Kinga Bałecka" width="1122" height="966"
+             class="w-full h-auto" fetchpriority="high">
+        <!-- Złota linia idzie POD logo: u góry łuk jest już zwężony i linia wychodziłaby poza krawędź. -->
+        <span class="block mt-1 border-t border-gold/45" aria-hidden="true"></span>
+      </div>
+    </div>
+
+    <div class="order-2 lg:order-1 text-center lg:text-left">
+      <p class="font-script text-accent text-[clamp(1.9rem,5vw,2.6rem)] leading-none">Kinga Bałecka</p>
+
+      <h1 class="font-display font-medium text-ink mt-3 text-[clamp(2.15rem,5.2vw,3.35rem)] leading-[1.1] [text-wrap:balance]">
+        Kosmetolog z pasji i wykształcenia
+      </h1>
+
+      <p class="mt-6 font-prose text-inkmuted text-[1.03rem] leading-relaxed max-w-prose mx-auto lg:mx-0">
+        Rzęsy, brwi i paznokcie w Sulejowie. Pracuję spokojnie i dokładnie, efekt dobieram
+        do Twojej urody, nie do szablonu. Zapisy telefonicznie.
+      </p>
+
+      <div class="mt-9 flex flex-wrap gap-3 justify-center lg:justify-start">
+        <a href="tel:+48509530559"
+           class="press inline-flex items-center gap-2 rounded-full bg-accent text-white font-semibold px-7 h-[52px]
+                  shadow-[0_8px_22px_rgba(159,65,110,.3)] hover:bg-[#8B3860] hover:shadow-[0_12px_28px_rgba(159,65,110,.4)]">
+          Zadzwoń i umów wizytę
+        </a>
+        <a href="https://www.instagram.com/majfi_beauty/" target="_blank" rel="noopener noreferrer"
+           class="press inline-flex items-center gap-2 rounded-full border-2 border-accent text-accent font-semibold px-7 h-[52px]
+                  hover:bg-accent hover:text-white">
+          Zobacz na Instagramie
+        </a>
+      </div>
+
+      <!-- Ocena: dane z briefu, bez zaokrąglania w górę. -->
+      <div class="mt-9 flex flex-wrap items-center gap-x-4 gap-y-2 justify-center lg:justify-start">
+        <span class="text-accent text-[1.05rem] tracking-[.22em]" aria-hidden="true">★★★★★</span>
+        <p class="text-sm text-inkmuted">
+          <span class="font-semibold text-ink">5,0</span> w Google
+          <span class="text-blush px-1.5" aria-hidden="true">·</span>
+          11 opinii, wszystkie polecają
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Ornament: ilustracja oczu z logo Kingi między złotymi liniami (Styl 04 + jej własny motyw). -->
+<div class="bg-bg pb-4 sm:pb-6">
+  <div class="rule rule--wide max-w-content mx-auto px-5">
+    <img src="photos/logo-oczy.png" alt="" aria-hidden="true" width="720" height="265"
+         class="eyes h-[26px] sm:h-[30px] opacity-80">
+  </div>
+</div>
+
+<!-- ══ USŁUGI ══ -->
+<section id="uslugi" class="bg-surface py-20 sm:py-28">
+  <div class="max-w-content mx-auto px-5 sm:px-8">
+
+    <div class="text-center">
+      <p class="label text-accent">Usługi</p>
+      <h2 class="font-display font-medium text-ink mt-3 text-[clamp(1.9rem,4.6vw,2.9rem)] leading-tight">
+        Cztery rzeczy, które robię najlepiej
+      </h2>
+      <p class="mt-4 font-prose text-inkmuted max-w-prose mx-auto">
+        Zamiast długiej listy wolę robić mniej i pewnie. Nie wiesz, co wybrać? Zadzwoń, doradzę.
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-6 sm:grid-cols-2">
+
+      <!-- Znak wodny z oczu leżał tu wcześniej za nagłówkiem i czytał się jak smuga,
+           nie jak ornament. Motyw oczu zostaje tam, gdzie ma powietrze: w separatorze
+           sekcji i w logo w stopce. -->
+      <article class="rounded-[28px] bg-bg p-8 sm:p-9 shadow-[0_12px_34px_rgba(26,22,20,.07)] ring-1 ring-blush/45">
+        <h3 class="font-display font-medium text-[1.35rem] text-ink">Stylizacja i zagęszczanie rzęs</h3>
+        <p class="mt-3 font-prose text-inkmuted text-[.97rem] leading-relaxed">
+          Przedłużanie i zagęszczanie metodą kępkową. Długość, skręt i efekt dobieram do kształtu
+          Twojego oka, żeby wyglądało naturalnie i lekko.
+        </p>
+        <div class="mt-6 flex items-baseline gap-2">
+          <span class="text-[.95rem] font-medium text-ink">Cena</span>
+          <span class="leader"></span>
+          <span class="todo rounded-full px-3 py-1 text-[.8rem] font-semibold text-accent bg-surface">do uzupełnienia</span>
+        </div>
+      </article>
+
+      <article class="rounded-[28px] bg-bg p-8 sm:p-9 shadow-[0_12px_34px_rgba(26,22,20,.07)] ring-1 ring-blush/45">
+        <h3 class="font-display font-medium text-[1.35rem] text-ink">Lifting rzęs</h3>
+        <p class="mt-3 font-prose text-inkmuted text-[.97rem] leading-relaxed">
+          Podkręcenie Twoich własnych rzęs, bez przedłużania. Dobre rozwiązanie, jeśli chcesz
+          otwarte spojrzenie i zero codziennej pracy z zalotką.
+        </p>
+        <div class="mt-6 flex items-baseline gap-2">
+          <span class="text-[.95rem] font-medium text-ink">Cena</span>
+          <span class="leader"></span>
+          <span class="todo rounded-full px-3 py-1 text-[.8rem] font-semibold text-accent bg-surface">do uzupełnienia</span>
+        </div>
+      </article>
+
+      <article class="rounded-[28px] bg-bg p-8 sm:p-9 shadow-[0_12px_34px_rgba(26,22,20,.07)] ring-1 ring-blush/45">
+        <h3 class="font-display font-medium text-[1.35rem] text-ink">Henna pudrowa brwi</h3>
+        <p class="mt-3 font-prose text-inkmuted text-[.97rem] leading-relaxed">
+          Miękki, pudrowy efekt bez ostrego konturu. Brwi zyskują kształt i kolor, ale nadal
+          wyglądają na Twoje.
+        </p>
+        <div class="mt-6 flex items-baseline gap-2">
+          <span class="text-[.95rem] font-medium text-ink">Cena</span>
+          <span class="leader"></span>
+          <span class="todo rounded-full px-3 py-1 text-[.8rem] font-semibold text-accent bg-surface">do uzupełnienia</span>
+        </div>
+      </article>
+
+      <article class="rounded-[28px] bg-bg p-8 sm:p-9 shadow-[0_12px_34px_rgba(26,22,20,.07)] ring-1 ring-blush/45">
+        <h3 class="font-display font-medium text-[1.35rem] text-ink">Stylizacja paznokci</h3>
+        <p class="mt-3 font-prose text-inkmuted text-[.97rem] leading-relaxed">
+          Zadbane dłonie na co dzień i na wyjście. Kolor i wykończenie ustalamy na miejscu,
+          spokojnie i bez pośpiechu.
+        </p>
+        <div class="mt-6 flex items-baseline gap-2">
+          <span class="text-[.95rem] font-medium text-ink">Cena</span>
+          <span class="leader"></span>
+          <span class="todo rounded-full px-3 py-1 text-[.8rem] font-semibold text-accent bg-surface">do uzupełnienia</span>
+        </div>
+      </article>
+    </div>
+
+    <!-- TODO: ceny od Kingi — wpisać w miejsce chipów "do uzupełnienia". -->
+    <p class="mt-8 text-center text-[.9rem] text-inkmuted">
+      Cennik uzupełnimy wkrótce. Do tego czasu ceny podaję przez telefon:
+      <a href="tel:+48509530559" class="text-accent font-semibold underline decoration-blush decoration-2 underline-offset-4 hover:decoration-accent press">509 530 559</a>
+    </p>
+  </div>
+</section>
+
+<!-- ══ OPINIE ══ -->
+<section id="opinie" class="bg-bg py-20 sm:py-28">
+  <div class="max-w-content mx-auto px-5 sm:px-8">
+
+    <div class="text-center">
+      <p class="label text-accent">Opinie</p>
+      <h2 class="font-display font-medium text-ink mt-3 text-[clamp(1.9rem,4.6vw,2.9rem)] leading-tight">
+        Co mówią klientki
+      </h2>
+    </div>
+
+    <!-- Liczby są ostateczne, pochodzą z profili Google i Facebooka. -->
+    <div class="mt-12 grid gap-5 sm:grid-cols-2 max-w-3xl mx-auto">
+      <div class="rounded-[24px] bg-surface p-7 text-center ring-1 ring-blush/50">
+        <p class="text-accent text-[1.05rem] tracking-[.22em]" aria-hidden="true">★★★★★</p>
+        <p class="font-display text-[2.4rem] leading-none text-ink mt-3">5,0</p>
+        <p class="mt-2 text-[.92rem] text-inkmuted">Google &middot; 11 opinii</p>
+      </div>
+      <div class="rounded-[24px] bg-surface p-7 text-center ring-1 ring-blush/50">
+        <p class="text-accent text-[1.05rem] tracking-[.22em]" aria-hidden="true">★★★★★</p>
+        <p class="font-display text-[2.4rem] leading-none text-ink mt-3">100%</p>
+        <p class="mt-2 text-[.92rem] text-inkmuted">Facebook &middot; 3 opinie, wszystkie polecają</p>
+      </div>
+    </div>
+
+    <!-- Prawdziwe opinie z profili Google i Facebooka klientki (sierpień 2026).
+         Ucięte przez Google "… Więcej" i oczywiste literówki (np. "Profesionalna",
+         "Serdeczne polecam") poprawione — treść i sens bez zmian. Facebook nie ma
+         gwiazdek, tylko rekomendacje "poleca", więc karty z FB mają inny znacznik. -->
+    <div class="mt-8 grid gap-5 sm:grid-cols-3">
+      <figure class="rounded-[24px] p-7 bg-surface ring-1 ring-blush/40 flex flex-col">
+        <p class="text-accent text-[.95rem] tracking-[.2em]" aria-hidden="true">★★★★★</p>
+        <blockquote class="mt-4 flex-1 font-prose text-inkmuted text-[.95rem] italic leading-relaxed">
+          „Bardzo serdecznie polecam usługi Kingi. Rzęski są obłędne, bardzo dokładnie i starannie
+          zrobione, do tego przemiła, sympatyczna i uśmiechnięta.”
+        </blockquote>
+        <figcaption class="mt-5 text-[.85rem] text-ink font-semibold">
+          Martyna Wieczorek
+          <span class="block font-normal text-inkmuted mt-1">Google</span>
+        </figcaption>
+      </figure>
+      <figure class="rounded-[24px] p-7 bg-surface ring-1 ring-blush/40 flex flex-col">
+        <p class="text-accent text-[.95rem] tracking-[.2em]" aria-hidden="true">★★★★★</p>
+        <blockquote class="mt-4 flex-1 font-prose text-inkmuted text-[.95rem] italic leading-relaxed">
+          „Serdecznie polecam. Kinga jest prawdziwą profesjonalistką. Poza pięknymi rzęsami zawsze
+          zaraża pozytywnym nastawieniem i uśmiechem. Zawsze miło spędzony czas!”
+        </blockquote>
+        <figcaption class="mt-5 text-[.85rem] text-ink font-semibold">
+          Małgorzata
+          <span class="block font-normal text-inkmuted mt-1">Google</span>
+        </figcaption>
+      </figure>
+      <figure class="rounded-[24px] p-7 bg-surface ring-1 ring-blush/40 flex flex-col">
+        <p class="text-accent text-[.95rem] tracking-[.2em]" aria-hidden="true">★★★★★</p>
+        <blockquote class="mt-4 flex-1 font-prose text-inkmuted text-[.95rem] italic leading-relaxed">
+          „Serdecznie polecam. Zawsze miła i przyjazna atmosfera. Kinga to prawdziwa profesjonalistka
+          i do tego zawsze uśmiechnięta. Rzęsy, brwi i paznokcie — wszystko w jednym miejscu.”
+        </blockquote>
+        <figcaption class="mt-5 text-[.85rem] text-ink font-semibold">
+          Anetta Majchrowska
+          <span class="block font-normal text-inkmuted mt-1">Google</span>
+        </figcaption>
+      </figure>
+
+      <figure class="rounded-[24px] p-7 bg-surface ring-1 ring-blush/40 flex flex-col">
+        <p class="flex items-center gap-1.5 text-accent text-[.85rem] font-semibold" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 shrink-0"><path fill-rule="evenodd" clip-rule="evenodd" d="M17.7 5.3a1 1 0 0 1 0 1.4l-9 9a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L8 13.6l8.3-8.3a1 1 0 0 1 1.4 0Z"/></svg>
+          Poleca
+        </p>
+        <blockquote class="mt-4 flex-1 font-prose text-inkmuted text-[.95rem] italic leading-relaxed">
+          „Polecam! Rzęsy trzymają się perfekcyjnie :)”
+        </blockquote>
+        <figcaption class="mt-5 text-[.85rem] text-ink font-semibold">
+          Milena Walasik
+          <span class="block font-normal text-inkmuted mt-1">Facebook</span>
+        </figcaption>
+      </figure>
+      <figure class="rounded-[24px] p-7 bg-surface ring-1 ring-blush/40 flex flex-col">
+        <p class="flex items-center gap-1.5 text-accent text-[.85rem] font-semibold" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 shrink-0"><path fill-rule="evenodd" clip-rule="evenodd" d="M17.7 5.3a1 1 0 0 1 0 1.4l-9 9a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L8 13.6l8.3-8.3a1 1 0 0 1 1.4 0Z"/></svg>
+          Poleca
+        </p>
+        <blockquote class="mt-4 flex-1 font-prose text-inkmuted text-[.95rem] italic leading-relaxed">
+          „Trafiłam przypadkiem na rzęsy do Kingi i jestem mega zadowolona. Polecam w 100%!”
+        </blockquote>
+        <figcaption class="mt-5 text-[.85rem] text-ink font-semibold">
+          Marta Markiewicz
+          <span class="block font-normal text-inkmuted mt-1">Facebook</span>
+        </figcaption>
+      </figure>
+      <figure class="rounded-[24px] p-7 bg-surface ring-1 ring-blush/40 flex flex-col">
+        <p class="flex items-center gap-1.5 text-accent text-[.85rem] font-semibold" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 shrink-0"><path fill-rule="evenodd" clip-rule="evenodd" d="M17.7 5.3a1 1 0 0 1 0 1.4l-9 9a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L8 13.6l8.3-8.3a1 1 0 0 1 1.4 0Z"/></svg>
+          Poleca
+        </p>
+        <blockquote class="mt-4 flex-1 font-prose text-inkmuted text-[.95rem] italic leading-relaxed">
+          „Profesjonalna obsługa. Bardzo dobre ceny.”
+        </blockquote>
+        <figcaption class="mt-5 text-[.85rem] text-ink font-semibold">
+          Adam Teler
+          <span class="block font-normal text-inkmuted mt-1">Facebook</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- CTA "Dodaj opinię" — układ 1:1 z NOVA-Magdalena-Kowalska-2/index.html (przycisk + ikona G),
+         ale kolor dopasowany do MajFi zamiast czarnej pigułki z NOVA: ten sam bg-accent/hover, co
+         reszta głównych CTA na stronie (telefon w hero, navbarze i stopce), więc "Dodaj opinię" nie
+         wygląda jak obcy element. Link to zweryfikowany URL Google Maps tej klientki z parametrem
+         !9m1!1b1 (otwiera edytor opinii) — potwierdzone 2026-08-26 w żywej przeglądarce: nazwa,
+         telefon 509 530 559, adres Polna 32 i ocena 5,0/11 zgadzają się z briefem. -->
+    <div class="mt-10 text-center">
+      <a href="https://www.google.com/maps/place/MajFi_beauty+Kinga+Ba%C5%82ecka/@51.3527862,19.8735155,17z/data=!4m8!3m7!1s0x44227248faf5ae57:0x16b22790c12a3f7d!8m2!3d51.3527862!4d19.8735155!9m1!1b1!16s%2Fg%2F11t7zpw5fj?entry=ttu"
+         target="_blank" rel="noopener noreferrer"
+         class="press inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-accent px-8 text-[1rem] font-semibold tracking-tight text-white shadow-[0_8px_22px_rgba(159,65,110,.3)] hover:bg-[#8B3860] hover:shadow-[0_12px_28px_rgba(159,65,110,.4)]">
+        <svg viewBox="0 0 48 48" width="18" height="18" fill="currentColor" aria-hidden="true">
+          <path d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+          <path d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+          <path d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+          <path d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+        </svg>
+        Dodaj opinię
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ GALERIA ══ -->
+<section id="galeria" class="bg-surface py-20 sm:py-28">
+  <div class="max-w-content mx-auto px-5 sm:px-8">
+
+    <div class="text-center">
+      <p class="label text-accent">Galeria</p>
+      <h2 class="font-display font-medium text-ink mt-3 text-[clamp(1.9rem,4.6vw,2.9rem)] leading-tight">
+        Efekty moich zabiegów
+      </h2>
+      <p class="mt-4 font-prose text-inkmuted max-w-prose mx-auto">
+        Najświeższe zdjęcia wrzucam na bieżąco na Instagram. Tutaj wkrótce pojawi się wybór najlepszych.
+      </p>
+    </div>
+
+    <!-- Zdjęcia wejdą do photos/galeria/ i zastąpią te ramki 1:1 (patrz photos/galeria/README.md).
+         Kafle są już klikalne — otwierają lightbox z podglądem, strzałkami, klawiaturą i swipe'em
+         na mobile. Gdy dojdą prawdziwe zdjęcia, sam lightbox (niżej w body) nie wymaga przebudowy —
+         patrz komentarz przy tablicy GALERIA w skrypcie na końcu strony. -->
+    <div class="mt-14 grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5">
+      <button type="button" data-index="0" aria-label="Powiększ: zdjęcie rzęs"
+              class="gallery-tile todo relative bg-bg aspect-square grid place-items-center rounded-[22px] rounded-tl-[120px]">
+        <span class="text-[.8rem] text-inkmuted px-3 text-center">Zdjęcie<br>rzęs</span>
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" data-index="1" aria-label="Powiększ: zdjęcie rzęs"
+              class="gallery-tile todo relative bg-bg aspect-square grid place-items-center rounded-[22px]">
+        <span class="text-[.8rem] text-inkmuted px-3 text-center">Zdjęcie<br>rzęs</span>
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" data-index="2" aria-label="Powiększ: zdjęcie brwi"
+              class="gallery-tile todo relative bg-bg aspect-square grid place-items-center rounded-[22px] rounded-tr-[120px]">
+        <span class="text-[.8rem] text-inkmuted px-3 text-center">Zdjęcie<br>brwi</span>
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" data-index="3" aria-label="Powiększ: zdjęcie brwi"
+              class="gallery-tile todo relative bg-bg aspect-square grid place-items-center rounded-[22px] rounded-bl-[120px]">
+        <span class="text-[.8rem] text-inkmuted px-3 text-center">Zdjęcie<br>brwi</span>
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" data-index="4" aria-label="Powiększ: zdjęcie paznokci"
+              class="gallery-tile todo relative bg-bg aspect-square grid place-items-center rounded-[22px]">
+        <span class="text-[.8rem] text-inkmuted px-3 text-center">Zdjęcie<br>paznokci</span>
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button type="button" data-index="5" aria-label="Powiększ: zdjęcie paznokci"
+              class="gallery-tile todo relative bg-bg aspect-square grid place-items-center rounded-[22px] rounded-br-[120px]">
+        <span class="text-[.8rem] text-inkmuted px-3 text-center">Zdjęcie<br>paznokci</span>
+        <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+    </div>
+
+    <p class="mt-9 text-center">
+      <a href="https://www.instagram.com/majfi_beauty/" target="_blank" rel="noopener noreferrer"
+         class="press inline-flex items-center gap-2 rounded-full border-2 border-accent text-accent font-semibold px-7 h-[52px] hover:bg-accent hover:text-white">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-[19px] h-[19px] shrink-0" aria-hidden="true">
+          <rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/>
+          <circle cx="12" cy="12" r="4.2"/>
+          <circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none"/>
+        </svg>
+        @majfi_beauty
+      </a>
+    </p>
+  </div>
+</section>
+
+<!-- ══ GODZINY · ADRES · KONTAKT ══ -->
+<section id="kontakt" class="bg-bg py-20 sm:py-28">
+  <div class="max-w-content mx-auto px-5 sm:px-8">
+
+    <div class="text-center">
+      <p class="label text-accent">Kontakt</p>
+      <h2 class="font-display font-medium text-ink mt-3 text-[clamp(1.9rem,4.6vw,2.9rem)] leading-tight">
+        Zapraszam do Sulejowa
+      </h2>
+    </div>
+
+    <div class="mt-14 grid gap-6 lg:grid-cols-[1fr_1.05fr] items-start">
+
+      <!-- Godziny -->
+      <div class="rounded-[28px] bg-surface p-8 sm:p-9 ring-1 ring-blush/50">
+        <h3 class="font-display font-medium text-[1.3rem] text-ink">Godziny otwarcia</h3>
+        <span class="block mt-4 mb-5 border-t border-gold/45" aria-hidden="true"></span>
+        <dl id="godziny" class="text-[.97rem]">
+          <div data-dzien="1" class="flex items-baseline gap-3 py-2"><dt class="text-inkmuted">Poniedziałek</dt><span class="leader"></span><dd class="font-semibold text-ink whitespace-nowrap">09:00 – 17:00</dd></div>
+          <div data-dzien="2" class="flex items-baseline gap-3 py-2"><dt class="text-inkmuted">Wtorek</dt><span class="leader"></span><dd class="font-semibold text-ink whitespace-nowrap">09:00 – 17:00</dd></div>
+          <div data-dzien="3" class="flex items-baseline gap-3 py-2"><dt class="text-inkmuted">Środa</dt><span class="leader"></span><dd class="font-semibold text-ink whitespace-nowrap">09:00 – 17:00</dd></div>
+          <div data-dzien="4" class="flex items-baseline gap-3 py-2"><dt class="text-inkmuted">Czwartek</dt><span class="leader"></span><dd class="font-semibold text-ink whitespace-nowrap">09:00 – 17:00</dd></div>
+          <div data-dzien="5" class="flex items-baseline gap-3 py-2"><dt class="text-inkmuted">Piątek</dt><span class="leader"></span><dd class="font-semibold text-ink whitespace-nowrap">09:00 – 17:00</dd></div>
+          <div data-dzien="6" class="flex items-baseline gap-3 py-2"><dt class="text-inkmuted">Sobota</dt><span class="leader"></span><dd class="font-semibold text-ink whitespace-nowrap">10:00 – 15:00</dd></div>
+          <div data-dzien="0" class="flex items-baseline gap-3 py-2"><dt class="text-inkmuted">Niedziela</dt><span class="leader"></span><dd class="font-semibold text-inkmuted whitespace-nowrap">Zamknięte</dd></div>
+        </dl>
+      </div>
+
+      <!-- Adres, telefon, social -->
+      <div class="rounded-[28px] bg-surface p-8 sm:p-9 ring-1 ring-blush/50">
+        <h3 class="font-display font-medium text-[1.3rem] text-ink">Gdzie mnie znajdziesz</h3>
+        <span class="block mt-4 mb-5 border-t border-gold/45" aria-hidden="true"></span>
+
+        <address class="not-italic text-[1.02rem] text-ink leading-relaxed">
+          ul. Polna 32<br>97-330 Sulejów
+        </address>
+
+        <div class="mt-6 flex flex-col gap-3">
+          <a href="tel:+48509530559"
+             class="press inline-flex items-center justify-center gap-2 rounded-full bg-accent text-white font-semibold px-6 h-[52px]
+                    shadow-[0_8px_22px_rgba(159,65,110,.3)] hover:bg-[#8B3860]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="w-[18px] h-[18px] shrink-0" aria-hidden="true">
+              <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>
+            </svg>
+            509 530 559
+          </a>
+
+          <div class="flex gap-3">
+            <a href="https://www.instagram.com/majfi_beauty/" target="_blank" rel="noopener noreferrer"
+               class="press flex-1 inline-flex items-center justify-center gap-2 rounded-full border-2 border-accent text-accent font-semibold h-[52px] hover:bg-accent hover:text-white">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-[19px] h-[19px] shrink-0" aria-hidden="true">
+                <rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/>
+                <circle cx="12" cy="12" r="4.2"/>
+                <circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none"/>
+              </svg>
+              Instagram
+            </a>
+            <a href="https://www.facebook.com/p/MajFi_beauty-100077932627780/" target="_blank" rel="noopener noreferrer"
+               class="press flex-1 inline-flex items-center justify-center gap-2 rounded-full border-2 border-accent text-accent font-semibold h-[52px] hover:bg-accent hover:text-white">
+              <svg viewBox="0 0 24 24" fill="currentColor" class="w-[19px] h-[19px] shrink-0" aria-hidden="true">
+                <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.5-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.44-4.92 8.44-9.94Z"/>
+              </svg>
+              Facebook
+            </a>
+          </div>
+
+          <a href="https://www.google.com/maps/dir/?api=1&destination=Polna+32,+97-330+Sulej%C3%B3w"
+             target="_blank" rel="noopener noreferrer"
+             class="press inline-flex items-center justify-center gap-2 h-11 text-[.92rem] font-semibold text-accent
+                    underline decoration-blush decoration-2 underline-offset-4 hover:decoration-accent">
+            Wyznacz trasę
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mapa Google — opisana w polityce prywatności (przekazanie danych do Google). -->
+    <div class="mt-6 overflow-hidden rounded-[28px] bg-surface ring-1 ring-blush/50 shadow-[0_12px_34px_rgba(26,22,20,.07)]">
+      <iframe
+        title="Mapa dojazdu: MajFi_beauty, ul. Polna 32, 97-330 Sulejów"
+        src="https://www.google.com/maps/embed?origin=mfe&amp;pb=!1m3!2m1!1sPolna+32,+97-330+Sulej%C3%B3w!6i15!3m1!1spl!5m1!1spl"
+        width="100%" height="340" style="border:0; display:block;"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ══ LIGHTBOX GALERII ══ Placeholder teraz — w photos/galeria/ nie ma jeszcze prawdziwych
+     zdjęć — ale mechanika (klik, strzałki, klawiatura Esc/←/→, swipe na mobile, focus trap)
+     jest już gotowa. Gdy Kinga dośle zdjęcia: w tablicy GALERIA w skrypcie niżej dopisz
+     `src`+`alt` zamiast `label`, a w render() podmień lightboxLabel.textContent na ustawienie
+     obrazka we #lightboxFrame — reszta (markup, zdarzenia) zostaje bez zmian. -->
+<div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-[rgba(26,22,20,.92)] p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia z galerii">
+  <button type="button" id="lightboxClose" aria-label="Zamknij podgląd"
+          class="press absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(255,251,249,.14)] text-bg hover:bg-[rgba(255,251,249,.24)] sm:right-6 sm:top-6">
+    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <button type="button" id="lightboxPrev" aria-label="Poprzednie zdjęcie"
+          class="press absolute left-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(255,251,249,.14)] text-bg hover:bg-[rgba(255,251,249,.24)] sm:left-5">
+    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+  <button type="button" id="lightboxNext" aria-label="Następne zdjęcie"
+          class="press absolute right-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(255,251,249,.14)] text-bg hover:bg-[rgba(255,251,249,.24)] sm:right-5">
+    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <figure id="lightboxTouchArea" class="mx-auto flex max-h-full w-full max-w-sm flex-col items-center touch-pan-y">
+    <div id="lightboxFrame" class="todo flex aspect-square w-full items-center justify-center rounded-[28px] bg-surface px-8 text-center shadow-[0_20px_60px_rgba(0,0,0,.35)]">
+      <span id="lightboxLabel" class="font-prose text-[1.15rem] text-inkmuted"></span>
+    </div>
+    <figcaption id="lightboxCounter" class="label mt-4 text-[#E0C68A]" aria-live="polite"></figcaption>
+  </figure>
+</div>
+
+<!-- ══ STOPKA ══ -->
+<footer class="bg-surface2 text-ink pt-16 pb-10">
+  <div class="max-w-content mx-auto px-5 sm:px-8 text-center">
+
+    <!-- Znowu plik logo, nie przepisany fontem — tak samo jak w navbarze i hero. -->
+    <img src="photos/logo-nav.png" alt="MajFi_beauty" width="1496" height="848"
+         class="h-[68px] w-auto mx-auto">
+
+    <p class="mt-5 text-[.95rem]">Kinga Bałecka &middot; ul. Polna 32, 97-330 Sulejów</p>
+
+    <span class="block w-24 mx-auto mt-7 border-t border-gold/55" aria-hidden="true"></span>
+
+    <div class="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-[.95rem] font-semibold">
+      <a href="tel:+48509530559" class="press hover:text-accent">509 530 559</a>
+      <a href="https://www.instagram.com/majfi_beauty/" target="_blank" rel="noopener noreferrer" class="press hover:text-accent">Instagram</a>
+      <a href="https://www.facebook.com/p/MajFi_beauty-100077932627780/" target="_blank" rel="noopener noreferrer" class="press hover:text-accent">Facebook</a>
+    </div>
+
+    <div class="mt-9 pt-6 border-t border-ink/10 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[.82rem] text-ink/70">
+      <span>&copy; 2026 MajFi_beauty Kinga Bałecka</span>
+      <a href="privacy.html" class="press underline underline-offset-4 hover:text-accent">Polityka prywatności</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Podświetlenie dzisiejszego dnia w tabeli godzin otwarcia.
+  (function () {
+    var wiersz = document.querySelector('#godziny [data-dzien="' + new Date().getDay() + '"]');
+    if (!wiersz) return;
+    wiersz.classList.add('today-row');
+    wiersz.querySelector('dt').insertAdjacentHTML('beforeend', '<span class="today-badge">dziś</span>');
+  })();
+
+  // Scrollspy: podświetla w nawigacji link sekcji aktualnie widocznej na ekranie.
+  (function () {
+    var navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+    if (!navLinks.length) return;
+    var sections = [];
+    navLinks.forEach(function (link) {
+      var sec = document.querySelector(link.getAttribute('href'));
+      if (sec) sections.push({ link: link, el: sec });
+    });
+    if (!sections.length) return;
+    var headerH = document.querySelector('header').offsetHeight || 84;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var match = sections.find(function (s) { return s.el === entry.target; });
+        if (!match) return;
+        if (entry.isIntersecting) {
+          navLinks.forEach(function (l) { l.classList.remove('is-active'); });
+          match.link.classList.add('is-active');
+        }
+      });
+    }, { rootMargin: '-' + (headerH + 4) + 'px 0px -60% 0px', threshold: 0 });
+    sections.forEach(function (s) { observer.observe(s.el); });
+  })();
+
+  // Galeria: lightbox nad sześcioma kaflami. To placeholdery (brak zdjęć w photos/galeria/),
+  // więc GALERIA trzyma tylko etykiety, nie ścieżki. Gdy dojdą prawdziwe zdjęcia: dopisz
+  // `src`+`alt` do każdego wpisu i w render() ustaw obrazek we #lightboxFrame zamiast tekstu —
+  // markup i reszta zdarzeń (klawiatura, swipe, focus) zostają bez zmian.
+  (function () {
+    var GALERIA = [
+      { label: 'Zdjęcie rzęs' },
+      { label: 'Zdjęcie rzęs' },
+      { label: 'Zdjęcie brwi' },
+      { label: 'Zdjęcie brwi' },
+      { label: 'Zdjęcie paznokci' },
+      { label: 'Zdjęcie paznokci' }
+    ];
+
+    var lightbox = document.getElementById('lightbox');
+    var label = document.getElementById('lightboxLabel');
+    var counter = document.getElementById('lightboxCounter');
+    var btnClose = document.getElementById('lightboxClose');
+    var btnPrev = document.getElementById('lightboxPrev');
+    var btnNext = document.getElementById('lightboxNext');
+    var touchArea = document.getElementById('lightboxTouchArea');
+    var tiles = document.querySelectorAll('.gallery-tile');
+    if (!lightbox || !tiles.length) return;
+
+    var current = 0;
+    var lastFocused = null;
+
+    function render() {
+      label.textContent = GALERIA[current].label;
+      counter.textContent = (current + 1) + ' / ' + GALERIA.length;
+    }
+    function open(index) {
+      current = index;
+      lastFocused = document.activeElement;
+      render();
+      lightbox.classList.remove('hidden');
+      lightbox.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      btnClose.focus();
+    }
+    function close() {
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+      document.body.style.overflow = '';
+      if (lastFocused) lastFocused.focus();
+    }
+    function next() { current = (current + 1) % GALERIA.length; render(); }
+    function prev() { current = (current - 1 + GALERIA.length) % GALERIA.length; render(); }
+
+    tiles.forEach(function (tile) {
+      tile.addEventListener('click', function () {
+        open(parseInt(tile.getAttribute('data-index'), 10));
+      });
+    });
+    btnClose.addEventListener('click', close);
+    btnNext.addEventListener('click', next);
+    btnPrev.addEventListener('click', prev);
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lightbox) close();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (lightbox.classList.contains('hidden')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    });
+
+    // Przewijanie palcem na mobile.
+    var touchStartX = null;
+    touchArea.addEventListener('touchstart', function (e) {
+      touchStartX = e.changedTouches[0].clientX;
+    }, { passive: true });
+    touchArea.addEventListener('touchend', function (e) {
+      if (touchStartX === null) return;
+      var dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); }
+      touchStartX = null;
+    }, { passive: true });
+  })();
+</script>
+
+</body>
+</html>

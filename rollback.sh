@@ -28,6 +28,7 @@ docker rm callcenter || true
 docker run -d --name callcenter --restart unless-stopped \
   -p 3000:3000 \
   -v "$(pwd)/webapp/data:/app/data" \
+  -v "$(pwd)/webapp/.env:/app/.env" \
   "$TAG"
 
 echo "Gotowe - appka wrocila do wersji $TAG. Kod w folderze (git) zostal nietkniety,"
