@@ -31,6 +31,7 @@
     "addressCountry": "PL"
   },
   "telephone": "+48531122360",
+  "acceptsReservations": true,
   "priceRange": "10–862 zł",
   "sameAs": [
     "https://www.facebook.com/profile.php?id=61575473254882",
@@ -204,6 +205,7 @@
 
   .map { filter:grayscale(.7) contrast(1.05); }
 </style>
+<link rel="stylesheet" href="css/booking.css">
 </head>
 
 <body class="bg-cream font-serif text-ink">
@@ -773,9 +775,10 @@
           <svg class="chev shrink-0 text-red" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
         </summary>
         <p class="max-w-content pb-6 pr-10 text-[1.08rem] leading-[1.8] text-muted">
-          Tak. Na razie rezerwujemy telefonicznie pod numerem
-          <a href="tel:+48531122360" class="text-red underline decoration-border underline-offset-4 hover:decoration-red">531&nbsp;122&nbsp;360</a>,
-          w godzinach otwarcia. Rezerwacja online jest w przygotowaniu.
+          Tak, <a href="#rezerwacja" class="text-red underline decoration-border underline-offset-4 hover:decoration-red">online na tej stronie</a>:
+          wybierasz dzień, liczbę gości i godzinę, a stolik jest od razu Twój. Większe grupy
+          i zmiany rezerwacji przyjmujemy telefonicznie:
+          <a href="tel:+48531122360" class="text-red underline decoration-border underline-offset-4 hover:decoration-red">531&nbsp;122&nbsp;360</a>.
         </p>
       </details>
 
@@ -823,48 +826,32 @@
 </section>
 
 <!-- ============================== REZERWACJA ============================== -->
-<section id="rezerwacja" class="on-red bg-red px-5 py-20 text-cream sm:px-8 sm:py-28">
+<!-- System rezerwacji: js/booking.js (UI) + js/booking-api.js (Supabase, Turnstile)
+     + functions/api/reserve.js (zapis). Wdrożenie: supabase/SETUP.md.
+     Ciemne tło zamiast czerwonego pasma, bo karta ze wzoru (UI.png) jest ciemna. -->
+<section id="rezerwacja" class="bg-ink px-5 py-20 text-cream sm:px-8 sm:py-28">
   <div class="mx-auto max-w-wide">
-    <p class="eyebrow">Rezerwacja</p>
+    <p class="eyebrow text-[#EF6A5F]">Rezerwacja</p>
     <h2 class="mt-5 max-w-content font-serif text-[clamp(2rem,5.4vw,3.4rem)] font-bold leading-[1.15]">
       Zarezerwuj stolik
     </h2>
+    <p class="mt-4 max-w-content text-[1.08rem] leading-[1.8] text-[#A89B89]">
+      Wybierz dzień, liczbę gości i godzinę. Wolny termin blokujemy od razu, bez czekania na potwierdzenie.
+    </p>
 
-    <!-- ==================================================================
-         TYMCZASOWE ROZWIĄZANIE — do podmiany.
-         Docelowo w tym miejscu montuje się customowy system rezerwacji
-         (HTML/JS + Supabase: baza, realtime, auth; hosting Cloudflare Pages).
-         Zakres: strona gościa (kalendarz, liczba osób, sloty godzinowe, dane
-         kontaktowe, slot znika natychmiast po zajęciu) + panel właściciela
-         (lista rezerwacji dnia, dane gości, anulowanie, logowanie e-mail+hasło).
-         To osobny prompt / osobne zadanie — NIE budowane w tej iteracji.
-
-         Jak podmienić: zostaw <div id="booking-app">, usuń całą zawartość
-         .booking-fallback i zamontuj w nim widget. Do czasu wdrożenia
-         rezerwacja idzie przez telefon w godzinach otwarcia.
-         ================================================================== -->
-    <div id="booking-app">
-      <div class="booking-fallback mt-8 max-w-content">
-        <p class="text-[1.08rem] leading-[1.85]">
-          Rezerwacje przyjmujemy telefonicznie, w godzinach otwarcia.
-          Zadzwoń i powiedz, na kiedy i dla ilu osób — resztę ustawimy.
-          Rezerwacja online ruszy wkrótce.
-        </p>
-        <div class="mt-8 flex flex-wrap items-center gap-3">
-          <a href="tel:+48531122360"
-             class="inline-flex min-h-[52px] items-center gap-2.5 rounded-full bg-cream px-8 font-ui text-[1rem] font-bold uppercase tracking-[.12em] text-red transition-colors hover:bg-ink hover:text-cream">
-            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
-            531 122 360
-          </a>
-          <a href="https://www.instagram.com/alticciogdansk/" target="_blank" rel="noopener"
-             class="inline-flex min-h-[52px] items-center gap-2.5 rounded-full border border-cream px-8 font-ui text-[1rem] font-bold uppercase tracking-[.12em] text-cream transition-colors hover:bg-cream hover:text-red">
-            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.62.07 4.81s0 3.56-.07 4.81c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.16-1.06.36-2.23.41-1.25.06-1.62.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.56 2.2 15.19 2.2 12s0-3.56.07-4.81c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.44 2.21 8.8 2.2 12 2.2m0 1.98c-3.14 0-3.51.01-4.75.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.05-1.15-.24-1.77-.4-2.18a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.75-.07m0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9m0 8.99a3.54 3.54 0 1 0 0-7.08 3.54 3.54 0 0 0 0 7.08m6.94-9.21a1.27 1.27 0 1 1-2.55 0 1.27 1.27 0 0 1 2.55 0"/></svg>
-            Napisz na Instagramie
-          </a>
-        </div>
-      </div>
+    <!-- -mx-5 na telefonie: karta od krawędzi do krawędzi, patrz css/booking.css -->
+    <div id="booking-app" class="bk -mx-5 mt-10 sm:mx-0">
+      <noscript>
+        <div class="bk-card"><div class="bk-message"><p>
+          Rezerwacja online wymaga włączonego JavaScriptu. Zadzwoń, a zarezerwujemy stolik telefonicznie:
+          <a href="tel:+48531122360">531&nbsp;122&nbsp;360</a>.
+        </p></div></div>
+      </noscript>
     </div>
 
+    <p class="mt-6 font-ui text-[.86rem] tracking-[.06em] text-[#A89B89]">
+      Wolisz zadzwonić? <a href="tel:+48531122360" class="font-bold text-cream underline decoration-[#4A4038] underline-offset-4 hover:decoration-cream">531&nbsp;122&nbsp;360</a>
+    </p>
   </div>
 </section>
 
@@ -1109,6 +1096,38 @@
     });
   });
 })();
+</script>
+
+<script type="module">
+/* ——— Rezerwacje: ładowane dopiero, gdy sekcja zbliża się do ekranu ———
+   Supabase i Turnstile nie obciążają strony, dopóki ktoś nie przewinie do rezerwacji
+   (albo nie kliknie „Zarezerwuj stolik”, co przewija do sekcji). */
+const bookingRoot = document.getElementById('booking-app');
+let bookingStarted = false;
+async function startBooking() {
+  if (bookingStarted) return;
+  bookingStarted = true;
+  try {
+    const [{ mountBooking }, { createBookingApi }] = await Promise.all([
+      import('./js/booking.js'),
+      import('./js/booking-api.js'),
+    ]);
+    mountBooking(bookingRoot, createBookingApi());
+  } catch (err) {
+    // np. zablokowany CDN z biblioteką Supabase — gość nie może zostać z pustą sekcją
+    console.error('Rezerwacje: nie udało się wczytać modułów', err);
+    bookingRoot.innerHTML = '<div class="bk-card"><div class="bk-message"><p>Kalendarz rezerwacji nie wczytał się. '
+      + 'Zadzwoń, a zarezerwujemy stolik telefonicznie: <a href="tel:+48531122360">531&nbsp;122&nbsp;360</a>.</p></div></div>';
+  }
+}
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((entries) => {
+    if (entries.some((e) => e.isIntersecting)) { io.disconnect(); startBooking(); }
+  }, { rootMargin: '800px 0px' });
+  io.observe(bookingRoot);
+} else {
+  startBooking();
+}
 </script>
 
 </body>

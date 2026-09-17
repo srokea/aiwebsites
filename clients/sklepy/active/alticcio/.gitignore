@@ -1,0 +1,5 @@
+# wynik build.sh
+dist/
+# lokalne sekrety dla `wrangler pages dev` (SUPABASE_SECRET_KEY, TURNSTILE_SECRET_KEY)
+.dev.vars
+.wrangler/

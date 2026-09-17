@@ -95,22 +95,51 @@
     <section>
       <h2 class="border-t border-border pt-6 font-serif text-[1.35rem] font-bold text-red">Jakie dane zbiera ta strona</h2>
       <p class="mt-4">
-        Żadnych. Ta strona nie ma formularza, nie zakłada kont i nie prowadzi rezerwacji online.
-        Nie używa własnych plików cookies ani narzędzi analitycznych. Nie wiemy, kto ją odwiedza.
+        Tylko te, które sam podajesz w formularzu rezerwacji stolika. Strona nie zakłada kont dla gości,
+        nie używa plików cookies do śledzenia ani narzędzi analitycznych. Nie wiemy, kto ją odwiedza.
       </p>
     </section>
 
     <section>
-      <h2 class="border-t border-border pt-6 font-serif text-[1.35rem] font-bold text-red">Rezerwacja telefoniczna</h2>
+      <h2 class="border-t border-border pt-6 font-serif text-[1.35rem] font-bold text-red">Rezerwacja stolika</h2>
       <p class="mt-4">
-        Kiedy dzwonisz, żeby zarezerwować stolik, zapisujemy to, co jest do tego potrzebne:
-        imię, numer telefonu, datę, godzinę i liczbę osób. Robimy to wyłącznie po to, żeby
-        rezerwację zrealizować i potwierdzić (podstawa prawna: art.&nbsp;6 ust.&nbsp;1 lit.&nbsp;b RODO).
-        Dane trzymamy do czasu wizyty, a potem do usunięcia z bieżącego grafiku.
+        Rezerwując stolik online, podajesz imię i numer telefonu, a jeśli chcesz, także e-mail i komentarz.
+        Razem z nimi zapisujemy datę, godzinę, czas przy stoliku i liczbę osób. Przy rezerwacji telefonicznej
+        zapisujemy to samo. Wykorzystujemy te dane wyłącznie do obsługi rezerwacji: żeby przygotować stolik
+        i móc się z Tobą skontaktować, gdyby coś się zmieniło (podstawa prawna: art.&nbsp;6 ust.&nbsp;1 lit.&nbsp;b RODO).
+        Nie wysyłamy na podany adres e-mail ani numer żadnych reklam.
       </p>
-      <!-- Po wdrożeniu systemu rezerwacji online (Supabase + Cloudflare Pages)
-           ta sekcja wymaga rozszerzenia: podmiot przetwarzający, lokalizacja serwerów,
-           czas przechowywania rezerwacji w bazie, konto właściciela. -->
+      <p class="mt-4">
+        Rezerwacje usuwamy automatycznie 30 dni po terminie wizyty.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="border-t border-border pt-6 font-serif text-[1.35rem] font-bold text-red">Gdzie są przechowywane rezerwacje</h2>
+      <!-- TODO przy wdrożeniu: zaakceptować umowę powierzenia (DPA) Supabase w panelu projektu
+           (Organization → Legal Documents) i utworzyć projekt w regionie eu-central-1 (Frankfurt).
+           Bez tego poniższy akapit nie jest prawdziwy. -->
+      <p class="mt-4">
+        Baza rezerwacji działa w usłudze Supabase, na serwerach we Frankfurcie (Unia Europejska).
+        Supabase przetwarza te dane wyłącznie na nasze zlecenie, na podstawie umowy powierzenia
+        przetwarzania danych. Dostęp do listy rezerwacji ma tylko obsługa Alticcio, po zalogowaniu.
+      </p>
+      <p class="mt-4">
+        Kalendarz rezerwacji wczytuje się dopiero, gdy przewiniesz stronę do sekcji rezerwacji. Wtedy
+        przeglądarka łączy się z Supabase (wolne godziny) i z serwerem cdn.jsdelivr.net, z którego pobierana
+        jest biblioteka do tego połączenia. Oba widzą przy tym Twój adres IP.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="border-t border-border pt-6 font-serif text-[1.35rem] font-bold text-red">Ochrona formularza przed botami</h2>
+      <p class="mt-4">
+        Formularz rezerwacji chroni Cloudflare Turnstile. Sprawdza, czy rezerwację składa człowiek, a nie
+        automat zajmujący wszystkie stoliki. Żeby to ocenić, Cloudflare otrzymuje Twój adres IP i podstawowe
+        informacje o przeglądarce. Nie służy to do reklam ani śledzenia (podstawa prawna: nasz prawnie
+        uzasadniony interes w ochronie systemu rezerwacji, art.&nbsp;6 ust.&nbsp;1 lit.&nbsp;f RODO). Szczegóły:
+        <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener" class="text-red underline decoration-border underline-offset-4 hover:decoration-red">polityka prywatności Cloudflare</a>.
+      </p>
     </section>
 
     <section>
@@ -144,6 +173,10 @@
         Wygląd strony opiera się na bibliotece stylów pobieranej z zewnętrznego serwera
         (<span class="whitespace-nowrap">cdn.tailwindcss.com</span>). Przy wczytywaniu strony
         ten serwer widzi Twój adres IP. Nie są przy tym zbierane żadne dane ani zapisywane cookies.
+      </p>
+      <p class="mt-4">
+        Stronę udostępnia Cloudflare (hosting Cloudflare Pages). Jak każdy serwer, widzi adres IP
+        przeglądarki, która ją wczytuje.
       </p>
     </section>
 
