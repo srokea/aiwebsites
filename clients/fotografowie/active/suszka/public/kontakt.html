@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kontakt · Magda Suszka-Krawiec Photography, Sulejów</title>
+<meta name="description" content="Umów sesję z Magdą Suszką-Krawiec. Studio: Cmentarna 21, Sulejów. Telefon 697 035 198, wtorek–piątek 9:00–16:00.">
+
+<!-- TODO: gdy bedzie znana domena Magdy, dopisac <link rel="canonical">,
+     og:url i pelny (absolutny) adres og:image. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kontakt — Magda Suszka-Krawiec Photography">
+<meta property="og:description" content="Telefon, formularz, adres studia w Sulejowie i godziny otwarcia.">
+<meta property="og:image" content="assets/img/og.jpg">
+<meta property="og:locale" content="pl_PL">
+
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="favicon.png">
+
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/cormorant-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/worksans-latin.woff2" crossorigin>
+
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<a class="sr-only" href="#top">Przejdź do treści</a>
+
+<!-- ============================================================== NAWIGACJA -->
+<header class="nav" id="nav">
+  <a class="wordmark" href="index.html" aria-label="Magda Suszka-Krawiec Photography, strona główna">
+    <img src="assets/img/logo-480.png" srcset="assets/img/logo-480.png 480w, assets/img/logo-960.png 960w"
+         sizes="140px" alt="" width="480" height="193">
+  </a>
+
+  <nav class="nav__links" aria-label="Sekcje strony">
+    <a href="index.html#o-mnie">O mnie</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="cennik.html">Cennik</a>
+    <a href="kontakt.html" aria-current="page">Kontakt</a>
+  </nav>
+
+  <div class="nav__right">
+    <!-- Social widoczne od razu w nagłówku (desktop) — nie trzeba scrollować
+         do stopki, żeby je znaleźć. -->
+    <a class="nav__social" href="https://www.instagram.com/magda_suszkakrawiec_fotografia/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/>
+      </svg>
+    </a>
+    <a class="nav__social" href="https://www.facebook.com/MagdalenaSuszkaKrawiecFotografia/" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.25-1.5 1.5-1.5h1.7V3.9c-.3-.04-1.3-.13-2.5-.13-2.5 0-4.2 1.5-4.2 4.3V10H7.3v3H10v8h3.5z" fill="currentColor"/>
+      </svg>
+    </a>
+    <!-- Telefon widoczny zawsze, też na mobile. -->
+    <a class="btn btn--primary" href="tel:+48697035198"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.5 3.5h3l1.5 4-2 1.5a12 12 0 006 6l1.5-2 4 1.5v3c0 .8-.7 1.5-1.5 1.4C10.8 18.6 5.4 13.2 5.1 5C5 4.2 5.7 3.5 6.5 3.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Zadzwoń</a>
+    <button class="nav__burger" type="button" id="burger"
+            aria-expanded="false" aria-controls="navpanel" aria-label="Otwórz menu">
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<div class="navpanel" id="navpanel" role="dialog" aria-modal="true" aria-label="Menu">
+  <button class="navpanel__close" type="button" id="navClose" aria-label="Zamknij menu">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.5"/>
+    </svg>
+  </button>
+  <a href="index.html#o-mnie">O mnie</a>
+  <a href="portfolio.html">Portfolio</a>
+  <a href="cennik.html">Cennik</a>
+  <a href="kontakt.html" aria-current="page">Kontakt</a>
+
+  <div class="navpanel__social">
+    <a href="https://www.instagram.com/magda_suszkakrawiec_fotografia/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/>
+      </svg>
+    </a>
+    <a href="https://www.facebook.com/MagdalenaSuszkaKrawiecFotografia/" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.25-1.5 1.5-1.5h1.7V3.9c-.3-.04-1.3-.13-2.5-.13-2.5 0-4.2 1.5-4.2 4.3V10H7.3v3H10v8h3.5z" fill="currentColor"/>
+      </svg>
+    </a>
+  </div>
+</div>
+
+<main id="top">
+
+<!-- ================================================================ KONTAKT -->
+<section class="section section--surface" id="kontakt">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <h2 class="section-title">Umówmy sesję</h2>
+    </div>
+
+    <div class="contact">
+      <div data-reveal>
+        <!-- formsubmit.co: bez backendu, wiadomosc idzie prosto na skrzynke Magdy.
+             TODO: brief.md nie podaje e-maila. Dopoki w action jest
+             UZUPELNIJ_EMAIL, site.js nie wysyla formularza, tylko prosi o telefon. -->
+        <form id="contactForm" action="https://formsubmit.co/UZUPELNIJ_EMAIL" method="POST" novalidate>
+          <input type="hidden" name="_subject" value="Zapytanie o sesję ze strony">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <!-- Honeypot: boty wypelniaja wszystko, ludzie tego pola nie widza. -->
+          <div style="display: none;" aria-hidden="true">
+            <label for="honey">Zostaw to pole puste</label>
+            <input id="honey" type="text" name="_honey" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="form__row">
+            <div class="field">
+              <label for="imie">Imię</label>
+              <input class="input" id="imie" name="imie" type="text" autocomplete="given-name"
+                     aria-describedby="imieError">
+              <span class="field__error" id="imieError" aria-live="polite"></span>
+            </div>
+            <div class="field">
+              <label for="kontakt">Telefon lub e-mail</label>
+              <input class="input" id="kontakt" name="kontakt" type="text" autocomplete="tel"
+                     aria-describedby="kontaktError">
+              <span class="field__error" id="kontaktError" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <div class="form__row">
+            <div class="field">
+              <label for="rodzaj">Rodzaj sesji</label>
+              <select class="input" id="rodzaj" name="rodzaj">
+                <option>Sesja ciążowa</option>
+                <option>Sesja noworodkowa</option>
+                <option>Sesja rodzinna</option>
+                <option>Sesja kobieca</option>
+                <option>Inne</option>
+              </select>
+              <span class="field__error"></span>
+            </div>
+            <div class="field">
+              <label for="kiedy">Preferowany termin</label>
+              <input class="input" id="kiedy" name="kiedy" type="date">
+              <span class="field__error"></span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="opis">Kilka słów o sesji</label>
+            <textarea class="input" id="opis" name="opis"
+                      placeholder="Np. który tydzień ciąży, ile osób, studio czy dojazd."></textarea>
+            <span class="field__error"></span>
+          </div>
+
+          <button class="btn btn--primary btn--block" type="submit">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 11.5L20.5 3.5 13 21l-2.7-7.3L3 11.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M10.3 13.7L20.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Wyślij zapytanie
+          </button>
+        </form>
+
+        <div class="form__done" id="formDone" hidden>
+          <strong>Dziękuję.</strong>
+          <p>Odezwę się najszybciej, jak to możliwe.</p>
+        </div>
+      </div>
+
+      <div>
+        <a class="contact__phone" href="tel:+48697035198">697 035 198</a>
+
+        <ul class="contact__list">
+          <li>
+            <a href="https://www.instagram.com/magda_suszkakrawiec_fotografia/" target="_blank" rel="noopener">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/>
+      </svg>
+              @magda_suszkakrawiec_fotografia
+            </a>
+          </li>
+          <li>
+            <a href="https://www.facebook.com/MagdalenaSuszkaKrawiecFotografia/" target="_blank" rel="noopener">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.25-1.5 1.5-1.5h1.7V3.9c-.3-.04-1.3-.13-2.5-.13-2.5 0-4.2 1.5-4.2 4.3V10H7.3v3H10v8h3.5z" fill="currentColor"/>
+      </svg>
+              Magdalena Suszka-Krawiec Fotografia
+            </a>
+          </li>
+        </ul>
+
+        <a class="contact__place" href="https://www.google.com/maps/search/?api=1&amp;query=Cmentarna+21%2C+97-330+Sulej%C3%B3w"
+           target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 21s7-6.1 7-11.5A7 7 0 1 0 5 9.5C5 14.9 12 21 12 21z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <circle cx="12" cy="9.5" r="2.3" stroke="currentColor" stroke-width="1.5"/>
+          </svg><span>Cmentarna 21, 97-330 Sulejów</span></a>
+        <p class="contact__note">Na sesje dojeżdżam do Piotrkowa Trybunalskiego, Bełchatowa, Tomaszowa Mazowieckiego i&nbsp;Opoczna.</p>
+
+        <h3 class="label hours__title">Godziny otwarcia</h3>
+        <table class="hours">
+          <tbody>
+            <tr data-day="0"><th scope="row">Poniedziałek</th><td>Zamknięte</td></tr>
+            <tr data-day="1"><th scope="row">Wtorek</th><td>9:00 – 16:00</td></tr>
+            <tr data-day="2"><th scope="row">Środa</th><td>9:00 – 16:00</td></tr>
+            <tr data-day="3"><th scope="row">Czwartek</th><td>9:00 – 16:00</td></tr>
+            <tr data-day="4"><th scope="row">Piątek</th><td>9:00 – 16:00</td></tr>
+            <tr data-day="5"><th scope="row">Sobota</th><td>Zamknięte</td></tr>
+            <tr data-day="6"><th scope="row">Niedziela</th><td>Zamknięte</td></tr>
+          </tbody>
+        </table>
+
+        <a class="btn btn--ghost contact__directions" href="https://www.google.com/maps/dir/?api=1&amp;destination=Cmentarna+21%2C+97-330+Sulej%C3%B3w" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 21s7-6.1 7-11.5A7 7 0 1 0 5 9.5C5 14.9 12 21 12 21z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <circle cx="12" cy="9.5" r="2.3" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          Wyznacz trasę
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mapa na cala szerokosc ekranu (poza .wrap), tuz nad stopka —
+       patrz design/SNIPPETS.md #4. RODO: wzmianka w privacy.html. -->
+  <div class="map-wrap">
+    <iframe class="map" src="https://www.google.com/maps?q=Cmentarna+21%2C+97-330+Sulej%C3%B3w&amp;output=embed"
+            title="Mapa dojazdu do studia, Cmentarna 21, 97-330 Sulejów"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+</section>
+
+</main>
+
+<!-- ================================================================= STOPKA -->
+<footer class="foot">
+  <div class="foot__grid">
+    <div>
+      <a class="wordmark" href="index.html" aria-label="Magda Suszka-Krawiec Photography, strona główna">
+        <img src="assets/img/logo-480.png" alt="" width="480" height="193" loading="lazy">
+      </a>
+      <p class="foot__copy">&copy; 2026 Magda Suszka-Krawiec</p>
+    </div>
+
+    <nav class="foot__links" aria-label="Stopka">
+      <a href="portfolio.html">Portfolio</a>
+      <a href="cennik.html">Cennik</a>
+      <a href="kontakt.html">Kontakt</a>
+    </nav>
+
+    <div class="foot__social">
+      <a href="https://www.instagram.com/magda_suszkakrawiec_fotografia/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/>
+      </svg>
+      </a>
+      <a href="https://www.facebook.com/MagdalenaSuszkaKrawiecFotografia/" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.25-1.5 1.5-1.5h1.7V3.9c-.3-.04-1.3-.13-2.5-.13-2.5 0-4.2 1.5-4.2 4.3V10H7.3v3H10v8h3.5z" fill="currentColor"/>
+      </svg>
+      </a>
+    </div>
+  </div>
+
+  <p class="foot__legal"><a href="privacy.html">Polityka prywatności</a></p>
+</footer>
+
+<script src="assets/js/site.js" defer></script>
+<script src="assets/js/widget.js" defer></script>
+</body>
+</html>

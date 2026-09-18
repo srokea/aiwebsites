@@ -1,0 +1,39 @@
+# wrangler.toml — konfiguracja workera (API) dla JEDNEJ instancji klienta.
+#
+# PER KLIENT ZMIENIASZ wszystko poniżej oznaczone NAZWA_KLIENTA / UZUPEŁNIJ / ZMIEŃ.
+# Kolejność: najpierw utwórz zasoby (d1 create, r2 bucket create), potem wklej id tutaj.
+
+name = "portfolio-suszka"
+main = "worker/index.js"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "portfolio-suszka-db"
+# Prawdziwa baza na koncie Cloudflare (utworzona 2026-09-18).
+database_id = "e1caefb4-5534-48e4-ae0a-4306618aec8b"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "portfolio-suszka-photos"
+
+[vars]
+# Domena frontendu (Cloudflare Pages albo własna domena klienta), plus lokalny
+# serwer statyczny (localhost:4325) do testow przez `wrangler dev`.
+# Tylko z tych origin worker przyjmuje zapytania (CORS).
+ALLOWED_ORIGIN = "https://suszka.pages.dev,http://localhost:4325"
+
+# Publiczny adres bucketu R2 (Dashboard → R2 → bucket → Settings → Public access).
+# Z niego sklejany jest URL każdego zdjęcia: {R2_PUBLIC_URL}/{r2_key}
+# Zdjecia serwuje sam worker (galaz /r2/ w worker/index.js), wiec bucket
+# nie musi byc publiczny.
+R2_PUBLIC_URL = "https://portfolio-suszka.project6osss.workers.dev/r2"
+
+# HASŁO I SEKRET JWT — NIE WPISUJ ICH TUTAJ (ten plik trafia do gita).
+# Ustawiasz je jako sekrety workera, raz na klienta:
+#   wrangler secret put ADMIN_PASSWORD
+#   wrangler secret put JWT_SECRET          (losowy string, min. 32 znaki)
+# Do lokalnych testów (`wrangler dev`) skopiuj .dev.vars.example → .dev.vars.
+#
+# Nie dopisuj ich też do [vars] — wrangler nie pozwala mieć zmiennej i sekretu
+# o tej samej nazwie, a `wrangler deploy` nadpisałby sekret wartością z pliku.
