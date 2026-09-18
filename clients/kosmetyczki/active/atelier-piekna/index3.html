@@ -25,9 +25,7 @@
       extend: {
         colors: {
           /* Cztery kolory z ksiegi znaku Atelier Piekna (identyfikacja-wizualna.pdf, str. Kolorystyka marki).
-             Wartosci uzyte doslownie, bez przyblizen. Kontrastowy wariant (index2.html) podbija
-             TYLKO kolor czcionki (patrz .text-ink/.text-muted na koncu pliku) — tla przyciskow,
-             obwodki, cienie, aktywne taby/navlink zostaja w oryginalnym Chocolate. */
+             Wartosci uzyte doslownie, bez przyblizen. */
           shell: '#e2ded2',   /* Off-White  — tlo strony */
           beige: '#b7a995',   /* Warm Beige — pasy sekcji */
           warm:  '#afa89b',   /* Warm Gray  — wypelnienia pomocnicze */
@@ -71,15 +69,6 @@
 
   html { scroll-behavior: smooth; }
   body { -webkit-font-smoothing: antialiased; }
-  /* Lekki "bold" dla Poiret One (index2.html) — kroj jest hostowany tylko w wadze 400,
-     wiec zamiast syntetycznego font-weight (ktory dla tak smuklych liter robi sie
-     rozmazany) dokladamy cienka obwodke kreski przez -webkit-text-stroke. Dziedziczy
-     sie z body na caly tekst Poiret One (tresc, navlink, przyciski, taby) — nagłówki
-     na Butlerze (.font-display) maja to jawnie wyzerowane, zeby nie dostaly obwodki
-     razem z tekstem. Nie dotyczy podpisu loga (.lockup__sign) — ten zostaje wiernie
-     wg ksiegi znaku. */
-  body { -webkit-text-stroke: .35px currentColor; }
-  .font-display, .lockup__sign { -webkit-text-stroke: 0; }
   ::selection { background: #473427; color: #e2ded2; }
   :focus-visible { outline: 2px solid #473427; outline-offset: 3px; border-radius: 2px; }
   @media (prefers-reduced-motion: reduce) {
@@ -207,16 +196,6 @@
 
   /* ---------- Mapa ---------- */
   .map { filter: grayscale(.6) sepia(.28) contrast(1.03) brightness(1.02); }
-
-  /* ---------- Kontrast tekstu ----------
-     Na wyrazna prosbe klienta: WYLACZNIE kolor czcionki podbity do prawie czerni,
-     dla czytelnosci. Przyciski, taby, navlink, ikony, dzielniki, cienie, overlay
-     lightboxa i stopka celowo NIE sa tu ruszane — zostaja w oryginalnym Chocolate
-     z ksiegi znaku. !important jest konieczny: Tailwind CDN (JIT w przegladarce)
-     wstawia/aktualizuje swoj arkusz stylow w nieprzewidywalnym momencie, wiec sama
-     kolejnosc w kaskadzie nie gwarantuje wygranej przy tej samej specyficznosci. */
-  .text-ink   { color: #120d09 !important; }
-  .text-muted { color: #46413b !important; }
 </style>
 </head>
 

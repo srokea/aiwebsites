@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Usługi Ogrodnicze Tomaszów Mazowiecki — Green Garden</title>
+<meta name="description" content="Zakładanie trawników z rolki, pielęgnacja ogrodów, nawadnianie i drobne brukarstwo w Tomaszowie Mazowieckim i okolicy. Bezpłatna wycena pod telefonem.">
+<!-- TODO przy deployu: wstaw prawdziwą domenę klienta w canonical, og:url, og:image oraz w JSON-LD (url, image). -->
+<link rel="canonical" href="https://DOMENA/">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:title" content="Usługi Ogrodnicze Tomaszów Mazowiecki — Green Garden">
+<meta property="og:description" content="Zakładanie trawników z rolki, pielęgnacja ogrodów, nawadnianie i drobne brukarstwo w Tomaszowie Mazowieckim i okolicy.">
+<meta property="og:url" content="https://DOMENA/">
+<meta property="og:image" content="https://DOMENA/photos/og-image.jpg">
+<meta property="og:image:alt" content="Trawnik z rolki założony wokół domu, widok z drona">
+<meta property="og:site_name" content="Green Garden">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" as="image" href="photos/hero-lotnicze-trawnik-mobile.jpg" media="(max-width: 700px)">
+<link rel="preload" as="image" href="photos/hero-lotnicze-trawnik.jpg" media="(min-width: 701px)">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#FFFFFF',
+          surface: '#F3F5EF',
+          deep: '#1B2416',
+          ink: '#1A1A1A',
+          inkmuted: '#5A5A5A',
+          border: 'rgba(26,26,26,0.12)',
+          accent: '#3F7229',
+          accentdark: '#2F5A1D',
+        },
+        fontFamily: {
+          display: ['"Bodoni Moda"', 'serif'],
+          body: ['"Work Sans"', 'sans-serif'],
+        },
+        maxWidth: {
+          content: '64rem',
+        },
+      },
+    },
+  }
+</script>
+<style>
+  @font-face {
+    font-family: 'Bodoni Moda';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('fonts/bodoni-500-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Bodoni Moda';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('fonts/bodoni-500-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('fonts/worksans-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('fonts/worksans-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+  body { -webkit-font-smoothing: antialiased; }
+  :focus-visible { outline: 2px solid #3F7229; outline-offset: 3px; border-radius: 3px; }
+
+  section[id], #top { scroll-margin-top: 78px; }
+
+  .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+
+  /* Na wąskim ekranie sekcje przewijają się poziomo. Maska wygasza prawą krawędź,
+     żeby ostatnia pozycja nie kończyła się uciętą literą tuż przy przycisku telefonu. */
+  @media (max-width: 639px) {
+    .nav-scroll {
+      padding-right: 2rem;
+      -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 3.5rem), transparent 100%);
+      mask-image: linear-gradient(to right, #000 calc(100% - 3.5rem), transparent 100%);
+    }
+  }
+
+  .navlink {
+    display: inline-flex; align-items: center; min-height: 44px; flex-shrink: 0;
+    padding: 0 .7rem; border-radius: 999px; white-space: nowrap;
+    font-size: .84rem; font-weight: 600; letter-spacing: -.01em;
+    transition: background-color .15s, color .15s;
+  }
+  /* Transparentny header (nad zdjęciem hero): jasny tekst, wspomagany przez .hero-nav-scrim.
+     Aktywna sekcja = pełna biel zamiast przezroczystości, bez tła/pigułki — subtelne
+     wyróżnienie samą czcionką, nie "chmurką" wokół linku. */
+  .site-header .navlink { color: rgba(255,255,255,.86); }
+  .site-header .navlink:hover { color: #FFFFFF; }
+  .site-header .navlink.active { color: #FFFFFF; font-weight: 700; }
+  /* Matowy header (po scrollu): ciemny tekst na jasnym szkle, ta sama zasada — aktywna
+     sekcja tylko przyciemnia czcionkę do pełnego inku, bez tła. */
+  .site-header.scrolled .navlink { color: #5A5A5A; }
+  .site-header.scrolled .navlink:hover { color: #1A1A1A; }
+  .site-header.scrolled .navlink.active { color: #1A1A1A; font-weight: 700; }
+
+  /* Hero na desktopie: wysokość = min(szerokość × 3/4, 100vh) — nie `aspect-ratio` +
+     `max-height` razem, bo te dwie własności "walczą" o to, która wymiaruje box: gdy
+     max-height przycina wysokość, przeglądarka dolicza SZEROKOŚĆ z powrotem z proporcji,
+     zamiast trzymać 100% — zostawia pusty pasek tła obok zdjęcia na szerokich ekranach.
+     `min()` liczy samą wysokość, szerokość zawsze zostaje 100%.
+     Efekt: proporcja bliska oryginałowi (4:3) na typowych szerokościach, a powyżej progu,
+     na którym zepchnęłaby nagłówek/CTA poza ekran, wysokość ogranicza się do 100vh i wraca
+     niewielkie, kontrolowane cięcie góra-dół zamiast scrolla.
+     Na mobile zostaje wysokość viewportu — tam obcinane są boki (osobno przycięty portretowy
+     wariant zdjęcia), nie góra/dół. Breakpoint 701px dopasowany do <picture>. */
+  @media (min-width: 701px) {
+    .hero-section { min-height: 0; width: 100%; height: min(75vw, 100vh); }
+  }
+
+  /* Hero: scrim najmocniejszy w dolnej strefie tekstu, słabszy u góry, żeby zdjęcie zostało czytelne.
+     Krzywa dobrana pomiarem: najjaśniejszy piksel pod akapitem daje 5,7:1 (mobile) i 7,0:1 (desktop). */
+  .hero-scrim {
+    background:
+      linear-gradient(to top, rgba(12,18,9,.84) 0%, rgba(12,18,9,.68) 30%, rgba(12,18,9,.52) 52%, rgba(12,18,9,.38) 100%);
+  }
+  /* Dodatkowe podciemnienie tylko pod przezroczystym headerem (niezależne od hero-scrim powyżej) —
+     bez niego biały tekst nawigacji spada poniżej 3:1 na jasnych partiach zdjęcia (niebo, sucha trawa).
+     Zmierzone: dociemnienie .0→.55 na 150px daje min. 5,2:1 (desktop) / 5,8:1 (mobile) dla białego tekstu. */
+  .hero-nav-scrim {
+    background: linear-gradient(to bottom, rgba(0,0,0,.55) 0%, rgba(0,0,0,.30) 55%, rgba(0,0,0,0) 100%);
+  }
+
+  /* Header: transparentne szkło nad zdjęciem hero, przechodzi w matowe po przescrollowaniu. */
+  .site-header {
+    position: fixed; inset-inline: 0; top: 0; z-index: 40;
+    background: rgba(255,255,255,.12);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border-bottom: 1px solid rgba(255,255,255,.20);
+    transition: background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
+  }
+  .site-header.scrolled {
+    background: rgba(255,255,255,.80);
+    border-bottom-color: rgba(26,26,26,.10);
+    box-shadow: 0 1px 24px rgba(26,26,26,.06);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .site-header, .site-header .brand-name, .site-header .brand-icon, .site-header .navlink { transition: none; }
+  }
+
+  .site-header .brand-name { color: #FFFFFF; transition: color .35s ease; }
+  .site-header.scrolled .brand-name { color: #1A1A1A; }
+  .site-header .brand-icon { color: #FFFFFF; transition: color .35s ease; }
+  .site-header.scrolled .brand-icon { color: #3F7229; }
+
+  tr.today th, tr.today td {
+    background: rgba(63,114,41,.10);
+    color: #1A1A1A;
+    font-weight: 600;
+  }
+  tr.today th { border-radius: 10px 0 0 10px; }
+  tr.today td { border-radius: 0 10px 10px 0; }
+  .today-badge {
+    display: inline-flex; align-items: center; margin-left: .5rem;
+    padding: .1rem .5rem; border-radius: 999px;
+    background: #3F7229; color: #FFFFFF;
+    font-size: .64rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  .gallery-tile { cursor: zoom-in; -webkit-tap-highlight-color: transparent; }
+  .gallery-hint {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    border-radius: inherit;
+    background: rgba(26,26,26,.10);
+    color: #1A1A1A;
+    opacity: 0; transition: opacity .2s ease;
+  }
+  .gallery-tile:hover .gallery-hint,
+  .gallery-tile:focus-visible .gallery-hint { opacity: 1; }
+
+  .map { filter: grayscale(.5) sepia(.14) hue-rotate(48deg) contrast(1.02); }
+</style>
+</head>
+<body class="bg-bg text-ink font-body">
+
+<a href="#top" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-bg">Przejdź do treści</a>
+
+<header id="siteHeader" class="site-header">
+  <div class="mx-auto flex max-w-content items-center gap-3 px-4 py-3 sm:gap-5 sm:px-7">
+
+    <a href="#top" aria-label="Green Garden, początek strony" class="inline-flex shrink-0 items-center gap-2">
+      <svg viewBox="0 0 24 24" width="22" height="22" class="brand-icon" fill="currentColor" aria-hidden="true">
+        <path d="M20.5 3.2c-7.6-.6-13 2.1-14.6 6.6-.9 2.5-.4 5 1 6.8l-2.6 3.6a1 1 0 0 0 1.6 1.2l2.6-3.6c2 1 4.5 1 6.7-.3 4.1-2.4 5.9-8.1 5.6-14a.9.9 0 0 0-.3-.3M13.3 15.8c-1.4.8-2.9.9-4.1.5l6.9-9.5a1 1 0 1 0-1.6-1.2L7.6 15c-.6-1.1-.7-2.5-.2-4C8.6 7.6 12.7 5.3 18.9 5.4c.1 4.9-1.4 8.7-4.4 10.4z"/>
+      </svg>
+      <span class="brand-name text-[.98rem] font-bold tracking-tight sm:text-[1.05rem]">Green Garden</span>
+    </a>
+
+    <nav aria-label="Sekcje strony" class="scrollbar-none nav-scroll flex min-w-0 flex-1 items-center gap-1 overflow-x-auto sm:justify-center sm:gap-2">
+      <a href="#uslugi"  data-nav="uslugi"  class="navlink">Usługi</a>
+      <a href="#wycena"  data-nav="wycena"  class="navlink">Wycena</a>
+      <a href="#opinie"  data-nav="opinie"  class="navlink">Opinie</a>
+      <a href="#galeria" data-nav="galeria" class="navlink">Galeria</a>
+      <a href="#kontakt" data-nav="kontakt" class="navlink">Kontakt</a>
+    </nav>
+
+    <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
+      <a href="https://www.facebook.com/GreenGardenSzymonIskierka" target="_blank" rel="noopener" aria-label="Facebook Green Garden"
+         class="hidden min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-ink text-bg transition-colors hover:bg-accent motion-reduce:transition-none sm:inline-flex">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
+      </a>
+      <a href="https://www.instagram.com/ogrody_tomaszow" target="_blank" rel="noopener" aria-label="Instagram Green Garden"
+         class="hidden min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-ink text-bg transition-colors hover:bg-accent motion-reduce:transition-none sm:inline-flex">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.62.07 4.81s0 3.56-.07 4.81c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.16-1.06.36-2.23.41-1.25.06-1.62.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.56 2.2 15.19 2.2 12s0-3.56.07-4.81c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.44 2.21 8.8 2.2 12 2.2m0 1.98c-3.14 0-3.51.01-4.75.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.05-1.15-.24-1.77-.4-2.18a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.75-.07m0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9m0 8.99a3.54 3.54 0 1 0 0-7.08 3.54 3.54 0 0 0 0 7.08m6.94-9.21a1.27 1.27 0 1 1-2.55 0 1.27 1.27 0 0 1 2.55 0"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@uslugi.ogrodnicze_tm" target="_blank" rel="noopener" aria-label="TikTok Green Garden"
+         class="hidden min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-ink text-bg transition-colors hover:bg-accent motion-reduce:transition-none sm:inline-flex">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+      </a>
+      <a href="tel:+48517960219"
+         class="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-accent px-3.5 text-[.9rem] font-semibold tracking-tight text-bg transition-colors hover:bg-accentdark motion-reduce:transition-none sm:px-5">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+        <span class="hidden whitespace-nowrap sm:inline">517 960 219</span>
+        <span class="sr-only sm:hidden">Zadzwoń 517 960 219</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero-section relative flex min-h-[100svh] items-end overflow-hidden">
+    <picture>
+      <source media="(max-width: 700px)" srcset="photos/hero-lotnicze-trawnik-mobile.jpg">
+      <img src="photos/hero-lotnicze-trawnik.jpg" width="1800" height="1350" fetchpriority="high" decoding="async"
+           alt="Widok z lotu ptaka na dom z rozległym, świeżo położonym trawnikiem z rolki, oczkiem wodnym i przyciętym żywopłotem"
+           class="absolute inset-0 h-full w-full object-cover" style="object-position:50% 46%">
+    </picture>
+    <div class="hero-scrim absolute inset-0"></div>
+    <div class="hero-nav-scrim pointer-events-none absolute inset-x-0 top-0 h-40" aria-hidden="true"></div>
+
+    <div class="relative mx-auto w-full max-w-content px-5 pb-14 pt-28 sm:px-7 sm:pb-20 sm:pt-32">
+      <h1 class="max-w-[19ch] font-display text-[clamp(2.1rem,3.2vw+1.4rem,3.75rem)] font-medium leading-[1.08] text-white">
+        Ogrody, które wyglądają jak z lotu ptaka
+      </h1>
+      <p class="mt-5 max-w-[46ch] text-[1.02rem] leading-relaxed text-[#E7EDE0] sm:text-lg">
+        Zakładamy trawniki z rolki, pielęgnujemy zieleń i nawadniamy ogrody w Tomaszowie Mazowieckim i okolicy.
+      </p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <a href="tel:+48517960219"
+           class="inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-accent px-7 text-[.98rem] font-semibold text-white transition-colors hover:bg-accentdark motion-reduce:transition-none">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+          Zadzwoń: 517 960 219
+        </a>
+        <a href="#uslugi"
+           class="inline-flex min-h-[52px] items-center justify-center rounded-full border border-[rgba(255,255,255,.45)] px-7 text-[.98rem] font-semibold text-white transition-colors hover:bg-[rgba(255,255,255,.14)] motion-reduce:transition-none">
+          Zobacz, co robimy
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- USŁUGI -->
+  <section id="uslugi" class="bg-bg py-16 sm:py-24">
+    <div class="mx-auto max-w-content px-5 sm:px-7">
+      <h2 class="font-display text-[clamp(1.75rem,2.5vw+1.1rem,2.75rem)] font-medium leading-[1.15]">Usługi</h2>
+      <p class="mt-4 max-w-[62ch] leading-relaxed text-inkmuted">
+        Pracujemy przy ogrodach przydomowych i większych terenach zielonych. Bierzemy zarówno pojedyncze prace, jak i stałą opiekę nad ogrodem przez cały sezon.
+      </p>
+
+      <dl class="mt-10 divide-y divide-border border-y border-border">
+        <div class="grid gap-1.5 py-6 sm:grid-cols-[minmax(0,22rem)_1fr] sm:gap-8">
+          <dt class="text-[1.05rem] font-semibold tracking-tight">Zakładanie trawników z rolki</dt>
+          <dd class="leading-relaxed text-inkmuted">Przygotowanie i wyrównanie podłoża, rozłożenie darni, dowałowanie i pierwsze podlanie. Gotowy trawnik wygląda dobrze od pierwszego dnia.</dd>
+        </div>
+        <div class="grid gap-1.5 py-6 sm:grid-cols-[minmax(0,22rem)_1fr] sm:gap-8">
+          <dt class="text-[1.05rem] font-semibold tracking-tight">Pielęgnacja trawników</dt>
+          <dd class="leading-relaxed text-inkmuted">Koszenie, wertykulacja, aeracja, nawożenie i dosiewanie. Jednorazowo albo w stałym rytmie przez sezon.</dd>
+        </div>
+        <div class="grid gap-1.5 py-6 sm:grid-cols-[minmax(0,22rem)_1fr] sm:gap-8">
+          <dt class="text-[1.05rem] font-semibold tracking-tight">Pielęgnacja roślin</dt>
+          <dd class="leading-relaxed text-inkmuted">Cięcie żywopłotów, krzewów ozdobnych i bylin, nawożenie, ochrona przed chorobami i szkodnikami.</dd>
+        </div>
+        <div class="grid gap-1.5 py-6 sm:grid-cols-[minmax(0,22rem)_1fr] sm:gap-8">
+          <dt class="text-[1.05rem] font-semibold tracking-tight">Systemy automatycznego nawadniania</dt>
+          <dd class="leading-relaxed text-inkmuted">Montaż i uruchomienie instalacji dobranej do kształtu i wielkości ogrodu, żeby podlewanie działało bez przypominania.</dd>
+        </div>
+        <div class="grid gap-1.5 py-6 sm:grid-cols-[minmax(0,22rem)_1fr] sm:gap-8">
+          <dt class="text-[1.05rem] font-semibold tracking-tight">Sadzenie drzew i krzewów</dt>
+          <dd class="leading-relaxed text-inkmuted">Dobór gatunków do stanowiska i gleby, przygotowanie dołów, sadzenie i palikowanie.</dd>
+        </div>
+        <div class="grid gap-1.5 py-6 sm:grid-cols-[minmax(0,22rem)_1fr] sm:gap-8">
+          <dt class="text-[1.05rem] font-semibold tracking-tight">Drobne brukarstwo</dt>
+          <dd class="leading-relaxed text-inkmuted">Ścieżki, obrzeża trawnika, opaski wokół budynku i niewielkie utwardzenia.</dd>
+        </div>
+        <div class="grid gap-1.5 py-6 sm:grid-cols-[minmax(0,22rem)_1fr] sm:gap-8">
+          <dt class="text-[1.05rem] font-semibold tracking-tight">Glebogryzarka separacyjna i kosiarka bijakowa</dt>
+          <dd class="leading-relaxed text-inkmuted">Przygotowanie gruntu pod nowy trawnik oraz koszenie zarośniętych i zaniedbanych działek.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- WYCENA -->
+  <section id="wycena" class="bg-surface py-16 sm:py-24">
+    <div class="mx-auto max-w-content px-5 sm:px-7">
+      <div class="grid gap-10 lg:grid-cols-[1fr_minmax(0,22rem)] lg:gap-16">
+        <div>
+          <h2 class="font-display text-[clamp(1.75rem,2.5vw+1.1rem,2.75rem)] font-medium leading-[1.15]">Wycena</h2>
+          <p class="mt-4 max-w-[58ch] text-[1.05rem] leading-relaxed text-inkmuted">
+            Każdy ogród wyceniamy osobno, bo ta sama usługa na dwóch działkach kosztuje inaczej. Zamiast sztywnego cennika wolimy krótką rozmowę i konkretną kwotę na Twój teren.
+          </p>
+
+          <p class="mt-8 text-sm font-semibold uppercase tracking-[.12em] text-ink">Co bierzemy pod uwagę</p>
+          <ul class="mt-4 space-y-3.5">
+            <li class="flex gap-3">
+              <svg viewBox="0 0 24 24" width="19" height="19" class="mt-0.5 shrink-0 text-accent" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span class="leading-relaxed text-inkmuted"><span class="font-medium text-ink">Powierzchnia i ukształtowanie terenu.</span> Płaski prostokąt liczy się inaczej niż skarpa.</span>
+            </li>
+            <li class="flex gap-3">
+              <svg viewBox="0 0 24 24" width="19" height="19" class="mt-0.5 shrink-0 text-accent" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span class="leading-relaxed text-inkmuted"><span class="font-medium text-ink">Zakres prac.</span> Samo koszenie, cały nowy trawnik czy opieka przez sezon.</span>
+            </li>
+            <li class="flex gap-3">
+              <svg viewBox="0 0 24 24" width="19" height="19" class="mt-0.5 shrink-0 text-accent" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span class="leading-relaxed text-inkmuted"><span class="font-medium text-ink">Stan działki i dojazd.</span> Ile trzeba przygotować przed właściwą robotą.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="flex flex-col justify-center rounded-2xl border border-border bg-bg p-7 sm:p-8">
+          <p class="font-display text-2xl font-medium leading-tight">Wycena jest bezpłatna.</p>
+          <p class="mt-3 leading-relaxed text-inkmuted">Opowiedz, co trzeba zrobić. Podamy cenę albo umówimy się na obejrzenie terenu.</p>
+          <a href="tel:+48517960219"
+             class="mt-6 inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-accent px-6 text-center text-[.98rem] font-semibold text-white transition-colors hover:bg-accentdark motion-reduce:transition-none">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+            Zadzwoń po wycenę
+          </a>
+          <p class="mt-4 text-center text-sm text-inkmuted">517 960 219</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPINIE -->
+  <section id="opinie" class="bg-deep py-20 text-white sm:py-28">
+    <div class="mx-auto max-w-content px-5 text-center sm:px-7">
+      <h2 class="font-display text-[clamp(2rem,3vw+1.2rem,3.25rem)] font-medium leading-[1.12]">
+        Pracowaliśmy u Ciebie?
+      </h2>
+      <p class="mx-auto mt-5 max-w-[52ch] text-lg leading-relaxed text-[#CFD8C4]">
+        Dwa zdania od Ciebie znaczą dla nas więcej niż każda reklama. Kolejna osoba, która szuka ogrodnika w Tomaszowie, przeczyta je przed telefonem do nas.
+      </p>
+      <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <a href="https://www.facebook.com/GreenGardenSzymonIskierka/reviews" target="_blank" rel="noopener"
+           class="inline-flex min-h-[54px] w-full max-w-[22rem] items-center justify-center gap-2.5 rounded-full bg-white px-7 text-[1rem] font-semibold text-accentdark transition-transform hover:scale-[1.02] motion-reduce:transition-none sm:w-auto">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
+          Zostaw opinię na Facebooku
+        </a>
+      </div>
+      <p class="mt-6 text-sm text-[#CFD8C4]">Zajmuje mniej niż minutę.</p>
+    </div>
+  </section>
+
+  <!-- GALERIA -->
+  <section id="galeria" class="bg-bg py-16 sm:py-24">
+    <div class="mx-auto max-w-content px-5 sm:px-7">
+      <h2 class="font-display text-[clamp(1.75rem,2.5vw+1.1rem,2.75rem)] font-medium leading-[1.15]">Galeria</h2>
+      <p class="mt-4 max-w-[58ch] leading-relaxed text-inkmuted">Nasze realizacje z Tomaszowa Mazowieckiego i okolicy.</p>
+
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+        <button type="button" class="gallery-tile group relative aspect-square overflow-hidden rounded-2xl" data-group="realizacje" data-index="0" aria-label="Powiększ zdjęcie 1">
+          <img src="photos/galeria/01-cropped.jpg" alt="Trawnik z rolki założony wokół domu, widok z drona" loading="lazy" width="800" height="800" class="h-full w-full object-cover transition duration-300 group-hover:scale-105 motion-reduce:transition-none">
+          <span class="gallery-hint" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg>
+          </span>
+        </button>
+        <button type="button" class="gallery-tile group relative aspect-square rounded-2xl border border-dashed border-border" data-group="realizacje" data-index="1" aria-label="Miejsce na zdjęcie 2">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" class="gallery-tile group relative aspect-square rounded-2xl border border-dashed border-border" data-group="realizacje" data-index="2" aria-label="Miejsce na zdjęcie 3">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" class="gallery-tile group relative aspect-square rounded-2xl border border-dashed border-border" data-group="realizacje" data-index="3" aria-label="Miejsce na zdjęcie 4">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" class="gallery-tile group relative aspect-square rounded-2xl border border-dashed border-border" data-group="realizacje" data-index="4" aria-label="Miejsce na zdjęcie 5">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <button type="button" class="gallery-tile group relative aspect-square rounded-2xl border border-dashed border-border" data-group="realizacje" data-index="5" aria-label="Miejsce na zdjęcie 6">
+          <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+        </button>
+      </div>
+
+      <p class="mt-8 text-inkmuted">
+        Więcej zdjęć z bieżących prac publikujemy na
+        <a href="https://www.facebook.com/GreenGardenSzymonIskierka" target="_blank" rel="noopener" class="font-medium text-accentdark underline decoration-2 underline-offset-4 hover:text-accent">Facebooku</a>
+        i
+        <a href="https://www.instagram.com/ogrody_tomaszow" target="_blank" rel="noopener" class="font-medium text-accentdark underline decoration-2 underline-offset-4 hover:text-accent">Instagramie</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- KONTAKT -->
+  <section id="kontakt" class="bg-surface pt-16 sm:pt-24">
+    <div class="mx-auto max-w-content px-5 sm:px-7">
+      <h2 class="font-display text-[clamp(1.75rem,2.5vw+1.1rem,2.75rem)] font-medium leading-[1.15]">Kontakt</h2>
+
+      <div class="mt-10 grid gap-10 sm:grid-cols-2 sm:gap-14">
+        <div>
+          <h3 class="text-sm font-semibold uppercase tracking-[.12em] text-ink">Godziny pracy</h3>
+          <table class="mt-4 w-full border-separate border-spacing-y-1 text-[.95rem]">
+            <caption class="sr-only">Godziny pracy Green Garden</caption>
+            <tbody>
+              <tr data-day="0"><th scope="row" class="px-3 py-2 text-left font-normal text-inkmuted">Poniedziałek</th><td class="px-3 py-2 text-right">08:00 – 17:00</td></tr>
+              <tr data-day="1"><th scope="row" class="px-3 py-2 text-left font-normal text-inkmuted">Wtorek</th><td class="px-3 py-2 text-right">08:00 – 17:00</td></tr>
+              <tr data-day="2"><th scope="row" class="px-3 py-2 text-left font-normal text-inkmuted">Środa</th><td class="px-3 py-2 text-right">08:00 – 17:00</td></tr>
+              <tr data-day="3"><th scope="row" class="px-3 py-2 text-left font-normal text-inkmuted">Czwartek</th><td class="px-3 py-2 text-right">08:00 – 17:00</td></tr>
+              <tr data-day="4"><th scope="row" class="px-3 py-2 text-left font-normal text-inkmuted">Piątek</th><td class="px-3 py-2 text-right">08:00 – 17:00</td></tr>
+              <tr data-day="5"><th scope="row" class="px-3 py-2 text-left font-normal text-inkmuted">Sobota</th><td class="px-3 py-2 text-right">09:00 – 13:00</td></tr>
+              <tr data-day="6"><th scope="row" class="px-3 py-2 text-left font-normal text-inkmuted">Niedziela</th><td class="px-3 py-2 text-right">Zamknięte</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-semibold uppercase tracking-[.12em] text-ink">Gdzie nas znaleźć</h3>
+          <address class="mt-4 not-italic leading-relaxed text-inkmuted">
+            Green Garden, Szymon Iskierka<br>
+            Cisowa 7<br>
+            97-200 Tomaszów Mazowiecki
+          </address>
+
+          <a href="tel:+48517960219" class="mt-5 inline-flex min-h-[52px] items-center gap-2.5 rounded-full bg-accent px-6 text-[.98rem] font-semibold text-white transition-colors hover:bg-accentdark motion-reduce:transition-none">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+            517 960 219
+          </a>
+
+          <div class="mt-4">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=Cisowa+7%2C+97-200+Tomasz%C3%B3w+Mazowiecki" target="_blank" rel="noopener"
+               class="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-border px-5 text-[.9rem] font-semibold text-ink transition-colors hover:bg-ink hover:text-bg motion-reduce:transition-none">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7m0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5"/></svg>
+              Wyznacz trasę
+            </a>
+          </div>
+
+          <h3 class="mt-9 text-sm font-semibold uppercase tracking-[.12em] text-ink">Social media</h3>
+          <div class="mt-4 flex items-center gap-2.5">
+            <a href="https://www.facebook.com/GreenGardenSzymonIskierka" target="_blank" rel="noopener" aria-label="Facebook Green Garden"
+               class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-ink text-bg transition-colors hover:bg-accent motion-reduce:transition-none">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
+            </a>
+            <a href="https://www.instagram.com/ogrody_tomaszow" target="_blank" rel="noopener" aria-label="Instagram Green Garden"
+               class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-ink text-bg transition-colors hover:bg-accent motion-reduce:transition-none">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.62.07 4.81s0 3.56-.07 4.81c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.16-1.06.36-2.23.41-1.25.06-1.62.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.56 2.2 15.19 2.2 12s0-3.56.07-4.81c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.44 2.21 8.8 2.2 12 2.2m0 1.98c-3.14 0-3.51.01-4.75.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.05-1.15-.24-1.77-.4-2.18a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.75-.07m0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9m0 8.99a3.54 3.54 0 1 0 0-7.08 3.54 3.54 0 0 0 0 7.08m6.94-9.21a1.27 1.27 0 1 1-2.55 0 1.27 1.27 0 0 1 2.55 0"/></svg>
+            </a>
+            <a href="https://www.tiktok.com/@uslugi.ogrodnicze_tm" target="_blank" rel="noopener" aria-label="TikTok Green Garden"
+               class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-ink text-bg transition-colors hover:bg-accent motion-reduce:transition-none">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-14 w-full">
+      <iframe src="https://www.google.com/maps?q=Cisowa+7,+97-200+Tomasz%C3%B3w+Mazowiecki&amp;output=embed"
+              title="Mapa dojazdu do Cisowa 7, 97-200 Tomaszów Mazowiecki"
+              loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+              class="map block h-[320px] w-full border-0 sm:h-[400px]"></iframe>
+    </div>
+  </section>
+
+</main>
+
+<footer class="bg-bg">
+  <div class="mx-auto flex max-w-content flex-col gap-3 px-5 py-9 text-sm text-inkmuted sm:flex-row sm:items-center sm:justify-between sm:px-7">
+    <span>© 2026 Green Garden, Szymon Iskierka. Usługi ogrodnicze, Tomaszów Mazowiecki.</span>
+    <a href="privacy.html" class="inline-flex min-h-[44px] items-center hover:text-ink transition-colors motion-reduce:transition-none">Polityka prywatności</a>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-[rgba(12,18,9,.92)] p-4 backdrop-blur-sm"
+     role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia z galerii">
+
+  <button type="button" id="lightboxClose" aria-label="Zamknij podgląd"
+          class="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(255,255,255,.14)] text-white transition-colors hover:bg-[rgba(255,255,255,.26)] motion-reduce:transition-none sm:right-6 sm:top-6">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+
+  <button type="button" id="lightboxPrev" aria-label="Poprzednie zdjęcie"
+          class="absolute left-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(255,255,255,.14)] text-white transition-colors hover:bg-[rgba(255,255,255,.26)] motion-reduce:transition-none sm:left-5">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+
+  <button type="button" id="lightboxNext" aria-label="Następne zdjęcie"
+          class="absolute right-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[rgba(255,255,255,.14)] text-white transition-colors hover:bg-[rgba(255,255,255,.26)] motion-reduce:transition-none sm:right-5">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+
+  <figure class="mx-auto flex max-h-full max-w-3xl flex-col items-center">
+    <img id="lightboxImg" src="" alt="" class="hidden max-h-[75vh] w-auto rounded-2xl object-contain">
+    <div id="lightboxPh" class="flex aspect-[4/5] max-h-[75vh] w-[min(80vw,420px)] items-center justify-center rounded-2xl border border-dashed border-[rgba(255,255,255,.4)] p-8 text-[rgba(255,255,255,.8)]">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-5-9 9"/></svg>
+    </div>
+    <figcaption id="lightboxCounter" class="mt-5 text-[.8rem] font-semibold uppercase tracking-[1.5px] text-[rgba(255,255,255,.7)]" aria-live="polite"></figcaption>
+  </figure>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Usługi Ogrodnicze Tomaszów Mazowiecki — Green Garden",
+  "alternateName": "Green Garden Szymon Iskierka",
+  "description": "Zakładanie trawników z rolki, pielęgnacja trawników i roślin, systemy automatycznego nawadniania, sadzenie drzew i krzewów, drobne brukarstwo. Tomaszów Mazowiecki i okolice.",
+  "telephone": "+48517960219",
+  "url": "https://DOMENA/",
+  "image": "https://DOMENA/photos/og-image.jpg",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Cisowa 7",
+    "postalCode": "97-200",
+    "addressLocality": "Tomaszów Mazowiecki",
+    "addressCountry": "PL"
+  },
+  "areaServed": "Tomaszów Mazowiecki i okolice",
+  "hasMap": "https://www.google.com/maps/dir/?api=1&destination=Cisowa+7%2C+97-200+Tomasz%C3%B3w+Mazowiecki",
+  "sameAs": [
+    "https://www.facebook.com/GreenGardenSzymonIskierka",
+    "https://www.instagram.com/ogrody_tomaszow",
+    "https://www.tiktok.com/@uslugi.ogrodnicze_tm"
+  ],
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "08:00", "closes": "17:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "13:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "00:00", "closes": "00:00" }
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Usługi ogrodnicze",
+    "itemListElement": [
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Zakładanie trawników z rolki" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Pielęgnacja trawników" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Pielęgnacja roślin" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Systemy automatycznego nawadniania" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Sadzenie drzew i krzewów" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Drobne brukarstwo" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Usługi glebogryzarką separacyjną i kosiarką bijakową" } }
+    ]
+  }
+}
+</script>
+
+<script>
+/* Header: przezroczyste szkło, dopóki hero jest choć trochę widoczne pod nim; matowe
+   dopiero gdy hero całkowicie zniknie za headerem. Próg liczony po samym hero (przez
+   IntersectionObserver), nie po stałej liczbie pikseli — inaczej header robił się biały
+   już przy pierwszym geście przewijania, mimo że zdjęcie wciąż wypełniało cały ekran. */
+(function () {
+  var header = document.getElementById('siteHeader');
+  var hero = document.querySelector('.hero-section');
+  if (!header || !hero || !('IntersectionObserver' in window)) return;
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      header.classList.toggle('scrolled', !entry.isIntersecting);
+    });
+  }, { rootMargin: '-78px 0px 0px 0px', threshold: 0 });
+  observer.observe(hero);
+})();
+</script>
+
+<script>
+/* Oznaczenie dzisiejszego dnia w godzinach pracy */
+(function () {
+  var todayIdx = (new Date().getDay() + 6) % 7;
+  var row = document.querySelector('tr[data-day="' + todayIdx + '"]');
+  if (!row) return;
+  row.classList.add('today');
+  var th = row.querySelector('th');
+  if (th) {
+    var badge = document.createElement('span');
+    badge.className = 'today-badge';
+    badge.textContent = 'dziś';
+    th.appendChild(badge);
+  }
+})();
+</script>
+
+<script>
+/* Scroll-spy w nawigacji */
+(function () {
+  if (!('IntersectionObserver' in window)) return;
+  var links = {};
+  document.querySelectorAll('.navlink[data-nav]').forEach(function (a) { links[a.dataset.nav] = a; });
+  var current = null;
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      if (current) current.classList.remove('active');
+      current = links[entry.target.id] || null;
+      if (current) current.classList.add('active');
+    });
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+  Object.keys(links).forEach(function (id) {
+    var section = document.getElementById(id);
+    if (section) observer.observe(section);
+  });
+})();
+</script>
+
+<script>
+/* Lightbox galerii */
+(function () {
+  var GALLERIES = {
+    realizacje: [
+      { src: 'photos/hero-lotnicze-trawnik.jpg', alt: 'Trawnik z rolki założony wokół domu, widok z drona' },
+      { src: '', alt: '' },
+      { src: '', alt: '' },
+      { src: '', alt: '' },
+      { src: '', alt: '' },
+      { src: '', alt: '' }
+    ]
+  };
+
+  var lightbox = document.getElementById('lightbox');
+  var tiles = document.querySelectorAll('.gallery-tile');
+  if (!lightbox || !tiles.length) return;
+
+  var img = document.getElementById('lightboxImg');
+  var ph = document.getElementById('lightboxPh');
+  var counter = document.getElementById('lightboxCounter');
+  var btnClose = document.getElementById('lightboxClose');
+  var btnPrev = document.getElementById('lightboxPrev');
+  var btnNext = document.getElementById('lightboxNext');
+  var currentGroup = Object.keys(GALLERIES)[0];
+  var current = 0;
+  var lastFocused = null;
+
+  function items() { return GALLERIES[currentGroup] || []; }
+
+  function render() {
+    var item = items()[current];
+    if (!item) return;
+    if (item.src) {
+      img.src = item.src; img.alt = item.alt;
+      img.classList.remove('hidden'); ph.classList.add('hidden');
+    } else {
+      img.classList.add('hidden'); ph.classList.remove('hidden');
+    }
+    counter.textContent = (current + 1) + ' / ' + items().length;
+  }
+
+  // Reszta strony jest wyłączana na czas podglądu, żeby Tab i czytnik ekranu
+  // nie wychodziły poza modal.
+  var backdropEls = [document.querySelector('header'), document.querySelector('main'), document.querySelector('footer')];
+  function setBackdropInert(on) {
+    backdropEls.forEach(function (el) {
+      if (!el) return;
+      if (on) { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); }
+      else { el.removeAttribute('inert'); el.removeAttribute('aria-hidden'); }
+    });
+  }
+
+  function open(group, index) {
+    currentGroup = group; current = index;
+    lastFocused = document.activeElement;
+    render();
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    setBackdropInert(true);
+    btnClose.focus();
+  }
+
+  function close() {
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
+    document.body.style.overflow = '';
+    setBackdropInert(false);
+    if (lastFocused) lastFocused.focus();
+  }
+
+  function next() { var n = items().length; current = (current + 1) % n; render(); }
+  function prev() { var n = items().length; current = (current - 1 + n) % n; render(); }
+
+  tiles.forEach(function (tile) {
+    tile.addEventListener('click', function () {
+      open(tile.getAttribute('data-group') || currentGroup,
+           parseInt(tile.getAttribute('data-index'), 10));
+    });
+  });
+
+  btnClose.addEventListener('click', close);
+  btnNext.addEventListener('click', next);
+  btnPrev.addEventListener('click', prev);
+
+  lightbox.addEventListener('click', function (e) { if (e.target === lightbox) close(); });
+
+  document.addEventListener('keydown', function (e) {
+    if (lightbox.classList.contains('hidden')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowRight') next();
+    if (e.key === 'ArrowLeft') prev();
+    if (e.key === 'Tab') {
+      // Pętla fokusu między trzema przyciskami modala.
+      var focusable = [btnClose, btnPrev, btnNext];
+      var i = focusable.indexOf(document.activeElement);
+      e.preventDefault();
+      var nextIdx = e.shiftKey
+        ? (i <= 0 ? focusable.length - 1 : i - 1)
+        : (i === -1 || i === focusable.length - 1 ? 0 : i + 1);
+      focusable[nextIdx].focus();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

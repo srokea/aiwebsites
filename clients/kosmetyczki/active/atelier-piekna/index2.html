@@ -25,9 +25,7 @@
       extend: {
         colors: {
           /* Cztery kolory z ksiegi znaku Atelier Piekna (identyfikacja-wizualna.pdf, str. Kolorystyka marki).
-             Wartosci uzyte doslownie, bez przyblizen. Kontrastowy wariant (index2.html) podbija
-             TYLKO kolor czcionki (patrz .text-ink/.text-muted na koncu pliku) — tla przyciskow,
-             obwodki, cienie, aktywne taby/navlink zostaja w oryginalnym Chocolate. */
+             Wartosci uzyte doslownie, bez przyblizen. */
           shell: '#e2ded2',   /* Off-White  — tlo strony */
           beige: '#b7a995',   /* Warm Beige — pasy sekcji */
           warm:  '#afa89b',   /* Warm Gray  — wypelnienia pomocnicze */
@@ -38,7 +36,7 @@
         },
         fontFamily: {
           display: ['Butler', 'Georgia', 'Times New Roman', 'serif'],
-          body:    ['"Poiret One"', 'Century Gothic', 'Futura', 'sans-serif'],
+          body:    ['"Josefin Sans"', 'Century Gothic', 'Futura', 'sans-serif'],
         },
         maxWidth: { content: '1120px', narrow: '740px' },
       }
@@ -48,7 +46,7 @@
 
 <style>
   /* Fonty hostowane lokalnie (RODO) — zero polaczen z serwerami Google.
-     Butler: CC BY-SA 4.0 (Fabian De Smet). Poiret One: SIL OFL 1.1.
+     Butler: CC BY-SA 4.0 (Fabian De Smet). Poiret One / Josefin Sans: SIL OFL 1.1.
      Oba wskazane w ksiedze znaku klientki. */
   @font-face {
     font-family: 'Butler'; font-style: normal; font-weight: 400; font-display: swap;
@@ -68,18 +66,23 @@
     src: url('fonts/poiret-one-latin-ext.woff2') format('woff2');
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
   }
+  /* Josefin Sans Medium — zastepuje Poiret One w calym tekscie poza podpisem loga (ten
+     zostaje wiernie wg ksiegi znaku). Ten sam geometryczny, art-decowy charakter,
+     ale z realna gruboscia kreski — Poiret One ma tylko wage 400 i przy drobnym
+     tekscie robi sie prawie niewidoczny. */
+  @font-face {
+    font-family: 'Josefin Sans'; font-style: normal; font-weight: 500; font-display: swap;
+    src: url('fonts/josefin-sans-medium-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Josefin Sans'; font-style: normal; font-weight: 500; font-display: swap;
+    src: url('fonts/josefin-sans-medium-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
 
   html { scroll-behavior: smooth; }
   body { -webkit-font-smoothing: antialiased; }
-  /* Lekki "bold" dla Poiret One (index2.html) — kroj jest hostowany tylko w wadze 400,
-     wiec zamiast syntetycznego font-weight (ktory dla tak smuklych liter robi sie
-     rozmazany) dokladamy cienka obwodke kreski przez -webkit-text-stroke. Dziedziczy
-     sie z body na caly tekst Poiret One (tresc, navlink, przyciski, taby) — nagłówki
-     na Butlerze (.font-display) maja to jawnie wyzerowane, zeby nie dostaly obwodki
-     razem z tekstem. Nie dotyczy podpisu loga (.lockup__sign) — ten zostaje wiernie
-     wg ksiegi znaku. */
-  body { -webkit-text-stroke: .35px currentColor; }
-  .font-display, .lockup__sign { -webkit-text-stroke: 0; }
   ::selection { background: #473427; color: #e2ded2; }
   :focus-visible { outline: 2px solid #473427; outline-offset: 3px; border-radius: 2px; }
   @media (prefers-reduced-motion: reduce) {
@@ -127,7 +130,7 @@
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
     min-height: 48px; padding: 0 1.6rem; border-radius: 999px;
-    font-family: 'Poiret One', sans-serif; font-size: .84rem;
+    font-family: 'Josefin Sans', sans-serif; font-size: .84rem;
     letter-spacing: .16em; text-transform: uppercase; white-space: nowrap;
     transition: background-color .18s ease, color .18s ease, border-color .18s ease;
   }
@@ -142,7 +145,7 @@
   .navlink {
     display: inline-flex; align-items: center; min-height: 44px; flex-shrink: 0;
     padding: 0 1.05rem; border-radius: 999px; white-space: nowrap;
-    font-family: 'Poiret One', sans-serif; font-size: .8rem;
+    font-family: 'Josefin Sans', sans-serif; font-size: .8rem;
     letter-spacing: .1em; text-transform: uppercase; color: #6e5e52;
     transition: background-color .15s, color .15s;
   }
@@ -161,7 +164,7 @@
     display: inline-flex; align-items: center; min-height: 44px; flex-shrink: 0;
     padding: 0 1.1rem; border-radius: 999px; white-space: nowrap;
     border: 1px solid rgba(71,52,39,.18);
-    font-family: 'Poiret One', sans-serif; font-size: .82rem;
+    font-family: 'Josefin Sans', sans-serif; font-size: .82rem;
     letter-spacing: .1em; text-transform: uppercase; color: #6e5e52;
     transition: background-color .18s, color .18s, border-color .18s;
   }
@@ -207,16 +210,6 @@
 
   /* ---------- Mapa ---------- */
   .map { filter: grayscale(.6) sepia(.28) contrast(1.03) brightness(1.02); }
-
-  /* ---------- Kontrast tekstu ----------
-     Na wyrazna prosbe klienta: WYLACZNIE kolor czcionki podbity do prawie czerni,
-     dla czytelnosci. Przyciski, taby, navlink, ikony, dzielniki, cienie, overlay
-     lightboxa i stopka celowo NIE sa tu ruszane — zostaja w oryginalnym Chocolate
-     z ksiegi znaku. !important jest konieczny: Tailwind CDN (JIT w przegladarce)
-     wstawia/aktualizuje swoj arkusz stylow w nieprzewidywalnym momencie, wiec sama
-     kolejnosc w kaskadzie nie gwarantuje wygranej przy tej samej specyficznosci. */
-  .text-ink   { color: #120d09 !important; }
-  .text-muted { color: #46413b !important; }
 </style>
 </head>
 

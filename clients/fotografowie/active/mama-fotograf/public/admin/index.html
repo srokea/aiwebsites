@@ -1,0 +1,1832 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel portfolio — Mama Fotograf</title>
+<link rel="icon" href="../favicon.png" type="image/png">
+<!-- Fonty hostowane lokalnie (assets/fonts/admin/), nie z fonts.googleapis.com (RODO).
+     Work Sans = font panelu. Reszta = fonty do wyboru w blokach tekstu (ta sama lista co w public/index.html). -->
+<link rel="stylesheet" href="../assets/css/admin-fonts.css">
+<!--
+  PANEL ADMINA — plik samodzielny (cały CSS i JS w środku).
+  Nie podmieniaj go per klient. Jedyna rzecz do zmiany to API_BASE w skrypcie niżej.
+
+  Struktura treści:  folder (zakładka) → albumy (sekcje pod sobą) → kafelki (zdjęcia i teksty)
+  Siatka albumu ma 6 kolumn; wysokość wiersza i tekst skalują się z szerokością siatki
+  dokładnie tak samo jak na stronie publicznej, więc panel pokazuje prawdziwe proporcje.
+-->
+<style>
+:root{
+  --bg:#0B0906;
+  --panel:#131009;
+  --raised:#1C1810;
+  --line:#2A241A;
+  --text:#F3EEE3;
+  --muted:#8C8375;
+  --accent:#C79A4B;
+  --danger:#C75B4B;
+  --gap:8px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:'Work Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none;transition:filter 150ms,background-color 150ms,color 150ms,border-color 150ms}
+button:hover{filter:brightness(1.25)}
+button:disabled{opacity:.45;cursor:default;filter:none}
+[hidden]{display:none!important}
+
+/* --- przyciski --- */
+.btn{border-radius:9999px;padding:8px 18px;background:var(--accent);color:#14100A;font-weight:600}
+.btn-ghost{border-radius:9999px;padding:8px 16px;background:transparent;color:var(--muted);border:1px solid var(--line);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-ghost:hover{color:var(--text)}
+.sm{padding:5px 12px;font-size:13px}
+.icon-btn{
+  width:30px;height:30px;border-radius:9999px;border:1px solid var(--line);
+  display:grid;place-items:center;color:var(--muted);line-height:1;flex:none;
+}
+.icon-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+/* --- ustawienia strony: tlo hero + zaufali mi --- */
+#settings{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.6);display:flex;justify-content:center;padding:40px 24px;overflow-y:auto}
+.settings-stack{width:100%;max-width:440px;display:flex;flex-direction:column;gap:16px;margin:auto 0}
+.settings-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;width:100%;display:flex;flex-direction:column;gap:14px}
+.settings-head{display:flex;align-items:center;justify-content:space-between}
+.settings-head strong{font-size:15px;font-weight:600}
+.hero-slot{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:10px}
+.hero-slot__preview{flex:none;width:64px;height:64px;border-radius:8px;background:var(--raised) center/cover no-repeat}
+.hero-slot__body{display:flex;flex-direction:column;gap:4px;min-width:0}
+.hero-slot__status{font-size:12px;color:var(--muted)}
+.hero-mode{display:flex;gap:4px;background:var(--raised);border:1px solid var(--line);border-radius:10px;padding:4px}
+.hero-mode label{position:relative;flex:1;display:flex;align-items:center;justify-content:center;text-align:center;gap:6px;padding:9px 8px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--muted);transition:background 150ms,color 150ms}
+.hero-mode label:hover{color:var(--text)}
+.hero-mode label:has(input:checked){background:var(--panel);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.35)}
+.hero-mode input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.hero-slides-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px}
+.hero-slide-card{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--raised) center/cover no-repeat;border:1px solid var(--line)}
+.hero-slide-card__badge{position:absolute;left:4px;top:4px;font-size:9px;padding:2px 6px;border-radius:9999px;background:rgba(0,0,0,.55);color:var(--text)}
+.hero-slide-card__del{position:absolute;right:4px;top:4px;width:20px;height:20px;border-radius:9999px;background:rgba(0,0,0,.55);color:var(--text);display:grid;place-items:center;font-size:11px;line-height:1;border:none;cursor:pointer}
+.hero-slide-card__del:hover{color:var(--danger)}
+.hero-slide-card--empty{display:grid;place-items:center;color:var(--muted);font-size:10px;text-align:center;padding:4px;cursor:pointer;border-style:dashed;transition:border-color 150ms,color 150ms}
+.hero-slide-card--empty:hover{border-color:var(--accent);color:var(--text)}
+.settings-hint{font-size:12px;color:var(--muted);background:var(--raised);border:1px solid var(--line);border-radius:10px;padding:10px 12px;line-height:1.4}
+.trusted-row{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:10px}
+.trusted-row__avatar{flex:none;width:48px;height:48px;border-radius:9999px;background:var(--raised) center/cover no-repeat;border:1px dashed var(--line);cursor:pointer;display:grid;place-items:center;color:var(--muted);font-size:16px;transition:border-color 150ms,color 150ms}
+.trusted-row__avatar:hover{border-color:var(--accent);color:var(--text)}
+.trusted-row__body{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:6px}
+.trusted-row__body input{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:13px;color:var(--text);outline:none;transition:border-color 150ms;font:inherit}
+.trusted-row__body input:focus{border-color:var(--accent)}
+.trusted-add{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;border:1px dashed var(--line);border-radius:10px;padding:11px;font-size:13px;color:var(--muted);cursor:pointer;transition:border-color 150ms,color 150ms}
+.trusted-add:hover{border-color:var(--accent);color:var(--text)}
+
+/* --- logowanie --- */
+#login{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px}
+#login form{width:100%;max-width:320px;display:flex;flex-direction:column;gap:12px}
+#login h1{font-size:20px;font-weight:600;margin:0 0 4px}
+#login p.intro{margin:0 0 12px;color:var(--muted);font-size:14px}
+.field{
+  width:100%;background:var(--panel);border:1px solid var(--line);border-radius:9999px;
+  padding:11px 18px;outline:none;transition:border-color 150ms;
+}
+.field:focus{border-color:var(--accent)}
+.error{color:var(--danger);font-size:14px;min-height:21px;margin:0}
+
+/* --- układ --- */
+#app{display:flex;min-height:100dvh}
+
+#sidebar{
+  width:280px;flex:0 0 280px;border-right:1px solid var(--line);background:var(--panel);
+  display:flex;flex-direction:column;position:sticky;top:0;height:100dvh;
+}
+.sidebar-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:18px 16px 12px;border-bottom:1px solid var(--line)}
+.sidebar-head h2{margin:0;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+#folderList{list-style:none;margin:0;padding:8px;overflow-y:auto;flex:1}
+#folderList li{
+  display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9999px;
+  cursor:pointer;color:var(--muted);transition:background-color 150ms,color 150ms;user-select:none;
+}
+#folderList li:hover{background:var(--raised);color:var(--text)}
+#folderList li.active{background:var(--raised);color:var(--accent)}
+#folderList .name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#folderList input{flex:1;background:transparent;border:none;outline:none;color:var(--text);min-width:0}
+.sidebar-foot{padding:12px 16px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:8px}
+#status{font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dragging{opacity:.4}
+
+#main{flex:1;min-width:0;display:flex;flex-direction:column}
+.main-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  padding:18px 24px;border-bottom:1px solid var(--line);
+}
+.main-head h1{margin:0;font-size:22px;font-weight:600}
+.main-head .sub{font-size:13px;color:var(--muted)}
+.head-actions{display:flex;gap:8px;flex-wrap:wrap}
+.main-body{padding:24px 24px 120px;flex:1}
+.empty{color:var(--muted);font-size:14px;padding:32px 0}
+
+/* --- album --- */
+.album{margin-bottom:40px;max-width:1200px}   /* jak na stronie publicznej — tekst ma ten sam rozmiar */
+.album-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.grip{
+  color:var(--muted);cursor:grab;user-select:none;font-size:16px;line-height:1;
+  padding:6px 4px;border-radius:6px;touch-action:none;
+}
+.grip:hover{color:var(--accent)}
+.album-name{
+  font-size:18px;font-weight:600;padding:2px 6px;margin-left:-6px;border-radius:6px;text-align:left;
+  max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.album-name:hover{background:var(--raised);filter:none}
+.album-name.unnamed{font-weight:400;font-style:italic;color:var(--muted);font-size:15px}
+.album-count{font-size:13px;color:var(--muted)}
+.album-actions{margin-left:auto;display:flex;gap:6px;align-items:center}
+
+/* --- siatka (te same proporcje co na stronie publicznej) --- */
+.grid-wrap{container-type:inline-size;position:relative;border-radius:8px;transition:outline-color 150ms;outline:1px dashed transparent;outline-offset:6px}
+.album.hot .grid-wrap{outline-color:var(--accent)}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  grid-auto-rows:minmax(calc((100cqw - 5 * var(--gap)) / 6 * .75),auto);
+  gap:var(--gap);grid-auto-flow:dense;align-content:start;min-height:120px;
+}
+.grid-empty{
+  position:absolute;inset:0;display:none;place-items:center;text-align:center;padding:16px;
+  border:1px dashed var(--line);border-radius:8px;color:var(--muted);font-size:14px;pointer-events:none;
+}
+.grid:empty + .grid-empty{display:grid}
+
+.tile{
+  position:relative;min-height:0;border-radius:4px;
+  grid-column:span var(--w);grid-row:span var(--h);
+}
+.tile.photo{overflow:hidden;background:var(--raised);cursor:grab;user-select:none}
+.tile.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.tile .caption{
+  position:absolute;left:0;right:0;bottom:0;padding:16px 10px 8px;font-size:12px;
+  background:linear-gradient(transparent,rgba(11,9,6,.85));opacity:0;transition:opacity 150ms;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;pointer-events:none;
+}
+.tile.photo:hover .caption{opacity:1}
+
+.tile.text{outline:1px dashed var(--line);outline-offset:-1px}
+.tile.text:hover{outline-color:var(--muted)}
+.tile.text.has-bg{outline-color:transparent}
+.tile.text.selected{outline:1px solid var(--accent)}
+.text-frame{display:flex;align-items:center;height:100%;padding:12px 16px;cursor:text}
+.text-body{
+  width:100%;outline:none;line-height:1.3;overflow-wrap:anywhere;
+  font-size:max(13px,calc(var(--fs) * 100cqw / 1200));
+}
+.text-body p,.text-body div{margin:0}
+.tile-grip{position:absolute;left:4px;top:4px;background:rgba(11,9,6,.7);opacity:0;transition:opacity 150ms}
+.tile.text:hover .tile-grip,.tile.text.selected .tile-grip{opacity:1}
+
+.handle{
+  position:absolute;right:4px;bottom:4px;width:24px;height:24px;border-radius:6px;
+  background:rgba(11,9,6,.75);color:var(--accent);display:grid;place-items:center;
+  font-size:13px;cursor:nwse-resize;opacity:0;transition:opacity 150ms;touch-action:none;z-index:2;
+}
+.size-badge{
+  position:absolute;right:4px;top:4px;padding:1px 7px;border-radius:9999px;font-size:11px;
+  background:rgba(11,9,6,.75);color:var(--text);opacity:0;transition:opacity 150ms;pointer-events:none;z-index:2;
+}
+.tile:hover .handle,.tile:hover .size-badge,.tile.resizing .handle,.tile.resizing .size-badge,.tile.selected .handle{opacity:1}
+.tile.resizing{outline:1px solid var(--accent);outline-offset:-1px}
+
+.tile.uploading{
+  display:flex;flex-direction:column;justify-content:center;align-items:stretch;background:var(--raised);
+  color:var(--muted);font-size:12px;padding:10px;text-align:center;grid-column:span 2;grid-row:span 2;
+}
+.tile.uploading .label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar{width:100%;height:3px;background:var(--line);border-radius:9999px;overflow:hidden;margin-top:8px}
+.bar span{display:block;height:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 150ms}
+
+/* --- pasek formatowania tekstu --- */
+#toolbar{
+  position:fixed;z-index:40;bottom:16px;left:calc(280px + (100vw - 280px) / 2);transform:translateX(-50%);
+  display:flex;align-items:center;gap:4px;flex-wrap:wrap;justify-content:center;
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 8px;
+  max-width:calc(100vw - 32px);
+}
+#toolbar select{
+  background:var(--raised);border:1px solid var(--line);border-radius:9999px;padding:5px 10px;outline:none;font-size:13px;
+}
+#tbFont{width:170px}
+#toolbar .tb{
+  min-width:32px;height:32px;border-radius:8px;display:grid;place-items:center;color:var(--muted);padding:0 6px;font-size:15px;
+}
+#toolbar .tb:hover{color:var(--text);background:var(--raised);filter:none}
+#toolbar .tb.on{color:var(--accent);background:var(--raised)}
+#toolbar .tb.danger{color:var(--danger);font-size:13px}
+#toolbar .sep{width:1px;height:22px;background:var(--line);margin:0 4px}
+.swatch{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);padding:0 4px;cursor:pointer}
+.swatch input{width:24px;height:24px;border:1px solid var(--line);border-radius:9999px;padding:0;background:none;cursor:pointer}
+.swatch input::-webkit-color-swatch-wrapper{padding:0}
+.swatch input::-webkit-color-swatch{border:none;border-radius:9999px}
+.swatch input::-moz-color-swatch{border:none;border-radius:9999px}
+
+/* --- menu kontekstowe --- */
+#menu{position:fixed;z-index:50;min-width:190px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px}
+#menu button{display:block;width:100%;text-align:left;padding:8px 12px;border-radius:6px;font-size:14px}
+#menu button:hover{background:var(--raised)}
+#menu button.danger{color:var(--danger)}
+
+/* --- mini-modal na tekst --- */
+#ask{position:fixed;inset:0;z-index:60;background:rgba(11,9,6,.8);display:grid;place-items:center;padding:24px}
+#ask form{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;width:100%;max-width:360px;display:flex;flex-direction:column;gap:12px}
+#ask h3{margin:0;font-size:15px;font-weight:600}
+#ask .row{display:flex;gap:8px;justify-content:flex-end}
+
+/* --- podgląd strony --- */
+#preview{position:fixed;inset:0;z-index:70;background:var(--bg);display:flex;flex-direction:column}
+.preview-bar{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.preview-bar strong{font-weight:600;margin-right:auto}
+.seg{display:flex;border:1px solid var(--line);border-radius:9999px;padding:3px}
+.seg button{padding:5px 14px;border-radius:9999px;font-size:13px;color:var(--muted)}
+.seg button.on{background:var(--raised);color:var(--accent)}
+.preview-stage{flex:1;display:flex;justify-content:center;align-items:center;padding:16px;min-height:0;background:#070604}
+#previewFrame{width:100%;height:100%;border:1px solid var(--line);border-radius:8px;background:#fff}
+#preview.phone #previewFrame{width:390px;max-width:100%;height:min(844px,100%);border-radius:28px;border-width:8px;border-color:var(--raised)}
+
+@media (max-width:820px){
+  #app{flex-direction:column}
+  #sidebar{width:100%;flex:none;height:auto;position:static;border-right:none;border-bottom:1px solid var(--line)}
+  #folderList{display:flex;gap:8px;overflow-x:auto;padding:10px}
+  #folderList li{flex:0 0 auto;border:1px solid var(--line)}
+  .main-body{padding:16px 16px 140px}
+  .main-head{padding:14px 16px}
+  #toolbar{left:50%}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ LOGOWANIE ============ -->
+<section id="login">
+  <form id="loginForm" autocomplete="off">
+    <h1>Panel portfolio</h1>
+    <p class="intro">Wpisz hasło, żeby zarządzać zdjęciami.</p>
+    <input class="field" id="password" type="password" placeholder="Hasło" autocomplete="current-password" required>
+    <p class="error" id="loginError"></p>
+    <button class="btn" type="submit" id="loginBtn">Zaloguj</button>
+  </form>
+</section>
+
+<!-- ============ PANEL ============ -->
+<div id="app" hidden>
+  <aside id="sidebar">
+    <div class="sidebar-head">
+      <h2>Foldery</h2>
+      <button class="icon-btn" id="addFolder" title="Nowy folder" aria-label="Nowy folder">+</button>
+    </div>
+    <ul id="folderList" data-group="folders"></ul>
+    <div class="sidebar-foot">
+      <span id="status">Gotowe</span>
+      <button class="btn-ghost sm" id="logout">Wyloguj</button>
+    </div>
+  </aside>
+
+  <main id="main">
+    <div class="main-head">
+      <div>
+        <h1 id="folderTitle">—</h1>
+        <div class="sub" id="folderSub"></div>
+      </div>
+      <div class="head-actions">
+        <button class="btn-ghost" id="openSettings">Ustawienia strony</button>
+        <button class="btn-ghost" id="openPreview">Podgląd strony</button>
+        <button class="btn" id="addAlbum">Nowy album</button>
+      </div>
+    </div>
+    <div class="main-body">
+      <div id="albums" data-group="albums"></div>
+      <p class="empty" id="emptyState" hidden>Ten folder nie ma jeszcze albumów. Kliknij „Nowy album”.</p>
+    </div>
+  </main>
+</div>
+
+<input type="file" id="fileInput" accept="image/*" multiple hidden>
+
+<!-- Pasek formatowania — pokazuje się, gdy edytujesz blok tekstu -->
+<div id="toolbar" role="toolbar" aria-label="Formatowanie tekstu" hidden>
+  <select id="tbFont" title="Czcionka"></select>
+  <select id="tbSize" title="Rozmiar tekstu"></select>
+  <span class="sep"></span>
+  <button class="tb" data-cmd="bold" title="Pogrubienie (Ctrl+B)"><b>B</b></button>
+  <button class="tb" data-cmd="italic" title="Kursywa (Ctrl+I)"><i style="font-family:Georgia,serif">I</i></button>
+  <button class="tb" data-cmd="underline" title="Podkreślenie (Ctrl+U)"><u>U</u></button>
+  <span class="sep"></span>
+  <button class="tb" data-align="left" title="Do lewej"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="3" width="14" height="1.6" rx=".8"/><rect x="1" y="7.2" width="9" height="1.6" rx=".8"/><rect x="1" y="11.4" width="12" height="1.6" rx=".8"/></svg></button>
+  <button class="tb" data-align="center" title="Do środka"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="3" width="14" height="1.6" rx=".8"/><rect x="3.5" y="7.2" width="9" height="1.6" rx=".8"/><rect x="2" y="11.4" width="12" height="1.6" rx=".8"/></svg></button>
+  <button class="tb" data-align="right" title="Do prawej"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="3" width="14" height="1.6" rx=".8"/><rect x="6" y="7.2" width="9" height="1.6" rx=".8"/><rect x="3" y="11.4" width="12" height="1.6" rx=".8"/></svg></button>
+  <span class="sep"></span>
+  <label class="swatch" title="Kolor tekstu">Tekst <input type="color" id="tbColor"></label>
+  <label class="swatch" title="Kolor tła bloku">Tło <input type="color" id="tbBg"></label>
+  <button class="tb" id="tbBgClear" title="Usuń tło">∅</button>
+  <span class="sep"></span>
+  <button class="tb danger" id="tbDelete" title="Usuń blok tekstu">Usuń</button>
+</div>
+
+<div id="menu" hidden></div>
+
+<div id="ask" hidden>
+  <form id="askForm">
+    <h3 id="askTitle"></h3>
+    <input class="field" id="askInput" autocomplete="off">
+    <div class="row">
+      <button type="button" class="btn-ghost" id="askCancel">Anuluj</button>
+      <button type="submit" class="btn">Zapisz</button>
+    </div>
+  </form>
+</div>
+
+<!-- ============ USTAWIENIA STRONY: tlo hero + zaufali mi ============ -->
+<div id="settings" hidden>
+  <div class="settings-stack">
+  <div class="settings-card">
+    <div class="settings-head">
+      <strong>Tło ekranu powitalnego</strong>
+      <button class="icon-btn" id="settingsClose" aria-label="Zamknij ustawienia">✕</button>
+    </div>
+
+    <div class="hero-mode" id="heroMode">
+      <label><input type="radio" name="heroMode" value="static"> Statyczne zdjęcie</label>
+      <label><input type="radio" name="heroMode" value="slideshow"> Slajdy z albumu</label>
+    </div>
+
+    <div id="heroStaticPanel">
+      <div class="hero-slot" data-slot="desktop">
+        <div class="hero-slot__preview" id="heroPreviewDesktop"></div>
+        <div class="hero-slot__body">
+          <strong>Komputer</strong>
+          <span class="hero-slot__status" id="heroStatusDesktop">Domyślne zdjęcie z repo</span>
+          <button type="button" class="btn-ghost sm" data-pick="desktop">Zmień zdjęcie</button>
+        </div>
+      </div>
+
+      <div class="hero-slot" data-slot="mobile">
+        <div class="hero-slot__preview" id="heroPreviewMobile"></div>
+        <div class="hero-slot__body">
+          <strong>Telefon</strong>
+          <span class="hero-slot__status" id="heroStatusMobile">Domyślne zdjęcie z repo</span>
+          <button type="button" class="btn-ghost sm" data-pick="mobile">Zmień zdjęcie</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="heroSlidesPanel" hidden>
+      <p class="settings-hint">Slajdy przełączają się co 5 sekund. Pionowe zdjęcia (z telefonu) pokażą się na telefonie, poziome na komputerze. Dodaj przynajmniej po jednym z obu rodzajów.</p>
+      <div class="hero-slides-grid" id="heroSlidesGrid"></div>
+    </div>
+  </div>
+
+  <div class="settings-card">
+    <div class="settings-head"><strong>Zaufali mi</strong></div>
+    <p class="intro">Avatar, nazwa firmy i link — opcjonalna sekcja na stronie klienta (jeśli jej używa).</p>
+    <div id="trustedEmpty" class="settings-hint" hidden>Brak wpisów. Dodaj pierwszy przyciskiem poniżej — sekcja pojawia się na stronie dopiero, gdy jest tu coś wpisane.</div>
+    <div id="trustedList"></div>
+    <button type="button" class="trusted-add" id="trustedAdd">+ Dodaj wpis</button>
+  </div>
+  </div>
+</div>
+<input type="file" id="heroInput" accept="image/*" hidden>
+<input type="file" id="heroSlideInput" accept="image/*" hidden>
+<input type="file" id="trustedAvatarInput" accept="image/*" hidden>
+
+<div id="preview" hidden>
+  <div class="preview-bar">
+    <strong>Podgląd strony</strong>
+    <div class="seg" role="group" aria-label="Urządzenie">
+      <button type="button" data-device="desktop" class="on">Komputer</button>
+      <button type="button" data-device="phone">Telefon</button>
+    </div>
+    <a class="btn-ghost sm" id="previewOpen" target="_blank" rel="noopener">Otwórz w nowej karcie ↗</a>
+    <button class="icon-btn" id="previewClose" aria-label="Zamknij podgląd">✕</button>
+  </div>
+  <div class="preview-stage">
+    <iframe id="previewFrame" title="Podgląd strony publicznej"></iframe>
+  </div>
+</div>
+
+<script>
+/* ============================================================================
+   KONFIGURACJA — JEDYNA LINIA DO ZMIANY PER KLIENT
+   ========================================================================== */
+const API_BASE = 'https://WORKER_URL.workers.dev';
+
+// Adres strony publicznej względem panelu (do podglądu). Zwykle nie ruszasz.
+const PUBLIC_PAGE = '../';
+
+/* ============================================================================
+   Stałe siatki i tekstu — muszą zgadzać się z public/index.html i public.css
+   ========================================================================== */
+const COLS = 6;          // kolumny siatki
+const MAX_H = 4;         // max wierszy na kafelek
+const ROW_RATIO = 0.75;  // wysokość wiersza = szerokość kolumny × 0.75
+const GAP = 8;           // odstęp w px
+
+// [nazwa w Google Fonts, rodzina zapasowa]
+const FONTS = [
+  ['Work Sans', 'sans-serif'],
+  ['Montserrat', 'sans-serif'],
+  ['DM Sans', 'sans-serif'],
+  ['Playfair Display', 'serif'],
+  ['Cormorant Garamond', 'serif'],
+  ['Lora', 'serif'],
+  ['Great Vibes', 'cursive'],
+  ['Caveat', 'cursive'],
+];
+const SIZES = [14, 16, 18, 20, 24, 28, 32, 40, 48, 64, 80, 96, 120];
+
+/* ============================================================================
+   Stan
+   ========================================================================== */
+const TOKEN_KEY = 'portfolio_admin_token';
+let token = localStorage.getItem(TOKEN_KEY) || null;
+let folders = [];
+let albums = [];                 // albumy aktywnego folderu, każdy z tablicą items
+let activeFolderId = null;
+const uploads = new Map();       // albumId → trwające uploady (optimistic UI)
+let activeText = null;           // { item, tile, body } — edytowany blok tekstu
+
+const $ = (id) => document.getElementById(id);
+const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+function el(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text != null) node.textContent = text;
+  return node;
+}
+
+function fontStack(name) {
+  const font = FONTS.find(([family]) => family === name);
+  return `'${name}', ${font ? font[1] : 'sans-serif'}`;
+}
+
+// Polska odmiana: 1 zdjęcie / 2 zdjęcia / 5 zdjęć.
+function plural(count, one, few, many) {
+  if (count === 1) return one;
+  const rest = count % 10;
+  const teens = count % 100;
+  return rest >= 2 && rest <= 4 && (teens < 12 || teens > 14) ? few : many;
+}
+
+/* ============================================================================
+   Klient API
+   ========================================================================== */
+async function api(path, { method = 'GET', body } = {}) {
+  const headers = {};
+  if (token) headers.Authorization = 'Bearer ' + token;
+  if (body !== undefined) headers['Content-Type'] = 'application/json';
+
+  let response;
+  try {
+    response = await fetch(API_BASE + path, {
+      method,
+      headers,
+      body: body === undefined ? undefined : JSON.stringify(body),
+    });
+  } catch {
+    throw new Error('Brak połączenia z API');
+  }
+
+  const payload = await response.json().catch(() => null);
+  if (!payload || payload.ok !== true) {
+    // Token wygasł albo hasło zmienione — wracamy na ekran logowania.
+    if (response.status === 401 && token) logout();
+    throw new Error((payload && payload.error) || 'Błąd serwera (' + response.status + ')');
+  }
+  return payload.data;
+}
+
+/* ============================================================================
+   Auto-save — każda zmiana leci PUT-em po 800 ms ciszy. Bez przycisku „Zapisz”.
+   ========================================================================== */
+const ENDPOINTS = { folder: '/api/folders/', album: '/api/albums/', item: '/api/items/', trusted: '/api/trusted/' };
+const pending = new Map();   // 'item:id' → { kind, id, patch }
+let saveTimer = null;
+
+function setStatus(text) { $('status').textContent = text; }
+
+function queueSave(kind, id, patch) {
+  const key = kind + ':' + id;
+  const entry = pending.get(key) || { kind, id, patch: {} };
+  Object.assign(entry.patch, patch);
+  pending.set(key, entry);
+  setStatus('Zapisywanie…');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(flushSaves, 800);
+}
+
+async function flushSaves() {
+  clearTimeout(saveTimer);
+  const entries = [...pending.values()];
+  pending.clear();
+  if (!entries.length) return;
+  try {
+    await Promise.all(entries.map((entry) =>
+      api(ENDPOINTS[entry.kind] + entry.id, { method: 'PUT', body: entry.patch })));
+    setStatus('Zapisano');
+  } catch (error) {
+    setStatus('Błąd zapisu: ' + error.message);
+  }
+}
+
+// Kolejność: pozycja = indeks w tablicy. Zapisujemy tylko to, co się ruszyło.
+function savePositions(kind, list) {
+  list.forEach((item, index) => {
+    if (item.position === index) return;
+    item.position = index;
+    queueSave(kind, item.id, { position: index });
+  });
+}
+
+window.addEventListener('beforeunload', (event) => {
+  if (!pending.size) return;
+  flushSaves();
+  event.preventDefault();
+});
+
+/* ============================================================================
+   Logowanie i start
+   ========================================================================== */
+$('loginForm').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  $('loginError').textContent = '';
+  $('loginBtn').disabled = true;
+  try {
+    const data = await api('/api/auth', { method: 'POST', body: { password: $('password').value } });
+    token = data.token;
+    localStorage.setItem(TOKEN_KEY, token);
+    await start();
+  } catch (error) {
+    $('loginError').textContent = error.message;
+  } finally {
+    $('loginBtn').disabled = false;
+  }
+});
+
+function logout() {
+  token = null;
+  localStorage.removeItem(TOKEN_KEY);
+  $('app').hidden = true;
+  $('login').hidden = false;
+  $('password').value = '';
+}
+$('logout').addEventListener('click', logout);
+
+async function start() {
+  $('login').hidden = true;
+  $('app').hidden = false;
+  folders = await api('/api/folders');
+  if (!folders.some((folder) => folder.id === activeFolderId)) {
+    activeFolderId = folders.length ? folders[0].id : null;
+  }
+  renderFolders();
+  await loadContent();
+}
+
+async function loadContent() {
+  deactivateText();
+  if (!activeFolderId) {
+    albums = [];
+    renderMain();
+    return;
+  }
+  const folderId = activeFolderId;
+  const data = await api('/api/folders/' + folderId + '/content');
+  if (folderId !== activeFolderId) return;   // w międzyczasie kliknięto inny folder
+  albums = data;
+  renderMain();
+}
+
+/* ============================================================================
+   Sidebar — foldery
+   ========================================================================== */
+function renderFolders() {
+  const list = $('folderList');
+  list.innerHTML = '';
+
+  folders.forEach((folder) => {
+    const item = el('li');
+    item.draggable = true;
+    item.dataset.id = folder.id;
+    item.dataset.drag = 'folders';
+    if (folder.id === activeFolderId) item.classList.add('active');
+    item.append(el('span', 'name', folder.name));
+
+    item.addEventListener('click', () => selectFolder(folder.id));
+    attachMenu(item, () => [
+      { label: 'Zmień nazwę', action: () => renameFolder(folder.id) },
+      { label: 'Usuń folder', danger: true, action: () => removeFolder(folder.id) },
+    ]);
+    list.append(item);
+  });
+}
+
+async function selectFolder(id) {
+  if (id === activeFolderId) return;
+  await flushSaves();
+  activeFolderId = id;
+  renderFolders();
+  await loadContent();
+}
+
+// Nowy folder: inline input na końcu listy. Enter zapisuje, Esc anuluje.
+$('addFolder').addEventListener('click', () => {
+  const item = el('li');
+  const input = el('input');
+  input.placeholder = 'Nazwa folderu';
+  item.append(input);
+  $('folderList').append(item);
+  input.focus();
+
+  let done = false;
+  const finish = async (save) => {
+    if (done) return;
+    done = true;
+    const name = input.value.trim();
+    item.remove();
+    if (!save || !name) return;
+    try {
+      const folder = await api('/api/folders', { method: 'POST', body: { name } });
+      folders.push(folder);
+      await flushSaves();
+      activeFolderId = folder.id;
+      renderFolders();
+      await loadContent();
+      setStatus('Dodano folder');
+    } catch (error) {
+      setStatus('Błąd: ' + error.message);
+    }
+  };
+
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') finish(true);
+    if (event.key === 'Escape') finish(false);
+  });
+  input.addEventListener('blur', () => finish(true));
+});
+
+async function renameFolder(id) {
+  const folder = folders.find((item) => item.id === id);
+  const name = await askText('Nazwa folderu', folder.name);
+  if (name === null || !name.trim() || name.trim() === folder.name) return;
+  folder.name = name.trim();
+  renderFolders();
+  renderHead();
+  queueSave('folder', id, { name: folder.name });
+}
+
+async function removeFolder(id) {
+  const folder = folders.find((item) => item.id === id);
+  if (!confirm('Usunąć folder „' + folder.name + '” razem ze wszystkimi albumami i zdjęciami?')) return;
+  await flushSaves();
+  try {
+    await api('/api/folders/' + id, { method: 'DELETE' });
+    folders = folders.filter((item) => item.id !== id);
+    if (activeFolderId === id) activeFolderId = folders.length ? folders[0].id : null;
+    renderFolders();
+    await loadContent();
+    setStatus('Usunięto folder');
+  } catch (error) {
+    setStatus('Błąd: ' + error.message);
+  }
+}
+
+/* ============================================================================
+   Główna kolumna — albumy jeden pod drugim
+   ========================================================================== */
+function renderHead() {
+  const folder = folders.find((item) => item.id === activeFolderId);
+  $('folderTitle').textContent = folder ? folder.name : 'Brak folderów';
+  $('folderSub').textContent = folder
+    ? albums.length + ' ' + plural(albums.length, 'album', 'albumy', 'albumów')
+    : 'Dodaj pierwszy folder przyciskiem „+”';
+  $('addAlbum').disabled = !folder;
+  $('openPreview').disabled = !folders.length;
+  $('emptyState').hidden = !folder || albums.length > 0;
+}
+
+function renderMain() {
+  renderHead();
+  const list = $('albums');
+  list.innerHTML = '';
+  albums.forEach((album) => list.append(buildAlbum(album)));
+}
+
+/** Przerysowuje jeden album (np. po uploadzie), bez ruszania pozostałych. */
+function refreshAlbum(albumId) {
+  const album = albums.find((item) => item.id === albumId);
+  const current = document.querySelector('.album[data-id="' + albumId + '"]');
+  if (!album || !current) return;
+  if (activeText && current.contains(activeText.tile)) deactivateText();
+  current.replaceWith(buildAlbum(album));
+}
+
+function buildAlbum(album) {
+  const section = el('section', 'album');
+  section.dataset.id = album.id;
+  section.dataset.drag = 'albums';
+  section.dataset.gripOnly = '1';     // przeciągany tylko za uchwyt ⠿
+
+  const head = el('header', 'album-head');
+
+  const grip = el('span', 'grip', '⠿');
+  grip.title = 'Przeciągnij, żeby zmienić kolejność albumów';
+  grip.addEventListener('pointerdown', () => { section.draggable = true; });
+
+  const name = el('button', 'album-name');
+  name.type = 'button';
+  name.title = 'Kliknij, żeby zmienić nazwę';
+  name.textContent = album.name || 'Bez nazwy — nagłówek nie pokaże się na stronie';
+  name.classList.toggle('unnamed', !album.name);
+  name.addEventListener('click', () => renameAlbum(album.id));
+
+  const count = el('span', 'album-count', albumCount(album));
+
+  const actions = el('div', 'album-actions');
+  const addPhotos = el('button', 'btn-ghost sm', '+ Zdjęcia');
+  addPhotos.addEventListener('click', () => pickFiles(album.id));
+  const addText = el('button', 'btn-ghost sm', '+ Tekst');
+  addText.addEventListener('click', () => addTextBlock(album.id));
+  const more = el('button', 'icon-btn', '⋯');
+  more.setAttribute('aria-label', 'Więcej opcji albumu');
+  more.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const box = more.getBoundingClientRect();
+    const idx = albums.indexOf(album);
+    const items = [];
+    if (idx > 0) items.push({ label: 'Przesuń album wyżej', action: () => moveAlbum(album.id, -1) });
+    if (idx < albums.length - 1) items.push({ label: 'Przesuń album niżej', action: () => moveAlbum(album.id, 1) });
+    items.push(
+      { label: 'Zmień nazwę albumu', action: () => renameAlbum(album.id) },
+      { label: 'Usuń album', danger: true, action: () => removeAlbum(album.id) },
+    );
+    openMenu(box.right - 190, box.bottom + 4, items);
+  });
+  actions.append(addPhotos, addText, more);
+  head.append(grip, name, count, actions);
+
+  const wrap = el('div', 'grid-wrap');
+  const grid = el('div', 'grid');
+  grid.dataset.group = 'items';
+  grid.dataset.albumId = album.id;
+  album.items.forEach((item) => grid.append(buildItem(item)));
+  (uploads.get(album.id) || []).forEach((upload) => grid.append(buildUploadTile(upload)));
+  wrap.append(grid, el('div', 'grid-empty', 'Przeciągnij tu zdjęcia albo użyj „+ Zdjęcia” / „+ Tekst”'));
+
+  section.append(head, wrap);
+  return section;
+}
+
+function albumCount(album) {
+  const photos = album.items.filter((item) => item.type === 'photo').length;
+  const texts = album.items.length - photos;
+  const parts = [photos + ' ' + plural(photos, 'zdjęcie', 'zdjęcia', 'zdjęć')];
+  if (texts) parts.push(texts + ' ' + plural(texts, 'tekst', 'teksty', 'tekstów'));
+  return parts.join(' · ');
+}
+
+async function addAlbumAction() {
+  const name = await askText('Nazwa albumu (może zostać pusta)', '');
+  if (name === null) return;
+  try {
+    const album = await api('/api/albums', { method: 'POST', body: { folderId: activeFolderId, name } });
+    album.items = [];
+    albums.push(album);
+    renderMain();
+    document.querySelector('.album[data-id="' + album.id + '"]').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setStatus('Dodano album');
+  } catch (error) {
+    setStatus('Błąd: ' + error.message);
+  }
+}
+$('addAlbum').addEventListener('click', addAlbumAction);
+
+async function renameAlbum(id) {
+  const album = albums.find((item) => item.id === id);
+  const name = await askText('Nazwa albumu (pusta = bez nagłówka)', album.name);
+  if (name === null || name.trim() === album.name) return;
+  album.name = name.trim();
+  refreshAlbum(id);
+  queueSave('album', id, { name: album.name });
+}
+
+/** Przesuwa album w liście: delta -1/1 (o jeden), albo 'start'/'end' (na sam początek/koniec folderu). */
+function moveAlbum(id, delta) {
+  const from = albums.findIndex((album) => album.id === id);
+  if (from === -1) return;
+  const to = delta === 'start' ? 0 : delta === 'end' ? albums.length - 1 : clamp(from + delta, 0, albums.length - 1);
+  if (to === from) return;
+  const [album] = albums.splice(from, 1);
+  albums.splice(to, 0, album);
+  savePositions('album', albums);
+  renderMain();
+}
+
+async function removeAlbum(id) {
+  const album = albums.find((item) => item.id === id);
+  const label = album.name ? '„' + album.name + '”' : 'bez nazwy';
+  if (!confirm('Usunąć album ' + label + ' (' + albumCount(album) + ')?')) return;
+  await flushSaves();
+  try {
+    await api('/api/albums/' + id, { method: 'DELETE' });
+    albums = albums.filter((item) => item.id !== id);
+    renderMain();
+    setStatus('Usunięto album');
+  } catch (error) {
+    setStatus('Błąd: ' + error.message);
+  }
+}
+
+/* ============================================================================
+   Kafelki: zdjęcia i bloki tekstu
+   ========================================================================== */
+function findItem(id) {
+  for (const album of albums) {
+    const item = album.items.find((candidate) => candidate.id === id);
+    if (item) return { album, item };
+  }
+  return null;
+}
+
+/**
+ * Przesuwa kafelek w obrębie jego albumu: delta -1/1 (o jeden w górę/w dół
+ * w kolejności zapisu), albo 'start'/'end' (na sam początek/koniec albumu).
+ * Alternatywa dla przeciągania — przydaje się, gdy kafelek nie pasuje w danym
+ * miejscu siatki i łatwiej go po prostu wysłać na koniec.
+ */
+function moveItem(id, delta) {
+  const found = findItem(id);
+  if (!found) return;
+  const { album, item } = found;
+  const list = album.items;
+  const from = list.indexOf(item);
+  const to = delta === 'start' ? 0 : delta === 'end' ? list.length - 1 : clamp(from + delta, 0, list.length - 1);
+  if (to === from) return;
+  list.splice(from, 1);
+  list.splice(to, 0, item);
+  savePositions('item', list);
+  refreshAlbum(album.id);
+}
+
+/** Buduje wpisy menu „Przesuń wyżej/niżej/na początek/na koniec” — pomija te, które nic by nie zmieniły. */
+function moveMenuEntries(id) {
+  const { album, item } = findItem(id);
+  const idx = album.items.indexOf(item);
+  const last = album.items.length - 1;
+  const entries = [];
+  if (idx > 0) entries.push({ label: 'Przesuń wyżej', action: () => moveItem(id, -1) });
+  if (idx < last) entries.push({ label: 'Przesuń niżej', action: () => moveItem(id, 1) });
+  if (idx > 1) entries.push({ label: 'Przesuń na początek albumu', action: () => moveItem(id, 'start') });
+  if (idx < last - 1) entries.push({ label: 'Przesuń na koniec albumu', action: () => moveItem(id, 'end') });
+  return entries;
+}
+
+/** Ustawia rozmiar kafelka w siatce i odświeża plakietkę „szer×wys”. */
+function applyGrid(tile, item) {
+  tile.style.setProperty('--w', item.grid_w);
+  tile.style.setProperty('--h', item.grid_h);
+  const badge = tile.querySelector('.size-badge');
+  if (badge) badge.textContent = item.grid_w + '×' + item.grid_h;
+}
+
+function buildItem(item) {
+  const tile = el('div', 'tile ' + item.type);
+  tile.dataset.id = item.id;
+  tile.dataset.drag = 'items';
+
+  const handle = el('div', 'handle', '⤡');
+  handle.title = 'Przeciągnij, żeby zmienić rozmiar';
+  const badge = el('span', 'size-badge');
+
+  if (item.type === 'photo') {
+    tile.draggable = true;
+    const image = el('img');
+    image.src = item.url;
+    image.alt = item.display_name || item.filename || '';
+    image.loading = 'lazy';
+    tile.append(image, el('div', 'caption', item.display_name || item.filename));
+    attachMenu(tile, () => [
+      ...moveMenuEntries(item.id),
+      { label: 'Zmień nazwę wyświetlaną', action: () => renamePhoto(item.id) },
+      { label: 'Usuń zdjęcie', danger: true, action: () => removeItem(item.id) },
+    ]);
+  } else {
+    tile.dataset.gripOnly = '1';   // tekst da się zaznaczać, więc przesuwamy za uchwyt
+    const grip = el('span', 'grip tile-grip', '⠿');
+    grip.title = 'Przeciągnij, żeby przesunąć blok';
+    grip.addEventListener('pointerdown', () => { tile.draggable = true; });
+    attachMenu(grip, () => [
+      ...moveMenuEntries(item.id),
+      { label: 'Usuń blok tekstu', danger: true, action: () => removeItem(item.id) },
+    ]);
+
+    const frame = el('div', 'text-frame');
+    const body = el('div', 'text-body');
+    body.contentEditable = 'true';
+    body.innerHTML = item.html;
+    frame.append(body);
+    tile.append(frame, grip);
+    applyTextStyle(tile, item.style);
+    attachTextEditing(tile, body, item);
+  }
+
+  tile.append(handle, badge);
+  applyGrid(tile, item);
+  attachResize(handle, tile, item);
+  return tile;
+}
+
+function buildUploadTile(upload) {
+  const tile = el('div', 'tile uploading');
+  const bar = el('div', 'bar');
+  const fill = el('span');
+  fill.style.transform = 'scaleX(' + upload.progress + ')';
+  bar.append(fill);
+  upload.fill = fill;              // referencja, żeby ruszać paskiem bez przerysowania
+  tile.append(el('div', 'label', upload.name), bar);
+  return tile;
+}
+
+async function renamePhoto(id) {
+  const { item } = findItem(id);
+  const name = await askText('Nazwa wyświetlana (podpis w lightboxie)', item.display_name || '');
+  if (name === null) return;
+  item.display_name = name.trim();
+  queueSave('item', id, { display_name: item.display_name });
+  const caption = document.querySelector('.tile[data-id="' + id + '"] .caption');
+  if (caption) caption.textContent = item.display_name || item.filename;
+}
+
+async function removeItem(id) {
+  const found = findItem(id);
+  if (!found) return;
+  const { album, item } = found;
+  if (!confirm(item.type === 'photo' ? 'Usunąć to zdjęcie?' : 'Usunąć ten blok tekstu?')) return;
+
+  if (activeText && activeText.item.id === id) deactivateText();
+  pending.delete('item:' + id);
+  album.items = album.items.filter((candidate) => candidate.id !== id);   // optimistic
+  refreshAlbum(album.id);
+  try {
+    await api('/api/items/' + id, { method: 'DELETE' });
+    setStatus('Usunięto');
+  } catch (error) {
+    setStatus('Błąd: ' + error.message);
+    await loadContent();                                                 // wracamy do stanu z serwera
+  }
+}
+
+/* ============================================================================
+   Resize — uchwyt w rogu, przyciąganie do kratek 1–6 × 1–4
+   ========================================================================== */
+function attachResize(handle, tile, item) {
+  handle.addEventListener('pointerdown', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    handle.setPointerCapture(event.pointerId);
+    tile.classList.add('resizing');
+
+    const origin = tile.getBoundingClientRect();
+    const wrapWidth = tile.closest('.grid-wrap').clientWidth;
+    const columnWidth = (wrapWidth - GAP * (COLS - 1)) / COLS;
+    const rowHeight = columnWidth * ROW_RATIO;
+    let width = item.grid_w;
+    let height = item.grid_h;
+
+    const onMove = (moveEvent) => {
+      // n kolumn zajmuje n × kolumna + (n − 1) × odstęp
+      width = clamp(Math.round((moveEvent.clientX - origin.left + GAP) / (columnWidth + GAP)), 1, COLS);
+      height = clamp(Math.round((moveEvent.clientY - origin.top + GAP) / (rowHeight + GAP)), 1, MAX_H);
+      applyGrid(tile, { ...item, grid_w: width, grid_h: height });
+    };
+
+    const onUp = () => {
+      handle.removeEventListener('pointermove', onMove);
+      handle.removeEventListener('pointerup', onUp);
+      handle.removeEventListener('pointercancel', onUp);
+      tile.classList.remove('resizing');
+      if (width === item.grid_w && height === item.grid_h) return;
+      item.grid_w = width;
+      item.grid_h = height;
+      queueSave('item', item.id, { grid_w: width, grid_h: height });
+    };
+
+    handle.addEventListener('pointermove', onMove);
+    handle.addEventListener('pointerup', onUp);
+    handle.addEventListener('pointercancel', onUp);
+  });
+}
+
+/* ============================================================================
+   Edycja tekstu
+   ========================================================================== */
+function applyTextStyle(tile, style) {
+  const body = tile.querySelector('.text-body');
+  body.style.setProperty('--fs', style.size);
+  body.style.fontFamily = fontStack(style.font);
+  body.style.textAlign = style.align;
+  body.style.color = style.color || '';
+  tile.style.backgroundColor = style.bg || '';
+  tile.classList.toggle('has-bg', Boolean(style.bg));
+}
+
+function attachTextEditing(tile, body, item) {
+  const frame = body.parentElement;
+
+  // Klik w pusty obszar bloku ustawia kursor na końcu tekstu.
+  frame.addEventListener('mousedown', (event) => {
+    if (event.target !== frame) return;
+    event.preventDefault();
+    body.focus();
+    const range = document.createRange();
+    range.selectNodeContents(body);
+    range.collapse(false);
+    const selection = getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+  });
+
+  body.addEventListener('focus', () => activateText(item, tile, body));
+  body.addEventListener('input', () => {
+    item.html = body.innerHTML;
+    queueSave('item', item.id, { html: item.html });
+  });
+  // Wklejamy sam tekst — bez stylów i śmieci z Worda czy stron www.
+  body.addEventListener('paste', (event) => {
+    event.preventDefault();
+    document.execCommand('insertText', false, event.clipboardData.getData('text/plain'));
+  });
+  body.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      body.blur();
+      deactivateText();
+    }
+  });
+}
+
+function activateText(item, tile, body) {
+  if (activeText && activeText.tile !== tile) activeText.tile.classList.remove('selected');
+  activeText = { item, tile, body };
+  tile.classList.add('selected');
+  $('toolbar').hidden = false;
+  syncToolbar();
+}
+
+function deactivateText() {
+  if (activeText) activeText.tile.classList.remove('selected');
+  activeText = null;
+  $('toolbar').hidden = true;
+}
+
+async function addTextBlock(albumId) {
+  try {
+    const item = await api('/api/items/text', { method: 'POST', body: { albumId } });
+    albums.find((album) => album.id === albumId).items.push(item);
+    refreshAlbum(albumId);
+    const body = document.querySelector('.tile[data-id="' + item.id + '"] .text-body');
+    body.focus();
+    const range = document.createRange();
+    range.selectNodeContents(body);
+    getSelection().removeAllRanges();
+    getSelection().addRange(range);
+  } catch (error) {
+    setStatus('Błąd: ' + error.message);
+  }
+}
+
+// Klik poza blokiem tekstu i paskiem kończy edycję.
+document.addEventListener('pointerdown', (event) => {
+  if (activeText && !event.target.closest('.tile.text, #toolbar, #menu, #ask')) deactivateText();
+});
+
+/* ---------- pasek formatowania ---------- */
+FONTS.forEach(([family]) => {
+  const option = el('option', null, family);
+  option.value = family;
+  option.style.fontFamily = fontStack(family);
+  $('tbFont').append(option);
+});
+SIZES.forEach((size) => {
+  const option = el('option', null, size + ' px');
+  option.value = size;
+  $('tbSize').append(option);
+});
+
+function toHex(color) {
+  const match = String(color).match(/\d+/g);
+  if (!match) return '#f3eee3';
+  return '#' + match.slice(0, 3).map((part) => Number(part).toString(16).padStart(2, '0')).join('');
+}
+
+function ensureOption(select, value, label) {
+  if (![...select.options].some((option) => option.value === String(value))) {
+    const option = el('option', null, label);
+    option.value = value;
+    select.append(option);
+  }
+  select.value = value;
+}
+
+function syncToolbar() {
+  if (!activeText) return;
+  const { style } = activeText.item;
+  ensureOption($('tbFont'), style.font, style.font);
+  ensureOption($('tbSize'), style.size, style.size + ' px');
+  document.querySelectorAll('#toolbar [data-align]').forEach((button) => {
+    button.classList.toggle('on', button.dataset.align === style.align);
+  });
+  $('tbColor').value = style.color || toHex(getComputedStyle(activeText.body).color);
+  $('tbBg').value = style.bg || '#1c1810';
+  $('tbBgClear').disabled = !style.bg;
+  syncInlineState();
+}
+
+function syncInlineState() {
+  document.querySelectorAll('#toolbar [data-cmd]').forEach((button) => {
+    button.classList.toggle('on', document.queryCommandState(button.dataset.cmd));
+  });
+}
+document.addEventListener('selectionchange', () => { if (activeText) syncInlineState(); });
+
+function updateStyle(patch) {
+  if (!activeText) return;
+  const { item, tile } = activeText;
+  Object.assign(item.style, patch);
+  applyTextStyle(tile, item.style);
+  queueSave('item', item.id, { style: { ...item.style } });
+  syncToolbar();
+}
+
+// Przyciski paska nie mogą zabierać fokusu z tekstu — inaczej zniknie zaznaczenie.
+document.querySelectorAll('#toolbar button').forEach((button) => {
+  button.addEventListener('mousedown', (event) => event.preventDefault());
+});
+
+document.querySelectorAll('#toolbar [data-cmd]').forEach((button) => {
+  button.addEventListener('click', () => {
+    if (!activeText) return;
+    if (document.activeElement !== activeText.body) activeText.body.focus();
+    document.execCommand(button.dataset.cmd);
+    activeText.item.html = activeText.body.innerHTML;
+    queueSave('item', activeText.item.id, { html: activeText.item.html });
+    syncInlineState();
+  });
+});
+document.querySelectorAll('#toolbar [data-align]').forEach((button) => {
+  button.addEventListener('click', () => updateStyle({ align: button.dataset.align }));
+});
+$('tbFont').addEventListener('change', (event) => updateStyle({ font: event.target.value }));
+$('tbSize').addEventListener('change', (event) => updateStyle({ size: Number(event.target.value) }));
+$('tbColor').addEventListener('input', (event) => updateStyle({ color: event.target.value }));
+$('tbBg').addEventListener('input', (event) => updateStyle({ bg: event.target.value }));
+$('tbBgClear').addEventListener('click', () => updateStyle({ bg: '' }));
+$('tbDelete').addEventListener('click', () => { if (activeText) removeItem(activeText.item.id); });
+
+/* ============================================================================
+   Drag & drop — jeden mechanizm dla folderów, albumów i kafelków.
+   Element ma data-drag="grupa", kontener data-group="grupa". Podczas
+   przeciągania przesuwamy węzeł w DOM, po upuszczeniu czytamy kolejność z DOM.
+   Kafelki można przenosić też między albumami, a upuszczenie w pustym miejscu
+   siatki (także w tym samym albumie, np. pod ostatnim rzędem) dopisuje kafelek
+   na koniec. Dla kafelków, którym trudno trafić w konkretne miejsce siatki
+   (np. bo nie mieszczą się obok sąsiada), jest prostsza alternatywa: menu pod
+   prawym klikiem / długim dotykiem ma „Przesuń wyżej/niżej/na początek/koniec”
+   (patrz moveItem / moveMenuEntries).
+   ========================================================================== */
+let dragged = null;
+
+const onReorder = {
+  folders() {
+    folders = [...$('folderList').querySelectorAll('li[data-id]')]
+      .map((node) => folders.find((folder) => folder.id === node.dataset.id))
+      .filter(Boolean);
+    savePositions('folder', folders);
+  },
+  albums() {
+    albums = [...$('albums').children]
+      .map((node) => albums.find((album) => album.id === node.dataset.id))
+      .filter(Boolean);
+    savePositions('album', albums);
+  },
+  items() {
+    const all = new Map();
+    albums.forEach((album) => album.items.forEach((item) => all.set(item.id, item)));
+
+    document.querySelectorAll('#albums .grid').forEach((grid) => {
+      const album = albums.find((candidate) => candidate.id === grid.dataset.albumId);
+      if (!album) return;
+      const list = [...grid.querySelectorAll('.tile[data-id]')].map((node) => all.get(node.dataset.id)).filter(Boolean);
+      list.forEach((item) => {
+        if (item.album_id === album.id) return;
+        item.album_id = album.id;
+        queueSave('item', item.id, { album_id: album.id });
+      });
+      album.items = list;
+      savePositions('item', list);
+      grid.closest('.album').querySelector('.album-count').textContent = albumCount(album);
+    });
+  },
+};
+
+// Elementy przeciągane tylko za uchwyt wracają do draggable=false po puszczeniu myszy.
+document.addEventListener('pointerup', () => {
+  document.querySelectorAll('[data-grip-only][draggable="true"]').forEach((node) => { node.draggable = false; });
+});
+
+document.addEventListener('dragstart', (event) => {
+  const item = event.target.closest && event.target.closest('[data-drag]');
+  if (!item || !item.draggable) return;     // np. przeciąganie zaznaczonego tekstu
+  dragged = item;
+  item.classList.add('dragging');
+  event.dataTransfer.effectAllowed = 'move';
+  event.dataTransfer.setData('text/plain', item.dataset.id || '');
+  closeMenu();
+});
+
+document.addEventListener('dragover', (event) => {
+  // Pliki z dysku: podświetl album, nad którym są.
+  if (!dragged) {
+    if (!event.dataTransfer || !event.dataTransfer.types.includes('Files')) return;
+    event.preventDefault();
+    const section = event.target.closest('.album');
+    setHot(section);
+    event.dataTransfer.dropEffect = section ? 'copy' : 'none';
+    return;
+  }
+
+  const group = dragged.dataset.drag;
+  const container = event.target.closest('[data-group="' + group + '"]');
+  if (!container) return;
+  event.preventDefault();
+  event.dataTransfer.dropEffect = 'move';
+
+  const target = event.target.closest('[data-drag="' + group + '"]');
+  if (target && target !== dragged && target.parentNode === container) {
+    const box = target.getBoundingClientRect();
+    let after;
+    if (group === 'items') {
+      // Siatka jest dwuwymiarowa (6 kolumn, kafelki różnej wielkości) — samo
+      // porównanie lewo/prawo nie wystarcza, gdy docelowy kafelek jest w innym
+      // wierszu. Liczymy, po której stronie przekątnej kafelka jest kursor:
+      // to poprawnie rozróżnia „przed" i „po" niezależnie od układu wierszy.
+      const dx = (event.clientX - box.left) / box.width;
+      const dy = (event.clientY - box.top) / box.height;
+      after = dx + dy > 1;
+    } else {
+      const flow = getComputedStyle(container);
+      const horizontal = flow.display === 'flex' && flow.flexDirection.startsWith('row');
+      after = horizontal
+        ? event.clientX > box.left + box.width / 2
+        : event.clientY > box.top + box.height / 2;
+    }
+    container.insertBefore(dragged, after ? target.nextSibling : target);
+  } else if (!target) {
+    // Puste miejsce w siatce — także w tym samym albumie (np. pod ostatnim
+    // rzędem) — dopisz na koniec, przed trwającymi uploadami.
+    container.insertBefore(dragged, container.querySelector('.uploading'));
+  }
+});
+
+document.addEventListener('drop', (event) => {
+  if (dragged) {
+    event.preventDefault();
+    return;
+  }
+  if (!event.dataTransfer || !event.dataTransfer.files.length) return;
+  event.preventDefault();
+  const section = event.target.closest('.album');
+  setHot(null);
+  if (section) uploadFiles(event.dataTransfer.files, section.dataset.id);
+});
+
+document.addEventListener('dragleave', (event) => {
+  if (!event.relatedTarget) setHot(null);
+});
+
+document.addEventListener('dragend', () => {
+  if (!dragged) return;
+  const group = dragged.dataset.drag;
+  dragged.classList.remove('dragging');
+  if (dragged.dataset.gripOnly) dragged.draggable = false;
+  dragged = null;
+  onReorder[group]();
+});
+
+function setHot(section) {
+  document.querySelectorAll('.album.hot').forEach((node) => { if (node !== section) node.classList.remove('hot'); });
+  if (section) section.classList.add('hot');
+}
+
+/* ============================================================================
+   Upload — konwersja do WebP w przeglądarce, potem POST z paskiem postępu.
+   Worker nie dotyka obrazów (ma za mało RAM-u), więc cała robota jest tutaj.
+   ========================================================================== */
+const MAX_EDGE = 2000;
+const WEBP_QUALITY = 0.85;
+let uploadTarget = null;
+
+function pickFiles(albumId) {
+  uploadTarget = albumId;
+  $('fileInput').click();
+}
+
+$('fileInput').addEventListener('change', (event) => {
+  if (uploadTarget) uploadFiles(event.target.files, uploadTarget);
+  event.target.value = '';           // ten sam plik da się wybrać ponownie
+});
+
+/** Skaluje do max 2000 px dłuższym bokiem i konwertuje do WebP. */
+async function toWebp(file) {
+  const bitmap = await createImageBitmap(file);
+  const scale = Math.min(1, MAX_EDGE / Math.max(bitmap.width, bitmap.height));
+  const width = Math.round(bitmap.width * scale);
+  const height = Math.round(bitmap.height * scale);
+
+  const canvas = el('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  canvas.getContext('2d').drawImage(bitmap, 0, 0, width, height);
+  if (bitmap.close) bitmap.close();
+
+  const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/webp', WEBP_QUALITY));
+  if (!blob) throw new Error('Przeglądarka nie potrafi zapisać WebP');
+
+  return {
+    file: new File([blob], file.name.replace(/\.[^.]+$/, '') + '.webp', { type: 'image/webp' }),
+    portrait: height > width * 1.1,   // pionowe zdjęcia dostają wyższy kafelek
+  };
+}
+
+/** POST przez XHR, bo fetch nie raportuje postępu wysyłki. */
+function postPhoto(file, albumId, portrait, onProgress) {
+  return new Promise((resolve, reject) => {
+    const form = new FormData();
+    form.append('file', file);
+    form.append('albumId', albumId);
+    if (portrait) form.append('portrait', '1');
+
+    const request = new XMLHttpRequest();
+    request.open('POST', API_BASE + '/api/items/upload');
+    request.setRequestHeader('Authorization', 'Bearer ' + token);
+    request.upload.addEventListener('progress', (event) => {
+      if (event.lengthComputable) onProgress(event.loaded / event.total);
+    });
+    request.addEventListener('load', () => {
+      let payload = null;
+      try { payload = JSON.parse(request.responseText); } catch (error) { /* pusta odpowiedź */ }
+      if (payload && payload.ok) resolve(payload.data);
+      else reject(new Error((payload && payload.error) || 'Upload nie powiódł się'));
+    });
+    request.addEventListener('error', () => reject(new Error('Brak połączenia z API')));
+    request.send(form);
+  });
+}
+
+async function uploadFiles(fileList, albumId) {
+  const files = [...fileList].filter((file) => file.type.startsWith('image/'));
+  if (!files.length) return;
+
+  // Kafelki-placeholdery pojawiają się od razu (optimistic UI).
+  const queue = uploads.get(albumId) || [];
+  uploads.set(albumId, queue);
+  const batch = files.map((file) => ({ name: file.name, progress: 0 }));
+  queue.push(...batch);
+  refreshAlbum(albumId);
+  setStatus('Wysyłanie ' + files.length + '…');
+
+  // Po kolei, nie równolegle — nie zapychamy łącza i pasek postępu jest czytelny.
+  for (let i = 0; i < files.length; i++) {
+    const upload = batch[i];
+    try {
+      const { file, portrait } = await toWebp(files[i]);
+      const item = await postPhoto(file, albumId, portrait, (ratio) => {
+        upload.progress = ratio;
+        if (upload.fill) upload.fill.style.transform = 'scaleX(' + ratio + ')';
+      });
+      const album = albums.find((candidate) => candidate.id === albumId);
+      if (album) album.items.push(item);   // album może być z innego folderu, jeśli ktoś przełączył widok
+    } catch (error) {
+      setStatus('Błąd: ' + files[i].name + ' — ' + error.message);
+    }
+    queue.splice(queue.indexOf(upload), 1);
+    refreshAlbum(albumId);
+  }
+  if (!queue.length) uploads.delete(albumId);
+  setStatus('Gotowe');
+}
+
+/* ============================================================================
+   Ustawienia strony — tło hero (statyczne albo slajdy z albumu) i sekcja
+   "Zaufali mi". Ten sam wzorzec co upload zdjęcia portfolio: konwersja do
+   WebP w przeglądarce (toWebp), XHR z tokenem, wynik od razu w podglądzie.
+   ========================================================================== */
+let heroTarget = null;
+
+function heroSlotUrl(data, slot) {
+  return data && data['hero_' + slot];
+}
+
+async function openSettings() {
+  $('settings').hidden = false;
+  try {
+    const response = await fetch(API_BASE + '/api/settings');
+    const payload = await response.json();
+    const data = (payload && payload.ok) ? payload.data : {};
+    ['desktop', 'mobile'].forEach((slot) => {
+      const url = heroSlotUrl(data, slot);
+      const preview = $('heroPreview' + (slot === 'desktop' ? 'Desktop' : 'Mobile'));
+      const status = $('heroStatus' + (slot === 'desktop' ? 'Desktop' : 'Mobile'));
+      if (url) {
+        preview.style.backgroundImage = 'url(' + JSON.stringify(url) + ')';
+        status.textContent = 'Zdjęcie z panelu';
+      } else {
+        preview.style.backgroundImage = '';
+        status.textContent = 'Domyślne zdjęcie z repo';
+      }
+    });
+    await loadHeroMode(data);
+  } catch (error) {
+    setStatus('Nie udało się wczytać ustawień: ' + error.message);
+  }
+  await loadTrusted();
+}
+
+function closeSettings() { $('settings').hidden = true; }
+
+function postHeroImage(file, slot) {
+  return new Promise((resolve, reject) => {
+    const form = new FormData();
+    form.append('file', file);
+
+    const request = new XMLHttpRequest();
+    request.open('POST', API_BASE + '/api/settings/hero-' + slot);
+    request.setRequestHeader('Authorization', 'Bearer ' + token);
+    request.addEventListener('load', () => {
+      let payload = null;
+      try { payload = JSON.parse(request.responseText); } catch (error) { /* pusta odpowiedź */ }
+      if (payload && payload.ok) resolve(payload.data);
+      else reject(new Error((payload && payload.error) || 'Upload nie powiódł się'));
+    });
+    request.addEventListener('error', () => reject(new Error('Brak połączenia z API')));
+    request.send(form);
+  });
+}
+
+/** Generyczny upload FormData przez XHR z tokenem — jak postHeroImage/postPhoto,
+    ale bez zaszytej z góry ścieżki, żeby użyć go dla slajdów i avatarów. */
+function postFile(url, formData) {
+  return new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest();
+    request.open('POST', API_BASE + url);
+    request.setRequestHeader('Authorization', 'Bearer ' + token);
+    request.addEventListener('load', () => {
+      let payload = null;
+      try { payload = JSON.parse(request.responseText); } catch (error) { /* pusta odpowiedź */ }
+      if (payload && payload.ok) resolve(payload.data);
+      else reject(new Error((payload && payload.error) || 'Upload nie powiódł się'));
+    });
+    request.addEventListener('error', () => reject(new Error('Brak połączenia z API')));
+    request.send(formData);
+  });
+}
+
+$('openSettings').addEventListener('click', openSettings);
+$('settingsClose').addEventListener('click', closeSettings);
+
+document.querySelectorAll('#settings [data-pick]').forEach((button) => {
+  button.addEventListener('click', () => {
+    heroTarget = button.dataset.pick;
+    $('heroInput').click();
+  });
+});
+
+$('heroInput').addEventListener('change', async (event) => {
+  const file = event.target.files[0];
+  event.target.value = '';
+  if (!file || !heroTarget) return;
+
+  const slot = heroTarget;
+  const label = slot === 'desktop' ? 'Desktop' : 'Mobile';
+  setStatus('Wysyłam zdjęcie hero…');
+  try {
+    const { file: webp } = await toWebp(file);
+    const { url } = await postHeroImage(webp, slot);
+    $('heroPreview' + label).style.backgroundImage = 'url(' + JSON.stringify(url) + ')';
+    $('heroStatus' + label).textContent = 'Zdjęcie z panelu';
+    setStatus('Gotowe');
+  } catch (error) {
+    setStatus('Błąd: ' + error.message);
+  }
+});
+
+/* ---------------------- Tło hero: tryb + slajdy ---------------------- */
+async function loadHeroMode(data) {
+  const mode = data.hero_mode === 'slideshow' ? 'slideshow' : 'static';
+  document.querySelectorAll('#heroMode input').forEach((input) => { input.checked = input.value === mode; });
+  $('heroSlidesPanel').hidden = mode !== 'slideshow';
+  $('heroStaticPanel').hidden = mode === 'slideshow';
+  if (mode === 'slideshow') await loadHeroSlides();
+}
+
+document.querySelectorAll('#heroMode input').forEach((input) => {
+  input.addEventListener('change', async () => {
+    const mode = input.value;
+    $('heroSlidesPanel').hidden = mode !== 'slideshow';
+    $('heroStaticPanel').hidden = mode === 'slideshow';
+    try {
+      await api('/api/settings/hero-mode', { method: 'POST', body: { mode } });
+      if (mode === 'slideshow') await loadHeroSlides();
+      setStatus('Zapisano');
+    } catch (error) {
+      setStatus('Błąd: ' + error.message);
+    }
+  });
+});
+
+async function loadHeroSlides() {
+  try {
+    const response = await fetch(API_BASE + '/api/hero-slides');
+    const payload = await response.json();
+    renderHeroSlides((payload && payload.ok) ? payload.data : []);
+  } catch (error) {
+    setStatus('Nie udało się wczytać slajdów: ' + error.message);
+  }
+}
+
+function renderHeroSlides(slides) {
+  const grid = $('heroSlidesGrid');
+  grid.innerHTML = '';
+
+  slides.forEach((slide) => {
+    const card = el('div', 'hero-slide-card');
+    card.style.backgroundImage = 'url(' + JSON.stringify(slide.url) + ')';
+
+    const badge = el('span', 'hero-slide-card__badge', slide.isPortrait ? 'Pion' : 'Poziom');
+    const del = el('button', 'hero-slide-card__del', '✕');
+    del.type = 'button';
+    del.setAttribute('aria-label', 'Usuń slajd');
+    del.addEventListener('click', async () => {
+      try {
+        await api('/api/hero-slides/' + slide.id, { method: 'DELETE' });
+        await loadHeroSlides();
+      } catch (error) {
+        setStatus('Błąd: ' + error.message);
+      }
+    });
+
+    card.append(badge, del);
+    grid.append(card);
+  });
+
+  const add = el('button', 'hero-slide-card hero-slide-card--empty', '+ Dodaj');
+  add.type = 'button';
+  add.addEventListener('click', () => $('heroSlideInput').click());
+  grid.append(add);
+}
+
+$('heroSlideInput').addEventListener('change', async (event) => {
+  const file = event.target.files[0];
+  event.target.value = '';
+  if (!file) return;
+
+  setStatus('Wysyłam slajd…');
+  try {
+    const { file: webp, portrait } = await toWebp(file);
+    const form = new FormData();
+    form.append('file', webp);
+    if (portrait) form.append('portrait', '1');
+    await postFile('/api/hero-slides', form);
+    await loadHeroSlides();
+    setStatus('Gotowe');
+  } catch (error) {
+    setStatus('Błąd: ' + error.message);
+  }
+});
+
+/* ---------------------------- Zaufali mi ------------------------------ */
+let trustedAvatarTarget = null;
+
+async function loadTrusted() {
+  try {
+    const response = await fetch(API_BASE + '/api/trusted');
+    const payload = await response.json();
+    renderTrusted((payload && payload.ok) ? payload.data : []);
+  } catch (error) {
+    setStatus('Nie udało się wczytać wpisów: ' + error.message);
+  }
+}
+
+function renderTrusted(entries) {
+  const list = $('trustedList');
+  list.innerHTML = '';
+  $('trustedEmpty').hidden = entries.length > 0;
+
+  entries.forEach((entry) => {
+    const row = el('div', 'trusted-row');
+
+    const avatar = el('button', 'trusted-row__avatar', entry.url ? '' : '＋');
+    avatar.type = 'button';
+    avatar.setAttribute('aria-label', 'Zmień avatar');
+    if (entry.url) avatar.style.backgroundImage = 'url(' + JSON.stringify(entry.url) + ')';
+    avatar.addEventListener('click', () => {
+      trustedAvatarTarget = entry.id;
+      $('trustedAvatarInput').click();
+    });
+
+    const body = el('div', 'trusted-row__body');
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.placeholder = 'Nazwa firmy';
+    nameInput.value = entry.name || '';
+    nameInput.addEventListener('input', () => queueSave('trusted', entry.id, { name: nameInput.value }));
+
+    const linkInput = document.createElement('input');
+    linkInput.type = 'text';
+    linkInput.placeholder = 'https://... (dokąd ma prowadzić)';
+    linkInput.value = entry.link || '';
+    linkInput.addEventListener('input', () => queueSave('trusted', entry.id, { link: linkInput.value }));
+
+    body.append(nameInput, linkInput);
+
+    const del = el('button', 'icon-btn', '✕');
+    del.type = 'button';
+    del.setAttribute('aria-label', 'Usuń wpis');
+    del.addEventListener('click', async () => {
+      try {
+        await api('/api/trusted/' + entry.id, { method: 'DELETE' });
+        await loadTrusted();
+      } catch (error) {
+        setStatus('Błąd: ' + error.message);
+      }
+    });
+
+    row.append(avatar, body, del);
+    list.append(row);
+  });
+}
+
+$('trustedAdd').addEventListener('click', async () => {
+  try {
+    await api('/api/trusted', { method: 'POST' });
+    await loadTrusted();
+  } catch (error) {
+    setStatus('Błąd: ' + error.message);
+  }
+});
+
+$('trustedAvatarInput').addEventListener('change', async (event) => {
+  const file = event.target.files[0];
+  event.target.value = '';
+  if (!file || !trustedAvatarTarget) return;
+
+  setStatus('Wysyłam avatar…');
+  try {
+    const { file: webp } = await toWebp(file);
+    const form = new FormData();
+    form.append('file', webp);
+    await postFile('/api/trusted/' + trustedAvatarTarget + '/avatar', form);
+    await loadTrusted();
+    setStatus('Gotowe');
+  } catch (error) {
+    setStatus('Błąd: ' + error.message);
+  }
+});
+
+/* ============================================================================
+   Podgląd strony publicznej — w ramce, na aktywnym folderze
+   ========================================================================== */
+async function openPreview() {
+  await flushSaves();                 // podgląd ma pokazać także ostatnie zmiany
+  const hash = activeFolderId ? '#f=' + activeFolderId : '';
+  const url = PUBLIC_PAGE + '?podglad=' + Date.now() + hash;
+  $('previewFrame').src = url;
+  $('previewOpen').href = url;
+  $('preview').hidden = false;
+}
+
+function closePreview() {
+  $('preview').hidden = true;
+  $('previewFrame').src = 'about:blank';
+}
+
+$('openPreview').addEventListener('click', openPreview);
+$('previewClose').addEventListener('click', closePreview);
+document.querySelectorAll('#preview [data-device]').forEach((button) => {
+  button.addEventListener('click', () => {
+    document.querySelectorAll('#preview [data-device]').forEach((other) => other.classList.toggle('on', other === button));
+    $('preview').classList.toggle('phone', button.dataset.device === 'phone');
+  });
+});
+
+/* ============================================================================
+   Menu kontekstowe (prawy klik na desktopie, długie przytrzymanie na mobile)
+   ========================================================================== */
+const menu = $('menu');
+
+function openMenu(x, y, items) {
+  menu.innerHTML = '';
+  items.forEach((item) => {
+    const button = el('button', item.danger ? 'danger' : '', item.label);
+    button.addEventListener('click', () => {
+      closeMenu();
+      item.action();
+    });
+    menu.append(button);
+  });
+
+  menu.hidden = false;
+  // Najpierw pokazujemy, potem mierzymy — żeby menu nie wyszło poza ekran.
+  const box = menu.getBoundingClientRect();
+  menu.style.left = Math.max(8, Math.min(x, window.innerWidth - box.width - 8)) + 'px';
+  menu.style.top = Math.max(8, Math.min(y, window.innerHeight - box.height - 8)) + 'px';
+}
+
+function closeMenu() { menu.hidden = true; }
+
+document.addEventListener('click', (event) => {
+  if (!menu.hidden && !menu.contains(event.target)) closeMenu();
+});
+window.addEventListener('scroll', closeMenu, true);
+
+function attachMenu(element, buildItems) {
+  element.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
+    openMenu(event.clientX, event.clientY, buildItems());
+  });
+
+  // Długie przytrzymanie na dotyku (~500 ms).
+  let timer = null;
+  const cancel = () => clearTimeout(timer);
+  element.addEventListener('touchstart', (event) => {
+    const touch = event.touches[0];
+    timer = setTimeout(() => openMenu(touch.clientX, touch.clientY, buildItems()), 500);
+  }, { passive: true });
+  ['touchend', 'touchmove', 'touchcancel'].forEach((type) => {
+    element.addEventListener(type, cancel, { passive: true });
+  });
+}
+
+/* ============================================================================
+   Mini-modal na wpisanie tekstu (zamiast systemowego prompt)
+   ========================================================================== */
+let askResolve = null;
+
+function askText(title, value) {
+  $('askTitle').textContent = title;
+  $('askInput').value = value || '';
+  $('ask').hidden = false;
+  $('askInput').focus();
+  $('askInput').select();
+  return new Promise((resolve) => { askResolve = resolve; });
+}
+
+function closeAsk(value) {
+  $('ask').hidden = true;
+  if (askResolve) askResolve(value);
+  askResolve = null;
+}
+
+$('askForm').addEventListener('submit', (event) => {
+  event.preventDefault();
+  closeAsk($('askInput').value);
+});
+$('askCancel').addEventListener('click', () => closeAsk(null));
+$('ask').addEventListener('click', (event) => {
+  if (event.target === $('ask')) closeAsk(null);
+});
+$('askInput').addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closeAsk(null);
+});
+
+// Escape zamyka to, co jest na wierzchu.
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape') return;
+  closeMenu();
+  if (!$('preview').hidden) closePreview();
+});
+
+/* ============================================================================
+   Wejście: jeśli w localStorage leży ważny token, wchodzimy od razu
+   ========================================================================== */
+(async function init() {
+  if (!token) return;
+  try {
+    await start();
+  } catch (error) {
+    logout();                         // token wygasł albo API nie odpowiada
+  }
+})();
+</script>
+</body>
+</html>

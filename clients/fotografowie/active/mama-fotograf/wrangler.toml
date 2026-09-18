@@ -1,0 +1,35 @@
+# wrangler.toml — konfiguracja workera (API) dla JEDNEJ instancji klienta.
+#
+# PER KLIENT ZMIENIASZ wszystko poniżej oznaczone NAZWA_KLIENTA / UZUPEŁNIJ / ZMIEŃ.
+# Kolejność: najpierw utwórz zasoby (d1 create, r2 bucket create), potem wklej id tutaj.
+
+name = "portfolio-mama-fotograf"
+main = "worker/index.js"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "portfolio-mama-fotograf-db"
+database_id = "UZUPEŁNIJ_PO_UTWORZENIU_D1"   # <- wynik `wrangler d1 create`
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "portfolio-mama-fotograf-photos"
+
+[vars]
+# Domena frontendu (Cloudflare Pages albo własna domena klienta).
+# Tylko z tego origin worker przyjmuje zapytania (CORS).
+ALLOWED_ORIGIN = "https://DOMENA_KLIENTA.pages.dev"
+
+# Publiczny adres bucketu R2 (Dashboard → R2 → bucket → Settings → Public access).
+# Z niego sklejany jest URL każdego zdjęcia: {R2_PUBLIC_URL}/{r2_key}
+R2_PUBLIC_URL = "https://pub-UZUPEŁNIJ_HASH.r2.dev"
+
+# HASŁO I SEKRET JWT — NIE WPISUJ ICH TUTAJ (ten plik trafia do gita).
+# Ustawiasz je jako sekrety workera, raz na klienta:
+#   wrangler secret put ADMIN_PASSWORD
+#   wrangler secret put JWT_SECRET          (losowy string, min. 32 znaki)
+# Do lokalnych testów (`wrangler dev`) skopiuj .dev.vars.example → .dev.vars.
+#
+# Nie dopisuj ich też do [vars] — wrangler nie pozwala mieć zmiennej i sekretu
+# o tej samej nazwie, a `wrangler deploy` nadpisałby sekret wartością z pliku.

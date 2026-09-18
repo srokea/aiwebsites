@@ -9,6 +9,7 @@
  * Opcje:
  *   --out DIR      katalog wyjściowy (domyślnie screenshots/<klient>/)
  *   --viewport     dodatkowo zrzuty samego viewportu (hero) zamiast tylko full-page
+ *   --wide         dodatkowo zrzut 2560x1440 (kontrola kadrów hero na szerokim monitorze)
  *
  * Sam uruchamia lokalny serwer statyczny (relatywne ścieżki photos/ działają),
  * po zakończeniu go zamyka. Nazwy plików: <strona>-mobile.png, <strona>-desktop.png.
@@ -52,6 +53,9 @@ const VIEWPORTS = [
   { name: 'mobile', width: 390, height: 844, deviceScaleFactor: 2 },
   { name: 'desktop', width: 1440, height: 900, deviceScaleFactor: 1 },
 ];
+// --wide: dodatkowy zrzut na szerokim monitorze. Kadry hero trzeba sprawdzać także tutaj,
+// nie tylko na 1440 px (powtarzalny błąd: hero ucięte po bokach na dużym ekranie).
+const WIDE_VIEWPORT = { name: 'wide', width: 2560, height: 1440, deviceScaleFactor: 1 };
 
 const args = process.argv.slice(2);
 const positional = args.filter((a) => !a.startsWith('--'));
@@ -87,9 +91,11 @@ const browser = await puppeteer.launch({
   args: ['--no-sandbox', '--disable-gpu', '--hide-scrollbars'],
 });
 
+const viewports = flag('wide') ? [...VIEWPORTS, WIDE_VIEWPORT] : VIEWPORTS;
+
 for (const file of pages) {
   const name = basename(file, '.html');
-  for (const vp of VIEWPORTS) {
+  for (const vp of viewports) {
     const page = await browser.newPage();
     await page.setViewport(vp);
     await page.goto(`http://localhost:${port}/${file}`, { waitUntil: 'networkidle0', timeout: 60000 });
