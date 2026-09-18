@@ -53,6 +53,21 @@ export async function uploadHeroImage(env, formData, slot) {
 }
 
 /**
+ * Nazwy dwoch grup sesji w portfolio (np. "Sesje naturalne" / "Sesje
+ * biznesowe"). Puste pole = strona pokazuje nazwe domyslna.
+ */
+export async function setGroupNames(env, body) {
+  const out = {};
+  for (const key of ['group1_name', 'group2_name']) {
+    if (typeof body[key] !== 'string') continue;
+    const value = body[key].trim().slice(0, 60);
+    await setSetting(env, key, value);
+    out[key] = value;
+  }
+  return out;
+}
+
+/**
  * Tryb tla hero: 'static' (domyslnie, zdjecia z uploadHeroImage powyzej) albo
  * 'slideshow' (slajdy z hero.js, patrz worker/hero.js). Osobny przelacznik,
  * zeby Magda mogl wrocic do statycznego zdjecia jednym klikiem bez utraty

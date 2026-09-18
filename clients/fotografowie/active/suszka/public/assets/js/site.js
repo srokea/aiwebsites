@@ -39,6 +39,9 @@
         if (!body.ok) return;
         if (body.data.hero_desktop && heroSourceDesktop) heroSourceDesktop.srcset = body.data.hero_desktop;
         if (body.data.hero_mobile) heroImg.src = body.data.hero_mobile;
+        // Zdjecie tla jest -> CSS pokazuje <img> i daje tekstowi wlasny kafel
+        // (bez mgly na calym zdjeciu, patrz .hero--photo w style.css).
+        if (body.data.hero_desktop || body.data.hero_mobile) heroImg.closest('.hero').classList.add('hero--photo');
 
         // Slideshow (opcja z panelu, patrz worker/hero.js) — zdjecie statyczne
         // wyzej zostaje jako natychmiast widoczna "plansza", dopoki slajdy
@@ -48,7 +51,10 @@
           try {
             const slidesRes = await fetch(API_BASE + '/api/hero-slides');
             const slidesBody = await slidesRes.json();
-            if (slidesBody.ok && slidesBody.data.length) startHeroSlideshow(slidesBody.data, heroMediaEl);
+            if (slidesBody.ok && slidesBody.data.length) {
+              heroMediaEl.closest('.hero').classList.add('hero--photo');
+              startHeroSlideshow(slidesBody.data, heroMediaEl);
+            }
           } catch (error) { /* zostaje zdjecie statyczne */ }
         }
       })
@@ -111,8 +117,15 @@
   // tytulem, NIE cala sekcja (ta zawiera tez galerie/formularz/cennik i
   // jest wysoka na cala strone — obserwowanie jej dawalo isIntersecting=true
   // przez caly scroll, wiec nav nigdy sie nie podnosil).
-  const firstSection = document.querySelector('.hero') || document.querySelector('.section-head');
-  if (firstSection && 'IntersectionObserver' in window) {
+  // Podstrony (bez .hero): nav dostaje tlo i blur od pierwszego piksela
+  // scrolla — inaczej tytul sekcji przebijal przez przezroczysty pasek,
+  // zanim schowal sie za nim w calosci (zgloszone z telefonu, 2026-09-18).
+  const firstSection = document.querySelector('.hero');
+  if (!firstSection) {
+    const onScrollSub = () => nav.classList.toggle('is-lifted', window.scrollY > 4);
+    window.addEventListener('scroll', onScrollSub, { passive: true });
+    onScrollSub();
+  } else if ('IntersectionObserver' in window) {
     // Ujemny gorny rootMargin o wysokosc navu: "nie przecina" liczy sie
     // dopiero, gdy sekcja schowa sie CALA za pasek nawigacji — czyli
     // dokladnie w momencie, gdy nav zaczalby lezec na kolejnej tresci.

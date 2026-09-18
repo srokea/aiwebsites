@@ -146,6 +146,8 @@
           .map(({ item, album }) => {
             const base = {
               cat: folder.slug,
+              // Grupa sesji z panelu (1 albo 2) — patrz wybor grupy w init().
+              grp: folder.grp === 2 ? 2 : 1,
               // Nazwa folderu z panelu = etykieta zakladki filtra — pokazujemy
               // ja dokladnie tak, jak Magda ja napisal (patrz renderFilters).
               catLabel: folder.name,
@@ -974,7 +976,56 @@
     });
   }
 
+  /* ---------------------------------------------------- grupy sesji ---
+     Portfolio ma dwie grupy (np. "Sesje naturalne" / "Sesje biznesowe").
+     Bez ?g= w adresie strona pokazuje dwa kafle do wyboru, z ?g=1 / ?g=2
+     zwykla galerie ograniczona do folderow tej grupy. Kafle to zwykle
+     linki, wiec "wstecz" w przegladarce i wyslany komus link dzialaja. */
+  const pickerEl = document.getElementById('sessionPicker');
+  const portfolioEl = document.getElementById('portfolio');
+  const DEFAULT_GROUP_NAMES = ['Sesje X', 'Sesje Y'];
+
+  function readGroup() {
+    const g = new URLSearchParams(location.search).get('g');
+    return g === '1' ? 1 : g === '2' ? 2 : null;
+  }
+  const activeGroup = pickerEl ? readGroup() : null;
+
+  // Od razu, zanim przyjda dane — zeby nie mignal zly widok.
+  if (pickerEl && portfolioEl) {
+    pickerEl.hidden = activeGroup !== null;
+    portfolioEl.hidden = activeGroup === null;
+  }
+
+  async function applyGroupNames() {
+    let names = DEFAULT_GROUP_NAMES.slice();
+    try {
+      const body = await (await fetch(API_BASE + '/api/settings')).json();
+      if (body.ok) names = [body.data.group1_name || names[0], body.data.group2_name || names[1]];
+    } catch (error) { /* zostaja domyslne */ }
+    document.querySelectorAll('[data-group-name]').forEach((node) => {
+      node.textContent = names[Number(node.dataset.groupName) - 1];
+    });
+    const title = document.getElementById('groupTitle');
+    if (title && activeGroup) {
+      title.textContent = names[activeGroup - 1];
+      document.title = names[activeGroup - 1] + ' · Portfolio · Magda Suszka-Krawiec Photography';
+    }
+  }
+
+  /** Okladka kafla = pierwsze zdjecie z pierwszego folderu grupy. */
+  function fillPickerCovers(allPhotos) {
+    [1, 2].forEach((group) => {
+      const cover = allPhotos.find((photo) => photo.type === 'photo' && (photo.grp || 1) === group);
+      const img = pickerEl.querySelector('[data-group-cover="' + group + '"]');
+      if (!cover || !img) return;
+      img.src = cover.url;
+      img.hidden = false;
+    });
+  }
+
   (async function init() {
+    const namesReady = pickerEl ? applyGroupNames() : null;
     let data = { photos: LOCAL_PHOTOS, videos: LOCAL_VIDEOS };
     if (API_BASE) {
       try {
@@ -985,7 +1036,15 @@
       }
     }
 
-    photos = decorate(data.photos);
+    if (namesReady) await namesReady;
+    if (pickerEl && activeGroup === null) {
+      fillPickerCovers(decorate(data.photos));
+      return; // galeria czeka, az ktos wybierze grupe
+    }
+
+    photos = decorate(activeGroup
+      ? data.photos.filter((photo) => (photo.grp || 1) === activeGroup)
+      : data.photos);
     videos = data.videos;
     const wanted = readUrl();
     activeFilter = wanted.filter;

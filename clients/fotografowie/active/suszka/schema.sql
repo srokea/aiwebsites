@@ -12,7 +12,10 @@ CREATE TABLE IF NOT EXISTS folders (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
   position INTEGER NOT NULL,
-  created_at TEXT DEFAULT (datetime('now'))
+  created_at TEXT DEFAULT (datetime('now')),
+  -- Grupa sesji na stronie (1 albo 2, nazwy w settings: group1_name/group2_name).
+  -- Na starej bazie: migrations/001-folders-grp.sql.
+  grp INTEGER NOT NULL DEFAULT 1
 );
 
 -- Albumy = sekcje wyświetlane jedna pod drugą na stronie folderu.

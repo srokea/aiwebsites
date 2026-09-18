@@ -21,6 +21,9 @@
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/worksans-latin.woff2" crossorigin>
 
 <link rel="stylesheet" href="assets/css/style.css">
+<!-- Bez ?g= w adresie: ekran wyboru grupy na caly ekran, bez headera
+     i stopki. Klasa ustawiana przed pierwszym malowaniem, zeby header nie mignal. -->
+<script>if (!/[?&]g=[12](&|$)/.test(location.search)) document.documentElement.classList.add('is-picker');</script>
 <!-- Fonty blokow tekstu z panelu (Playfair, Lora, Great Vibes...) — te same
      pliki co w panelu, wczytywane tylko gdy faktycznie uzyte w tekscie. -->
 <link rel="stylesheet" href="assets/css/admin-fonts.css">
@@ -58,8 +61,9 @@
         <path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.25-1.5 1.5-1.5h1.7V3.9c-.3-.04-1.3-.13-2.5-.13-2.5 0-4.2 1.5-4.2 4.3V10H7.3v3H10v8h3.5z" fill="currentColor"/>
       </svg>
     </a>
-    <!-- Telefon widoczny zawsze, też na mobile. -->
-    <a class="btn btn--primary" href="tel:+48697035198"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.5 3.5h3l1.5 4-2 1.5a12 12 0 006 6l1.5-2 4 1.5v3c0 .8-.7 1.5-1.5 1.4C10.8 18.6 5.4 13.2 5.1 5C5 4.2 5.7 3.5 6.5 3.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Zadzwoń</a>
+    <!-- Glowne CTA: Messenger (prosba klientki). Telefon jest tylko na
+         stronie Kontakt i w dymku widgetu. -->
+    <a class="btn btn--primary" href="https://m.me/MagdalenaSuszkaKrawiecFotografia" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.2c-4.9 0-8.8 3.6-8.8 8.1 0 2.5 1.2 4.7 3.2 6.2v3l2.9-1.6c.8.2 1.7.3 2.7.3 4.9 0 8.8-3.6 8.8-8s-3.9-8-8.8-8z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M7.2 14.2l3.5-3.7 2 2 2.9-2.6-3.3 3.6-2-1.9-3.1 2.6z" fill="currentColor"/></svg>Napisz</a>
     <button class="nav__burger" type="button" id="burger"
             aria-expanded="false" aria-controls="navpanel" aria-label="Otwórz menu">
       <span></span>
@@ -96,11 +100,37 @@
 
 <main id="top">
 
+<!-- ==================================================== WYBOR GRUPY SESJI -->
+<!-- Najpierw wybor jednej z dwoch grup (nazwy i przypisanie folderow w panelu
+     -> Ustawienia strony). gallery.js pokazuje ten blok albo galerie ponizej,
+     zaleznie od ?g= w adresie; okladka = pierwsze zdjecie grupy. -->
+<div class="picker" id="sessionPicker" hidden>
+  <h1 class="sr-only">Portfolio</h1>
+  <!-- Ekran wyboru jest bez headera i stopki — logo w rogu prowadzi na glowna. -->
+  <a class="picker__logo" href="index.html" aria-label="Magda Suszka-Krawiec Photography, strona główna">
+    <img src="assets/img/logo-480.png" alt="" width="480" height="193">
+  </a>
+  <a class="picker__tile picker__tile--1" href="portfolio.html?g=1">
+    <img class="picker__img" alt="" data-group-cover="1" width="1200" height="1600" hidden>
+    <span class="picker__label" data-group-name="1">Sesje X</span>
+  </a>
+  <a class="picker__tile picker__tile--2" href="portfolio.html?g=2">
+    <img class="picker__img" alt="" data-group-cover="2" width="1200" height="1600" hidden>
+    <span class="picker__label" data-group-name="2">Sesje Y</span>
+  </a>
+</div>
+
 <!-- ============================================================== PORTFOLIO -->
-<section class="section glow glow--left" id="portfolio">
+<section class="section glow glow--left" id="portfolio" hidden>
   <div class="wrap">
     <div class="section-head" data-reveal>
-      <h2 class="section-title">Portfolio</h2>
+      <a class="picker-back" href="portfolio.html">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M14.5 5L8 12l6.5 7" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        Wszystkie sesje
+      </a>
+      <h2 class="section-title" id="groupTitle">Portfolio</h2>
       <p class="section-intro">Brzuszki, maluchy, całe rodziny. Każda sesja jest inna.</p>
     </div>
 
@@ -156,6 +186,9 @@
     </nav>
 
     <div class="foot__social">
+      <a href="https://m.me/MagdalenaSuszkaKrawiecFotografia" target="_blank" rel="noopener" aria-label="Messenger">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.2c-4.9 0-8.8 3.6-8.8 8.1 0 2.5 1.2 4.7 3.2 6.2v3l2.9-1.6c.8.2 1.7.3 2.7.3 4.9 0 8.8-3.6 8.8-8s-3.9-8-8.8-8z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M7.2 14.2l3.5-3.7 2 2 2.9-2.6-3.3 3.6-2-1.9-3.1 2.6z" fill="currentColor"/></svg>
+      </a>
       <a href="https://www.instagram.com/magda_suszkakrawiec_fotografia/" target="_blank" rel="noopener" aria-label="Instagram">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.5"/>

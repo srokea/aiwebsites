@@ -15,7 +15,6 @@
     // email: 'mailto:...' i ['email', 'E-mail'] w CHANNEL_LABELS nizej.
     channels: {
       phone: 'tel:+48697035198',
-      instagram: 'https://ig.me/m/magda_suszkakrawiec_fotografia',
       messenger: 'https://m.me/MagdalenaSuszkaKrawiecFotografia',
     },
 
@@ -51,7 +50,7 @@
       },
       {
         q: 'Jak zarezerwować termin?',
-        a: 'Wystarczy zadzwonić albo napisać na Instagramie lub Messengerze. Ustalimy rodzaj sesji, miejsce i termin.',
+        a: 'Wystarczy napisać na Messengerze albo zadzwonić. Ustalimy rodzaj sesji, miejsce i termin.',
       },
     ],
   };
@@ -65,7 +64,7 @@
     const hit = WIDGET_CONFIG.faq.find((entry) =>
       query && entry.q.toLowerCase().split(' ').some((word) =>
         word.length > 4 && query.includes(word)));
-    return hit ? hit.a : 'Proszę napisać do mnie na Instagramie albo zadzwonić, odpowiem osobiście.';
+    return hit ? hit.a : 'Proszę napisać do mnie na Messengerze albo zadzwonić, odpowiem osobiście.';
   }
 
   // Widget siedzi we własnym zakresie, więc punkt wejścia wystawiamy jawnie.
@@ -96,9 +95,9 @@
   };
 
   const CHANNEL_LABELS = [
-    ['phone', 'Zadzwoń'],
-    ['instagram', 'Instagram'],
+    // Messenger pierwszy (prosba klientki), bez Instagrama; telefon na koncu.
     ['messenger', 'Messenger'],
+    ['phone', 'Zadzwoń'],
   ];
 
   /* ------------------------------------------------------------- budowanie --- */

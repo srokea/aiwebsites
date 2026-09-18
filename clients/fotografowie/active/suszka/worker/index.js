@@ -16,7 +16,7 @@
  *
  * Endpointy chronione (Authorization: Bearer <JWT>):
  *   POST   /api/folders                { name }
- *   PUT    /api/folders/:id            { name?, position? }
+ *   PUT    /api/folders/:id            { name?, position?, grp? (1|2) }
  *   DELETE /api/folders/:id
  *   POST   /api/albums                 { folderId, name? }
  *   PUT    /api/albums/:id             { name?, position? }
@@ -29,6 +29,7 @@
  *   POST   /api/settings/hero-desktop  FormData: file (WebP)
  *   POST   /api/settings/hero-mobile   FormData: file (WebP)
  *   POST   /api/settings/hero-mode     { mode: 'static' | 'slideshow' }
+ *   POST   /api/settings/groups        { group1_name?, group2_name? }
  *   POST   /api/hero-slides            FormData: file, portrait?
  *   PUT    /api/hero-slides/:id        { position }
  *   DELETE /api/hero-slides/:id
@@ -45,7 +46,7 @@ import { authenticate, checkPassword, createToken } from './auth.js';
 import { createAlbum, deleteAlbum, updateAlbum } from './albums.js';
 import { createFolder, deleteFolder, getFolderContent, listFolders, updateFolder } from './folders.js';
 import { createText, deleteItem, updateItem, uploadPhoto, uploadVideo } from './items.js';
-import { getSettings, setHeroMode, uploadHeroImage } from './settings.js';
+import { getSettings, setGroupNames, setHeroMode, uploadHeroImage } from './settings.js';
 import { deleteHeroSlide, listHeroSlides, updateHeroSlide, uploadHeroSlide } from './hero.js';
 import { createTrusted, deleteTrusted, listTrusted, updateTrusted, uploadTrustedAvatar } from './trusted.js';
 
@@ -195,6 +196,10 @@ async function route(request, env) {
   if (resource === 'settings' && method === 'POST' && (param === 'hero-desktop' || param === 'hero-mobile')) {
     const slot = param === 'hero-desktop' ? 'desktop' : 'mobile';
     return ok(await uploadHeroImage(env, await request.formData(), slot), request, env);
+  }
+
+  if (resource === 'settings' && method === 'POST' && param === 'groups') {
+    return ok(await setGroupNames(env, await readJson(request)), request, env);
   }
 
   if (resource === 'settings' && method === 'POST' && param === 'hero-mode') {

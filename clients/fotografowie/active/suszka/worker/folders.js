@@ -10,12 +10,12 @@
 
 import { deleteR2Keys, toPublicItem } from './items.js';
 
-const SELECT_FOLDER = 'SELECT id, name, position, created_at FROM folders WHERE id = ?';
+const SELECT_FOLDER = 'SELECT id, name, position, created_at, grp FROM folders WHERE id = ?';
 
 /** Wszystkie foldery, w kolejności ustawionej w panelu. */
 export async function listFolders(env) {
   const { results } = await env.DB
-    .prepare('SELECT id, name, position, created_at FROM folders ORDER BY position ASC')
+    .prepare('SELECT id, name, position, created_at, grp FROM folders ORDER BY position ASC')
     .all();
   return results || [];
 }
@@ -74,7 +74,7 @@ export async function createFolder(env, name) {
   return env.DB.prepare(SELECT_FOLDER).bind(id).first();
 }
 
-/** Zmiana nazwy i/lub pozycji. Pola nieprzysłane zostają bez zmian. */
+/** Zmiana nazwy, pozycji i/lub grupy. Pola nieprzysłane zostają bez zmian. */
 export async function updateFolder(env, id, patch) {
   const fields = [];
   const values = [];
@@ -86,6 +86,11 @@ export async function updateFolder(env, id, patch) {
   if (Number.isInteger(patch.position)) {
     fields.push('position = ?');
     values.push(patch.position);
+  }
+  // Grupa sesji na stronie portfolio: tylko 1 albo 2.
+  if (patch.grp === 1 || patch.grp === 2) {
+    fields.push('grp = ?');
+    values.push(patch.grp);
   }
   if (!fields.length) throw new Error('Brak pól do aktualizacji');
 

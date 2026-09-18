@@ -177,7 +177,7 @@ a { color: inherit; }
 .section--surface { background: var(--surface); }
 /* Podstrony zaczynaja sie od zwyklej sekcji (nie od hero) — musi ona zejsc
    ponizej stalej nawigacji, inaczej tytul wjezdza pod header na telefonie. */
-main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 5vw, 3.5rem)); }
+main > .section:first-of-type { padding-top: calc(var(--nav-h) + clamp(2rem, 5vw, 3.5rem)); }
 
 .wrap { max-width: var(--max); margin: 0 auto; }
 
@@ -459,9 +459,10 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 5vw, 
   overflow: hidden;
 }
 .hero__media { position: absolute; inset: 0; z-index: -2; }
-/* Dopoki Magda nie wgra tla w panelu, <img> nie ma src — bez tego przegladarka
-   rysuje ikone zepsutego obrazka i ramke na bialym hero. */
-.hero__media img:not([src]) { visibility: hidden; }
+/* Dopoki Magda nie wgra tla w panelu, <img> nie ma zdjecia — bez tego przegladarka
+   rysuje ikone zepsutego obrazka i ramke na bialym hero. site.js dokleja
+   .hero--photo, gdy zdjecie (albo slajdy) faktycznie jest. */
+.hero:not(.hero--photo) .hero__media img { visibility: hidden; }
 .hero__media img,
 .hero__media video {
   width: 100%; height: 100%;
@@ -485,19 +486,42 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 5vw, 
 }
 .hero__slide.is-active { opacity: 1; }
 /* Gradient, nie plaska zaslona: zdjecie ma zostac widoczne. */
-.hero__media::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  /* Jasny welon: srodek (logo i tekst) prawie bialy, brzegi zostawiaja
-     zdjecie z panelu widoczne. Bez zdjecia hero to po prostu biel. */
-  background: radial-gradient(ellipse 70% 60% at 50% 52%,
-    rgba(255, 255, 255, 0.9) 0%,
-    rgba(255, 255, 255, 0.72) 55%,
-    rgba(255, 255, 255, 0.35) 100%);
-}
 /* Kontener hero: logo (max 40rem) + podpis + CTA, wysrodkowane. */
 .hero__inner { width: 100%; max-width: min(60rem, 92vw); margin: 0 auto; }
+
+/* Zdjecie w tle BEZ mgly i bez kafla (prosba klientki): cale zdjecie widoczne,
+   tekst i logo na bialo z miekkim cieniem, blizej dolnej krawedzi, zeby nie
+   wchodzic na twarz. */
+.hero--photo { align-items: flex-end; }
+.hero--photo .hero__inner { color: #FFFFFF; text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45), 0 0 2px rgba(0, 0, 0, 0.35); }
+.hero--photo .hero__title img {
+  width: min(17rem, 76%);
+  /* Ciemne logo -> biale, z tym samym cieniem co tekst. */
+  filter: brightness(0) invert(1) drop-shadow(0 1px 8px rgba(0, 0, 0, 0.5));
+}
+.hero--photo .hero__lead { color: #FFFFFF; margin-top: 0.75rem; }
+.hero--photo .hero__more { margin-top: 1.25rem; border-color: #FFFFFF; color: #FFFFFF; box-shadow: 0 1px 12px rgba(0, 0, 0, 0.18); }
+.hero--photo .hero__more:hover { background: #FFFFFF; color: var(--ink); text-shadow: none; }
+.hero--photo .hero__proof, .hero--photo .hero__proof .stat__num { color: #FFFFFF; }
+@media (min-width: 768px) { .hero--photo .hero__title img { width: min(24rem, 100%); } }
+/* Telefon (wariant A, wybrany 2026-09-18, warianty/hero-porownanie.png):
+   samo logo + pelny bialy przycisk — zdjecie ma grac pierwsze skrzypce.
+   Dolny odstep trzyma przycisk nad dymkiem widgetu. */
+@media (max-width: 767px) {
+  .hero--photo { padding-bottom: 5.75rem; }
+  .hero--photo .hero__lead, .hero--photo .hero__proof { display: none; }
+  .hero--photo .hero__title img { width: min(16rem, 72%); }
+  .hero--photo .hero__more {
+    margin-top: 1.5rem;
+    background: #FFFFFF;
+    border-color: #FFFFFF;
+    color: var(--ink);
+    text-shadow: none;
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.28);
+  }
+}
+/* Na zdjeciu przezroczysty header gubi ciemne logo - od razu jasne tlo. */
+body:has(.hero--photo) .nav { background: rgba(255, 255, 255, 0.88); border-bottom-color: var(--border); }
 
 /* .label domyslnie jest --ink-muted — na zdjeciu w tle hero to za slabo
    widoczne. Tutaj potrzebny jasniejszy ton, mimo ze to wciaz drugoplanowy
@@ -540,6 +564,9 @@ main > .section:first-child { padding-top: calc(var(--nav-h) + clamp(2rem, 5vw, 
   /* Pigulki maja dochodzic do krawedzi ekranu przy scrollu poziomym. */
   margin-inline: calc(var(--pad) * -1);
   padding-inline: var(--pad);
+  /* Bez tego scroll-snap dociaga pierwsza pigulke do samej krawedzi ekranu
+     (ignoruje padding) — na telefonie "Wszystko" przyklejalo sie do lewej. */
+  scroll-padding-inline: var(--pad);
 }
 .filters::-webkit-scrollbar { display: none; }
 @media (min-width: 900px) {
@@ -1686,6 +1713,94 @@ textarea.input { min-height: 8rem; resize: vertical; }
   text-transform: uppercase;
   vertical-align: middle;
 }
+
+/* ================================================ PORTFOLIO: GRUPY SESJI ===
+   Wejscie w Portfolio = najpierw wybor jednej z dwoch grup (kafle na cala
+   szerokosc, na telefonie jeden pod drugim, od 768px obok siebie). Nazwy
+   i przypisanie folderow ustawia sie w panelu, okladka = pierwsze zdjecie
+   grupy (gallery.js). */
+.picker { display: grid; margin-top: var(--nav-h); }
+@media (min-width: 768px) { .picker { grid-template-columns: 1fr 1fr; } }
+.picker__tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  /* Telefon: wyzsze kafle, zeby bylo widac wiecej zdjecia (jak na wzorze od
+     klientki). lvh, nie svh — na iPhonie svh odejmuje paski Safari i kafle
+     wychodzily za niskie. 26rem = dolna granica na malych ekranach. */
+  min-height: max(26rem, calc((100lvh - var(--nav-h)) / 2));
+  background: var(--surface);
+  text-decoration: none;
+}
+.picker__tile--2 { background: var(--surface-2); }
+@media (min-width: 768px) { .picker__tile { min-height: calc(100svh - var(--nav-h)); } }
+.picker__tile:focus-visible { outline-offset: -6px; }
+.picker__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  transition: transform 700ms var(--ease);
+}
+.picker__tile:hover .picker__img { transform: scale(1.03); }
+.picker__label {
+  position: relative;
+  width: min(80%, 26rem);
+  padding: clamp(1.75rem, 5vw, 2.75rem) 1rem;
+  text-align: center;
+  color: #FFFFFF;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(2.125rem, 6.5vw, 3.25rem);
+  line-height: 1.1;
+  background: rgba(150, 88, 75, 0.78);
+  transition: background-color 200ms var(--ease);
+}
+.picker__tile--2 .picker__label { background: rgba(28, 26, 25, 0.7); }
+.picker__tile:hover .picker__label { background: rgba(122, 70, 60, 0.86); }
+.picker__tile--2:hover .picker__label { background: rgba(28, 26, 25, 0.8); }
+
+/* Ekran wyboru = pelny ekran, bez headera i stopki (html.is-picker ustawia
+   skrypt w <head> portfolio.html, zanim cokolwiek sie narysuje). Dwa kafle
+   dziela wysokosc ekranu po rowno; lvh, zeby na iPhonie paski Safari nie
+   sciskaly kafli (drugi moze wejsc pod dolny pasek, jak na wzorze). */
+html.is-picker .nav,
+html.is-picker .navpanel,
+html.is-picker .foot { display: none; }
+html.is-picker body { padding-bottom: 0; }
+html.is-picker .picker { position: relative; margin-top: 0; }
+html.is-picker .picker__tile { min-height: max(18rem, 50lvh); }
+@media (min-width: 768px) { html.is-picker .picker__tile { min-height: 100lvh; } }
+
+.picker__logo {
+  position: absolute;
+  top: 1rem;
+  left: var(--pad);
+  z-index: 2;
+  line-height: 0;
+}
+.picker__logo img {
+  width: 9.5rem;
+  height: auto;
+  filter: brightness(0) invert(1) drop-shadow(0 1px 8px rgba(0, 0, 0, 0.5));
+}
+@media (min-width: 768px) { .picker__logo { top: 1.5rem; } .picker__logo img { width: 12rem; } }
+
+.picker-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--ink-muted);
+  text-decoration: none;
+  transition: color 180ms var(--ease);
+}
+.picker-back:hover { color: var(--ink); }
 
 /* ===================================================== REDUCED MOTION === */
 @media (prefers-reduced-motion: reduce) {
