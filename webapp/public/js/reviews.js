@@ -48,23 +48,28 @@ function logoHtml(r) {
 }
 
 // mini-podglad strony karty w trybie edycji (tlo + logo/tekst) - odswiezany na zywo
-function previewHtml(r) {
-  // zdjecie w tle przykrywa kolor - tekst zawsze jasny na lekkim przyciemnieniu
+// Podglad = to samo co publiczna karta (cloudflare-worker/review-card.js): biala karta na tle
+// (kolor/gradient + opcjonalne zdjecie z rozmyciem), przycisk w kolorze tla.
+function bgLayerHtml(r, scale = 1) {
   const img = r.bg_image_url;
-  const light = !img && isLightBg(r.bg);
-  const blur = Number(r.bg_blur) || 0;
+  const blur = (Number(r.bg_blur) || 0) * scale;
   return `
-    <div class="rv-preview ${light ? "rv-preview--light" : ""} ${img ? "rv-preview--img" : ""}" style="background:${bgCss(r.bg)}">
-      ${
-        img
-          ? `<div class="rv-preview-img" style="background-image:url('${escapeHtml(img)}'); filter:blur(${blur}px); transform:scale(${blur ? 1.1 : 1})"></div>
-             <div class="rv-preview-shade"></div>`
-          : ""
-      }
-      ${logoHtml(r)}
-      <div class="rv-preview-name">${escapeHtml(r.business_name || "Nazwa firmy")}</div>
-      ${r.tagline ? `<div class="rv-preview-tagline">${escapeHtml(r.tagline)}</div>` : ""}
-      <div class="rv-preview-cta">⭐ Zostaw opinię</div>
+    <div class="rv-bgfill" style="background:${bgCss(r.bg)}"></div>
+    ${img ? `<div class="rv-preview-img" style="background-image:url('${escapeHtml(img)}'); filter:blur(${blur}px); transform:scale(${blur ? 1.15 : 1})"></div>` : ""}`;
+}
+
+function previewHtml(r) {
+  const btnBg = isLightBg(r.bg) ? "#1a1a2e" : bgCss(r.bg);
+  return `
+    <div class="rv-preview">
+      ${bgLayerHtml(r, 0.5)}
+      <div class="rv-preview-card">
+        ${logoHtml(r)}
+        <div class="rv-preview-name">${escapeHtml(r.business_name || "Nazwa firmy")}</div>
+        ${r.tagline ? `<div class="rv-preview-tagline">${escapeHtml(r.tagline)}</div>` : ""}
+        <div class="rv-preview-stars">⭐⭐⭐⭐⭐</div>
+        <div class="rv-preview-cta" style="background:${btnBg}">Napisz opinię w Google</div>
+      </div>
     </div>`;
 }
 
@@ -112,6 +117,7 @@ function reviewCardHtml(r) {
         : `<span class="review-google review-google--missing">⚠ Brak linku do opinii — CTA nie zadziała</span>`
     }
     <div class="review-stats">
+      <span class="review-bg-thumb" title="Tło karty">${bgLayerHtml(r, 0.25)}</span>
       <span>👆 ${r.scan_count} skanów</span>
       <span>🖱️ ${r.click_count} kliknięć</span>
     </div>
