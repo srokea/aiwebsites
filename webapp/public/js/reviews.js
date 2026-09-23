@@ -49,14 +49,47 @@ function logoHtml(r) {
 
 // mini-podglad strony karty w trybie edycji (tlo + logo/tekst) - odswiezany na zywo
 function previewHtml(r) {
-  const light = isLightBg(r.bg);
+  // zdjecie w tle przykrywa kolor - tekst zawsze jasny na lekkim przyciemnieniu
+  const img = r.bg_image_url;
+  const light = !img && isLightBg(r.bg);
+  const blur = Number(r.bg_blur) || 0;
   return `
-    <div class="rv-preview ${light ? "rv-preview--light" : ""}" style="background:${bgCss(r.bg)}">
+    <div class="rv-preview ${light ? "rv-preview--light" : ""} ${img ? "rv-preview--img" : ""}" style="background:${bgCss(r.bg)}">
+      ${
+        img
+          ? `<div class="rv-preview-img" style="background-image:url('${escapeHtml(img)}'); filter:blur(${blur}px); transform:scale(${blur ? 1.1 : 1})"></div>
+             <div class="rv-preview-shade"></div>`
+          : ""
+      }
       ${logoHtml(r)}
       <div class="rv-preview-name">${escapeHtml(r.business_name || "Nazwa firmy")}</div>
       ${r.tagline ? `<div class="rv-preview-tagline">${escapeHtml(r.tagline)}</div>` : ""}
       <div class="rv-preview-cta">⭐ Zostaw opinię</div>
     </div>`;
+}
+
+// zdjecie w tle: wgranie z pliku albo wklejenie ze schowka (Cmd/Ctrl+V w otwartej karcie) +
+// suwak rozmycia (0-20 px, zapisywany razem z reszta przyciskiem "Zapisz")
+function bgImageHtml(r) {
+  const blur = Number(r.bg_blur) || 0;
+  return `
+    <div class="rv-bg-label">Zdjęcie w tle</div>
+    <div class="review-logo-upload">
+      <label class="review-file-btn">
+        🖼️ ${r.bg_image_url ? "Zmień zdjęcie" : "Wgraj zdjęcie"}
+        <input type="file" data-upload-bg="${escapeHtml(r.slug)}" accept="image/png,image/jpeg,image/webp" hidden>
+      </label>
+      ${r.bg_image_url ? `<button type="button" class="btn" data-del-bg="${escapeHtml(r.slug)}">Usuń zdjęcie</button>` : ""}
+    </div>
+    <div class="rv-bg-hint">albo skopiuj zdjęcie i wklej je tutaj (Cmd+V / Ctrl+V) · max 2 MB</div>
+    ${
+      r.bg_image_url
+        ? `<label class="rv-blur">Rozmycie
+             <input type="range" class="rv-edit-blur" min="0" max="20" step="1" value="${blur}">
+             <span class="rv-blur-val">${blur}px</span>
+           </label>`
+        : `<input type="hidden" class="rv-edit-blur" value="${blur}">`
+    }`;
 }
 
 function reviewCardHtml(r) {
@@ -123,6 +156,7 @@ function editFormHtml(r) {
         <input type="color" class="rv-edit-bg2" value="${(r.bg || "").split(",")[1] || "#764ba2"}" ${(r.bg || "").includes(",") ? "" : "disabled"}>
       </div>
     </div>
+    <div class="rv-bgimg">${bgImageHtml(r)}</div>
     <div class="rv-preview-wrap">${previewHtml(r)}</div>
     <div class="review-actions">
       <button type="button" class="btn primary" data-save="${escapeHtml(r.slug)}">Zapisz</button>
@@ -230,6 +264,7 @@ gridEl.addEventListener("click", async (e) => {
       logo_url: cardEl.querySelector(".rv-edit-logo").value.trim(),
       show_logo: !cardEl.querySelector(".rv-edit-nologo").checked,
       bg: cardEl.querySelector(".rv-edit-bg").value,
+      bg_blur: Number(cardEl.querySelector(".rv-edit-blur").value) || 0,
     };
     saveBtn.disabled = true;
     try {
@@ -367,6 +402,7 @@ function editState(cardEl) {
     logo_url: cardEl.querySelector(".rv-edit-logo").value.trim(),
     show_logo: cardEl.querySelector(".rv-edit-nologo").checked ? 0 : 1,
     bg: cardEl.querySelector(".rv-edit-bg").value,
+    bg_blur: Number(cardEl.querySelector(".rv-edit-blur").value) || 0,
   };
 }
 
@@ -407,7 +443,60 @@ gridEl.addEventListener("input", (e) => {
   const cardEl = e.target.closest(".review-card--edit");
   if (!cardEl) return;
   if (e.target.matches(".rv-edit-bg1, .rv-edit-bg2, .rv-edit-bg-grad")) applyCustomBg(cardEl);
+  else if (e.target.matches(".rv-edit-blur")) {
+    cardEl.querySelector(".rv-blur-val").textContent = `${e.target.value}px`;
+    refreshPreview(cardEl);
+  }
   else if (e.target.matches("input")) refreshPreview(cardEl);
+});
+
+// wgranie/usuniecie zdjecia zapisuje sie od razu na serwerze, ale NIE przerysowujemy calej
+// karty - reszta niezapisanych zmian w formularzu (tlo, tekst, rozmycie) zostaje na miejscu
+async function uploadBg(slug, file) {
+  const cardEl = gridEl.querySelector(`.review-card--edit[data-slug="${CSS.escape(slug)}"]`);
+  if (!cardEl || !file) return;
+  if (!/^image\/(png|jpeg|webp)$/.test(file.type)) return alert("Dozwolone pliki: JPG, PNG, WEBP");
+  if (file.size > 2 * 1024 * 1024) return alert("Plik za duży (max 2 MB)");
+  const fd = new FormData();
+  fd.append("image", file, file.name || "tlo.png");
+  try {
+    applyBgImage(cardEl, await api.postForm(`/api/reviews/${slug}/bg`, fd));
+  } catch (err) {
+    alert("Błąd wgrywania zdjęcia: " + err.message);
+  }
+}
+
+function applyBgImage(cardEl, saved) {
+  const card = cards.find((c) => c.slug === saved.slug);
+  if (card) card.bg_image_url = saved.bg_image_url;
+  const st = { ...editState(cardEl), bg_image_url: saved.bg_image_url };
+  cardEl.querySelector(".rv-bgimg").innerHTML = bgImageHtml(st);
+  refreshPreview(cardEl);
+}
+
+gridEl.addEventListener("change", (e) => {
+  const input = e.target.closest("[data-upload-bg]");
+  if (input) uploadBg(input.dataset.uploadBg, input.files[0]);
+});
+
+gridEl.addEventListener("click", async (e) => {
+  const del = e.target.closest("[data-del-bg]");
+  if (!del) return;
+  const cardEl = del.closest(".review-card--edit");
+  try {
+    applyBgImage(cardEl, await api.del(`/api/reviews/${del.dataset.delBg}/bg`));
+  } catch (err) {
+    alert("Błąd usuwania zdjęcia: " + err.message);
+  }
+});
+
+// wklejenie zdjecia ze schowka, gdy jakas karta jest otwarta do edycji
+document.addEventListener("paste", (e) => {
+  if (!editingSlug) return;
+  const item = [...(e.clipboardData?.items || [])].find((i) => i.kind === "file" && i.type.startsWith("image/"));
+  if (!item) return;
+  e.preventDefault();
+  uploadBg(editingSlug, item.getAsFile());
 });
 
 load();

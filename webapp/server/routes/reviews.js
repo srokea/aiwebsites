@@ -27,10 +27,17 @@ const uploadLogo = multer({
 
 // usuwa stary plik logo (jesli byl lokalnie wgrany), zeby podmiana/usuniecie nie
 // zostawialy sierot na dysku - dziala tylko dla URLi wskazujacych na nasz /review-logos/
-function deleteOldLogoFile(row) {
-  if (!row.logo_url || !row.logo_url.includes("/review-logos/")) return;
-  fs.unlink(path.join(LOGOS_DIR, path.basename(row.logo_url)), () => {}); // best-effort
+function deleteLocalFile(url) {
+  if (!url || !url.includes("/review-logos/")) return;
+  fs.unlink(path.join(LOGOS_DIR, path.basename(url)), () => {}); // best-effort
 }
+function deleteOldLogoFile(row) {
+  deleteLocalFile(row.logo_url);
+  deleteLocalFile(row.bg_image_url);
+}
+
+const MAX_BLUR = 20;
+const clampBlur = (v) => Math.max(0, Math.min(MAX_BLUR, Math.round(Number(v) || 0)));
 
 // tlo karty: '' (domyslne), '#rrggbb' albo '#rrggbb,#rrggbb' (gradient). Cokolwiek innego = null.
 const BG_FORMAT = /^(#[0-9a-f]{6})(,#[0-9a-f]{6})?$/;
@@ -74,6 +81,9 @@ async function syncToKV(slug, row) {
     show_logo: showLogo,
     bg: bgCss(row.bg),
     bg_light: isLightBg(row.bg),
+    // zdjecie w tle (przykrywa kolor/gradient) + rozmycie w px - Worker: filter: blur(Npx)
+    bg_image: row.bg_image_url || "",
+    bg_blur: row.bg_blur || 0,
   });
   const res = await fetch(kvUrl(slug), {
     method: "PUT",
@@ -182,13 +192,14 @@ router.patch("/:slug", async (req, res) => {
     active: req.body.active !== undefined ? (req.body.active ? 1 : 0) : existing.active,
     show_logo: req.body.show_logo !== undefined ? (req.body.show_logo ? 1 : 0) : existing.show_logo,
     bg: req.body.bg !== undefined ? normalizeBg(req.body.bg) : existing.bg,
+    bg_blur: req.body.bg_blur !== undefined ? clampBlur(req.body.bg_blur) : existing.bg_blur,
   };
   if (!fields.business_name) return res.status(400).json({ error: "Nazwa firmy jest wymagana" });
   if (fields.bg === null) return res.status(400).json({ error: "Nieprawidlowe tlo (oczekiwane #rrggbb albo #rrggbb,#rrggbb)" });
 
   db.prepare(
     `UPDATE review_links SET business_name=@business_name, tagline=@tagline, google_review_url=@google_review_url,
-     logo_emoji=@logo_emoji, logo_url=@logo_url, active=@active, show_logo=@show_logo, bg=@bg,
+     logo_emoji=@logo_emoji, logo_url=@logo_url, active=@active, show_logo=@show_logo, bg=@bg, bg_blur=@bg_blur,
      updated_at=datetime('now') WHERE slug=@slug`
   ).run({ ...fields, slug: existing.slug });
 
@@ -220,7 +231,7 @@ router.post(
     if (!req.file) return res.status(400).json({ error: "Dozwolone pliki: JPG, PNG, WEBP (max 2 MB)" });
     if (!PUBLIC_BASE_URL) return res.status(500).json({ error: "Brak PUBLIC_BASE_URL w konfiguracji serwera" });
 
-    deleteOldLogoFile(existing);
+    deleteLocalFile(existing.logo_url);
     const filename = `${existing.slug}-${Date.now()}.${LOGO_MIME_EXT[req.file.mimetype]}`;
     fs.writeFileSync(path.join(LOGOS_DIR, filename), req.file.buffer);
     const logo_url = `${PUBLIC_BASE_URL}/review-logos/${filename}`;
@@ -241,12 +252,68 @@ router.post(
   }
 );
 
+// POST /api/reviews/:slug/bg - zdjecie w tle karty (JPG/PNG/WEBP, max 2 MB), jak logo wyzej
+router.post(
+  "/:slug/bg",
+  (req, res, next) => {
+    uploadLogo.single("image")(req, res, (err) => {
+      if (!err) return next();
+      const message = err.code === "LIMIT_FILE_SIZE" ? "Plik za duży (max 2 MB)" : "Nie udało się wgrać pliku";
+      res.status(400).json({ error: message });
+    });
+  },
+  async (req, res) => {
+    const existing = getBySlug(req.params.slug);
+    if (!existing) return res.status(404).json({ error: "Nie znaleziono karty" });
+    if (!req.file) return res.status(400).json({ error: "Dozwolone pliki: JPG, PNG, WEBP (max 2 MB)" });
+    if (!PUBLIC_BASE_URL) return res.status(500).json({ error: "Brak PUBLIC_BASE_URL w konfiguracji serwera" });
+
+    deleteLocalFile(existing.bg_image_url);
+    const filename = `${existing.slug}-bg-${Date.now()}.${LOGO_MIME_EXT[req.file.mimetype]}`;
+    fs.writeFileSync(path.join(LOGOS_DIR, filename), req.file.buffer);
+    const bg_image_url = `${PUBLIC_BASE_URL}/review-logos/${filename}`;
+    db.prepare("UPDATE review_links SET bg_image_url = ?, updated_at = datetime('now') WHERE slug = ?").run(
+      bg_image_url,
+      existing.slug
+    );
+
+    const saved = getBySlug(existing.slug);
+    let kv_synced = true;
+    try {
+      await syncToKV(existing.slug, saved);
+    } catch (err) {
+      kv_synced = false;
+      console.error("Cloudflare KV sync (POST /api/reviews/:slug/bg):", err.message);
+    }
+    res.json({ ...saved, kv_synced });
+  }
+);
+
+// DELETE /api/reviews/:slug/bg - usuwa zdjecie z tla (zostaje kolor/gradient)
+router.delete("/:slug/bg", async (req, res) => {
+  const existing = getBySlug(req.params.slug);
+  if (!existing) return res.status(404).json({ error: "Nie znaleziono karty" });
+
+  deleteLocalFile(existing.bg_image_url);
+  db.prepare("UPDATE review_links SET bg_image_url = '', updated_at = datetime('now') WHERE slug = ?").run(existing.slug);
+
+  const saved = getBySlug(existing.slug);
+  let kv_synced = true;
+  try {
+    await syncToKV(existing.slug, saved);
+  } catch (err) {
+    kv_synced = false;
+    console.error("Cloudflare KV sync (DELETE /api/reviews/:slug/bg):", err.message);
+  }
+  res.json({ ...saved, kv_synced });
+});
+
 // DELETE /api/reviews/:slug/logo - powrot do emoji (kasuje plik i czysci logo_url)
 router.delete("/:slug/logo", async (req, res) => {
   const existing = getBySlug(req.params.slug);
   if (!existing) return res.status(404).json({ error: "Nie znaleziono karty" });
 
-  deleteOldLogoFile(existing);
+  deleteLocalFile(existing.logo_url);
   db.prepare("UPDATE review_links SET logo_url = '', updated_at = datetime('now') WHERE slug = ?").run(existing.slug);
 
   const saved = getBySlug(existing.slug);

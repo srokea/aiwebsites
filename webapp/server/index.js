@@ -18,7 +18,37 @@ app.use(express.json());
 app.use(cookieParser());
 // pliki statyczne (HTML/CSS/JS) same w sobie nie ujawniaja danych leadow - jedyna
 // prawdziwa granica bezpieczenstwa to /api, wiec to ja chronimy ponizej, a nie routing stron
-app.use(express.static(path.join(__dirname, "..", "public")));
+// Wersjonowanie plikow po kazdym deployu: strony HTML dostaja ?v=<czas startu serwera> przy
+// kazdym /js/*.js i /css/*.css, a sam HTML idzie z "no-cache". Dzieki temu po redeployu
+// przegladarka (i cache Cloudflare) zawsze bierze swiezy JS - bez Cmd+Shift+R. Wczesniej nowy
+// HTML + stary JS z cache dawaly dziwne bugi (np. niche.html?status=... przerzucalo na home).
+const PUBLIC_DIR = path.join(__dirname, "..", "public");
+const ASSET_VERSION = Date.now().toString(36);
+const htmlCache = new Map();
+app.get(["/", "/*.html"], (req, res, next) => {
+  const file = req.path === "/" ? "index.html" : req.path.slice(1);
+  if (file.includes("..") || file.includes("/")) return next();
+  let html = htmlCache.get(file);
+  if (html === undefined) {
+    try {
+      html = require("fs")
+        .readFileSync(path.join(PUBLIC_DIR, file), "utf8")
+        .replace(/((?:src|href)="\/(?:js|css)\/[^"?]+\.(?:js|css))"/g, `$1?v=${ASSET_VERSION}"`);
+    } catch {
+      return next();
+    }
+    htmlCache.set(file, html);
+  }
+  res.set("Cache-Control", "no-cache");
+  res.type("html").send(html);
+});
+app.use(
+  express.static(PUBLIC_DIR, {
+    setHeaders(res, filePath) {
+      if (/\.(js|css|html)$/.test(filePath)) res.set("Cache-Control", "no-cache");
+    },
+  })
+);
 // wgrane zdjecia profilowe (patrz POST /api/users/:id/avatar-photo) - poza public/, bo to dane
 // uzytkownikow (jak data/coldcall.db), nie kod aplikacji pod git
 app.use("/avatars", express.static(path.join(__dirname, "..", "data", "avatars")));
