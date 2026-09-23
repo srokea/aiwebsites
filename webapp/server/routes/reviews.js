@@ -36,6 +36,29 @@ function deleteOldLogoFile(row) {
   deleteLocalFile(row.bg_image_url);
 }
 
+// kadr zdjecia w tle: { m: {x,y,z}, d: {x,y,z} } - telefon / komputer (patrz db.js)
+const CROP_DEFAULT = { x: 50, y: 50, z: 100 };
+const clampNum = (v, min, max, def) => {
+  const n = Number(v);
+  return Number.isFinite(n) ? Math.round(Math.max(min, Math.min(max, n)) * 10) / 10 : def;
+};
+function parseCrop(raw) {
+  let o = raw;
+  if (typeof raw === "string") {
+    try {
+      o = raw ? JSON.parse(raw) : {};
+    } catch {
+      o = {};
+    }
+  }
+  const one = (c) => ({
+    x: clampNum(c?.x, 0, 100, CROP_DEFAULT.x),
+    y: clampNum(c?.y, 0, 100, CROP_DEFAULT.y),
+    z: clampNum(c?.z, 100, 300, CROP_DEFAULT.z),
+  });
+  return { m: one(o?.m), d: one(o?.d) };
+}
+
 const MAX_BLUR = 20;
 const clampBlur = (v) => Math.max(0, Math.min(MAX_BLUR, Math.round(Number(v) || 0)));
 
@@ -84,6 +107,7 @@ async function syncToKV(slug, row) {
     // zdjecie w tle (przykrywa kolor/gradient) + rozmycie w px - Worker: filter: blur(Npx)
     bg_image: row.bg_image_url || "",
     bg_blur: row.bg_blur || 0,
+    bg_crop: parseCrop(row.bg_crop),
   });
   const res = await fetch(kvUrl(slug), {
     method: "PUT",
@@ -193,13 +217,14 @@ router.patch("/:slug", async (req, res) => {
     show_logo: req.body.show_logo !== undefined ? (req.body.show_logo ? 1 : 0) : existing.show_logo,
     bg: req.body.bg !== undefined ? normalizeBg(req.body.bg) : existing.bg,
     bg_blur: req.body.bg_blur !== undefined ? clampBlur(req.body.bg_blur) : existing.bg_blur,
+    bg_crop: req.body.bg_crop !== undefined ? JSON.stringify(parseCrop(req.body.bg_crop)) : existing.bg_crop,
   };
   if (!fields.business_name) return res.status(400).json({ error: "Nazwa firmy jest wymagana" });
   if (fields.bg === null) return res.status(400).json({ error: "Nieprawidlowe tlo (oczekiwane #rrggbb albo #rrggbb,#rrggbb)" });
 
   db.prepare(
     `UPDATE review_links SET business_name=@business_name, tagline=@tagline, google_review_url=@google_review_url,
-     logo_emoji=@logo_emoji, logo_url=@logo_url, active=@active, show_logo=@show_logo, bg=@bg, bg_blur=@bg_blur,
+     logo_emoji=@logo_emoji, logo_url=@logo_url, active=@active, show_logo=@show_logo, bg=@bg, bg_blur=@bg_blur, bg_crop=@bg_crop,
      updated_at=datetime('now') WHERE slug=@slug`
   ).run({ ...fields, slug: existing.slug });
 
@@ -272,7 +297,8 @@ router.post(
     const filename = `${existing.slug}-bg-${Date.now()}.${LOGO_MIME_EXT[req.file.mimetype]}`;
     fs.writeFileSync(path.join(LOGOS_DIR, filename), req.file.buffer);
     const bg_image_url = `${PUBLIC_BASE_URL}/review-logos/${filename}`;
-    db.prepare("UPDATE review_links SET bg_image_url = ?, updated_at = datetime('now') WHERE slug = ?").run(
+    // nowe zdjecie = kadr od nowa (srodek, bez zblizenia) - stary kadr dotyczyl innego zdjecia
+    db.prepare("UPDATE review_links SET bg_image_url = ?, bg_crop = '', updated_at = datetime('now') WHERE slug = ?").run(
       bg_image_url,
       existing.slug
     );

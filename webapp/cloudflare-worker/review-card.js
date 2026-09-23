@@ -7,18 +7,21 @@
 // Dane karty czyta z Cloudflare KV (klucz = slug). Zapisuje je tam panel /reviews.html
 // (server/routes/reviews.js -> syncToKV):
 //   { business_name, tagline, google_url, emoji, logo_url,
-//     show_logo, bg, bg_light, bg_image, bg_blur }
+//     show_logo, bg, bg_light, bg_image, bg_blur, bg_crop }
+// bg_crop = kadr zdjecia: { m: {x,y,z}, d: {x,y,z} } - m dla ekranow pionowych (telefon),
+// d dla poziomych (komputer). x/y = punkt zdjecia w %, z = zblizenie w % (100 = brak).
 //
-// Trasy:
+// Trasy (jak w poprzedniej wersji - kopia w review-card.old.js):
 //   GET /r/:slug        -> strona karty (logo/emoji, nazwa, tagline, przycisk do opinii)
 //   GET /r/:slug/click  -> przekierowanie na link do opinii Google (albo 404 "Brak linku.")
-// Wszystko inne przepuszczamy dalej bez zmian.
+// Wszystko inne -> 404 "Not found".
 
 const DEFAULT_BG = "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
 
-// Binding KV wykrywamy sam (pierwszy obiekt w env z get/put), zeby nie trzeba bylo znac
-// jego nazwy z ustawien Workera.
+// Binding KV w Cloudflare nazywa sie CLIENTS_KV. Awaryjnie bierzemy pierwszy obiekt z env,
+// ktory ma get/put (gdyby binding zostal kiedys przemianowany).
 function findKV(env) {
+  if (env && env.CLIENTS_KV) return env.CLIENTS_KV;
   for (const v of Object.values(env || {})) {
     if (v && typeof v.get === "function" && typeof v.put === "function") return v;
   }
@@ -31,7 +34,17 @@ const esc = (s) =>
 // tlo przychodzi z serwera jako gotowa wartosc CSS (kolor albo linear-gradient) - i tak
 // przepuszczamy tylko bezpieczne znaki, zeby nic nie wyszlo poza deklaracje CSS
 const safeCss = (s) => (/^[#a-z0-9(),.%\s-]*$/i.test(String(s || "")) ? String(s || "") : "");
-const safeUrl = (s) => (/^https:\/\/[^\s"'()<>]+$/i.test(String(s || "")) ? String(s) : "");
+const safeUrl = (s) => (/^https?:\/\/[^\s"'()<>]+$/i.test(String(s || "")) ? String(s) : "");
+
+// ten sam kadr co podglad w panelu (public/js/reviews.js -> cropLayerStyle): cover +
+// background-position x% y% + scale(z) wokol tego samego punktu
+function cropCss(c) {
+  const n = (v, min, max, def) => (Number.isFinite(Number(v)) ? Math.max(min, Math.min(max, Number(v))) : def);
+  const x = n(c?.x, 0, 100, 50);
+  const y = n(c?.y, 0, 100, 50);
+  const z = n(c?.z, 100, 300, 100) / 100;
+  return `background-position: ${x}% ${y}%; transform: scale(${z}); transform-origin: ${x}% ${y}%;`;
+}
 
 function renderCard(slug, d) {
   const name = d.business_name || "";
@@ -39,15 +52,15 @@ function renderCard(slug, d) {
   const bgImage = safeUrl(d.bg_image);
   const blur = Math.max(0, Math.min(20, Number(d.bg_blur) || 0));
   // przycisk w kolorze tla karty; na jasnym tle (bialy, bez) ciemny, zeby byl widoczny na bialej karcie
-  const btnBg = d.bg_light ? "#1a1a2e" : bg;
+  const btnBg = d.bg_light ? "#1a1a2e" : safeCss(d.bg) || "linear-gradient(135deg, #667eea, #764ba2)";
   const btnShadow = d.bg ? "0 6px 20px rgba(0,0,0,0.25)" : "0 6px 20px rgba(102,126,234,0.5)";
 
   let logo = "";
   if (d.show_logo !== false) {
     if (safeUrl(d.logo_url)) {
       logo = `<img src="${esc(d.logo_url)}" alt="${esc(name)}" style="max-width:120px;max-height:80px;object-fit:contain;margin-bottom:16px;">`;
-    } else if (d.emoji) {
-      logo = `<div class="emoji">${esc(d.emoji)}</div>`;
+    } else {
+      logo = `<div class="emoji">${esc(d.emoji || "⭐")}</div>`;
     }
   }
 
@@ -74,9 +87,15 @@ function renderCard(slug, d) {
     content: "";
     position: fixed;
     inset: -${blur * 2}px;
-    background: url("${bgImage}") center / cover no-repeat;
+    background-image: url("${bgImage}");
+    background-size: cover;
+    background-repeat: no-repeat;
+    ${cropCss(d.bg_crop?.d)}
     filter: blur(${blur}px);
     z-index: -1;
+  }
+  @media (max-aspect-ratio: 1/1) {
+    body::before { ${cropCss(d.bg_crop?.m)} }
   }`
       : ""
   }
@@ -111,7 +130,7 @@ function renderCard(slug, d) {
 <div class="card">
   ${logo}
   <h1>${esc(name)}</h1>
-  ${d.tagline ? `<p class="tagline">${esc(d.tagline)}</p>` : ""}
+  <p class="tagline">${esc(d.tagline || "Dziękujemy za wizytę!")}</p>
   <div class="stars">⭐⭐⭐⭐⭐</div>
   <a href="/r/${esc(slug)}/click" class="btn">Napisz opinię w Google</a>
   <p class="powered">Powered by MMates</p>
@@ -126,15 +145,16 @@ const text = (body, status) =>
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    const m = url.pathname.match(/^\/r\/([a-z0-9-]+)(\/click)?\/?$/);
-    if (!m) return fetch(request); // nie nasza trasa - przepuszczamy
+    const parts = url.pathname.split("/").filter(Boolean);
+    if (parts[0] !== "r" || !parts[1]) return text("Not found", 404);
 
     const kv = findKV(env);
     if (!kv) return text("Brak konfiguracji KV.", 500);
 
-    const slug = m[1];
+    const slug = parts[1];
+    const isClick = parts[2] === "click";
     const raw = await kv.get(slug);
-    if (!raw) return text("Nie znaleziono strony.", 404);
+    if (!raw) return text(isClick ? "Nie znaleziono." : "Nie znaleziono strony.", 404);
 
     let data;
     try {
@@ -143,7 +163,7 @@ export default {
       return text("Nie znaleziono strony.", 404);
     }
 
-    if (m[2]) {
+    if (isClick) {
       const target = String(data.google_url || "").trim();
       if (!/^https?:\/\//i.test(target)) return text("Brak linku.", 404);
       return Response.redirect(target, 302);

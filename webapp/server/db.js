@@ -295,6 +295,9 @@ addColumnIfMissing("review_links", "bg TEXT NOT NULL DEFAULT ''");
 // zdjecie w tle karty (pelny URL, jak logo_url) + rozmycie tego zdjecia w px (0 = ostre)
 addColumnIfMissing("review_links", "bg_image_url TEXT NOT NULL DEFAULT ''");
 addColumnIfMissing("review_links", "bg_blur INTEGER NOT NULL DEFAULT 0");
+// kadr zdjecia w tle osobno dla telefonu (m) i komputera (d): JSON {"m":{x,y,z},"d":{x,y,z}},
+// x/y = punkt zdjecia w % (50/50 = srodek), z = zblizenie w % (100 = bez zblizenia). '' = srodek
+addColumnIfMissing("review_links", "bg_crop TEXT NOT NULL DEFAULT ''");
 // Jednorazowy backfill: istniejace karty (sprzed dodania tej kolumny) dostaja kolejnosc
 // zgodna z dotychczasowym sortowaniem (najnowsze pierwsze), zeby nic nie "skoczylo" po starcie.
 // Warunek na sort_order=0 dla wszystkich = po pierwszym uruchomieniu juz nie zlapie (nowe karty

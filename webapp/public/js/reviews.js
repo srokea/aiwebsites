@@ -44,7 +44,7 @@ function logoHtml(r) {
   if (r.show_logo === 0) return "";
   return r.logo_url
     ? `<img class="review-logo" src="${escapeHtml(r.logo_url)}" alt="">`
-    : `<span class="review-logo review-logo-emoji">${escapeHtml(r.logo_emoji || "🔗")}</span>`;
+    : `<span class="review-logo review-logo-emoji">${escapeHtml(r.logo_emoji || "⭐")}</span>`; // ⭐ = domyslne emoji Workera
 }
 
 // mini-podglad strony karty w trybie edycji (tlo + logo/tekst) - odswiezany na zywo
@@ -55,22 +55,116 @@ function bgLayerHtml(r, scale = 1) {
   const blur = (Number(r.bg_blur) || 0) * scale;
   return `
     <div class="rv-bgfill" style="background:${bgCss(r.bg)}"></div>
-    ${img ? `<div class="rv-preview-img" style="background-image:url('${escapeHtml(img)}'); filter:blur(${blur}px); transform:scale(${blur ? 1.15 : 1})"></div>` : ""}`;
+    ${img ? `<div class="rv-preview-img" style="background-image:url('${escapeHtml(img)}'); filter:blur(${blur}px); ${cropLayerStyle(parseCropClient(r.bg_crop).d)}"></div>` : ""}`;
+}
+
+// ---------- podglad karty na telefonie i komputerze + kadrowanie zdjecia w tle ----------
+// Kazdy ekran renderujemy w PRAWDZIWEJ rozdzielczosci (390x844 / 1440x900) i zmniejszamy
+// transform: scale - wtedy karta, rozmycie i kadr wygladaja 1:1 jak w Workerze
+// (cloudflare-worker/review-card.js), a nie "mniej wiecej". Kadr: przeciagnij zdjecie myszka,
+// suwak = zblizenie. Telefon i komputer maja osobne kadry (Worker przelacza je po orientacji ekranu).
+const DEVICES = {
+  m: { label: "Telefon", w: 390, h: 844 },
+  d: { label: "Komputer", w: 1440, h: 900 },
+};
+// szerokosc podgladu w panelu (px) - mniejsza, gdy panel ogladamy na telefonie
+function devBox(key) {
+  const narrow = matchMedia("(max-width: 560px)").matches;
+  return key === "m" ? (narrow ? 110 : 140) : narrow ? 230 : 380;
+}
+const CROP_DEFAULT = { x: 50, y: 50, z: 100 };
+
+function parseCropClient(raw) {
+  let o = raw;
+  if (typeof raw === "string") {
+    try {
+      o = raw ? JSON.parse(raw) : {};
+    } catch {
+      o = {};
+    }
+  }
+  const one = (c) => ({ ...CROP_DEFAULT, ...(c || {}) });
+  return { m: one(o?.m), d: one(o?.d) };
+}
+
+function cropLayerStyle(c) {
+  return `background-position:${c.x}% ${c.y}%; transform:scale(${c.z / 100}); transform-origin:${c.x}% ${c.y}%;`;
+}
+
+// naturalne wymiary zdjec (potrzebne do przeliczenia przeciagniecia na % kadru)
+const imgSizeCache = new Map();
+function imgSize(url) {
+  if (!imgSizeCache.has(url)) {
+    const entry = { w: 0, h: 0 };
+    imgSizeCache.set(url, entry);
+    const im = new Image();
+    im.onload = () => {
+      entry.w = im.naturalWidth;
+      entry.h = im.naturalHeight;
+    };
+    im.src = url;
+  }
+  return imgSizeCache.get(url);
+}
+
+function deviceHtml(r, key, crop) {
+  const dev = DEVICES[key];
+  const box = devBox(key);
+  const k = box / dev.w;
+  const blur = Number(r.bg_blur) || 0;
+  const img = r.bg_image_url;
+  const btnBg = isLightBg(r.bg) ? "#1a1a2e" : r.bg ? bgCss(r.bg) : "linear-gradient(135deg, #667eea, #764ba2)";
+  const c = crop[key];
+  if (img) imgSize(img);
+  return `
+    <div class="rv-dev-col">
+      <div class="rv-dev ${img ? "rv-dev--crop" : ""}" data-dev="${key}" data-k="${k}" style="width:${box}px; height:${Math.round(dev.h * k)}px"
+        ${img ? `title="Przeciągnij, żeby wykadrować"` : ""}>
+        <div class="rv-dev-screen" style="width:${dev.w}px; height:${dev.h}px; transform:scale(${k})">
+          <div class="rv-dev-fill" style="background:${bgCss(r.bg)}"></div>
+          ${
+            img
+              ? `<div class="rv-dev-img" style="inset:-${blur * 2}px; background-image:url('${escapeHtml(img)}'); filter:blur(${blur}px); ${cropLayerStyle(c)}"></div>`
+              : ""
+          }
+          <div class="rv-dev-body">
+            <div class="rv-dev-card">
+              ${
+                r.show_logo === 0
+                  ? ""
+                  : r.logo_url
+                  ? `<img class="rv-dev-logo" src="${escapeHtml(r.logo_url)}" alt="">`
+                  : `<div class="rv-dev-emoji">${escapeHtml(r.logo_emoji || "⭐")}</div>`
+              }
+              <h1>${escapeHtml(r.business_name || "Nazwa firmy")}</h1>
+              <p class="rv-dev-tagline">${escapeHtml(r.tagline || "Dziękujemy za wizytę!")}</p>
+              <div class="rv-dev-stars">⭐⭐⭐⭐⭐</div>
+              <div class="rv-dev-btn" style="background:${btnBg}">Napisz opinię w Google</div>
+              <p class="rv-dev-powered">Powered by MMates</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="rv-dev-label">${dev.label}</div>
+      ${
+        img
+          ? `<label class="rv-dev-zoom" title="Zbliżenie">🔍
+               <input type="range" class="rv-edit-zoom" data-zoom="${key}" min="100" max="300" step="5" value="${c.z}">
+             </label>
+             <button type="button" class="rv-dev-reset" data-crop-reset="${key}">Wyśrodkuj</button>`
+          : ""
+      }
+    </div>`;
 }
 
 function previewHtml(r) {
-  const btnBg = isLightBg(r.bg) ? "#1a1a2e" : bgCss(r.bg);
+  const crop = parseCropClient(r.bg_crop);
   return `
-    <div class="rv-preview">
-      ${bgLayerHtml(r, 0.5)}
-      <div class="rv-preview-card">
-        ${logoHtml(r)}
-        <div class="rv-preview-name">${escapeHtml(r.business_name || "Nazwa firmy")}</div>
-        ${r.tagline ? `<div class="rv-preview-tagline">${escapeHtml(r.tagline)}</div>` : ""}
-        <div class="rv-preview-stars">⭐⭐⭐⭐⭐</div>
-        <div class="rv-preview-cta" style="background:${btnBg}">Napisz opinię w Google</div>
-      </div>
-    </div>`;
+    <div class="rv-devices">
+      ${deviceHtml(r, "m", crop)}
+      ${deviceHtml(r, "d", crop)}
+    </div>
+    ${r.bg_image_url ? `<div class="rv-bg-hint">Przeciągnij zdjęcie na podglądzie, żeby je wykadrować — osobno dla telefonu i komputera.</div>` : ""}`;
 }
 
 // zdjecie w tle: wgranie z pliku albo wklejenie ze schowka (Cmd/Ctrl+V w otwartej karcie) +
@@ -134,6 +228,8 @@ function editFormHtml(r) {
   return `
   <div class="review-card review-card--edit" data-slug="${escapeHtml(r.slug)}">
     <div class="review-name">${escapeHtml(r.business_name)} <span class="review-link">mmates.pl/r/${escapeHtml(r.slug)}</span></div>
+    <div class="rv-edit-layout">
+    <div class="rv-edit-fields">
     <input type="text" class="rv-edit-business" placeholder="Nazwa firmy" value="${escapeHtml(r.business_name)}">
     <input type="text" class="rv-edit-tagline" placeholder="Tagline" value="${escapeHtml(r.tagline)}">
     <input type="url" class="rv-edit-google" placeholder="Link do opinii Google" value="${escapeHtml(r.google_review_url)}">
@@ -163,7 +259,10 @@ function editFormHtml(r) {
       </div>
     </div>
     <div class="rv-bgimg">${bgImageHtml(r)}</div>
+    </div>
+    <input type="hidden" class="rv-edit-crop" value="${escapeHtml(JSON.stringify(parseCropClient(r.bg_crop)))}">
     <div class="rv-preview-wrap">${previewHtml(r)}</div>
+    </div>
     <div class="review-actions">
       <button type="button" class="btn primary" data-save="${escapeHtml(r.slug)}">Zapisz</button>
       <button type="button" class="btn" data-cancel="${escapeHtml(r.slug)}">Anuluj</button>
@@ -271,6 +370,7 @@ gridEl.addEventListener("click", async (e) => {
       show_logo: !cardEl.querySelector(".rv-edit-nologo").checked,
       bg: cardEl.querySelector(".rv-edit-bg").value,
       bg_blur: Number(cardEl.querySelector(".rv-edit-blur").value) || 0,
+      bg_crop: parseCropClient(cardEl.querySelector(".rv-edit-crop").value),
     };
     saveBtn.disabled = true;
     try {
@@ -409,6 +509,7 @@ function editState(cardEl) {
     show_logo: cardEl.querySelector(".rv-edit-nologo").checked ? 0 : 1,
     bg: cardEl.querySelector(".rv-edit-bg").value,
     bg_blur: Number(cardEl.querySelector(".rv-edit-blur").value) || 0,
+    bg_crop: cardEl.querySelector(".rv-edit-crop").value,
   };
 }
 
@@ -449,7 +550,9 @@ gridEl.addEventListener("input", (e) => {
   const cardEl = e.target.closest(".review-card--edit");
   if (!cardEl) return;
   if (e.target.matches(".rv-edit-bg1, .rv-edit-bg2, .rv-edit-bg-grad")) applyCustomBg(cardEl);
-  else if (e.target.matches(".rv-edit-blur")) {
+  else if (e.target.matches(".rv-edit-zoom")) {
+    setCrop(cardEl, e.target.dataset.zoom, { z: Number(e.target.value) });
+  } else if (e.target.matches(".rv-edit-blur")) {
     cardEl.querySelector(".rv-blur-val").textContent = `${e.target.value}px`;
     refreshPreview(cardEl);
   }
@@ -474,7 +577,12 @@ async function uploadBg(slug, file) {
 
 function applyBgImage(cardEl, saved) {
   const card = cards.find((c) => c.slug === saved.slug);
-  if (card) card.bg_image_url = saved.bg_image_url;
+  if (card) {
+    card.bg_image_url = saved.bg_image_url;
+    card.bg_crop = saved.bg_crop;
+  }
+  // serwer zeruje kadr przy nowym zdjeciu - formularz tez
+  cardEl.querySelector(".rv-edit-crop").value = JSON.stringify(parseCropClient(saved.bg_crop));
   const st = { ...editState(cardEl), bg_image_url: saved.bg_image_url };
   cardEl.querySelector(".rv-bgimg").innerHTML = bgImageHtml(st);
   refreshPreview(cardEl);
@@ -504,5 +612,83 @@ document.addEventListener("paste", (e) => {
   e.preventDefault();
   uploadBg(editingSlug, item.getAsFile());
 });
+
+// ---------- kadrowanie: przeciaganie + zblizenie ----------
+function getCrop(cardEl) {
+  return parseCropClient(cardEl.querySelector(".rv-edit-crop").value);
+}
+
+// zmiana kadru jednego ekranu - aktualizujemy tylko warstwe zdjecia (bez przerysowania calego
+// podgladu, zeby przeciaganie bylo plynne)
+function setCrop(cardEl, key, patch) {
+  const crop = getCrop(cardEl);
+  crop[key] = { ...crop[key], ...patch };
+  cardEl.querySelector(".rv-edit-crop").value = JSON.stringify(crop);
+  const layer = cardEl.querySelector(`.rv-dev[data-dev="${key}"] .rv-dev-img`);
+  if (layer) {
+    const c = crop[key];
+    layer.style.backgroundPosition = `${c.x}% ${c.y}%`;
+    layer.style.transformOrigin = `${c.x}% ${c.y}%`;
+    layer.style.transform = `scale(${c.z / 100})`;
+  }
+  const zoom = cardEl.querySelector(`[data-zoom="${key}"]`);
+  if (zoom && patch.z !== undefined) zoom.value = crop[key].z;
+}
+
+gridEl.addEventListener("click", (e) => {
+  const reset = e.target.closest("[data-crop-reset]");
+  if (!reset) return;
+  setCrop(reset.closest(".review-card--edit"), reset.dataset.cropReset, { ...CROP_DEFAULT });
+});
+
+let cropDrag = null;
+gridEl.addEventListener("pointerdown", (e) => {
+  const frame = e.target.closest(".rv-dev--crop");
+  if (!frame) return;
+  const cardEl = frame.closest(".review-card--edit");
+  const key = frame.dataset.dev;
+  const st = editState(cardEl);
+  const size = imgSize(st.bg_image_url);
+  if (!size.w) return; // zdjecie jeszcze sie laduje
+  e.preventDefault();
+  try {
+    frame.setPointerCapture(e.pointerId);
+  } catch {
+    /* np. pointer juz zwolniony */
+  }
+  cropDrag = { cardEl, key, frame, x0: e.clientX, y0: e.clientY, start: getCrop(cardEl)[key], size, blur: st.bg_blur };
+  frame.classList.add("dragging");
+});
+
+gridEl.addEventListener("pointermove", (e) => {
+  if (!cropDrag) return;
+  const { cardEl, key, frame, x0, y0, start, size, blur } = cropDrag;
+  const dev = DEVICES[key];
+  const k = Number(frame.dataset.k);
+  // warstwa zdjecia jest wieksza od ekranu o 2*blur z kazdej strony (jak w Workerze)
+  const EW = dev.w + blur * 4;
+  const EH = dev.h + blur * 4;
+  const s = Math.max(EW / size.w, EH / size.h);
+  const z = start.z / 100;
+  // lewa krawedz zdjecia = -x * (szerokosc_po_zblizeniu - szerokosc_warstwy) -> przesuniecie
+  // o dx px (w skali ekranu) to zmiana x o dx / nadmiar
+  const overX = size.w * s * z - EW;
+  const overY = size.h * s * z - EH;
+  const dx = (e.clientX - x0) / k;
+  const dy = (e.clientY - y0) / k;
+  const clamp = (v) => Math.round(Math.max(0, Math.min(100, v)) * 10) / 10;
+  setCrop(cardEl, key, {
+    x: overX > 0.5 ? clamp(start.x - (dx / overX) * 100) : start.x,
+    y: overY > 0.5 ? clamp(start.y - (dy / overY) * 100) : start.y,
+  });
+});
+
+const endCropDrag = () => {
+  if (!cropDrag) return;
+  cropDrag.frame.classList.remove("dragging");
+  cropDrag = null;
+};
+gridEl.addEventListener("pointerup", endCropDrag);
+gridEl.addEventListener("pointercancel", endCropDrag);
 
 load();

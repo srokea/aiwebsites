@@ -2833,7 +2833,8 @@ table.leads tr:hover .lead-delete-btn { opacity: 1; }
 .review-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 2px; }
 .review-actions .btn { padding: 7px 8px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-.review-card--edit { gap: 8px; border-color: rgba(96,144,224,0.4); cursor: default; }
+.review-card--edit { gap: 8px; border-color: rgba(96,144,224,0.4); cursor: default; grid-column: 1 / -1; }
+.review-card--edit > .review-actions { max-width: 440px; }
 .review-card--edit input {
   background: #141414;
   border: 1px solid #232323;
@@ -2881,24 +2882,55 @@ table.leads tr:hover .lead-delete-btn { opacity: 1; }
   background: #141414; border: 1px solid #2a2a2a;
 }
 .review-card--edit input[type="color"]:disabled { opacity: 0.35; cursor: default; }
-.rv-preview {
-  position: relative; overflow: hidden; isolation: isolate;
-  display: flex; align-items: center; justify-content: center;
-  min-height: 190px; padding: 18px 14px; border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.08);
-}
 .rv-bgfill { position: absolute; inset: 0; z-index: -3; }
-.rv-preview-img { position: absolute; inset: 0; z-index: -2; background-size: cover; background-position: center; }
-.rv-preview-card {
-  background: #fff; color: #1a1a2e; border-radius: 12px; padding: 16px 18px; width: 72%; max-width: 230px;
-  display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+.rv-preview-img { position: absolute; inset: 0; z-index: -2; background-size: cover; background-repeat: no-repeat; background-position: center; }
+
+/* podglad karty: telefon + komputer w prawdziwej rozdzielczosci, zmniejszone transform:scale
+   (1:1 z cloudflare-worker/review-card.js). Na zdjeciu: przeciagnij = kadr, suwak = zblizenie. */
+.rv-edit-layout { display: grid; grid-template-columns: minmax(0, 440px) minmax(0, 1fr); gap: 20px 28px; align-items: start; }
+.rv-edit-fields { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.rv-preview-wrap { position: sticky; top: 16px; display: flex; flex-direction: column; gap: 8px; }
+@media (max-width: 900px) {
+  .rv-edit-layout { grid-template-columns: minmax(0, 1fr); }
+  .rv-preview-wrap { position: static; }
 }
-.rv-preview-card .review-logo { width: 36px; height: 36px; }
-.rv-preview-name { font-weight: 700; font-size: 13.5px; }
-.rv-preview-tagline { font-size: 11px; color: #666; }
-.rv-preview-stars { font-size: 11px; letter-spacing: 1px; margin: 2px 0; }
-.rv-preview-cta { width: 100%; margin-top: 2px; font-size: 10.5px; font-weight: 700; color: #fff; padding: 7px 8px; border-radius: 7px; }
+.rv-devices { display: flex; align-items: flex-end; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 4px; }
+.rv-dev-col { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.rv-dev {
+  position: relative; overflow: hidden; flex-shrink: 0;
+  border-radius: 10px; border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  user-select: none; touch-action: none;
+}
+.rv-dev[data-dev="m"] { border-radius: 14px; }
+.rv-dev--crop { cursor: grab; }
+.rv-dev--crop.dragging { cursor: grabbing; border-color: var(--blue); }
+.rv-dev-screen { position: absolute; top: 0; left: 0; transform-origin: 0 0; overflow: hidden; isolation: isolate; pointer-events: none; }
+.rv-dev-fill { position: absolute; inset: 0; z-index: -2; }
+.rv-dev-img { position: absolute; z-index: -1; background-size: cover; background-repeat: no-repeat; }
+.rv-dev-body {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.rv-dev-card {
+  background: #fff; border-radius: 24px; padding: 48px 36px; text-align: center;
+  max-width: 400px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.rv-dev-logo { max-width: 120px; max-height: 80px; object-fit: contain; margin-bottom: 16px; }
+.rv-dev-emoji { font-size: 64px; margin-bottom: 16px; line-height: 1.2; }
+.rv-dev-card h1 { font-size: 26px; font-weight: 700; color: #1a1a2e; margin: 0 0 8px; letter-spacing: 0; }
+.rv-dev-tagline { font-size: 16px; color: #666; margin: 0 0 28px; }
+.rv-dev-stars { font-size: 36px; margin-bottom: 28px; letter-spacing: 4px; }
+.rv-dev-btn { color: #fff; padding: 18px 32px; border-radius: 14px; font-size: 18px; font-weight: 700; box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
+.rv-dev-powered { margin: 24px 0 0; font-size: 12px; color: #bbb; }
+.rv-dev-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
+.rv-dev-zoom { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+.review-card--edit .rv-dev-zoom input[type="range"] { width: 96px; padding: 0; border: 0; background: none; accent-color: var(--blue); }
+.rv-dev-reset {
+  background: none; border: 0; padding: 0; cursor: pointer; font: inherit; font-size: 11.5px; color: var(--muted-soft);
+  text-decoration: underline; text-underline-offset: 2px;
+}
+.rv-dev-reset:hover { color: var(--text); }
 .review-bg-thumb {
   position: relative; overflow: hidden; isolation: isolate; display: inline-block;
   width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.14); vertical-align: -3px;
