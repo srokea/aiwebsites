@@ -66,9 +66,21 @@ function syncSubscriptions() {
 // Abonament liczymy po MIESIACACH KALENDARZOWYCH, nie po dniu-rocznicy: klient dopiety
 // kiedykolwiek w sierpniu ma 1 wrzesnia gotowa naleznosc za wrzesien (a 1. abonament -
 // sierpniowy - stoi razem z wdrozeniem w miesiacu domkniecia).
+// #6 - cena klienta: indywidualna z client_pricing albo domyslna PRICING (w groszach)
+function clientPrice(row) {
+  return {
+    onetime: row.onetime_grosze ?? PRICING.oneTime * 100,
+    monthly: row.monthly_grosze ?? PRICING.monthly * 100,
+  };
+}
+
 function syncClientDues() {
   const clients = db
-    .prepare("SELECT id, dopiete_at FROM leads WHERE interested = 'dopiete' AND dopiete_at IS NOT NULL")
+    .prepare(
+      `SELECT l.id, l.dopiete_at, p.onetime_grosze, p.monthly_grosze
+       FROM leads l LEFT JOIN client_pricing p ON p.lead_id = l.id
+       WHERE l.interested = 'dopiete' AND l.dopiete_at IS NOT NULL`
+    )
     .all();
   const insert = db.prepare(
     `INSERT OR IGNORE INTO client_dues (lead_id, kind, period, amount_grosze)
@@ -78,14 +90,28 @@ function syncClientDues() {
   for (const c of clients) {
     const start = new Date(c.dopiete_at);
     if (Number.isNaN(start.getTime())) continue;
-    insert.run({ lead_id: c.id, kind: "onetime", period: ym(start), amount_grosze: PRICING.oneTime * 100 });
+    const price = clientPrice(c);
+    insert.run({ lead_id: c.id, kind: "onetime", period: ym(start), amount_grosze: price.onetime });
     // k=0 -> miesiac domkniecia (1. abonament, placony razem z wdrozeniem)
     const monthsSince = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
     for (let k = 0; k <= monthsSince; k++) {
       const period = ym(new Date(start.getFullYear(), start.getMonth() + k, 1));
-      insert.run({ lead_id: c.id, kind: "monthly", period, amount_grosze: PRICING.monthly * 100 });
+      insert.run({ lead_id: c.id, kind: "monthly", period, amount_grosze: price.monthly });
     }
   }
+  // zmiana ceny klienta przestawia tez naleznosci, ktore jeszcze CZEKAJA na potwierdzenie
+  // (potwierdzone to juz historia - te poprawia tylko jawnie setClientPricing z applyConfirmed)
+  db.prepare(
+    `UPDATE client_dues SET amount_grosze = CASE client_dues.kind
+         WHEN 'onetime' THEN COALESCE(p.onetime_grosze, @defOnetime)
+         ELSE COALESCE(p.monthly_grosze, @defMonthly) END
+     FROM (SELECT l.id AS lead_id, cp.onetime_grosze, cp.monthly_grosze
+           FROM leads l LEFT JOIN client_pricing cp ON cp.lead_id = l.id) p
+     WHERE p.lead_id = client_dues.lead_id AND client_dues.status = 'pending'
+       AND client_dues.amount_grosze <> CASE client_dues.kind
+         WHEN 'onetime' THEN COALESCE(p.onetime_grosze, @defOnetime)
+         ELSE COALESCE(p.monthly_grosze, @defMonthly) END`
+  ).run({ defOnetime: PRICING.oneTime * 100, defMonthly: PRICING.monthly * 100 });
 }
 
 // #4 - data wpisu potwierdzonej naleznosci: wdrozenie + pierwszy abonament (miesiac domkniecia)
@@ -134,13 +160,19 @@ function summary() {
     .get();
   const pendingDues = db.prepare("SELECT COUNT(*) c FROM client_dues WHERE status = 'pending'").get().c;
   const clients = db.prepare("SELECT COUNT(*) c FROM leads WHERE interested = 'dopiete'").get().c;
+  const mrrG = db
+    .prepare(
+      `SELECT COALESCE(SUM(COALESCE(p.monthly_grosze, ?)), 0) g
+       FROM leads l LEFT JOIN client_pricing p ON p.lead_id = l.id WHERE l.interested = 'dopiete'`
+    )
+    .get(PRICING.monthly * 100).g;
   return {
     income: row.income / 100,
     expense: row.expense / 100,
     balance: (row.income - row.expense) / 100,
     pendingDues,
     clients,
-    mrr: clients * PRICING.monthly,
+    mrr: mrrG / 100,
   };
 }
 
@@ -281,6 +313,65 @@ function confirmDue(id, by) {
   return { ok: true };
 }
 
+// #6 - lista dopietych klientow z ich cenami (edycja w Kasie)
+function clientsPricingList() {
+  return db
+    .prepare(
+      `SELECT l.id AS lead_id, l.company_name, l.caller, l.dopiete_at, p.onetime_grosze, p.monthly_grosze
+       FROM leads l LEFT JOIN client_pricing p ON p.lead_id = l.id
+       WHERE l.interested = 'dopiete'
+       ORDER BY l.dopiete_at DESC, l.company_name COLLATE NOCASE`
+    )
+    .all()
+    .map((r) => {
+      const price = clientPrice(r);
+      return {
+        lead_id: r.lead_id,
+        company: r.company_name,
+        caller: r.caller || "",
+        dopiete_at: r.dopiete_at,
+        onetime: price.onetime / 100,
+        monthly: price.monthly / 100,
+        custom: r.onetime_grosze != null || r.monthly_grosze != null,
+      };
+    });
+}
+
+// Zapis ceny klienta. onetimeG/monthlyG: grosze albo null (= domyslna). applyConfirmed = popraw
+// tez juz potwierdzone wpisy tego klienta (np. od poczatku placil 250, a wpisalo sie 100).
+function setClientPricing(leadId, onetimeG, monthlyG, applyConfirmed, by) {
+  const lead = db.prepare("SELECT id, interested FROM leads WHERE id = ?").get(leadId);
+  if (!lead) return { error: "Nie znaleziono klienta", status: 404 };
+
+  db.transaction(() => {
+    if (onetimeG == null && monthlyG == null) {
+      db.prepare("DELETE FROM client_pricing WHERE lead_id = ?").run(leadId);
+    } else {
+      db.prepare(
+        `INSERT INTO client_pricing (lead_id, onetime_grosze, monthly_grosze, updated_by, updated_at)
+         VALUES (@leadId, @onetimeG, @monthlyG, @by, datetime('now'))
+         ON CONFLICT(lead_id) DO UPDATE SET onetime_grosze = excluded.onetime_grosze,
+           monthly_grosze = excluded.monthly_grosze, updated_by = excluded.updated_by, updated_at = excluded.updated_at`
+      ).run({ leadId, onetimeG, monthlyG, by: by || "" });
+    }
+    if (applyConfirmed) {
+      const price = clientPrice({ onetime_grosze: onetimeG, monthly_grosze: monthlyG });
+      const rows = db
+        .prepare("SELECT id, kind, transaction_id FROM client_dues WHERE lead_id = ? AND status = 'confirmed'")
+        .all(leadId);
+      const updDue = db.prepare("UPDATE client_dues SET amount_grosze = ? WHERE id = ?");
+      const updTx = db.prepare("UPDATE transactions SET amount_grosze = ? WHERE id = ?");
+      for (const r of rows) {
+        const g = r.kind === "onetime" ? price.onetime : price.monthly;
+        updDue.run(g, r.id);
+        if (r.transaction_id) updTx.run(g, r.transaction_id);
+      }
+    }
+  })();
+  financeSync(); // przelicza oczekujace naleznosci wg nowej ceny
+  return { ok: true };
+}
+
 // "Pomin" - klient nie zaplacil za ten miesiac / zrezygnowal. Nie wraca na liste.
 function skipDue(id, by) {
   const info = db
@@ -299,5 +390,7 @@ module.exports = {
   pendingDuesList,
   confirmDue,
   skipDue,
+  clientsPricingList,
+  setClientPricing,
   fullMonthsElapsed,
 };

@@ -534,15 +534,16 @@ async function loadStats() {
     })
     .join(", ");
 
-  const legendItem = (color, label, value) => `
-    <div class="legend-item">
+  // #5 - klik w status = tabela leadow z tym statusem ze wszystkich nisz (niche.html?status=)
+  const legendItem = (color, label, value, status) => `
+    <a class="legend-item clickable" href="/niche.html?status=${encodeURIComponent(status)}" title="Pokaż: ${escapeHtml(label)} — wszystkie nisze">
       <span class="legend-dot" style="background:${color}"></span>
       <span class="lbl">${escapeHtml(label)}</span>
       <span class="val">${value}</span>
-    </div>
+    </a>
   `;
 
-  const legend = donutData.map((o) => legendItem(o.color, o.label, o.count)).join("");
+  const legend = donutData.map((o) => legendItem(o.color, o.label, o.count, o.value)).join("");
 
   const maxCaller = Math.max(1, ...stats.byCaller.map((c) => c.count));
   const topCount = Math.max(0, ...stats.byCaller.map((c) => c.count));

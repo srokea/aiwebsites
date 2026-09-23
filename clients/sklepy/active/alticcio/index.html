@@ -76,6 +76,9 @@
              wąski grotesk wersalikami w nazwach pozycji. Logo jest wektorem, nie fontem. */
           serif: ['"PT Serif"', 'Georgia', 'serif'],
           ui:    ['"Archivo Narrow"', 'system-ui', 'sans-serif'],
+          /* Hasła (taglines). Znaki spoza wersji próbnej Nuances (polskie diakrytyki, apostrof)
+             spadają na PT Serif — patrz komentarz przy @font-face. */
+          tagline: ['"Nuances Condensed"', '"PT Serif"', 'Georgia', 'serif'],
         },
         maxWidth: { content: '46rem', wide: '72rem' },
       }
@@ -109,6 +112,12 @@
   @font-face { font-family:'Archivo Narrow'; font-style:normal; font-weight:400 700; font-display:swap;
     src:url('fonts/archivonarrow-normal-400-700-latin-ext.woff2') format('woff2');
     unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  /* Hasła: krój licencji próbnej (blazetype.eu) — zestaw znaków tylko A–Z a–z 0–9 i podstawowa
+     interpunkcja, BRAK polskich znaków diakrytycznych i apostrofu. Znaki spoza zestawu spadają
+     na PT Serif (kolejny font w font-tagline) — świadomie zaakceptowane ryzyko wizualne do czasu
+     zakupu pełnej licencji WWW z kompletem znaków. */
+  @font-face { font-family:'Nuances Condensed'; font-style:normal; font-weight:400; font-display:swap;
+    src:url('fonts/nuancescondensed-regular-400.woff2') format('woff2'); }
 
   html { scroll-behavior: smooth; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
@@ -224,7 +233,10 @@
 
 <!-- ============================== HEADER ============================== -->
 <header class="sticky top-0 z-40 border-b border-border bg-cream/95 backdrop-blur">
-  <div class="mx-auto flex max-w-wide items-center gap-3 px-4 py-3 sm:gap-5 sm:px-7">
+  <!-- Pełna szerokość, bez max-w: logo ma siedzieć przy samej lewej krawędzi (flush-left).
+       Odstępy px-5/sm:px-8 takie same jak w hero — logo w headerze stoi w jednej pionowej
+       linii z wordmarkiem i treścią sekcji poniżej. -->
+  <div class="flex items-center gap-3 px-5 py-3 sm:gap-5 sm:px-10 lg:px-12">
 
     <a href="#top" aria-label="Alticcio, początek strony" class="inline-flex min-h-[44px] shrink-0 items-center text-red">
       <svg class="h-[15px] w-auto sm:h-[17px]" viewBox="0 0 4380.6 1000" aria-hidden="true"><use href="#wordmark"/></svg>
@@ -259,47 +271,76 @@
 
 <main id="top">
 
-<!-- ============================== HERO ============================== -->
-<section class="border-b border-border px-5 pb-16 pt-14 sm:px-8 sm:pb-24 sm:pt-20">
-  <div class="mx-auto max-w-wide">
+<!-- ============================== HERO ==============================
+     Układ dzielony: treść po lewej (60%), pusta czerwona płaszczyzna po prawej (40%).
+     min-h zamiast sztywnej wysokości — przy małych ekranach w poziomie treść ma się
+     wylać w dół, a nie zostać przycięta. 100svh, bo 100vh na mobile chowa się
+     pod paskiem adresu przeglądarki. -->
+<section class="grid grid-cols-1 border-b border-border md:h-screen md:grid-cols-[62fr_38fr]">
 
-    <p class="eyebrow text-red">Hala Targowa &middot; Plac Dominikański 1 &middot; Gdańsk</p>
+  <!-- Rytm jak w Empire: blok identyfikacji przy górnej krawędzi, blok sprzedażowy przy dolnej,
+       pustka rozpycha je między sobą (justify-between). -->
+  <div class="flex flex-col justify-between px-5 py-11 sm:px-10 sm:py-12 lg:px-12">
 
-    <h1 class="mt-7 sm:mt-9">
-      <span class="sr-only">Alticcio</span>
-      <svg class="block w-full max-w-[1100px] text-red" viewBox="0 0 4380.6 1000" aria-hidden="true"><use href="#wordmark"/></svg>
-    </h1>
+    <div>
+      <p class="eyebrow text-red">Hala Targowa &middot; Plac Dominikański 1 &middot; Gdańsk</p>
 
-    <p class="mt-8 font-serif text-[clamp(1.6rem,5.2vw,2.9rem)] italic leading-[1.2] sm:mt-10">
-      A new kind of Italian.
-    </p>
+      <!-- Blok identyfikacji węższy niż kolumna (na desktopie 70% szerokości), przycięty od prawej.
+           Na telefonie zostaje pełna szerokość, żeby wordmark nie zrobił się mikroskopijny. -->
+      <div class="md:w-[70%]">
+        <h1 class="mt-6">
+          <span class="sr-only">Alticcio</span>
+          <svg class="block w-full text-red" viewBox="0 0 4380.6 1000" aria-hidden="true"><use href="#wordmark"/></svg>
+        </h1>
 
-    <p class="mt-6 max-w-content text-[1.08rem] leading-[1.8] text-muted">
-      Makaron robimy u nas na miejscu. Do tego pizza, aperitivo o każdej porze
-      i karta win, która nie kończy się na prosecco.
-    </p>
-
-    <div class="mt-9 flex flex-wrap items-center gap-3">
-      <a href="#rezerwacja"
-         class="inline-flex min-h-[48px] items-center rounded-full bg-red px-7 font-ui text-[1rem] font-bold uppercase tracking-[.12em] text-cream transition-colors hover:bg-reddeep">
-        Zarezerwuj stolik
-      </a>
-      <a href="#karta"
-         class="inline-flex min-h-[48px] items-center rounded-full border border-ink px-7 font-ui text-[1rem] font-bold uppercase tracking-[.12em] text-ink transition-colors hover:bg-ink hover:text-cream">
-        Zobacz kartę
-      </a>
+        <!-- Litery rozstawione przez justify-between, nie stałym letter-spacingiem: napis sam
+             dociąga się dokładnie do szerokości wordmarku przy każdej szerokości kolumny.
+             Wersja dla czytników ekranu osobno, żeby nie czytały słowa litera po literze. -->
+        <p class="mt-4">
+          <span class="sr-only">Restauracja</span>
+          <span class="flex justify-between font-ui text-[.95rem] font-bold uppercase text-ink sm:text-[1.05rem]" aria-hidden="true"
+            ><span>R</span><span>E</span><span>S</span><span>T</span><span>A</span><span>U</span><span>R</span><span>A</span><span>C</span><span>J</span><span>A</span></span>
+        </p>
+      </div>
     </div>
 
-    <p class="mt-9 font-ui text-[.86rem] tracking-[.06em] text-muted">
-      <span id="open-state" class="font-bold text-ink">Dziś otwarte 12:00 – 23:00</span>
-    </p>
+    <div class="mt-14">
+      <p class="font-tagline text-[clamp(1.6rem,5.2vw,2.9rem)] leading-[1.2]">
+        A new kind of Italian.
+      </p>
+
+      <p class="mt-6 max-w-content text-[1.08rem] leading-[1.8] text-muted">
+        Makaron robimy u nas na miejscu. Do tego pizza, aperitivo o każdej porze
+        i karta win, która nie kończy się na prosecco.
+      </p>
+
+      <div class="mt-9 flex flex-wrap items-center gap-3">
+        <a href="#rezerwacja"
+           class="inline-flex min-h-[48px] items-center rounded-full bg-red px-7 font-ui text-[1rem] font-bold uppercase tracking-[.12em] text-cream transition-colors hover:bg-reddeep">
+          Zarezerwuj stolik
+        </a>
+        <a href="#karta"
+           class="inline-flex min-h-[48px] items-center rounded-full border border-ink px-7 font-ui text-[1rem] font-bold uppercase tracking-[.12em] text-ink transition-colors hover:bg-ink hover:text-cream">
+          Zobacz kartę
+        </a>
+      </div>
+
+      <p class="mt-9 font-ui text-[.86rem] tracking-[.06em] text-muted">
+        <span id="open-state" class="font-bold text-ink">Dziś otwarte 12:00 – 23:00</span>
+      </p>
+    </div>
 
   </div>
+
+  <!-- Czysta płaszczyzna koloru marki. Zaczyna się niżej niż lewa kolumna (odsłonięty pas kremu
+       pod navbarem), na mobile jest pełnej szerokości paskiem pod treścią. -->
+  <div class="min-h-[200px] bg-red md:min-h-0 md:mt-28" aria-hidden="true"></div>
+
 </section>
 
 <!-- ——— Pasmo hasła: slajd przejściowy z Instagrama marki ——— -->
 <section class="on-red bg-red px-5 py-16 text-cream sm:py-24">
-  <p class="mx-auto max-w-wide text-[clamp(2rem,7vw,4.4rem)] italic leading-[1.1]">
+  <p class="mx-auto max-w-wide font-tagline text-[clamp(2rem,7vw,4.4rem)] leading-[1.1]">
     The night starts here.
   </p>
 </section>
@@ -330,7 +371,7 @@
           Nowej Zelandii, Chile, Mołdawii i Szampanii: od kieliszka za 19 zł
           po butelkę, którą otwiera się przy specjalnej okazji.
         </p>
-        <p class="font-serif text-[1.35rem] italic leading-[1.5] text-red">
+        <p class="font-tagline text-[1.35rem] leading-[1.5] text-red">
           To nie jest trattoria z ceratą w kratkę.
         </p>
       </div>
@@ -473,12 +514,12 @@
     <!-- ——— APERITIVO ——— -->
     <div role="tabpanel" id="panel-aperitivo" aria-labelledby="tab-aperitivo" class="mt-12" hidden>
       <h3 class="font-serif text-[1.75rem] font-bold uppercase tracking-[.04em] text-red">Aperitivo</h3>
-      <p class="mt-2 text-[1.08rem] italic text-muted">Nowe spojrzenie na ponadczasową tradycję</p>
+      <p class="mt-2 font-tagline text-[1.08rem] text-muted">Nowe spojrzenie na ponadczasową tradycję</p>
       <ul class="mt-6 divide-y divide-border border-t border-border">
         <li class="flex items-start gap-4 py-5">
           <div class="min-w-0 flex-1">
             <p class="item-name">Cascara Spritz</p>
-            <p class="item-meta italic">lekki, cytrusowy, orzeźwiający</p>
+            <p class="item-meta font-tagline">lekki, cytrusowy, orzeźwiający</p>
             <p class="item-meta mt-1">Cascara / Pierre Ferrand Dry Curaçao Yuzu / cydr</p>
           </div>
           <span class="price shrink-0">38 <small>PLN</small></span>
@@ -486,7 +527,7 @@
         <li class="flex items-start gap-4 py-5">
           <div class="min-w-0 flex-1">
             <p class="item-name">Alticcio Limoncello Spritz</p>
-            <p class="item-meta italic">cytrusowy, elegancki, zbalansowany</p>
+            <p class="item-meta font-tagline">cytrusowy, elegancki, zbalansowany</p>
             <p class="item-meta mt-1">Botega Limoncino / 3cents mandarin &amp; bergamot / soda</p>
           </div>
           <span class="price shrink-0">38 <small>PLN</small></span>
@@ -494,7 +535,7 @@
         <li class="flex items-start gap-4 py-5">
           <div class="min-w-0 flex-1">
             <p class="item-name">Alticcio Hugo Spritz</p>
-            <p class="item-meta italic">świeży, kwiatowy, ziołowy</p>
+            <p class="item-meta font-tagline">świeży, kwiatowy, ziołowy</p>
             <p class="item-meta mt-1">likier z kwiatu bzu / dill syrop / limonka / mięta / Lamia prosecco</p>
           </div>
           <span class="price shrink-0">38 <small>PLN</small></span>
@@ -502,7 +543,7 @@
         <li class="flex items-start gap-4 py-5">
           <div class="min-w-0 flex-1">
             <p class="item-name">Garibaldi Spritz</p>
-            <p class="item-meta italic">aromatyczny, cytrusowy, lekki</p>
+            <p class="item-meta font-tagline">aromatyczny, cytrusowy, lekki</p>
             <p class="item-meta mt-1">Campari / pomarańcza / kwiat pomarańczy / Lamia prosecco</p>
           </div>
           <span class="price shrink-0">38 <small>PLN</small></span>
@@ -510,7 +551,7 @@
         <li class="flex items-start gap-4 py-5">
           <div class="min-w-0 flex-1">
             <p class="item-name">Jasmine Peach Spritz</p>
-            <p class="item-meta italic">żywy, soczysty, kwiatowy</p>
+            <p class="item-meta font-tagline">żywy, soczysty, kwiatowy</p>
             <p class="item-meta mt-1">likier brzoskwiniowy / jaśmin / Lamia prosecco</p>
           </div>
           <span class="price shrink-0">38 <small>PLN</small></span>
@@ -518,7 +559,7 @@
         <li class="flex items-start gap-4 py-5">
           <div class="min-w-0 flex-1">
             <p class="item-name">Aperol Spritz</p>
-            <p class="item-meta italic">gorzko-słodki, promienny, musujący</p>
+            <p class="item-meta font-tagline">gorzko-słodki, promienny, musujący</p>
             <p class="item-meta mt-1">Aperol / Lamia prosecco / soda</p>
           </div>
           <span class="price shrink-0">36 <small>PLN</small></span>
@@ -526,7 +567,7 @@
         <li class="flex items-start gap-4 py-5">
           <div class="min-w-0 flex-1">
             <p class="item-name">Americano</p>
-            <p class="item-meta italic">idealny aperitif, wytrawny, ziołowy</p>
+            <p class="item-meta font-tagline">idealny aperitif, wytrawny, ziołowy</p>
             <p class="item-meta mt-1">Campari / Dolin Rouge Vermouth / kwiat pomarańczy / soda</p>
           </div>
           <span class="price shrink-0">32 <small>PLN</small></span>
@@ -534,7 +575,7 @@
         <li class="flex items-start gap-4 py-5">
           <div class="min-w-0 flex-1">
             <p class="item-name">Sarti Sbagliato</p>
-            <p class="item-meta italic">kwiatowy, aromatyczny, elegancki</p>
+            <p class="item-meta font-tagline">kwiatowy, aromatyczny, elegancki</p>
             <p class="item-meta mt-1">Sarti / Dolin Dry Vermouth / Lamia prosecco</p>
           </div>
           <span class="price shrink-0">32 <small>PLN</small></span>
@@ -542,7 +583,7 @@
         <li class="flex items-start gap-4 py-5">
           <div class="min-w-0 flex-1">
             <p class="item-name">Bellini</p>
-            <p class="item-meta italic">owocowy, lekki, soczysty</p>
+            <p class="item-meta font-tagline">owocowy, lekki, soczysty</p>
             <p class="item-meta mt-1">brzoskwinia / Lamia prosecco</p>
           </div>
           <span class="price shrink-0">34 <small>PLN</small></span>
@@ -550,7 +591,7 @@
         <li class="flex items-start gap-4 py-5">
           <div class="min-w-0 flex-1">
             <p class="item-name">Rubino</p>
-            <p class="item-meta italic">aromatyczny, soczysty, herbaciany</p>
+            <p class="item-meta font-tagline">aromatyczny, soczysty, herbaciany</p>
             <p class="item-meta mt-1">Campari / cacao / wiśnia / gryka</p>
           </div>
           <span class="price shrink-0">39 <small>PLN</small></span>
@@ -729,7 +770,7 @@
 
 <!-- ——— Pasmo hasła ——— -->
 <section class="on-red bg-red px-5 py-16 text-cream sm:py-24">
-  <p class="mx-auto max-w-wide text-[clamp(2rem,7vw,4.4rem)] italic leading-[1.1]">
+  <p class="mx-auto max-w-wide font-tagline text-[clamp(2rem,7vw,4.4rem)] leading-[1.1]">
     wine o'clock
   </p>
 </section>
@@ -742,7 +783,7 @@
       <figure class="photo-slot h-[260px] sm:h-[400px]">
         <figcaption class="eyebrow">Miejsce na zdjęcie &middot; kieliszek / bar</figcaption>
       </figure>
-      <p class="font-serif text-[clamp(1.5rem,3.6vw,2.2rem)] italic leading-[1.35] text-red">
+      <p class="font-tagline text-[clamp(1.5rem,3.6vw,2.2rem)] leading-[1.35] text-red">
         Kieliszek od 19&nbsp;zł. Butelka, kiedy wieczór na to zasługuje.
       </p>
     </div>

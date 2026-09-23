@@ -11,10 +11,56 @@ function cardHref(slug) {
   return `https://mmates.pl/r/${slug}`;
 }
 
-function reviewCardHtml(r) {
-  const logo = r.logo_url
+// Tlo strony karty: '' = domyslny gradient Workera, '#rrggbb' = kolor, '#rrggbb,#rrggbb' = gradient.
+// "Domyślne" pokazujemy w podgladzie jako przyblizenie obecnego niebiesko-fioletowego gradientu.
+const DEFAULT_BG_PREVIEW = "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
+const BG_PRESETS = [
+  { value: "", label: "Domyślne" },
+  { value: "#0f0f0f", label: "Czarne" },
+  { value: "#232526,#414345", label: "Grafit" },
+  { value: "#ffffff", label: "Białe" },
+  { value: "#f5efe6", label: "Beż" },
+  { value: "#0f2027,#2c5364", label: "Granat" },
+  { value: "#134e5e,#71b280", label: "Zieleń" },
+  { value: "#ee9ca7,#ffdde1", label: "Róż" },
+];
+
+function bgCss(bg) {
+  if (!bg) return DEFAULT_BG_PREVIEW;
+  const [a, b] = bg.split(",");
+  return b ? `linear-gradient(135deg, ${a} 0%, ${b} 100%)` : a;
+}
+function isLightBg(bg) {
+  if (!bg) return false;
+  const lum = (hex) => {
+    const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const cols = bg.split(",");
+  return cols.reduce((s, c) => s + lum(c), 0) / cols.length > 0.6;
+}
+
+function logoHtml(r) {
+  if (r.show_logo === 0) return "";
+  return r.logo_url
     ? `<img class="review-logo" src="${escapeHtml(r.logo_url)}" alt="">`
     : `<span class="review-logo review-logo-emoji">${escapeHtml(r.logo_emoji || "🔗")}</span>`;
+}
+
+// mini-podglad strony karty w trybie edycji (tlo + logo/tekst) - odswiezany na zywo
+function previewHtml(r) {
+  const light = isLightBg(r.bg);
+  return `
+    <div class="rv-preview ${light ? "rv-preview--light" : ""}" style="background:${bgCss(r.bg)}">
+      ${logoHtml(r)}
+      <div class="rv-preview-name">${escapeHtml(r.business_name || "Nazwa firmy")}</div>
+      ${r.tagline ? `<div class="rv-preview-tagline">${escapeHtml(r.tagline)}</div>` : ""}
+      <div class="rv-preview-cta">⭐ Zostaw opinię</div>
+    </div>`;
+}
+
+function reviewCardHtml(r) {
+  const logo = logoHtml(r);
 
   return `
   <div class="review-card ${r.active ? "" : "review-card--inactive"}" data-slug="${escapeHtml(r.slug)}" draggable="true">
@@ -54,6 +100,7 @@ function editFormHtml(r) {
     <input type="url" class="rv-edit-google" placeholder="Link do opinii Google" value="${escapeHtml(r.google_review_url)}">
     <input type="text" class="rv-edit-emoji" placeholder="Emoji" maxlength="4" value="${escapeHtml(r.logo_emoji)}">
     <input type="url" class="rv-edit-logo" placeholder="Logo URL" value="${escapeHtml(r.logo_url)}">
+    <label class="rv-check"><input type="checkbox" class="rv-edit-nologo" ${r.show_logo === 0 ? "checked" : ""}> Bez logo — sam tekst</label>
     <div class="review-logo-upload">
       <label class="review-file-btn">
         📎 Wgraj logo z pliku
@@ -61,6 +108,22 @@ function editFormHtml(r) {
       </label>
       ${r.logo_url ? `<button type="button" class="btn" data-del-logo="${escapeHtml(r.slug)}">Usuń wgrane logo</button>` : ""}
     </div>
+    <div class="rv-bg-editor">
+      <div class="rv-bg-label">Tło karty</div>
+      <input type="hidden" class="rv-edit-bg" value="${escapeHtml(r.bg || "")}">
+      <div class="rv-bg-swatches">
+        ${BG_PRESETS.map(
+          (p) => `<button type="button" class="rv-bg-swatch ${(r.bg || "") === p.value ? "active" : ""}" data-bg-preset="${p.value}"
+            title="${p.label}" style="background:${bgCss(p.value)}"></button>`
+        ).join("")}
+      </div>
+      <div class="rv-bg-custom">
+        <label>Własne <input type="color" class="rv-edit-bg1" value="${(r.bg || "").split(",")[0] || "#667eea"}"></label>
+        <label class="rv-check"><input type="checkbox" class="rv-edit-bg-grad" ${(r.bg || "").includes(",") ? "checked" : ""}> gradient</label>
+        <input type="color" class="rv-edit-bg2" value="${(r.bg || "").split(",")[1] || "#764ba2"}" ${(r.bg || "").includes(",") ? "" : "disabled"}>
+      </div>
+    </div>
+    <div class="rv-preview-wrap">${previewHtml(r)}</div>
     <div class="review-actions">
       <button type="button" class="btn primary" data-save="${escapeHtml(r.slug)}">Zapisz</button>
       <button type="button" class="btn" data-cancel="${escapeHtml(r.slug)}">Anuluj</button>
@@ -100,6 +163,7 @@ form.addEventListener("submit", async (e) => {
     google_url: document.getElementById("rv-google").value.trim(),
     emoji: document.getElementById("rv-emoji").value.trim(),
     logo_url: document.getElementById("rv-logo").value.trim(),
+    show_logo: !document.getElementById("rv-nologo").checked,
   };
   const fileInput = document.getElementById("rv-logo-file");
   const file = fileInput.files[0];
@@ -145,6 +209,7 @@ gridEl.addEventListener("click", async (e) => {
     document.getElementById("rv-google").value = source.google_review_url;
     document.getElementById("rv-emoji").value = source.logo_emoji;
     document.getElementById("rv-logo").value = source.logo_url;
+    document.getElementById("rv-nologo").checked = source.show_logo === 0;
     form.scrollIntoView({ behavior: "smooth", block: "start" });
     document.getElementById("rv-slug").focus();
     return;
@@ -163,6 +228,8 @@ gridEl.addEventListener("click", async (e) => {
       google_url: cardEl.querySelector(".rv-edit-google").value.trim(),
       emoji: cardEl.querySelector(".rv-edit-emoji").value.trim(),
       logo_url: cardEl.querySelector(".rv-edit-logo").value.trim(),
+      show_logo: !cardEl.querySelector(".rv-edit-nologo").checked,
+      bg: cardEl.querySelector(".rv-edit-bg").value,
     };
     saveBtn.disabled = true;
     try {
@@ -287,6 +354,60 @@ gridEl.addEventListener("change", async (e) => {
   } catch (err) {
     alert("Błąd wgrywania logo: " + err.message);
   }
+});
+
+// ---------- edycja tla + "bez logo": zywy podglad w otwartej karcie ----------
+function editState(cardEl) {
+  const r = cards.find((c) => c.slug === cardEl.dataset.slug) || {};
+  return {
+    ...r,
+    business_name: cardEl.querySelector(".rv-edit-business").value.trim(),
+    tagline: cardEl.querySelector(".rv-edit-tagline").value.trim(),
+    logo_emoji: cardEl.querySelector(".rv-edit-emoji").value.trim(),
+    logo_url: cardEl.querySelector(".rv-edit-logo").value.trim(),
+    show_logo: cardEl.querySelector(".rv-edit-nologo").checked ? 0 : 1,
+    bg: cardEl.querySelector(".rv-edit-bg").value,
+  };
+}
+
+function refreshPreview(cardEl) {
+  const st = editState(cardEl);
+  cardEl.querySelector(".rv-preview-wrap").innerHTML = previewHtml(st);
+  cardEl.querySelectorAll(".rv-bg-swatch").forEach((b) => b.classList.toggle("active", b.dataset.bgPreset === st.bg));
+}
+
+// wartosc z "Wlasne" (kolor + opcjonalnie drugi kolor gradientu) -> ukryte pole bg
+function applyCustomBg(cardEl) {
+  const grad = cardEl.querySelector(".rv-edit-bg-grad").checked;
+  const c2 = cardEl.querySelector(".rv-edit-bg2");
+  c2.disabled = !grad;
+  const c1 = cardEl.querySelector(".rv-edit-bg1").value;
+  cardEl.querySelector(".rv-edit-bg").value = grad ? `${c1},${c2.value}` : c1;
+  refreshPreview(cardEl);
+}
+
+gridEl.addEventListener("click", (e) => {
+  const sw = e.target.closest("[data-bg-preset]");
+  if (!sw) return;
+  const cardEl = sw.closest(".review-card--edit");
+  const v = sw.dataset.bgPreset;
+  cardEl.querySelector(".rv-edit-bg").value = v;
+  if (v) {
+    const [a, b] = v.split(",");
+    cardEl.querySelector(".rv-edit-bg1").value = a;
+    cardEl.querySelector(".rv-edit-bg-grad").checked = Boolean(b);
+    const c2 = cardEl.querySelector(".rv-edit-bg2");
+    c2.disabled = !b;
+    if (b) c2.value = b;
+  }
+  refreshPreview(cardEl);
+});
+
+gridEl.addEventListener("input", (e) => {
+  const cardEl = e.target.closest(".review-card--edit");
+  if (!cardEl) return;
+  if (e.target.matches(".rv-edit-bg1, .rv-edit-bg2, .rv-edit-bg-grad")) applyCustomBg(cardEl);
+  else if (e.target.matches("input")) refreshPreview(cardEl);
 });
 
 load();

@@ -3,7 +3,7 @@ const multer = require("multer");
 const Papa = require("papaparse");
 const db = require("../db");
 const { mapRowsToLeads } = require("../csvImport");
-const { computeCalledAt, computeDopieteAt, STATS_ELIGIBLE_SQL } = require("../leadStatus");
+const { computeCalledAt, computeDopieteAt, STATS_ELIGIBLE_SQL, STATS_BREAKDOWN_SQL } = require("../leadStatus");
 const { listScriptFiles } = require("./scripts");
 const { stripDiacritics } = require("../text");
 const {
@@ -125,6 +125,91 @@ router.post("/", (req, res) => {
   const id = db.prepare("INSERT INTO niches (name, slug, columns) VALUES (?, ?, ?)").run(name, slug, columns).lastInsertRowid;
   const niche = db.prepare("SELECT * FROM niches WHERE id = ?").get(id);
   res.status(201).json({ ...niche, columns: parseColumns(niche.columns), ...nicheStats(id) });
+});
+
+// ---------- widok "status ze wszystkich nisz" (#5 - klik w status na dashboardzie) ----------
+// niche.html?status=dopiete - ta sama tabela co w niszy, ale leady z KAZDEJ niszy z danym
+// statusem. Warunek jest dokladnie ten sam co w legendzie "Status zainteresowania" (patrz
+// routes/stats.js), zeby liczba na dashboardzie = liczba wierszy tutaj. Google Meet liczy
+// sie po nadchodzacych terminach (google_term w przyszlosci), reszta po polu "Zainteresowany".
+function statusFilter(value) {
+  if (value === "google_meet") {
+    return { sql: "leads.google_term <> '' AND leads.google_term >= strftime('%Y-%m-%dT%H:%M', 'now', 'localtime')", args: [] };
+  }
+  return { sql: `leads.interested = ? AND ${STATS_BREAKDOWN_SQL}`, args: [value] };
+}
+
+router.get("/_status/:value", (req, res) => {
+  const opt = INTERESTED_OPTIONS.find((o) => o.value === req.params.value);
+  if (!opt) return res.status(404).json({ error: "Nieznany status" });
+  const f = statusFilter(opt.value);
+
+  const t = db
+    .prepare(
+      `SELECT COUNT(*) total,
+              COALESCE(SUM(${STATS_ELIGIBLE_SQL}), 0) eligible,
+              COALESCE(SUM(called_at IS NOT NULL AND ${STATS_ELIGIBLE_SQL}), 0) called
+       FROM leads WHERE ${f.sql}`
+    )
+    .get(...f.args);
+  const byCaller = db
+    .prepare(
+      `SELECT caller, COUNT(*) c FROM leads
+       WHERE ${f.sql} AND called_at IS NOT NULL AND caller <> '' AND ${STATS_ELIGIBLE_SQL}
+       GROUP BY caller`
+    )
+    .all(...f.args);
+  const myCalledToday = db
+    .prepare(
+      `SELECT COUNT(*) c FROM leads
+       WHERE caller = ? AND called_at IS NOT NULL AND ${STATS_ELIGIBLE_SQL}
+         AND date(called_at, 'localtime') = date('now', 'localtime')`
+    )
+    .get(req.user.display_name).c;
+
+  res.json({
+    id: 0,
+    status: opt.value,
+    name: `${opt.label} — wszystkie nisze`,
+    color: opt.color,
+    columns: [...LEAD_COLUMN_KEYS],
+    myCalledToday,
+    total: t.total,
+    eligible: t.eligible,
+    called: t.called,
+    todo: t.eligible - t.called,
+    byCaller,
+  });
+});
+
+router.get("/_status/:value/leads", (req, res) => {
+  const opt = INTERESTED_OPTIONS.find((o) => o.value === req.params.value);
+  if (!opt) return res.status(404).json({ error: "Nieznany status" });
+  const f = statusFilter(opt.value);
+
+  const leads = db
+    .prepare(
+      `SELECT leads.*, niches.name AS niche_name, niches.slug AS niche_slug, niches.color AS niche_color,
+              (SELECT COUNT(*) FROM lead_call_attempts WHERE lead_call_attempts.lead_id = leads.id) AS attempts_count
+       FROM leads JOIN niches ON niches.id = leads.niche_id
+       WHERE ${f.sql} ORDER BY niches.name COLLATE NOCASE, leads.id ASC`
+    )
+    .all(...f.args);
+  const ids = leads.map((l) => l.id);
+  const notesByLead = new Map();
+  if (ids.length) {
+    const noteRows = db
+      .prepare(
+        `SELECT id, lead_id, content, created_at FROM lead_notes
+         WHERE lead_id IN (${ids.map(() => "?").join(",")}) ORDER BY created_at DESC, id DESC`
+      )
+      .all(...ids);
+    for (const { lead_id, ...note } of noteRows) {
+      if (!notesByLead.has(lead_id)) notesByLead.set(lead_id, []);
+      notesByLead.get(lead_id).push(note);
+    }
+  }
+  res.json(leads.map((l) => ({ ...l, notes_list: notesByLead.get(l.id) || [] })));
 });
 
 // GET /api/niches/:slug - szczegoly niszy + statystyki per osoba + dzienny licznik

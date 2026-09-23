@@ -40,15 +40,17 @@ router.post("/leave", (req, res) => {
 // polling per-nisza (patrz niche.js) - kto inny (nie ja) jest aktywny na KONKRETNYCH leadach
 // tej niszy (lead_id=0 = "na niszy, bez konkretnego leada" - pomijamy, bo nie ma czego podswietlic)
 router.get("/", (req, res) => {
+  // niche_id=all - widok statusu ze wszystkich nisz (niche.html?status=...), leady z roznych nisz
+  const all = req.query.niche_id === "all";
   const nicheId = Number(req.query.niche_id);
-  if (!nicheId) return res.status(400).json({ error: "Brak niche_id" });
+  if (!all && !nicheId) return res.status(400).json({ error: "Brak niche_id" });
 
   const rows = db
     .prepare(
       `SELECT p.lead_id, u.display_name, u.color FROM presence p JOIN users u ON u.id = p.user_id
-       WHERE p.niche_id = ? AND p.user_id != ? AND p.lead_id != 0 AND p.updated_at > ${SAFETY_NET_WINDOW_SQL}`
+       WHERE ${all ? "1" : "p.niche_id = @nicheId"} AND p.user_id != @me AND p.lead_id != 0 AND p.updated_at > ${SAFETY_NET_WINDOW_SQL}`
     )
-    .all(nicheId, req.user.id);
+    .all(all ? { me: req.user.id } : { nicheId, me: req.user.id });
 
   res.json(rows);
 });

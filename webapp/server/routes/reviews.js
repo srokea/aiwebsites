@@ -32,6 +32,30 @@ function deleteOldLogoFile(row) {
   fs.unlink(path.join(LOGOS_DIR, path.basename(row.logo_url)), () => {}); // best-effort
 }
 
+// tlo karty: '' (domyslne), '#rrggbb' albo '#rrggbb,#rrggbb' (gradient). Cokolwiek innego = null.
+const BG_FORMAT = /^(#[0-9a-f]{6})(,#[0-9a-f]{6})?$/;
+function normalizeBg(raw) {
+  const v = String(raw || "").trim().toLowerCase().replace(/\s/g, "");
+  if (!v) return "";
+  return BG_FORMAT.test(v) ? v : null;
+}
+
+// gotowa wartosc CSS dla Workera + czy tlo jest jasne (Worker przelacza wtedy tekst na ciemny)
+function bgCss(bg) {
+  if (!bg) return "";
+  const [a, b] = bg.split(",");
+  return b ? `linear-gradient(135deg, ${a} 0%, ${b} 100%)` : a;
+}
+function isLightBg(bg) {
+  if (!bg) return false;
+  const lum = (hex) => {
+    const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const cols = bg.split(",");
+  return cols.reduce((s, c) => s + lum(c), 0) / cols.length > 0.6;
+}
+
 function kvUrl(slug) {
   return `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/storage/kv/namespaces/${CF_KV_NAMESPACE_ID}/values/${encodeURIComponent(slug)}`;
 }
@@ -39,12 +63,17 @@ function kvUrl(slug) {
 // Po kazdym zapisie/usunieciu karty synchronizujemy jej stan do Cloudflare KV - stamtad
 // czyta go Worker obslugujacy mmates.pl/r/:slug, nie z tej bazy bezposrednio.
 async function syncToKV(slug, row) {
+  const showLogo = row.show_logo !== 0;
   const body = JSON.stringify({
     business_name: row.business_name,
     tagline: row.tagline,
     google_url: row.google_review_url,
-    emoji: row.logo_emoji,
-    logo_url: row.logo_url,
+    // karta "sam tekst": logo i emoji wysylamy puste (+ jawna flaga show_logo dla Workera)
+    emoji: showLogo ? row.logo_emoji : "",
+    logo_url: showLogo ? row.logo_url : "",
+    show_logo: showLogo,
+    bg: bgCss(row.bg),
+    bg_light: isLightBg(row.bg),
   });
   const res = await fetch(kvUrl(slug), {
     method: "PUT",
@@ -97,15 +126,19 @@ router.post("/", async (req, res) => {
   if (!business_name) return res.status(400).json({ error: "Nazwa firmy jest wymagana" });
 
   const google_review_url = String(req.body.google_url ?? req.body.google_review_url ?? "").trim();
+  const bg = normalizeBg(req.body.bg);
+  if (bg === null) return res.status(400).json({ error: "Nieprawidlowe tlo (oczekiwane #rrggbb albo #rrggbb,#rrggbb)" });
 
   // nowa karta ląduje na górze listy (jak dawniej przy sortowaniu po dacie)
   const minOrder = db.prepare("SELECT MIN(sort_order) m FROM review_links").get().m ?? 0;
 
   db.prepare(
-    `INSERT INTO review_links (slug, business_name, tagline, google_review_url, logo_emoji, logo_url, sort_order)
-     VALUES (@slug, @business_name, @tagline, @google_review_url, @logo_emoji, @logo_url, @sort_order)`
+    `INSERT INTO review_links (slug, business_name, tagline, google_review_url, logo_emoji, logo_url, sort_order, show_logo, bg)
+     VALUES (@slug, @business_name, @tagline, @google_review_url, @logo_emoji, @logo_url, @sort_order, @show_logo, @bg)`
   ).run({
     slug,
+    show_logo: req.body.show_logo === undefined || req.body.show_logo ? 1 : 0,
+    bg,
     sort_order: minOrder - 1,
     business_name,
     tagline: String(req.body.tagline || "").trim(),
@@ -147,12 +180,16 @@ router.patch("/:slug", async (req, res) => {
         : existing.logo_emoji,
     logo_url: req.body.logo_url !== undefined ? String(req.body.logo_url).trim() : existing.logo_url,
     active: req.body.active !== undefined ? (req.body.active ? 1 : 0) : existing.active,
+    show_logo: req.body.show_logo !== undefined ? (req.body.show_logo ? 1 : 0) : existing.show_logo,
+    bg: req.body.bg !== undefined ? normalizeBg(req.body.bg) : existing.bg,
   };
   if (!fields.business_name) return res.status(400).json({ error: "Nazwa firmy jest wymagana" });
+  if (fields.bg === null) return res.status(400).json({ error: "Nieprawidlowe tlo (oczekiwane #rrggbb albo #rrggbb,#rrggbb)" });
 
   db.prepare(
     `UPDATE review_links SET business_name=@business_name, tagline=@tagline, google_review_url=@google_review_url,
-     logo_emoji=@logo_emoji, logo_url=@logo_url, active=@active, updated_at=datetime('now') WHERE slug=@slug`
+     logo_emoji=@logo_emoji, logo_url=@logo_url, active=@active, show_logo=@show_logo, bg=@bg,
+     updated_at=datetime('now') WHERE slug=@slug`
   ).run({ ...fields, slug: existing.slug });
 
   const saved = getBySlug(existing.slug);

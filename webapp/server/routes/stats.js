@@ -125,11 +125,20 @@ router.get("/caller/:name", (req, res) => {
 
   // Kasa liczona dokladnie tak samo jak w panelu zbiorczym (patrz wyzej) - tylko z leadow
   // dopietych przez te osobe. Bez filtra "eligible": dopiety klient dostaje pozniej Strona = "Tak".
-  const dopieteRows = db.prepare("SELECT dopiete_at FROM leads WHERE caller = ? AND interested = 'dopiete'").all(name);
+  // cena klienta: indywidualna z client_pricing (#6 - edycja w Kasie) albo domyslna PRICING
+  const dopieteRows = db
+    .prepare(
+      `SELECT l.dopiete_at, p.onetime_grosze, p.monthly_grosze
+       FROM leads l LEFT JOIN client_pricing p ON p.lead_id = l.id
+       WHERE l.caller = ? AND l.interested = 'dopiete'`
+    )
+    .all(name);
   const now = new Date();
   const earned = dopieteRows.reduce((sum, row) => {
     const months = row.dopiete_at ? fullMonthsElapsed(row.dopiete_at, now) : 0;
-    return sum + PRICING.oneTime + PRICING.monthly * (months + 1);
+    const onetime = row.onetime_grosze != null ? row.onetime_grosze / 100 : PRICING.oneTime;
+    const monthly = row.monthly_grosze != null ? row.monthly_grosze / 100 : PRICING.monthly;
+    return sum + onetime + monthly * (months + 1);
   }, 0);
 
   const meetsAhead = db

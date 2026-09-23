@@ -2,7 +2,7 @@ const express = require("express");
 const db = require("../db");
 const { TRANSACTION_CATEGORIES } = require("../constants");
 const { localDate } = require("../time");
-const { financeSync, summary, perPerson, pendingDuesList } = require("../finance");
+const { financeSync, summary, perPerson, pendingDuesList, clientsPricingList } = require("../finance");
 
 const router = express.Router();
 
@@ -33,6 +33,7 @@ function bundle() {
     summary: summary(),
     perPerson: perPerson(),
     pendingDues: pendingDuesList(),
+    clients: clientsPricingList(),
   };
 }
 

@@ -14,14 +14,21 @@ function shiftDate(iso, deltaDays) {
 }
 
 // GET /api/notifications?days=N - zadania "na dany dzien" (Google Meet / oddzwonienie / SMS)
-// dla dzisiaj + N dni wstecz, zgrupowane po dacie (dzis pierwsze). Alerty NIE sa nigdzie
+// zalogowanego usera dla dzisiaj + N dni wstecz, zgrupowane po dacie (dzis pierwsze). Alerty NIE sa nigdzie
 // zapisywane - liczymy je z biezacego stanu leadow. "Przeczytane" ogarnia front (localStorage).
 router.get("/", (req, res) => {
   const today = localDate();
   const days = Math.min(60, Math.max(1, parseInt(req.query.days, 10) || 14));
   const from = shiftDate(today, -(days - 1));
-  const caller = req.query.caller && getCallerNames().includes(String(req.query.caller)) ? String(req.query.caller) : null;
-  const callerClause = caller ? "AND leads.caller = ?" : "";
+  // powiadomienia sa per osoba: domyslnie tylko leady zalogowanego usera (+ leady bez
+  // przypisanego callera, zeby Meet bez "Kto dzwonil" nie zniknal wszystkim). ?caller=X
+  // podglada kogos innego, ?all=1 = wszyscy.
+  const caller = req.query.all
+    ? null
+    : req.query.caller && getCallerNames().includes(String(req.query.caller))
+    ? String(req.query.caller)
+    : req.user.display_name;
+  const callerClause = caller ? "AND (leads.caller = ? OR COALESCE(leads.caller, '') = '')" : "";
   const args = caller ? [caller] : [];
 
   const rows = db

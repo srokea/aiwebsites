@@ -13,9 +13,14 @@
 
 <div class="wrap">
   <div class="topbar">
+    <div class="topbar-left">
+    <a class="icon-btn icon-btn-home" href="/" title="Strona główna">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h5v-6h4v6h5V9.5"/></svg>
+    </a>
     <div>
       <h1>🔗 Karty NFC</h1>
       <div class="topbar-sub">Zarządzanie kartami z opiniami Google — mmates.pl/r/:slug</div>
+    </div>
     </div>
     <div style="display:flex; align-items:center; gap:14px;">
       <div id="user-widget"></div>
@@ -37,6 +42,7 @@
     <input type="url" id="rv-google" placeholder="Link do opinii Google (opcjonalnie)">
     <input type="text" id="rv-emoji" placeholder="Emoji (np. 💈)" maxlength="4">
     <input type="url" id="rv-logo" placeholder="Logo URL (opcjonalnie)">
+    <label class="rv-check"><input type="checkbox" id="rv-nologo"> Bez logo — sam tekst</label>
     <label class="review-file-btn">
       📎 Logo z pliku
       <input type="file" id="rv-logo-file" accept="image/png,image/jpeg,image/webp" hidden>

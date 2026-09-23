@@ -106,6 +106,16 @@ CREATE TABLE IF NOT EXISTS client_dues (
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_client_dues_uniq ON client_dues(lead_id, kind, period);
 
+-- #6 - indywidualna cena klienta (nadpisuje PRICING z constants.js: 300 wdrozenie / 100 mies.).
+-- Brak wiersza = cena domyslna. NULL w kolumnie = domyslna dla tego rodzaju oplaty.
+CREATE TABLE IF NOT EXISTS client_pricing (
+  lead_id INTEGER PRIMARY KEY REFERENCES leads(id) ON DELETE CASCADE,
+  onetime_grosze INTEGER,
+  monthly_grosze INTEGER,
+  updated_by TEXT NOT NULL DEFAULT '',
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 -- Historia edycji notatki: przy kazdej zmianie tresci stara wersja ladowana jest tutaj
 -- (patrz PATCH /api/leads/:id/notes/:noteId), zeby nic nie ginelo po edycji.
 CREATE TABLE IF NOT EXISTS lead_note_edits (
@@ -278,6 +288,10 @@ addColumnIfMissing("review_links", "logo_url TEXT NOT NULL DEFAULT ''");
 // reczna kolejnosc kart w panelu /reviews.html (przeciagnij i upusc) - nie ma nic wspolnego
 // z Cloudflare KV, to czysto kosmetyczna kolejnosc widoku admina
 addColumnIfMissing("review_links", "sort_order INTEGER NOT NULL DEFAULT 0");
+// karta NFC bez logo/emoji (sam tekst) + wlasne tlo strony karty. bg: '' = domyslny gradient
+// Workera, '#rrggbb' = jednolity kolor, '#rrggbb,#rrggbb' = gradient z dwoch kolorow
+addColumnIfMissing("review_links", "show_logo INTEGER NOT NULL DEFAULT 1");
+addColumnIfMissing("review_links", "bg TEXT NOT NULL DEFAULT ''");
 // Jednorazowy backfill: istniejace karty (sprzed dodania tej kolumny) dostaja kolejnosc
 // zgodna z dotychczasowym sortowaniem (najnowsze pierwsze), zeby nic nie "skoczylo" po starcie.
 // Warunek na sort_order=0 dla wszystkich = po pierwszym uruchomieniu juz nie zlapie (nowe karty

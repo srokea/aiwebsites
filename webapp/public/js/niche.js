@@ -1,6 +1,13 @@
 const params = new URLSearchParams(location.search);
-const slug = params.get("slug");
+// #5 - niche.html?status=dopiete: ta sama tabela, ale leady ze WSZYSTKICH nisz z danym statusem
+// (klik w status w legendzie "Status zainteresowania" na dashboardzie). slug sluzy wtedy tylko
+// jako klucz localStorage (widok/scroll/ostatni lead) - dane ida z /api/niches/_status/:value.
+const statusView = params.get("status");
+const slug = statusView ? `_status-${statusView}` : params.get("slug");
 if (!slug) location.href = "/";
+const nicheApi = statusView
+  ? `/api/niches/_status/${encodeURIComponent(statusView)}`
+  : `/api/niches/${encodeURIComponent(slug)}`;
 
 let meta = null;
 let leads = [];
@@ -69,7 +76,12 @@ async function init() {
     highlightStatuses = new Set(meta.interestedOptions.filter((o) => o.highlight).map((o) => o.value));
     restoreViewState(); // zanim narysujemy pasek filtrow i tabele - patrz nizej
     renderFilterBar();
-    document.getElementById("export-csv-btn").href = `/api/niches/${encodeURIComponent(slug)}/export.csv`;
+    document.getElementById("export-csv-btn").href = `${nicheApi}/export.csv`;
+    if (statusView) {
+      // widok zbiorczy nie jest niszą: nie ma gdzie dodac leada ani czego ustawiac
+      document.getElementById("add-lead-btn").hidden = true;
+      document.getElementById("settings-btn").hidden = true;
+    }
     const savedActive = recallLastLead();
     activeRowId = savedActive ? Number(savedActive) : null;
     await loadNicheHeader();
@@ -96,7 +108,7 @@ async function init() {
 }
 
 async function loadNicheHeader() {
-  const niche = await api.get(`/api/niches/${encodeURIComponent(slug)}`);
+  const niche = await api.get(nicheApi);
   currentNiche = niche;
   applyNicheColumns(niche.columns || []);
 
@@ -157,7 +169,7 @@ async function loadNicheHeader() {
 }
 
 async function loadLeads() {
-  leads = await api.get(`/api/niches/${encodeURIComponent(slug)}/leads`);
+  leads = await api.get(`${nicheApi}/leads`);
   renderLeads();
 }
 
@@ -585,7 +597,9 @@ async function pingPresence(leadId) {
   if (lastPresencePing.leadId === leadId && now - lastPresencePing.time < 3000) return;
   lastPresencePing = { leadId, time: now };
   try {
-    await api.post("/api/presence", { lead_id: leadId, niche_id: currentNiche.id });
+    // w widoku statusu kazdy lead ma swoja nisze - obecnosc zglaszamy w niszy TEGO leada
+    const nicheId = statusView ? leads.find((l) => l.id === leadId)?.niche_id || 0 : currentNiche.id;
+    await api.post("/api/presence", { lead_id: leadId, niche_id: nicheId });
   } catch {
     // best-effort - brak zapisu obecnosci nie powinien przerywac pracy z leadem
   }
@@ -627,7 +641,7 @@ function renderPresenceBadges() {
 async function pollPresence() {
   if (!currentNiche || document.visibilityState !== "visible") return;
   try {
-    const rows = await api.get(`/api/presence?niche_id=${currentNiche.id}`);
+    const rows = await api.get(`/api/presence?niche_id=${statusView ? "all" : currentNiche.id}`);
     presenceMap = new Map(rows.map((r) => [r.lead_id, r]));
     renderPresenceBadges();
   } catch {
@@ -730,6 +744,11 @@ function rowHtml(lead, index) {
         <div class="company-cell-inner">
           <span class="presence-badge" style="display:none;"></span>
           <a class="company-link" href="${escapeHtml(companyGoogleSearchHref(lead))}" target="_blank" rel="noopener" title="${escapeHtml(lead.company_name)} — szukaj w Google">${escapeHtml(lead.company_name)}</a>
+          ${
+            statusView && lead.niche_slug
+              ? `<a class="lead-niche-tag" href="/niche.html?slug=${encodeURIComponent(lead.niche_slug)}&lead=${lead.id}" style="color:${lead.niche_color || "var(--muted)"}" title="Otwórz w niszy">${escapeHtml(lead.niche_name)}</a>`
+              : ""
+          }
         </div>
       </td>
       ${showCol("city") ? `<td class="city-cell" title="${escapeHtml(lead.city)}">${escapeHtml(shortCity(lead.city))}</td>` : ""}
@@ -1296,7 +1315,8 @@ document.getElementById("notes-modal").addEventListener("click", (e) => {
 
 function focusLeadRow(leadId) {
   // czyscimy parametr od razu, zeby odswiezenie strony nie powtarzalo scrolla/flasha
-  history.replaceState(null, "", `/niche.html?slug=${encodeURIComponent(slug)}`);
+  const cleanQs = statusView ? `status=${encodeURIComponent(statusView)}` : `slug=${encodeURIComponent(slug)}`;
+  history.replaceState(null, "", `/niche.html?${cleanQs}`);
   const tr = document.querySelector(`tr[data-id="${leadId}"]`);
   if (!tr) return;
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1319,7 +1339,7 @@ const EMPTY_FILTERS = () => ({ interested: [], caller: [], answered: [], quality
 const setSize = (set) => Object.values(set.filters || {}).reduce((n, v) => n + (Array.isArray(v) ? v.length : 0), 0);
 
 async function loadFilterSets() {
-  if (!currentNiche) return;
+  if (!currentNiche || statusView) return;
   try {
     filterSets = await api.get(`/api/filter-sets?niche_id=${currentNiche.id}`);
   } catch {
@@ -1335,6 +1355,7 @@ function reopenSetsMenu() {
 }
 
 function filterSetsHtml() {
+  if (statusView) return ""; // zestawy sa per nisza - w widoku zbiorczym nie ma do czego ich przypiac
   const rows = filterSets
     .map((set) =>
       set.id === renamingSetId

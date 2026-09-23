@@ -1,5 +1,6 @@
 // #6 - Historia transakcji (Kasa). Jedno miejsce na finanse:
-//   - naleznosci klientow DO POTWIERDZENIA (300 zl wdrozenie + 100 zl/mies. abonament),
+//   - naleznosci klientow DO POTWIERDZENIA (domyslnie 300 zl wdrozenie + 100 zl/mies., cene
+//     kazdego klienta mozna zmienic w sekcji "Ceny klientow"),
 //   - reczne wpisy (przychod / wydatek),
 //   - auto-koszty subskrypcji (dopisywane same, bez potwierdzania).
 // Podsumowanie (przychod / koszty / bilans) = te same liczby co panel na dashboardzie.
@@ -12,6 +13,8 @@ const splitSection = document.getElementById("split-section");
 const splitGridEl = document.getElementById("split-grid");
 const duesSection = document.getElementById("dues-section");
 const duesListEl = document.getElementById("dues-list");
+const pricesSection = document.getElementById("prices-section");
+const pricesListEl = document.getElementById("prices-list");
 const form = document.getElementById("tx-form");
 const errEl = document.getElementById("tx-error");
 const dateInput = document.getElementById("tx-date");
@@ -88,6 +91,89 @@ function renderDues(dues) {
     )
     .join("");
 }
+
+// #6 - ceny klientow: domyslnie 300 zl wdrozenie + 100 zl/mies., kazdego mozna nadpisac
+let clientsPricing = [];
+let editingPriceId = null;
+const plainNum = (n) => String(Number(n)).replace(".", ",");
+
+function renderPrices() {
+  if (!clientsPricing.length) {
+    pricesSection.hidden = true;
+    pricesListEl.innerHTML = "";
+    return;
+  }
+  pricesSection.hidden = false;
+  pricesListEl.innerHTML = clientsPricing
+    .map((c) => {
+      const head = `
+        <span class="prices-company">${escapeHtml(c.company)}${c.caller ? `<span class="prices-caller"> · ${escapeHtml(c.caller)}</span>` : ""}</span>`;
+      if (c.lead_id !== editingPriceId) {
+        return `
+        <div class="prices-row">
+          ${head}
+          <span class="prices-val">${zl(c.onetime)} + ${zl(c.monthly)}/mies.${c.custom ? ` <span class="prices-custom">indywidualna</span>` : ""}</span>
+          <button type="button" class="btn prices-btn" data-price-edit="${c.lead_id}">Edytuj</button>
+        </div>`;
+      }
+      return `
+        <div class="prices-row prices-row--edit" data-lead="${c.lead_id}">
+          ${head}
+          <label class="prices-field">Wdrożenie <input type="text" inputmode="decimal" class="pr-onetime" value="${plainNum(c.onetime)}"> zł</label>
+          <label class="prices-field">Abonament <input type="text" inputmode="decimal" class="pr-monthly" value="${plainNum(c.monthly)}"> zł/mies.</label>
+          <label class="prices-apply"><input type="checkbox" class="pr-apply"> popraw też już potwierdzone wpisy</label>
+          <span class="prices-actions">
+            <button type="button" class="btn primary prices-btn" data-price-save="${c.lead_id}">Zapisz</button>
+            ${c.custom ? `<button type="button" class="btn prices-btn" data-price-reset="${c.lead_id}">Domyślna (300 + 100)</button>` : ""}
+            <button type="button" class="btn prices-btn" data-price-cancel>Anuluj</button>
+          </span>
+        </div>`;
+    })
+    .join("");
+}
+
+pricesListEl.addEventListener("click", async (e) => {
+  const edit = e.target.closest("[data-price-edit]");
+  const save = e.target.closest("[data-price-save]");
+  const reset = e.target.closest("[data-price-reset]");
+  if (edit) {
+    editingPriceId = Number(edit.dataset.priceEdit);
+    renderPrices();
+    pricesListEl.querySelector(".pr-monthly")?.focus();
+    return;
+  }
+  if (e.target.closest("[data-price-cancel]")) {
+    editingPriceId = null;
+    renderPrices();
+    return;
+  }
+  if (!save && !reset) return;
+  const row = (save || reset).closest(".prices-row");
+  const leadId = Number(row.dataset.lead);
+  const applyConfirmed = row.querySelector(".pr-apply").checked;
+  // puste pola = cena domyslna (serwer trzyma wtedy NULL)
+  const body = reset
+    ? { onetime: "", monthly: "", applyConfirmed }
+    : { onetime: row.querySelector(".pr-onetime").value, monthly: row.querySelector(".pr-monthly").value, applyConfirmed };
+  (save || reset).disabled = true;
+  try {
+    const b = await api.put(`/api/finance/clients/${leadId}/pricing`, body);
+    editingPriceId = null;
+    applyBundle(b);
+  } catch (err) {
+    alert("Błąd zapisu ceny: " + err.message);
+    (save || reset).disabled = false;
+  }
+});
+
+pricesListEl.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && e.target.matches(".pr-onetime, .pr-monthly")) {
+    e.target.closest(".prices-row").querySelector("[data-price-save]").click();
+  } else if (e.key === "Escape") {
+    editingPriceId = null;
+    renderPrices();
+  }
+});
 
 function renderList(rows) {
   if (!rows.length) {
@@ -389,6 +475,8 @@ function applyBundle(b) {
   renderSummary(b.summary);
   renderSplit(b.perPerson);
   renderDues(b.pendingDues);
+  clientsPricing = b.clients || [];
+  renderPrices();
   renderList(b.transactions);
 }
 
