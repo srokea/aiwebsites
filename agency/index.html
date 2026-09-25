@@ -37,7 +37,19 @@
   </div>
 </div>
 
-<main>
+<!-- ══ Nawigacja ══ -->
+<header class="nav">
+  <a class="nav__logo" href="#top" aria-label="MMates — na górę strony">
+    <img src="assets/logo-mm.png" alt="MMates" width="332" height="262">
+  </a>
+  <nav class="nav__links" aria-label="Główna">
+    <a href="#o-nas">Kim jesteśmy</a>
+    <a href="#work">Portfolio</a>
+  </nav>
+  <a class="nav__cta" href="tel:+48789245868">Zadzwoń</a>
+</header>
+
+<main id="top">
 
   <!-- ══ 1 ══ Scena startowa jest już w kadrze przy p ≈ 0.42,
              dlatego ma tylko wyjście, a wejście robi jednorazowa
@@ -62,7 +74,7 @@
   </section>
 
   <!-- ══ 3 ══ -->
-  <section class="scene" data-scene>
+  <section class="scene" id="o-nas" data-scene>
     <div class="stage">
       <h2 class="display display--ask beat" data-in="0.34 0.46" data-out="0.58 0.72">Kim jesteśmy?</h2>
     </div>
@@ -71,10 +83,8 @@
   <!-- ══ 4 ══ -->
   <section class="scene" data-scene>
     <div class="stage">
-      <figure class="shot beat" data-motion="image" data-in="0.32 0.48" data-out="0.60 0.74">
-        <!-- TODO: podmień assets/image1.png na właściwy plik (teraz placeholder)
-             i wpisz alt opisujący, co na nim widać. -->
-        <img src="assets/image1.png" alt="" width="1500" height="1000" decoding="async">
+      <figure class="shot shot--portrait beat" data-motion="image" data-in="0.32 0.48" data-out="0.60 0.74">
+        <img src="assets/o-nas.jpg" alt="Nasze wspólne zdjęcie na ekranie aparatu cyfrowego" width="1000" height="1333" decoding="async">
       </figure>
     </div>
   </section>
@@ -119,8 +129,7 @@
   <section class="scene" data-scene>
     <div class="stage stage--cta">
       <p class="display beat" data-in="0.32 0.44" data-out="0.60 0.74">Wystarczy jeden telefon.</p>
-      <!-- TODO: podmień numer w href i w treści -->
-      <a class="phone beat" data-in="0.38 0.50" data-out="0.60 0.74" href="tel:+48000000000">+48&nbsp;000&nbsp;000&nbsp;000</a>
+      <a class="phone beat" data-in="0.38 0.50" data-out="0.60 0.74" href="tel:+48789245868">+48&nbsp;789&nbsp;245&nbsp;868</a>
     </div>
   </section>
 
@@ -138,47 +147,107 @@
       <div class="work__scene">
 
         <article class="win" data-i="0">
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">NOVA Magdalena Kowalska</span></div>
+          <div class="win__view"><img src="assets/work/nova.jpg" alt="Strona internetowa NOVA Magdalena Kowalska" width="1280" height="800" loading="lazy" decoding="async"></div>
+        </article>
+
+        <article class="win" data-i="1">
           <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Granda Barber Shop</span></div>
           <div class="win__view"><img src="assets/work/granda.jpg" alt="Strona internetowa Granda Barber Shop" width="1280" height="800" loading="lazy" decoding="async"></div>
         </article>
 
-        <article class="win" data-i="1">
+        <article class="win" data-i="2">
           <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Zajawa Barbershop</span></div>
           <div class="win__view"><img src="assets/work/zajawa.jpg" alt="Strona internetowa Zajawa Barbershop" width="1280" height="800" loading="lazy" decoding="async"></div>
         </article>
 
-        <article class="win" data-i="2">
-          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">O!hair</span></div>
-          <div class="win__view"><img src="assets/work/ohair.jpg" alt="Strona internetowa salonu fryzjerskiego O!hair" width="1280" height="800" loading="lazy" decoding="async"></div>
-        </article>
-
         <article class="win" data-i="3">
-          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Męska Sprawa</span></div>
-          <div class="win__view"><img src="assets/work/meska-sprawa.jpg" alt="Strona internetowa Męska Sprawa Barber" width="1280" height="800" loading="lazy" decoding="async"></div>
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Piękna Sprawa Beauty Studio</span></div>
+          <div class="win__view"><img src="assets/work/piekna-sprawa.jpg" alt="Strona internetowa Piękna Sprawa Beauty Studio" width="1280" height="800" loading="lazy" decoding="async"></div>
         </article>
 
         <article class="win" data-i="4">
-          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Paradoxe Studio</span></div>
-          <div class="win__view"><img src="assets/work/paradoxe.jpg" alt="Strona internetowa Paradoxe Studio" width="1280" height="800" loading="lazy" decoding="async"></div>
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Psia Łapka</span></div>
+          <div class="win__view"><img src="assets/work/psia-lapka.jpg" alt="Strona internetowa Psia Łapka" width="1280" height="800" loading="lazy" decoding="async"></div>
         </article>
 
         <article class="win" data-i="5">
-          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Starowarszawska</span></div>
-          <div class="win__view"><img src="assets/work/starowarszawska.jpg" alt="Strona internetowa Starowarszawska — fryzjer męski" width="1280" height="800" loading="lazy" decoding="async"></div>
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Salon Psiej Urody Pudelek</span></div>
+          <div class="win__view"><img src="assets/work/pudelek.jpg" alt="Strona internetowa Salon Psiej Urody Pudelek" width="1280" height="800" loading="lazy" decoding="async"></div>
+        </article>
+
+        <article class="win" data-i="6">
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Szkatulski Photography</span></div>
+          <div class="win__view"><img src="assets/work/szkatulski.jpg" alt="Strona internetowa Szkatulski Photography" width="1280" height="800" loading="lazy" decoding="async"></div>
+        </article>
+
+        <article class="win" data-i="7">
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Męska Sprawa</span></div>
+          <div class="win__view"><img src="assets/work/meska-sprawa.jpg" alt="Strona internetowa Męska Sprawa" width="1280" height="800" loading="lazy" decoding="async"></div>
+        </article>
+
+        <article class="win" data-i="8">
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Atelier Piękna</span></div>
+          <div class="win__view"><img src="assets/work/atelier-piekna.jpg" alt="Strona internetowa Atelier Piękna" width="1280" height="800" loading="lazy" decoding="async"></div>
+        </article>
+
+        <article class="win" data-i="9">
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Usługi Ogrodnicze</span></div>
+          <div class="win__view"><img src="assets/work/uslugi-ogrodnicze.jpg" alt="Strona internetowa Usługi Ogrodnicze" width="1280" height="800" loading="lazy" decoding="async"></div>
+        </article>
+
+        <article class="win" data-i="10">
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Chmielewska Beauty Studio</span></div>
+          <div class="win__view"><img src="assets/work/chmielewska.jpg" alt="Strona internetowa Chmielewska Beauty Studio" width="1280" height="800" loading="lazy" decoding="async"></div>
+        </article>
+
+        <article class="win" data-i="11">
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Colibra iBeauty</span></div>
+          <div class="win__view"><img src="assets/work/colibra.jpg" alt="Strona internetowa Colibra iBeauty" width="1280" height="800" loading="lazy" decoding="async"></div>
+        </article>
+
+        <article class="win" data-i="12">
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Visage</span></div>
+          <div class="win__view"><img src="assets/work/visage.jpg" alt="Strona internetowa Visage" width="1280" height="800" loading="lazy" decoding="async"></div>
+        </article>
+
+        <article class="win" data-i="13">
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Medycyna Estetyczna Natalia Chrząstek</span></div>
+          <div class="win__view"><img src="assets/work/medycyna-estetyczna.jpg" alt="Strona internetowa Medycyna Estetyczna Natalia Chrząstek" width="1280" height="800" loading="lazy" decoding="async"></div>
+        </article>
+
+        <article class="win" data-i="14">
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Patent na Pazur</span></div>
+          <div class="win__view"><img src="assets/work/patent-na-pazur.jpg" alt="Strona internetowa Patent na Pazur" width="1280" height="800" loading="lazy" decoding="async"></div>
+        </article>
+
+        <article class="win" data-i="15">
+          <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__pill">Piękne Sztuki</span></div>
+          <div class="win__view"><img src="assets/work/piekne-sztuki.jpg" alt="Strona internetowa Piękne Sztuki" width="1280" height="800" loading="lazy" decoding="async"></div>
         </article>
 
       </div>
 
       <div class="caps">
-        <div class="cap" data-i="0"><h3>Granda Barber Shop</h3><p>Barbershop · Łódź, Bełchatów, Piotrków Tryb.</p></div>
-        <div class="cap" data-i="1"><h3>Zajawa Barbershop</h3><p>Barbershop · Bełchatów</p></div>
-        <div class="cap" data-i="2"><h3>O!hair</h3><p>Salon fryzjerski · Radomsko</p></div>
-        <div class="cap" data-i="3"><h3>Męska Sprawa</h3><p>Barbershop · Kamieńsk</p></div>
-        <div class="cap" data-i="4"><h3>Paradoxe Studio</h3><p>Barber &amp; hair studio · Bełchatów</p></div>
-        <div class="cap" data-i="5"><h3>Starowarszawska</h3><p>Fryzjer męski · Piotrków Tryb.</p></div>
+        <div class="cap" data-i="0"><h3>NOVA Magdalena Kowalska</h3><p>Makijaż permanentny i kosmetologia · Sulejów</p></div>
+        <div class="cap" data-i="1"><h3>Granda Barber Shop</h3><p>Barbershop · Łódź, Bełchatów, Piotrków Tryb.</p></div>
+        <div class="cap" data-i="2"><h3>Zajawa Barbershop</h3><p>Barbershop · Bełchatów</p></div>
+        <div class="cap" data-i="3"><h3>Piękna Sprawa Beauty Studio</h3><p>Manicure i pedicure · Rozprza</p></div>
+        <div class="cap" data-i="4"><h3>Psia Łapka</h3><p>Psi fryzjer · Piotrków Tryb.</p></div>
+        <div class="cap" data-i="5"><h3>Salon Psiej Urody Pudelek</h3><p>Groomer · Piotrków Tryb.</p></div>
+        <div class="cap" data-i="6"><h3>Szkatulski Photography</h3><p>Fotograf · Sulejów</p></div>
+        <div class="cap" data-i="7"><h3>Męska Sprawa</h3><p>Barbershop · Kamieńsk</p></div>
+        <div class="cap" data-i="8"><h3>Atelier Piękna</h3><p>Makijaż permanentny i rzęsy · Tomaszów Maz.</p></div>
+        <div class="cap" data-i="9"><h3>Usługi Ogrodnicze</h3><p>Ogrody i zieleń · Tomaszów Maz.</p></div>
+        <div class="cap" data-i="10"><h3>Chmielewska Beauty Studio</h3><p>Makijaż ślubny · Tomaszów Maz.</p></div>
+        <div class="cap" data-i="11"><h3>Colibra iBeauty</h3><p>Masaż i zabiegi anti-aging · Tomaszów Maz.</p></div>
+        <div class="cap" data-i="12"><h3>Visage</h3><p>Salon kosmetyczny · Rozprza</p></div>
+        <div class="cap" data-i="13"><h3>Medycyna Estetyczna Natalia Chrząstek</h3><p>Medycyna estetyczna · Radomsko</p></div>
+        <div class="cap" data-i="14"><h3>Patent na Pazur</h3><p>Stylizacja paznokci · Opoczno</p></div>
+        <div class="cap" data-i="15"><h3>Piękne Sztuki</h3><p>Stylizacja paznokci · Piotrków Tryb.</p></div>
       </div>
 
-      <div class="rail" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="rail" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
     </div>
   </section>
 
@@ -188,8 +257,7 @@
   <section class="scene scene--end" data-scene>
     <div class="stage stage--cta">
       <p class="lede beat" data-in="0.34 0.46">Tyle wystarczy, żeby zacząć.</p>
-      <!-- TODO: podmień numer w href i w treści -->
-      <a class="phone beat" data-in="0.40 0.52" href="tel:+48000000000">+48&nbsp;000&nbsp;000&nbsp;000</a>
+      <a class="phone beat" data-in="0.40 0.52" href="tel:+48789245868">+48&nbsp;789&nbsp;245&nbsp;868</a>
     </div>
   </section>
 
