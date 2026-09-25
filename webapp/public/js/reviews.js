@@ -691,4 +691,16 @@ const endCropDrag = () => {
 gridEl.addEventListener("pointerup", endCropDrag);
 gridEl.addEventListener("pointercancel", endCropDrag);
 
+// prefiks linku do opinii - klik = kopiuj (dalej wystarczy dokleic Place ID)
+document.getElementById("rv-copy-prefix").addEventListener("click", async (e) => {
+  const el = e.currentTarget;
+  try {
+    await navigator.clipboard.writeText(el.textContent.trim());
+    el.classList.add("copied");
+    setTimeout(() => el.classList.remove("copied"), 1200);
+  } catch {
+    /* brak dostepu do schowka - tekst i tak da sie zaznaczyc recznie (user-select: all) */
+  }
+});
+
 load();

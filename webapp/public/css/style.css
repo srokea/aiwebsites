@@ -2759,6 +2759,9 @@ table.leads tr:hover .lead-delete-btn { opacity: 1; }
   padding: 1px 5px;
 }
 .review-form-hint a { color: var(--blue); }
+.review-form-hint { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.rv-copy { cursor: pointer; user-select: all; }
+.rv-copy.copied { border-color: var(--green); color: var(--green); }
 .review-form {
   display: flex;
   flex-wrap: wrap;
