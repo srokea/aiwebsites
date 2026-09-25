@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://psialapka.pl/sitemap.xml
+Sitemap: https://psialapkaaldonarutowicz.pl/sitemap.xml
