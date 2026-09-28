@@ -1,0 +1,13 @@
+// Hosting: Cloudflare Workers (statyczne pliki). Wdrożenie z tego folderu: npx wrangler deploy
+// Pliki, które nie mają być publiczne, są wykluczone w .assetsignore.
+{
+  "name": "uslugi-ogrodnicze",
+  "compatibility_date": "2026-09-26",
+  "routes": [
+    { "pattern": "uslugiogrodnicze-tomaszow.pl", "custom_domain": true },
+    { "pattern": "www.uslugiogrodnicze-tomaszow.pl", "custom_domain": true }
+  ],
+  "assets": {
+    "directory": "."
+  }
+}

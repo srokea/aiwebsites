@@ -1,0 +1,13 @@
+// Hosting: Cloudflare Workers (statyczne pliki). Wdrożenie z tego folderu: npx wrangler deploy
+// Pliki, które nie mają być publiczne, są wykluczone w .assetsignore.
+{
+  "name": "atelier-piekna",
+  "compatibility_date": "2026-09-26",
+  "routes": [
+    { "pattern": "atelierpiekna-tomaszow.pl", "custom_domain": true },
+    { "pattern": "www.atelierpiekna-tomaszow.pl", "custom_domain": true }
+  ],
+  "assets": {
+    "directory": "."
+  }
+}
