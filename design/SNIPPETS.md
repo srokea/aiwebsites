@@ -283,12 +283,28 @@ section[id] { scroll-margin-top: 78px; }   /* wysokość headera — inaczej kot
   var links = {};
   document.querySelectorAll('.navlink[data-nav]').forEach(function (a) { links[a.dataset.nav] = a; });
   var current = null;
+  var nav = document.querySelector('nav[aria-label="Sekcje strony"]');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Na telefonie pasek sekcji przewija się w bok — aktywny link trzymamy na środku paska.
+  // scrollBy na samym pasku, nie scrollIntoView (ten szarpie też stroną na iOS).
+  function centerInNav(link) {
+    if (!nav || nav.scrollWidth <= nav.clientWidth) return;
+    var navRect = nav.getBoundingClientRect();
+    var linkRect = link.getBoundingClientRect();
+    var delta = (linkRect.left + linkRect.width / 2) - (navRect.left + navRect.width / 2);
+    nav.scrollBy({ left: delta, behavior: reduceMotion ? 'auto' : 'smooth' });
+  }
+
   var observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (!entry.isIntersecting) return;
       if (current) current.classList.remove('active');
       current = links[entry.target.id] || null;
-      if (current) current.classList.add('active');
+      if (current) {
+        current.classList.add('active');
+        centerInNav(current);
+      }
     });
   }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
   Object.keys(links).forEach(function (id) {
@@ -301,6 +317,10 @@ section[id] { scroll-margin-top: 78px; }   /* wysokość headera — inaczej kot
 
 `rootMargin: '-45% 0px -50% 0px'` = sekcja liczy się jako aktywna, gdy jest mniej więcej na środku
 ekranu. Nie zmieniaj bez powodu — inne wartości powodują migotanie na krótkich sekcjach.
+
+`centerInNav` — na mobile pasek sekcji jest przewijany poziomo i przy 5+ sekcjach aktywny link
+uciekał poza ekran. Teraz pasek sam jedzie w prawo przy scrollu w dół (i w lewo w górę).
+Na desktopie nic nie robi (pasek się nie przewija). Prośba klientki Atelier Piękna, 2026-09-28.
 
 ---
 
