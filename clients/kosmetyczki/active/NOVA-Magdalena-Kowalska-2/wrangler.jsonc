@@ -1,0 +1,13 @@
+// Hosting: Cloudflare Workers (statyczne pliki). Wdrożenie z tego folderu: npx wrangler deploy
+// Pliki, które nie mają być publiczne, są wykluczone w .assetsignore.
+// Nazwa Workera nadana przy tworzeniu w panelu Cloudflare — nie zmieniaj, bo powstanie nowy Worker.
+{
+  "name": "dry-union-e994",
+  "compatibility_date": "2026-09-17",
+  "routes": [
+    { "pattern": "novamagdalenakowalska.pl", "custom_domain": true }
+  ],
+  "assets": {
+    "directory": "."
+  }
+}
