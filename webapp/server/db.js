@@ -5,7 +5,8 @@ const Database = require("better-sqlite3");
 const dataDir = path.join(__dirname, "..", "data");
 if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
-const db = new Database(path.join(dataDir, "coldcall.db"));
+// DB_FILE tylko dla testow (npm test -> ":memory:"), zeby nigdy nie dotykaly prawdziwej bazy
+const db = new Database(process.env.DB_FILE || path.join(dataDir, "coldcall.db"));
 db.pragma("journal_mode = WAL");
 db.pragma("foreign_keys = ON");
 
@@ -233,6 +234,97 @@ CREATE TABLE IF NOT EXISTS review_links (
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+-- Modul "Klienci i umowy" (+ rachunki). Dane zleceniobiorcy (PESEL, nr dowodu, nr konta) -
+-- zawsze jeden wiersz (id = 1), edytowany w "Moje dane" na klienci.html.
+CREATE TABLE IF NOT EXISTS contractor (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  full_name TEXT NOT NULL DEFAULT '',
+  address TEXT NOT NULL DEFAULT '',
+  pesel TEXT NOT NULL DEFAULT '',
+  id_card TEXT NOT NULL DEFAULT '',
+  bank_account TEXT NOT NULL DEFAULT '',
+  phone TEXT NOT NULL DEFAULT '',
+  email TEXT NOT NULL DEFAULT '',
+  issue_city TEXT NOT NULL DEFAULT '',
+  student_until TEXT NOT NULL DEFAULT '',
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Klient = dopiety lead (albo ktos spoza cold callingu - lead_id NULL). SET NULL zamiast CASCADE:
+-- usuniecie niszy kasuje jej leady, a umowy i rachunki klienta musza to przezyc.
+-- name = krotka nazwa na liste ("Colibra iBeauty"), legal_name = firma dokladnie jak na fakturach
+-- klienta (idzie na rachunek).
+CREATE TABLE IF NOT EXISTS clients (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  lead_id INTEGER REFERENCES leads(id) ON DELETE SET NULL,
+  name TEXT NOT NULL DEFAULT '',
+  legal_name TEXT NOT NULL DEFAULT '',
+  owner_name TEXT NOT NULL DEFAULT '',
+  address TEXT NOT NULL DEFAULT '',
+  nip TEXT NOT NULL DEFAULT '',
+  regon TEXT NOT NULL DEFAULT '',
+  phone TEXT NOT NULL DEFAULT '',
+  email TEXT NOT NULL DEFAULT '',
+  city TEXT NOT NULL DEFAULT '',
+  niche TEXT NOT NULL DEFAULT '',
+  notes TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_clients_lead ON clients(lead_id) WHERE lead_id IS NOT NULL;
+
+-- Umowy zlecenia. Daty "YYYY-MM-DD" albo '' (ends_on '' = bez daty konca). Kwoty w groszach,
+-- NULL = jeszcze nieznana (do uzupelnienia). sites = JSON [{name, domain}] - z tego liczba stron
+-- i osobne pozycje na rachunku. bought_out_on ustawia sie samo po oplaceniu rachunku za wykup.
+CREATE TABLE IF NOT EXISTS contracts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  client_id INTEGER NOT NULL REFERENCES clients(id) ON DELETE CASCADE,
+  number TEXT NOT NULL UNIQUE,
+  signed_on TEXT NOT NULL DEFAULT '',
+  starts_on TEXT NOT NULL DEFAULT '',
+  ends_on TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'szkic',
+  kind TEXT NOT NULL DEFAULT 'wykonanie_abonament',
+  variant TEXT NOT NULL DEFAULT '',
+  onetime_grosze INTEGER,
+  monthly_grosze INTEGER,
+  sites TEXT NOT NULL DEFAULT '[]',
+  buyout_grosze INTEGER,
+  bought_out_on TEXT NOT NULL DEFAULT '',
+  signed_pdf TEXT NOT NULL DEFAULT '',
+  notes TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_contracts_client ON contracts(client_id);
+
+-- Rachunki. contract_id BEZ cascade - umowy z rachunkami nie da sie skasowac (dokument ksiegowy).
+-- Numer "{seq}/{MM}/{RRRR}", seq kolejny w obrebie roku (UNIQUE year+seq = bez dubli).
+-- snapshot = JSON z danymi stron z chwili wystawienia - rachunek renderuje sie TYLKO z niego,
+-- wiec pozniejsza zmiana danych klienta/zleceniobiorcy nie zmienia starych rachunkow.
+-- period 'YYYY-MM' dla abonamentu, '' dla wykonania/wykupu -> jeden taki rachunek na umowe.
+CREATE TABLE IF NOT EXISTS bills (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  contract_id INTEGER NOT NULL REFERENCES contracts(id),
+  number TEXT NOT NULL UNIQUE,
+  year INTEGER NOT NULL,
+  seq INTEGER NOT NULL,
+  issued_on TEXT NOT NULL,
+  kind TEXT NOT NULL,
+  period TEXT NOT NULL DEFAULT '',
+  items TEXT NOT NULL DEFAULT '[]',
+  total_grosze INTEGER NOT NULL,
+  due_on TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'wystawiony',
+  paid_on TEXT NOT NULL DEFAULT '',
+  snapshot TEXT NOT NULL DEFAULT '{}',
+  transaction_id INTEGER REFERENCES transactions(id) ON DELETE SET NULL,
+  created_by TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_bills_seq ON bills(year, seq);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_bills_once ON bills(contract_id, kind, period);
 `);
 
 // Proste "migracje" dla kolumn dodanych po pierwszym wydaniu - ALTER TABLE ADD COLUMN
@@ -283,6 +375,10 @@ addColumnIfMissing("lead_pins", "status TEXT NOT NULL DEFAULT 'nieruszone'");
 addColumnIfMissing("lead_pins", "notes TEXT NOT NULL DEFAULT ''");
 addColumnIfMissing("lead_pins", "caller TEXT NOT NULL DEFAULT ''");
 addColumnIfMissing("lead_pins", "last_visited_at TEXT");
+
+// cena klienta przepisana z jego podpisanej umowy (billing.js syncLeadPricing) - wtedy w Kasie
+// zamiast edycji jest "z umowy N/RRRR"; NULL = cena ustawiona recznie w Kasie
+addColumnIfMissing("client_pricing", "source_contract_id INTEGER");
 
 addColumnIfMissing("review_links", "logo_url TEXT NOT NULL DEFAULT ''");
 // reczna kolejnosc kart w panelu /reviews.html (przeciagnij i upusc) - nie ma nic wspolnego

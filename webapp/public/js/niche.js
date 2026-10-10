@@ -1057,7 +1057,11 @@ tbody.addEventListener("click", (e) => {
     const body = { [field]: value };
 
     const before = leads.find((l) => l.id === Number(tr.dataset.id));
-    if (field === "interested" && value === "dopiete" && before?.interested !== "dopiete") celebrateDeal();
+    if (field === "interested" && value === "dopiete" && before?.interested !== "dopiete") {
+      celebrateDeal();
+      // modul Klienci: "Dodac do klientow?" (okienko lezy pod animacja i odslania sie po niej)
+      if (before) offerAddClient(before, before.niche_name || currentNiche?.name || "");
+    }
 
     saveLead(tr.dataset.id, body);
     return;

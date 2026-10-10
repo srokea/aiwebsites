@@ -6,7 +6,9 @@
   "type": "commonjs",
   "scripts": {
     "start": "node --env-file-if-exists=.env server/index.js",
-    "dev": "node --watch --env-file-if-exists=.env server/index.js"
+    "dev": "node --watch --env-file-if-exists=.env server/index.js",
+    "test": "node --test",
+    "seed:klienci": "node server/scripts/seedClients.js"
   },
   "dependencies": {
     "@babel/parser": "^8.0.4",

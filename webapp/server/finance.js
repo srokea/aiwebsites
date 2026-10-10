@@ -86,16 +86,33 @@ function syncClientDues() {
     `INSERT OR IGNORE INTO client_dues (lead_id, kind, period, amount_grosze)
      VALUES (@lead_id, @kind, @period, @amount_grosze)`
   );
+  // Klienci z umowami (klienci.html): abonament liczymy tylko do miesiaca daty konca najpozniejszej
+  // umowy - bez tego Kasa generowalaby naleznosci w nieskonczonosc po zakonczeniu wspolpracy.
+  // Umowa bez daty konca (open_ended) = brak limitu.
+  const contractEnds = new Map(
+    db
+      .prepare(
+        `SELECT cl.lead_id, MAX(c.ends_on) AS last_end, SUM(c.ends_on = '') AS open_ended
+         FROM contracts c JOIN clients cl ON cl.id = c.client_id
+         WHERE cl.lead_id IS NOT NULL GROUP BY cl.lead_id`
+      )
+      .all()
+      .map((r) => [r.lead_id, r])
+  );
   const now = new Date();
   for (const c of clients) {
     const start = new Date(c.dopiete_at);
     if (Number.isNaN(start.getTime())) continue;
     const price = clientPrice(c);
-    insert.run({ lead_id: c.id, kind: "onetime", period: ym(start), amount_grosze: price.onetime });
+    // umowa "tylko abonament" ma wdrozenie 0 zl - takiej naleznosci nie ma co potwierdzac
+    if (price.onetime > 0) insert.run({ lead_id: c.id, kind: "onetime", period: ym(start), amount_grosze: price.onetime });
+    const ends = contractEnds.get(c.id);
+    const lastPeriod = ends && !ends.open_ended && ends.last_end ? ends.last_end.slice(0, 7) : null;
     // k=0 -> miesiac domkniecia (1. abonament, placony razem z wdrozeniem)
     const monthsSince = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
     for (let k = 0; k <= monthsSince; k++) {
       const period = ym(new Date(start.getFullYear(), start.getMonth() + k, 1));
+      if (lastPeriod && period > lastPeriod) break;
       insert.run({ lead_id: c.id, kind: "monthly", period, amount_grosze: price.monthly });
     }
   }
@@ -112,6 +129,8 @@ function syncClientDues() {
          WHEN 'onetime' THEN COALESCE(p.onetime_grosze, @defOnetime)
          ELSE COALESCE(p.monthly_grosze, @defMonthly) END`
   ).run({ defOnetime: PRICING.oneTime * 100, defMonthly: PRICING.monthly * 100 });
+  // naleznosc 0 zl (np. wdrozenie przy umowie "tylko abonament") nie ma czego potwierdzac
+  db.prepare("DELETE FROM client_dues WHERE status = 'pending' AND amount_grosze = 0").run();
 }
 
 // #4 - data wpisu potwierdzonej naleznosci: wdrozenie + pierwszy abonament (miesiac domkniecia)
@@ -225,8 +244,13 @@ function perPerson() {
     )
     .get().g;
 
+  // reczne przychody + oplacone rachunki spoza naleznosci (wykup strony, klienci bez leada -
+  // source_key 'bill:<id>', patrz billing.js) - dziela sie rowno jak abonamenty
   const manualIncomeG = db
-    .prepare("SELECT COALESCE(SUM(amount_grosze), 0) g FROM transactions WHERE category = 'przychod' AND source_key IS NULL")
+    .prepare(
+      `SELECT COALESCE(SUM(amount_grosze), 0) g FROM transactions
+       WHERE category = 'przychod' AND (source_key IS NULL OR source_key LIKE 'bill:%')`
+    )
     .get().g;
 
   const expenseG = db.prepare("SELECT COALESCE(SUM(amount_grosze), 0) g FROM transactions WHERE category = 'wydatek'").get().g;
@@ -288,8 +312,26 @@ function pendingDuesList() {
     }));
 }
 
-// Potwierdzenie naleznosci -> wpis w transactions (przychod) + link. Zwraca { error, status } albo { ok }.
-function confirmDue(id, by) {
+// Rachunek (klienci.html), ktory odpowiada tej naleznosci: wdrozenie <-> rachunek za wykonanie,
+// abonament za miesiac X <-> rachunek za abonament X - u klienta podpietego pod tego leada.
+function findBillForDue(due) {
+  return db
+    .prepare(
+      `SELECT b.id FROM bills b
+       JOIN contracts c ON c.id = b.contract_id
+       JOIN clients cl ON cl.id = c.client_id
+       WHERE cl.lead_id = @lead_id AND b.status = 'wystawiony'
+         AND ((@kind = 'onetime' AND b.kind = 'wykonanie')
+           OR (@kind = 'monthly' AND b.kind = 'abonament' AND b.period = @period))
+       ORDER BY b.id LIMIT 1`
+    )
+    .get(due);
+}
+
+// Potwierdzenie naleznosci -> wpis w transactions (przychod) + link. Zwraca { error, status } albo
+// { ok, transactionId }. Pasujacy rachunek (billId albo znaleziony sam) oznacza sie jako oplacony -
+// "Potwierdz" w Kasie i "Oplacony" w karcie klienta to ta sama operacja, bez podwojnych wpisow.
+function confirmDue(id, by, { billId = null, paidOn = null } = {}) {
   const due = db.prepare("SELECT * FROM client_dues WHERE id = ?").get(id);
   if (!due) return { error: "Nie znaleziono należności", status: 404 };
   if (due.status !== "pending") return { error: "Ta należność jest już rozliczona", status: 400 };
@@ -298,8 +340,9 @@ function confirmDue(id, by) {
   const label = due.kind === "onetime" ? "Wdrożenie" : `Abonament ${due.period}`;
   const occurredOn = lead && lead.dopiete_at ? dueOccurredOn(due, lead.dopiete_at) : `${due.period}-01`;
 
+  let txId;
   db.transaction(() => {
-    const txId = db
+    txId = db
       .prepare(
         `INSERT INTO transactions (occurred_on, description, amount_grosze, category, source_key, created_by)
          VALUES (?, ?, ?, 'przychod', ?, ?)`
@@ -309,16 +352,40 @@ function confirmDue(id, by) {
     db.prepare(
       "UPDATE client_dues SET status='confirmed', transaction_id=?, resolved_at=datetime('now'), resolved_by=? WHERE id=?"
     ).run(txId, by || "", id);
+    const bill = billId ? { id: billId } : findBillForDue(due);
+    if (bill) {
+      db.prepare("UPDATE bills SET status = 'oplacony', paid_on = ?, transaction_id = ? WHERE id = ?").run(
+        paidOn || localDate(),
+        txId,
+        bill.id
+      );
+    }
   })();
-  return { ok: true };
+  return { ok: true, transactionId: txId };
+}
+
+// Odwrotnosc confirmDue - tylko dla "Cofnij oplacony" przy rachunku (Kasa celowo nie ma
+// odpotwierdzania): wpis przychodu znika, naleznosc wraca na liste do potwierdzenia.
+function reopenDue(id) {
+  const due = db.prepare("SELECT * FROM client_dues WHERE id = ?").get(id);
+  if (!due || due.status !== "confirmed") return;
+  db.transaction(() => {
+    db.prepare(
+      "UPDATE client_dues SET status='pending', transaction_id=NULL, resolved_at=NULL, resolved_by=NULL WHERE id=?"
+    ).run(id);
+    if (due.transaction_id) db.prepare("DELETE FROM transactions WHERE id = ?").run(due.transaction_id);
+  })();
 }
 
 // #6 - lista dopietych klientow z ich cenami (edycja w Kasie)
 function clientsPricingList() {
   return db
     .prepare(
-      `SELECT l.id AS lead_id, l.company_name, l.caller, l.dopiete_at, p.onetime_grosze, p.monthly_grosze
+      `SELECT l.id AS lead_id, l.company_name, l.caller, l.dopiete_at, p.onetime_grosze, p.monthly_grosze,
+              c.number AS contract_number, cl.id AS client_id
        FROM leads l LEFT JOIN client_pricing p ON p.lead_id = l.id
+       LEFT JOIN contracts c ON c.id = p.source_contract_id
+       LEFT JOIN clients cl ON cl.lead_id = l.id
        WHERE l.interested = 'dopiete'
        ORDER BY l.dopiete_at DESC, l.company_name COLLATE NOCASE`
     )
@@ -333,6 +400,9 @@ function clientsPricingList() {
         onetime: price.onetime / 100,
         monthly: price.monthly / 100,
         custom: r.onetime_grosze != null || r.monthly_grosze != null,
+        // cena przepisana z podpisanej umowy (billing.js syncLeadPricing) - edycja w karcie klienta
+        contract: r.contract_number || null,
+        client_id: r.client_id || null,
       };
     });
 }
@@ -389,8 +459,10 @@ module.exports = {
   perPerson,
   pendingDuesList,
   confirmDue,
+  reopenDue,
   skipDue,
   clientsPricingList,
   setClientPricing,
   fullMonthsElapsed,
+  splitEven,
 };

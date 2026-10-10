@@ -13,6 +13,12 @@ const {
   NICHE_COLORS,
   DAILY_GOAL,
   LEAD_COLUMNS,
+  CONTRACT_STATUS_OPTIONS,
+  CONTRACT_KIND_OPTIONS,
+  CONTRACT_VARIANT_OPTIONS,
+  BILL_KIND_OPTIONS,
+  CONTRACT_DAYS_THRESHOLDS,
+  BUYOUT_DEFAULT,
 } = require("../constants");
 const { getCallers } = require("../callers");
 
@@ -38,6 +44,12 @@ router.get("/", (req, res) => {
     nicheColors: NICHE_COLORS,
     dailyGoal: DAILY_GOAL,
     leadColumns: LEAD_COLUMNS,
+    contractStatusOptions: CONTRACT_STATUS_OPTIONS,
+    contractKindOptions: CONTRACT_KIND_OPTIONS,
+    contractVariantOptions: CONTRACT_VARIANT_OPTIONS,
+    billKindOptions: BILL_KIND_OPTIONS,
+    contractDaysThresholds: CONTRACT_DAYS_THRESHOLDS,
+    buyoutDefault: BUYOUT_DEFAULT,
   });
 });
 

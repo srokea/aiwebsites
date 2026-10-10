@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Klienci — Cold Calls</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%93%84</text></svg>">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="bg-particles" id="bg-particles" aria-hidden="true"></div>
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="topbar-left">
+    <a class="icon-btn icon-btn-home" href="/" title="Strona główna">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h5v-6h4v6h5V9.5"/></svg>
+    </a>
+    <div>
+      <h1>📄 Klienci</h1>
+      <div class="topbar-sub">Umowy, rachunki i dni do końca umów</div>
+    </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <div id="user-widget"></div>
+      <a class="icon-btn icon-btn-back" href="/" title="Dashboard">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="cl-toolbar">
+    <button type="button" class="btn" id="contractor-open">⚙️ Moje dane</button>
+    <button type="button" class="btn primary" id="client-new">+ Nowy klient</button>
+  </div>
+
+  <div class="ledger-summary" id="clients-summary"></div>
+
+  <div class="cl-candidates" id="cl-candidates" hidden></div>
+
+  <div class="section-title">Klienci</div>
+  <div class="cl-list" id="cl-list"></div>
+</div>
+
+<div class="modal-overlay hidden" id="contractor-modal">
+  <div class="modal">
+    <h3>⚙️ Moje dane (zleceniobiorca)</h3>
+    <div class="co-sub">Trafiają na każdy rachunek. Zmiana nie rusza już wystawionych rachunków.</div>
+    <form id="contractor-form">
+      <label for="ct-full_name">Imię i nazwisko</label>
+      <input type="text" id="ct-full_name">
+      <label for="ct-address">Adres</label>
+      <input type="text" id="ct-address" placeholder="ul. …, 97-300 Piotrków Trybunalski">
+      <div class="cl-form-row">
+        <div><label for="ct-pesel">PESEL</label><input type="text" id="ct-pesel" inputmode="numeric" maxlength="11"></div>
+        <div><label for="ct-id_card">Nr dowodu</label><input type="text" id="ct-id_card"></div>
+      </div>
+      <label for="ct-bank_account">Nr konta</label>
+      <input type="text" id="ct-bank_account" inputmode="numeric">
+      <div class="cl-form-row">
+        <div><label for="ct-phone">Telefon</label><input type="text" id="ct-phone" inputmode="tel"></div>
+        <div><label for="ct-email">E-mail</label><input type="text" id="ct-email" inputmode="email"></div>
+      </div>
+      <div class="cl-form-row">
+        <div><label for="ct-issue_city">Miejscowość wystawiania</label><input type="text" id="ct-issue_city"></div>
+        <div><label for="ct-student_until">Status studenta do</label><input type="date" id="ct-student_until"></div>
+      </div>
+      <div class="hint">Po dacie statusu studenta (albo po 26. urodzinach z PESEL-u) rachunek wystawi się bez klauzuli o zwolnieniu z PIT/ZUS — z ostrzeżeniem.</div>
+      <div class="error" id="contractor-error" style="display:none;"></div>
+      <div class="actions">
+        <button type="button" class="btn" id="contractor-cancel">Anuluj</button>
+        <button type="submit" class="btn primary">Zapisz</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/auth-widget.js"></script>
+<script src="/js/klienci-common.js"></script>
+<script src="/js/klienci.js"></script>
+</body>
+</html>

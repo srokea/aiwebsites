@@ -2,7 +2,7 @@ const express = require("express");
 const db = require("../db");
 const { INTERESTED_OPTIONS, INTERESTED_STATS_ORDER, INTERESTED_DONUT_ORDER, DAILY_GOAL, PRICING } = require("../constants");
 const { STATS_ELIGIBLE_SQL, STATS_BREAKDOWN_SQL } = require("../leadStatus");
-const { getCallerNames } = require("../callers");
+const { getCallers, getCallerNames } = require("../callers");
 const { financeSync, summary: financeSummary, fullMonthsElapsed } = require("../finance");
 
 const router = express.Router();
@@ -162,6 +162,52 @@ router.get("/caller/:name", (req, res) => {
     interestedBreakdown,
     byNiche,
   });
+});
+
+// "2026-08-20T10:00:00.000Z" (called_at) albo "2026-08-20 10:00:00" (UTC z datetime('now') przy
+// backfillach w db.js) -> ms. null gdy nie da sie odczytac.
+function utcMs(ts) {
+  if (!ts) return null;
+  const s = String(ts);
+  const ms = Date.parse(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}(:\d{2})?$/.test(s) ? `${s.replace(" ", "T")}Z` : s);
+  return Number.isNaN(ms) ? null : ms;
+}
+
+// GET /api/stats/history - surowe zdarzenia w czasie do statystyk "na przestrzeni lat"
+// (statystyki.html: ile dopietych przy N-tym callu, miesiace/lata). Liczy front - zdarzen jest
+// malo (jeden call na leada), a tak pytanie "ile przy X callach" odpowiada od reki, bez requestu.
+// Call = ta sama definicja co "zadzwonione" na dashboardzie (called_at + STATS_ELIGIBLE_SQL),
+// plus dopieci klienci - ci dostaja potem jakosc "6" (maja strone) i inaczej znikneliby z wlasnej
+// historii. Osoba = wpisany "Kto dzwonil" (jak w /caller/:name).
+router.get("/history", (req, res) => {
+  const callers = getCallers();
+  const idx = new Map(callers.map((c, i) => [c.display_name, i]));
+  const who = (caller) => (idx.has(caller) ? idx.get(caller) : -1);
+
+  const calls = db
+    .prepare(
+      `SELECT caller, called_at, answered FROM leads
+       WHERE called_at IS NOT NULL AND (${STATS_ELIGIBLE_SQL} OR interested = 'dopiete')`
+    )
+    .all()
+    .map((r) => [utcMs(r.called_at), who(r.caller), r.answered === "Tak" ? 1 : 0])
+    .filter((e) => e[0] != null)
+    .sort((a, b) => a[0] - b[0]);
+
+  const deals = db
+    .prepare("SELECT caller, dopiete_at FROM leads WHERE interested = 'dopiete' AND dopiete_at IS NOT NULL")
+    .all()
+    .map((r) => [utcMs(r.dopiete_at), who(r.caller)])
+    .filter((e) => e[0] != null)
+    .sort((a, b) => a[0] - b[0]);
+
+  // termin Meeta to lokalny "YYYY-MM-DDTHH:MM" bez strefy - front parsuje go jako czas lokalny
+  const meets = db
+    .prepare("SELECT caller, google_term FROM leads WHERE google_term <> ''")
+    .all()
+    .map((r) => [r.google_term, who(r.caller)]);
+
+  res.json({ callers: callers.map((c) => ({ name: c.display_name, color: c.color || "" })), calls, deals, meets });
 });
 
 module.exports = router;

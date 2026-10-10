@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Statystyki — Cold Calls</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%93%88</text></svg>">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="bg-particles" id="bg-particles" aria-hidden="true"></div>
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="topbar-left">
+    <a class="icon-btn icon-btn-home" href="/" title="Strona główna">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h5v-6h4v6h5V9.5"/></svg>
+    </a>
+    <div>
+      <h1>📈 Statystyki</h1>
+      <div class="topbar-sub">Calle i dopięte w czasie, od pierwszego telefonu</div>
+    </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <div id="user-widget"></div>
+      <a class="icon-btn icon-btn-back" href="/" title="Dashboard">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="st-filters">
+    <div class="networth-gran" id="st-scope" role="group" aria-label="Czyje statystyki"></div>
+  </div>
+
+  <div class="ledger-summary" id="st-tiles"></div>
+
+  <div class="st-ask">
+    <label for="st-ask-n">Ile dopiętych przy</label>
+    <input type="number" id="st-ask-n" min="1" step="1" value="50" inputmode="numeric">
+    <span>callach?</span>
+    <div class="st-ask-answer" id="st-ask-answer"></div>
+  </div>
+
+  <div class="networth-card">
+    <div class="networth-head">
+      <div>
+        <div class="networth-title">Dopięte przy kolejnych callach</div>
+        <div class="networth-caption">Oś pozioma: który to call danej osoby. Oś pionowa: ilu klientów było już dopiętych.</div>
+      </div>
+      <div class="st-legend" id="st-legend"></div>
+    </div>
+    <div class="networth-plot" id="st-plot"></div>
+  </div>
+
+  <div class="section-title">Kamienie milowe</div>
+  <div class="st-table-wrap"><table class="st-table" id="st-milestones"></table></div>
+
+  <div class="st-section-head">
+    <div class="section-title">Na przestrzeni czasu</div>
+    <div class="networth-gran" id="st-gran">
+      <button type="button" data-g="month" class="active">Miesiące</button>
+      <button type="button" data-g="year">Lata</button>
+    </div>
+  </div>
+  <div class="st-table-wrap"><table class="st-table" id="st-periods"></table></div>
+  <div class="st-note">Call = lead oznaczony jako zadzwoniony (jak „Zadzwonione” na dashboardzie), liczony w dniu, w którym się zamknął. Dopięte liczone w dniu dopięcia, Meety w dniu terminu. Osoba = wpisany „Kto dzwonił”.</div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/auth-widget.js"></script>
+<script src="/js/statystyki.js"></script>
+</body>
+</html>

@@ -17,19 +17,15 @@ build/
 # kopie zapasowe schematow rozmow (tworzone przy edycji z poziomu appki)
 *.js.bak
 
-# baza Cold Calls: NIE w repo (2026-08-20 - byla tu, ale "git reset"/"git pull" na zywej
-# bazie w trybie WAL nadpisal produkcyjne dane i pouciekaly hasla/leady/avatar - patrz
-# server/backup.js, ktory teraz robi wlasne, bezpieczne kopie do data/backups/)
-webapp/data/coldcall.db
+# caly webapp/data/ to dane, nie kod - NIGDY w repo:
+# - baza Cold Calls (2026-08-20 - byla tu, ale "git reset"/"git pull" na zywej bazie w trybie
+#   WAL nadpisal produkcyjne dane i pouciekaly hasla/leady/avatar - patrz server/backup.js,
+#   ktory teraz robi wlasne, bezpieczne kopie do data/backups/)
+# - backupy, avatary, logo kart NFC, PDF-y umow klientow
+# - seed-klienci-umowy.json (PESEL, nr dowodu, nr konta)
+webapp/data/
 *.db-shm
 *.db-wal
-
-# automatyczne kopie zapasowe bazy (patrz server/backup.js) - tworzone lokalnie, nie w repo
-webapp/data/backups/
-
-# wgrane pliki uzytkownikow (avatary, logo klientow do kart NFC) - dane, nie kod
-webapp/data/avatars/
-webapp/data/review-logos/
 
 # Impeccable cache (stan sesji, nie kod)
 .impeccable/hook.cache.json

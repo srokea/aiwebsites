@@ -3248,3 +3248,282 @@ body.map-page { overflow: hidden; }
 }
 .nw-tip-k { color: var(--muted); }
 .nw-tip-v { color: var(--text); font-weight: 700; }
+
+/* ================= Klienci i umowy (klienci.html / klient.html) ================= */
+
+/* modale modulu: pola daty/miesiaca i textarea jak reszta pol, dlugie formularze przewijaja sie */
+.modal input[type=date], .modal input[type=month], .modal textarea {
+  width: 100%;
+  background: #101010;
+  border: 1px solid #2a2a2a;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  color-scheme: dark;
+}
+.modal textarea { resize: vertical; }
+.modal input:focus, .modal textarea:focus { outline: none; border-color: var(--blue); }
+.modal-wide { width: 720px; }
+#client-offer-modal .modal, #contractor-modal .modal, #contract-modal .modal, #bill-modal .modal {
+  max-height: 92vh;
+  overflow-y: auto;
+}
+.co-sub { font-size: 12.5px; color: var(--muted); margin: -10px 0 4px; }
+.co-done p, .cl-done { font-size: 14px; margin: 6px 0 0; }
+.cl-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+@media (max-width: 560px) {
+  .cl-form-row { grid-template-columns: 1fr; }
+}
+
+.cl-toolbar { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; margin: -10px 0 18px; }
+.cl-summary-sub { font-size: 12px; color: var(--muted); }
+.cl-muted { color: var(--muted); font-weight: 400; }
+.cl-link { color: var(--blue); }
+.cl-link:hover { text-decoration: underline; }
+.cl-linkbtn {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--blue);
+  cursor: pointer;
+}
+.cl-linkbtn:hover { text-decoration: underline; }
+.cl-missing { color: var(--gold); }
+.cl-ok { color: var(--green); }
+.cl-empty { color: var(--muted); font-size: 13px; padding: 14px 0 22px; }
+
+/* licznik dni do konca umowy + chip statusu */
+.cl-badge {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.cl-badge--ok { color: var(--green); background: rgba(92, 184, 92, 0.12); border-color: rgba(92, 184, 92, 0.35); }
+.cl-badge--soon { color: #e8c45c; background: rgba(232, 196, 92, 0.12); border-color: rgba(232, 196, 92, 0.38); }
+.cl-badge--urgent { color: var(--red); background: rgba(224, 96, 80, 0.13); border-color: rgba(224, 96, 80, 0.4); }
+.cl-badge--ended, .cl-badge--none { color: var(--muted); background: rgba(255, 255, 255, 0.04); border-color: var(--border); }
+.cl-badge--open { color: #9fb6e0; background: rgba(96, 144, 224, 0.1); border-color: rgba(96, 144, 224, 0.3); }
+.cl-chip {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--chip);
+  border: 1px solid color-mix(in srgb, var(--chip) 45%, transparent);
+  background: color-mix(in srgb, var(--chip) 12%, transparent);
+  border-radius: 6px;
+  padding: 1px 6px;
+  vertical-align: 1px;
+}
+.cl-tag {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--blue);
+}
+
+/* dopiete leady bez karty klienta */
+.cl-candidates {
+  background: rgba(96, 144, 224, 0.06);
+  border: 1px solid rgba(96, 144, 224, 0.28);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 24px;
+}
+.cl-candidates-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.cl-candidates-list { display: flex; flex-direction: column; gap: 6px; }
+.cl-candidate { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px; }
+.cl-candidate-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* lista klientow */
+.cl-list { display: flex; flex-direction: column; gap: 6px; }
+.cl-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "main badge" "contract end";
+  align-items: center;
+  gap: 4px 12px;
+  background: var(--card);
+  border: 1px solid var(--border-soft);
+  border-radius: 11px;
+  padding: 12px 14px;
+  font-size: 13px;
+  transition: border-color .15s;
+}
+.cl-row:hover { border-color: #3a3a3a; }
+.cl-row-main { grid-area: main; display: flex; flex-direction: column; min-width: 0; }
+.cl-row-name { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cl-row-sub { font-size: 12px; color: var(--muted); }
+.cl-row-contract { grid-area: contract; color: var(--muted); font-size: 12.5px; }
+.cl-row-end { grid-area: end; color: var(--muted); font-size: 12px; text-align: right; font-variant-numeric: tabular-nums; }
+.cl-row-badge { grid-area: badge; text-align: right; }
+@media (min-width: 720px) {
+  .cl-row { grid-template-columns: minmax(0, 1fr) 210px 110px 130px; grid-template-areas: "main contract end badge"; }
+}
+
+/* karta klienta */
+.cl-section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.cl-section-head .section-title { margin-bottom: 0; }
+.cl-contracts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.cl-contract {
+  background: var(--card);
+  border: 1px solid var(--border-soft);
+  border-radius: 13px;
+  padding: 14px 16px;
+}
+.cl-contract.is-current { border-color: rgba(96, 144, 224, 0.45); }
+.cl-contract-head { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.cl-contract-no { font-weight: 700; font-size: 14px; }
+.cl-contract-badge { margin-left: auto; }
+.cl-dl { display: grid; grid-template-columns: 1fr; gap: 6px 18px; font-size: 13px; }
+.cl-dl > div { display: grid; grid-template-columns: 120px 1fr; gap: 10px; }
+.cl-dl dt { color: var(--muted); font-size: 12px; padding-top: 1px; }
+.cl-dl dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+@media (min-width: 720px) {
+  .cl-dl { grid-template-columns: 1fr 1fr; }
+}
+.cl-notes { font-size: 12.5px; color: var(--muted); margin-top: 10px; white-space: pre-wrap; }
+.cl-contract-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+.cl-bills { display: flex; flex-direction: column; gap: 6px; margin-bottom: 28px; }
+.cl-bill {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 6px 12px;
+  background: var(--card);
+  border: 1px solid var(--border-soft);
+  border-radius: 11px;
+  padding: 11px 14px;
+  font-size: 13px;
+}
+.cl-bill-main { display: flex; flex-direction: column; min-width: 0; }
+.cl-bill-no { font-weight: 700; }
+.cl-bill-what { font-size: 12px; color: var(--muted); }
+.cl-bill-amount { font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+.cl-bill-status { grid-column: 1; }
+.cl-bill-actions { display: flex; gap: 6px; align-items: center; justify-content: flex-end; }
+@media (min-width: 720px) {
+  .cl-bill { grid-template-columns: minmax(0, 1fr) 110px 200px auto; }
+  .cl-bill-status { grid-column: auto; text-align: right; }
+}
+
+.cl-panel {
+  background: var(--card);
+  border: 1px solid var(--border-soft);
+  border-radius: 13px;
+  padding: 16px;
+  margin-bottom: 18px;
+}
+.cl-fields { display: grid; grid-template-columns: 1fr; gap: 12px 16px; }
+@media (min-width: 720px) {
+  .cl-fields { grid-template-columns: 1fr 1fr; }
+  .cl-fields .cl-span { grid-column: 1 / -1; }
+}
+.cl-fields label { display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: var(--muted); }
+.cl-fields input, .cl-fields textarea {
+  background: #141414;
+  border: 1px solid #232323;
+  color: var(--text);
+  border-radius: 9px;
+  padding: 9px 12px;
+  font-size: 13.5px;
+  font-family: inherit;
+}
+.cl-fields textarea { resize: vertical; }
+.cl-fields input:focus, .cl-fields textarea:focus { outline: none; border-color: var(--blue); }
+.cl-form-actions { display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+.cl-form-actions .error { color: var(--red); font-size: 12px; }
+.cl-saved { color: var(--green); font-size: 12.5px; }
+.cl-danger { display: flex; justify-content: flex-end; margin-bottom: 30px; }
+
+/* modal umowy - lista stron */
+.cl-sites { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+.cl-site-row { display: grid; grid-template-columns: 1fr 1fr 28px; gap: 6px; align-items: center; }
+
+/* modal rachunku */
+.cl-kind-pick { display: flex; flex-direction: column; gap: 6px; }
+.modal .cl-kind { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 13.5px; color: var(--text); cursor: pointer; }
+.modal .cl-kind.is-disabled { color: var(--muted-soft); cursor: default; }
+.cl-items { display: flex; flex-direction: column; gap: 8px; }
+.cl-item { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; }
+.cl-item .prices-field input { width: 100px; }
+@media (max-width: 560px) {
+  .cl-item { grid-template-columns: 1fr; gap: 4px; }
+  .cl-item textarea { min-height: 84px; }
+}
+.modal .cl-item .prices-field { margin: 0; }
+.cl-alert { border-radius: 10px; padding: 10px 12px; font-size: 12.5px; margin-bottom: 4px; }
+.cl-alert ul { margin: 4px 0 0 18px; }
+.cl-alert--error { color: #f0a59a; background: rgba(224, 96, 80, 0.1); border: 1px solid rgba(224, 96, 80, 0.4); }
+.cl-alert--warn { color: #e8c45c; background: rgba(232, 196, 92, 0.08); border: 1px solid rgba(232, 196, 92, 0.35); margin-top: 8px; }
+
+/* ================= Statystyki w czasie (statystyki.html) ================= */
+.st-filters { display: flex; gap: 10px; flex-wrap: wrap; margin: -8px 0 18px; }
+.st-tile-sub { font-size: 12px; color: var(--muted); }
+
+.st-ask {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  background: linear-gradient(160deg, var(--card-alt), var(--card));
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 22px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.st-ask input {
+  width: 92px;
+  background: #141414;
+  border: 1px solid #232323;
+  color: var(--text);
+  border-radius: 9px;
+  padding: 7px 10px;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+.st-ask input:focus { outline: none; border-color: var(--blue); }
+.st-ask-answer { flex-basis: 100%; font-weight: 400; font-size: 13.5px; color: var(--muted); }
+.st-ask-answer b { color: var(--text); }
+
+.st-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--text); }
+.st-legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.st-legend-item.is-muted { color: var(--muted-soft); }
+.st-swatch { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.st-line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.st-line.is-muted { stroke-width: 1.5; opacity: 0.7; }
+.st-end { stroke: var(--card); stroke-width: 2; }
+.st-endlabel { fill: var(--text); font-size: 10px; font-weight: 600; dominant-baseline: middle; }
+.st-tip { gap: 3px; }
+.st-tip-row { display: inline-flex; align-items: center; gap: 6px; color: var(--text); }
+
+.st-section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 26px 0 14px; }
+.st-section-head .section-title { margin-bottom: 0; }
+.st-table-wrap { overflow-x: auto; margin-bottom: 8px; border: 1px solid var(--border-soft); border-radius: 12px; background: var(--card); }
+.st-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.st-table th, .st-table td { padding: 9px 14px; text-align: left; white-space: nowrap; border-bottom: 1px solid var(--border-soft); }
+.st-table th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--muted); }
+.st-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.st-table tbody tr:last-child td { border-bottom: none; }
+.st-table tfoot td { border-top: 1px solid var(--border); border-bottom: none; font-weight: 700; }
+.st-table .st-now td { color: var(--text); font-weight: 600; }
+.st-now-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--blue); margin-left: 6px; }
+.st-empty { color: var(--muted); }
+.st-note { font-size: 11.5px; color: var(--muted-soft); margin: 10px 0 30px; }
+@media (max-width: 560px) {
+  .st-table th, .st-table td { padding: 8px 9px; font-size: 12.5px; }
+  .st-table th { font-size: 10px; }
+}

@@ -118,6 +118,36 @@ const PRICING = { oneTime: 300, monthly: 100 };
 // faktyczna date startu subskrypcji, jesli chcesz dokladne wyliczenie w kafelku "Netto".
 const EXPENSES = [{ name: "Claude Code", amount: 99.96, from: "2026-07-01" }];
 
+// Modul "Klienci i umowy" (klienci.html). Statusy umowy - "aktywna" (liczy sie do sumy
+// abonamentow) = podpisana, juz sie zaczela i nie minela data konca.
+const CONTRACT_STATUS_OPTIONS = [
+  { value: "szkic", label: "Szkic", color: "#5a5a5a" },
+  { value: "wyslana", label: "Wysłana", color: "#c0a050" },
+  { value: "podpisana", label: "Podpisana", color: "#5cb85c" },
+  { value: "zakonczona", label: "Zakończona", color: "#888888" },
+  { value: "wypowiedziana", label: "Wypowiedziana", color: "#e06050" },
+];
+const CONTRACT_KIND_OPTIONS = [
+  { value: "wykonanie_abonament", label: "Wykonanie + abonament" },
+  { value: "abonament", label: "Tylko abonament" },
+];
+const CONTRACT_VARIANT_OPTIONS = [
+  { value: "basic", label: "Basic" },
+  { value: "website_plus", label: "Website+" },
+  { value: "pro_plus", label: "Pro+" },
+];
+const BILL_KIND_OPTIONS = [
+  { value: "wykonanie", label: "Wykonanie" },
+  { value: "abonament", label: "Abonament" },
+  { value: "wykup", label: "Wykup" },
+];
+// licznik "dni do konca umowy": > soon zielony, urgent..soon zolty, < urgent czerwony
+const CONTRACT_DAYS_THRESHOLDS = { soon: 60, urgent: 30 };
+// §5 ust. 2 wzoru umowy - domyslna kwota wykupu strony (zl)
+const BUYOUT_DEFAULT = 2000;
+// §2 ust. 1 - wykonanie (i wykup) platne w 7 dni od wystawienia rachunku
+const BILL_PAYMENT_DAYS = 7;
+
 // Kolumny tabeli leadow, ktore mozna wlaczyc/wylaczyc per nisza (klucz = data-sort-id w
 // niche.html). "#", Firma i kosz sa zawsze. Pusta lista `columns` w niszy = wszystkie ponizsze.
 const LEAD_COLUMNS = [
@@ -156,4 +186,11 @@ module.exports = {
   EXPENSES,
   LEAD_COLUMNS,
   LEAD_COLUMN_KEYS,
+  CONTRACT_STATUS_OPTIONS,
+  CONTRACT_KIND_OPTIONS,
+  CONTRACT_VARIANT_OPTIONS,
+  BILL_KIND_OPTIONS,
+  CONTRACT_DAYS_THRESHOLDS,
+  BUYOUT_DEFAULT,
+  BILL_PAYMENT_DAYS,
 };

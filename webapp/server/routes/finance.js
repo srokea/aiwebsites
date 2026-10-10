@@ -1,4 +1,5 @@
 const express = require("express");
+const db = require("../db");
 const { confirmDue, skipDue, setClientPricing } = require("../finance");
 const { transactionsBundle } = require("./transactions");
 
@@ -31,6 +32,16 @@ function priceToGrosze(raw) {
 // PUT /api/finance/clients/:leadId/pricing - #6 indywidualna cena klienta.
 // Body: { onetime, monthly, applyConfirmed }. Puste pole = cena domyslna (300 / 100).
 router.put("/clients/:leadId/pricing", (req, res) => {
+  const fromContract = db
+    .prepare(
+      `SELECT c.number FROM client_pricing p JOIN contracts c ON c.id = p.source_contract_id WHERE p.lead_id = ?`
+    )
+    .get(Number(req.params.leadId));
+  if (fromContract) {
+    return res
+      .status(400)
+      .json({ error: `Cena pochodzi z umowy ${fromContract.number} — zmień ją w karcie klienta (Klienci)` });
+  }
   const onetimeG = priceToGrosze(req.body.onetime);
   const monthlyG = priceToGrosze(req.body.monthly);
   if (onetimeG === undefined || monthlyG === undefined) {

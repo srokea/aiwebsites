@@ -21,15 +21,53 @@ router.get("/tiles", (req, res) => {
   res.json(users);
 });
 
+// Limit blednych logowan per IP - od kiedy w bazie jest PESEL i nr konta (modul Klienci), hasla
+// nie da sie juz zgadywac bez konca. W pamieci procesu (restart = czysta karta - to wystarczy).
+// Pod Cloudflare Tunnel prawdziwy adres klienta jest w CF-Connecting-IP.
+const LOGIN_MAX_FAILS = 10;
+const LOGIN_WINDOW_MS = 15 * 60 * 1000;
+const loginFails = new Map(); // ip -> { count, since }
+
+function clientIp(req) {
+  return req.get("cf-connecting-ip") || req.ip || "";
+}
+
+function loginBlockedFor(ip) {
+  const entry = loginFails.get(ip);
+  if (!entry) return 0;
+  const left = entry.since + LOGIN_WINDOW_MS - Date.now();
+  if (left <= 0) {
+    loginFails.delete(ip);
+    return 0;
+  }
+  return entry.count >= LOGIN_MAX_FAILS ? left : 0;
+}
+
+function registerLoginFail(ip) {
+  const entry = loginFails.get(ip);
+  if (!entry || entry.since + LOGIN_WINDOW_MS < Date.now()) loginFails.set(ip, { count: 1, since: Date.now() });
+  else entry.count += 1;
+}
+
 router.post("/login", (req, res) => {
+  const ip = clientIp(req);
+  const blockedMs = loginBlockedFor(ip);
+  if (blockedMs) {
+    return res
+      .status(429)
+      .json({ error: `Za dużo nieudanych prób — spróbuj za ${Math.ceil(blockedMs / 60000)} min` });
+  }
+
   const username = String(req.body.username || "").trim().toLowerCase();
   const password = String(req.body.password || "");
   if (!username || !password) return res.status(400).json({ error: "Podaj login i hasło" });
 
   const user = db.prepare("SELECT * FROM users WHERE username = ?").get(username);
   if (!user || !verifyPassword(password, user.password_hash)) {
+    registerLoginFail(ip);
     return res.status(401).json({ error: "Nieprawidłowy login lub hasło" });
   }
+  loginFails.delete(ip);
 
   const token = createSession(user.id);
   res.cookie(COOKIE_NAME, token, cookieOptions(req));

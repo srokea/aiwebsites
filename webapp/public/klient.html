@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Klient — Cold Calls</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%93%84</text></svg>">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/rachunek.css">
+</head>
+<body>
+
+<div class="bg-particles" id="bg-particles" aria-hidden="true"></div>
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="topbar-left">
+    <a class="icon-btn icon-btn-home" href="/" title="Strona główna">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h5v-6h4v6h5V9.5"/></svg>
+    </a>
+    <div>
+      <h1 id="cl-title">Klient</h1>
+      <div class="topbar-sub" id="cl-sub"></div>
+    </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <div id="user-widget"></div>
+      <a class="icon-btn icon-btn-back" href="/klienci.html" title="Lista klientów">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="cl-section-head">
+    <div class="section-title">Umowy</div>
+    <button type="button" class="btn primary prices-btn" id="contract-add">+ Dodaj umowę</button>
+  </div>
+  <div class="cl-contracts" id="cl-contracts"></div>
+
+  <div class="section-title">Rachunki</div>
+  <div class="cl-bills" id="cl-bills"></div>
+
+  <div class="section-title">Dane klienta</div>
+  <form class="cl-panel" id="client-form">
+    <div class="cl-fields">
+      <label>Nazwa (na listę)<input type="text" data-f="name"></label>
+      <label>Firma (dokładnie jak na fakturach)<input type="text" data-f="legal_name"></label>
+      <label>Właściciel (imię i nazwisko)<input type="text" data-f="owner_name"></label>
+      <label>NIP<input type="text" data-f="nip" inputmode="numeric"></label>
+      <label class="cl-span">Adres siedziby<input type="text" data-f="address" placeholder="ul. …, 97-200 Tomaszów Mazowiecki"></label>
+      <label>REGON (opcjonalnie)<input type="text" data-f="regon" inputmode="numeric"></label>
+      <label>Miasto<input type="text" data-f="city"></label>
+      <label>Telefon<input type="text" data-f="phone" inputmode="tel"></label>
+      <label>E-mail<input type="text" data-f="email" inputmode="email"></label>
+      <label>Nisza<input type="text" data-f="niche"></label>
+      <label class="cl-span">Notatki<textarea data-f="notes" rows="3"></textarea></label>
+    </div>
+    <div class="cl-form-actions">
+      <span class="cl-saved" id="client-saved"></span>
+      <div class="error" id="client-error" style="display:none;"></div>
+      <button type="submit" class="btn primary">Zapisz dane</button>
+    </div>
+  </form>
+
+  <div class="cl-danger">
+    <button type="button" class="btn danger prices-btn" id="client-delete">Usuń klienta</button>
+  </div>
+</div>
+
+<input type="file" id="pdf-input" accept="application/pdf" hidden>
+
+<div class="modal-overlay hidden" id="contract-modal">
+  <div class="modal modal-wide">
+    <h3 id="contract-modal-title">Nowa umowa</h3>
+    <form id="contract-form">
+      <div class="cl-form-row">
+        <div><label for="ck-number">Numer umowy</label><input type="text" id="ck-number" required placeholder="3/2026"></div>
+        <div><label for="ck-status">Status</label><select id="ck-status"></select></div>
+      </div>
+      <div class="cl-form-row">
+        <div><label for="ck-signed_on">Data zawarcia</label><input type="date" id="ck-signed_on"></div>
+        <div><label for="ck-kind">Typ</label><select id="ck-kind"></select></div>
+      </div>
+      <div class="cl-form-row">
+        <div><label for="ck-starts_on">Obowiązuje od</label><input type="date" id="ck-starts_on"></div>
+        <div><label for="ck-ends_on">do <span class="label-optional">(puste = bez daty końca)</span></label><input type="date" id="ck-ends_on"></div>
+      </div>
+      <div class="cl-form-row">
+        <div><label for="ck-onetime">Opłata jednorazowa (zł)</label><input type="text" id="ck-onetime" inputmode="decimal"></div>
+        <div><label for="ck-monthly">Abonament / mies. łącznie (zł)</label><input type="text" id="ck-monthly" inputmode="decimal"></div>
+      </div>
+      <div class="cl-form-row">
+        <div><label for="ck-variant">Wariant</label><select id="ck-variant"></select></div>
+        <div><label for="ck-buyout">Kwota wykupu (zł)</label><input type="text" id="ck-buyout" inputmode="decimal"></div>
+      </div>
+      <label>Strony (każda = osobna pozycja na rachunku)</label>
+      <div class="cl-sites" id="ck-sites"></div>
+      <button type="button" class="btn prices-btn" id="ck-site-add">+ Dodaj stronę</button>
+      <label for="ck-notes">Notatki</label>
+      <textarea id="ck-notes" rows="2"></textarea>
+      <div class="error" id="contract-error" style="display:none;"></div>
+      <div class="actions">
+        <button type="button" class="btn" id="contract-cancel">Anuluj</button>
+        <button type="submit" class="btn primary">Zapisz umowę</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="bill-modal">
+  <div class="modal modal-wide">
+    <h3 id="bill-modal-title">Wystaw rachunek</h3>
+    <div id="bill-step1">
+      <label>Za co</label>
+      <div class="cl-kind-pick" id="bill-kinds"></div>
+      <div id="bill-period-wrap">
+        <label for="bill-period">Miesiąc abonamentu</label>
+        <input type="month" id="bill-period">
+      </div>
+      <label for="bill-issued">Data wystawienia</label>
+      <input type="date" id="bill-issued">
+      <div class="error" id="bill-error1" style="display:none;"></div>
+      <div class="actions">
+        <button type="button" class="btn" data-bill-close>Anuluj</button>
+        <button type="button" class="btn primary" id="bill-preview-btn">Podgląd →</button>
+      </div>
+    </div>
+    <div id="bill-step2" class="hidden">
+      <div class="cl-alert cl-alert--error hidden" id="bill-errors"></div>
+      <div class="cl-alert cl-alert--warn hidden" id="bill-warnings"></div>
+      <label>Pozycje <span class="label-optional">(możesz poprawić opis i kwotę)</span></label>
+      <div class="cl-items" id="bill-items"></div>
+      <label>Podgląd</label>
+      <div class="bill-preview" id="bill-preview"></div>
+      <div class="error" id="bill-error2" style="display:none;"></div>
+      <div class="actions">
+        <button type="button" class="btn" id="bill-back">← Wstecz</button>
+        <button type="button" class="btn primary" id="bill-save">Wystaw rachunek</button>
+      </div>
+    </div>
+    <div id="bill-step3" class="hidden">
+      <p class="cl-done" id="bill-done-text"></p>
+      <div class="actions">
+        <button type="button" class="btn" data-bill-close>Zamknij</button>
+        <a class="btn primary" id="bill-print-link" href="#" target="_blank">🖨️ Drukuj / PDF</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="paid-modal">
+  <div class="modal">
+    <h3 id="paid-title">Opłacony</h3>
+    <label for="paid-date">Data wpływu</label>
+    <input type="date" id="paid-date">
+    <div class="hint">Wpis przychodu trafi do Kasy (to samo co „Potwierdź” przy należności).</div>
+    <div class="error" id="paid-error" style="display:none;"></div>
+    <div class="actions">
+      <button type="button" class="btn" id="paid-cancel">Anuluj</button>
+      <button type="button" class="btn primary" id="paid-save">Oznacz jako opłacony</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/auth-widget.js"></script>
+<script src="/js/klienci-common.js"></script>
+<script src="/js/bill-render.js"></script>
+<script src="/js/klient.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rachunek</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%93%84</text></svg>">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="/css/rachunek.css">
+</head>
+<body class="bill-page">
+
+<div class="bill-toolbar">
+  <a href="/klienci.html" id="bill-back">← Wróć do klienta</a>
+  <button type="button" id="bill-print">🖨️ Drukuj / zapisz PDF</button>
+</div>
+<div id="bill-root"><div class="bill-msg">Wczytuję…</div></div>
+
+<script src="/js/api.js"></script>
+<script src="/js/bill-render.js"></script>
+<script src="/js/rachunek.js"></script>
+</body>
+</html>
