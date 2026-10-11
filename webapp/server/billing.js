@@ -95,7 +95,8 @@ function lastBusinessDay(period) {
 }
 
 // §2 umowy: wykonanie i wykup - 7 dni od wystawienia; abonament - do ostatniego dnia roboczego
-// miesiaca, za ktory jest (rachunek wystawiony juz po tym dniu -> tez 7 dni od wystawienia)
+// miesiaca, za ktory jest (rachunek wystawiony juz po tym dniu -> tez 7 dni od wystawienia).
+// Rachunek laczony (wykonanie + abonament) - jak wykonanie: 7 dni.
 function dueDate(kind, issuedOn, period) {
   if (kind === "abonament") {
     const last = lastBusinessDay(period);
@@ -330,34 +331,56 @@ const DESCRIBE = {
     `Wykup strony internetowej ${label} – przeniesienie autorskich praw majątkowych zgodnie z §5 ust. 2 umowy`,
 };
 
+// rodzaj rachunku -> czesci, z ktorych sie sklada (wykonanie + abonament = obie naraz)
+const BILL_PARTS = {
+  wykonanie: ["wykonanie"],
+  abonament: ["abonament"],
+  wykonanie_abonament: ["wykonanie", "abonament"],
+  wykup: ["wykup"],
+};
+const PART_LABEL = { wykonanie: "opłaty jednorazowej", abonament: "abonamentu", wykup: "kwoty wykupu" };
+
 // Pozycje wyliczone z umowy: osobna pozycja na kazda strone, kwota z umowy dzielona rowno
-// (Atelier: abonament 200 zl za 2 strony -> 2 x 100 zl). null, gdy w umowie brakuje kwoty.
+// (Atelier: abonament 200 zl za 2 strony -> 2 x 100 zl). part = za co jest pozycja (do Kasy).
+// { missing: "abonamentu" }, gdy w umowie brakuje kwoty.
 function defaultItems(kind, contract, client, period) {
-  const total =
-    kind === "wykonanie"
-      ? contract.onetime_grosze
-      : kind === "abonament"
-        ? contract.monthly_grosze
-        : (contract.buyout_grosze ?? BUYOUT_DEFAULT * 100);
-  if (total == null) return null;
   const sites = parseSites(contract.sites);
   const list = sites.length ? sites : [{ name: client.name || client.legal_name, domain: "" }];
-  const amounts = splitEven(total, list.length);
-  return list.map((s, i) => ({ description: DESCRIBE[kind](siteLabel(s), period), amount_grosze: amounts[i] }));
+  const items = [];
+  for (const part of BILL_PARTS[kind]) {
+    const total =
+      part === "wykonanie"
+        ? contract.onetime_grosze
+        : part === "abonament"
+          ? contract.monthly_grosze
+          : (contract.buyout_grosze ?? BUYOUT_DEFAULT * 100);
+    if (total == null) return { missing: PART_LABEL[part] };
+    const amounts = splitEven(total, list.length);
+    list.forEach((s, i) => items.push({ description: DESCRIBE[part](siteLabel(s), period), amount_grosze: amounts[i], part }));
+  }
+  return { items };
 }
 
-// pozycje poprawione recznie w podgladzie: [{description, amount}] (amount w zl, "100,50" tez)
-function parseItems(raw) {
+// pozycje poprawione recznie w podgladzie: [{description, amount, part}] (amount w zl, "100,50" tez)
+function parseItems(raw, kind) {
   if (!Array.isArray(raw) || !raw.length) return { error: "Rachunek musi mieć co najmniej jedną pozycję" };
+  const parts = BILL_PARTS[kind];
   const items = [];
   for (const it of raw) {
     const description = String(it?.description || "").trim();
     const n = parseFloat(String(it?.amount ?? "").replace(",", ".").replace(/\s/g, ""));
     if (!description) return { error: "Każda pozycja musi mieć opis" };
     if (!Number.isFinite(n) || n <= 0) return { error: `Nieprawidłowa kwota pozycji: „${it?.amount ?? ""}”` };
-    items.push({ description, amount_grosze: Math.round(n * 100) });
+    // part z podgladu, a gdy rachunek ma tylko jedna czesc - zawsze ta
+    const part = parts.length === 1 ? parts[0] : parts.includes(it?.part) ? it.part : parts[0];
+    items.push({ description, amount_grosze: Math.round(n * 100), part });
   }
   return { items };
+}
+
+// suma pozycji danej czesci (wykonanie / abonament) - ile z rachunku idzie na ktora naleznosc w Kasie
+function partTotal(items, part) {
+  return items.filter((it) => (it.part || part) === part).reduce((s, it) => s + it.amount_grosze, 0);
 }
 
 // Projekt rachunku (do podgladu i do zapisu - ta sama funkcja, wiec podglad = to, co sie zapisze).
@@ -369,33 +392,40 @@ function draftBill(contractId, { kind, period, issued_on, items } = {}) {
   const client = db.prepare("SELECT * FROM clients WHERE id = ?").get(contract.client_id);
 
   if (!BILL_KINDS.includes(kind)) return { status: 400, error: `Nieprawidłowy typ rachunku: „${kind}”` };
-  if (kind === "wykonanie" && contract.kind === "abonament") {
+  const parts = BILL_PARTS[kind];
+  if (parts.includes("wykonanie") && contract.kind === "abonament") {
     return { status: 400, error: "Ta umowa jest „tylko abonament” — nie ma opłaty za wykonanie" };
   }
   const issuedOn = issued_on ? String(issued_on) : localDate();
   if (!ISO_DATE.test(issuedOn)) return { status: 400, error: `Nieprawidłowa data wystawienia: „${issuedOn}”` };
-  const billPeriod = kind === "abonament" ? String(period || "") : "";
-  if (kind === "abonament" && !PERIOD.test(billPeriod)) return { status: 400, error: "Wybierz miesiąc abonamentu" };
+  const billPeriod = parts.includes("abonament") ? String(period || "") : "";
+  if (parts.includes("abonament") && !PERIOD.test(billPeriod)) return { status: 400, error: "Wybierz miesiąc abonamentu" };
 
-  const existing = db
-    .prepare("SELECT number FROM bills WHERE contract_id = ? AND kind = ? AND period = ?")
-    .get(contract.id, kind, billPeriod);
-  if (existing) {
-    const what = kind === "abonament" ? `abonament za ${periodLabel(billPeriod)}` : kind;
-    return { status: 400, error: `Rachunek za ${what} do tej umowy już jest (nr ${existing.number})` };
+  // kazda czesc tylko raz: wykonanie (osobno albo w rachunku laczonym) i abonament za dany miesiac
+  for (const part of parts) {
+    const existing =
+      part === "abonament"
+        ? db
+            .prepare("SELECT number FROM bills WHERE contract_id = ? AND kind IN ('abonament', 'wykonanie_abonament') AND period = ?")
+            .get(contract.id, billPeriod)
+        : db
+            .prepare(`SELECT number FROM bills WHERE contract_id = ? AND kind IN (${part === "wykonanie" ? "'wykonanie', 'wykonanie_abonament'" : "'wykup'"})`)
+            .get(contract.id);
+    if (existing) {
+      const what = part === "abonament" ? `abonament za ${periodLabel(billPeriod)}` : part;
+      return { status: 400, error: `Rachunek za ${what} do tej umowy już jest (nr ${existing.number})` };
+    }
   }
 
   let billItems;
   if (items) {
-    const parsed = parseItems(items);
+    const parsed = parseItems(items, kind);
     if (parsed.error) return { status: 400, error: parsed.error };
     billItems = parsed.items;
   } else {
-    billItems = defaultItems(kind, contract, client, billPeriod);
-    if (!billItems) {
-      const field = kind === "wykonanie" ? "opłaty jednorazowej" : kind === "abonament" ? "abonamentu" : "kwoty wykupu";
-      return { status: 400, error: `W umowie ${contract.number} brakuje ${field} — uzupełnij umowę` };
-    }
+    const d = defaultItems(kind, contract, client, billPeriod);
+    if (d.missing) return { status: 400, error: `W umowie ${contract.number} brakuje ${d.missing} — uzupełnij umowę` };
+    billItems = d.items;
   }
   const total = billItems.reduce((s, it) => s + it.amount_grosze, 0);
 
@@ -521,33 +551,36 @@ function markBillPaid(billId, paidOn, by) {
     : null;
   const kasaManaged = lead && lead.interested === "dopiete" && lead.dopiete_at && bill.kind !== "wykup";
 
-  let result = { ok: true };
+  const items = JSON.parse(bill.items || "[]");
   db.transaction(() => {
+    // refs = co to oznaczenie zrobilo w Kasie (patrz unmarkBillPaid). own: false = naleznosc byla juz
+    // potwierdzona wczesniej w Kasie, wiec "Cofnij" jej nie ruszy.
+    const refs = [];
     if (kasaManaged) {
-      const dueKind = bill.kind === "wykonanie" ? "onetime" : "monthly";
-      let due =
-        dueKind === "onetime"
-          ? db.prepare("SELECT * FROM client_dues WHERE lead_id = ? AND kind = 'onetime' ORDER BY id LIMIT 1").get(lead.id)
-          : db.prepare("SELECT * FROM client_dues WHERE lead_id = ? AND kind = 'monthly' AND period = ?").get(lead.id, bill.period);
-      if (!due) {
-        const period = dueKind === "onetime" ? lead.dopiete_at.slice(0, 7) : bill.period;
-        const id = db
-          .prepare("INSERT INTO client_dues (lead_id, kind, period, amount_grosze) VALUES (?, ?, ?, ?)")
-          .run(lead.id, dueKind, period, bill.total_grosze).lastInsertRowid;
-        due = db.prepare("SELECT * FROM client_dues WHERE id = ?").get(id);
-      }
-      if (due.status === "confirmed") {
-        // juz potwierdzone wczesniej w Kasie - tylko podpinamy rachunek pod ten wpis
-        db.prepare("UPDATE bills SET status = 'oplacony', paid_on = ?, transaction_id = ? WHERE id = ?").run(
-          paid,
-          due.transaction_id,
-          bill.id
-        );
-      } else {
-        // kwota z rachunku jest prawda (mogla byc poprawiona w podgladzie); "pominieta" tez wraca
-        db.prepare("UPDATE client_dues SET status = 'pending', amount_grosze = ? WHERE id = ?").run(bill.total_grosze, due.id);
-        const r = confirmDue(due.id, by, { billId: bill.id, paidOn: paid });
-        if (r.error) throw Object.assign(new Error(r.error), { status: r.status });
+      // rachunek laczony = dwie naleznosci (wdrozenie + abonament za miesiac), kazda ze swoja kwota
+      for (const part of BILL_PARTS[bill.kind]) {
+        const dueKind = part === "wykonanie" ? "onetime" : "monthly";
+        const amount = BILL_PARTS[bill.kind].length > 1 ? partTotal(items, part) : bill.total_grosze;
+        let due =
+          dueKind === "onetime"
+            ? db.prepare("SELECT * FROM client_dues WHERE lead_id = ? AND kind = 'onetime' ORDER BY id LIMIT 1").get(lead.id)
+            : db.prepare("SELECT * FROM client_dues WHERE lead_id = ? AND kind = 'monthly' AND period = ?").get(lead.id, bill.period);
+        if (!due) {
+          const period = dueKind === "onetime" ? lead.dopiete_at.slice(0, 7) : bill.period;
+          const id = db
+            .prepare("INSERT INTO client_dues (lead_id, kind, period, amount_grosze) VALUES (?, ?, ?, ?)")
+            .run(lead.id, dueKind, period, amount).lastInsertRowid;
+          due = db.prepare("SELECT * FROM client_dues WHERE id = ?").get(id);
+        }
+        if (due.status === "confirmed") {
+          refs.push({ due: due.id, own: false }); // juz potwierdzone w Kasie - tylko podpinamy
+        } else {
+          // kwota z rachunku jest prawda (mogla byc poprawiona w podgladzie); "pominieta" tez wraca
+          db.prepare("UPDATE client_dues SET status = 'pending', amount_grosze = ? WHERE id = ?").run(amount, due.id);
+          const r = confirmDue(due.id, by, { skipBillLink: true });
+          if (r.error) throw Object.assign(new Error(r.error), { status: r.status });
+          refs.push({ due: due.id, own: true });
+        }
       }
     } else {
       const txId = db
@@ -557,8 +590,15 @@ function markBillPaid(billId, paidOn, by) {
         )
         .run(paid, `Rachunek ${bill.number} — ${client.name || client.legal_name}`, bill.total_grosze, `bill:${bill.id}`, by || "")
         .lastInsertRowid;
-      db.prepare("UPDATE bills SET status = 'oplacony', paid_on = ?, transaction_id = ? WHERE id = ?").run(paid, txId, bill.id);
+      refs.push({ tx: txId });
     }
+    const firstTx = refs[0].tx || db.prepare("SELECT transaction_id FROM client_dues WHERE id = ?").pluck().get(refs[0].due);
+    db.prepare("UPDATE bills SET status = 'oplacony', paid_on = ?, transaction_id = ?, paid_refs = ? WHERE id = ?").run(
+      paid,
+      firstTx,
+      JSON.stringify(refs),
+      bill.id
+    );
     if (bill.kind === "wykup") {
       db.prepare("UPDATE contracts SET bought_out_on = ?, updated_at = datetime('now') WHERE id = ? AND bought_out_on = ''").run(
         paid,
@@ -566,20 +606,33 @@ function markBillPaid(billId, paidOn, by) {
       );
     }
   })();
-  return result;
+  return { ok: true };
 }
 
-// "Cofnij oplacony" - wpis przychodu znika z Kasy (naleznosc wraca do potwierdzenia)
+// "Cofnij oplacony" - wpisy przychodu, ktore utworzylo oznaczenie, znikaja z Kasy (naleznosci
+// wracaja do potwierdzenia). Starsze rachunki bez paid_refs: po transaction_id jak dotad.
 function unmarkBillPaid(billId) {
   const bill = db.prepare("SELECT * FROM bills WHERE id = ?").get(billId);
   if (!bill) return { status: 404, error: "Nie znaleziono rachunku" };
   if (bill.status !== "oplacony") return { status: 400, error: "Ten rachunek nie jest oznaczony jako opłacony" };
-  const tx = bill.transaction_id ? db.prepare("SELECT * FROM transactions WHERE id = ?").get(bill.transaction_id) : null;
+  let refs = [];
+  try {
+    refs = JSON.parse(bill.paid_refs || "[]");
+  } catch {
+    refs = [];
+  }
+  if (!refs.length && bill.transaction_id) {
+    const tx = db.prepare("SELECT * FROM transactions WHERE id = ?").get(bill.transaction_id);
+    if (tx && tx.source_key === `bill:${bill.id}`) refs = [{ tx: tx.id }];
+    else if (tx && String(tx.source_key || "").startsWith("due:")) refs = [{ due: Number(tx.source_key.slice(4)), own: true }];
+  }
 
   db.transaction(() => {
-    if (tx && tx.source_key === `bill:${bill.id}`) db.prepare("DELETE FROM transactions WHERE id = ?").run(tx.id);
-    else if (tx && String(tx.source_key || "").startsWith("due:")) reopenDue(Number(tx.source_key.slice(4)));
-    db.prepare("UPDATE bills SET status = 'wystawiony', paid_on = '', transaction_id = NULL WHERE id = ?").run(bill.id);
+    for (const r of refs) {
+      if (r.tx) db.prepare("DELETE FROM transactions WHERE id = ? AND source_key = ?").run(r.tx, `bill:${bill.id}`);
+      else if (r.due && r.own) reopenDue(r.due);
+    }
+    db.prepare("UPDATE bills SET status = 'wystawiony', paid_on = '', transaction_id = NULL, paid_refs = '' WHERE id = ?").run(bill.id);
     if (bill.kind === "wykup") {
       db.prepare("UPDATE contracts SET bought_out_on = '' WHERE id = ? AND bought_out_on = ?").run(bill.contract_id, bill.paid_on);
     }
@@ -632,29 +685,42 @@ function billingTodo(today = localDate()) {
        WHERE c.status IN ('podpisana', 'zakonczona', 'wypowiedziana')`
     )
     .all();
-  // wystawione + pominiete ("Pomin" przy przypominajce) - o tych juz nie przypominamy
-  const billed = new Set(
-    db
-      .prepare(
-        `SELECT contract_id || ':' || kind || ':' || period FROM bills
-         UNION SELECT contract_id || ':' || kind || ':' || period FROM bill_skips`
-      )
-      .pluck()
-      .all()
-  );
+  // wystawione + pominiete ("Pomin" przy przypominajce) - o tych juz nie przypominamy. Rachunek
+  // laczony zalatwia obie czesci: wykonanie i abonament za swoj miesiac.
+  const billed = new Set();
+  for (const r of db.prepare("SELECT contract_id, kind, period FROM bills UNION SELECT contract_id, kind, period FROM bill_skips").all()) {
+    for (const part of BILL_PARTS[r.kind] || [r.kind]) {
+      billed.add(`${r.contract_id}:${part}:${part === "abonament" ? r.period : ""}`);
+    }
+  }
   const items = [];
 
   for (const c of contracts) {
     const start = c.starts_on || c.signed_on;
     if (!start || start > today) continue;
     const base = { client_id: c.client_id, client_name: c.client_name || c.legal_name, contract_id: c.id, contract_number: c.number };
-    if (c.kind !== "abonament" && (c.onetime_grosze || 0) > 0 && !billed.has(`${c.id}:wykonanie:`)) {
+    const firstPeriod = start.slice(0, 7);
+    const needsWork = c.kind !== "abonament" && (c.onetime_grosze || 0) > 0 && !billed.has(`${c.id}:wykonanie:`);
+    const needsFirstMonth = (c.monthly_grosze || 0) > 0 && !billed.has(`${c.id}:abonament:${firstPeriod}`);
+    // nowa umowa: wykonanie + pierwszy abonament (§2 ust. 2 - placony w miesiacu uruchomienia) jako
+    // jedna propozycja = jeden rachunek; w okienku mozna i tak wybrac osobne
+    if (needsWork && needsFirstMonth) {
+      billed.add(`${c.id}:abonament:${firstPeriod}`);
+      items.push({
+        ...base,
+        type: "issue",
+        kind: "wykonanie_abonament",
+        period: firstPeriod,
+        late: firstPeriod < curPeriod,
+        label: `Wystaw rachunek: wykonanie + abonament za ${periodLabel(firstPeriod)}${firstPeriod < curPeriod ? " (zaległy)" : ""}`,
+      });
+    } else if (needsWork) {
       items.push({ ...base, type: "issue", kind: "wykonanie", period: "", late: false, label: `Wystaw rachunek za wykonanie strony (umowa ${c.number})` });
     }
     if ((c.monthly_grosze || 0) > 0) {
       const endPeriod = c.ends_on ? c.ends_on.slice(0, 7) : null;
       const last = endPeriod && endPeriod < curPeriod ? endPeriod : curPeriod;
-      for (let p = start.slice(0, 7); p <= last; p = nextPeriod(p)) {
+      for (let p = firstPeriod; p <= last; p = nextPeriod(p)) {
         if (billed.has(`${c.id}:abonament:${p}`)) continue;
         const late = p < curPeriod;
         items.push({

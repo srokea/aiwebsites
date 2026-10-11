@@ -345,7 +345,9 @@ function billStep(n) {
 }
 
 function nextUnbilledMonth(k) {
-  const billed = new Set(card.bills.filter((b) => b.contract_id === k.id && b.kind === "abonament").map((b) => b.period));
+  const billed = new Set(
+    card.bills.filter((b) => b.contract_id === k.id && (b.kind === "abonament" || b.kind === "wykonanie_abonament")).map((b) => b.period)
+  );
   const d = new Date();
   for (let i = 0; i < 36; i++) {
     const p = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
@@ -360,16 +362,28 @@ function openBillModal(k, preset = {}) {
   billContract = k;
   billItems = null;
   document.getElementById("bill-modal-title").textContent = `Wystaw rachunek — umowa ${k.number}`;
-  const existing = (kind) => card.bills.find((b) => b.contract_id === k.id && b.kind === kind);
+  // wykonanie jest raz na umowe - osobno albo w rachunku laczonym (wykonanie + abonament)
+  const workBill = card.bills.find((b) => b.contract_id === k.id && (b.kind === "wykonanie" || b.kind === "wykonanie_abonament"));
+  const buyoutBill = card.bills.find((b) => b.contract_id === k.id && b.kind === "wykup");
+  const KIND_TEXT = {
+    abonament: "Abonament za miesiąc",
+    wykonanie_abonament: "Wykonanie + abonament za miesiąc (jeden rachunek)",
+  };
   const kinds = meta.billKindOptions.map((o) => {
-    const done = o.value !== "abonament" && existing(o.value);
-    const notApplicable = o.value === "wykonanie" && k.kind === "abonament";
-    const note = done ? ` <span class="cl-muted">— już jest (nr ${escapeHtml(done.number)})</span>` : notApplicable ? ` <span class="cl-muted">— umowa tylko abonament</span>` : "";
-    return `<label class="cl-kind${done || notApplicable ? " is-disabled" : ""}"><input type="radio" name="bill-kind" value="${o.value}"${done || notApplicable ? " disabled" : ""}> ${escapeHtml(o.value === "abonament" ? "Abonament za miesiąc" : o.label)}${note}</label>`;
+    const withWork = o.value === "wykonanie" || o.value === "wykonanie_abonament";
+    const done = withWork ? workBill : o.value === "wykup" ? buyoutBill : null;
+    const notApplicable = withWork && k.kind === "abonament";
+    const note = done
+      ? ` <span class="cl-muted">— wykonanie już jest (nr ${escapeHtml(done.number)})</span>`
+      : notApplicable
+        ? ` <span class="cl-muted">— umowa tylko abonament</span>`
+        : "";
+    return `<label class="cl-kind${done || notApplicable ? " is-disabled" : ""}"><input type="radio" name="bill-kind" value="${o.value}"${done || notApplicable ? " disabled" : ""}> ${escapeHtml(KIND_TEXT[o.value] || o.label)}${note}</label>`;
   });
   document.getElementById("bill-kinds").innerHTML = kinds.join("");
   const first =
     (preset.kind && document.querySelector(`#bill-kinds input:not(:disabled)[value="${preset.kind}"]`)) ||
+    document.querySelector('#bill-kinds input:not(:disabled)[value="wykonanie_abonament"]') ||
     document.querySelector('#bill-kinds input:not(:disabled)[value="abonament"]') ||
     document.querySelector("#bill-kinds input:not(:disabled)");
   if (first) first.checked = true;
@@ -383,7 +397,7 @@ function openBillModal(k, preset = {}) {
 
 const billKind = () => document.querySelector('#bill-kinds input[name="bill-kind"]:checked')?.value || "";
 function syncPeriodVisibility() {
-  document.getElementById("bill-period-wrap").classList.toggle("hidden", billKind() !== "abonament");
+  document.getElementById("bill-period-wrap").classList.toggle("hidden", !["abonament", "wykonanie_abonament"].includes(billKind()));
 }
 document.getElementById("bill-kinds").addEventListener("change", () => {
   billItems = null;
@@ -412,7 +426,7 @@ function renderPreview(p) {
   document.getElementById("bill-items").innerHTML = p.bill.items
     .map(
       (it, i) => `
-      <div class="cl-item" data-i="${i}">
+      <div class="cl-item" data-i="${i}" data-part="${escapeHtml(it.part || "")}">
         <textarea class="cl-item-desc" rows="2">${escapeHtml(it.description)}</textarea>
         <label class="prices-field"><input type="text" class="cl-item-amount" inputmode="decimal" value="${plainNum(it.amount)}"> zł</label>
       </div>`
@@ -444,6 +458,7 @@ document.getElementById("bill-items").addEventListener("change", () => {
   billItems = [...document.querySelectorAll("#bill-items .cl-item")].map((row) => ({
     description: row.querySelector(".cl-item-desc").value,
     amount: row.querySelector(".cl-item-amount").value,
+    part: row.dataset.part, // za co jest pozycja (wykonanie / abonament) - do Kasy przy rachunku laczonym
   }));
   preview("bill-error2");
 });

@@ -392,6 +392,9 @@ addColumnIfMissing("lead_pins", "last_visited_at TEXT");
 addColumnIfMissing("client_pricing", "source_contract_id INTEGER");
 // rachunek wyslany klientowi (data) - '' = jeszcze nie wyslany (przypominajka na klienci.html)
 addColumnIfMissing("bills", "sent_on TEXT NOT NULL DEFAULT ''");
+// co oznaczenie "oplacony" utworzylo w Kasie: JSON [{due: id, own: bool} | {tx: id}] - zeby "Cofnij"
+// cofnelo dokladnie to (rachunek wykonanie + abonament potwierdza naraz dwie naleznosci)
+addColumnIfMissing("bills", "paid_refs TEXT NOT NULL DEFAULT ''");
 
 addColumnIfMissing("review_links", "logo_url TEXT NOT NULL DEFAULT ''");
 // reczna kolejnosc kart w panelu /reviews.html (przeciagnij i upusc) - nie ma nic wspolnego

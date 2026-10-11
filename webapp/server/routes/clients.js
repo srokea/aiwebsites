@@ -393,8 +393,9 @@ router.post("/contracts/:id(\\d+)/skip", (req, res) => {
   const contractId = Number(req.params.id);
   if (!db.prepare("SELECT 1 FROM contracts WHERE id = ?").get(contractId)) return res.status(404).json({ error: "Nie znaleziono umowy" });
   const kind = String(req.body.kind || "");
-  const period = kind === "abonament" ? String(req.body.period || "") : "";
-  if (!["wykonanie", "abonament", "wykup"].includes(kind) || (kind === "abonament" && !/^\d{4}-\d{2}$/.test(period))) {
+  const withPeriod = kind === "abonament" || kind === "wykonanie_abonament";
+  const period = withPeriod ? String(req.body.period || "") : "";
+  if (!["wykonanie", "abonament", "wykonanie_abonament", "wykup"].includes(kind) || (withPeriod && !/^\d{4}-\d{2}$/.test(period))) {
     return res.status(400).json({ error: "Nieprawidłowa przypominajka" });
   }
   db.prepare("INSERT OR IGNORE INTO bill_skips (contract_id, kind, period, created_by) VALUES (?, ?, ?, ?)").run(contractId, kind, period, by(req));

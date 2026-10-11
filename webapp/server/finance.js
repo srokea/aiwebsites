@@ -315,24 +315,48 @@ function pendingDuesList() {
 
 // Rachunek (klienci.html), ktory odpowiada tej naleznosci: wdrozenie <-> rachunek za wykonanie,
 // abonament za miesiac X <-> rachunek za abonament X - u klienta podpietego pod tego leada.
+// Rachunek laczony (wykonanie + abonament za miesiac) pasuje do obu naleznosci.
 function findBillForDue(due) {
   return db
     .prepare(
-      `SELECT b.id FROM bills b
+      `SELECT b.id, b.kind, b.period FROM bills b
        JOIN contracts c ON c.id = b.contract_id
        JOIN clients cl ON cl.id = c.client_id
        WHERE cl.lead_id = @lead_id AND b.status = 'wystawiony'
-         AND ((@kind = 'onetime' AND b.kind = 'wykonanie')
-           OR (@kind = 'monthly' AND b.kind = 'abonament' AND b.period = @period))
+         AND ((@kind = 'onetime' AND b.kind IN ('wykonanie', 'wykonanie_abonament'))
+           OR (@kind = 'monthly' AND b.kind IN ('abonament', 'wykonanie_abonament') AND b.period = @period))
        ORDER BY b.id LIMIT 1`
     )
     .get(due);
 }
 
+// Po potwierdzeniu naleznosci w Kasie: pasujacy rachunek -> oplacony. Laczony dopiero, gdy obie
+// jego naleznosci (wdrozenie i abonament za ten miesiac) sa juz potwierdzone.
+function markBillForDue(due, txId, paidOn) {
+  const bill = findBillForDue(due);
+  if (!bill) return;
+  let refs = [{ due: due.id, own: true }];
+  if (bill.kind === "wykonanie_abonament") {
+    const other =
+      due.kind === "onetime"
+        ? db.prepare("SELECT * FROM client_dues WHERE lead_id = ? AND kind = 'monthly' AND period = ?").get(due.lead_id, bill.period)
+        : db.prepare("SELECT * FROM client_dues WHERE lead_id = ? AND kind = 'onetime' ORDER BY id LIMIT 1").get(due.lead_id);
+    if (!other || other.status !== "confirmed") return;
+    refs = [{ due: other.id, own: true }, ...refs];
+  }
+  db.prepare("UPDATE bills SET status = 'oplacony', paid_on = ?, transaction_id = ?, paid_refs = ? WHERE id = ?").run(
+    paidOn || localDate(),
+    txId,
+    JSON.stringify(refs),
+    bill.id
+  );
+}
+
 // Potwierdzenie naleznosci -> wpis w transactions (przychod) + link. Zwraca { error, status } albo
-// { ok, transactionId }. Pasujacy rachunek (billId albo znaleziony sam) oznacza sie jako oplacony -
-// "Potwierdz" w Kasie i "Oplacony" w karcie klienta to ta sama operacja, bez podwojnych wpisow.
-function confirmDue(id, by, { billId = null, paidOn = null } = {}) {
+// { ok, transactionId }. Pasujacy rachunek oznacza sie jako oplacony - "Potwierdz" w Kasie i
+// "Oplacony" w karcie klienta to ta sama operacja, bez podwojnych wpisow. skipBillLink: wola
+// billing.js markBillPaid, ktory sam ustawia rachunek (moze potwierdzac kilka naleznosci naraz).
+function confirmDue(id, by, { skipBillLink = false } = {}) {
   const due = db.prepare("SELECT * FROM client_dues WHERE id = ?").get(id);
   if (!due) return { error: "Nie znaleziono należności", status: 404 };
   if (due.status !== "pending") return { error: "Ta należność jest już rozliczona", status: 400 };
@@ -353,14 +377,7 @@ function confirmDue(id, by, { billId = null, paidOn = null } = {}) {
     db.prepare(
       "UPDATE client_dues SET status='confirmed', transaction_id=?, resolved_at=datetime('now'), resolved_by=? WHERE id=?"
     ).run(txId, by || "", id);
-    const bill = billId ? { id: billId } : findBillForDue(due);
-    if (bill) {
-      db.prepare("UPDATE bills SET status = 'oplacony', paid_on = ?, transaction_id = ? WHERE id = ?").run(
-        paidOn || localDate(),
-        txId,
-        bill.id
-      );
-    }
+    if (!skipBillLink) markBillForDue(due, txId);
   })();
   return { ok: true, transactionId: txId };
 }

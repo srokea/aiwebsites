@@ -171,3 +171,43 @@ test("pominieta przypominajka juz nie wraca", () => {
   const issue = billing.billingTodo("2026-12-05").filter((t) => t.type === "issue" && t.contract_id === 1).map((t) => t.period);
   assert.deepEqual(issue.sort(), ["2026-11", "2026-12"]);
 });
+
+test("rachunek wykonanie + abonament: jedna kartka, dwie naleznosci w Kasie", () => {
+  db.exec(`
+    UPDATE clients SET nip = '1234567890' WHERE id = 1;
+    INSERT INTO leads (id, niche_id, company_name, interested, dopiete_at) VALUES (3, 1, 'Nowy Salon', 'dopiete', '2026-10-01 09:00:00');
+    INSERT INTO clients (id, lead_id, name, legal_name, address, nip) VALUES (3, 3, 'Nowy', 'Nowy Salon Anna Test', 'ul. Nowa 1', '1111111111');
+    INSERT INTO contracts (id, client_id, number, signed_on, starts_on, ends_on, status, onetime_grosze, monthly_grosze, sites)
+      VALUES (3, 3, '7/2026', '2026-10-01', '2026-10-01', '2027-09-30', 'podpisana', 30000, 10000, '[{"name":"Nowy","domain":"nowy.pl"}]');
+  `);
+  billing.syncPricing();
+
+  // przypominajka: jedna propozycja laczona zamiast dwoch osobnych
+  const todo = billing.billingTodo("2026-10-11").filter((t) => t.contract_id === 3);
+  assert.deepEqual(todo.map((t) => [t.kind, t.period]), [["wykonanie_abonament", "2026-10"]]);
+
+  const draft = billing.draftBill(3, { kind: "wykonanie_abonament", period: "2026-10", issued_on: "2026-10-11" });
+  assert.deepEqual(draft.errors, []);
+  assert.deepEqual(draft.bill.items.map((it) => [it.part, it.amount_grosze]), [["wykonanie", 30000], ["abonament", 10000]]);
+  assert.equal(draft.bill.total_grosze, 40000);
+  assert.equal(draft.bill.due_on, "2026-10-18"); // jak wykonanie: 7 dni
+  const { id } = billing.createBill(3, { kind: "wykonanie_abonament", period: "2026-10", issued_on: "2026-10-11" }, "test");
+  // osobne wykonanie / abonament za pazdziernik juz niemozliwe
+  assert.equal(billing.createBill(3, { kind: "wykonanie" }).status, 400);
+  assert.equal(billing.createBill(3, { kind: "abonament", period: "2026-10" }).status, 400);
+  assert.equal(billing.billingTodo("2026-10-11").filter((t) => t.contract_id === 3 && t.type === "issue").length, 0);
+
+  billing.markBillPaid(id, "2026-10-15", "test");
+  const dues = db.prepare("SELECT kind, period, amount_grosze, status FROM client_dues WHERE lead_id = 3 ORDER BY kind").all();
+  assert.deepEqual(dues.map((d) => [d.kind, d.amount_grosze, d.status]), [["monthly", 10000, "confirmed"], ["onetime", 30000, "confirmed"]]);
+  billing.unmarkBillPaid(id);
+  assert.equal(db.prepare("SELECT COUNT(*) FROM client_dues WHERE lead_id = 3 AND status = 'pending'").pluck().get(), 2);
+
+  // z Kasy: po potwierdzeniu tylko wdrozenia rachunek jeszcze nieoplacony, po abonamencie - oplacony
+  const onetime = db.prepare("SELECT id FROM client_dues WHERE lead_id = 3 AND kind = 'onetime'").pluck().get();
+  const monthly = db.prepare("SELECT id FROM client_dues WHERE lead_id = 3 AND kind = 'monthly' AND period = '2026-10'").pluck().get();
+  confirmDue(onetime, "test");
+  assert.equal(db.prepare("SELECT status FROM bills WHERE id = ?").pluck().get(id), "wystawiony");
+  confirmDue(monthly, "test");
+  assert.equal(db.prepare("SELECT status FROM bills WHERE id = ?").pluck().get(id), "oplacony");
+});

@@ -136,9 +136,12 @@ const CONTRACT_VARIANT_OPTIONS = [
   { value: "website_plus", label: "Website+" },
   { value: "pro_plus", label: "Pro+" },
 ];
+// wykonanie_abonament = jeden rachunek na wykonanie + abonament za wybrany miesiac (zwykle pierwszy -
+// §2 ust. 2: pierwsza oplata abonamentowa w miesiacu uruchomienia strony)
 const BILL_KIND_OPTIONS = [
   { value: "wykonanie", label: "Wykonanie" },
   { value: "abonament", label: "Abonament" },
+  { value: "wykonanie_abonament", label: "Wykonanie + abonament" },
   { value: "wykup", label: "Wykup" },
 ];
 // licznik "dni do konca umowy": > soon zielony, urgent..soon zolty, < urgent czerwony
