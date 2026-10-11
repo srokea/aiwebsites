@@ -30,6 +30,24 @@ function billAccount(raw) {
   return pl + [d.slice(0, 2), ...d.slice(2).match(/.{4}/g)].join(" ");
 }
 
+// Rozliczenie pod pozycjami: brutto, skladki, zaliczka, do wyplaty. Student do 26 lat (clause) -
+// zwolniony z ZUS i PIT, wiec zera i brutto = netto. Bez zwolnienia NIE wpisujemy zer (bylyby
+// nieprawda) ani nie zgadujemy stawek - wg §2 ust. 3 umowy kwoty z umowy to kwoty do wyplaty,
+// a skladki i zaliczke nalicza Zleceniodawca ponad nie.
+function billSettlementHtml(total, exempt) {
+  const row = (label, value, cls = "") => `<tr${cls ? ` class="${cls}"` : ""}><td>${label}</td><td class="bill-amt">${value}</td></tr>`;
+  const zeroOr = exempt ? billZl(0) : "nalicza Zleceniodawca";
+  return `
+    <table class="bill-summary">
+      ${row("Wynagrodzenie brutto", exempt ? billZl(total) : `${billZl(total)} + należności poniżej`)}
+      ${row("Składki na ubezpieczenia społeczne (emerytalne, rentowe, chorobowe)", zeroOr)}
+      ${row("Składka na ubezpieczenie zdrowotne", zeroOr)}
+      ${row("Zaliczka na podatek dochodowy", zeroOr)}
+      ${row("Razem do wypłaty", billZl(total), "bill-summary-total")}
+    </table>
+    ${exempt ? "" : `<div class="bill-summary-note">Składki i zaliczkę na podatek nalicza i odprowadza Zleceniodawca ponad kwotę do wypłaty (§2 ust. 3 umowy).</div>`}`;
+}
+
 function renderBillHtml(b) {
   const s = b.snapshot || {};
   const me = s.contractor || {};
@@ -71,7 +89,7 @@ function renderBillHtml(b) {
       <thead><tr><th class="bill-lp">Lp.</th><th>Opis</th><th class="bill-amt">Kwota</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
-    <div class="bill-total">Razem do wypłaty: <b>${billZl(b.total ?? b.total_grosze / 100)}</b></div>
+    ${billSettlementHtml(b.total ?? b.total_grosze / 100, s.clause)}
     <div class="bill-words">Słownie: ${billEsc(b.words)}</div>
     <p class="bill-pay">Płatne przelewem na rachunek nr ${me.bank_account !== undefined ? billAccount(me.bank_account) : "…"} w terminie do ${billDate(b.due_on)}.</p>
     ${
