@@ -317,9 +317,14 @@ function getContractor() {
   );
 }
 
+// na rachunku sama domena: "https://atelierpiekna-tomaszow.pl/" -> "atelierpiekna-tomaszow.pl"
+// (krocej - rachunek z kilkoma stronami miesci sie na jednej kartce)
+const bareDomain = (d) => d.replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/\/+$/, "");
+
 function siteLabel(site) {
-  if (site.name && site.domain) return `„${site.name}” (${site.domain})`;
-  return site.domain || `„${site.name}”`;
+  const domain = bareDomain(site.domain);
+  if (site.name && domain) return `„${site.name}” (${domain})`;
+  return domain || `„${site.name}”`;
 }
 
 const DESCRIBE = {
