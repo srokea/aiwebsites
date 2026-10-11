@@ -324,6 +324,17 @@ CREATE TABLE IF NOT EXISTS bills (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_bills_seq ON bills(year, seq);
+
+-- "Pomin" przy przypominajce "wystaw rachunek" (np. darmowy miesiac, wykonanie rozliczone inaczej) -
+-- ten rachunek nie bedzie juz przypominany. period jak w bills ('' dla wykonania).
+CREATE TABLE IF NOT EXISTS bill_skips (
+  contract_id INTEGER NOT NULL REFERENCES contracts(id) ON DELETE CASCADE,
+  kind TEXT NOT NULL,
+  period TEXT NOT NULL DEFAULT '',
+  created_by TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (contract_id, kind, period)
+);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_bills_once ON bills(contract_id, kind, period);
 `);
 
@@ -379,6 +390,8 @@ addColumnIfMissing("lead_pins", "last_visited_at TEXT");
 // cena klienta przepisana z jego podpisanej umowy (billing.js syncLeadPricing) - wtedy w Kasie
 // zamiast edycji jest "z umowy N/RRRR"; NULL = cena ustawiona recznie w Kasie
 addColumnIfMissing("client_pricing", "source_contract_id INTEGER");
+// rachunek wyslany klientowi (data) - '' = jeszcze nie wyslany (przypominajka na klienci.html)
+addColumnIfMissing("bills", "sent_on TEXT NOT NULL DEFAULT ''");
 
 addColumnIfMissing("review_links", "logo_url TEXT NOT NULL DEFAULT ''");
 // reczna kolejnosc kart w panelu /reviews.html (przeciagnij i upusc) - nie ma nic wspolnego

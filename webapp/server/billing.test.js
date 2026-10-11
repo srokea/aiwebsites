@@ -57,7 +57,7 @@ function seed() {
 
 test("rachunek za abonament: 2 pozycje, numer, migawka, oplacenie spiete z Kasa", () => {
   seed();
-  billing.syncLeadPricing(1);
+  billing.syncPricing();
   const pricing = db.prepare("SELECT * FROM client_pricing WHERE lead_id = 1").get();
   assert.equal(pricing.monthly_grosze, 20000);
   assert.equal(pricing.source_contract_id, 1);
@@ -123,4 +123,51 @@ test("brak danych blokuje wystawienie", () => {
   const draft = billing.draftBill(1, { kind: "abonament", period: "2026-12", issued_on: "2026-12-01" });
   assert.deepEqual(draft.errors, ["Klient: NIP"]);
   assert.equal(billing.createBill(1, { kind: "abonament", period: "2026-12" }).status, 400);
+});
+
+test("strona innego klienta w umowie: Kasa liczy calosc u wlasciciela, u drugiego 0", () => {
+  db.exec(`
+    INSERT INTO leads (id, niche_id, company_name, interested, dopiete_at) VALUES (2, 1, 'Ogrody Test', 'dopiete', '2026-09-15 10:05:00');
+    INSERT INTO clients (id, lead_id, name) VALUES (2, 2, 'Ogrody');
+  `);
+  db.prepare("UPDATE contracts SET sites = ? WHERE id = 1").run(
+    JSON.stringify([{ name: "Atelier", domain: "atelier.pl" }, { name: "Ogrody", domain: "ogrody.pl", client_id: 2 }])
+  );
+  billing.syncPricing();
+  const p1 = db.prepare("SELECT * FROM client_pricing WHERE lead_id = 1").get();
+  const p2 = db.prepare("SELECT * FROM client_pricing WHERE lead_id = 2").get();
+  assert.equal(p1.monthly_grosze, 20000);
+  assert.deepEqual([p2.onetime_grosze, p2.monthly_grosze, p2.source_contract_id], [0, 0, 1]);
+  assert.equal(db.prepare("SELECT COUNT(*) FROM client_dues WHERE lead_id = 2 AND status = 'pending'").pluck().get(), 0);
+  const card = billing.clientCard(2);
+  assert.equal(card.contracts[0].covered_by.client_id, 1);
+  assert.equal(card.currentContractId, 1);
+
+  // strona wraca do wlasciciela umowy -> drugi klient znow na cenie domyslnej
+  db.prepare("UPDATE contracts SET sites = ? WHERE id = 1").run(JSON.stringify([{ name: "Atelier", domain: "atelier.pl" }]));
+  billing.syncPricing();
+  const back = db.prepare("SELECT * FROM client_pricing WHERE lead_id = 2").get();
+  assert.deepEqual([back.onetime_grosze, back.monthly_grosze, back.source_contract_id], [null, null, null]);
+});
+
+test("przypominajki: brakujace miesiace abonamentu, niewyslane i po terminie", () => {
+  const todo = billing.billingTodo("2026-12-05");
+  const issue = todo.filter((t) => t.type === "issue" && t.contract_id === 1).map((t) => t.period);
+  assert.deepEqual(issue.sort(), ["2026-09", "2026-11", "2026-12"]); // pazdziernik wystawiony
+  assert.equal(todo.find((t) => t.period === "2026-09").late, true);
+  assert.equal(todo.find((t) => t.period === "2026-12").late, false);
+
+  const oct = db.prepare("SELECT id FROM bills WHERE kind = 'abonament' AND period = '2026-10'").pluck().get();
+  assert.ok(todo.some((t) => t.type === "send" && t.bill_id === oct));
+  assert.deepEqual(billing.setBillSent(oct, "2026-10-12"), { ok: true });
+  const after = billing.billingTodo("2026-12-05");
+  assert.ok(!after.some((t) => t.type === "send" && t.bill_id === oct));
+  assert.ok(after.some((t) => t.type === "overdue" && t.bill_id === oct)); // termin 30.10 minal
+  assert.equal(billing.setBillSent(oct, "12.10.2026").status, 400);
+});
+
+test("pominieta przypominajka juz nie wraca", () => {
+  db.prepare("INSERT INTO bill_skips (contract_id, kind, period) VALUES (1, 'abonament', '2026-09')").run();
+  const issue = billing.billingTodo("2026-12-05").filter((t) => t.type === "issue" && t.contract_id === 1).map((t) => t.period);
+  assert.deepEqual(issue.sort(), ["2026-11", "2026-12"]);
 });

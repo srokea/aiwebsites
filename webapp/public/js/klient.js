@@ -21,9 +21,14 @@ function showError(el, msg) {
 
 // ---------- render ----------
 
-function siteText(s) {
-  if (s.name && s.domain) return `${escapeHtml(s.name)} <span class="cl-muted">(${escapeHtml(s.domain)})</span>`;
-  return escapeHtml(s.domain || s.name);
+function siteText(s, ownerId) {
+  const text =
+    s.name && s.domain ? `${escapeHtml(s.name)} <span class="cl-muted">(${escapeHtml(s.domain)})</span>` : escapeHtml(s.domain || s.name);
+  // strona innego klienta w tej umowie - odnosnik do jego karty (na jego wlasnej karcie: "ten klient")
+  if (!s.client_id || s.client_id === ownerId) return text;
+  if (s.client_id === clientId) return `${text} <span class="cl-muted">— ten klient</span>`;
+  const other = (card.clientOptions || []).find((c) => c.id === s.client_id);
+  return `${text} <span class="cl-muted">→</span> <a class="cl-link" href="/klient.html?id=${s.client_id}">${escapeHtml(other ? other.name : "klient")}</a>`;
 }
 
 function renderHeader() {
@@ -51,13 +56,18 @@ function renderContracts() {
       ];
       if (k.kind !== "abonament") rows.push(["Wykonanie", k.onetime != null ? clZl(k.onetime) : "<span class='cl-missing'>brak kwoty</span>"]);
       rows.push(["Abonament", k.monthly != null ? `${clZl(k.monthly)} / mies.` : "<span class='cl-missing'>brak kwoty</span>"]);
-      rows.push(["Strony", k.sites.length ? k.sites.map(siteText).join("<br>") : "—"]);
+      rows.push(["Strony", k.sites.length ? k.sites.map((s) => siteText(s, k.client_id)).join("<br>") : "—"]);
       rows.push(["Wykup", `${clZl(k.buyout)}${k.bought_out_on ? ` · <span class="cl-ok">wykupiona ${clDate(k.bought_out_on)}</span>` : ""}`]);
       rows.push([
         "Podpisana umowa",
-        k.has_pdf
-          ? `<a class="cl-link" href="/api/clients/contracts/${k.id}/pdf" target="_blank">📎 Otwórz PDF</a> · <button type="button" class="cl-linkbtn" data-pdf-up="${k.id}">podmień</button> · <button type="button" class="cl-linkbtn" data-pdf-del="${k.id}">usuń</button>`
-          : `<button type="button" class="cl-linkbtn" data-pdf-up="${k.id}">📎 Wgraj PDF</button>`,
+        // cudza umowa (strona tego klienta jest w umowie kogos innego) - PDF tylko do odczytu
+        k.covered_by
+          ? k.has_pdf
+            ? `<a class="cl-link" href="/api/clients/contracts/${k.id}/pdf" target="_blank">📎 Otwórz PDF</a>`
+            : "—"
+          : k.has_pdf
+            ? `<a class="cl-link" href="/api/clients/contracts/${k.id}/pdf" target="_blank">📎 Otwórz PDF</a> · <button type="button" class="cl-linkbtn" data-pdf-up="${k.id}">podmień</button> · <button type="button" class="cl-linkbtn" data-pdf-del="${k.id}">usuń</button>`
+            : `<button type="button" class="cl-linkbtn" data-pdf-up="${k.id}">📎 Wgraj PDF</button>`,
       ]);
       return `
       <div class="cl-contract${current ? " is-current" : ""}">
@@ -67,22 +77,31 @@ function renderContracts() {
           ${current ? `<span class="cl-tag">aktualna</span>` : ""}
           <span class="cl-contract-badge">${clCountdownHtml(k.countdown)}</span>
         </div>
+        ${
+          k.covered_by
+            ? `<div class="cl-cover-note">Strona tego klienta jest w umowie <b>${escapeHtml(k.covered_by.name)}</b> — tam są rachunki i opłaty (Kasa nie liczy jej tutaj osobno).
+               <a class="cl-link" href="/klient.html?id=${k.covered_by.client_id}">Otwórz kartę ${escapeHtml(k.covered_by.name)} →</a></div>`
+            : ""
+        }
         <dl class="cl-dl">${rows.map(([t, d]) => `<div><dt>${t}</dt><dd>${d}</dd></div>`).join("")}</dl>
         ${k.notes ? `<div class="cl-notes">${escapeHtml(k.notes)}</div>` : ""}
-        <div class="cl-contract-actions">
+        ${k.covered_by ? "" : `<div class="cl-contract-actions">
           <button type="button" class="btn primary prices-btn" data-bill="${k.id}">Wystaw rachunek</button>
           <button type="button" class="btn prices-btn" data-edit="${k.id}">Edytuj</button>
           ${billed.has(k.id) ? "" : `<button type="button" class="btn danger prices-btn" data-del-contract="${k.id}">Usuń</button>`}
-        </div>
+        </div>`}
       </div>`;
     })
     .join("");
 }
 
+// wystawiony -> wyslany -> oplacony (po terminie wygrywa z "wyslany", bo to pilniejsze)
 function billStatusHtml(b) {
   if (b.status === "oplacony") return `<span class="cl-badge cl-badge--ok">opłacony ${clDate(b.paid_on)}</span>`;
-  if (b.overdue) return `<span class="cl-badge cl-badge--urgent">po terminie (${clDate(b.due_on)})</span>`;
-  return `<span class="cl-badge cl-badge--soon">nieopłacony · do ${clDate(b.due_on)}</span>`;
+  const sent = b.sent_on ? ` · wysłany ${clDate(b.sent_on)}` : " · niewysłany";
+  if (b.overdue) return `<span class="cl-badge cl-badge--urgent">po terminie (${clDate(b.due_on)})${sent}</span>`;
+  if (!b.sent_on) return `<span class="cl-badge cl-badge--open">niewysłany · do ${clDate(b.due_on)}</span>`;
+  return `<span class="cl-badge cl-badge--soon">wysłany ${clDate(b.sent_on)} · do ${clDate(b.due_on)}</span>`;
 }
 
 function renderBills() {
@@ -103,6 +122,13 @@ function renderBills() {
         <span class="cl-bill-status">${billStatusHtml(b)}</span>
         <span class="cl-bill-actions">
           <a class="btn prices-btn" href="/rachunek.html?id=${b.id}" target="_blank" title="Podgląd / druk">🖨️</a>
+          ${
+            b.status === "oplacony"
+              ? ""
+              : b.sent_on
+                ? `<button type="button" class="tx-del" data-unsent="${b.id}" title="Cofnij „wysłany”">↺</button>`
+                : `<button type="button" class="btn prices-btn" data-sent="${b.id}">Wysłany</button>`
+          }
           ${
             b.status === "oplacony"
               ? `<button type="button" class="btn prices-btn" data-unpaid="${b.id}">Cofnij</button>`
@@ -136,6 +162,13 @@ async function load() {
     meta = m;
     applyCard(c);
     fillClientForm();
+    // przyjscie z przypominajki ("Wystaw" na klienci.html): od razu okienko rachunku
+    const q = new URLSearchParams(location.search);
+    const preset = card.contracts.find((k) => k.id === Number(q.get("wystaw")) && !k.covered_by);
+    if (preset) {
+      openBillModal(preset, { kind: q.get("kind"), period: q.get("period") });
+      history.replaceState(null, "", `/klient.html?id=${clientId}`);
+    }
   } catch (err) {
     contractsEl.innerHTML = `<div class="empty-state">Nie udało się wczytać: ${escapeHtml(err.message)}</div>`;
   }
@@ -182,12 +215,19 @@ function fillSelect(id, options, value, emptyLabel) {
   el.value = value ?? "";
 }
 
-function siteRowHtml(s = { name: "", domain: "" }) {
+// strona + czyja jest: domyslnie ten klient; inny klient = jego strona jest w tej umowie (np. Uslugi
+// Ogrodnicze w umowie Atelier) - wtedy Kasa nie liczy mu osobnych oplat
+function siteRowHtml(s = { name: "", domain: "", client_id: null }) {
+  const owner = s.client_id || clientId;
+  const options = (card.clientOptions || [])
+    .map((c) => `<option value="${c.id}"${c.id === owner ? " selected" : ""}>${escapeHtml(c.id === clientId ? `${c.name} (ten klient)` : c.name)}</option>`)
+    .join("");
   return `
     <div class="cl-site-row">
       <input type="text" class="cl-site-name" placeholder="Nazwa strony" value="${escapeHtml(s.name)}">
       <input type="text" class="cl-site-domain" placeholder="domena.pl" value="${escapeHtml(s.domain)}">
       <button type="button" class="tx-del" data-site-del title="Usuń stronę">✕</button>
+      <select class="cl-site-client" title="Czyja to strona">${options}</select>
     </div>`;
 }
 
@@ -233,10 +273,14 @@ document.getElementById("contract-form").addEventListener("submit", async (e) =>
     monthly: v("ck-monthly"),
     buyout: v("ck-buyout"),
     notes: v("ck-notes"),
-    sites: [...sitesEl.querySelectorAll(".cl-site-row")].map((r) => ({
-      name: r.querySelector(".cl-site-name").value,
-      domain: r.querySelector(".cl-site-domain").value,
-    })),
+    sites: [...sitesEl.querySelectorAll(".cl-site-row")].map((r) => {
+      const owner = Number(r.querySelector(".cl-site-client").value);
+      return {
+        name: r.querySelector(".cl-site-name").value,
+        domain: r.querySelector(".cl-site-domain").value,
+        ...(owner && owner !== clientId ? { client_id: owner } : {}),
+      };
+    }),
   };
   try {
     applyCard(
@@ -311,7 +355,8 @@ function nextUnbilledMonth(k) {
   return "";
 }
 
-function openBillModal(k) {
+// preset = { kind, period } z przypominajki na klienci.html
+function openBillModal(k, preset = {}) {
   billContract = k;
   billItems = null;
   document.getElementById("bill-modal-title").textContent = `Wystaw rachunek — umowa ${k.number}`;
@@ -323,9 +368,12 @@ function openBillModal(k) {
     return `<label class="cl-kind${done || notApplicable ? " is-disabled" : ""}"><input type="radio" name="bill-kind" value="${o.value}"${done || notApplicable ? " disabled" : ""}> ${escapeHtml(o.value === "abonament" ? "Abonament za miesiąc" : o.label)}${note}</label>`;
   });
   document.getElementById("bill-kinds").innerHTML = kinds.join("");
-  const first = document.querySelector('#bill-kinds input:not(:disabled)[value="abonament"]') || document.querySelector("#bill-kinds input:not(:disabled)");
+  const first =
+    (preset.kind && document.querySelector(`#bill-kinds input:not(:disabled)[value="${preset.kind}"]`)) ||
+    document.querySelector('#bill-kinds input:not(:disabled)[value="abonament"]') ||
+    document.querySelector("#bill-kinds input:not(:disabled)");
   if (first) first.checked = true;
-  document.getElementById("bill-period").value = nextUnbilledMonth(k);
+  document.getElementById("bill-period").value = /^\d{4}-\d{2}$/.test(preset.period || "") ? preset.period : nextUnbilledMonth(k);
   document.getElementById("bill-issued").value = clToday();
   syncPeriodVisibility();
   showError(document.getElementById("bill-error1"), "");
@@ -412,6 +460,10 @@ document.getElementById("bill-save").addEventListener("click", async (e) => {
     const saved = card.bills.find((b) => b.id === id);
     document.getElementById("bill-done-text").textContent = `✅ Wystawiono rachunek nr ${saved ? saved.number : ""} na ${saved ? clZl(saved.total) : ""}.`;
     document.getElementById("bill-print-link").href = `/rachunek.html?id=${id}`;
+    const sentBtn = document.getElementById("bill-sent-now");
+    sentBtn.dataset.id = id;
+    sentBtn.disabled = false;
+    sentBtn.textContent = "✉️ Oznacz jako wysłany";
     billStep(3);
   } catch (err) {
     showError(document.getElementById("bill-error2"), err.message);
@@ -420,6 +472,18 @@ document.getElementById("bill-save").addEventListener("click", async (e) => {
 });
 
 for (const b of billModal.querySelectorAll("[data-bill-close]")) b.addEventListener("click", () => billModal.classList.add("hidden"));
+
+document.getElementById("bill-sent-now").addEventListener("click", async (e) => {
+  const btn = e.currentTarget;
+  btn.disabled = true;
+  try {
+    applyCard(await api.post(`/api/clients/bills/${btn.dataset.id}/sent`, {}));
+    btn.textContent = "✅ Oznaczony jako wysłany";
+  } catch (err) {
+    alert(err.message);
+    btn.disabled = false;
+  }
+});
 
 // ---------- rachunki: oplacony / cofnij / usun ----------
 
@@ -430,6 +494,8 @@ billsEl.addEventListener("click", async (e) => {
   const paid = e.target.closest("[data-paid]");
   const unpaid = e.target.closest("[data-unpaid]");
   const del = e.target.closest("[data-del-bill]");
+  const sent = e.target.closest("[data-sent]");
+  const unsent = e.target.closest("[data-unsent]");
   if (paid) {
     paidBillId = Number(paid.dataset.paid);
     const b = card.bills.find((x) => x.id === paidBillId);
@@ -440,7 +506,11 @@ billsEl.addEventListener("click", async (e) => {
     return;
   }
   try {
-    if (unpaid) {
+    if (sent) {
+      applyCard(await api.post(`/api/clients/bills/${sent.dataset.sent}/sent`, {}));
+    } else if (unsent) {
+      applyCard(await api.post(`/api/clients/bills/${unsent.dataset.unsent}/sent`, { sent_on: "" }));
+    } else if (unpaid) {
       if (!confirm("Cofnąć „opłacony”? Wpis przychodu zniknie z Kasy.")) return;
       applyCard(await api.post(`/api/clients/bills/${unpaid.dataset.unpaid}/unpaid`, {}));
     } else if (del) {

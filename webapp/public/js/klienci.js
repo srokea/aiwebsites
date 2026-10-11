@@ -19,6 +19,63 @@ function renderSummary(d) {
     </div>`;
 }
 
+// przypominajki z rachunkami (te same co w dzwonku na dashboardzie): wystaw / wyslij / po terminie
+const todoEl = document.getElementById("cl-todo");
+
+function todoAction(t) {
+  if (t.type === "issue") {
+    const q = `id=${t.client_id}&wystaw=${t.contract_id}&kind=${t.kind}${t.period ? `&period=${t.period}` : ""}`;
+    return `<button type="button" class="cl-linkbtn cl-todo-skip" data-skip="${t.contract_id}" data-kind="${t.kind}" data-period="${t.period || ""}">pomiń</button>
+      <a class="btn prices-btn" href="/klient.html?${q}">Wystaw</a>`;
+  }
+  if (t.type === "send") {
+    return `<a class="btn prices-btn" href="/rachunek.html?id=${t.bill_id}" target="_blank" title="Podgląd / druk">🖨️</a>
+      <button type="button" class="btn prices-btn" data-sent="${t.bill_id}">Wysłany</button>`;
+  }
+  return `<a class="btn prices-btn" href="/klient.html?id=${t.client_id}">Karta</a>`;
+}
+
+function renderTodo(todo) {
+  if (!todo || !todo.length) {
+    todoEl.hidden = true;
+    todoEl.innerHTML = "";
+    return;
+  }
+  todoEl.hidden = false;
+  todoEl.innerHTML = `
+    <div class="cl-candidates-title">Do zrobienia z rachunkami (${todo.length})</div>
+    <div class="cl-todo-list">
+      ${todo
+        .map(
+          (t) => `
+        <div class="cl-todo-item${t.late ? " is-late" : ""}">
+          <span class="cl-todo-text"><b>${escapeHtml(t.client_name)}</b> <span class="cl-todo-label">${escapeHtml(t.label)}</span></span>
+          <span class="cl-todo-actions">${todoAction(t)}</span>
+        </div>`
+        )
+        .join("")}
+    </div>`;
+}
+
+todoEl.addEventListener("click", async (e) => {
+  const skip = e.target.closest("[data-skip]");
+  const btn = skip || e.target.closest("[data-sent]");
+  if (!btn) return;
+  if (skip && !confirm("Nie przypominać o tym rachunku? (np. darmowy miesiąc albo rozliczone inaczej)")) return;
+  btn.disabled = true;
+  try {
+    if (skip) {
+      await api.post(`/api/clients/contracts/${skip.dataset.skip}/skip`, { kind: skip.dataset.kind, period: skip.dataset.period });
+    } else {
+      await api.post(`/api/clients/bills/${btn.dataset.sent}/sent`, {});
+    }
+    load();
+  } catch (err) {
+    alert(err.message);
+    btn.disabled = false;
+  }
+});
+
 function renderCandidates() {
   if (!candidates.length) {
     candidatesEl.hidden = true;
@@ -51,7 +108,9 @@ function renderList(clients) {
       const k = c.contract;
       const sub = [c.city, c.niche].filter(Boolean).map(escapeHtml).join(" · ");
       const contract = k
-        ? `<span class="cl-row-contract">Umowa ${escapeHtml(k.number)} ${clStatusChip(meta?.contractStatusOptions, k.status)}</span>`
+        ? `<span class="cl-row-contract">Umowa ${escapeHtml(k.number)} ${clStatusChip(meta?.contractStatusOptions, k.status)}${
+            k.covered_by ? `<span class="cl-row-cover">w umowie: ${escapeHtml(k.covered_by.name)}</span>` : ""
+          }</span>`
         : `<span class="cl-row-contract cl-muted">—</span>`;
       const end = k && k.ends_on ? `<span class="cl-row-end">do ${clDate(k.ends_on)}</span>` : `<span class="cl-row-end"></span>`;
       return `
@@ -74,6 +133,7 @@ async function load() {
     meta = m;
     candidates = d.candidates;
     renderSummary(d);
+    renderTodo(d.todo);
     renderCandidates();
     renderList(d.clients);
   } catch (err) {

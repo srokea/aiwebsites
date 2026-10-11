@@ -355,7 +355,7 @@ db.transaction(() => {
   for (const k of Object.keys(root)) if (!known.has(norm(k))) warnings.push(`Nieznana sekcja „${k}” — pominięta`);
 })();
 
-for (const id of touchedClients) billing.syncLeadPricing(id, "seed");
+if (touchedClients.size) billing.syncPricing("seed");
 
 // ---------- raport ----------
 

@@ -1016,7 +1016,7 @@ window.addEventListener("pageshow", (e) => {
 // Google Meety, oddzwonienia, SMS-y. "Jednorazowy" = flaga w sessionStorage, nie pokazuje
 // sie przy kazdym odswiezeniu. (NOTIF_KIND_LABEL zyje w auth-widget.js - tu wlasna nazwa,
 // bo oba skrypty dziela globalny scope i const by sie zderzyl.)
-const TASK_KIND_LABEL = { meet: "Meet", callback: "Oddzwoń", sms: "SMS" };
+const TASK_KIND_LABEL = { meet: "Meet", callback: "Oddzwoń", sms: "SMS", bill: "Rachunek" };
 
 async function showTodayTasksAlert() {
   let data;
@@ -1036,11 +1036,11 @@ async function showTodayTasksAlert() {
   document.getElementById("today-tasks-list").innerHTML = todayGroup.items
     .map(
       (it) => `
-      <a class="today-task" href="/script.html?leadId=${it.lead_id}">
+      <a class="today-task" href="${it.href || `/script.html?leadId=${it.lead_id}`}">
         <span class="today-task-kind ${it.kind}">${TASK_KIND_LABEL[it.kind] || it.kind}</span>
         <span class="today-task-body">
           <span class="today-task-company">${escapeHtml(it.company)}</span>
-          <span class="today-task-meta">${escapeHtml(it.label)} · ${escapeHtml(it.niche_name)}</span>
+          <span class="today-task-meta">${[it.label, it.niche_name].filter(Boolean).map(escapeHtml).join(" · ")}</span>
         </span>
       </a>`
     )

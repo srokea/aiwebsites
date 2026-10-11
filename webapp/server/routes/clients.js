@@ -104,7 +104,13 @@ function contractValues(body, { partial = false } = {}) {
     if (!Array.isArray(body.sites)) return { error: "Nieprawidłowa lista stron" };
     v.sites = JSON.stringify(
       body.sites
-        .map((s) => ({ name: String(s?.name || "").trim(), domain: String(s?.domain || "").trim() }))
+        .map((s) => {
+          const site = { name: String(s?.name || "").trim(), domain: String(s?.domain || "").trim() };
+          // strona innego klienta (rozliczany w tej umowie) - zapisujemy tylko istniejacego klienta
+          const clientId = Number(s?.client_id) || null;
+          if (clientId && db.prepare("SELECT 1 FROM clients WHERE id = ?").get(clientId)) site.client_id = clientId;
+          return site;
+        })
         .filter((s) => s.name || s.domain)
     );
   }
@@ -112,8 +118,15 @@ function contractValues(body, { partial = false } = {}) {
   return { values: v };
 }
 
-function uniqueNumberError(err) {
-  return /UNIQUE constraint failed: contracts\.number/.test(err.message) ? "Umowa o takim numerze już istnieje" : null;
+// zajety numer umowy - mowimy czyj, bo najczestszy powod to strona, ktora juz jest w umowie
+// innego klienta (np. Uslugi Ogrodnicze w umowie Atelier)
+function uniqueNumberError(err, number) {
+  if (!/UNIQUE constraint failed: contracts\.number/.test(err.message)) return null;
+  const owner = db
+    .prepare("SELECT cl.name, cl.legal_name FROM contracts c JOIN clients cl ON cl.id = c.client_id WHERE c.number = ?")
+    .get(number);
+  const who = owner ? ` (${owner.name || owner.legal_name})` : "";
+  return `Umowa ${number} już istnieje${who}. Jeśli ta strona jest w tamtej umowie, dodaj ją tam i przy stronie wybierz tego klienta.`;
 }
 
 // ---------- lista + Moje dane ----------
@@ -230,11 +243,11 @@ router.post("/:id(\\d+)/contracts", (req, res) => {
       `INSERT INTO contracts (client_id, ${cols.join(", ")}) VALUES (@client_id, ${cols.map((c) => "@" + c).join(", ")})`
     ).run({ client_id: clientId, ...v });
   } catch (err) {
-    const msg = uniqueNumberError(err);
+    const msg = uniqueNumberError(err, v.number);
     if (msg) return res.status(400).json({ error: msg });
     throw err;
   }
-  billing.syncLeadPricing(clientId, by(req));
+  billing.syncPricing(by(req));
   res.status(201);
   sendCard(req, res, clientId);
 });
@@ -256,12 +269,12 @@ router.patch("/contracts/:id(\\d+)", (req, res) => {
         id: contract.id,
       });
     } catch (err) {
-      const msg = uniqueNumberError(err);
+      const msg = uniqueNumberError(err, v.number);
       if (msg) return res.status(400).json({ error: msg });
       throw err;
     }
   }
-  billing.syncLeadPricing(contract.client_id, by(req));
+  billing.syncPricing(by(req));
   sendCard(req, res, contract.client_id);
 });
 
@@ -276,7 +289,7 @@ router.delete("/contracts/:id(\\d+)", (req, res) => {
     db.prepare("UPDATE client_pricing SET source_contract_id = NULL WHERE source_contract_id = ?").run(contract.id);
     db.prepare("DELETE FROM contracts WHERE id = ?").run(contract.id);
   })();
-  billing.syncLeadPricing(contract.client_id, by(req));
+  billing.syncPricing(by(req));
   sendCard(req, res, contract.client_id);
 });
 
@@ -371,6 +384,28 @@ router.post("/bills/:id(\\d+)/paid", (req, res) => {
 router.post("/bills/:id(\\d+)/unpaid", (req, res) => {
   const id = Number(req.params.id);
   const r = billing.unmarkBillPaid(id);
+  if (r.error) return fail(res, r);
+  sendCard(req, res, clientIdOfBill(id));
+});
+
+// POST /api/clients/contracts/:id/skip - { kind, period } - "Pomin" przy przypominajce o wystawieniu
+router.post("/contracts/:id(\\d+)/skip", (req, res) => {
+  const contractId = Number(req.params.id);
+  if (!db.prepare("SELECT 1 FROM contracts WHERE id = ?").get(contractId)) return res.status(404).json({ error: "Nie znaleziono umowy" });
+  const kind = String(req.body.kind || "");
+  const period = kind === "abonament" ? String(req.body.period || "") : "";
+  if (!["wykonanie", "abonament", "wykup"].includes(kind) || (kind === "abonament" && !/^\d{4}-\d{2}$/.test(period))) {
+    return res.status(400).json({ error: "Nieprawidłowa przypominajka" });
+  }
+  db.prepare("INSERT OR IGNORE INTO bill_skips (contract_id, kind, period, created_by) VALUES (?, ?, ?, ?)").run(contractId, kind, period, by(req));
+  res.json({ ok: true });
+});
+
+// POST /api/clients/bills/:id/sent - { sent_on } (domyslnie dzis); { sent_on: "" } = cofnij
+router.post("/bills/:id(\\d+)/sent", (req, res) => {
+  const id = Number(req.params.id);
+  const sentOn = req.body.sent_on === undefined ? localDate() : String(req.body.sent_on || "");
+  const r = billing.setBillSent(id, sentOn);
   if (r.error) return fail(res, r);
   sendCard(req, res, clientIdOfBill(id));
 });

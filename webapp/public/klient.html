@@ -93,7 +93,7 @@
         <div><label for="ck-variant">Wariant</label><select id="ck-variant"></select></div>
         <div><label for="ck-buyout">Kwota wykupu (zł)</label><input type="text" id="ck-buyout" inputmode="decimal"></div>
       </div>
-      <label>Strony (każda = osobna pozycja na rachunku)</label>
+      <label>Strony (każda = osobna pozycja na rachunku; pod spodem czyja to strona)</label>
       <div class="cl-sites" id="ck-sites"></div>
       <button type="button" class="btn prices-btn" id="ck-site-add">+ Dodaj stronę</button>
       <label for="ck-notes">Notatki</label>
@@ -142,6 +142,7 @@
       <p class="cl-done" id="bill-done-text"></p>
       <div class="actions">
         <button type="button" class="btn" data-bill-close>Zamknij</button>
+        <button type="button" class="btn" id="bill-sent-now">✉️ Oznacz jako wysłany</button>
         <a class="btn primary" id="bill-print-link" href="#" target="_blank">🖨️ Drukuj / PDF</a>
       </div>
     </div>

@@ -2,6 +2,7 @@ const express = require("express");
 const db = require("../db");
 const { getCallerNames } = require("../callers");
 const { localDate } = require("../time");
+const { billingTodo, getContractor } = require("../billing");
 
 const router = express.Router();
 
@@ -69,6 +70,24 @@ router.get("/", (req, res) => {
       const day = r.callback_when.slice(0, 10);
       const time = r.callback_when.length > 10 ? r.callback_when.slice(11, 16) : "";
       push(day, { ...base, kind: "callback", time, label: `Oddzwonić${time ? ` o ${time}` : ""}` });
+    }
+  }
+
+  // Przypominajki z rachunkami (modul Klienci: wystaw / wyslij / po terminie) - wisza w "dzis",
+  // dopoki sprawa nie jest zalatwiona. Rachunki wystawia zleceniobiorca, wiec widzi je osoba,
+  // ktorej imie zgadza sie z "Moje dane" (a gdy sie nie da dopasowac - wszyscy).
+  const contractorFirst = (getContractor().full_name || "").trim().split(/\s+/)[0];
+  const billOwner = getCallerNames().find((n) => n === contractorFirst);
+  if (!billOwner || billOwner === req.user.display_name || req.query.all) {
+    for (const t of billingTodo(today)) {
+      push(today, {
+        kind: "bill",
+        time: "",
+        company: t.client_name,
+        label: t.label,
+        niche_name: "",
+        href: `/klient.html?id=${t.client_id}`,
+      });
     }
   }
 

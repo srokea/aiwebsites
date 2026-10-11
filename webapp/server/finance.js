@@ -113,7 +113,8 @@ function syncClientDues() {
     for (let k = 0; k <= monthsSince; k++) {
       const period = ym(new Date(start.getFullYear(), start.getMonth() + k, 1));
       if (lastPeriod && period > lastPeriod) break;
-      insert.run({ lead_id: c.id, kind: "monthly", period, amount_grosze: price.monthly });
+      // 0 zl = strona rozliczana w cudzej umowie (billing.js syncPricing) - nie ma czego potwierdzac
+      if (price.monthly > 0) insert.run({ lead_id: c.id, kind: "monthly", period, amount_grosze: price.monthly });
     }
   }
   // zmiana ceny klienta przestawia tez naleznosci, ktore jeszcze CZEKAJA na potwierdzenie

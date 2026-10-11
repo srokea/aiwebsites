@@ -179,16 +179,35 @@ function countdown(c, today) {
   return { state: days > soon ? "ok" : days >= urgent ? "soon" : "urgent", days };
 }
 
+// strony umowy: [{name, domain, client_id}] - client_id = klient, do ktorego strona nalezy, gdy to
+// ktos inny niz wlasciciel umowy (Uslugi Ogrodnicze w umowie Atelier); null = wlasciciel umowy
 function parseSites(json) {
   try {
     const list = JSON.parse(json || "[]");
     if (!Array.isArray(list)) return [];
     return list
-      .map((s) => ({ name: String(s?.name || "").trim(), domain: String(s?.domain || "").trim() }))
+      .map((s) => ({
+        name: String(s?.name || "").trim(),
+        domain: String(s?.domain || "").trim(),
+        client_id: Number(s?.client_id) || null,
+      }))
       .filter((s) => s.name || s.domain);
   } catch {
     return [];
   }
+}
+
+// klient -> umowy INNYCH klientow, w ktorych jest jego strona (rozliczany w cudzej umowie)
+function coveringContracts(allContracts) {
+  const map = new Map();
+  for (const c of allContracts) {
+    for (const s of parseSites(c.sites)) {
+      if (!s.client_id || s.client_id === c.client_id) continue;
+      if (!map.has(s.client_id)) map.set(s.client_id, []);
+      if (!map.get(s.client_id).includes(c)) map.get(s.client_id).push(c);
+    }
+  }
+  return map;
 }
 
 const gr2zl = (g) => (g == null ? null : g / 100);
@@ -224,36 +243,59 @@ function suggestContractNumber(year = new Date().getFullYear()) {
   return `${max + 1}/${year}`;
 }
 
-// Cena klienta w Kasie = cena z jego najnowszej podpisanej umowy (client_pricing.source_contract_id
-// zaznacza, ze to cena z umowy - w Kasie widac wtedy "z umowy N" zamiast edycji). Brak podpisanej
-// umowy -> zdejmujemy tylko znacznik, sama cena zostaje jak byla.
-function syncLeadPricing(clientId, by = "") {
-  const client = db.prepare("SELECT id, lead_id FROM clients WHERE id = ?").get(clientId);
-  if (!client || !client.lead_id) return;
-  const signed = db
-    .prepare(
-      `SELECT * FROM contracts WHERE client_id = ? AND status IN ('podpisana', 'zakonczona', 'wypowiedziana')
-       ORDER BY COALESCE(NULLIF(starts_on, ''), NULLIF(signed_on, ''), '') DESC, id DESC LIMIT 1`
-    )
-    .get(clientId);
-  if (!signed) {
-    db.prepare("UPDATE client_pricing SET source_contract_id = NULL WHERE lead_id = ?").run(client.lead_id);
-    return;
+// Ceny klientow w Kasie wg umow (client_pricing.source_contract_id = "cena z umowy" - w Kasie widac
+// wtedy "z umowy N" zamiast edycji). Przeliczane dla wszystkich klientow z leadem naraz (danych jest
+// malo), zeby zmiana jednej umowy przestawila tez klienta, ktorego strona w niej jest:
+//   - wlasna podpisana umowa -> cena z niej (calosc, razem ze stronami innych klientow - placi wlasciciel),
+//   - strona w cudzej podpisanej umowie -> 0 zl (inaczej Kasa liczylaby te strone podwojnie),
+//   - brak umowy -> znacznik zdjety; cena 0/0 z dawnego pokrycia wraca do domyslnej.
+const SIGNED_STATUSES = ["podpisana", "zakonczona", "wypowiedziana"];
+const byStartDesc = (a, b) =>
+  (b.starts_on || b.signed_on || "").localeCompare(a.starts_on || a.signed_on || "") || b.id - a.id;
+const latestSigned = (list) => [...list].filter((c) => SIGNED_STATUSES.includes(c.status)).sort(byStartDesc)[0] || null;
+
+function syncPricing(by = "") {
+  const contracts = db.prepare("SELECT * FROM contracts").all();
+  const own = new Map();
+  for (const c of contracts) {
+    if (!own.has(c.client_id)) own.set(c.client_id, []);
+    own.get(c.client_id).push(c);
   }
-  db.prepare(
+  const covering = coveringContracts(contracts);
+  const upsert = db.prepare(
     `INSERT INTO client_pricing (lead_id, onetime_grosze, monthly_grosze, updated_by, updated_at, source_contract_id)
      VALUES (@lead, @onetime, @monthly, @by, datetime('now'), @contract)
      ON CONFLICT(lead_id) DO UPDATE SET onetime_grosze = excluded.onetime_grosze,
        monthly_grosze = excluded.monthly_grosze, updated_by = excluded.updated_by,
        updated_at = excluded.updated_at, source_contract_id = excluded.source_contract_id`
-  ).run({
-    lead: client.lead_id,
-    onetime: signed.kind === "abonament" ? 0 : signed.onetime_grosze,
-    monthly: signed.monthly_grosze,
-    by,
-    contract: signed.id,
-  });
-  financeSync(); // przelicza naleznosci czekajace na potwierdzenie wg nowej ceny
+  );
+  // SET liczy wszystko na starych wartosciach wiersza, wiec oba CASE widza stare 0/0
+  const clear = db.prepare(
+    `UPDATE client_pricing SET source_contract_id = NULL,
+       onetime_grosze = CASE WHEN onetime_grosze = 0 AND monthly_grosze = 0 THEN NULL ELSE onetime_grosze END,
+       monthly_grosze = CASE WHEN onetime_grosze = 0 AND monthly_grosze = 0 THEN NULL ELSE monthly_grosze END
+     WHERE lead_id = ? AND source_contract_id IS NOT NULL`
+  );
+  db.transaction(() => {
+    for (const cl of db.prepare("SELECT id, lead_id FROM clients WHERE lead_id IS NOT NULL").all()) {
+      const mine = latestSigned(own.get(cl.id) || []);
+      const cover = mine ? null : latestSigned(covering.get(cl.id) || []);
+      if (mine) {
+        upsert.run({
+          lead: cl.lead_id,
+          onetime: mine.kind === "abonament" ? 0 : mine.onetime_grosze,
+          monthly: mine.monthly_grosze,
+          by,
+          contract: mine.id,
+        });
+      } else if (cover) {
+        upsert.run({ lead: cl.lead_id, onetime: 0, monthly: 0, by, contract: cover.id });
+      } else {
+        clear.run(cl.lead_id);
+      }
+    }
+  })();
+  financeSync(); // przelicza naleznosci czekajace na potwierdzenie wg nowych cen
 }
 
 // ---------- rachunki ----------
@@ -454,6 +496,7 @@ function serializeBill(row, today = localDate()) {
     due_on: row.due_on,
     status: row.status,
     paid_on: row.paid_on,
+    sent_on: row.sent_on || "",
     overdue: row.status === "wystawiony" && row.due_on < today,
     // usunac mozna tylko ostatni nieoplacony rachunek w roku - inaczej dziura w numeracji
     deletable: row.status === "wystawiony" && row.seq === maxSeq,
@@ -544,6 +587,14 @@ function unmarkBillPaid(billId) {
   return { ok: true };
 }
 
+// "Wyslany" - rachunek poszedl do klienta (mail / Messenger / osobiscie). sentOn '' = cofniecie.
+function setBillSent(billId, sentOn) {
+  if (sentOn && !ISO_DATE.test(sentOn)) return { status: 400, error: `Nieprawidłowa data: „${sentOn}”` };
+  const info = db.prepare("UPDATE bills SET sent_on = ? WHERE id = ?").run(sentOn || "", billId);
+  if (!info.changes) return { status: 404, error: "Nie znaleziono rachunku" };
+  return { ok: true };
+}
+
 function deleteBill(billId) {
   const bill = db.prepare("SELECT * FROM bills WHERE id = ?").get(billId);
   if (!bill) return { status: 404, error: "Nie znaleziono rachunku" };
@@ -559,14 +610,106 @@ function deleteBill(billId) {
 
 // ---------- lista klientow ----------
 
+// ---------- przypominajki: co trzeba zrobic z rachunkami ----------
+
+function nextPeriod(p) {
+  const [y, m] = p.split("-").map(Number);
+  return m === 12 ? `${y + 1}-01` : `${y}-${pad(m + 1)}`;
+}
+
+// Liczone z biezacego stanu (nic nie jest zapisywane):
+//   issue   - podpisana umowa bez rachunku za wykonanie albo za abonament za kolejny miesiac
+//             (od miesiaca startu umowy do biezacego, nie dalej niz miesiac konca umowy);
+//             late = miesiac juz minal,
+//   send    - wystawiony, ale nie oznaczony jako wyslany,
+//   overdue - wyslany, nieoplacony, po terminie platnosci.
+function billingTodo(today = localDate()) {
+  const curPeriod = today.slice(0, 7);
+  const zl = (g) => `${(g / 100).toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} zł`;
+  const contracts = db
+    .prepare(
+      `SELECT c.*, cl.name AS client_name, cl.legal_name FROM contracts c JOIN clients cl ON cl.id = c.client_id
+       WHERE c.status IN ('podpisana', 'zakonczona', 'wypowiedziana')`
+    )
+    .all();
+  // wystawione + pominiete ("Pomin" przy przypominajce) - o tych juz nie przypominamy
+  const billed = new Set(
+    db
+      .prepare(
+        `SELECT contract_id || ':' || kind || ':' || period FROM bills
+         UNION SELECT contract_id || ':' || kind || ':' || period FROM bill_skips`
+      )
+      .pluck()
+      .all()
+  );
+  const items = [];
+
+  for (const c of contracts) {
+    const start = c.starts_on || c.signed_on;
+    if (!start || start > today) continue;
+    const base = { client_id: c.client_id, client_name: c.client_name || c.legal_name, contract_id: c.id, contract_number: c.number };
+    if (c.kind !== "abonament" && (c.onetime_grosze || 0) > 0 && !billed.has(`${c.id}:wykonanie:`)) {
+      items.push({ ...base, type: "issue", kind: "wykonanie", period: "", late: false, label: `Wystaw rachunek za wykonanie strony (umowa ${c.number})` });
+    }
+    if ((c.monthly_grosze || 0) > 0) {
+      const endPeriod = c.ends_on ? c.ends_on.slice(0, 7) : null;
+      const last = endPeriod && endPeriod < curPeriod ? endPeriod : curPeriod;
+      for (let p = start.slice(0, 7); p <= last; p = nextPeriod(p)) {
+        if (billed.has(`${c.id}:abonament:${p}`)) continue;
+        const late = p < curPeriod;
+        items.push({
+          ...base,
+          type: "issue",
+          kind: "abonament",
+          period: p,
+          late,
+          label: `Wystaw rachunek: abonament za ${periodLabel(p)}${late ? " (zaległy)" : ""}`,
+        });
+      }
+    }
+  }
+
+  const open = db
+    .prepare(
+      `SELECT b.*, c.client_id, cl.name AS client_name, cl.legal_name, c.number AS contract_number
+       FROM bills b JOIN contracts c ON c.id = b.contract_id JOIN clients cl ON cl.id = c.client_id
+       WHERE b.status = 'wystawiony' ORDER BY b.issued_on`
+    )
+    .all();
+  for (const b of open) {
+    const base = {
+      client_id: b.client_id,
+      client_name: b.client_name || b.legal_name,
+      contract_id: b.contract_id,
+      contract_number: b.contract_number,
+      bill_id: b.id,
+      bill_number: b.number,
+      due_on: b.due_on,
+    };
+    if (!b.sent_on) {
+      items.push({ ...base, type: "send", late: b.due_on < today, label: `Wyślij rachunek ${b.number} (${zl(b.total_grosze)})` });
+    } else if (b.due_on < today) {
+      items.push({ ...base, type: "overdue", late: true, label: `Nieopłacony po terminie: rachunek ${b.number}, termin ${fmtDate(b.due_on)}` });
+    }
+  }
+
+  // najpierw zalegle, potem wg klienta
+  return items.sort((a, b) => b.late - a.late || a.client_name.localeCompare(b.client_name, "pl") || (a.period || "").localeCompare(b.period || ""));
+}
+
+// ---------- lista klientow ----------
+
 function clientsOverview() {
   const today = localDate();
   const clients = db.prepare("SELECT * FROM clients ORDER BY name COLLATE NOCASE").all();
+  const names = new Map(clients.map((c) => [c.id, c.name || c.legal_name]));
+  const allContracts = db.prepare("SELECT * FROM contracts").all();
   const byClient = new Map();
-  for (const c of db.prepare("SELECT * FROM contracts").all()) {
+  for (const c of allContracts) {
     if (!byClient.has(c.client_id)) byClient.set(c.client_id, []);
     byClient.get(c.client_id).push(c);
   }
+  const covering = coveringContracts(allContracts);
 
   let monthlySum = 0;
   let activeCount = 0;
@@ -583,14 +726,17 @@ function clientsOverview() {
   const RANK = { urgent: 0, soon: 0, ok: 0, open: 1, none: 2, ended: 3 };
   const rows = clients
     .map((cl) => {
-      const cur = pickCurrent(byClient.get(cl.id) || [], today);
+      // umowy wlasne + cudze, w ktorych jest strona tego klienta (licznik dni tez z nich)
+      const cur = pickCurrent([...(byClient.get(cl.id) || []), ...(covering.get(cl.id) || [])], today);
+      const contract = cur ? serializeContract(cur, today) : null;
+      if (contract && cur.client_id !== cl.id) contract.covered_by = { client_id: cur.client_id, name: names.get(cur.client_id) };
       return {
         id: cl.id,
         name: cl.name || cl.legal_name,
         city: cl.city,
         niche: cl.niche,
         lead_id: cl.lead_id,
-        contract: cur ? serializeContract(cur, today) : null,
+        contract,
         countdown: countdown(cur, today),
       };
     })
@@ -610,7 +756,7 @@ function clientsOverview() {
     )
     .all();
 
-  return { clients: rows, monthlySum: monthlySum / 100, activeCount, candidates };
+  return { clients: rows, monthlySum: monthlySum / 100, activeCount, candidates, todo: billingTodo(today) };
 }
 
 function clientCard(id) {
@@ -625,11 +771,18 @@ function clientCard(id) {
         )
         .get(client.lead_id)
     : null;
-  const contractRows = db.prepare("SELECT * FROM contracts WHERE client_id = ?").all(id);
-  const current = pickCurrent(contractRows, today);
-  const contracts = contractRows
-    .map((c) => serializeContract(c, today))
-    .sort((a, b) => (b.starts_on || b.signed_on || "").localeCompare(a.starts_on || a.signed_on || "") || b.id - a.id);
+  const allContracts = db.prepare("SELECT * FROM contracts").all();
+  const own = allContracts.filter((c) => c.client_id === id);
+  // umowy innych klientow, w ktorych jest strona tego klienta - pokazywane w karcie z odnosnikiem,
+  // ale rachunki wystawia sie z karty wlasciciela umowy
+  const covering = coveringContracts(allContracts).get(id) || [];
+  const clientOptions = db.prepare("SELECT id, name, legal_name FROM clients ORDER BY name COLLATE NOCASE").all();
+  const names = new Map(clientOptions.map((c) => [c.id, c.name || c.legal_name]));
+  const current = pickCurrent([...own, ...covering], today);
+  const contracts = [
+    ...own.map((c) => serializeContract(c, today)),
+    ...covering.map((c) => ({ ...serializeContract(c, today), covered_by: { client_id: c.client_id, name: names.get(c.client_id) } })),
+  ].sort((a, b) => (b.starts_on || b.signed_on || "").localeCompare(a.starts_on || a.signed_on || "") || b.id - a.id);
   const bills = db
     .prepare(
       `SELECT b.* FROM bills b JOIN contracts c ON c.id = b.contract_id
@@ -644,6 +797,8 @@ function clientCard(id) {
     currentContractId: current ? current.id : null,
     bills,
     suggestedNumber: suggestContractNumber(),
+    clientOptions: clientOptions.map((c) => ({ id: c.id, name: c.name || c.legal_name })),
+    todo: billingTodo(today).filter((t) => t.client_id === id),
   };
 }
 
@@ -661,13 +816,15 @@ module.exports = {
   parseSites,
   serializeContract,
   suggestContractNumber,
-  syncLeadPricing,
+  syncPricing,
   draftBill,
   createBill,
   serializeBill,
   markBillPaid,
   unmarkBillPaid,
+  setBillSent,
   deleteBill,
+  billingTodo,
   clientsOverview,
   clientCard,
 };
