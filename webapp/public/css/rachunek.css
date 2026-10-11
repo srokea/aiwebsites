@@ -57,7 +57,7 @@
   cursor: pointer;
   text-decoration: none;
 }
-.bill-toolbar button { background: #1d6b35; border-color: #1d6b35; color: #fff; }
+.bill-toolbar .bill-primary { background: #1d6b35; border-color: #1d6b35; color: #fff; }
 .bill-toolbar .bill-sent-btn { background: #fff; border-color: #bbb; color: #111; }
 .bill-toolbar .bill-sent-btn:disabled { color: #1d6b35; cursor: default; }
 .bill-page .bill-paper { box-shadow: 0 2px 14px rgba(0, 0, 0, 0.18); }

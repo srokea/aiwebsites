@@ -121,6 +121,7 @@ function renderBills() {
         <span class="cl-bill-amount">${clZl(b.total)}</span>
         <span class="cl-bill-status">${billStatusHtml(b)}</span>
         <span class="cl-bill-actions">
+          <a class="btn prices-btn" href="/api/clients/bills/${b.id}/pdf" title="Pobierz PDF">⬇️ PDF</a>
           <a class="btn prices-btn" href="/rachunek.html?id=${b.id}" target="_blank" title="Podgląd / druk">🖨️</a>
           ${
             b.status === "oplacony"
@@ -475,6 +476,7 @@ document.getElementById("bill-save").addEventListener("click", async (e) => {
     const saved = card.bills.find((b) => b.id === id);
     document.getElementById("bill-done-text").textContent = `✅ Wystawiono rachunek nr ${saved ? saved.number : ""} na ${saved ? clZl(saved.total) : ""}.`;
     document.getElementById("bill-print-link").href = `/rachunek.html?id=${id}`;
+    document.getElementById("bill-pdf-link").href = `/api/clients/bills/${id}/pdf`;
     const sentBtn = document.getElementById("bill-sent-now");
     sentBtn.dataset.id = id;
     sentBtn.disabled = false;

@@ -9,6 +9,7 @@ const multer = require("multer");
 const db = require("../db");
 const billing = require("../billing");
 const { slownie } = require("../slownie");
+const { billPdf } = require("../billPdf");
 const { localDate } = require("../time");
 const {
   CONTRACT_STATUS_OPTIONS,
@@ -365,6 +366,20 @@ router.get("/bills/:id(\\d+)", (req, res) => {
     .prepare("SELECT cl.id, cl.name FROM clients cl JOIN contracts c ON c.client_id = cl.id WHERE c.id = ?")
     .get(row.contract_id);
   res.json({ ...redactBill(req, billing.serializeBill(row)), client });
+});
+
+// GET /api/clients/bills/:id/pdf - gotowy plik PDF do pobrania (zamiast okna drukowania)
+router.get("/bills/:id(\\d+)/pdf", async (req, res) => {
+  const row = db.prepare("SELECT * FROM bills WHERE id = ?").get(Number(req.params.id));
+  if (!row) return res.status(404).json({ error: "Nie znaleziono rachunku" });
+  try {
+    const pdf = await billPdf(redactBill(req, billing.serializeBill(row)));
+    res.set("Content-Disposition", `attachment; filename="Rachunek-${row.number.replace(/\//g, "-")}.pdf"`);
+    res.type("application/pdf").send(pdf);
+  } catch (err) {
+    console.error("[rachunek pdf]", err.message);
+    res.status(500).json({ error: "Nie udało się wygenerować PDF-a — użyj „Drukuj” → „Zapisz jako PDF”" });
+  }
 });
 
 function clientIdOfBill(billId) {

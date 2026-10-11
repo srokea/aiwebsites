@@ -103,3 +103,6 @@ function renderBillHtml(b) {
     </div>
   </article>`;
 }
+
+// serwer (PDF do pobrania - server/billPdf.js) uzywa tego samego szablonu; w przegladarce module nie istnieje
+if (typeof module !== "undefined") module.exports = { renderBillHtml };

@@ -1,5 +1,5 @@
-// Rachunek do druku: window.print() na A4 (w oknie druku "Zapisz jako PDF" daje plik PDF).
-// Tytul strony = numer rachunku, wiec PDF zapisuje sie od razu z sensowna nazwa.
+// Rachunek: "Pobierz PDF" = gotowy plik z serwera (server/billPdf.js), "Drukuj" = window.print()
+// na A4. Tytul strony = numer rachunku, wiec i z okna druku PDF zapisuje sie z sensowna nazwa.
 
 const billId = Number(new URLSearchParams(location.search).get("id"));
 const root = document.getElementById("bill-root");
@@ -35,6 +35,8 @@ async function load() {
     const b = await api.get(`/api/clients/bills/${billId}`);
     document.title = `Rachunek ${b.number.replace(/\//g, "-")}`;
     if (b.client) document.getElementById("bill-back").href = `/klient.html?id=${b.client.id}`;
+    // gotowy plik PDF z serwera (Content-Disposition: attachment - pobiera sie, nie drukuje)
+    document.getElementById("bill-download").href = `/api/clients/bills/${billId}/pdf`;
     root.innerHTML = renderBillHtml(b);
     showSent(b.sent_on);
   } catch (err) {
