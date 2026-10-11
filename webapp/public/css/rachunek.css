@@ -51,6 +51,8 @@
   text-decoration: none;
 }
 .bill-toolbar button { background: #1d6b35; border-color: #1d6b35; color: #fff; }
+.bill-toolbar .bill-sent-btn { background: #fff; border-color: #bbb; color: #111; }
+.bill-toolbar .bill-sent-btn:disabled { color: #1d6b35; cursor: default; }
 .bill-page .bill-paper { box-shadow: 0 2px 14px rgba(0, 0, 0, 0.18); }
 .bill-msg { text-align: center; font-family: "Inter", Arial, sans-serif; padding: 40px 16px; color: #333; }
 

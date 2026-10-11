@@ -49,7 +49,10 @@ function renderBillHtml(b) {
   <article class="bill-paper">
     <div class="bill-place">${billEsc(me.issue_city)}, ${billDate(b.issued_on)}</div>
     <h1 class="bill-title">RACHUNEK nr ${billEsc(b.number)}</h1>
-    <div class="bill-sub">do umowy zlecenia nr ${billEsc(k.number)} z dnia ${billDate(k.signed_on)}</div>
+    <div class="bill-sub">wystawiony na podstawie umowy cywilnoprawnej – umowy zlecenia nr ${billEsc(k.number)} z dnia ${billDate(k.signed_on)}${
+      // "ze studentem..." tylko gdy w dniu wystawienia to prawda (ten sam warunek co klauzula nizej)
+      s.clause ? ", zawartej ze studentem do ukończenia 26. roku życia" : ""
+    }</div>
     <div class="bill-parties">
       <div>
         <div class="bill-label">Zleceniobiorca:</div>
