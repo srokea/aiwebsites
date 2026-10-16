@@ -123,6 +123,7 @@ function renderBills() {
         <span class="cl-bill-actions">
           <a class="btn prices-btn" href="/api/clients/bills/${b.id}/pdf" title="Pobierz PDF">⬇️ PDF</a>
           <a class="btn prices-btn" href="/rachunek.html?id=${b.id}" target="_blank" title="Podgląd / druk">🖨️</a>
+          ${b.status === "oplacony" ? "" : `<button type="button" class="btn prices-btn" data-mail="${b.id}" title="Wyślij mailem">📧</button>`}
           ${
             b.status === "oplacony"
               ? ""
@@ -521,6 +522,16 @@ billsEl.addEventListener("click", async (e) => {
   const del = e.target.closest("[data-del-bill]");
   const sent = e.target.closest("[data-sent]");
   const unsent = e.target.closest("[data-unsent]");
+  const mail = e.target.closest("[data-mail]");
+  if (mail) {
+    openBillMail(Number(mail.dataset.mail), async () => {
+      applyCard(await api.get(`/api/clients/${clientId}`));
+      // pusty e-mail klienta serwer uzupelnil adresem z maila - pokaz go w formularzu danych
+      const email = clientForm.querySelector('[data-f="email"]');
+      if (!email.value) email.value = card.client.email || "";
+    });
+    return;
+  }
   if (paid) {
     openPaidModal(card.bills.find((x) => x.id === Number(paid.dataset.paid)));
     return;

@@ -10,6 +10,7 @@ const db = require("../db");
 const billing = require("../billing");
 const { slownie } = require("../slownie");
 const { billPdf } = require("../billPdf");
+const { mailConfigured, mailSender, sendMail } = require("../mailer");
 const { localDate } = require("../time");
 const {
   CONTRACT_STATUS_OPTIONS,
@@ -399,6 +400,74 @@ router.get("/bills/:id(\\d+)/pdf", async (req, res) => {
     console.error("[rachunek pdf]", err.message);
     res.status(500).json({ error: "Nie udało się wygenerować PDF-a — użyj „Drukuj” → „Zapisz jako PDF”" });
   }
+});
+
+// ---------- mail z rachunkiem (okienko "Wyślij mailem" - nic nie idzie bez klikniecia "Wyślij") ----------
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// GET /api/clients/bills/:id/email - gotowy adres, temat i tresc do poprawienia w okienku
+router.get("/bills/:id(\\d+)/email", (req, res) => {
+  const d = billing.billEmailDraft(Number(req.params.id));
+  if (d.error) return fail(res, d);
+  res.json({
+    to: d.to,
+    subject: d.subject,
+    text: d.text,
+    filename: d.filename,
+    number: d.bill.number,
+    client_name: d.client ? d.client.name || d.client.legal_name : "",
+    sent_on: d.bill.sent_on,
+    from: mailSender(),
+    configured: mailConfigured(),
+  });
+});
+
+// POST /api/clients/bills/:id/email - { to, subject, text } -> mail z PDF-em w zalaczniku, rachunek
+// oznaczony jako wyslany, a pusty e-mail klienta uzupelniony adresem, na ktory poszlo. Klucz API
+// (Jarvis) nie wysyla - tylko klikniete i potwierdzone w appce.
+router.post("/bills/:id(\\d+)/email", async (req, res) => {
+  if (req.viaApiKey) return res.status(403).json({ error: "Mail z rachunkiem można wysłać tylko z appki" });
+  if (!mailConfigured()) {
+    return res.status(400).json({ error: "Wysyłka maili nie jest ustawiona — brakuje SMTP_USER / SMTP_PASS w .env na serwerze" });
+  }
+  const d = billing.billEmailDraft(Number(req.params.id));
+  if (d.error) return fail(res, d);
+  const to = String(req.body.to || "")
+    .split(/[,;\s]+/)
+    .filter(Boolean);
+  const subject = String(req.body.subject || "").trim();
+  const text = String(req.body.text || "").trim();
+  if (!to.length) return res.status(400).json({ error: "Podaj adres e-mail klienta" });
+  const bad = to.find((a) => !EMAIL_RE.test(a));
+  if (bad) return res.status(400).json({ error: `Nieprawidłowy adres e-mail: „${bad}”` });
+  if (!subject || !text) return res.status(400).json({ error: "Temat i treść nie mogą być puste" });
+
+  const me = billing.getContractor();
+  try {
+    const pdf = await billPdf(d.bill);
+    await sendMail({
+      fromName: me.full_name,
+      replyTo: me.email,
+      to: to.join(", "),
+      subject,
+      text,
+      attachments: [{ filename: d.filename, content: pdf, contentType: "application/pdf" }],
+    });
+  } catch (err) {
+    console.error("[rachunek mail]", err.message);
+    const error =
+      err.code === "EAUTH"
+        ? "Skrzynka odrzuciła logowanie — sprawdź SMTP_USER i hasło aplikacji w .env"
+        : `Nie udało się wysłać maila: ${err.message}`;
+    return res.status(502).json({ error });
+  }
+  const sentOn = d.bill.sent_on || localDate();
+  if (!d.bill.sent_on) billing.setBillSent(d.bill.id, sentOn);
+  if (d.client && !d.client.email) {
+    db.prepare("UPDATE clients SET email = ?, updated_at = datetime('now') WHERE id = ?").run(to[0], d.client.id);
+  }
+  res.json({ ok: true, to, sent_on: sentOn });
 });
 
 function clientIdOfBill(billId) {

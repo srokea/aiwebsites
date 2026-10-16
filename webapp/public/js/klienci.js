@@ -30,7 +30,8 @@ function todoAction(t) {
   }
   if (t.type === "send") {
     return `<a class="btn prices-btn" href="/rachunek.html?id=${t.bill_id}" target="_blank" title="Podgląd / druk">🖨️</a>
-      <button type="button" class="btn prices-btn" data-sent="${t.bill_id}">Wysłany</button>`;
+      <button type="button" class="btn prices-btn" data-sent="${t.bill_id}" title="Wysłany inaczej niż z appki">Wysłany</button>
+      <button type="button" class="btn primary prices-btn" data-mail="${t.bill_id}">📧 Wyślij</button>`;
   }
   if (t.type === "unpaid" || t.type === "overdue") {
     // "Oplacony" otwiera karte klienta od razu z okienkiem daty wplywu (wpis do Kasy)
@@ -90,6 +91,8 @@ function renderTodo(todo) {
 }
 
 todoEl.addEventListener("click", async (e) => {
+  const mail = e.target.closest("[data-mail]");
+  if (mail) return openBillMail(Number(mail.dataset.mail), load);
   const skip = e.target.closest("[data-skip]");
   const btn = skip || e.target.closest("[data-sent]");
   if (!btn) return;

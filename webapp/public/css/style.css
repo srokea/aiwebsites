@@ -3267,11 +3267,17 @@ body.map-page { overflow: hidden; }
 .modal textarea { resize: vertical; }
 .modal input:focus, .modal textarea:focus { outline: none; border-color: var(--blue); }
 .modal-wide { width: 720px; }
-#client-offer-modal .modal, #contractor-modal .modal, #contract-modal .modal, #bill-modal .modal {
+#client-offer-modal .modal, #contractor-modal .modal, #contract-modal .modal, #bill-modal .modal, #bill-mail-modal .modal {
   max-height: 92vh;
   overflow-y: auto;
 }
 .co-sub { font-size: 12.5px; color: var(--muted); margin: -10px 0 4px; }
+/* okienko "Wyslij rachunek mailem" */
+#bill-mail-modal .modal { width: 560px; }
+#bill-mail-modal textarea { line-height: 1.5; }
+.bm-attach { margin-top: 10px; font-size: 12.5px; color: var(--muted); }
+.bm-attach a { color: var(--blue); text-decoration: none; }
+.bm-attach a:hover { text-decoration: underline; }
 .co-done p, .cl-done { font-size: 14px; margin: 6px 0 0; }
 .cl-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
 /* podpis w Moich danych: biale pole jak papier rachunku, zeby od razu bylo widac, jak wyjdzie */

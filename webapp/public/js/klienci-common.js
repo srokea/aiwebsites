@@ -136,3 +136,97 @@ async function offerAddClient(lead, nicheName) {
     /* brak okienka nie moze zepsuc zapisu statusu */
   }
 }
+
+// ---------- okienko "Wyślij rachunek mailem" (klienci.html i klient.html) ----------
+// Gotowy adres, temat i tresc z serwera do poprawienia - mail idzie dopiero po kliknieciu "Wyślij".
+// Po wyslaniu serwer sam oznacza rachunek jako wyslany; onSent() przerysowuje widok.
+
+let billMailEl = null;
+let billMailState = null;
+
+function buildBillMailModal() {
+  const el = document.createElement("div");
+  el.className = "modal-overlay hidden";
+  el.id = "bill-mail-modal";
+  el.innerHTML = `
+    <div class="modal">
+      <h3>📧 Wyślij rachunek mailem</h3>
+      <div class="co-sub" id="bm-sub"></div>
+      <form id="bm-form">
+        <label for="bm-to">Do</label>
+        <input type="text" id="bm-to" inputmode="email" placeholder="adres@klienta.pl" autocomplete="off">
+        <label for="bm-subject">Temat</label>
+        <input type="text" id="bm-subject">
+        <label for="bm-text">Treść</label>
+        <textarea id="bm-text" rows="11"></textarea>
+        <div class="bm-attach">📎 <a id="bm-file" href="#" target="_blank">rachunek.pdf</a> <span>— w załączniku, z podpisem</span></div>
+        <div class="hint" id="bm-hint"></div>
+        <div class="error" id="bm-error" style="display:none;"></div>
+        <div class="actions">
+          <button type="button" class="btn" id="bm-cancel">Anuluj</button>
+          <button type="submit" class="btn primary" id="bm-send">Wyślij</button>
+        </div>
+      </form>
+    </div>`;
+  document.body.appendChild(el);
+
+  const close = () => el.classList.add("hidden");
+  el.addEventListener("click", (e) => {
+    if (e.target === el) close();
+  });
+  el.querySelector("#bm-cancel").addEventListener("click", close);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !el.classList.contains("hidden")) close();
+  });
+  el.querySelector("#bm-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const errEl = el.querySelector("#bm-error");
+    errEl.style.display = "none";
+    const btn = el.querySelector("#bm-send");
+    btn.disabled = true;
+    btn.textContent = "Wysyłam…";
+    try {
+      await api.post(`/api/clients/bills/${billMailState.billId}/email`, {
+        to: el.querySelector("#bm-to").value,
+        subject: el.querySelector("#bm-subject").value,
+        text: el.querySelector("#bm-text").value,
+      });
+      close();
+      billMailState.onSent?.();
+    } catch (err) {
+      errEl.textContent = err.message;
+      errEl.style.display = "block";
+    } finally {
+      btn.disabled = !billMailState.configured;
+      btn.textContent = "Wyślij";
+    }
+  });
+  return el;
+}
+
+async function openBillMail(billId, onSent) {
+  if (!billMailEl) billMailEl = buildBillMailModal();
+  const el = billMailEl;
+  let d;
+  try {
+    d = await api.get(`/api/clients/bills/${billId}/email`);
+  } catch (err) {
+    alert("Nie udało się przygotować maila: " + err.message);
+    return;
+  }
+  billMailState = { billId, onSent, configured: d.configured };
+  el.querySelector("#bm-sub").textContent = `Rachunek ${d.number} · ${d.client_name}${d.sent_on ? ` · już wysłany ${clDate(d.sent_on)}` : ""}`;
+  el.querySelector("#bm-to").value = d.to;
+  el.querySelector("#bm-subject").value = d.subject;
+  el.querySelector("#bm-text").value = d.text;
+  const file = el.querySelector("#bm-file");
+  file.textContent = d.filename;
+  file.href = `/api/clients/bills/${billId}/pdf`;
+  el.querySelector("#bm-hint").textContent = d.configured
+    ? `Wyślemy z ${d.from}. Kopia zostanie w Wysłanych w tej skrzynce, a rachunek oznaczy się jako wysłany.`
+    : "Wysyłka maili nie jest jeszcze ustawiona na serwerze (brak skrzynki w .env) — na razie pobierz PDF i wyślij go ręcznie.";
+  el.querySelector("#bm-send").disabled = !d.configured;
+  el.querySelector("#bm-error").style.display = "none";
+  el.classList.remove("hidden");
+  el.querySelector(d.to ? "#bm-subject" : "#bm-to").focus();
+}

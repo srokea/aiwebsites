@@ -655,6 +655,49 @@ function setBillSent(billId, sentOn) {
   return { ok: true };
 }
 
+// ---------- mail z rachunkiem ----------
+
+const BILL_MAIL_WHAT = {
+  wykonanie: () => "wykonanie strony internetowej",
+  abonament: (p) => `abonament za ${periodLabel(p)}`,
+  wykonanie_abonament: (p) => `wykonanie strony internetowej i abonament za ${periodLabel(p)}`,
+  wykup: () => "wykup strony internetowej",
+};
+
+// Gotowy mail do klienta - adres, temat i tresc do poprawienia w okienku przed wyslaniem. Dane do
+// przelewu z migawki rachunku (te same co na PDF-ie), podpis pod mailem z biezacych Moich danych.
+function billEmailDraft(billId) {
+  const row = db.prepare("SELECT * FROM bills WHERE id = ?").get(billId);
+  if (!row) return { status: 404, error: "Nie znaleziono rachunku" };
+  const bill = serializeBill(row);
+  const client = db.prepare("SELECT cl.* FROM clients cl JOIN contracts c ON c.client_id = cl.id WHERE c.id = ?").get(row.contract_id);
+  const me = getContractor();
+  const what = (BILL_MAIL_WHAT[bill.kind] || (() => "usługi"))(bill.period);
+  const amount = `${bill.total.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} zł`;
+  const account = (bill.snapshot.contractor || {}).bank_account || me.bank_account;
+  return {
+    bill,
+    client,
+    to: client?.email || "",
+    subject: `Rachunek nr ${bill.number} – ${what}`,
+    text: [
+      "Dzień dobry,",
+      "",
+      `w załączniku przesyłam rachunek nr ${bill.number} za ${what} na kwotę ${amount}.`,
+      `Termin płatności: ${fmtDate(bill.due_on)}, przelew na konto:`,
+      account,
+      `W tytule przelewu proszę wpisać: rachunek ${bill.number}.`,
+      "",
+      "Dziękuję i pozdrawiam",
+      me.full_name,
+      me.phone ? `tel. ${me.phone}` : "",
+    ]
+      .join("\n")
+      .trim(),
+    filename: `Rachunek-${bill.number.replace(/\//g, "-")}.pdf`,
+  };
+}
+
 function deleteBill(billId) {
   const bill = db.prepare("SELECT * FROM bills WHERE id = ?").get(billId);
   if (!bill) return { status: 404, error: "Nie znaleziono rachunku" };
@@ -918,6 +961,7 @@ module.exports = {
   markBillPaid,
   unmarkBillPaid,
   setBillSent,
+  billEmailDraft,
   deleteBill,
   billingTodo,
   clientsOverview,
