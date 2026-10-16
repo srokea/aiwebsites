@@ -19,7 +19,7 @@ function renderSummary(d) {
     </div>`;
 }
 
-// przypominajki z rachunkami (te same co w dzwonku na dashboardzie): wystaw / wyslij / po terminie
+// przypominajki z rachunkami (te same co w dzwonku na dashboardzie): wystaw / wyslij / czy oplacony
 const todoEl = document.getElementById("cl-todo");
 
 function todoAction(t) {
@@ -31,6 +31,11 @@ function todoAction(t) {
   if (t.type === "send") {
     return `<a class="btn prices-btn" href="/rachunek.html?id=${t.bill_id}" target="_blank" title="Podgląd / druk">🖨️</a>
       <button type="button" class="btn prices-btn" data-sent="${t.bill_id}">Wysłany</button>`;
+  }
+  if (t.type === "unpaid" || t.type === "overdue") {
+    // "Oplacony" otwiera karte klienta od razu z okienkiem daty wplywu (wpis do Kasy)
+    return `<a class="btn prices-btn" href="/klient.html?id=${t.client_id}">Karta</a>
+      <a class="btn prices-btn" href="/klient.html?id=${t.client_id}&oplacony=${t.bill_id}">Opłacony</a>`;
   }
   return `<a class="btn prices-btn" href="/klient.html?id=${t.client_id}">Karta</a>`;
 }

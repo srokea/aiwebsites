@@ -163,13 +163,13 @@ async function load() {
     meta = m;
     applyCard(c);
     fillClientForm();
-    // przyjscie z przypominajki ("Wystaw" na klienci.html): od razu okienko rachunku
+    // przyjscie z przypominajki ("Wystaw" / "Opłacony" na klienci.html): od razu wlasciwe okienko
     const q = new URLSearchParams(location.search);
     const preset = card.contracts.find((k) => k.id === Number(q.get("wystaw")) && !k.covered_by);
-    if (preset) {
-      openBillModal(preset, { kind: q.get("kind"), period: q.get("period") });
-      history.replaceState(null, "", `/klient.html?id=${clientId}`);
-    }
+    const toPay = card.bills.find((b) => b.id === Number(q.get("oplacony")) && b.status === "wystawiony");
+    if (preset) openBillModal(preset, { kind: q.get("kind"), period: q.get("period") });
+    else if (toPay) openPaidModal(toPay);
+    if (preset || toPay) history.replaceState(null, "", `/klient.html?id=${clientId}`);
   } catch (err) {
     contractsEl.innerHTML = `<div class="empty-state">Nie udało się wczytać: ${escapeHtml(err.message)}</div>`;
   }
@@ -507,6 +507,14 @@ document.getElementById("bill-sent-now").addEventListener("click", async (e) => 
 const paidModal = document.getElementById("paid-modal");
 let paidBillId = null;
 
+function openPaidModal(b) {
+  paidBillId = b.id;
+  document.getElementById("paid-title").textContent = `Rachunek ${b.number} — opłacony`;
+  document.getElementById("paid-date").value = clToday();
+  showError(document.getElementById("paid-error"), "");
+  paidModal.classList.remove("hidden");
+}
+
 billsEl.addEventListener("click", async (e) => {
   const paid = e.target.closest("[data-paid]");
   const unpaid = e.target.closest("[data-unpaid]");
@@ -514,12 +522,7 @@ billsEl.addEventListener("click", async (e) => {
   const sent = e.target.closest("[data-sent]");
   const unsent = e.target.closest("[data-unsent]");
   if (paid) {
-    paidBillId = Number(paid.dataset.paid);
-    const b = card.bills.find((x) => x.id === paidBillId);
-    document.getElementById("paid-title").textContent = `Rachunek ${b.number} — opłacony`;
-    document.getElementById("paid-date").value = clToday();
-    showError(document.getElementById("paid-error"), "");
-    paidModal.classList.remove("hidden");
+    openPaidModal(card.bills.find((x) => x.id === Number(paid.dataset.paid)));
     return;
   }
   try {

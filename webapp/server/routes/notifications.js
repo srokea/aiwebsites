@@ -73,7 +73,7 @@ router.get("/", (req, res) => {
     }
   }
 
-  // Przypominajki z rachunkami (modul Klienci: wystaw / wyslij / po terminie) - wisza w "dzis",
+  // Przypominajki z rachunkami (modul Klienci: wystaw / wyslij / czy oplacony) - wisza w "dzis",
   // dopoki sprawa nie jest zalatwiona. Rachunki wystawia zleceniobiorca, wiec widzi je osoba,
   // ktorej imie zgadza sie z "Moje dane" (a gdy sie nie da dopasowac - wszyscy).
   const contractorFirst = (getContractor().full_name || "").trim().split(/\s+/)[0];

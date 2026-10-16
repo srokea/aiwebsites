@@ -682,6 +682,7 @@ function nextPeriod(p) {
 //             (od miesiaca startu umowy do biezacego, nie dalej niz miesiac konca umowy);
 //             late = miesiac juz minal,
 //   send    - wystawiony, ale nie oznaczony jako wyslany,
+//   unpaid  - wyslany, czeka na wplate (wisi az do "Oplacony"),
 //   overdue - wyslany, nieoplacony, po terminie platnosci.
 function billingTodo(today = localDate()) {
   const curPeriod = today.slice(0, 7);
@@ -763,6 +764,13 @@ function billingTodo(today = localDate()) {
       items.push({ ...base, type: "send", late: b.due_on < today, label: `Wyślij rachunek ${b.number} (${zl(b.total_grosze)})` });
     } else if (b.due_on < today) {
       items.push({ ...base, type: "overdue", late: true, label: `Nieopłacony po terminie: rachunek ${b.number}, termin ${fmtDate(b.due_on)}` });
+    } else {
+      items.push({
+        ...base,
+        type: "unpaid",
+        late: false,
+        label: `Sprawdź, czy opłacony: rachunek ${b.number} (${zl(b.total_grosze)}), termin ${fmtDate(b.due_on)}`,
+      });
     }
   }
 
