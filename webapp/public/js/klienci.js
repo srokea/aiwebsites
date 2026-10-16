@@ -40,6 +40,23 @@ function todoAction(t) {
   return `<a class="btn prices-btn" href="/klient.html?id=${t.client_id}">Karta</a>`;
 }
 
+// sekcje w kolejnosci, w jakiej rachunek przez nie przechodzi
+const TODO_GROUPS = [
+  { key: "issue", title: "Do wystawienia", types: ["issue"] },
+  { key: "send", title: "Do wysłania", types: ["send"] },
+  { key: "paid", title: "Wysłane — czekają na wpłatę", types: ["overdue", "unpaid"] },
+];
+
+// druga linia pozycji: obok "co" - status i termin
+function todoMeta(t) {
+  const late = (text) => `<span class="cl-todo-chip">${text}</span>`;
+  const note = (text, cls = "") => `<span class="cl-todo-note${cls}">${text}</span>`;
+  if (t.type === "issue") return t.late ? late("zaległy") : "";
+  if (t.type === "send") return t.late ? late(`termin minął ${clDate(t.due_on)}`) : note(`termin ${clDate(t.due_on)}`);
+  const sent = note(`✓ wysłany ${clDate(t.sent_on)}`, " is-sent");
+  return sent + (t.late ? late(`po terminie (${clDate(t.due_on)})`) : note(`termin ${clDate(t.due_on)}`));
+}
+
 function renderTodo(todo) {
   if (!todo || !todo.length) {
     todoEl.hidden = true;
@@ -47,19 +64,29 @@ function renderTodo(todo) {
     return;
   }
   todoEl.hidden = false;
+  const groups = TODO_GROUPS.map((g) => ({ ...g, items: todo.filter((t) => g.types.includes(t.type)) })).filter((g) => g.items.length);
   todoEl.innerHTML = `
-    <div class="cl-candidates-title">Do zrobienia z rachunkami (${todo.length})</div>
-    <div class="cl-todo-list">
-      ${todo
-        .map(
-          (t) => `
-        <div class="cl-todo-item${t.late ? " is-late" : ""}">
-          <span class="cl-todo-text"><b>${escapeHtml(t.client_name)}</b> <span class="cl-todo-label">${escapeHtml(t.label)}</span></span>
-          <span class="cl-todo-actions">${todoAction(t)}</span>
-        </div>`
-        )
-        .join("")}
-    </div>`;
+    <div class="cl-candidates-title">Do zrobienia z rachunkami</div>
+    ${groups
+      .map(
+        (g) => `
+      <section class="cl-todo-group cl-todo-group--${g.key}">
+        <div class="cl-todo-group-title">${g.title} <span class="cl-todo-count">${g.items.length}</span></div>
+        ${g.items
+          .map(
+            (t) => `
+          <div class="cl-todo-item${t.late ? " is-late" : ""}">
+            <div class="cl-todo-text">
+              <div class="cl-todo-client">${escapeHtml(t.client_name)}</div>
+              <div class="cl-todo-detail"><span>${escapeHtml(t.detail)}</span>${todoMeta(t)}</div>
+            </div>
+            <div class="cl-todo-actions">${todoAction(t)}</div>
+          </div>`
+          )
+          .join("")}
+      </section>`
+      )
+      .join("")}`;
 }
 
 todoEl.addEventListener("click", async (e) => {

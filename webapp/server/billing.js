@@ -684,6 +684,8 @@ function nextPeriod(p) {
 //   send    - wystawiony, ale nie oznaczony jako wyslany,
 //   unpaid  - wyslany, czeka na wplate (wisi az do "Oplacony"),
 //   overdue - wyslany, nieoplacony, po terminie platnosci.
+// label = cale zdanie (dzwonek na dashboardzie), detail = samo "co" (lista na klienci.html, gdzie
+// czynnosc mowi naglowek sekcji).
 function billingTodo(today = localDate()) {
   const curPeriod = today.slice(0, 7);
   const zl = (g) => `${(g / 100).toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} zł`;
@@ -721,9 +723,18 @@ function billingTodo(today = localDate()) {
         period: firstPeriod,
         late: firstPeriod < curPeriod,
         label: `Wystaw rachunek: wykonanie + abonament za ${periodLabel(firstPeriod)}${firstPeriod < curPeriod ? " (zaległy)" : ""}`,
+        detail: `wykonanie + abonament za ${periodLabel(firstPeriod)}`,
       });
     } else if (needsWork) {
-      items.push({ ...base, type: "issue", kind: "wykonanie", period: "", late: false, label: `Wystaw rachunek za wykonanie strony (umowa ${c.number})` });
+      items.push({
+        ...base,
+        type: "issue",
+        kind: "wykonanie",
+        period: "",
+        late: false,
+        label: `Wystaw rachunek za wykonanie strony (umowa ${c.number})`,
+        detail: `wykonanie strony (umowa ${c.number})`,
+      });
     }
     if ((c.monthly_grosze || 0) > 0) {
       const endPeriod = c.ends_on ? c.ends_on.slice(0, 7) : null;
@@ -738,6 +749,7 @@ function billingTodo(today = localDate()) {
           period: p,
           late,
           label: `Wystaw rachunek: abonament za ${periodLabel(p)}${late ? " (zaległy)" : ""}`,
+          detail: `abonament za ${periodLabel(p)}`,
         });
       }
     }
@@ -759,6 +771,8 @@ function billingTodo(today = localDate()) {
       bill_id: b.id,
       bill_number: b.number,
       due_on: b.due_on,
+      sent_on: b.sent_on || "",
+      detail: `rachunek ${b.number} · ${zl(b.total_grosze)}`,
     };
     if (!b.sent_on) {
       items.push({ ...base, type: "send", late: b.due_on < today, label: `Wyślij rachunek ${b.number} (${zl(b.total_grosze)})` });
