@@ -395,6 +395,9 @@ addColumnIfMissing("bills", "sent_on TEXT NOT NULL DEFAULT ''");
 // co oznaczenie "oplacony" utworzylo w Kasie: JSON [{due: id, own: bool} | {tx: id}] - zeby "Cofnij"
 // cofnelo dokladnie to (rachunek wykonanie + abonament potwierdza naraz dwie naleznosci)
 addColumnIfMissing("bills", "paid_refs TEXT NOT NULL DEFAULT ''");
+// podpis zleceniobiorcy na rachunkach: PNG z przezroczystym tlem jako data URL ('' = miejsce na
+// podpis odreczny). Kopiowany do migawki rachunku przy wystawieniu.
+addColumnIfMissing("contractor", "signature TEXT NOT NULL DEFAULT ''");
 
 addColumnIfMissing("review_links", "logo_url TEXT NOT NULL DEFAULT ''");
 // reczna kolejnosc kart w panelu /reviews.html (przeciagnij i upusc) - nie ma nic wspolnego

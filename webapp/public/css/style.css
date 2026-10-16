@@ -3274,6 +3274,33 @@ body.map-page { overflow: hidden; }
 .co-sub { font-size: 12.5px; color: var(--muted); margin: -10px 0 4px; }
 .co-done p, .cl-done { font-size: 14px; margin: 6px 0 0; }
 .cl-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+/* podpis w Moich danych: biale pole jak papier rachunku, zeby od razu bylo widac, jak wyjdzie */
+.ct-sig-box {
+  position: relative;
+  height: 130px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.ct-sig-box img { max-width: 90%; max-height: 80%; object-fit: contain; }
+.ct-sig-box canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+.ct-sig-box.is-drawing::after {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 30px;
+  border-bottom: 1px dashed #bbb;
+  pointer-events: none;
+}
+.ct-sig-empty { color: #777; font-size: 12px; padding: 0 16px; text-align: center; }
+.ct-sig-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.ct-sig-actions[hidden] { display: none; }
+.ct-sig-actions .btn { padding: 7px 12px; font-size: 12.5px; }
 @media (max-width: 560px) {
   .cl-form-row { grid-template-columns: 1fr; }
 }

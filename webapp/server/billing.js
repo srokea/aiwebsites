@@ -313,6 +313,7 @@ function getContractor() {
       email: "",
       issue_city: "",
       student_until: "",
+      signature: "",
     }
   );
 }
@@ -480,6 +481,7 @@ function draftBill(contractId, { kind, period, issued_on, items } = {}) {
           pesel: contractor.pesel,
           bank_account: contractor.bank_account,
           issue_city: contractor.issue_city,
+          signature: contractor.signature || "",
         },
         client: {
           legal_name: client.legal_name || client.name,

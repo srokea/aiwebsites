@@ -69,6 +69,24 @@
         <div><label for="ct-student_until">Status studenta do</label><input type="date" id="ct-student_until"></div>
       </div>
       <div class="hint">Po dacie statusu studenta (albo po 26. urodzinach z PESEL-u) rachunek wystawi się bez klauzuli o zwolnieniu z PIT/ZUS — z ostrzeżeniem.</div>
+      <label>Podpis na rachunkach</label>
+      <div class="ct-sig-box" id="ct-sig-box">
+        <img id="ct-sig-img" alt="Twój podpis" hidden>
+        <canvas id="ct-sig-pad" hidden></canvas>
+        <span class="ct-sig-empty" id="ct-sig-empty">Brak — na rachunku zostaje miejsce na podpis odręczny.</span>
+      </div>
+      <div class="ct-sig-actions" id="ct-sig-view-actions">
+        <button type="button" class="btn" id="ct-sig-draw">✍️ Narysuj</button>
+        <button type="button" class="btn" id="ct-sig-upload">📷 Wgraj zdjęcie</button>
+        <button type="button" class="btn danger" id="ct-sig-remove" hidden>Usuń</button>
+        <input type="file" id="ct-sig-file" accept="image/*" hidden>
+      </div>
+      <div class="ct-sig-actions" id="ct-sig-draw-actions" hidden>
+        <button type="button" class="btn" id="ct-sig-pad-clear">Wyczyść</button>
+        <button type="button" class="btn" id="ct-sig-pad-cancel">Anuluj</button>
+        <button type="button" class="btn primary" id="ct-sig-pad-done">Gotowe</button>
+      </div>
+      <div class="hint" id="ct-sig-hint">Podpisz się palcem albo myszką, albo wgraj zdjęcie podpisu długopisem na białej kartce (z bliska, w dobrym świetle) — tło zrobi się przezroczyste. Trafia na nowe rachunki, wystawione zostają bez zmian.</div>
       <div class="error" id="contractor-error" style="display:none;"></div>
       <div class="actions">
         <button type="button" class="btn" id="contractor-cancel">Anuluj</button>

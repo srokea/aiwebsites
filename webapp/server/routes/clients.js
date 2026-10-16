@@ -34,17 +34,25 @@ const uploadPdf = multer({
 const by = (req) => req.user?.display_name || "";
 const fail = (res, r) => res.status(r.status || 400).json({ error: r.error });
 
-// klucz API (Jarvis) widzi klientow, umowy i rachunki, ale bez PESEL-u, nr dowodu i nr konta
+// klucz API (Jarvis) widzi klientow, umowy i rachunki, ale bez PESEL-u, nr dowodu, nr konta i podpisu
 function redactBill(req, bill) {
   if (!req.viaApiKey || !bill.snapshot?.contractor) return bill;
-  const { pesel, bank_account, ...contractor } = bill.snapshot.contractor;
+  const { pesel, bank_account, signature, ...contractor } = bill.snapshot.contractor;
+  return { ...bill, snapshot: { ...bill.snapshot, contractor } };
+}
+
+// karta klienta nie rysuje tresci wystawionych rachunkow - obrazek podpisu (kilkanascie-kilkadziesiat
+// kB) w kazdym rachunku tylko by ja spowalnial na telefonie
+function withoutSignature(bill) {
+  if (!bill.snapshot?.contractor?.signature) return bill;
+  const { signature, ...contractor } = bill.snapshot.contractor;
   return { ...bill, snapshot: { ...bill.snapshot, contractor } };
 }
 
 function sendCard(req, res, id) {
   const card = billing.clientCard(id);
   if (!card) return res.status(404).json({ error: "Nie znaleziono klienta" });
-  res.json({ ...card, bills: card.bills.map((b) => redactBill(req, b)) });
+  res.json({ ...card, bills: card.bills.map((b) => redactBill(req, withoutSignature(b))) });
 }
 
 function pickClientFields(body) {
@@ -145,9 +153,15 @@ router.get("/contractor", (req, res) => {
     delete out.pesel;
     delete out.id_card;
     delete out.bank_account;
+  } else {
+    out.signature = c.signature || "";
   }
   res.json(out);
 });
+
+// podpis: PNG z przezroczystym tlem (data URL) przyciety i zmniejszony w przegladarce (klienci.js);
+// '' = brak podpisu (na rachunku zostaje miejsce na podpis odreczny)
+const SIGNATURE_RE = /^data:image\/png;base64,[A-Za-z0-9+/]+={0,2}$/;
 
 router.put("/contractor", (req, res) => {
   if (req.viaApiKey) return res.status(403).json({ error: "Moje dane można zmienić tylko po zalogowaniu w przeglądarce" });
@@ -157,7 +171,12 @@ router.put("/contractor", (req, res) => {
   if (values.student_until && !ISO_DATE.test(values.student_until)) {
     return res.status(400).json({ error: "Nieprawidłowa data statusu studenta" });
   }
-  const cols = billing.CONTRACTOR_FIELDS;
+  const cols = [...billing.CONTRACTOR_FIELDS];
+  if (req.body.signature !== undefined) {
+    values.signature = String(req.body.signature ?? "");
+    if (values.signature && !SIGNATURE_RE.test(values.signature)) return res.status(400).json({ error: "Nieprawidłowy obraz podpisu" });
+    cols.push("signature");
+  }
   db.prepare(
     `INSERT INTO contractor (id, ${cols.join(", ")}, updated_at) VALUES (1, ${cols.map((f) => "@" + f).join(", ")}, datetime('now'))
      ON CONFLICT(id) DO UPDATE SET ${cols.map((f) => `${f} = excluded.${f}`).join(", ")}, updated_at = excluded.updated_at`
