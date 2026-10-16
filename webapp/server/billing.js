@@ -683,7 +683,7 @@ function billEmailDraft(billId) {
     text: [
       "Witam,",
       "",
-      `podsyłam rachunek za ${what} – ${amount}, płatne do ${fmtDate(bill.due_on)}.`,
+      `podsyłam rachunek za ${what} na kwotę ${amount}. Termin płatności: ${fmtDate(bill.due_on)}.`,
       "",
       "Pozdrawiam",
       me.full_name,
