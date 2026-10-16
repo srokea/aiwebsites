@@ -657,15 +657,16 @@ function setBillSent(billId, sentOn) {
 
 // ---------- mail z rachunkiem ----------
 
+// "podsylam rachunek za ..." - przy abonamencie sam miesiac
 const BILL_MAIL_WHAT = {
-  wykonanie: () => "wykonanie strony internetowej",
-  abonament: (p) => `abonament za ${periodLabel(p)}`,
-  wykonanie_abonament: (p) => `wykonanie strony internetowej i abonament za ${periodLabel(p)}`,
-  wykup: () => "wykup strony internetowej",
+  wykonanie: () => "wykonanie strony",
+  abonament: (p) => periodLabel(p),
+  wykonanie_abonament: (p) => `wykonanie strony i abonament za ${periodLabel(p)}`,
+  wykup: () => "wykup strony",
 };
 
-// Gotowy mail do klienta - adres, temat i tresc do poprawienia w okienku przed wyslaniem. Dane do
-// przelewu z migawki rachunku (te same co na PDF-ie), podpis pod mailem z biezacych Moich danych.
+// Gotowy mail do klienta - adres, temat i tresc do poprawienia w okienku przed wyslaniem. Krotko,
+// po ludzku: nr konta i reszta danych sa na rachunku w zalaczniku.
 function billEmailDraft(billId) {
   const row = db.prepare("SELECT * FROM bills WHERE id = ?").get(billId);
   if (!row) return { status: 404, error: "Nie znaleziono rachunku" };
@@ -674,23 +675,18 @@ function billEmailDraft(billId) {
   const me = getContractor();
   const what = (BILL_MAIL_WHAT[bill.kind] || (() => "usługi"))(bill.period);
   const amount = `${bill.total.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} zł`;
-  const account = (bill.snapshot.contractor || {}).bank_account || me.bank_account;
   return {
     bill,
     client,
     to: client?.email || "",
-    subject: `Rachunek nr ${bill.number} – ${what}`,
+    subject: `Rachunek za ${what}`,
     text: [
-      "Dzień dobry,",
+      "Witam,",
       "",
-      `w załączniku przesyłam rachunek nr ${bill.number} za ${what} na kwotę ${amount}.`,
-      `Termin płatności: ${fmtDate(bill.due_on)}, przelew na konto:`,
-      account,
-      `W tytule przelewu proszę wpisać: rachunek ${bill.number}.`,
+      `podsyłam rachunek za ${what} – ${amount}, płatne do ${fmtDate(bill.due_on)}.`,
       "",
-      "Dziękuję i pozdrawiam",
+      "Pozdrawiam",
       me.full_name,
-      me.phone ? `tel. ${me.phone}` : "",
     ]
       .join("\n")
       .trim(),
