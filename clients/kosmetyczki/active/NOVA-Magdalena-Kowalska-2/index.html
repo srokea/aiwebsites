@@ -350,6 +350,7 @@
       <a href="#pmu" class="chip">Makijaż permanentny</a>
       <a href="#dopigm" class="chip">Dopigmentowanie</a>
       <a href="#odswiez" class="chip">Odświeżenie</a>
+      <a href="#sylwetka-ceny" class="chip">Modelowanie sylwetki</a>
     </nav>
 
     <div class="mt-14">
@@ -430,6 +431,28 @@
       <dl class="rows mt-5">
         <div class="row row-strong"><dt class="nm"><span class="lbl">Odświeżenie</span><span class="dots" aria-hidden="true"></span></dt><dd class="pr">400 PLN</dd></div>
       </dl>
+    </div>
+
+    <!-- Modelowanie sylwetki: ceny z grafiki cennikowej klientki (29.10.2026, photos/galeria/sylwetka/02.jpg),
+         przepisane natywnie. Ceny karnetów obowiązują do końca 2026 r. — w styczniu 2027 sprawdzić z klientką. -->
+    <div class="mt-12">
+      <h3 id="sylwetka-ceny" class="cat text-[1.3rem] font-bold tracking-[-.02em]">Modelowanie sylwetki</h3>
+      <p class="mt-1.5 text-[.85rem] text-muted">30 minut zabiegu na jedną partię ciała.</p>
+      <p class="mt-5 font-bold leading-snug">MYOslim EMS + RF<small class="mt-1 block text-[.8rem] font-normal leading-relaxed text-muted">Stymulacja mięśni, redukcja tkanki tłuszczowej, ujędrnienie, modelowanie sylwetki.</small></p>
+      <dl class="rows mt-2">
+        <div class="row sub"><dt class="nm"><span class="lbl">1 zabieg</span><span class="dots" aria-hidden="true"></span></dt><dd class="pr">90 PLN</dd></div>
+        <div class="row sub"><dt class="nm"><span class="lbl">Karnet 5 zabiegów<small>70 PLN / zabieg</small></span><span class="dots" aria-hidden="true"></span></dt><dd class="pr">350 PLN</dd></div>
+        <div class="row sub"><dt class="nm"><span class="lbl">Karnet 10 zabiegów<small>60 PLN / zabieg</small></span><span class="dots" aria-hidden="true"></span></dt><dd class="pr">600 PLN</dd></div>
+        <div class="row sub"><dt class="nm"><span class="lbl">Zabieg próbny na start</span><span class="dots" aria-hidden="true"></span></dt><dd class="pr">79 PLN</dd></div>
+      </dl>
+      <p class="mt-7 font-bold leading-snug">V-Nine (endermologia)<small class="mt-1 block text-[.8rem] font-normal leading-relaxed text-muted">Masaż podciśnieniowy, ujędrnienie skóry, redukcja cellulitu, drenaż limfatyczny.</small></p>
+      <dl class="rows mt-2">
+        <div class="row sub"><dt class="nm"><span class="lbl">1 zabieg</span><span class="dots" aria-hidden="true"></span></dt><dd class="pr">130 PLN</dd></div>
+        <div class="row sub"><dt class="nm"><span class="lbl">Karnet 5 zabiegów<small>90 PLN / zabieg</small></span><span class="dots" aria-hidden="true"></span></dt><dd class="pr">450 PLN</dd></div>
+        <div class="row sub"><dt class="nm"><span class="lbl">Karnet 10 zabiegów<small>80 PLN / zabieg</small></span><span class="dots" aria-hidden="true"></span></dt><dd class="pr">800 PLN</dd></div>
+        <div class="row sub"><dt class="nm"><span class="lbl">Zabieg próbny na start</span><span class="dots" aria-hidden="true"></span></dt><dd class="pr">99 PLN</dd></div>
+      </dl>
+      <p class="mt-4 text-[.8rem] text-muted">Ceny karnetów obowiązują do 31 grudnia 2026 r.</p>
     </div>
 
     <div class="mt-12 text-center">
@@ -845,6 +868,106 @@
       </div>
     </article>
 
+    <!-- Modelowanie sylwetki: film i grafiki od klientki (29.10.2026). Grafiki to jej relacje z Instagrama
+         w proporcji 9:16, więc kafelki mają te same proporcje i pokazują całą grafikę. Wyjątek: cennik
+         jest 2:3, więc ma przycięte boki, a kadr jest przesunięty w prawo, żeby nagłówek był cały.
+         Film z przyciskami odtwarzania, bez autoplay — 4 MB nie pobiera się, dopóki ktoś nie kliknie. -->
+    <article class="mt-16" aria-labelledby="sylwetka">
+      <h3 id="sylwetka" class="cat text-[1.3rem] font-bold tracking-[-.02em]">Modelowanie sylwetki</h3>
+      <p class="mt-1 text-[.98rem] text-muted">MYOslim EMS + RF i <span class="whitespace-nowrap">V-Nine</span> (endermologia)</p>
+      <p class="mt-4 text-[.85rem]"><a href="#sylwetka-ceny" class="underline decoration-hair underline-offset-4 hover:text-accent">Ceny modelowania sylwetki</a></p>
+      <div class="mt-6 grid gap-8 sm:grid-cols-[17rem_minmax(0,1fr)] sm:items-start sm:gap-6">
+        <video controls playsinline preload="metadata" width="576" height="1024"
+               poster="photos/video/myoslim-poster.jpg"
+               aria-label="Film: MYOslim, nowość w NOVA"
+               class="mx-auto block h-auto w-full max-w-[18rem] rounded-2xl bg-ink sm:max-w-none">
+          <source src="photos/video/myoslim.mp4" type="video/mp4">
+        </video>
+        <div>
+          <p class="text-[.85rem] text-muted">Kliknij grafikę, żeby zobaczyć wszystkie 7.</p>
+          <div class="mt-4 grid grid-cols-3 gap-3">
+            <button type="button" data-group="sylwetka" data-index="0" class="gallery-tile group relative aspect-[9/16] overflow-hidden rounded-2xl">
+              <img src="photos/galeria/sylwetka/01.jpg" alt="Profesjonalne modelowanie sylwetki urządzeniem V-Nine: 1 zabieg 130 zł, w karnecie 80 zł za 30 minut do końca 2026 roku" width="900" height="1600" loading="lazy" decoding="async" class="h-full w-full object-cover">
+              <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+            </button>
+            <button type="button" data-group="sylwetka" data-index="1" class="gallery-tile group relative aspect-[9/16] overflow-hidden rounded-2xl">
+              <img src="photos/galeria/sylwetka/02.jpg" alt="Cennik modelowania sylwetki MYOslim EMS + RF i V-Nine: pojedynczy zabieg, karnety 5 i 10 zabiegów, zabieg próbny" width="1024" height="1536" loading="lazy" decoding="async" class="h-full w-full object-cover object-[70%_50%]">
+              <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+            </button>
+            <button type="button" data-group="sylwetka" data-index="2" class="gallery-tile group relative aspect-[9/16] overflow-hidden rounded-2xl">
+              <img src="photos/galeria/sylwetka/03.jpg" alt="Jak działa V-Nine: kawitacja ultradźwiękowa, fale radiowe RF, masaż podciśnieniowy z rolkami i technologia próżniowa" width="900" height="1600" loading="lazy" decoding="async" class="h-full w-full object-cover">
+              <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+            </button>
+            <button type="button" data-group="sylwetka" data-index="3" class="gallery-tile group relative aspect-[9/16] overflow-hidden rounded-2xl">
+              <img src="photos/galeria/sylwetka/04.jpg" alt="Efekty V-Nine po kilku zabiegach: mniej cellulitu, gładsza skóra, mniejsze obwody i obrzęki" width="900" height="1600" loading="lazy" decoding="async" class="h-full w-full object-cover">
+              <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+            </button>
+            <button type="button" data-group="sylwetka" data-index="4" class="gallery-tile group relative aspect-[9/16] overflow-hidden rounded-2xl">
+              <img src="photos/galeria/sylwetka/05.jpg" alt="Jak wygląda zabieg V-Nine: żel i masaż głowicą, podgrzewanie RF, masaż próżniowy z rolkami, bez rekonwalescencji" width="900" height="1600" loading="lazy" decoding="async" class="h-full w-full object-cover">
+              <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+            </button>
+            <button type="button" data-group="sylwetka" data-index="5" class="gallery-tile group relative aspect-[9/16] overflow-hidden rounded-2xl">
+              <img src="photos/galeria/sylwetka/06.jpg" alt="Dla kogo jest V-Nine: cellulit, ujędrnienie skóry, obrzęki, pośladki, uda i brzuch" width="900" height="1600" loading="lazy" decoding="async" class="h-full w-full object-cover">
+              <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pytania o endermologię V-Nine od klientki (29.10.2026), przepisane 1:1. -->
+      <h4 class="mt-10 text-[1rem] font-bold tracking-[-.01em]">Najczęstsze pytania o endermologię <span class="whitespace-nowrap">V-Nine</span></h4>
+      <div class="faq-list mt-3">
+        <details class="faq">
+          <summary>Czym jest endermologia?</summary>
+          <p>To nieinwazyjny masaż mechaniczny z wykorzystaniem podciśnienia, który oddziałuje na skórę i tkanki podskórne. Pomaga poprawić wygląd skóry, wspiera mikrokrążenie i może zmniejszać widoczność cellulitu.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy endermologia odchudza?</summary>
+          <p>Nie zastępuje odchudzania, ale może wspomagać modelowanie sylwetki, szczególnie poprzez zmniejszenie przejściowych obrzęków i poprawę wyglądu skóry.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy zabieg pomaga na cellulit?</summary>
+          <p>TAK! Regularne zabiegi mogą zmniejszyć widoczność cellulitu i sprawić, że skóra będzie wyglądała na gładszą i bardziej napiętą. Efekty są indywidualne.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy endermologia ujędrnia skórę?</summary>
+          <p>Może poprawić jej wygląd, elastyczność i napięcie. To dobry wybór dla osób, które zauważają utratę jędrności skóry na udach, brzuchu czy pośladkach.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy zabieg boli?</summary>
+          <p>Zazwyczaj nie. Odczuwalne jest zasysanie i intensywny masaż. Siłę podciśnienia dostosowujemy do komfortu klientki.</p>
+        </details>
+        <details class="faq">
+          <summary>Ile zabiegów potrzeba, żeby zobaczyć efekty?</summary>
+          <p>Niektóre klientki zauważają uczucie lekkości i wygładzenie skóry już po pierwszym zabiegu. Trwalsza poprawa wyglądu zwykle wymaga serii. Często planuje się 6–10 spotkań, a następnie ocenia efekty.</p>
+        </details>
+        <details class="faq">
+          <summary>Jak często wykonywać endermologię?</summary>
+          <p>Najczęściej 1–2 razy w tygodniu, zależnie od kondycji skóry, tolerancji zabiegu i celu terapii.</p>
+        </details>
+        <details class="faq">
+          <summary>Jakie partie ciała możemy modelować?</summary>
+          <p>Brzuch, uda, pośladki, biodra i ramiona. Obszar zabiegowy dobieramy indywidualnie.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy po zabiegu mogą pojawić się siniaki?</summary>
+          <p>Tak, szczególnie przy delikatnych naczyniach lub zbyt intensywnym podciśnieniu. Dlatego parametry dobierane są indywidualnie.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy endermologię można łączyć z MYOslim EMS + RF?</summary>
+          <p>TAK! To dwa zabiegi o różnym działaniu. Endermologia oddziałuje mechanicznie na tkanki, a EMS stymuluje skurcze mięśni. Połączenie może stanowić element kompleksowego planu modelowania sylwetki, jeśli nie występują przeciwwskazania.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy zabieg jest dla każdej kobiety?</summary>
+          <p>Nie. Przeciwwskazaniami mogą być m.in. zakrzepica, aktywne stany zapalne, infekcje skóry, niektóre choroby naczyń i zaburzenia krzepnięcia. W ciąży i przy poważnych chorobach konieczna jest szczególna ostrożność. Przed zabiegiem przeprowadzamy wywiad.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy trzeba ćwiczyć i stosować dietę?</summary>
+          <p>Nie jest to warunek wykonania zabiegu, ale aktywność fizyczna, prawidłowe odżywianie i odpowiednie nawodnienie pomagają dbać o sylwetkę i kondycję skóry.</p>
+        </details>
+      </div>
+    </article>
+
   </div>
 </section>
 
@@ -1041,7 +1164,7 @@
   })();
 
   // Galerie: lightbox z podglądem, strzałkami i klawiaturą (wzorzec z clients/Patent-na-Pazur/index.html).
-  // Niezależne grupy kafelków (4× zdjęcia w Zabiegach wg kategorii, Certyfikaty, Salon) dzielą jeden
+  // Niezależne grupy kafelków (5× zdjęcia w Zabiegach wg kategorii, Certyfikaty, Salon) dzielą jeden
   // modal — strzałki przewijają tylko w obrębie grupy, którą otworzono. Każda grupa zdjęć zabiegu ma
   // WIĘCEJ zdjęć w tablicy niż kafelków w siatce (6 widocznych na stronie) — resztę pokazuje się
   // wyłącznie strzałkami w lightboxie, patrz photos/galeria/<kategoria>/. Sekcja "Zabiegi
@@ -1131,6 +1254,15 @@
         { src: 'photos/galeria/lifting-twarzy/07.jpg', alt: 'Produkty kosmetyczne marki THESERA używane w zabiegu' },
         { src: 'photos/galeria/lifting-twarzy/08.jpg', alt: 'Ulotka producenta kosmetyków THESERA — mikroigłowa regeneracja' },
         { src: 'photos/galeria/lifting-twarzy/09.jpg', alt: 'Magda Kowalska na targach kosmetycznych marki THESERA' }
+      ],
+      sylwetka: [
+        { src: 'photos/galeria/sylwetka/01.jpg', alt: 'Profesjonalne modelowanie sylwetki urządzeniem V-Nine: 1 zabieg 130 zł, w karnecie 80 zł za 30 minut do końca 2026 roku' },
+        { src: 'photos/galeria/sylwetka/02.jpg', alt: 'Cennik modelowania sylwetki MYOslim EMS + RF i V-Nine: pojedynczy zabieg, karnety 5 i 10 zabiegów, zabieg próbny' },
+        { src: 'photos/galeria/sylwetka/03.jpg', alt: 'Jak działa V-Nine: kawitacja ultradźwiękowa, fale radiowe RF, masaż podciśnieniowy z rolkami i technologia próżniowa' },
+        { src: 'photos/galeria/sylwetka/04.jpg', alt: 'Efekty V-Nine po kilku zabiegach: mniej cellulitu, gładsza skóra, mniejsze obwody i obrzęki' },
+        { src: 'photos/galeria/sylwetka/05.jpg', alt: 'Jak wygląda zabieg V-Nine: żel i masaż głowicą, podgrzewanie RF, masaż próżniowy z rolkami, bez rekonwalescencji' },
+        { src: 'photos/galeria/sylwetka/06.jpg', alt: 'Dla kogo jest V-Nine: cellulit, ujędrnienie skóry, obrzęki, pośladki, uda i brzuch' },
+        { src: 'photos/galeria/sylwetka/07.jpg', alt: 'Polecana seria V-Nine: 6–10 zabiegów, 1–2 razy w tygodniu, po 30–45 minut' }
       ],
       certyfikaty: [
         { src: 'photos/o-niej/dyplom-1.jpg', alt: 'Dyplom laureatki konkursu ORŁY Kosmetyki 2026 w Sulejowie' },
