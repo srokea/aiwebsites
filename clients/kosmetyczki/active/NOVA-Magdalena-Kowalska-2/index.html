@@ -165,6 +165,24 @@
   .gallery-tile:hover .gallery-hint, .gallery-tile:focus-visible .gallery-hint { opacity: 1; }
 
   .map { filter: grayscale(.55) sepia(.18) contrast(1.02); }
+  /* ---- Q&A przy zabiegach: natywne <details>, plus/minus po prawej ---- */
+  .faq-list { border-top: 1px solid rgba(26,22,20,.14); }
+  .faq { border-bottom: 1px solid rgba(26,22,20,.14); }
+  .faq summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    min-height: 52px; padding: .8rem 0; cursor: pointer; list-style: none;
+    font-weight: 600; line-height: 1.4; letter-spacing: -.01em;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after {
+    content: "+"; flex: none; width: 1.6rem; height: 1.6rem; border-radius: 999px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(26,22,20,.22); font-weight: 400; font-size: 1.05rem; line-height: 1;
+    transition: background-color .15s, color .15s;
+  }
+  .faq[open] summary::after { content: "\2212"; background: #1A1614; border-color: #1A1614; color: #FBF6F4; }
+  .faq summary:hover { color: #8A4A40; }
+  .faq p { padding: 0 2.6rem 1.1rem 0; color: #4A3F3C; font-size: .95rem; line-height: 1.7; }
 </style>
 </head>
 
@@ -185,7 +203,7 @@
       <a href="#onas"    data-nav="onas"    class="navlink">O niej</a>
       <a href="#cennik"  data-nav="cennik"  class="navlink">Cennik</a>
       <a href="#opinie"  data-nav="opinie"  class="navlink">Opinie</a>
-      <a href="#galeria" data-nav="galeria" class="navlink">Efekty</a>
+      <a href="#zabiegi" data-nav="zabiegi" class="navlink">Zabiegi</a>
       <a href="#kontakt" data-nav="kontakt" class="navlink">Wizyta</a>
     </nav>
 
@@ -251,7 +269,7 @@
 
 <!-- ============ O NIEJ: Magda, certyfikaty i salon ============
      Zdjęcia (portret, dyplomy, wnętrze salonu) czekają na sesję zdjęciową — na razie
-     kafelki placeholder, klikalne w ten sam lightbox co galeria Efekty (patrz JS na dole). -->
+     kafelki placeholder, klikalne w ten sam lightbox co galeria w Zabiegach (patrz JS na dole). -->
 <section id="onas" class="border-b border-hair bg-shell">
   <div class="mx-auto max-w-narrow px-5 py-16 sm:px-7 sm:py-20">
 
@@ -501,18 +519,44 @@
   </div>
 </section>
 
-<!-- ============ GALERIA EFEKTÓW ============ -->
-<section id="galeria" class="marble border-b border-hair">
+<!-- ============ ZABIEGI: w każdej kategorii opis, zdjęcia i najczęstsze pytania ============
+     Prośba klientki 23.10.2026: dawna galeria „Efekty” ma być „Zabiegami”, z opisem zabiegu nad
+     zdjęciami. Opisy i pytania od klientki (SMS 12.10.2026), przepisane 1:1 bez emoji. Pytania jako
+     rozwijane <details> — działają bez JS i nie wydłużają strony na telefonie. -->
+<section id="zabiegi" class="marble border-b border-hair">
   <div class="mx-auto max-w-narrow px-5 pb-16 pt-6 sm:px-7 sm:pb-20 sm:pt-8">
 
-    <h2 class="text-center font-script text-[clamp(2.8rem,11vw,4.2rem)] leading-[.95]">Efekty</h2>
-    <p class="mx-auto mt-6 max-w-[42ch] text-center text-[.98rem] text-muted">
-      Prawdziwe zdjęcia z zabiegów wykonanych w NOVA, podzielone na kategorie.
-    </p>
+    <h2 class="text-center font-script text-[clamp(2.8rem,11vw,4.2rem)] leading-[.95]">Zabiegi</h2>
 
-    <div class="mt-14 first:mt-10">
+    <article class="mt-10" aria-labelledby="usta">
       <h3 id="usta" class="cat text-[1.3rem] font-bold tracking-[-.02em]">Usta permanentne</h3>
-      <p class="mt-1.5 text-[.85rem] text-muted">Kliknij zdjęcie, żeby zobaczyć więcej — w tej kategorii jest ich 19.</p>
+      <p class="mt-1 text-[.98rem] text-muted">Naturalny efekt, który podkreśla Twoje piękno</p>
+      <!-- Opis od klientki (23.10.2026), przepisany 1:1. Zaproszenie na konsultację na końcu bloku, pod zdjęciami (jak przy brwiach). -->
+      <div class="mt-4 space-y-4 text-[.98rem] leading-relaxed">
+        <p>Makijaż permanentny ust to nowoczesna metoda podkreślenia naturalnego kształtu i koloru ust. W NOVA stawiamy przede wszystkim na naturalność, delikatność i dopasowanie efektu do urody klientki.</p>
+        <p>Nie tworzymy ciężkich, przerysowanych konturów ani efektu „szminki”. Współczesny makijaż permanentny ust ma wyglądać świeżo, elegancko i harmonijnie – tak, aby podkreślać urodę, a nie ją zmieniać.</p>
+        <p>Podczas zabiegu możemy subtelnie skorygować kształt, wyrównać asymetrię, podkreślić kontur oraz nadać ustom delikatny, naturalny kolor. Po wygojeniu efekt staje się znacznie bardziej subtelny niż bezpośrednio po zabiegu.</p>
+        <div class="rounded-2xl bg-shell/75 p-6">
+          <p class="font-bold tracking-[-.01em]">Każde usta są inne</p>
+          <p class="mt-1.5">Dlatego przed zabiegiem odbywa się bezpłatna konsultacja, podczas której wspólnie omawiamy:</p>
+          <ul class="mt-3 list-disc space-y-1 pl-5 marker:text-accent">
+            <li>oczekiwany efekt</li>
+            <li>kształt i proporcje ust</li>
+            <li>odpowiedni kolor pigmentu</li>
+            <li>możliwości korekty asymetrii</li>
+            <li>przeciwwskazania do zabiegu</li>
+            <li>proces gojenia i pielęgnację pozabiegową</li>
+          </ul>
+          <p class="mt-3">To również moment, w którym możesz spokojnie zadać wszystkie pytania i sprawdzić, czy makijaż permanentny jest dla Ciebie.</p>
+          <p class="mt-3">Nie musisz wiedzieć, jaki kolor ani jaki efekt wybrać. Od tego jestem ja.</p>
+        </div>
+        <h4 class="pt-2 text-[1rem] font-bold tracking-[-.01em]">Jak wygląda efekt?</h4>
+        <p>Bezpośrednio po zabiegu usta są intensywniejsze i mogą być lekko opuchnięte. Jest to naturalna reakcja skóry.</p>
+        <p>W kolejnych dniach kolor stopniowo się wycisza, a podczas gojenia może pojawić się delikatne łuszczenie. Po pełnym wygojeniu pigment jest znacznie subtelniejszy i bardziej naturalny.</p>
+        <p>Makijaż permanentny nie ma zastępować codziennej szminki. Jego zadaniem jest sprawić, aby usta wyglądały ładnie również bez makijażu.</p>
+      </div>
+      <p class="mt-4 text-[.85rem]"><a href="#pmu" class="underline decoration-hair underline-offset-4 hover:text-accent">Ceny makijażu permanentnego</a></p>
+      <p class="mt-8 text-[.85rem] text-muted">Kliknij zdjęcie, żeby zobaczyć więcej — w tej kategorii jest ich 19.</p>
       <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
         <button type="button" data-group="efekty-usta" data-index="0" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
           <img src="photos/galeria/usta/17.jpg" alt="Makijaż permanentny ust, zdjęcie 1" loading="lazy" decoding="async" class="h-full w-full object-cover">
@@ -539,11 +583,100 @@
           <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
         </button>
       </div>
-    </div>
+      <!-- Pytania o usta od klientki (23.10.2026), przepisane 1:1. -->
+      <h4 class="mt-10 text-[1rem] font-bold tracking-[-.01em]">Najczęstsze pytania</h4>
+      <div class="faq-list mt-3">
+        <details class="faq">
+          <summary>Czy usta permanentne wyglądają jak szminka?</summary>
+          <p>Nie muszą. Aktualne trendy w PMU zdecydowanie zmierzają w stronę naturalnych, lekkich efektów. Intensywność dobieramy indywidualnie.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy można skorygować asymetrię ust?</summary>
+          <p>Tak, w wielu przypadkach można optycznie wyrównać niewielką asymetrię. Podczas konsultacji oceniam, jaki zakres korekty jest możliwy i bezpieczny.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy kolor po zabiegu będzie bardzo intensywny?</summary>
+          <p>Bezpośrednio po pigmentacji kolor jest zdecydowanie mocniejszy. W trakcie gojenia wycisza się i po pełnej regeneracji skóry jest znacznie delikatniejszy.</p>
+        </details>
+        <details class="faq">
+          <summary>Ile trwa gojenie?</summary>
+          <p>Pierwsze dni to najbardziej widoczny etap gojenia. Skóra może się łuszczyć, a kolor może przejściowo wydawać się bardzo jasny. Stabilizacja koloru następuje stopniowo, dlatego efekt oceniamy dopiero po pełnym wygojeniu.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy usta mogą się łuszczyć?</summary>
+          <p>Tak. Delikatne łuszczenie jest naturalnym elementem procesu regeneracji. Nie należy zrywać skórek ani mechanicznie ich usuwać.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy można przyspieszyć gojenie?</summary>
+          <p>Najważniejsze jest stosowanie zaleconej pielęgnacji, niewysuszanie ust i niedrapanie skóry. Przez okres gojenia należy również przestrzegać zaleceń dotyczących aktywności, kosmetyków, sauny, basenu i ekspozycji na słońce.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy po zabiegu kolor może chwilowo zniknąć?</summary>
+          <p>Tak. W trakcie gojenia pigment może wydawać się bardzo jasny, a nawet prawie niewidoczny. Jest to etap przejściowy i kolor może ponownie delikatnie się ujawnić w kolejnych tygodniach.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy potrzebna jest korekta?</summary>
+          <p>Często tak. Korekta pozwala ocenić wygojony efekt i ewentualnie delikatnie uzupełnić pigment lub wyrównać miejsca, w których pigment przyjął się słabiej.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy zabieg jest bolesny?</summary>
+          <p>Odczucia są indywidualne. Podczas zabiegu stosowane są preparaty znieczulające, dzięki którym można znacznie ograniczyć dyskomfort.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy można wykonać PMU na bardzo blade usta?</summary>
+          <p>Tak, ale kolor dobieramy indywidualnie do naturalnej pigmentacji ust, karnacji i oczekiwanego efektu.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy można zrobić bardzo mocny kontur ust?</summary>
+          <p>W NOVA stawiam na naturalne efekty. Kontur powinien harmonizować z ustami, a nie tworzyć wyraźną, sztuczną linię.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy makijaż permanentny powiększa usta?</summary>
+          <p>Nie zwiększa ich fizycznej objętości. Odpowiednio zaplanowana pigmentacja może jednak optycznie poprawić proporcje i podkreślić kształt ust.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy można wykonać PMU na starym makijażu permanentnym?</summary>
+          <p>To zależy od koloru, głębokości i stanu poprzedniej pigmentacji. W niektórych przypadkach można wykonać nową pigmentację, a w innych najpierw potrzebne jest rozjaśnienie lub usunięcie starego pigmentu. Oceniam to podczas konsultacji.</p>
+        </details>
+        <details class="faq">
+          <summary>Kiedy zobaczę ostateczny kolor?</summary>
+          <p>Nie bezpośrednio po zabiegu. Kolor zmienia się w kolejnych etapach regeneracji skóry, dlatego na ocenę finalnego efektu trzeba poczekać do pełnego wygojenia.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy mogę przyjść na konsultację, jeśli jeszcze nie jestem zdecydowana?</summary>
+          <p>Oczywiście. Konsultacja jest bezpłatna i nie zobowiązuje do wykonania zabiegu. To najlepszy sposób, aby rozwiać wątpliwości i sprawdzić, jaki efekt można uzyskać właśnie na Twoich ustach.</p>
+        </details>
+      </div>
 
-    <div class="mt-14 first:mt-10">
+      <div class="mt-10 rounded-2xl bg-shell/75 p-6 text-[.98rem] leading-relaxed">
+        <p><span class="font-bold">Najważniejsze:</span> piękne usta permanentne nie powinny krzyczeć „mam makijaż permanentny”. Powinny wyglądać jak Twoje usta – tylko bardziej zadbane, harmonijne i podkreślone.</p>
+      </div>
+
+      <div class="mt-10 text-center">
+        <p class="font-bold tracking-[-.01em]">Zapraszam na bezpłatną konsultację</p>
+        <p class="mx-auto mt-2 max-w-[52ch] text-[.98rem]">Jeżeli zastanawiasz się, czy makijaż permanentny ust będzie odpowiedni dla Ciebie, zacznij od konsultacji.</p>
+        <p class="mx-auto mt-2 max-w-[52ch] text-[.98rem]">Bez zobowiązań. Bez presji. Z indywidualną oceną Twoich ust i możliwością omówienia oczekiwanego efektu.</p>
+        <p class="mx-auto mt-2 max-w-[52ch] text-[.98rem]">Umów się na darmową konsultację i wspólnie zaplanujmy efekt, który będzie pasował właśnie do Ciebie.</p>
+        <a href="tel:+48515235861"
+           class="mt-5 inline-flex min-h-[54px] w-full max-w-[340px] items-center justify-center gap-2.5 rounded-full bg-ink px-8 text-[1.02rem] font-semibold tracking-tight text-shell transition-colors hover:bg-accent">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+          Umów bezpłatną konsultację
+        </a>
+      </div>
+    </article>
+
+    <article class="mt-16" aria-labelledby="rzesy-lifting">
       <h3 id="rzesy-lifting" class="cat text-[1.3rem] font-bold tracking-[-.02em]">Stylizacja rzęs i lifting koreański</h3>
-      <p class="mt-1.5 text-[.85rem] text-muted">Kliknij zdjęcie, żeby zobaczyć więcej — w tej kategorii jest ich 15.</p>
+      <div class="mt-4 space-y-4 text-[.98rem] leading-relaxed">
+        <p>Piękne rzęsy, które podkreślają Twoje spojrzenie i pozwalają cieszyć się efektem na dłużej! Dzięki odpowiednio dobranym preparatom utrwalającym stylizacja zachowuje estetyczny wygląd, a Ty możesz wybrać zarówno klasyczną elegancję, jak i niestandardowe stylizacje – kolory, efekty ombre, neonowe akcenty czy bardziej wyraziste spojrzenie.</p>
+        <div class="rounded-2xl bg-shell/75 p-6">
+          <p class="font-bold tracking-[-.01em]">Oryginalny koreański lifting rzęs</p>
+          <p class="mt-1.5">To coś więcej niż podkręcenie! To rytuał, który łączy piękne uniesienie z intensywną pielęgnacją. Odpowiednio dobrane preparaty pomagają zadbać o kondycję rzęs, nadają im połysk i podkreślają ich naturalne piękno.</p>
+        </div>
+        <p>W NOVA znajdziemy stylizację dopasowaną do Ciebie – od naturalnego efektu po wyjątkowe spojrzenie.</p>
+      </div>
+      <p class="mt-4 text-[.85rem]"><a href="#rzesy" class="underline decoration-hair underline-offset-4 hover:text-accent">Ceny stylizacji rzęs</a></p>
+      <p class="mt-8 text-[.85rem] text-muted">Kliknij zdjęcie, żeby zobaczyć więcej — w tej kategorii jest ich 15.</p>
       <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
         <button type="button" data-group="efekty-rzesy" data-index="0" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
           <img src="photos/galeria/rzesy-lifting/01.jpg" alt="Stylizacja rzęs i lifting koreański, zdjęcie 1" loading="lazy" decoding="async" class="h-full w-full object-cover">
@@ -570,11 +703,52 @@
           <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
         </button>
       </div>
-    </div>
 
-    <div class="mt-14 first:mt-10">
+      <h4 class="mt-10 text-[1rem] font-bold tracking-[-.01em]">Najczęstsze pytania</h4>
+      <div class="faq-list mt-3">
+        <details class="faq">
+          <summary>Jak długo utrzymuje się efekt stylizacji rzęs?</summary>
+          <p>To zależy od rodzaju stylizacji, cyklu wzrostu rzęs i pielęgnacji. Odpowiednio dobrane preparaty pomagają utrwalić efekt.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy mogę wybrać niestandardową stylizację?</summary>
+          <p>Oczywiście! Możemy stworzyć m.in. stylizację kolorową, ombre, neonową lub bardziej wyrazistą – dopasowaną do Twojego stylu.</p>
+        </details>
+        <details class="faq">
+          <summary>Czym wyróżnia się koreański lifting rzęs?</summary>
+          <p>Łączy uniesienie i podkręcenie rzęs z etapami pielęgnacyjnymi, które pomagają poprawić ich wygląd i nadać im piękny połysk.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy lifting koreański niszczy rzęsy?</summary>
+          <p>Prawidłowo wykonany zabieg, z użyciem odpowiednich preparatów i z zachowaniem czasu działania, może być bezpieczny dla rzęs. Nieprawidłowe wykonanie może jednak je osłabić.</p>
+        </details>
+        <details class="faq">
+          <summary>Jak przygotować się do zabiegu?</summary>
+          <p>Przyjdź bez makijażu oczu i nie nakładaj tuszu na rzęsy. Jeśli masz wrażliwe oczy lub skłonność do alergii, poinformuj o tym przed zabiegiem.</p>
+        </details>
+      </div>
+    </article>
+
+    <article class="mt-16" aria-labelledby="brwi">
       <h3 id="brwi" class="cat text-[1.3rem] font-bold tracking-[-.02em]">Brwi permanentne</h3>
-      <p class="mt-1.5 text-[.85rem] text-muted">Kliknij zdjęcie, żeby zobaczyć więcej — w tej kategorii jest ich 32.</p>
+      <div class="mt-4 space-y-4 text-[.98rem] leading-relaxed">
+        <p>Piękne brwi nie muszą wyglądać na umalowane! W NOVA stawiam na naturalny efekt, dopasowany do urody i rysów twarzy. Wybierz metodę, która najlepiej odpowiada Twoim oczekiwaniom.</p>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div class="rounded-2xl bg-shell/75 p-6">
+            <p class="font-bold tracking-[-.01em]">Powder Brows</p>
+            <p class="text-[.85rem] text-muted">Efekt delikatnej henny</p>
+            <p class="mt-2.5">Miękkie cieniowanie, subtelne podkreślenie kształtu i efekt przypominający delikatnie zaznaczone brwi henną. Idealna propozycja dla osób, które lubią uporządkowany, ale nieprzerysowany wygląd.</p>
+          </div>
+          <div class="rounded-2xl bg-shell/75 p-6">
+            <p class="font-bold tracking-[-.01em]">Włos maszynowy</p>
+            <p class="text-[.85rem] text-muted">Efekt naturalnych włosków</p>
+            <p class="mt-2.5">Precyzyjnie wykonane, delikatne kreski imitujące naturalne włoski. To propozycja dla osób, które marzą o optycznym zagęszczeniu brwi i subtelnym uzupełnieniu ubytków bez efektu tatuażu.</p>
+          </div>
+        </div>
+        <p>W NOVA nie zmieniam Twojej twarzy – podkreślam to, co w niej naturalnie piękne.</p>
+      </div>
+      <p class="mt-4 text-[.85rem]"><a href="#pmu" class="underline decoration-hair underline-offset-4 hover:text-accent">Ceny makijażu permanentnego</a></p>
+      <p class="mt-8 text-[.85rem] text-muted">Kliknij zdjęcie, żeby zobaczyć więcej — w tej kategorii jest ich 32.</p>
       <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
         <button type="button" data-group="efekty-brwi" data-index="0" class="gallery-tile group relative aspect-[4/5] overflow-hidden rounded-2xl">
           <img src="photos/galeria/brwi/27.jpg" alt="Makijaż permanentny brwi, zdjęcie 1" loading="lazy" decoding="async" class="h-full w-full object-cover">
@@ -601,9 +775,46 @@
           <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
         </button>
       </div>
-    </div>
 
-    <div class="mt-14">
+      <h4 class="mt-10 text-[1rem] font-bold tracking-[-.01em]">Najczęstsze pytania</h4>
+      <div class="faq-list mt-3">
+        <details class="faq">
+          <summary>Czym różni się Powder Brows od włosa maszynowego?</summary>
+          <p>Powder Brows daje efekt delikatnego cienia przypominającego hennę, a włos maszynowy imituje naturalne włoski.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy brwi po zabiegu będą bardzo ciemne?</summary>
+          <p>Bezpośrednio po zabiegu kolor jest intensywniejszy. Po wygojeniu staje się delikatniejszy i bardziej naturalny.</p>
+        </details>
+        <details class="faq">
+          <summary>Jak długo utrzymuje się makijaż permanentny?</summary>
+          <p>Zwykle od około 1 do 3 lat, w zależności od skóry, techniki, pigmentu i pielęgnacji. Efekt stopniowo blednie.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy zabieg boli?</summary>
+          <p>Odczucia są indywidualne. Możesz odczuwać delikatne drapanie lub dyskomfort.</p>
+        </details>
+        <details class="faq">
+          <summary>Czy potrzebna jest korekta?</summary>
+          <p>Często tak. Korekta pozwala ocenić wygojony efekt i uzupełnić miejsca, w których pigment przyjął się słabiej.</p>
+        </details>
+        <details class="faq">
+          <summary>Która metoda będzie dla mnie najlepsza?</summary>
+          <p>Podczas bezpłatnej konsultacji ocenimy Twoje naturalne brwi, skórę i oczekiwania, aby dobrać odpowiednią technikę.</p>
+        </details>
+      </div>
+
+      <div class="mt-10 text-center">
+        <p class="text-[.98rem]">Umów się na bezpłatną konsultację i wspólnie wybierzmy metodę idealną dla Ciebie!</p>
+        <a href="tel:+48515235861"
+           class="mt-5 inline-flex min-h-[54px] w-full max-w-[340px] items-center justify-center gap-2.5 rounded-full bg-ink px-8 text-[1.02rem] font-semibold tracking-tight text-shell transition-colors hover:bg-accent">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+          Umów bezpłatną konsultację
+        </a>
+      </div>
+    </article>
+
+    <article class="mt-16" aria-labelledby="lifting-twarzy">
       <h3 id="lifting-twarzy" class="cat text-[1.3rem] font-bold tracking-[-.02em]">Zabiegi liftingujące i ujędrniające twarz</h3>
       <p class="mt-1.5 text-[.85rem] text-muted">Kliknij zdjęcie, żeby zobaczyć więcej — w tej kategorii jest ich 9.</p>
       <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
@@ -632,7 +843,7 @@
           <span class="gallery-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
         </button>
       </div>
-    </div>
+    </article>
 
   </div>
 </section>
@@ -799,12 +1010,28 @@
       links[a.dataset.nav] = a;
     });
     var current = null;
+    var nav = document.querySelector('nav[aria-label="Sekcje strony"]');
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Na telefonie pasek sekcji przewija się w bok — aktywny link trzymamy na środku paska.
+    // scrollBy na samym pasku, nie scrollIntoView (ten szarpie też stroną na iOS).
+    function centerInNav(link) {
+      if (!nav || nav.scrollWidth <= nav.clientWidth) return;
+      var navRect = nav.getBoundingClientRect();
+      var linkRect = link.getBoundingClientRect();
+      var delta = (linkRect.left + linkRect.width / 2) - (navRect.left + navRect.width / 2);
+      nav.scrollBy({ left: delta, behavior: reduceMotion ? 'auto' : 'smooth' });
+    }
+
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
         if (current) current.classList.remove('active');
         current = links[entry.target.id] || null;
-        if (current) current.classList.add('active');
+        if (current) {
+          current.classList.add('active');
+          centerInNav(current);
+        }
       });
     }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
     Object.keys(links).forEach(function (id) {
@@ -814,8 +1041,8 @@
   })();
 
   // Galerie: lightbox z podglądem, strzałkami i klawiaturą (wzorzec z clients/Patent-na-Pazur/index.html).
-  // Niezależne grupy kafelków (4× Efekty wg kategorii zabiegu, Certyfikaty, Salon) dzielą jeden
-  // modal — strzałki przewijają tylko w obrębie grupy, którą otworzono. Każda grupa "Efekty" ma
+  // Niezależne grupy kafelków (4× zdjęcia w Zabiegach wg kategorii, Certyfikaty, Salon) dzielą jeden
+  // modal — strzałki przewijają tylko w obrębie grupy, którą otworzono. Każda grupa zdjęć zabiegu ma
   // WIĘCEJ zdjęć w tablicy niż kafelków w siatce (6 widocznych na stronie) — resztę pokazuje się
   // wyłącznie strzałkami w lightboxie, patrz photos/galeria/<kategoria>/. Sekcja "Zabiegi
   // liftingujące" ma na razie tylko 1 prawdziwe zdjęcie — pozostałe src zostają puste, dopóki nie
