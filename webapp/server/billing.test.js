@@ -160,6 +160,9 @@ test("przypominajki: brakujace miesiace abonamentu, niewyslane i po terminie", (
   const oct = db.prepare("SELECT id FROM bills WHERE kind = 'abonament' AND period = '2026-10'").pluck().get();
   assert.ok(todo.some((t) => t.type === "send" && t.bill_id === oct));
   assert.deepEqual(billing.setBillSent(oct, "2026-10-12"), { ok: true });
+  // wyslany, przed terminem: zamiast "wyslij" wisi "czy oplacony"
+  const waiting = billing.billingTodo("2026-10-20").find((t) => t.bill_id === oct);
+  assert.deepEqual([waiting.type, waiting.late], ["unpaid", false]);
   const after = billing.billingTodo("2026-12-05");
   assert.ok(!after.some((t) => t.type === "send" && t.bill_id === oct));
   assert.ok(after.some((t) => t.type === "overdue" && t.bill_id === oct)); // termin 30.10 minal

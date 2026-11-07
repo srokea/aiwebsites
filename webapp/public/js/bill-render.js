@@ -97,7 +97,8 @@ function renderBillHtml(b) {
         ? `<p class="bill-clause">Wynagrodzenie zwolnione z podatku dochodowego (art. 21 ust. 1 pkt 148 ustawy o PIT) i nie podlega składkom ZUS (art. 6 ust. 4 ustawy o systemie ubezpieczeń społecznych) — Zleceniobiorca jest studentem przed ukończeniem 26. roku życia.</p>`
         : ""
     }
-    <div class="bill-sign">
+    <div class="bill-sign${me.signature ? " has-signature" : ""}">
+      ${me.signature ? `<img class="bill-sign-img" src="${billEsc(me.signature)}" alt="">` : ""}
       <div class="bill-sign-line">........................................</div>
       <div>podpis Zleceniobiorcy</div>
     </div>

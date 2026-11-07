@@ -313,6 +313,7 @@ function getContractor() {
       email: "",
       issue_city: "",
       student_until: "",
+      signature: "",
     }
   );
 }
@@ -480,6 +481,7 @@ function draftBill(contractId, { kind, period, issued_on, items } = {}) {
           pesel: contractor.pesel,
           bank_account: contractor.bank_account,
           issue_city: contractor.issue_city,
+          signature: contractor.signature || "",
         },
         client: {
           legal_name: client.legal_name || client.name,
@@ -653,6 +655,45 @@ function setBillSent(billId, sentOn) {
   return { ok: true };
 }
 
+// ---------- mail z rachunkiem ----------
+
+// "podsylam rachunek za ..." - przy abonamencie sam miesiac
+const BILL_MAIL_WHAT = {
+  wykonanie: () => "wykonanie strony",
+  abonament: (p) => periodLabel(p),
+  wykonanie_abonament: (p) => `wykonanie strony i abonament za ${periodLabel(p)}`,
+  wykup: () => "wykup strony",
+};
+
+// Gotowy mail do klienta - adres, temat i tresc do poprawienia w okienku przed wyslaniem. Krotko,
+// po ludzku: nr konta i reszta danych sa na rachunku w zalaczniku.
+function billEmailDraft(billId) {
+  const row = db.prepare("SELECT * FROM bills WHERE id = ?").get(billId);
+  if (!row) return { status: 404, error: "Nie znaleziono rachunku" };
+  const bill = serializeBill(row);
+  const client = db.prepare("SELECT cl.* FROM clients cl JOIN contracts c ON c.client_id = cl.id WHERE c.id = ?").get(row.contract_id);
+  const me = getContractor();
+  const what = (BILL_MAIL_WHAT[bill.kind] || (() => "usługi"))(bill.period);
+  const amount = `${bill.total.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} zł`;
+  return {
+    bill,
+    client,
+    to: client?.email || "",
+    subject: `Rachunek za ${what}`,
+    text: [
+      "Witam,",
+      "",
+      `podsyłam rachunek za ${what} na kwotę ${amount}. Termin płatności: ${fmtDate(bill.due_on)}.`,
+      "",
+      "Pozdrawiam",
+      me.full_name,
+    ]
+      .join("\n")
+      .trim(),
+    filename: `Rachunek-${bill.number.replace(/\//g, "-")}.pdf`,
+  };
+}
+
 function deleteBill(billId) {
   const bill = db.prepare("SELECT * FROM bills WHERE id = ?").get(billId);
   if (!bill) return { status: 404, error: "Nie znaleziono rachunku" };
@@ -680,7 +721,10 @@ function nextPeriod(p) {
 //             (od miesiaca startu umowy do biezacego, nie dalej niz miesiac konca umowy);
 //             late = miesiac juz minal,
 //   send    - wystawiony, ale nie oznaczony jako wyslany,
+//   unpaid  - wyslany, czeka na wplate (wisi az do "Oplacony"),
 //   overdue - wyslany, nieoplacony, po terminie platnosci.
+// label = cale zdanie (dzwonek na dashboardzie), detail = samo "co" (lista na klienci.html, gdzie
+// czynnosc mowi naglowek sekcji).
 function billingTodo(today = localDate()) {
   const curPeriod = today.slice(0, 7);
   const zl = (g) => `${(g / 100).toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} zł`;
@@ -718,9 +762,18 @@ function billingTodo(today = localDate()) {
         period: firstPeriod,
         late: firstPeriod < curPeriod,
         label: `Wystaw rachunek: wykonanie + abonament za ${periodLabel(firstPeriod)}${firstPeriod < curPeriod ? " (zaległy)" : ""}`,
+        detail: `wykonanie + abonament za ${periodLabel(firstPeriod)}`,
       });
     } else if (needsWork) {
-      items.push({ ...base, type: "issue", kind: "wykonanie", period: "", late: false, label: `Wystaw rachunek za wykonanie strony (umowa ${c.number})` });
+      items.push({
+        ...base,
+        type: "issue",
+        kind: "wykonanie",
+        period: "",
+        late: false,
+        label: `Wystaw rachunek za wykonanie strony (umowa ${c.number})`,
+        detail: `wykonanie strony (umowa ${c.number})`,
+      });
     }
     if ((c.monthly_grosze || 0) > 0) {
       const endPeriod = c.ends_on ? c.ends_on.slice(0, 7) : null;
@@ -735,6 +788,7 @@ function billingTodo(today = localDate()) {
           period: p,
           late,
           label: `Wystaw rachunek: abonament za ${periodLabel(p)}${late ? " (zaległy)" : ""}`,
+          detail: `abonament za ${periodLabel(p)}`,
         });
       }
     }
@@ -756,11 +810,20 @@ function billingTodo(today = localDate()) {
       bill_id: b.id,
       bill_number: b.number,
       due_on: b.due_on,
+      sent_on: b.sent_on || "",
+      detail: `rachunek ${b.number} · ${zl(b.total_grosze)}`,
     };
     if (!b.sent_on) {
       items.push({ ...base, type: "send", late: b.due_on < today, label: `Wyślij rachunek ${b.number} (${zl(b.total_grosze)})` });
     } else if (b.due_on < today) {
       items.push({ ...base, type: "overdue", late: true, label: `Nieopłacony po terminie: rachunek ${b.number}, termin ${fmtDate(b.due_on)}` });
+    } else {
+      items.push({
+        ...base,
+        type: "unpaid",
+        late: false,
+        label: `Sprawdź, czy opłacony: rachunek ${b.number} (${zl(b.total_grosze)}), termin ${fmtDate(b.due_on)}`,
+      });
     }
   }
 
@@ -894,6 +957,7 @@ module.exports = {
   markBillPaid,
   unmarkBillPaid,
   setBillSent,
+  billEmailDraft,
   deleteBill,
   billingTodo,
   clientsOverview,

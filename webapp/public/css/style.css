@@ -3552,13 +3552,46 @@ body.map-page { overflow: hidden; }
 .modal textarea { resize: vertical; }
 .modal input:focus, .modal textarea:focus { outline: none; border-color: var(--accent); box-shadow: var(--focus-ring); }
 .modal-wide { width: 720px; }
-#client-offer-modal .modal, #contractor-modal .modal, #contract-modal .modal, #bill-modal .modal {
+#client-offer-modal .modal, #contractor-modal .modal, #contract-modal .modal, #bill-modal .modal, #bill-mail-modal .modal {
   max-height: 92vh;
   overflow-y: auto;
 }
 .co-sub { font-size: 12.5px; color: var(--muted); margin: -10px 0 4px; }
+/* okienko "Wyslij rachunek mailem" */
+#bill-mail-modal .modal { width: 560px; }
+#bill-mail-modal textarea { line-height: 1.5; }
+.bm-attach { margin-top: 10px; font-size: 12.5px; color: var(--muted); }
+.bm-attach a { color: #9cc4ff; text-decoration: none; }
+.bm-attach a:hover { text-decoration: underline; }
 .co-done p, .cl-done { font-size: 14px; margin: 6px 0 0; }
 .cl-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+/* podpis w Moich danych: biale pole jak papier rachunku, zeby od razu bylo widac, jak wyjdzie */
+.ct-sig-box {
+  position: relative;
+  height: 130px;
+  border-radius: var(--r-field);
+  border: 1px solid var(--border);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.ct-sig-box img { max-width: 90%; max-height: 80%; object-fit: contain; }
+.ct-sig-box canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+.ct-sig-box.is-drawing::after {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 30px;
+  border-bottom: 1px dashed #bbb;
+  pointer-events: none;
+}
+.ct-sig-empty { color: #5d6370; font-size: 12px; padding: 0 16px; text-align: center; }
+.ct-sig-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.ct-sig-actions[hidden] { display: none; }
+.ct-sig-actions .btn { padding: 7px 12px; font-size: 12.5px; }
 @media (max-width: 560px) {
   .cl-form-row { grid-template-columns: 1fr; }
 }
@@ -3811,7 +3844,7 @@ body.map-page { overflow: hidden; }
   .st-table th { font-size: 11px; }
 }
 
-/* Klienci: przypominajki z rachunkami (wystaw / wyslij / po terminie) */
+/* Klienci: przypominajki z rachunkami - sekcje do wystawienia / do wyslania / czekaja na wplate */
 .cl-todo {
   background: linear-gradient(180deg, rgba(192, 160, 80, 0.11), rgba(192, 160, 80, 0.05));
   border: 1px solid rgba(192, 160, 80, 0.32);
@@ -3820,12 +3853,38 @@ body.map-page { overflow: hidden; }
   padding: 12px 14px;
   margin-bottom: 18px;
 }
-.cl-todo-list { display: flex; flex-direction: column; gap: 6px; }
-.cl-todo-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px; }
-.cl-todo-text { min-width: 0; }
-.cl-todo-label { color: var(--muted); }
-.cl-todo-item.is-late .cl-todo-label { color: #f0a59a; }
-.cl-todo-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.cl-todo-group { --dot: var(--gold); }
+.cl-todo-group--send { --dot: var(--blue); }
+.cl-todo-group--paid { --dot: var(--green); }
+.cl-todo-group + .cl-todo-group { margin-top: 10px; padding-top: 12px; border-top: 1px solid rgba(192, 160, 80, 0.2); }
+.cl-todo-group-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.cl-todo-group-title::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--dot); flex-shrink: 0; }
+.cl-todo-count { color: var(--muted); font-weight: 600; }
+.cl-todo-item { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 9px 0 9px 16px; }
+.cl-todo-item + .cl-todo-item { border-top: 1px solid rgba(255, 255, 255, 0.06); }
+.cl-todo-text { flex: 1 1 190px; min-width: 0; }
+.cl-todo-client { font-size: 14px; font-weight: 700; line-height: 1.3; }
+.cl-todo-detail { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 10px; margin-top: 3px; font-size: 12.5px; color: var(--muted); }
+.cl-todo-note { color: var(--muted-soft); }
+.cl-todo-note.is-sent { color: var(--green); }
+.cl-todo-chip {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--red);
+  background: rgba(224, 96, 80, 0.13);
+  border: 1px solid rgba(224, 96, 80, 0.4);
+  border-radius: 999px;
+  padding: 1px 8px;
+}
+.cl-todo-actions { display: flex; align-items: center; gap: 6px; margin-left: auto; flex-shrink: 0; }
 .cl-row-cover { display: block; font-size: 11.5px; color: var(--muted-soft); }
 .cl-cover-note {
   font-size: 12.5px;
