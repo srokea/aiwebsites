@@ -10,8 +10,14 @@
       {
         "rule": "overused-font",
         "value": "fraunces",
-        "reason": "Agency design system standard (DESIGN.md) — Fraunces is the fixed display serif, not an ad-hoc choice",
-        "createdAt": "2026-07-05T12:38:36.623Z"
+        "createdAt": "2026-07-05T12:38:36.623Z",
+        "reason": "Agency design system standard (DESIGN.md) — Fraunces is the fixed display serif, not an ad-hoc choice"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-11-07T11:39:57.369Z",
+        "reason": "claude: Inter to istniejacy kroj appki Cold Call Tracker sprzed redesignu; operate.md dopuszcza znajomy sans w narzedziach"
       }
     ]
   }
