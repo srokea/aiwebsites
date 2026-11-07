@@ -336,6 +336,49 @@ CREATE TABLE IF NOT EXISTS bill_skips (
   PRIMARY KEY (contract_id, kind, period)
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_bills_once ON bills(contract_id, kind, period);
+
+-- Parowanie kalendarza iCloud (CalDAV) - jeden wiersz na osobe. secret = haslo DO APLIKACJI
+-- zaszyfrowane AES-GCM (server/calendarSecret.js), nigdy nie wraca do frontu. calendar_url ''
+-- = zalogowano, ale kalendarz jeszcze nie wybrany (drugi krok parowania). scope: 'mine' = tylko
+-- Meety, gdzie ta osoba jest "Kto dzwonil" (albo sama ustawila termin), 'all' = wszystkie.
+-- alarm_min: -1 = bez przypomnienia. status: 'ok' | 'error' | 'auth_error' (haslo uniewaznione -
+-- automatyczny sync stoi, dopoki ktos nie polaczy ponownie albo nie kliknie "Synchronizuj").
+CREATE TABLE IF NOT EXISTS calendar_accounts (
+  user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  provider TEXT NOT NULL DEFAULT 'icloud',
+  server_url TEXT NOT NULL DEFAULT '',
+  username TEXT NOT NULL,
+  secret TEXT NOT NULL,
+  home_url TEXT NOT NULL DEFAULT '',
+  calendar_url TEXT NOT NULL DEFAULT '',
+  calendar_name TEXT NOT NULL DEFAULT '',
+  calendar_color TEXT NOT NULL DEFAULT '',
+  scope TEXT NOT NULL DEFAULT 'mine',
+  duration_min INTEGER NOT NULL DEFAULT 30,
+  alarm_min INTEGER NOT NULL DEFAULT 15,
+  app_url TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'ok',
+  last_error TEXT NOT NULL DEFAULT '',
+  last_sync_at TEXT,
+  test_href TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Co juz wyslalismy do czyjego kalendarza. lead_id CELOWO bez FK/CASCADE: po skasowaniu leada
+-- (albo calej niszy) wiersz musi przetrwac, zeby sync zdazyl usunac wydarzenie z iCloud.
+-- term = google_term w chwili wyslania, content_hash = czy tresc wydarzenia sie zmienila.
+CREATE TABLE IF NOT EXISTS calendar_events (
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  lead_id INTEGER NOT NULL,
+  calendar_url TEXT NOT NULL,
+  href TEXT NOT NULL,
+  term TEXT NOT NULL,
+  content_hash TEXT NOT NULL,
+  etag TEXT NOT NULL DEFAULT '',
+  synced_at TEXT NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (user_id, lead_id)
+);
 `);
 
 // Proste "migracje" dla kolumn dodanych po pierwszym wydaniu - ALTER TABLE ADD COLUMN
@@ -369,6 +412,9 @@ addColumnIfMissing("leads", "tag_tiktok INTEGER NOT NULL DEFAULT 0");
 // znaczek "verified" przy ramce social - ustawiany raz, gdy ktos recznie poprawi tagi
 // platform (odroznia recznie zweryfikowane dane od tych prosto ze scrapera/importu CSV)
 addColumnIfMissing("leads", "social_verified INTEGER NOT NULL DEFAULT 0");
+// kto ostatnio ustawil "Termin Google" (display_name) - wlasciciel Meeta do kalendarza iCloud,
+// gdy lead nie ma jeszcze "Kto dzwonil" (patrz calendarSync.js meetingOwner)
+addColumnIfMissing("leads", "google_term_by TEXT NOT NULL DEFAULT ''");
 // #6 - klucz dedup auto-postow w transactions (subskrypcje / potwierdzone naleznosci).
 // Musi byc dodany PRZED indeksem ponizej, bo starsze bazy maja tabele bez tej kolumny.
 addColumnIfMissing("transactions", "source_key TEXT");

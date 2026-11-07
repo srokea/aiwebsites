@@ -69,6 +69,7 @@ router.patch("/:id", (req, res) => {
     db.prepare(`UPDATE users SET ${setClauses} WHERE id = @id`).run({ ...updates, id });
     if (updates.display_name && updates.display_name !== target.display_name) {
       db.prepare("UPDATE leads SET caller = ? WHERE caller = ?").run(updates.display_name, target.display_name);
+      db.prepare("UPDATE leads SET google_term_by = ? WHERE google_term_by = ?").run(updates.display_name, target.display_name);
     }
   })();
 

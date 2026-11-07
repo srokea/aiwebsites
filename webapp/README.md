@@ -47,6 +47,20 @@ Definicja siedzi w jednym miejscu (`server/leadStatus.js`) i obowiązuje tak sam
 
 Zawieszone = `Oczekiwanie` i `Poczta` — czekają na kolejny telefon, więc zostają w „do zrobienia". Pozostałe statusy (`Dopięte`, `Google Meet`, `SMS`, `Nie`) zamykają temat.
 
+## Kalendarz iCloud (Meety → iPhone)
+
+Każdy podpina **swój** kalendarz: avatar w prawym górnym rogu → Profil → „Kalendarz iCloud” (albo przycisk „Połącz z iCloud” na `/kalendarz.html`, albo podpowiedź w kalendarzyku wyboru terminu).
+
+- **Parowanie:** Apple ID + **hasło do aplikacji** (account.apple.com → Logowanie i bezpieczeństwo → Hasła do aplikacji). Zwykłe hasło do Apple ID nie przejdzie (iCloud odda 401). Potem wybór kalendarza — domyślnie appka tworzy osobny „Cold Call — Meety”, który łatwo ukryć/usunąć na iPhonie. W oknie jest też „Wyślij testowe wydarzenie”.
+- **Co trafia do kalendarza:** leady z ustawionym „Termin Google”. Domyślnie tylko *moje* (jestem w „Kto dzwonił”, a gdy nikt nie jest wpisany — termin ustawiono z mojego konta, `leads.google_term_by`); można przełączyć na „Całego zespołu”. Zmiana terminu przesuwa wydarzenie, wyczyszczenie terminu albo skasowanie leada/niszy je usuwa. Przeszłych Meetów nie dosyłamy wstecz (już wysłane zostają jako historia).
+- **Jak to działa:** `server/calendarSync.js` uzgadnia stan (co powinno być w kalendarzu vs. co już wysłano — tabela `calendar_events`) po każdym udanym zapisie leadów/nisz/kont i dodatkowo co 10 minut. Klient CalDAV bez zależności: `server/caldav.js`; wydarzenia `.ics` w strefie `Europe/Warsaw`: `server/ics.js`.
+- **Hasło do aplikacji** jest szyfrowane (AES-256-GCM). Klucz: `CALENDAR_SECRET` w `.env` albo — gdy go brak — `data/calendar.key` tworzony automatycznie (leży w `data/`, czyli na wolumenie Dockera, więc przeżywa redeploy). Utrata/zmiana klucza = trzeba połączyć kalendarze ponownie (appka sama to zgłosi).
+- **Testy:** `npm test` (atrapa serwera iCloud w `server/calendarSync.test.js`). `CALDAV_SERVER_URL` służy wyłącznie do lokalnych testów z atrapą — na produkcji nie ustawiać.
+
+## Wygląd
+
+Styl „Liquid Glass” (ciemny): tokeny i hierarchia warstw szkła na początku `public/css/style.css`, wspólny materiał paneli na końcu pliku. Zasady produktu i tonu: `PRODUCT.md`.
+
 ## Wystawienie na zewnątrz
 
 Bez otwierania portów na routerze: [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) — `cloudflared tunnel --url http://localhost:3000`.

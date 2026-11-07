@@ -160,6 +160,10 @@ function buildProfileModal() {
           <button type="submit" class="btn primary">Zresetuj</button>
         </div>
       </form>
+
+      <div class="modal-divider"></div>
+      <!-- parowanie kalendarza iCloud (calendar-sync.js) - zawsze dotyczy zalogowanej osoby -->
+      <div data-calsync-slot="profile"></div>
     </div>
   `;
   document.body.appendChild(el);
@@ -278,6 +282,10 @@ async function openProfileModal() {
 
   renderUserPicker();
   fillProfileFormForEditingUser();
+  if (typeof loadCalSyncStatus === "function") {
+    renderCalSyncSlots();
+    loadCalSyncStatus();
+  }
   profileModalEl.classList.remove("hidden");
 }
 

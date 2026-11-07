@@ -860,6 +860,7 @@ tbody.addEventListener("click", (e) => {
     onPick: async (value) => {
       await saveLead(lead.id, { google_term: value });
       await loadMeets(); // swiezo umowiony termin ma od razu blokowac te godzine
+      if (typeof calSyncAfterTermChange === "function") calSyncAfterTermChange(lead.id, value);
     },
   });
 });
@@ -1573,6 +1574,7 @@ document.getElementById("add-lead-form").addEventListener("submit", async (e) =>
     renderLeads();
     await loadNicheHeader(); // nowy lead zmienia "wszystkich"/"do zrobienia" w kafelkach
     focusLeadRow(lead.id); // przescrolluj do swiezego wiersza i mrugnij nim
+    if (lead.google_term && typeof calSyncAfterTermChange === "function") calSyncAfterTermChange(lead.id, lead.google_term);
   } catch (err) {
     errorEl.textContent = err.message;
     errorEl.style.display = "block";

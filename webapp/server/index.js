@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 require("./db"); // inicjalizuje baze i tworzy tabele przy starcie
 const { requireAuth } = require("./auth");
 const { scheduleBackups } = require("./backup");
+const calendarSync = require("./calendarSync");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -62,6 +63,19 @@ app.use("/api/auth", require("./routes/auth"));
 // wszystko dalej pod /api wymaga zalogowania (sesja z ciasteczka albo, w przyszlosci, API key)
 app.use("/api", requireAuth);
 
+// Kalendarz iCloud: kazdy udany zapis leadow / nisz / kont (zmiana terminu, dzwoniacego, nazwy
+// firmy, skasowanie leada albo niszy, zmiana nazwy osoby...) "kopie" synchronizacje. Sam sync
+// liczy roznice wzgledem tego, co juz jest w kalendarzach, wiec zbedne kopniecie nic nie kosztuje,
+// a nie trzeba pamietac o tym w kazdym endpoincie z osobna (patrz server/calendarSync.js).
+app.use(["/api/leads", "/api/niches", "/api/users"], (req, res, next) => {
+  if (req.method !== "GET") {
+    res.on("finish", () => {
+      if (res.statusCode < 400 && calendarSync.hasAccounts()) calendarSync.kick();
+    });
+  }
+  next();
+});
+
 app.use("/api/niches", require("./routes/niches"));
 app.use("/api/leads", require("./routes/leads"));
 app.use("/api/stats", require("./routes/stats"));
@@ -76,6 +90,7 @@ app.use("/api/jarvis", require("./routes/jarvis"));
 app.use("/api/transactions", require("./routes/transactions"));
 app.use("/api/finance", require("./routes/finance"));
 app.use("/api/calendar", require("./routes/calendar"));
+app.use("/api/calendar-sync", require("./routes/calendarSync"));
 app.use("/api/notifications", require("./routes/notifications"));
 app.use("/api/map", require("./routes/map"));
 app.use("/api/reviews", require("./routes/reviews"));
@@ -102,3 +117,7 @@ app.listen(PORT, () => {
 // w backup.js) - to jej jedyna siatka bezpieczenstwa. Backup od razu przy starcie i potem co
 // 3h - baza jest mala, wiec czesty backup nic nie kosztuje, a duzo daje przy kolejnej wpadce.
 scheduleBackups(3 * 60 * 60 * 1000);
+
+// synchronizacja Meetow z kalendarzami iCloud: przebieg chwile po starcie i potem co 10 minut
+// (siatka bezpieczenstwa obok "kopniec" po kazdym zapisie powyzej)
+calendarSync.start();

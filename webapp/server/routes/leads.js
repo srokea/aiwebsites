@@ -281,6 +281,11 @@ router.patch("/:id", (req, res) => {
 
   if (!Object.keys(updates).length) return res.status(400).json({ error: "Brak pol do aktualizacji" });
 
+  // kto umowil Meeta - wlasciciel wydarzenia w kalendarzu iCloud, dopoki lead nie ma "Kto dzwonil"
+  if ("google_term" in updates && updates.google_term !== lead.google_term) {
+    updates.google_term_by = updates.google_term ? req.user?.display_name || "" : "";
+  }
+
   const calledAt = computeCalledAt({ ...lead, ...updates }, lead.called_at);
   const dopieteAt = computeDopieteAt({ ...lead, ...updates }, lead.dopiete_at);
 

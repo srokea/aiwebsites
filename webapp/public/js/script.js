@@ -425,6 +425,7 @@ document.getElementById("lead-panel").addEventListener("click", (e) => {
       onPick: async (value) => {
         await savePanelField("google_term", value);
         await loadMeets();
+        if (typeof calSyncAfterTermChange === "function") calSyncAfterTermChange(panelLead.id, value);
       },
     });
     return;

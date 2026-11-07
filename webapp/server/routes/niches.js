@@ -330,6 +330,8 @@ router.post("/:slug/leads", (req, res) => {
     lead.caller = caller;
   }
   for (const tag of PLATFORM_TAGS) lead[`tag_${tag}`] = req.body[`tag_${tag}`] ? 1 : 0;
+  // jak w PATCH /api/leads/:id - kto ustawil termin (kalendarz iCloud, patrz calendarSync.js)
+  lead.google_term_by = lead.google_term ? req.user?.display_name || "" : "";
 
   const cols = Object.keys(lead);
   const info = db
