@@ -8,6 +8,17 @@
 set -e
 cd "$(dirname "$0")"
 
+# Backup zywej bazy PRZED czymkolwiek - nowa wersja przy starcie moze dolozyc tabele/kolumny
+# (migracje w server/db.js), a automatyczny backup z backup.js robi sie dopiero PO starcie, czyli
+# juz po migracji. db.backup() w dzialajacym kontenerze jest bezpieczne dla zywej bazy (WAL).
+# Nieudany backup = koniec skryptu (set -e), nic nie zostaje ruszone.
+echo "0) Backup bazy przed aktualizacja..."
+if docker ps --format '{{.Names}}' | grep -qx callcenter; then
+  docker exec callcenter node -e "require('./server/backup').runBackup().then((f) => console.log('   zapisano ' + f))"
+else
+  echo "   kontener callcenter nie dziala - pomijam backup na zywo"
+fi
+
 echo "1) Zabezpieczam poprzednie wersje obrazu (backup do rollbacku)..."
 docker image inspect aiwebsites-webapp:previous >/dev/null 2>&1 && \
   docker tag aiwebsites-webapp:previous aiwebsites-webapp:previous2 || true

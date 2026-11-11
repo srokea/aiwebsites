@@ -1,0 +1,416 @@
+<!doctype html>
+<!--
+  Paulina Kotas Fotografia — strona publiczna.
+  Portfolio i tło hero czyta z workera (te same endpointy co portfolio-template:
+  /api/folders, /api/folders/{id}/content, /api/settings, /api/hero-slides).
+  Dopóki worker nie odpowiada, strona pokazuje zdjęcia z assets/photos/ (zapas
+  w assets/js/site.js → LOCAL_PORTFOLIO). API_BASE też tam.
+-->
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Paulina Kotas Fotografia | Fotograf Piotrków Trybunalski</title>
+<meta name="description" content="Sesje kobiece, ciążowe, noworodkowe, rodzinne i dziecięce. Reportaże z chrzcin i innych uroczystości. Fotograf z okolic Piotrkowa Trybunalskiego, tel. 576 685 749.">
+<meta name="theme-color" content="#3F5F0A">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:title" content="Paulina Kotas Fotografia | Fotograf Piotrków Trybunalski">
+<meta property="og:description" content="Sesje kobiece, ciążowe, noworodkowe, rodzinne i dziecięce. Reportaże z chrzcin i innych uroczystości. Okolice Piotrkowa Trybunalskiego.">
+<meta property="og:image" content="https://kotas.pages.dev/assets/img/og.jpg">
+<meta property="og:url" content="https://kotas.pages.dev/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://kotas.pages.dev/">
+<!-- Po podpięciu domeny klientki: podmień https://kotas.pages.dev/ w canonical, og:url, og:image i JSON-LD -->
+
+<link rel="preload" href="assets/fonts/bodonimoda-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/worksans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css">
+<!-- Fonty bloków tekstu z panelu (Playfair, Lora, Great Vibes…), hostowane lokalnie -->
+<link rel="stylesheet" href="assets/css/admin-fonts.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Paulina Kotas Fotografia",
+  "description": "Sesje kobiece, ciążowe, noworodkowe, rodzinne i dziecięce. Reportaże z chrzcin i innych uroczystości.",
+  "image": "https://kotas.pages.dev/assets/img/og.jpg",
+  "url": "https://kotas.pages.dev/",
+  "telephone": "+48576685749",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Krzyżanów 52",
+    "postalCode": "97-371",
+    "addressLocality": "Krzyżanów",
+    "addressRegion": "łódzkie",
+    "addressCountry": "PL"
+  },
+  "areaServed": ["Piotrków Trybunalski", "województwo łódzkie"],
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    "opens": "08:00",
+    "closes": "17:00"
+  }],
+  "hasMap": "https://www.google.com/maps/search/?api=1&query=Paulina+Kotas+Fotografia&query_place_id=ChIJrVcdAbH1GUcR_DoljQcujCM",
+  "sameAs": ["https://www.instagram.com/paulinakotasfotografia/", "https://www.facebook.com/p/Paulina-Kotas-Fotografia-100063511065266/"]
+}
+</script>
+</head>
+<body id="top">
+
+<a class="skip" href="#main">Przejdź do treści</a>
+
+<!-- ================================================================ HEADER -->
+<header class="site-head">
+  <div class="site-head__in">
+    <!-- Logo tymczasowe (tekstowe), do podmiany na oryginał od klientki -->
+    <a href="#top" class="logo" aria-label="Paulina Kotas Fotografia, początek strony">
+      <span class="logo__name">Paulina Kotas</span>
+      <span class="logo__sub">Fotografia</span>
+    </a>
+
+    <nav class="nav scrollbar-none" aria-label="Sekcje strony">
+      <a href="#o-mnie" data-nav="o-mnie" class="navlink">O mnie</a>
+      <a href="#sesje" data-nav="sesje" class="navlink">Sesje</a>
+      <a href="#cennik" data-nav="cennik" class="navlink">Cennik</a>
+      <a href="#opinie" data-nav="opinie" class="navlink">Opinie</a>
+      <a href="#kontakt" data-nav="kontakt" class="navlink">Kontakt</a>
+    </nav>
+
+    <div class="head-actions">
+      <a href="https://www.instagram.com/paulinakotasfotografia/" target="_blank" rel="noopener" class="icon-btn" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r=".6" fill="currentColor"/></svg>
+      </a>
+      <a href="https://www.facebook.com/p/Paulina-Kotas-Fotografia-100063511065266/" target="_blank" rel="noopener" class="icon-btn" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
+      </a>
+      <a href="tel:+48576685749" class="btn btn--green btn--head" aria-label="Zadzwoń: 576 685 749">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+        <span class="btn--head__num">576 685 749</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ================================================================== HERO -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__in">
+    <div class="hero__media">
+      <div class="hero__frame" id="heroMedia">
+        <img id="heroImg"
+             src="assets/img/hero-1200.webp"
+             srcset="assets/img/hero-700.webp 700w, assets/img/hero-1200.webp 1200w"
+             sizes="(min-width: 900px) 46vw, 100vw"
+             width="1200" height="1600"
+             alt="Rodzice tulą noworodka podczas domowej sesji noworodkowej"
+             fetchpriority="high">
+      </div>
+      <figure class="hero__inset" aria-hidden="true">
+        <img src="assets/photos/dzieciece/02-800.webp" width="800" height="1121" alt="">
+      </figure>
+    </div>
+
+    <div class="hero__text">
+      <h1 id="hero-title" class="display">Witaj w&nbsp;moim małym świecie <em>fotografii</em>
+        <span class="h1-sub">Fotograf z&nbsp;okolic Piotrkowa Trybunalskiego</span></h1>
+      <p class="hero__lead">Fotografuję kobiety, przyszłe mamy, maluszki i&nbsp;całe rodziny. Robię też zdjęcia na chrzcinach i&nbsp;innych uroczystościach.</p>
+
+      <div class="hero__cta">
+        <a href="tel:+48576685749" class="btn btn--green btn--lg">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+          Zadzwoń 576&nbsp;685&nbsp;749
+        </a>
+        <a href="#sesje" class="btn btn--ghost btn--lg">Zobacz zdjęcia</a>
+      </div>
+
+      <a href="#opinie" class="hero__rating">
+        <span class="hero__rating-num display">5,0</span>
+        <span class="hero__rating-txt">
+          <span class="stars" aria-hidden="true">★★★★★</span>
+          <span>57 opinii w&nbsp;Google</span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================== O MNIE -->
+<section class="section section--surface" id="o-mnie" aria-labelledby="o-mnie-title">
+  <div class="wrap about">
+    <figure class="about__photo">
+      <img src="assets/img/paulina-800.webp"
+           srcset="assets/img/paulina-480.webp 480w, assets/img/paulina-800.webp 800w"
+           sizes="(min-width: 900px) 40vw, 100vw"
+           width="800" height="798" loading="lazy"
+           alt="Paulina Kotas z aparatem w dłoni">
+    </figure>
+    <div class="about__text">
+      <h2 id="o-mnie-title" class="display h2">O mnie</h2>
+      <p class="about__lead">Robię to, co kocham, i&nbsp;zatrzymuję dla Was czas na fotografiach.</p>
+      <p>Nie musicie umieć pozować. Na sesji wszystko podpowiem, a&nbsp;Wy po prostu bądźcie sobą.</p>
+      <p>Pracuję w&nbsp;Piotrkowie Trybunalskim i&nbsp;okolicach.</p>
+      <p class="about__sign display">Paulina</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ SESJE -->
+<!-- Zakładki = rodzaje sesji (foldery z panelu), pod nimi galeria wybranej.
+     Buduje je assets/js/site.js z panelu albo, przed wdrożeniem, z assets/photos/. -->
+<section class="section" id="sesje" aria-labelledby="sesje-title">
+  <div class="wrap">
+    <div class="sesje-head">
+      <h2 id="sesje-title" class="display h2">Sesje</h2>
+    </div>
+
+    <div class="cats-wrap">
+      <div class="cats scrollbar-none" id="cats" role="tablist" aria-label="Rodzaj sesji"></div>
+    </div>
+
+    <div class="cat-panel" id="catPanel" role="tabpanel" tabindex="-1">
+      <h3 class="sr-only" id="catTitle"></h3>
+      <div class="pf-body" id="pfBody">
+        <div class="pf-albums" id="pfAlbums"></div>
+      </div>
+      <div class="pf-more">
+        <button type="button" class="btn btn--ghost" id="pfMore" hidden>Pokaż wszystkie</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================== CENNIK -->
+<!-- Kwoty i opisy: kreskowane pola do uzupełnienia, gdy Paulina poda cennik. -->
+<section class="section section--surface" id="cennik" aria-labelledby="cennik-title">
+  <div class="wrap">
+    <div class="menu-card">
+    <h2 id="cennik-title" class="display h2 menu-card__title">Cennik</h2>
+
+    <ul class="prices" role="list">
+      <li class="price">
+        <span class="price__thumb"><img src="assets/photos/kobiece/03-800.webp" width="800" height="1067" loading="lazy" alt=""></span>
+        <div class="price__body">
+          <div class="price__top"><h3 class="price__name">Sesja kobieca</h3><span class="price__dots" aria-hidden="true"></span><span class="price__val">od <span class="price__ph" aria-hidden="true"></span> zł</span></div>
+          <button type="button" class="price__link" data-open-cat="kobiece">Zobacz zdjęcia <span aria-hidden="true">→</span></button>
+        </div>
+      </li>
+      <li class="price">
+        <span class="price__thumb"><img src="assets/img/cennik-ciazowa.webp" width="320" height="400" loading="lazy" alt=""></span>
+        <div class="price__body">
+          <div class="price__top"><h3 class="price__name">Sesja ciążowa</h3><span class="price__dots" aria-hidden="true"></span><span class="price__val">od <span class="price__ph" aria-hidden="true"></span> zł</span></div>
+          <button type="button" class="price__link" data-open-cat="ciazowe">Zobacz zdjęcia <span aria-hidden="true">→</span></button>
+        </div>
+      </li>
+      <li class="price">
+        <span class="price__thumb"><img src="assets/photos/noworodkowe/02-800.webp" width="800" height="1067" loading="lazy" alt=""></span>
+        <div class="price__body">
+          <div class="price__top"><h3 class="price__name">Sesja noworodkowa</h3><span class="price__dots" aria-hidden="true"></span><span class="price__val">od <span class="price__ph" aria-hidden="true"></span> zł</span></div>
+          <button type="button" class="price__link" data-open-cat="noworodkowe">Zobacz zdjęcia <span aria-hidden="true">→</span></button>
+        </div>
+      </li>
+      <li class="price">
+        <span class="price__thumb"><img src="assets/photos/rodzinne/02-800.webp" width="800" height="1121" loading="lazy" alt=""></span>
+        <div class="price__body">
+          <div class="price__top"><h3 class="price__name">Sesja rodzinna</h3><span class="price__dots" aria-hidden="true"></span><span class="price__val">od <span class="price__ph" aria-hidden="true"></span> zł</span></div>
+          <button type="button" class="price__link" data-open-cat="rodzinne">Zobacz zdjęcia <span aria-hidden="true">→</span></button>
+        </div>
+      </li>
+      <li class="price">
+        <span class="price__thumb"><img src="assets/photos/dzieciece/01-800.webp" width="800" height="1121" loading="lazy" alt=""></span>
+        <div class="price__body">
+          <div class="price__top"><h3 class="price__name">Sesja dziecięca</h3><span class="price__dots" aria-hidden="true"></span><span class="price__val">od <span class="price__ph" aria-hidden="true"></span> zł</span></div>
+          <button type="button" class="price__link" data-open-cat="dzieciece">Zobacz zdjęcia <span aria-hidden="true">→</span></button>
+        </div>
+      </li>
+      <li class="price">
+        <span class="price__thumb placeholder" aria-hidden="true"></span>
+        <div class="price__body">
+          <div class="price__top"><h3 class="price__name">Reportaż z&nbsp;uroczystości</h3><span class="price__dots" aria-hidden="true"></span><span class="price__val">od <span class="price__ph" aria-hidden="true"></span> zł</span></div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="prices-cta">
+      <p class="display">O&nbsp;wolne terminy najlepiej pytać telefonicznie.</p>
+      <a href="tel:+48576685749" class="btn btn--green">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+        Zadzwoń 576&nbsp;685&nbsp;749
+      </a>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================== OPINIE -->
+<section class="section section--green" id="opinie" aria-labelledby="opinie-title">
+  <div class="wrap">
+    <div class="reviews-head">
+      <h2 id="opinie-title" class="display h2">Opinie</h2>
+      <div class="reviews-score">
+        <p class="reviews-score__num display">5,0</p>
+        <div>
+          <p class="stars stars--lg" aria-label="Ocena 5 na 5">★★★★★</p>
+          <p class="reviews-score__count">57 opinii w&nbsp;Google</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rv">
+      <button type="button" class="rv__btn rv__btn--prev" id="rvPrev" aria-label="Poprzednie opinie">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <ul class="rv__track scrollbar-none" id="rvTrack" role="list" tabindex="0" aria-label="Opinie klientów z Google">
+        <li class="review">
+          <blockquote>Serdecznie polecam ! Paulina mega sympatyczna, nie ma się co przy niej stresować. Pomaga przy pozowaniu, a efekt finalny jest przepiękny. Zdjęcia cudowne + piękny wydruk odbitek. Najlepszy wybór na sesję zdjęciową na prawdę !</blockquote>
+          <p class="review__meta"><span class="stars" aria-label="5 na 5">★★★★★</span> <span class="review__who">Rena Adamczyk</span></p>
+        </li>
+        <li class="review">
+          <blockquote>Jesteśmy zachwyceni sesją noworodkowa. Podejście do córeczki pierwsza klasa. Dużo wyrozumiałości i cierpliwości do dziecka. Zdjęcia prześliczne. Ciężki było zdecydować się, które wybrać. Z całego serca polecamy Panią Paulinę jako fotografa 🙂</blockquote>
+          <p class="review__meta"><span class="stars" aria-label="5 na 5">★★★★★</span> <span class="review__who">Daria Burzynska</span></p>
+        </li>
+        <li class="review">
+          <blockquote>U Pauliny wykonaliśmy w sumie już 7 sesji i reportaży. Chyba nie ma może być lepszej opinii, niż fakt, że przy następnej okazji znów będziemy chcieli, aby to Ona była naszym fotografem! 😊</blockquote>
+          <p class="review__meta"><span class="stars" aria-label="5 na 5">★★★★★</span> <span class="review__who">Patrycja Sygulska</span></p>
+        </li>
+        <li class="review">
+          <blockquote>Współpraca z Panią Pauliną to czysta przyjemność! Podczas sesji rodzinnej panowała super atmosfera, bez żadnego spięcia i sztucznego pozowania.</blockquote>
+          <p class="review__meta"><span class="stars" aria-label="5 na 5">★★★★★</span> <span class="review__who">Agata C.</span></p>
+        </li>
+        <li class="review">
+          <blockquote>Serdecznie polecam! Zdjęcia są przepiękne, kontakt z Pauliną świetny, potrzebowałam jednego zdjęcia wcześniej i bez problemu je dostałam tego samego dnia.</blockquote>
+          <p class="review__meta"><span class="stars" aria-label="5 na 5">★★★★★</span> <span class="review__who">Katarzyna Lepka</span></p>
+        </li>
+        <li class="review">
+          <blockquote>Z całego serca polecam współpracę z Panią Pauliną!</blockquote>
+          <p class="review__meta"><span class="stars" aria-label="5 na 5">★★★★★</span> <span class="review__who">Kamil Dobrysiewicz</span></p>
+        </li>
+      </ul>
+      <button type="button" class="rv__btn rv__btn--next" id="rvNext" aria-label="Następne opinie">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <p class="rv__count" id="rvCount" aria-hidden="true"></p>
+    </div>
+
+    <div class="reviews-cta">
+      <p class="display">Byliście u&nbsp;mnie na sesji? Zostawcie proszę kilka słów w&nbsp;Google, bardzo mi to pomaga.</p>
+      <div class="reviews-cta__btns">
+        <a class="btn btn--white" href="https://search.google.com/local/writereview?placeid=ChIJrVcdAbH1GUcR_DoljQcujCM" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+            <path d="M12 10.2v3.9h5.5a4.7 4.7 0 0 1-2 3.1v2.6h3.2c1.9-1.7 3-4.3 3-7.3 0-.7-.06-1.4-.18-2.05z"/>
+            <path d="M12 22c2.7 0 4.96-.9 6.62-2.42l-3.2-2.48c-.9.6-2.05.95-3.42.95-2.6 0-4.8-1.76-5.6-4.13H3.1v2.6A10 10 0 0 0 12 22"/>
+            <path d="M6.4 13.92a6 6 0 0 1 0-3.84V7.48H3.1a10 10 0 0 0 0 9.04z"/>
+            <path d="M12 5.98c1.47 0 2.79.5 3.83 1.5l2.84-2.84C16.95 3.03 14.7 2 12 2A10 10 0 0 0 3.1 7.48l3.3 2.6C7.2 7.74 9.4 5.98 12 5.98"/>
+          </svg>
+          Zostaw opinię
+        </a>
+        <a class="btn btn--outline-white" href="https://search.google.com/local/reviews?placeid=ChIJrVcdAbH1GUcR_DoljQcujCM" target="_blank" rel="noopener">Wszystkie opinie</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== KONTAKT -->
+<section class="section" id="kontakt" aria-labelledby="kontakt-title">
+  <div class="wrap contact">
+    <div class="contact__main">
+      <h2 id="kontakt-title" class="display h2">Kontakt</h2>
+      <p class="contact__lead">Najłatwiej złapać mnie telefonicznie, w&nbsp;tygodniu od 8 do 17.</p>
+      <a href="tel:+48576685749" class="contact__phone display">576&nbsp;685&nbsp;749</a>
+
+      <div class="contact__actions">
+        <a href="tel:+48576685749" class="btn btn--green">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+          Zadzwoń
+        </a>
+        <a href="https://www.instagram.com/paulinakotasfotografia/" target="_blank" rel="noopener" class="btn btn--ghost">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r=".6" fill="currentColor"/></svg>
+          Instagram
+        </a>
+        <a href="https://www.facebook.com/p/Paulina-Kotas-Fotografia-100063511065266/" target="_blank" rel="noopener" class="btn btn--ghost">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
+          Facebook
+        </a>
+      </div>
+
+      <div class="contact__addr">
+        <h3 class="label">Adres</h3>
+        <p>Krzyżanów 52<br>97-371 Krzyżanów</p>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Paulina+Kotas+Fotografia%2C+Krzy%C5%BCan%C3%B3w+52%2C+97-371+Krzy%C5%BCan%C3%B3w&destination_place_id=ChIJrVcdAbH1GUcR_DoljQcujCM" target="_blank" rel="noopener" class="btn btn--ghost btn--sm">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7m0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5"/></svg>
+          Wyznacz trasę
+        </a>
+      </div>
+    </div>
+
+    <div class="contact__hours">
+      <h3 class="label">Kiedy dzwonić</h3>
+      <table class="hours">
+        <tbody>
+          <tr data-day="0"><th scope="row">Poniedziałek</th><td>8:00–17:00</td></tr>
+          <tr data-day="1"><th scope="row">Wtorek</th><td>8:00–17:00</td></tr>
+          <tr data-day="2"><th scope="row">Środa</th><td>8:00–17:00</td></tr>
+          <tr data-day="3"><th scope="row">Czwartek</th><td>8:00–17:00</td></tr>
+          <tr data-day="4"><th scope="row">Piątek</th><td>8:00–17:00</td></tr>
+          <tr data-day="5"><th scope="row">Sobota</th><td>wolne</td></tr>
+          <tr data-day="6"><th scope="row">Niedziela</th><td>wolne</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="map-wrap">
+    <iframe class="map" src="https://maps.google.com/maps?q=Paulina%20Kotas%20Fotografia%2C%20Krzy%C5%BCan%C3%B3w%2052%2C%2097-371%20Krzy%C5%BCan%C3%B3w&z=13&output=embed"
+            title="Mapa dojazdu: Krzyżanów 52, 97-371 Krzyżanów" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+</section>
+
+</main>
+
+<!-- ================================================================ STOPKA -->
+<footer class="site-foot">
+  <div class="wrap site-foot__in">
+    <a href="#top" class="logo logo--light" aria-label="Paulina Kotas Fotografia, początek strony">
+      <span class="logo__name">Paulina Kotas</span>
+      <span class="logo__sub">Fotografia</span>
+    </a>
+    <div class="site-foot__links">
+      <a href="tel:+48576685749">576 685 749</a>
+      <a href="https://www.instagram.com/paulinakotasfotografia/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.facebook.com/p/Paulina-Kotas-Fotografia-100063511065266/" target="_blank" rel="noopener">Facebook</a>
+      <a href="privacy.html">Polityka prywatności</a>
+    </div>
+    <p class="site-foot__copy">© 2026 Paulina Kotas Fotografia</p>
+  </div>
+</footer>
+
+<!-- ============================================================== LIGHTBOX -->
+<div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia" hidden>
+  <button type="button" class="lightbox__btn lightbox__close" id="lbClose" aria-label="Zamknij podgląd">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <button type="button" class="lightbox__btn lightbox__zoom" id="lbZoom" aria-label="Przybliż zdjęcie" aria-pressed="false">
+    <svg class="i-in" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2M11 8.2v5.6M8.2 11h5.6"/></svg>
+    <svg class="i-out" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2M8.2 11h5.6"/></svg>
+  </button>
+  <button type="button" class="lightbox__btn lightbox__prev" id="lbPrev" aria-label="Poprzednie zdjęcie">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+  <button type="button" class="lightbox__btn lightbox__next" id="lbNext" aria-label="Następne zdjęcie">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <figure class="lightbox__fig" id="lbFig">
+    <!-- <img> wstawia site.js; klik w zdjęcie przybliża -->
+    <div class="lightbox__stage" id="lbStage"></div>
+    <figcaption id="lbCounter" aria-live="polite"></figcaption>
+  </figure>
+</div>
+
+<script src="assets/js/site.js" defer></script>
+</body>
+</html>

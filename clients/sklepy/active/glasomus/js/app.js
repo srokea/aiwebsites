@@ -38,5 +38,19 @@ function updateActiveNavLink() {
 window.addEventListener('scroll', updateActiveNavLink);
 updateActiveNavLink();
 
+// Mobile menu: hamburger toggles the nav dropdown
+const navbar = document.querySelector('.navbar');
+const navToggle = document.querySelector('.nav-toggle');
+
+function setMenu(open) {
+  navbar.classList.toggle('open', open);
+  navToggle.setAttribute('aria-expanded', open);
+}
+
+navToggle.addEventListener('click', () => setMenu(!navbar.classList.contains('open')));
+navLinks.forEach(link => link.addEventListener('click', () => setMenu(false)));
+document.addEventListener('click', e => { if (!navbar.contains(e.target)) setMenu(false); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+
 // Init
 applyLang('pl');

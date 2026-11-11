@@ -5,7 +5,8 @@ const Database = require("better-sqlite3");
 const dataDir = path.join(__dirname, "..", "data");
 if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
-const db = new Database(path.join(dataDir, "coldcall.db"));
+// DB_FILE tylko dla testow (npm test -> ":memory:"), zeby nigdy nie dotykaly prawdziwej bazy
+const db = new Database(process.env.DB_FILE || path.join(dataDir, "coldcall.db"));
 db.pragma("journal_mode = WAL");
 db.pragma("foreign_keys = ON");
 
@@ -233,6 +234,151 @@ CREATE TABLE IF NOT EXISTS review_links (
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+-- Modul "Klienci i umowy" (+ rachunki). Dane zleceniobiorcy (PESEL, nr dowodu, nr konta) -
+-- zawsze jeden wiersz (id = 1), edytowany w "Moje dane" na klienci.html.
+CREATE TABLE IF NOT EXISTS contractor (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  full_name TEXT NOT NULL DEFAULT '',
+  address TEXT NOT NULL DEFAULT '',
+  pesel TEXT NOT NULL DEFAULT '',
+  id_card TEXT NOT NULL DEFAULT '',
+  bank_account TEXT NOT NULL DEFAULT '',
+  phone TEXT NOT NULL DEFAULT '',
+  email TEXT NOT NULL DEFAULT '',
+  issue_city TEXT NOT NULL DEFAULT '',
+  student_until TEXT NOT NULL DEFAULT '',
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Klient = dopiety lead (albo ktos spoza cold callingu - lead_id NULL). SET NULL zamiast CASCADE:
+-- usuniecie niszy kasuje jej leady, a umowy i rachunki klienta musza to przezyc.
+-- name = krotka nazwa na liste ("Colibra iBeauty"), legal_name = firma dokladnie jak na fakturach
+-- klienta (idzie na rachunek).
+CREATE TABLE IF NOT EXISTS clients (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  lead_id INTEGER REFERENCES leads(id) ON DELETE SET NULL,
+  name TEXT NOT NULL DEFAULT '',
+  legal_name TEXT NOT NULL DEFAULT '',
+  owner_name TEXT NOT NULL DEFAULT '',
+  address TEXT NOT NULL DEFAULT '',
+  nip TEXT NOT NULL DEFAULT '',
+  regon TEXT NOT NULL DEFAULT '',
+  phone TEXT NOT NULL DEFAULT '',
+  email TEXT NOT NULL DEFAULT '',
+  city TEXT NOT NULL DEFAULT '',
+  niche TEXT NOT NULL DEFAULT '',
+  notes TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_clients_lead ON clients(lead_id) WHERE lead_id IS NOT NULL;
+
+-- Umowy zlecenia. Daty "YYYY-MM-DD" albo '' (ends_on '' = bez daty konca). Kwoty w groszach,
+-- NULL = jeszcze nieznana (do uzupelnienia). sites = JSON [{name, domain}] - z tego liczba stron
+-- i osobne pozycje na rachunku. bought_out_on ustawia sie samo po oplaceniu rachunku za wykup.
+CREATE TABLE IF NOT EXISTS contracts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  client_id INTEGER NOT NULL REFERENCES clients(id) ON DELETE CASCADE,
+  number TEXT NOT NULL UNIQUE,
+  signed_on TEXT NOT NULL DEFAULT '',
+  starts_on TEXT NOT NULL DEFAULT '',
+  ends_on TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'szkic',
+  kind TEXT NOT NULL DEFAULT 'wykonanie_abonament',
+  variant TEXT NOT NULL DEFAULT '',
+  onetime_grosze INTEGER,
+  monthly_grosze INTEGER,
+  sites TEXT NOT NULL DEFAULT '[]',
+  buyout_grosze INTEGER,
+  bought_out_on TEXT NOT NULL DEFAULT '',
+  signed_pdf TEXT NOT NULL DEFAULT '',
+  notes TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_contracts_client ON contracts(client_id);
+
+-- Rachunki. contract_id BEZ cascade - umowy z rachunkami nie da sie skasowac (dokument ksiegowy).
+-- Numer "{seq}/{MM}/{RRRR}", seq kolejny w obrebie roku (UNIQUE year+seq = bez dubli).
+-- snapshot = JSON z danymi stron z chwili wystawienia - rachunek renderuje sie TYLKO z niego,
+-- wiec pozniejsza zmiana danych klienta/zleceniobiorcy nie zmienia starych rachunkow.
+-- period 'YYYY-MM' dla abonamentu, '' dla wykonania/wykupu -> jeden taki rachunek na umowe.
+CREATE TABLE IF NOT EXISTS bills (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  contract_id INTEGER NOT NULL REFERENCES contracts(id),
+  number TEXT NOT NULL UNIQUE,
+  year INTEGER NOT NULL,
+  seq INTEGER NOT NULL,
+  issued_on TEXT NOT NULL,
+  kind TEXT NOT NULL,
+  period TEXT NOT NULL DEFAULT '',
+  items TEXT NOT NULL DEFAULT '[]',
+  total_grosze INTEGER NOT NULL,
+  due_on TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'wystawiony',
+  paid_on TEXT NOT NULL DEFAULT '',
+  snapshot TEXT NOT NULL DEFAULT '{}',
+  transaction_id INTEGER REFERENCES transactions(id) ON DELETE SET NULL,
+  created_by TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_bills_seq ON bills(year, seq);
+
+-- "Pomin" przy przypominajce "wystaw rachunek" (np. darmowy miesiac, wykonanie rozliczone inaczej) -
+-- ten rachunek nie bedzie juz przypominany. period jak w bills ('' dla wykonania).
+CREATE TABLE IF NOT EXISTS bill_skips (
+  contract_id INTEGER NOT NULL REFERENCES contracts(id) ON DELETE CASCADE,
+  kind TEXT NOT NULL,
+  period TEXT NOT NULL DEFAULT '',
+  created_by TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (contract_id, kind, period)
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_bills_once ON bills(contract_id, kind, period);
+
+-- Parowanie kalendarza iCloud (CalDAV) - jeden wiersz na osobe. secret = haslo DO APLIKACJI
+-- zaszyfrowane AES-GCM (server/calendarSecret.js), nigdy nie wraca do frontu. calendar_url ''
+-- = zalogowano, ale kalendarz jeszcze nie wybrany (drugi krok parowania). scope: 'mine' = tylko
+-- Meety, gdzie ta osoba jest "Kto dzwonil" (albo sama ustawila termin), 'all' = wszystkie.
+-- alarm_min: -1 = bez przypomnienia. status: 'ok' | 'error' | 'auth_error' (haslo uniewaznione -
+-- automatyczny sync stoi, dopoki ktos nie polaczy ponownie albo nie kliknie "Synchronizuj").
+CREATE TABLE IF NOT EXISTS calendar_accounts (
+  user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  provider TEXT NOT NULL DEFAULT 'icloud',
+  server_url TEXT NOT NULL DEFAULT '',
+  username TEXT NOT NULL,
+  secret TEXT NOT NULL,
+  home_url TEXT NOT NULL DEFAULT '',
+  calendar_url TEXT NOT NULL DEFAULT '',
+  calendar_name TEXT NOT NULL DEFAULT '',
+  calendar_color TEXT NOT NULL DEFAULT '',
+  scope TEXT NOT NULL DEFAULT 'mine',
+  duration_min INTEGER NOT NULL DEFAULT 30,
+  alarm_min INTEGER NOT NULL DEFAULT 15,
+  app_url TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'ok',
+  last_error TEXT NOT NULL DEFAULT '',
+  last_sync_at TEXT,
+  test_href TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Co juz wyslalismy do czyjego kalendarza. lead_id CELOWO bez FK/CASCADE: po skasowaniu leada
+-- (albo calej niszy) wiersz musi przetrwac, zeby sync zdazyl usunac wydarzenie z iCloud.
+-- term = google_term w chwili wyslania, content_hash = czy tresc wydarzenia sie zmienila.
+CREATE TABLE IF NOT EXISTS calendar_events (
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  lead_id INTEGER NOT NULL,
+  calendar_url TEXT NOT NULL,
+  href TEXT NOT NULL,
+  term TEXT NOT NULL,
+  content_hash TEXT NOT NULL,
+  etag TEXT NOT NULL DEFAULT '',
+  synced_at TEXT NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (user_id, lead_id)
+);
 `);
 
 // Proste "migracje" dla kolumn dodanych po pierwszym wydaniu - ALTER TABLE ADD COLUMN
@@ -266,6 +412,9 @@ addColumnIfMissing("leads", "tag_tiktok INTEGER NOT NULL DEFAULT 0");
 // znaczek "verified" przy ramce social - ustawiany raz, gdy ktos recznie poprawi tagi
 // platform (odroznia recznie zweryfikowane dane od tych prosto ze scrapera/importu CSV)
 addColumnIfMissing("leads", "social_verified INTEGER NOT NULL DEFAULT 0");
+// kto ostatnio ustawil "Termin Google" (display_name) - wlasciciel Meeta do kalendarza iCloud,
+// gdy lead nie ma jeszcze "Kto dzwonil" (patrz calendarSync.js meetingOwner)
+addColumnIfMissing("leads", "google_term_by TEXT NOT NULL DEFAULT ''");
 // #6 - klucz dedup auto-postow w transactions (subskrypcje / potwierdzone naleznosci).
 // Musi byc dodany PRZED indeksem ponizej, bo starsze bazy maja tabele bez tej kolumny.
 addColumnIfMissing("transactions", "source_key TEXT");
@@ -283,6 +432,18 @@ addColumnIfMissing("lead_pins", "status TEXT NOT NULL DEFAULT 'nieruszone'");
 addColumnIfMissing("lead_pins", "notes TEXT NOT NULL DEFAULT ''");
 addColumnIfMissing("lead_pins", "caller TEXT NOT NULL DEFAULT ''");
 addColumnIfMissing("lead_pins", "last_visited_at TEXT");
+
+// cena klienta przepisana z jego podpisanej umowy (billing.js syncLeadPricing) - wtedy w Kasie
+// zamiast edycji jest "z umowy N/RRRR"; NULL = cena ustawiona recznie w Kasie
+addColumnIfMissing("client_pricing", "source_contract_id INTEGER");
+// rachunek wyslany klientowi (data) - '' = jeszcze nie wyslany (przypominajka na klienci.html)
+addColumnIfMissing("bills", "sent_on TEXT NOT NULL DEFAULT ''");
+// co oznaczenie "oplacony" utworzylo w Kasie: JSON [{due: id, own: bool} | {tx: id}] - zeby "Cofnij"
+// cofnelo dokladnie to (rachunek wykonanie + abonament potwierdza naraz dwie naleznosci)
+addColumnIfMissing("bills", "paid_refs TEXT NOT NULL DEFAULT ''");
+// podpis zleceniobiorcy na rachunkach: PNG z przezroczystym tlem jako data URL ('' = miejsce na
+// podpis odreczny). Kopiowany do migawki rachunku przy wystawieniu.
+addColumnIfMissing("contractor", "signature TEXT NOT NULL DEFAULT ''");
 
 addColumnIfMissing("review_links", "logo_url TEXT NOT NULL DEFAULT ''");
 // reczna kolejnosc kart w panelu /reviews.html (przeciagnij i upusc) - nie ma nic wspolnego

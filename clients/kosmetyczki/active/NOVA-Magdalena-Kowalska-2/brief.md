@@ -69,7 +69,7 @@ Ale przede wszystkim: REPLIKUJ to, co klientka już ma w swoich prawdziwych cenn
 ### Stylizacja rzęs / uzupełnienie
 | Usługa | Cena |
 |---|---|
-| Lifting koreański | 120 PLN |
+| Lifting koreański | 130 PLN |
 | Natural 1:1 | 140 PLN / 120 PLN |
 | Lekka objętość 2-3D | 150 PLN / 130 PLN |
 | Objętość 4-6D | 160 PLN / 140 PLN |

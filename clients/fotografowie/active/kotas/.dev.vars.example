@@ -1,0 +1,4 @@
+# Sekrety do lokalnego `wrangler dev`. Skopiuj ten plik do .dev.vars (nie commituj go).
+# Na produkcji ustawiasz je przez: wrangler secret put ADMIN_PASSWORD / JWT_SECRET
+ADMIN_PASSWORD=haslo-do-testow
+JWT_SECRET=lokalny-sekret-do-testow-min-32-znaki-xxxxxxxx

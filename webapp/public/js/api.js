@@ -404,6 +404,7 @@ function openTermPicker({ anchor, value, caller, leadId, onPick }) {
         ${cells.join("")}
       </div>
       <div class="term-hours">${hours}</div>
+      ${typeof calSyncPickerHint === "function" ? calSyncPickerHint(caller) : ""}
       <div class="term-foot">
         <button type="button" class="btn" data-term-clear>Wyczyść termin</button>
         <button type="button" class="btn" data-term-close>Zamknij</button>
@@ -427,6 +428,14 @@ function openTermPicker({ anchor, value, caller, leadId, onPick }) {
     // globalnego "klik poza zamyka", klikniety element juz nie istnieje w DOM - i dymek
     // zamykalby sie sam przy wyborze dnia. Stad zatrzymanie propagacji tutaj.
     e.stopPropagation();
+
+    // "Polacz iCloud" z podpowiedzi pod godzinami (calendar-sync.js) - globalny listener nie
+    // dostanie tego klikniecia przez stopPropagation powyzej, wiec otwieramy okno tutaj
+    if (e.target.closest("[data-calsync-open]")) {
+      closeTermPicker();
+      if (typeof openCalSyncModal === "function") openCalSyncModal();
+      return;
+    }
 
     const nav = e.target.closest("[data-term-nav]");
     if (nav) {

@@ -160,6 +160,10 @@ function buildProfileModal() {
           <button type="submit" class="btn primary">Zresetuj</button>
         </div>
       </form>
+
+      <div class="modal-divider"></div>
+      <!-- parowanie kalendarza iCloud (calendar-sync.js) - zawsze dotyczy zalogowanej osoby -->
+      <div data-calsync-slot="profile"></div>
     </div>
   `;
   document.body.appendChild(el);
@@ -278,6 +282,10 @@ async function openProfileModal() {
 
   renderUserPicker();
   fillProfileFormForEditingUser();
+  if (typeof loadCalSyncStatus === "function") {
+    renderCalSyncSlots();
+    loadCalSyncStatus();
+  }
   profileModalEl.classList.remove("hidden");
 }
 
@@ -370,7 +378,7 @@ async function submitPasswordForm(e) {
 let notifPanelEl = null;
 let notifData = null;
 
-const NOTIF_KIND_LABEL = { meet: "Meet", callback: "Oddzwoń", sms: "SMS" };
+const NOTIF_KIND_LABEL = { meet: "Meet", callback: "Oddzwoń", sms: "SMS", bill: "Rachunek" };
 
 function notifSeenKey(today) {
   return `notif-bell-seen-${today}`;
@@ -428,10 +436,10 @@ async function toggleNotifPanel() {
         ${g.items
           .map(
             (it) => `
-          <a class="notif-item" href="/script.html?leadId=${it.lead_id}">
+          <a class="notif-item" href="${it.href || `/script.html?leadId=${it.lead_id}`}">
             <span class="notif-item-kind ${it.kind}">${NOTIF_KIND_LABEL[it.kind] || it.kind}</span>
             <span class="notif-item-company">${escapeHtml(it.company)}</span>
-            <span class="notif-item-meta">${escapeHtml(it.label)} · ${escapeHtml(it.niche_name)}</span>
+            <span class="notif-item-meta">${[it.label, it.niche_name].filter(Boolean).map(escapeHtml).join(" · ")}</span>
           </a>`
           )
           .join("")}

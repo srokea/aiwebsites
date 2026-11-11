@@ -58,15 +58,19 @@ function getUserFromApiKey(rawKey) {
 function requireAuth(req, res, next) {
   const token = req.cookies && req.cookies.session;
   let user = token ? getUserFromToken(token) : null;
+  let viaApiKey = false;
 
   if (!user) {
     const header = req.get("authorization") || "";
     const bearer = header.startsWith("Bearer ") ? header.slice(7).trim() : "";
     user = bearer ? getUserFromApiKey(bearer) : null;
+    viaApiKey = Boolean(user);
   }
 
   if (!user) return res.status(401).json({ error: "Niezalogowany" });
   req.user = publicUser(user);
+  // klucz API (Jarvis) nie dostaje PESEL-u / nr dowodu / nr konta - patrz routes/clients.js
+  req.viaApiKey = viaApiKey;
   next();
 }
 

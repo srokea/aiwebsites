@@ -1,0 +1,8 @@
+*.pdf
+brief.md
+brand
+wrangler.jsonc
+.assetsignore
+.gitignore
+.wrangler
+.impeccable

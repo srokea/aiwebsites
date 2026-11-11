@@ -1,0 +1,965 @@
+// Modul "Klienci i umowy" (klienci.html / klient.html / rachunek.html): stan umow (aktualna,
+// aktywna, licznik dni do konca), numeracja i tresc rachunkow, terminy platnosci, migawka danych
+// stron oraz oplacanie rachunku - spiete z Kasa (finance.js), zeby "Oplacony" tutaj i "Potwierdz"
+// w Kasie byly jedna operacja, a cena z podpisanej umowy byla cena klienta w Kasie.
+
+const db = require("./db");
+const { localDate } = require("./time");
+const { slownie } = require("./slownie");
+const { BILL_PAYMENT_DAYS, BUYOUT_DEFAULT, BILL_KIND_OPTIONS, CONTRACT_DAYS_THRESHOLDS } = require("./constants");
+const { financeSync, confirmDue, reopenDue, splitEven } = require("./finance");
+
+const pad = (n) => String(n).padStart(2, "0");
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+const PERIOD = /^\d{4}-(0[1-9]|1[0-2])$/;
+const MONTHS = [
+  "styczeń",
+  "luty",
+  "marzec",
+  "kwiecień",
+  "maj",
+  "czerwiec",
+  "lipiec",
+  "sierpień",
+  "wrzesień",
+  "październik",
+  "listopad",
+  "grudzień",
+];
+const BILL_KINDS = BILL_KIND_OPTIONS.map((o) => o.value);
+const ENDED_STATUSES = ["zakonczona", "wypowiedziana"];
+
+// ---------- daty ----------
+
+function parseIso(iso) {
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Date(y, m - 1, d);
+}
+
+function addDays(iso, n) {
+  const d = parseIso(iso);
+  d.setDate(d.getDate() + n);
+  return localDate(d);
+}
+
+function daysBetween(fromIso, toIso) {
+  return Math.round((parseIso(toIso) - parseIso(fromIso)) / 86400000);
+}
+
+// Niedziela Wielkanocna (algorytm Meeusa/Jonesa/Butchera) - od niej zaleza swieta ruchome
+function easterSunday(year) {
+  const a = year % 19;
+  const b = Math.floor(year / 100);
+  const c = year % 100;
+  const d = Math.floor(b / 4);
+  const e = b % 4;
+  const f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4);
+  const k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31);
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
+  return new Date(year, month - 1, day);
+}
+
+// Ustawowe dni wolne w Polsce (Wigilia od 2025)
+function polishHolidays(year) {
+  const fixed = ["01-01", "01-06", "05-01", "05-03", "08-15", "11-01", "11-11", "12-25", "12-26"];
+  if (year >= 2025) fixed.push("12-24");
+  const days = new Set(fixed.map((md) => `${year}-${md}`));
+  const easter = easterSunday(year);
+  for (const offset of [0, 1, 49, 60]) {
+    // Wielkanoc, Poniedzialek Wielkanocny, Zeslanie Ducha Sw., Boze Cialo
+    const d = new Date(easter);
+    d.setDate(d.getDate() + offset);
+    days.add(localDate(d));
+  }
+  return days;
+}
+
+function isBusinessDay(iso) {
+  const d = parseIso(iso);
+  const wd = d.getDay();
+  return wd !== 0 && wd !== 6 && !polishHolidays(d.getFullYear()).has(iso);
+}
+
+// "2026-10" -> "2026-10-30" (31.10.2026 to sobota)
+function lastBusinessDay(period) {
+  const [y, m] = period.split("-").map(Number);
+  const d = new Date(y, m, 0);
+  while (!isBusinessDay(localDate(d))) d.setDate(d.getDate() - 1);
+  return localDate(d);
+}
+
+// §2 umowy: wykonanie i wykup - 7 dni od wystawienia; abonament - do ostatniego dnia roboczego
+// miesiaca, za ktory jest (rachunek wystawiony juz po tym dniu -> tez 7 dni od wystawienia).
+// Rachunek laczony (wykonanie + abonament) - jak wykonanie: 7 dni.
+function dueDate(kind, issuedOn, period) {
+  if (kind === "abonament") {
+    const last = lastBusinessDay(period);
+    if (last >= issuedOn) return last;
+  }
+  return addDays(issuedOn, BILL_PAYMENT_DAYS);
+}
+
+function periodLabel(period) {
+  const [y, m] = period.split("-").map(Number);
+  return `${MONTHS[m - 1]} ${y}`;
+}
+
+const fmtDate = (iso) => (ISO_DATE.test(iso || "") ? `${iso.slice(8, 10)}.${iso.slice(5, 7)}.${iso.slice(0, 4)}` : iso);
+
+// ---------- zwolnienie z PIT/ZUS (klauzula na rachunku) ----------
+
+// PESEL -> data 26. urodzin ("YYYY-MM-DD") albo null, gdy PESEL niepelny. Miesiac w PESEL-u ma
+// doliczone stulecie: +80 (1800-1899), +0 (1900-), +20 (2000-), +40 (2100-), +60 (2200-).
+function turns26On(pesel) {
+  const p = String(pesel || "").replace(/\D/g, "");
+  if (p.length !== 11) return null;
+  const yy = Number(p.slice(0, 2));
+  const mmRaw = Number(p.slice(2, 4));
+  const dd = Number(p.slice(4, 6));
+  const century = [
+    [80, 1800],
+    [0, 1900],
+    [20, 2000],
+    [40, 2100],
+    [60, 2200],
+  ].find(([off]) => mmRaw - off >= 1 && mmRaw - off <= 12);
+  if (!century || dd < 1 || dd > 31) return null;
+  return `${century[1] + yy + 26}-${pad(mmRaw - century[0])}-${pad(dd)}`;
+}
+
+// Klauzula "student przed ukonczeniem 26 lat" (art. 21 ust. 1 pkt 148 PIT + art. 6 ust. 4 o SUS) -
+// prawdziwa tylko, gdy w dniu wystawienia trwa status studenta I nie minely 26. urodziny.
+function exemption(contractor, onDate) {
+  const problems = [];
+  if (!contractor.student_until) problems.push("brak daty „status studenta do” w Moich danych");
+  else if (onDate > contractor.student_until) problems.push(`status studenta minął ${fmtDate(contractor.student_until)}`);
+  const b26 = turns26On(contractor.pesel);
+  if (!b26) problems.push("brak poprawnego PESEL-u — nie da się sprawdzić 26. urodzin");
+  else if (onDate >= b26) problems.push(`26. urodziny były ${fmtDate(b26)}`);
+  return { ok: problems.length === 0, problems };
+}
+
+// ---------- umowy: aktualna / aktywna / licznik dni ----------
+
+function isEnded(c, today) {
+  return ENDED_STATUSES.includes(c.status) || Boolean(c.ends_on && c.ends_on < today);
+}
+
+// aktywna = liczy sie do sumy abonamentow na liscie Klientow
+function isActive(c, today) {
+  return c.status === "podpisana" && (!c.starts_on || c.starts_on <= today) && (!c.ends_on || c.ends_on >= today);
+}
+
+// "aktualna" umowa klienta: najnowsza podpisana i trwajaca, potem najnowsza w toku (szkic /
+// wyslana), a gdy wszystko zakonczone - po prostu najnowsza (do pokazania jako "zakonczona")
+function pickCurrent(contracts, today) {
+  const sorted = [...contracts].sort(
+    (a, b) => (b.starts_on || b.signed_on || "").localeCompare(a.starts_on || a.signed_on || "") || b.id - a.id
+  );
+  return (
+    sorted.find((c) => c.status === "podpisana" && !isEnded(c, today)) ||
+    sorted.find((c) => !isEnded(c, today)) ||
+    sorted[0] ||
+    null
+  );
+}
+
+// licznik na liscie: state ok (> 60 dni) / soon (30-60) / urgent (< 30) / open / ended / none
+function countdown(c, today) {
+  if (!c) return { state: "none", days: null };
+  if (isEnded(c, today)) return { state: "ended", days: null };
+  if (!c.ends_on) return { state: "open", days: null };
+  const days = daysBetween(today, c.ends_on);
+  const { soon, urgent } = CONTRACT_DAYS_THRESHOLDS;
+  return { state: days > soon ? "ok" : days >= urgent ? "soon" : "urgent", days };
+}
+
+// strony umowy: [{name, domain, client_id}] - client_id = klient, do ktorego strona nalezy, gdy to
+// ktos inny niz wlasciciel umowy (Uslugi Ogrodnicze w umowie Atelier); null = wlasciciel umowy
+function parseSites(json) {
+  try {
+    const list = JSON.parse(json || "[]");
+    if (!Array.isArray(list)) return [];
+    return list
+      .map((s) => ({
+        name: String(s?.name || "").trim(),
+        domain: String(s?.domain || "").trim(),
+        client_id: Number(s?.client_id) || null,
+      }))
+      .filter((s) => s.name || s.domain);
+  } catch {
+    return [];
+  }
+}
+
+// klient -> umowy INNYCH klientow, w ktorych jest jego strona (rozliczany w cudzej umowie)
+function coveringContracts(allContracts) {
+  const map = new Map();
+  for (const c of allContracts) {
+    for (const s of parseSites(c.sites)) {
+      if (!s.client_id || s.client_id === c.client_id) continue;
+      if (!map.has(s.client_id)) map.set(s.client_id, []);
+      if (!map.get(s.client_id).includes(c)) map.get(s.client_id).push(c);
+    }
+  }
+  return map;
+}
+
+const gr2zl = (g) => (g == null ? null : g / 100);
+
+function serializeContract(c, today = localDate()) {
+  return {
+    id: c.id,
+    client_id: c.client_id,
+    number: c.number,
+    signed_on: c.signed_on,
+    starts_on: c.starts_on,
+    ends_on: c.ends_on,
+    status: c.status,
+    kind: c.kind,
+    variant: c.variant,
+    onetime: gr2zl(c.onetime_grosze),
+    monthly: gr2zl(c.monthly_grosze),
+    sites: parseSites(c.sites),
+    buyout: gr2zl(c.buyout_grosze ?? BUYOUT_DEFAULT * 100),
+    bought_out_on: c.bought_out_on,
+    has_pdf: Boolean(c.signed_pdf),
+    notes: c.notes,
+    active: isActive(c, today),
+    ended: isEnded(c, today),
+    countdown: countdown(c, today),
+  };
+}
+
+// Podpowiedz numeru nowej umowy: kolejny "N/RRRR" w danym roku
+function suggestContractNumber(year = new Date().getFullYear()) {
+  const nums = db.prepare("SELECT number FROM contracts WHERE number LIKE ?").pluck().all(`%/${year}`);
+  const max = nums.reduce((m, n) => Math.max(m, parseInt(n, 10) || 0), 0);
+  return `${max + 1}/${year}`;
+}
+
+// Ceny klientow w Kasie wg umow (client_pricing.source_contract_id = "cena z umowy" - w Kasie widac
+// wtedy "z umowy N" zamiast edycji). Przeliczane dla wszystkich klientow z leadem naraz (danych jest
+// malo), zeby zmiana jednej umowy przestawila tez klienta, ktorego strona w niej jest:
+//   - wlasna podpisana umowa -> cena z niej (calosc, razem ze stronami innych klientow - placi wlasciciel),
+//   - strona w cudzej podpisanej umowie -> 0 zl (inaczej Kasa liczylaby te strone podwojnie),
+//   - brak umowy -> znacznik zdjety; cena 0/0 z dawnego pokrycia wraca do domyslnej.
+const SIGNED_STATUSES = ["podpisana", "zakonczona", "wypowiedziana"];
+const byStartDesc = (a, b) =>
+  (b.starts_on || b.signed_on || "").localeCompare(a.starts_on || a.signed_on || "") || b.id - a.id;
+const latestSigned = (list) => [...list].filter((c) => SIGNED_STATUSES.includes(c.status)).sort(byStartDesc)[0] || null;
+
+function syncPricing(by = "") {
+  const contracts = db.prepare("SELECT * FROM contracts").all();
+  const own = new Map();
+  for (const c of contracts) {
+    if (!own.has(c.client_id)) own.set(c.client_id, []);
+    own.get(c.client_id).push(c);
+  }
+  const covering = coveringContracts(contracts);
+  const upsert = db.prepare(
+    `INSERT INTO client_pricing (lead_id, onetime_grosze, monthly_grosze, updated_by, updated_at, source_contract_id)
+     VALUES (@lead, @onetime, @monthly, @by, datetime('now'), @contract)
+     ON CONFLICT(lead_id) DO UPDATE SET onetime_grosze = excluded.onetime_grosze,
+       monthly_grosze = excluded.monthly_grosze, updated_by = excluded.updated_by,
+       updated_at = excluded.updated_at, source_contract_id = excluded.source_contract_id`
+  );
+  // SET liczy wszystko na starych wartosciach wiersza, wiec oba CASE widza stare 0/0
+  const clear = db.prepare(
+    `UPDATE client_pricing SET source_contract_id = NULL,
+       onetime_grosze = CASE WHEN onetime_grosze = 0 AND monthly_grosze = 0 THEN NULL ELSE onetime_grosze END,
+       monthly_grosze = CASE WHEN onetime_grosze = 0 AND monthly_grosze = 0 THEN NULL ELSE monthly_grosze END
+     WHERE lead_id = ? AND source_contract_id IS NOT NULL`
+  );
+  db.transaction(() => {
+    for (const cl of db.prepare("SELECT id, lead_id FROM clients WHERE lead_id IS NOT NULL").all()) {
+      const mine = latestSigned(own.get(cl.id) || []);
+      const cover = mine ? null : latestSigned(covering.get(cl.id) || []);
+      if (mine) {
+        upsert.run({
+          lead: cl.lead_id,
+          onetime: mine.kind === "abonament" ? 0 : mine.onetime_grosze,
+          monthly: mine.monthly_grosze,
+          by,
+          contract: mine.id,
+        });
+      } else if (cover) {
+        upsert.run({ lead: cl.lead_id, onetime: 0, monthly: 0, by, contract: cover.id });
+      } else {
+        clear.run(cl.lead_id);
+      }
+    }
+  })();
+  financeSync(); // przelicza naleznosci czekajace na potwierdzenie wg nowych cen
+}
+
+// ---------- rachunki ----------
+
+function getContractor() {
+  return (
+    db.prepare("SELECT * FROM contractor WHERE id = 1").get() || {
+      full_name: "",
+      address: "",
+      pesel: "",
+      id_card: "",
+      bank_account: "",
+      phone: "",
+      email: "",
+      issue_city: "",
+      student_until: "",
+      signature: "",
+    }
+  );
+}
+
+// na rachunku sama domena: "https://atelierpiekna-tomaszow.pl/" -> "atelierpiekna-tomaszow.pl"
+// (krocej - rachunek z kilkoma stronami miesci sie na jednej kartce)
+const bareDomain = (d) => d.replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/\/+$/, "");
+
+function siteLabel(site) {
+  const domain = bareDomain(site.domain);
+  if (site.name && domain) return `„${site.name}” (${domain})`;
+  return domain || `„${site.name}”`;
+}
+
+const DESCRIBE = {
+  wykonanie: (label) =>
+    `Zaprojektowanie, wykonanie i uruchomienie strony internetowej ${label} – zgodnie z §2 ust. 1 umowy`,
+  abonament: (label, period) =>
+    `Abonament – utrzymanie strony internetowej ${label} za ${periodLabel(period)} – zgodnie z §2 ust. 2 umowy`,
+  wykup: (label) =>
+    `Wykup strony internetowej ${label} – przeniesienie autorskich praw majątkowych zgodnie z §5 ust. 2 umowy`,
+};
+
+// rodzaj rachunku -> czesci, z ktorych sie sklada (wykonanie + abonament = obie naraz)
+const BILL_PARTS = {
+  wykonanie: ["wykonanie"],
+  abonament: ["abonament"],
+  wykonanie_abonament: ["wykonanie", "abonament"],
+  wykup: ["wykup"],
+};
+const PART_LABEL = { wykonanie: "opłaty jednorazowej", abonament: "abonamentu", wykup: "kwoty wykupu" };
+
+// Pozycje wyliczone z umowy: osobna pozycja na kazda strone, kwota z umowy dzielona rowno
+// (Atelier: abonament 200 zl za 2 strony -> 2 x 100 zl). part = za co jest pozycja (do Kasy).
+// { missing: "abonamentu" }, gdy w umowie brakuje kwoty.
+function defaultItems(kind, contract, client, period) {
+  const sites = parseSites(contract.sites);
+  const list = sites.length ? sites : [{ name: client.name || client.legal_name, domain: "" }];
+  const items = [];
+  for (const part of BILL_PARTS[kind]) {
+    const total =
+      part === "wykonanie"
+        ? contract.onetime_grosze
+        : part === "abonament"
+          ? contract.monthly_grosze
+          : (contract.buyout_grosze ?? BUYOUT_DEFAULT * 100);
+    if (total == null) return { missing: PART_LABEL[part] };
+    const amounts = splitEven(total, list.length);
+    list.forEach((s, i) => items.push({ description: DESCRIBE[part](siteLabel(s), period), amount_grosze: amounts[i], part }));
+  }
+  return { items };
+}
+
+// pozycje poprawione recznie w podgladzie: [{description, amount, part}] (amount w zl, "100,50" tez)
+function parseItems(raw, kind) {
+  if (!Array.isArray(raw) || !raw.length) return { error: "Rachunek musi mieć co najmniej jedną pozycję" };
+  const parts = BILL_PARTS[kind];
+  const items = [];
+  for (const it of raw) {
+    const description = String(it?.description || "").trim();
+    const n = parseFloat(String(it?.amount ?? "").replace(",", ".").replace(/\s/g, ""));
+    if (!description) return { error: "Każda pozycja musi mieć opis" };
+    if (!Number.isFinite(n) || n <= 0) return { error: `Nieprawidłowa kwota pozycji: „${it?.amount ?? ""}”` };
+    // part z podgladu, a gdy rachunek ma tylko jedna czesc - zawsze ta
+    const part = parts.length === 1 ? parts[0] : parts.includes(it?.part) ? it.part : parts[0];
+    items.push({ description, amount_grosze: Math.round(n * 100), part });
+  }
+  return { items };
+}
+
+// suma pozycji danej czesci (wykonanie / abonament) - ile z rachunku idzie na ktora naleznosc w Kasie
+function partTotal(items, part) {
+  return items.filter((it) => (it.part || part) === part).reduce((s, it) => s + it.amount_grosze, 0);
+}
+
+// Projekt rachunku (do podgladu i do zapisu - ta sama funkcja, wiec podglad = to, co sie zapisze).
+// errors blokuja wystawienie (rachunek z pustym PESEL-em/NIP-em zostalby taki na zawsze, bo
+// dane sa zamrazane w migawce); warnings tylko ostrzegaja.
+function draftBill(contractId, { kind, period, issued_on, items } = {}) {
+  const contract = db.prepare("SELECT * FROM contracts WHERE id = ?").get(contractId);
+  if (!contract) return { status: 404, error: "Nie znaleziono umowy" };
+  const client = db.prepare("SELECT * FROM clients WHERE id = ?").get(contract.client_id);
+
+  if (!BILL_KINDS.includes(kind)) return { status: 400, error: `Nieprawidłowy typ rachunku: „${kind}”` };
+  const parts = BILL_PARTS[kind];
+  if (parts.includes("wykonanie") && contract.kind === "abonament") {
+    return { status: 400, error: "Ta umowa jest „tylko abonament” — nie ma opłaty za wykonanie" };
+  }
+  const issuedOn = issued_on ? String(issued_on) : localDate();
+  if (!ISO_DATE.test(issuedOn)) return { status: 400, error: `Nieprawidłowa data wystawienia: „${issuedOn}”` };
+  const billPeriod = parts.includes("abonament") ? String(period || "") : "";
+  if (parts.includes("abonament") && !PERIOD.test(billPeriod)) return { status: 400, error: "Wybierz miesiąc abonamentu" };
+
+  // kazda czesc tylko raz: wykonanie (osobno albo w rachunku laczonym) i abonament za dany miesiac
+  for (const part of parts) {
+    const existing =
+      part === "abonament"
+        ? db
+            .prepare("SELECT number FROM bills WHERE contract_id = ? AND kind IN ('abonament', 'wykonanie_abonament') AND period = ?")
+            .get(contract.id, billPeriod)
+        : db
+            .prepare(`SELECT number FROM bills WHERE contract_id = ? AND kind IN (${part === "wykonanie" ? "'wykonanie', 'wykonanie_abonament'" : "'wykup'"})`)
+            .get(contract.id);
+    if (existing) {
+      const what = part === "abonament" ? `abonament za ${periodLabel(billPeriod)}` : part;
+      return { status: 400, error: `Rachunek za ${what} do tej umowy już jest (nr ${existing.number})` };
+    }
+  }
+
+  let billItems;
+  if (items) {
+    const parsed = parseItems(items, kind);
+    if (parsed.error) return { status: 400, error: parsed.error };
+    billItems = parsed.items;
+  } else {
+    const d = defaultItems(kind, contract, client, billPeriod);
+    if (d.missing) return { status: 400, error: `W umowie ${contract.number} brakuje ${d.missing} — uzupełnij umowę` };
+    billItems = d.items;
+  }
+  const total = billItems.reduce((s, it) => s + it.amount_grosze, 0);
+
+  const contractor = getContractor();
+  const errors = [];
+  const missing = (label, value) => {
+    if (!String(value || "").trim()) errors.push(label);
+  };
+  missing("Moje dane: imię i nazwisko", contractor.full_name);
+  missing("Moje dane: adres", contractor.address);
+  missing("Moje dane: PESEL", contractor.pesel);
+  missing("Moje dane: nr konta", contractor.bank_account);
+  missing("Moje dane: miejscowość wystawiania", contractor.issue_city);
+  missing("Klient: firma (jak na fakturach)", client.legal_name);
+  missing("Klient: adres siedziby", client.address);
+  missing("Klient: NIP", client.nip);
+  missing(`Umowa ${contract.number}: data zawarcia`, contract.signed_on);
+
+  const ex = exemption(contractor, issuedOn);
+  const warnings = ex.ok ? [] : [`Klauzula o zwolnieniu z PIT/ZUS nie trafi na rachunek: ${ex.problems.join("; ")}.`];
+
+  const year = Number(issuedOn.slice(0, 4));
+  const last = db.prepare("SELECT number, issued_on FROM bills WHERE year = ? ORDER BY seq DESC LIMIT 1").get(year);
+  if (last && last.issued_on > issuedOn) {
+    warnings.push(`Ostatni rachunek w ${year} (nr ${last.number}) ma późniejszą datę — numeracja rozjedzie się z datami.`);
+  }
+  const seq = db.prepare("SELECT COALESCE(MAX(seq), 0) + 1 FROM bills WHERE year = ?").pluck().get(year);
+
+  return {
+    errors,
+    warnings,
+    bill: {
+      contract_id: contract.id,
+      number: `${seq}/${issuedOn.slice(5, 7)}/${year}`,
+      year,
+      seq,
+      issued_on: issuedOn,
+      kind,
+      period: billPeriod,
+      items: billItems,
+      total_grosze: total,
+      due_on: dueDate(kind, issuedOn, billPeriod),
+      snapshot: {
+        contractor: {
+          full_name: contractor.full_name,
+          address: contractor.address,
+          pesel: contractor.pesel,
+          bank_account: contractor.bank_account,
+          issue_city: contractor.issue_city,
+          signature: contractor.signature || "",
+        },
+        client: {
+          legal_name: client.legal_name || client.name,
+          address: client.address,
+          nip: client.nip,
+        },
+        contract: { number: contract.number, signed_on: contract.signed_on },
+        clause: ex.ok,
+      },
+    },
+  };
+}
+
+function createBill(contractId, body, by) {
+  let result;
+  db.transaction(() => {
+    result = draftBill(contractId, body);
+    if (result.error) return;
+    if (result.errors.length) {
+      result = { status: 400, error: `Uzupełnij przed wystawieniem: ${result.errors.join(", ")}` };
+      return;
+    }
+    const b = result.bill;
+    const id = db
+      .prepare(
+        `INSERT INTO bills (contract_id, number, year, seq, issued_on, kind, period, items, total_grosze, due_on, snapshot, created_by)
+         VALUES (@contract_id, @number, @year, @seq, @issued_on, @kind, @period, @items, @total_grosze, @due_on, @snapshot, @by)`
+      )
+      .run({ ...b, items: JSON.stringify(b.items), snapshot: JSON.stringify(b.snapshot), by: by || "" }).lastInsertRowid;
+    result = { id };
+  })();
+  return result;
+}
+
+function serializeBill(row, today = localDate()) {
+  const maxSeq = db.prepare("SELECT MAX(seq) FROM bills WHERE year = ?").pluck().get(row.year);
+  return {
+    id: row.id,
+    contract_id: row.contract_id,
+    number: row.number,
+    issued_on: row.issued_on,
+    kind: row.kind,
+    period: row.period,
+    period_label: row.period ? periodLabel(row.period) : "",
+    items: JSON.parse(row.items || "[]").map((it) => ({ ...it, amount: it.amount_grosze / 100 })),
+    total: row.total_grosze / 100,
+    total_grosze: row.total_grosze,
+    words: slownie(row.total_grosze),
+    due_on: row.due_on,
+    status: row.status,
+    paid_on: row.paid_on,
+    sent_on: row.sent_on || "",
+    overdue: row.status === "wystawiony" && row.due_on < today,
+    // usunac mozna tylko ostatni nieoplacony rachunek w roku - inaczej dziura w numeracji
+    deletable: row.status === "wystawiony" && row.seq === maxSeq,
+    snapshot: JSON.parse(row.snapshot || "{}"),
+  };
+}
+
+// "Oplacony": klient podpiety pod leada, ktorego naleznosci prowadzi Kasa -> ta sama naleznosc
+// (wdrozenie / abonament za miesiac) zostaje potwierdzona (confirmDue). Wykup i klienci bez leada
+// -> osobny wpis przychodu 'bill:<id>' (w podziale per osoba liczony jako wspolny, 50/50).
+function markBillPaid(billId, paidOn, by) {
+  const bill = db.prepare("SELECT * FROM bills WHERE id = ?").get(billId);
+  if (!bill) return { status: 404, error: "Nie znaleziono rachunku" };
+  if (bill.status !== "wystawiony") return { status: 400, error: "Ten rachunek jest już opłacony" };
+  const paid = paidOn || localDate();
+  if (!ISO_DATE.test(paid)) return { status: 400, error: `Nieprawidłowa data: „${paid}”` };
+
+  const contract = db.prepare("SELECT * FROM contracts WHERE id = ?").get(bill.contract_id);
+  const client = db.prepare("SELECT * FROM clients WHERE id = ?").get(contract.client_id);
+  const lead = client.lead_id
+    ? db.prepare("SELECT id, interested, dopiete_at FROM leads WHERE id = ?").get(client.lead_id)
+    : null;
+  const kasaManaged = lead && lead.interested === "dopiete" && lead.dopiete_at && bill.kind !== "wykup";
+
+  const items = JSON.parse(bill.items || "[]");
+  db.transaction(() => {
+    // refs = co to oznaczenie zrobilo w Kasie (patrz unmarkBillPaid). own: false = naleznosc byla juz
+    // potwierdzona wczesniej w Kasie, wiec "Cofnij" jej nie ruszy.
+    const refs = [];
+    if (kasaManaged) {
+      // rachunek laczony = dwie naleznosci (wdrozenie + abonament za miesiac), kazda ze swoja kwota
+      for (const part of BILL_PARTS[bill.kind]) {
+        const dueKind = part === "wykonanie" ? "onetime" : "monthly";
+        const amount = BILL_PARTS[bill.kind].length > 1 ? partTotal(items, part) : bill.total_grosze;
+        let due =
+          dueKind === "onetime"
+            ? db.prepare("SELECT * FROM client_dues WHERE lead_id = ? AND kind = 'onetime' ORDER BY id LIMIT 1").get(lead.id)
+            : db.prepare("SELECT * FROM client_dues WHERE lead_id = ? AND kind = 'monthly' AND period = ?").get(lead.id, bill.period);
+        if (!due) {
+          const period = dueKind === "onetime" ? lead.dopiete_at.slice(0, 7) : bill.period;
+          const id = db
+            .prepare("INSERT INTO client_dues (lead_id, kind, period, amount_grosze) VALUES (?, ?, ?, ?)")
+            .run(lead.id, dueKind, period, amount).lastInsertRowid;
+          due = db.prepare("SELECT * FROM client_dues WHERE id = ?").get(id);
+        }
+        if (due.status === "confirmed") {
+          refs.push({ due: due.id, own: false }); // juz potwierdzone w Kasie - tylko podpinamy
+        } else {
+          // kwota z rachunku jest prawda (mogla byc poprawiona w podgladzie); "pominieta" tez wraca
+          db.prepare("UPDATE client_dues SET status = 'pending', amount_grosze = ? WHERE id = ?").run(amount, due.id);
+          const r = confirmDue(due.id, by, { skipBillLink: true });
+          if (r.error) throw Object.assign(new Error(r.error), { status: r.status });
+          refs.push({ due: due.id, own: true });
+        }
+      }
+    } else {
+      const txId = db
+        .prepare(
+          `INSERT INTO transactions (occurred_on, description, amount_grosze, category, source_key, created_by)
+           VALUES (?, ?, ?, 'przychod', ?, ?)`
+        )
+        .run(paid, `Rachunek ${bill.number} — ${client.name || client.legal_name}`, bill.total_grosze, `bill:${bill.id}`, by || "")
+        .lastInsertRowid;
+      refs.push({ tx: txId });
+    }
+    const firstTx = refs[0].tx || db.prepare("SELECT transaction_id FROM client_dues WHERE id = ?").pluck().get(refs[0].due);
+    db.prepare("UPDATE bills SET status = 'oplacony', paid_on = ?, transaction_id = ?, paid_refs = ? WHERE id = ?").run(
+      paid,
+      firstTx,
+      JSON.stringify(refs),
+      bill.id
+    );
+    if (bill.kind === "wykup") {
+      db.prepare("UPDATE contracts SET bought_out_on = ?, updated_at = datetime('now') WHERE id = ? AND bought_out_on = ''").run(
+        paid,
+        contract.id
+      );
+    }
+  })();
+  return { ok: true };
+}
+
+// "Cofnij oplacony" - wpisy przychodu, ktore utworzylo oznaczenie, znikaja z Kasy (naleznosci
+// wracaja do potwierdzenia). Starsze rachunki bez paid_refs: po transaction_id jak dotad.
+function unmarkBillPaid(billId) {
+  const bill = db.prepare("SELECT * FROM bills WHERE id = ?").get(billId);
+  if (!bill) return { status: 404, error: "Nie znaleziono rachunku" };
+  if (bill.status !== "oplacony") return { status: 400, error: "Ten rachunek nie jest oznaczony jako opłacony" };
+  let refs = [];
+  try {
+    refs = JSON.parse(bill.paid_refs || "[]");
+  } catch {
+    refs = [];
+  }
+  if (!refs.length && bill.transaction_id) {
+    const tx = db.prepare("SELECT * FROM transactions WHERE id = ?").get(bill.transaction_id);
+    if (tx && tx.source_key === `bill:${bill.id}`) refs = [{ tx: tx.id }];
+    else if (tx && String(tx.source_key || "").startsWith("due:")) refs = [{ due: Number(tx.source_key.slice(4)), own: true }];
+  }
+
+  db.transaction(() => {
+    for (const r of refs) {
+      if (r.tx) db.prepare("DELETE FROM transactions WHERE id = ? AND source_key = ?").run(r.tx, `bill:${bill.id}`);
+      else if (r.due && r.own) reopenDue(r.due);
+    }
+    db.prepare("UPDATE bills SET status = 'wystawiony', paid_on = '', transaction_id = NULL, paid_refs = '' WHERE id = ?").run(bill.id);
+    if (bill.kind === "wykup") {
+      db.prepare("UPDATE contracts SET bought_out_on = '' WHERE id = ? AND bought_out_on = ?").run(bill.contract_id, bill.paid_on);
+    }
+  })();
+  return { ok: true };
+}
+
+// "Wyslany" - rachunek poszedl do klienta (mail / Messenger / osobiscie). sentOn '' = cofniecie.
+function setBillSent(billId, sentOn) {
+  if (sentOn && !ISO_DATE.test(sentOn)) return { status: 400, error: `Nieprawidłowa data: „${sentOn}”` };
+  const info = db.prepare("UPDATE bills SET sent_on = ? WHERE id = ?").run(sentOn || "", billId);
+  if (!info.changes) return { status: 404, error: "Nie znaleziono rachunku" };
+  return { ok: true };
+}
+
+// ---------- mail z rachunkiem ----------
+
+// "podsylam rachunek za ..." - przy abonamencie sam miesiac
+const BILL_MAIL_WHAT = {
+  wykonanie: () => "wykonanie strony",
+  abonament: (p) => periodLabel(p),
+  wykonanie_abonament: (p) => `wykonanie strony i abonament za ${periodLabel(p)}`,
+  wykup: () => "wykup strony",
+};
+
+// Gotowy mail do klienta - adres, temat i tresc do poprawienia w okienku przed wyslaniem. Krotko,
+// po ludzku: nr konta i reszta danych sa na rachunku w zalaczniku.
+function billEmailDraft(billId) {
+  const row = db.prepare("SELECT * FROM bills WHERE id = ?").get(billId);
+  if (!row) return { status: 404, error: "Nie znaleziono rachunku" };
+  const bill = serializeBill(row);
+  const client = db.prepare("SELECT cl.* FROM clients cl JOIN contracts c ON c.client_id = cl.id WHERE c.id = ?").get(row.contract_id);
+  const me = getContractor();
+  const what = (BILL_MAIL_WHAT[bill.kind] || (() => "usługi"))(bill.period);
+  const amount = `${bill.total.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} zł`;
+  return {
+    bill,
+    client,
+    to: client?.email || "",
+    subject: `Rachunek za ${what}`,
+    text: [
+      "Witam,",
+      "",
+      `podsyłam rachunek za ${what} na kwotę ${amount}. Termin płatności: ${fmtDate(bill.due_on)}.`,
+      "",
+      "Pozdrawiam",
+      me.full_name,
+    ]
+      .join("\n")
+      .trim(),
+    filename: `Rachunek-${bill.number.replace(/\//g, "-")}.pdf`,
+  };
+}
+
+function deleteBill(billId) {
+  const bill = db.prepare("SELECT * FROM bills WHERE id = ?").get(billId);
+  if (!bill) return { status: 404, error: "Nie znaleziono rachunku" };
+  if (!serializeBill(bill).deletable) {
+    return {
+      status: 400,
+      error: "Usunąć można tylko ostatni, nieopłacony rachunek w roku — inaczej powstałaby dziura w numeracji",
+    };
+  }
+  db.prepare("DELETE FROM bills WHERE id = ?").run(billId);
+  return { ok: true };
+}
+
+// ---------- lista klientow ----------
+
+// ---------- przypominajki: co trzeba zrobic z rachunkami ----------
+
+function nextPeriod(p) {
+  const [y, m] = p.split("-").map(Number);
+  return m === 12 ? `${y + 1}-01` : `${y}-${pad(m + 1)}`;
+}
+
+// Liczone z biezacego stanu (nic nie jest zapisywane):
+//   issue   - podpisana umowa bez rachunku za wykonanie albo za abonament za kolejny miesiac
+//             (od miesiaca startu umowy do biezacego, nie dalej niz miesiac konca umowy);
+//             late = miesiac juz minal,
+//   send    - wystawiony, ale nie oznaczony jako wyslany,
+//   unpaid  - wyslany, czeka na wplate (wisi az do "Oplacony"),
+//   overdue - wyslany, nieoplacony, po terminie platnosci.
+// label = cale zdanie (dzwonek na dashboardzie), detail = samo "co" (lista na klienci.html, gdzie
+// czynnosc mowi naglowek sekcji).
+function billingTodo(today = localDate()) {
+  const curPeriod = today.slice(0, 7);
+  const zl = (g) => `${(g / 100).toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} zł`;
+  const contracts = db
+    .prepare(
+      `SELECT c.*, cl.name AS client_name, cl.legal_name FROM contracts c JOIN clients cl ON cl.id = c.client_id
+       WHERE c.status IN ('podpisana', 'zakonczona', 'wypowiedziana')`
+    )
+    .all();
+  // wystawione + pominiete ("Pomin" przy przypominajce) - o tych juz nie przypominamy. Rachunek
+  // laczony zalatwia obie czesci: wykonanie i abonament za swoj miesiac.
+  const billed = new Set();
+  for (const r of db.prepare("SELECT contract_id, kind, period FROM bills UNION SELECT contract_id, kind, period FROM bill_skips").all()) {
+    for (const part of BILL_PARTS[r.kind] || [r.kind]) {
+      billed.add(`${r.contract_id}:${part}:${part === "abonament" ? r.period : ""}`);
+    }
+  }
+  const items = [];
+
+  for (const c of contracts) {
+    const start = c.starts_on || c.signed_on;
+    if (!start || start > today) continue;
+    const base = { client_id: c.client_id, client_name: c.client_name || c.legal_name, contract_id: c.id, contract_number: c.number };
+    const firstPeriod = start.slice(0, 7);
+    const needsWork = c.kind !== "abonament" && (c.onetime_grosze || 0) > 0 && !billed.has(`${c.id}:wykonanie:`);
+    const needsFirstMonth = (c.monthly_grosze || 0) > 0 && !billed.has(`${c.id}:abonament:${firstPeriod}`);
+    // nowa umowa: wykonanie + pierwszy abonament (§2 ust. 2 - placony w miesiacu uruchomienia) jako
+    // jedna propozycja = jeden rachunek; w okienku mozna i tak wybrac osobne
+    if (needsWork && needsFirstMonth) {
+      billed.add(`${c.id}:abonament:${firstPeriod}`);
+      items.push({
+        ...base,
+        type: "issue",
+        kind: "wykonanie_abonament",
+        period: firstPeriod,
+        late: firstPeriod < curPeriod,
+        label: `Wystaw rachunek: wykonanie + abonament za ${periodLabel(firstPeriod)}${firstPeriod < curPeriod ? " (zaległy)" : ""}`,
+        detail: `wykonanie + abonament za ${periodLabel(firstPeriod)}`,
+      });
+    } else if (needsWork) {
+      items.push({
+        ...base,
+        type: "issue",
+        kind: "wykonanie",
+        period: "",
+        late: false,
+        label: `Wystaw rachunek za wykonanie strony (umowa ${c.number})`,
+        detail: `wykonanie strony (umowa ${c.number})`,
+      });
+    }
+    if ((c.monthly_grosze || 0) > 0) {
+      const endPeriod = c.ends_on ? c.ends_on.slice(0, 7) : null;
+      const last = endPeriod && endPeriod < curPeriod ? endPeriod : curPeriod;
+      for (let p = firstPeriod; p <= last; p = nextPeriod(p)) {
+        if (billed.has(`${c.id}:abonament:${p}`)) continue;
+        const late = p < curPeriod;
+        items.push({
+          ...base,
+          type: "issue",
+          kind: "abonament",
+          period: p,
+          late,
+          label: `Wystaw rachunek: abonament za ${periodLabel(p)}${late ? " (zaległy)" : ""}`,
+          detail: `abonament za ${periodLabel(p)}`,
+        });
+      }
+    }
+  }
+
+  const open = db
+    .prepare(
+      `SELECT b.*, c.client_id, cl.name AS client_name, cl.legal_name, c.number AS contract_number
+       FROM bills b JOIN contracts c ON c.id = b.contract_id JOIN clients cl ON cl.id = c.client_id
+       WHERE b.status = 'wystawiony' ORDER BY b.issued_on`
+    )
+    .all();
+  for (const b of open) {
+    const base = {
+      client_id: b.client_id,
+      client_name: b.client_name || b.legal_name,
+      contract_id: b.contract_id,
+      contract_number: b.contract_number,
+      bill_id: b.id,
+      bill_number: b.number,
+      due_on: b.due_on,
+      sent_on: b.sent_on || "",
+      detail: `rachunek ${b.number} · ${zl(b.total_grosze)}`,
+    };
+    if (!b.sent_on) {
+      items.push({ ...base, type: "send", late: b.due_on < today, label: `Wyślij rachunek ${b.number} (${zl(b.total_grosze)})` });
+    } else if (b.due_on < today) {
+      items.push({ ...base, type: "overdue", late: true, label: `Nieopłacony po terminie: rachunek ${b.number}, termin ${fmtDate(b.due_on)}` });
+    } else {
+      items.push({
+        ...base,
+        type: "unpaid",
+        late: false,
+        label: `Sprawdź, czy opłacony: rachunek ${b.number} (${zl(b.total_grosze)}), termin ${fmtDate(b.due_on)}`,
+      });
+    }
+  }
+
+  // najpierw zalegle, potem wg klienta
+  return items.sort((a, b) => b.late - a.late || a.client_name.localeCompare(b.client_name, "pl") || (a.period || "").localeCompare(b.period || ""));
+}
+
+// ---------- lista klientow ----------
+
+function clientsOverview() {
+  const today = localDate();
+  const clients = db.prepare("SELECT * FROM clients ORDER BY name COLLATE NOCASE").all();
+  const names = new Map(clients.map((c) => [c.id, c.name || c.legal_name]));
+  const allContracts = db.prepare("SELECT * FROM contracts").all();
+  const byClient = new Map();
+  for (const c of allContracts) {
+    if (!byClient.has(c.client_id)) byClient.set(c.client_id, []);
+    byClient.get(c.client_id).push(c);
+  }
+  const covering = coveringContracts(allContracts);
+
+  let monthlySum = 0;
+  let activeCount = 0;
+  for (const list of byClient.values()) {
+    for (const c of list) {
+      if (!isActive(c, today)) continue;
+      activeCount += 1;
+      monthlySum += c.monthly_grosze || 0;
+    }
+  }
+
+  // kolejnosc: najblizszy koniec umowy na gorze (z kim rozmawiac o przedluzeniu), potem bez daty
+  // konca, bez umowy, a zakonczone na samym dole
+  const RANK = { urgent: 0, soon: 0, ok: 0, open: 1, none: 2, ended: 3 };
+  const rows = clients
+    .map((cl) => {
+      // umowy wlasne + cudze, w ktorych jest strona tego klienta (licznik dni tez z nich)
+      const cur = pickCurrent([...(byClient.get(cl.id) || []), ...(covering.get(cl.id) || [])], today);
+      const contract = cur ? serializeContract(cur, today) : null;
+      if (contract && cur.client_id !== cl.id) contract.covered_by = { client_id: cur.client_id, name: names.get(cur.client_id) };
+      return {
+        id: cl.id,
+        name: cl.name || cl.legal_name,
+        city: cl.city,
+        niche: cl.niche,
+        lead_id: cl.lead_id,
+        contract,
+        countdown: countdown(cur, today),
+      };
+    })
+    .sort((a, b) => {
+      const r = RANK[a.countdown.state] - RANK[b.countdown.state];
+      if (r) return r;
+      if (a.countdown.days != null && b.countdown.days != null) return a.countdown.days - b.countdown.days;
+      return a.name.localeCompare(b.name, "pl");
+    });
+
+  const candidates = db
+    .prepare(
+      `SELECT l.id, l.company_name, l.phone, l.city, n.name AS niche_name
+       FROM leads l JOIN niches n ON n.id = l.niche_id
+       WHERE l.interested = 'dopiete' AND NOT EXISTS (SELECT 1 FROM clients c WHERE c.lead_id = l.id)
+       ORDER BY l.dopiete_at DESC, l.company_name COLLATE NOCASE`
+    )
+    .all();
+
+  return { clients: rows, monthlySum: monthlySum / 100, activeCount, candidates, todo: billingTodo(today) };
+}
+
+function clientCard(id) {
+  const client = db.prepare("SELECT * FROM clients WHERE id = ?").get(id);
+  if (!client) return null;
+  const today = localDate();
+  const lead = client.lead_id
+    ? db
+        .prepare(
+          `SELECT l.id, l.company_name, l.niche_id, n.name AS niche_name FROM leads l JOIN niches n ON n.id = l.niche_id
+           WHERE l.id = ?`
+        )
+        .get(client.lead_id)
+    : null;
+  const allContracts = db.prepare("SELECT * FROM contracts").all();
+  const own = allContracts.filter((c) => c.client_id === id);
+  // umowy innych klientow, w ktorych jest strona tego klienta - pokazywane w karcie z odnosnikiem,
+  // ale rachunki wystawia sie z karty wlasciciela umowy
+  const covering = coveringContracts(allContracts).get(id) || [];
+  const clientOptions = db.prepare("SELECT id, name, legal_name FROM clients ORDER BY name COLLATE NOCASE").all();
+  const names = new Map(clientOptions.map((c) => [c.id, c.name || c.legal_name]));
+  const current = pickCurrent([...own, ...covering], today);
+  const contracts = [
+    ...own.map((c) => serializeContract(c, today)),
+    ...covering.map((c) => ({ ...serializeContract(c, today), covered_by: { client_id: c.client_id, name: names.get(c.client_id) } })),
+  ].sort((a, b) => (b.starts_on || b.signed_on || "").localeCompare(a.starts_on || a.signed_on || "") || b.id - a.id);
+  const bills = db
+    .prepare(
+      `SELECT b.* FROM bills b JOIN contracts c ON c.id = b.contract_id
+       WHERE c.client_id = ? ORDER BY b.issued_on DESC, b.id DESC`
+    )
+    .all(id)
+    .map((b) => serializeBill(b, today));
+  return {
+    client,
+    lead,
+    contracts,
+    currentContractId: current ? current.id : null,
+    bills,
+    suggestedNumber: suggestContractNumber(),
+    clientOptions: clientOptions.map((c) => ({ id: c.id, name: c.name || c.legal_name })),
+    todo: billingTodo(today).filter((t) => t.client_id === id),
+  };
+}
+
+module.exports = {
+  // czyste funkcje (testy)
+  lastBusinessDay,
+  dueDate,
+  turns26On,
+  exemption,
+  periodLabel,
+  countdown,
+  // modul
+  CONTRACTOR_FIELDS: ["full_name", "address", "pesel", "id_card", "bank_account", "phone", "email", "issue_city", "student_until"],
+  getContractor,
+  parseSites,
+  serializeContract,
+  suggestContractNumber,
+  syncPricing,
+  draftBill,
+  createBill,
+  serializeBill,
+  markBillPaid,
+  unmarkBillPaid,
+  setBillSent,
+  billEmailDraft,
+  deleteBill,
+  billingTodo,
+  clientsOverview,
+  clientCard,
+};

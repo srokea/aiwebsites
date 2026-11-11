@@ -108,6 +108,15 @@ function renderPrices() {
     .map((c) => {
       const head = `
         <span class="prices-company">${escapeHtml(c.company)}${c.caller ? `<span class="prices-caller"> · ${escapeHtml(c.caller)}</span>` : ""}</span>`;
+      // cena z podpisanej umowy (modul Klienci) - zmienia sie w karcie klienta, nie tutaj
+      if (c.contract) {
+        return `
+        <div class="prices-row">
+          ${head}
+          <span class="prices-val">${zl(c.onetime)} + ${zl(c.monthly)}/mies. <span class="prices-custom">z umowy ${escapeHtml(c.contract)}</span></span>
+          <a class="btn prices-btn" href="/klient.html?id=${c.client_id}">Karta klienta</a>
+        </div>`;
+      }
       if (c.lead_id !== editingPriceId) {
         return `
         <div class="prices-row">

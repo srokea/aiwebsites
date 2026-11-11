@@ -6,7 +6,9 @@
   "type": "commonjs",
   "scripts": {
     "start": "node --env-file-if-exists=.env server/index.js",
-    "dev": "node --watch --env-file-if-exists=.env server/index.js"
+    "dev": "node --watch --env-file-if-exists=.env server/index.js",
+    "test": "node --test",
+    "seed:klienci": "node server/scripts/seedClients.js"
   },
   "dependencies": {
     "@babel/parser": "^8.0.4",
@@ -15,6 +17,7 @@
     "cookie-parser": "^1.4.6",
     "express": "^4.19.2",
     "multer": "^2.0.1",
+    "nodemailer": "^10.1.2",
     "papaparse": "^5.4.1",
     "recast": "^0.23.19"
   }

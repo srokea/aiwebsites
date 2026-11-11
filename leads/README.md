@@ -3,6 +3,12 @@
 Pliki CSV/JSON generowane przez `node scripts/scrape-gmaps.mjs "<nisza> <miasto>"`
 (albo przez sub-agenta `lead-scraper`, który dodatkowo wzbogaca i ocenia leady).
 
+## Struktura
+
+Jeden folder na niszę: `fryzjerzy/`, `kosmetyczki/`, `fotografowie/` (kolejne dokładaj tak samo).
+Nowy scrape ląduje w `leads/` — po sprawdzeniu przenieś go do folderu swojej niszy.
+Pliki `*-arkusz*.csv` / `*-zbiorczy.csv` to eksporty z Google Sheets (inne kolumny niż schemat niżej).
+
 ## Schemat kolumn (zgodny z AI_WEB_AGENCY_CONTEXT.md §4)
 
 | kolumna | znaczenie |
