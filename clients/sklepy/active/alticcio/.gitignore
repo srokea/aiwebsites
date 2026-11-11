@@ -3,3 +3,5 @@ dist/
 # lokalne sekrety dla `wrangler pages dev` (SUPABASE_SECRET_KEY, TURNSTILE_SECRET_KEY)
 .dev.vars
 .wrangler/
+# kopia rsaas/ robiona przez build.sh dla functions/
+.rsaas/

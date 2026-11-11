@@ -28,6 +28,10 @@ Powtarzalne komponenty (galeria-lightbox, scroll-spy w headerze, social obok tel
 
 Paleta i typografia pochodzą z briefu, logo i zdjęć klienta — tokeny w `/design/DESIGN.md` to wartość domyślna, gdy brief milczy. Patrz sekcja 0 tego pliku.
 
+## RSaaS (Restaurant Software as a Service)
+
+Wspólny system rezerwacji dla restauracji: jeden projekt Supabase (multi-tenant, `restaurant_id` + RLS), pierwszy klient to Alticcio. Kod, wdrożenie i dodawanie restauracji: `rsaas/README.md`. Przy pracy nad nim używaj skilli `replica-architect`, `replica-backend`, `replica-test`. Pozostałe `replica-*` tylko na żądanie.
+
 ## Uczenie się na błędach
 
 Jeśli zauważysz, że powtarzasz ten sam błąd albo użytkownik poprawia Cię wielokrotnie w tej samej sprawie — zaproponuj konkretną poprawkę do odpowiedniego pliku (CLAUDE.md, SKILL.md albo pliku agenta) i zapytaj o zgodę, zanim ją wprowadzisz. Nigdy nie edytuj tych plików samodzielnie bez pytania.

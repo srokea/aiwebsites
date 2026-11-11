@@ -97,7 +97,7 @@
 <script type="module">
   const root = document.getElementById('cancel-app');
   try {
-    const [{ mountCancel }, { createCancelApi }] = await Promise.all([import('../js/cancel.js'), import('../js/cancel-api.js')]);
+    const [{ mountCancel }, { createCancelApi }] = await Promise.all([import('../js/rsaas/cancel.js'), import('../js/rsaas/cancel-api.js')]);
     mountCancel(root, createCancelApi(), location.hash.slice(1));
   } catch (err) {
     console.error('Odwołanie: nie wczytano skryptów', err);

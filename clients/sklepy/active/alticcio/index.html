@@ -867,8 +867,8 @@
 </section>
 
 <!-- ============================== REZERWACJA ============================== -->
-<!-- System rezerwacji: js/booking.js (UI) + js/booking-api.js (Supabase, Turnstile)
-     + functions/api/reserve.js (zapis). Wdrożenie: supabase/SETUP.md.
+<!-- System rezerwacji RSaaS (wspólny dla restauracji): js/rsaas/booking.js (UI) + js/rsaas/booking-api.js
+     (Supabase, Turnstile) + functions/api/reserve.js (zapis). Kod i wdrożenie: rsaas/README.md w repo.
      Ciemne tło zamiast czerwonego pasma, bo karta ze wzoru (UI.png) jest ciemna. -->
 <section id="rezerwacja" class="bg-ink px-5 py-20 text-cream sm:px-8 sm:py-28">
   <div class="mx-auto max-w-wide">
@@ -1150,8 +1150,8 @@ async function startBooking() {
   bookingStarted = true;
   try {
     const [{ mountBooking }, { createBookingApi }] = await Promise.all([
-      import('./js/booking.js'),
-      import('./js/booking-api.js'),
+      import('./js/rsaas/booking.js'),
+      import('./js/rsaas/booking-api.js'),
     ]);
     mountBooking(bookingRoot, createBookingApi());
   } catch (err) {

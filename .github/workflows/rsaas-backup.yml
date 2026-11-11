@@ -1,0 +1,75 @@
+# RSaaS: codzienna kopia bazy + ping, żeby Supabase Free nie uśpił projektu.
+#
+# Kopia jest szyfrowana (age) PRZED zapisem — w GitHubie leży tylko szyfrogram.
+# Klucz prywatny do odszyfrowania ma wyłącznie właściciel agencji. Retencja 30 dni,
+# zgodnie z settings.retention_days (RODO). Przywracanie: rsaas/README.md → „Backup”.
+#
+# Wymagane w Settings → Secrets and variables → Actions:
+#   secret   RSAAS_DB_URL               connection string „Session pooler” (IPv4) z Supabase
+#   variable RSAAS_BACKUP_AGE_RECIPIENT klucz publiczny age (age1…)
+#   variable RSAAS_SUPABASE_URL         https://<projekt>.supabase.co
+#   variable RSAAS_PUBLISHABLE_KEY      sb_publishable_… (jawny z założenia)
+#   variable RSAAS_PING_SLUG            slug dowolnej restauracji, np. alticcio
+
+name: RSaaS backup
+
+on:
+  schedule:
+    - cron: '40 2 * * *'   # codziennie 02:40 UTC, przed retencją w bazie (03:17 UTC)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rsaas-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Ping (Supabase Free usypia projekt po 7 dniach bez zapytań)
+        env:
+          URL: ${{ vars.RSAAS_SUPABASE_URL }}
+          KEY: ${{ vars.RSAAS_PUBLISHABLE_KEY }}
+          SLUG: ${{ vars.RSAAS_PING_SLUG }}
+        run: |
+          curl -fsS --max-time 30 "$URL/rest/v1/rpc/get_public_config" \
+            -H "apikey: $KEY" -H 'content-type: application/json' \
+            -d "{\"p_slug\":\"$SLUG\"}" | grep -q '"ok"[[:space:]]*:[[:space:]]*true'
+
+      - name: Narzędzia (pg_dump 17, age)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-common age
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get install -y -qq postgresql-client-17
+
+      - name: Zrzut i szyfrowanie
+        env:
+          RSAAS_DB_URL: ${{ secrets.RSAAS_DB_URL }}
+          RECIPIENT: ${{ vars.RSAAS_BACKUP_AGE_RECIPIENT }}
+        run: |
+          set -euo pipefail
+          umask 077
+          STAMP=$(date -u +%Y-%m-%dT%H%MZ)
+          echo "STAMP=$STAMP" >> "$GITHUB_ENV"
+          PG=/usr/lib/postgresql/17/bin
+          {
+            # schemat + dane RSaaS
+            $PG/pg_dump "$RSAAS_DB_URL" --schema=public --schema=private --no-owner --no-privileges
+            # konta obsługi (staff.user_id → auth.users) — same dane, schemat auth tworzy Supabase
+            $PG/pg_dump "$RSAAS_DB_URL" --data-only --table=auth.users --table=auth.identities --no-owner --no-privileges
+          } | gzip -9 | age -r "$RECIPIENT" -o "rsaas-$STAMP.sql.gz.age"
+          ls -la rsaas-*.age
+          # pusty albo podejrzanie mały zrzut = błąd, nie „sukces”
+          test "$(stat -c %s "rsaas-$STAMP.sql.gz.age")" -gt 2000
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rsaas-backup-${{ env.STAMP }}
+          path: rsaas-*.sql.gz.age
+          retention-days: 30
+          if-no-files-found: error
