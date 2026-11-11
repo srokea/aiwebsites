@@ -30,7 +30,9 @@ Paleta i typografia pochodzą z briefu, logo i zdjęć klienta — tokeny w `/de
 
 ## RSaaS (Restaurant Software as a Service)
 
-Wspólny system rezerwacji dla restauracji: jeden projekt Supabase (multi-tenant, `restaurant_id` + RLS), pierwszy klient to Alticcio. Kod, wdrożenie i dodawanie restauracji: `rsaas/README.md`. Przy pracy nad nim używaj skilli `replica-architect`, `replica-backend`, `replica-test`. Pozostałe `replica-*` tylko na żądanie.
+Wspólny system rezerwacji dla restauracji: jeden projekt Supabase (multi-tenant, `restaurant_id` + RLS), pierwszy klient to Alticcio. Kod, wdrożenie i dodawanie restauracji: `rsaas/README.md`. Plan i braki: `rsaas/TODO.md`.
+
+Na początku każdej rozmowy o RSaaS zapytaj użytkownika, czy pierwsza restauracja (Alticcio) jest już domknięta (prawdziwa sala, domena, klient korzysta). Jeśli tak i wdrażamy kolejną — przed oddaniem jej klientowi zrób test z `rsaas/TODO.md` pkt 4 (izolacja dwóch restauracji na produkcji). Przy pracy nad nim używaj skilli `replica-architect`, `replica-backend`, `replica-test`. Pozostałe `replica-*` tylko na żądanie.
 
 ## Uczenie się na błędach
 

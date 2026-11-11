@@ -25,6 +25,8 @@ GitHub Actions ── codziennie: ping + zaszyfrowany pg_dump (artefakt, 30 dni)
 - **Podwójną rezerwację blokuje baza** (`reservations_no_overlap`), a stolik innej restauracji — złożony klucz obcy. Nie kod strony.
 - Testy izolacji (sekcja 10 w `supabase/tests/booking_test.sql`) muszą przechodzić przed każdym wdrożeniem zmian w SQL.
 
+Plan rozwoju i znane braki: [TODO.md](TODO.md).
+
 ## Restauracje w RSaaS
 
 | Slug | Strona w repo | Cloudflare Pages | Adres |
