@@ -25,6 +25,14 @@ GitHub Actions ── codziennie: ping + zaszyfrowany pg_dump (artefakt, 30 dni)
 - **Podwójną rezerwację blokuje baza** (`reservations_no_overlap`), a stolik innej restauracji — złożony klucz obcy. Nie kod strony.
 - Testy izolacji (sekcja 10 w `supabase/tests/booking_test.sql`) muszą przechodzić przed każdym wdrożeniem zmian w SQL.
 
+## Restauracje w RSaaS
+
+| Slug | Strona w repo | Cloudflare Pages | Adres |
+|---|---|---|---|
+| `alticcio` | `clients/sklepy/active/alticcio` | projekt `alticcio` (Git, watch paths: folder strony + `rsaas/*`) | https://alticcio.pages.dev (bez domeny, `noindex`) |
+
+Projekt Pages bez *watch paths* buduje się przy **każdym** commicie w repo — buildy innych klientów lądują w kolejce jako „queued”. Zawsze ustawiaj watch paths.
+
 ## Struktura
 
 | Ścieżka | Co |
