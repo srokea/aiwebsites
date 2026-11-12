@@ -475,9 +475,9 @@
     <div class="mt-10 grid gap-5 sm:grid-cols-2">
       <div class="rounded-2xl border border-hair bg-blush/45 px-6 py-6 text-center">
         <div class="text-[.72rem] font-semibold uppercase tracking-[1.6px] text-muted">Google</div>
-        <div class="mt-2 text-[2.2rem] font-bold leading-none tracking-[-.03em]">5,0</div>
+        <div class="mt-2 text-[2.2rem] font-bold leading-none tracking-[-.03em]" data-opinie="ocena">5,0</div>
         <div class="mt-2 text-[.9rem] tracking-[2px] text-accent" aria-hidden="true">★★★★★</div>
-        <div class="mt-2 text-[.88rem] text-muted">na podstawie 18 opinii</div>
+        <div class="mt-2 text-[.88rem] text-muted">na podstawie <span data-opinie="liczba-slowo">19 opinii</span></div>
       </div>
       <div class="rounded-2xl border border-hair bg-blush/45 px-6 py-6 text-center">
         <div class="text-[.72rem] font-semibold uppercase tracking-[1.6px] text-muted">Facebook</div>
@@ -1341,5 +1341,6 @@
   })();
 </script>
 
+<script src="https://opinie-licznik.project6osss.workers.dev/o.js" data-klient="nova" defer></script>
 </body>
 </html>

@@ -130,10 +130,10 @@
       </div>
 
       <a href="#opinie" class="hero__rating">
-        <span class="hero__rating-num display">5,0</span>
+        <span class="hero__rating-num display" data-opinie="ocena">5,0</span>
         <span class="hero__rating-txt">
           <span class="stars" aria-hidden="true">★★★★★</span>
-          <span>57 opinii w&nbsp;Google</span>
+          <span><span data-opinie="liczba-slowo">57 opinii</span> w&nbsp;Google</span>
         </span>
       </a>
     </div>
@@ -253,10 +253,10 @@
     <div class="reviews-head">
       <h2 id="opinie-title" class="display h2">Opinie</h2>
       <div class="reviews-score">
-        <p class="reviews-score__num display">5,0</p>
+        <p class="reviews-score__num display" data-opinie="ocena">5,0</p>
         <div>
           <p class="stars stars--lg" aria-label="Ocena 5 na 5">★★★★★</p>
-          <p class="reviews-score__count">57 opinii w&nbsp;Google</p>
+          <p class="reviews-score__count"><span data-opinie="liczba-slowo">57 opinii</span> w&nbsp;Google</p>
         </div>
       </div>
     </div>
@@ -412,5 +412,6 @@
 </div>
 
 <script src="assets/js/site.js" defer></script>
+<script src="https://opinie-licznik.project6osss.workers.dev/o.js" data-klient="kotas" defer></script>
 </body>
 </html>
