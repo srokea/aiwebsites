@@ -46,6 +46,20 @@ test("refreshAll: zapisuje dobre, nie nadpisuje przy błędzie", async () => {
   assert.equal(kv.m.has("o:pusty"), false);
 });
 
+test("bezpiecznik: po limicie nie pyta Google i nie rusza danych", async () => {
+  const kv = kvMock(); const now = new Date("2026-11-12T03:40:00Z");
+  kv.m.set("uzycie:2026-11", String(mod.MIESIECZNY_LIMIT - 1));
+  let calls = 0; const f = async () => { calls++; return new Response(JSON.stringify({ rating: 5, userRatingCount: 7 })); };
+  const rep = await refreshAll({ OPINIE_KV: kv, GOOGLE_PLACES_KEY: "K" }, [{ slug: "a", place_id: "1" }, { slug: "b", place_id: "2" }, { slug: "c", place_id: "3" }], f, now);
+  assert.equal(calls, 1);
+  assert.deepEqual(rep.map((r) => r.ok), [true, false, false]);
+  assert.equal(kv.m.get("uzycie:2026-11"), String(mod.MIESIECZNY_LIMIT));
+  assert.equal(kv.m.has("o:b"), false);
+  // nowy miesiąc = licznik od zera
+  await refreshAll({ OPINIE_KV: kv, GOOGLE_PLACES_KEY: "K" }, [{ slug: "b", place_id: "2" }], f, new Date("2026-12-01T03:40:00Z"));
+  assert.equal(kv.m.get("uzycie:2026-12"), "1"); assert.equal(calls, 2);
+});
+
 test("worker: trasy", async () => {
   const kv = kvMock(); kv.m.set("o:salon", JSON.stringify({ rating: 4.9, count: 122, updated: "2026-11-12" }));
   const env = { OPINIE_KV: kv };

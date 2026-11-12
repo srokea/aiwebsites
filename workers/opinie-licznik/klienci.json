@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "slug": "kotas",
+    "place_id": "ChIJrVcdAbH1GUcR_DoljQcujCM"
+  },
+  {
+    "slug": "salon-psiej-urody-pudelek",
+    "place_id": "ChIJc2QWMJOKGUcRz0i-CcQniQc"
+  },
+  {
+    "slug": "colibra-ibeauty",
+    "place_id": "ChIJAevVtayFGUcR3PRufPMPvMA"
+  },
+  {
+    "slug": "nova",
+    "place_id": "ChIJFxxiDmuTGUcRapukeU4Kwos"
+  },
+  {
+    "slug": "atelier-piekna",
+    "place_id": "ChIJY9yKc82RGUcRkCxHCzLLxBQ"
+  },
+  {
+    "slug": "alticcio",
+    "place_id": "ChIJY5qwxddz_UYRxNJ8BCYLiuc"
+  }
+]

@@ -38,14 +38,34 @@ export async function fetchPlace(placeId, apiKey, fetchImpl = fetch) {
   return { rating: Math.round(rating * 10) / 10, count };
 }
 
-export async function refreshAll(env, list = klienci, fetchImpl = fetch) {
+// BEZPIECZNIK KOSZTÓW. Google daje 1000 darmowych zapytań tego typu miesięcznie, potem liczy
+// 20 USD za 1000 (0,02 USD za sztukę). Worker sam liczy swoje zapytania w KV pod kluczem
+// "uzycie:RRRR-MM" i po dojściu do MIESIECZNY_LIMIT przestaje pytać Google do końca miesiąca.
+// Strony pokazują wtedy ostatnie znane liczby. Limit jest celowo poniżej darmowej puli.
+export const MIESIECZNY_LIMIT = 900;
+
+export async function readUsage(env, now = new Date()) {
+  const key = `uzycie:${now.toISOString().slice(0, 7)}`;
+  return { key, used: Number(await env.OPINIE_KV.get(key)) || 0 };
+}
+
+export async function refreshAll(env, list = klienci, fetchImpl = fetch, now = new Date()) {
   const report = [];
+  const usage = await readUsage(env, now);
+  let used = usage.used;
   for (const k of list) {
+    if (used >= MIESIECZNY_LIMIT) {
+      report.push({ slug: k && k.slug, ok: false, error: "miesięczny limit zapytań wyczerpany" });
+      continue;
+    }
     if (!k || !SLUG.test(k.slug || "") || !k.place_id) {
       report.push({ slug: k && k.slug, ok: false, error: "zły wpis w klienci.json" });
       continue;
     }
     try {
+      // licznik podbijamy PRZED zapytaniem: nieudane zapytanie Google też może być policzone
+      used += 1;
+      await env.OPINIE_KV.put(usage.key, String(used), { expirationTtl: 60 * 60 * 24 * 100 });
       const place = await fetchPlace(k.place_id, env.GOOGLE_PLACES_KEY, fetchImpl);
       if (!place) {
         report.push({ slug: k.slug, ok: false, error: "brak oceny w odpowiedzi Google" });
@@ -101,6 +121,12 @@ export default {
           "x-content-type-options": "nosniff",
         },
       });
+    }
+
+    // ile zapytań do Google poszło w tym miesiącu (do kontroli kosztów)
+    if (pathname === "/uzycie.json") {
+      const u = await readUsage(env);
+      return json({ miesiac: u.key.slice(7), zapytania: u.used, limit_workera: MIESIECZNY_LIMIT, darmowa_pula_google: 1000 }, 200, { "cache-control": "no-store" });
     }
 
     const m = pathname.match(/^\/o\/([a-z0-9-]+)\.json$/);

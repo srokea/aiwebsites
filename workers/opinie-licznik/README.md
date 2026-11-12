@@ -18,6 +18,17 @@ dane i nadpisuje ją. Gdy worker albo Google nie odpowiada, odwiedzający widzi 
 4. `npx wrangler secret put GOOGLE_PLACES_KEY` i wklej klucz. Klucz nie trafia do repo.
 5. `npx wrangler deploy`. Zapisz adres workera (`https://opinie-licznik.<konto>.workers.dev`).
 
+## Koszty i bezpiecznik
+
+- Darmowa pula Google: 1000 zapytań miesięcznie. Powyżej: 20 USD za 1000, czyli 0,02 USD za sztukę.
+- Jeden klient to jedno zapytanie dziennie, około 30 miesięcznie.
+- **Worker sam liczy swoje zapytania i po 900 w miesiącu przestaje pytać Google.** Strony pokazują
+  wtedy ostatnie znane liczby. Najgorszy przypadek z naszej strony to 0 zł.
+- Podgląd licznika: `https://opinie-licznik.project6osss.workers.dev/uzycie.json`
+- Bezpiecznik nie chroni przed użyciem klucza poza workerem (np. gdyby klucz wyciekł). Dlatego
+  w Google Cloud klucz ma być ograniczony do „Places API (New)", a na usłudze ma być ustawiony
+  dzienny limit zapytań (Interfejsy API → Places API (New) → Limity).
+
 ## Dodanie klienta
 
 1. Znajdź identyfikator miejsca:
