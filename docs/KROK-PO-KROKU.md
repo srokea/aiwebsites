@@ -148,6 +148,65 @@ Jeśli się zgodzi: „wdróż opinie u klienta nazwa-firmy". Co tydzień wkleja
 4. **Oglądanie tylko na komputerze.** Klienci naszych klientów siedzą na telefonach.
 5. **Poprawki hurtem.** Dziesięć uwag w jednej wiadomości kończy się tym, że trzy są zrobione źle.
 
+## Co podać Claude'owi, żeby dokończyć konfigurację
+
+Stan na 12.11.2026. Odhacz, gdy zrobione. Przy każdym punkcie jest, co dokładnie napisać w rozmowie.
+
+### Wymaga Twojego kliknięcia (to Twoje konta)
+
+**1. Klucz Google do licznika opinii**
+1. Wejdź na `console.cloud.google.com` i zaloguj się.
+2. U góry wybór projektu → „Nowy projekt" → nazwa np. `agencja-opinie`.
+3. Menu → „Rozliczenia" → podepnij kartę. Przy naszej skali mieści się w darmowym limicie
+   (1000 zapytań miesięcznie, czyli do 33 klientów przy codziennym odświeżaniu).
+4. Menu → „Interfejsy API i usługi" → „Biblioteka" → wyszukaj **Places API (New)** → „Włącz".
+5. „Dane logowania" → „Utwórz dane logowania" → „Klucz interfejsu API".
+6. Przy kluczu „Edytuj" → „Ograniczenia interfejsów API" → zaznacz tylko Places API (New).
+7. W terminalu, w folderze repo:
+   ```
+   cd workers/opinie-licznik
+   npx wrangler secret put GOOGLE_PLACES_KEY
+   ```
+   Gdy zapyta, wklej klucz. **Nie wklejaj klucza w rozmowie z Claude'em.**
+8. Napisz: `klucz jest`
+
+**2. Token GitHuba (codzienna kontrola stron)**
+1. Wejdź na `github.com/settings/tokens`.
+2. Kliknij swój token (zaczyna się od `ghp_`).
+3. Zaznacz pole **workflow** → „Update token" na dole. Token zostaje ten sam.
+4. Napisz: `token zrobiony`
+
+**3. Hasło SSH do serwera**
+Było wklejone w rozmowie, więc zmień je. Claude loguje się kluczem i hasła nie potrzebuje.
+Nic nie trzeba pisać.
+
+**4. Konto w Uptime Kumie**
+Otwórz `http://ADRES_SERWERA:3001` (z domu albo przez Tailscale), ustaw login i hasło, dodaj
+domeny klientów i powiadomienia. Do tego momentu konto może założyć każdy w Twojej sieci.
+
+**5. Nikodem**
+Po `git pull` zniknie mu plik `.claude/settings.local.json`. Odtwarza go poleceniem
+`cp .claude/settings.local.example.json .claude/settings.local.json` i wpisuje swoją ścieżkę.
+
+### Wymaga tylko odpowiedzi
+
+| Sprawa | Co napisać |
+|---|---|
+| Cena „Opinii Google" (propozycja: 50 zł miesięcznie, bez opłaty startowej) | `cena opinii 50 zł` albo inna kwota |
+| Agent Reach, tylko publiczne źródła bez logowania na Twoje konta | `agent reach tak` albo `agent reach nie` |
+| Umami, statystyki odwiedzin na serwerze | `umami tak` albo `umami nie` |
+| Dane strukturalne dla Glasomusa | `glasomus bez apteki i bez ceny` albo podaj cenę produktu |
+| Nowy kod Workera kart opinii (licznik skanów) | `worker kart sprawdź najpierw` albo `worker kart wdróż` |
+
+### Co Claude może zrobić od razu, bez czekania na cokolwiek
+
+| Zadanie | Co napisać |
+|---|---|
+| Skill do zdjęć (zmniejszanie, kadrowanie, WebP) | `zrób skill do zdjęć` |
+| Dane strukturalne dla Grandy i Pudelka | `dodaj dane strukturalne Grandzie i Pudelkowi` |
+| Lokalne fonty zamiast Google w Filiżance i szablonie fotografa | `przenieś fonty na lokalne` |
+| Test całego procesu na jednym kliencie | `/new-client <nisza> <nazwa>` i dalej według kroków wyżej |
+
 ## Gotowe polecenia do wklejenia
 
 Podmień nazwy i wklej. Im konkretniej, tym mniej poprawek.
