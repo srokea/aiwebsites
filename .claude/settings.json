@@ -1,5 +1,96 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
-    "IMPECCABLE_CONTEXT_DIR": "/Users/xnickyy4/Documents/Websites/design"
+    "IMPECCABLE_CONTEXT_DIR": "design"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(node scripts/screenshot.mjs *)",
+      "Bash(node scripts/scrape-gmaps.mjs *)",
+      "Bash(node scripts/check-sites.mjs *)",
+      "Bash(node scripts/check-sites.mjs)",
+      "Bash(node scripts/qr.mjs *)",
+      "Bash(node scripts/place-id.mjs *)",
+      "Bash(npm run shot *)",
+      "Bash(npm run scrape *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(npx wrangler whoami)",
+      "Bash(npx wrangler dev *)"
+    ],
+    "ask": [
+      "Bash(npx wrangler deploy *)",
+      "Bash(npx wrangler deploy)",
+      "Bash(npx wrangler pages deploy *)",
+      "Bash(npx wrangler secret *)",
+      "Bash(npx wrangler d1 *)",
+      "Bash(npx wrangler r2 *)",
+      "Bash(wrangler deploy *)",
+      "Bash(wrangler deploy)",
+      "Bash(wrangler pages deploy *)",
+      "Bash(wrangler secret *)",
+      "Bash(node scripts/ovh.mjs *)",
+      "Bash(./redeploy.sh *)",
+      "Bash(./redeploy.sh)",
+      "Bash(./rollback.sh *)",
+      "Bash(./rollback.sh)",
+      "Bash(docker *)"
+    ],
+    "deny": [
+      "Read(./**/.env)",
+      "Read(./**/.env.local)",
+      "Read(./**/.env.production)",
+      "Read(./**/.dev.vars)",
+      "Read(./**/haslo.txt)",
+      "Read(./webapp/data/**)",
+      "Read(~/.ovh.conf)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(git push * --force)",
+      "Bash(git push * --force *)",
+      "Bash(git push * -f)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ ! -f \"${CLAUDE_PROJECT_DIR}/.claude/skills/impeccable/scripts/impeccable\" ] || \"${CLAUDE_PROJECT_DIR}/.claude/skills/impeccable/scripts/impeccable\" hook",
+            "timeout": 5,
+            "statusMessage": "Checking UI changes"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ ! -f \"${CLAUDE_PROJECT_DIR}/.claude/skills/impeccable/scripts/impeccable\" ] || \"${CLAUDE_PROJECT_DIR}/.claude/skills/impeccable/scripts/impeccable\" hook",
+            "timeout": 5,
+            "statusMessage": "Preparing build session"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ ! -f \"${CLAUDE_PROJECT_DIR}/.claude/skills/impeccable/scripts/impeccable\" ] || \"${CLAUDE_PROJECT_DIR}/.claude/skills/impeccable/scripts/impeccable\" hook",
+            "timeout": 30,
+            "statusMessage": "Design deep pass"
+          }
+        ]
+      }
+    ]
   }
 }

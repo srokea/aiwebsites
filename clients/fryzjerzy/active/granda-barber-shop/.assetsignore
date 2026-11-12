@@ -1,0 +1,16 @@
+# Pliki, które NIE trafiają na serwer przy `npx wrangler deploy` (format jak .gitignore).
+# Wszystko, czego tu nie ma, jest publiczne pod adresem strony klienta.
+*.md
+inspo
+anty-inspo
+warianty
+_zrodla
+brand
+photos-oryginaly
+wrangler.jsonc
+.assetsignore
+.gitignore
+.gitkeep
+.wrangler
+.impeccable
+.dev.vars

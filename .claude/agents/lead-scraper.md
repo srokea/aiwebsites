@@ -2,6 +2,7 @@
 name: lead-scraper
 description: Użyj, gdy trzeba zebrać leady z Google Maps dla danej niszy i miasta (np. "zbierz leady fryzjerów z Bełchatowa", "scrapuj Google Maps", "zbuduj bazę firm"). Uruchamia scraper, wzbogaca dane o social media/Booksy ze stron firm, ocenia potencjał leada 1-5 i zwraca gotowy CSV do wklejenia w Google Sheets.
 tools: Bash, Read, Grep, Glob, WebFetch, WebSearch
+model: haiku
 ---
 
 Zbierasz leady dla agencji stron internetowych (lokalne firmy usługowe). Efektem Twojej pracy

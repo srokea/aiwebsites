@@ -221,6 +221,8 @@ Sprzedajemy lokalnym firmom widoczność — strona bez tego jest niekompletna.
 
 ## RODO i prywatność (obowiązkowe na każdej stronie)
 
+Wzór treści podstrony: `templates/polityka-prywatnosci.md` (podmień dane, usuń akapity, które nie dotyczą tej strony).
+
 - Stopka zawiera link "Polityka prywatności" prowadzący do osobnej podstrony/sekcji z podstawową informacją: jakie dane zbiera formularz kontaktowy (jeśli jest), po co, i że dane trafiają do właściciela firmy (nie do agencji).
 - **Fonty Google:** nie ładuj ich z `fonts.googleapis.com` w locie — pobierz pliki raz i hostuj lokalnie w projekcie klienta. Ładowanie na żywo z serwerów Google wysyła IP odwiedzającego bez zgody, co jest problematyczne pod RODO.
 - **Mapa Google Maps:** jeśli osadzona jako iframe, wspomnij o tym w polityce prywatności (przekazywanie danych do Google). Alternatywa: link "Wyznacz trasę" zamiast pełnego embedu, jeśli klient/agencja chce tego unikać całkowicie.

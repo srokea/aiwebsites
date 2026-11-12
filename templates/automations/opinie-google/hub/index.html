@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opinia | NAZWA FIRMY</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../FAVICON_KLIENTA">
+<!--
+  Strona, do której prowadzi kod QR z lady. Trafia do folderu klienta jako opinia/index.html.
+  Przy wdrożeniu (skill automation-setup):
+  1. Podmień wszystko WIELKIMI LITERAMI.
+  2. Przepisz 5 kolorów i 2 kroje pisma ze strony głównej klienta (jej tailwind.config i @font-face).
+  3. Usuń przyciski, na które klient nie ma linku. Nie zostawiaj pustych href.
+  4. Klient bez pliku logo: zamiast <img class="logo"> wstaw nazwę firmy krojem nagłówków.
+  Bez zewnętrznych skryptów i bez CDN: strona nie wysyła nigdzie danych odwiedzającego.
+-->
+<style>
+  /* Kroje pisma klienta: skopiuj jego reguły @font-face i popraw ścieżki na ../fonts/... */
+  :root {
+    --bg: KOLOR_TLA;
+    --surface: KOLOR_POWIERZCHNI;
+    --ink: KOLOR_TEKSTU;
+    --muted: KOLOR_TEKSTU_DRUGORZEDNEGO;
+    --accent: KOLOR_AKCENTU;
+    --on-accent: KOLOR_TEKSTU_NA_AKCENCIE;
+    --font-display: KROJ_NAGLOWKOW, serif;
+    --font-body: KROJ_TEKSTU, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: 2rem 1.25rem;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.55;
+  }
+  main { width: 100%; max-width: 26rem; text-align: center; }
+  .logo { max-width: 9rem; height: auto; margin: 0 auto 1.75rem; display: block; }
+  h1 { font-family: var(--font-display); font-size: 1.75rem; line-height: 1.2; margin: 0 0 .75rem; font-weight: 600; }
+  p { margin: 0 0 1.75rem; color: var(--muted); }
+  .btn {
+    display: flex; align-items: center; justify-content: center; gap: .6rem;
+    min-height: 3.25rem; padding: 0 1.25rem; margin-bottom: .75rem;
+    border-radius: 999px; border: 1px solid transparent;
+    font: inherit; font-weight: 600; text-decoration: none; white-space: nowrap;
+  }
+  .btn-primary { background: var(--accent); color: var(--on-accent); }
+  .btn-secondary { background: var(--surface); color: var(--ink); border-color: color-mix(in srgb, var(--ink) 14%, transparent); }
+  .btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+  .rest { margin-top: 1.75rem; }
+  footer { margin-top: 2.25rem; font-size: .85rem; }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <img class="logo" src="../LOGO_KLIENTA" alt="NAZWA FIRMY" width="144" height="144">
+
+  <h1>Dziękujemy za wizytę</h1>
+  <p>Jeśli ma Pani/Pan chwilę, prosimy o opinię w Google. Każda opinia, także krytyczna, pomaga nam pracować lepiej.</p>
+
+  <a class="btn btn-primary" href="LINK_DO_WYSTAWIENIA_OPINII" rel="noopener">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+      <path d="M12 10.2v3.9h5.5a4.7 4.7 0 0 1-2 3.1v2.6h3.2c1.9-1.7 3-4.3 3-7.3 0-.7-.06-1.4-.18-2.05z"/>
+      <path d="M12 22c2.7 0 4.96-.9 6.62-2.42l-3.2-2.48c-.9.6-2.05.95-3.42.95-2.6 0-4.8-1.76-5.6-4.13H3.1v2.6A10 10 0 0 0 12 22"/>
+      <path d="M6.4 13.92a6 6 0 0 1 0-3.84V7.48H3.1a10 10 0 0 0 0 9.04z"/>
+      <path d="M12 5.98c1.47 0 2.79.5 3.83 1.5l2.84-2.84C16.95 3.03 14.7 2 12 2A10 10 0 0 0 3.1 7.48l3.3 2.6C7.2 7.74 9.4 5.98 12 5.98"/>
+    </svg>
+    Wystaw opinię w Google
+  </a>
+
+  <div class="rest">
+    <!-- Booksy: ikonę bierz z pliku klienta (design/SNIPPETS.md, sekcja 6), nie rysuj jej. -->
+    <a class="btn btn-secondary" href="LINK_BOOKSY" rel="noopener">Umów kolejną wizytę</a>
+
+    <a class="btn btn-secondary" href="LINK_INSTAGRAM" rel="noopener">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.62.07 4.81s0 3.56-.07 4.81c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.16-1.06.36-2.23.41-1.25.06-1.62.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.56 2.2 15.19 2.2 12s0-3.56.07-4.81c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.44 2.21 8.8 2.2 12 2.2m0 1.98c-3.14 0-3.51.01-4.75.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.75s.01 3.51.07 4.75c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.05-1.15-.24-1.77-.4-2.18a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.75-.07m0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9m0 8.99a3.54 3.54 0 1 0 0-7.08 3.54 3.54 0 0 0 0 7.08m6.94-9.21a1.27 1.27 0 1 1-2.55 0 1.27 1.27 0 0 1 2.55 0"/></svg>
+      Instagram
+    </a>
+
+    <a class="btn btn-secondary" href="LINK_FACEBOOK" rel="noopener">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>
+      Facebook
+    </a>
+
+    <a class="btn btn-secondary" href="tel:TELEFON_BEZ_SPACJI">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+      Zadzwoń
+    </a>
+  </div>
+
+  <footer>
+    <a href="../">Strona główna</a> · <a href="../privacy.html">Polityka prywatności</a>
+  </footer>
+</main>
+</body>
+</html>

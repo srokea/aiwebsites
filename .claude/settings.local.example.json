@@ -1,0 +1,11 @@
+{
+  "env": {
+    "IMPECCABLE_CONTEXT_DIR": "/PELNA/SCIEZKA/DO/REPO/design"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git push *)",
+      "Bash(npm install *)"
+    ]
+  }
+}

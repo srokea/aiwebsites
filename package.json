@@ -8,6 +8,7 @@
     "scrape": "node scripts/scrape-gmaps.mjs"
   },
   "dependencies": {
-    "puppeteer-core": "^24.0.0"
+    "puppeteer-core": "^24.0.0",
+    "qrcode": "^1.5.4"
   }
 }
