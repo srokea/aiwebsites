@@ -148,26 +148,84 @@ Jeśli się zgodzi: „wdróż opinie u klienta nazwa-firmy". Co tydzień wkleja
 4. **Oglądanie tylko na komputerze.** Klienci naszych klientów siedzą na telefonach.
 5. **Poprawki hurtem.** Dziesięć uwag w jednej wiadomości kończy się tym, że trzy są zrobione źle.
 
+## Gotowe polecenia do wklejenia
+
+Podmień nazwy i wklej. Im konkretniej, tym mniej poprawek.
+
+**Nowy klient i brief**
+```
+/new-client kosmetyczki Studio Urody Anna
+Wizytówka Google: [link]. Instagram: [link]. Booksy: [link].
+Z rozmowy: pracuje sama, chce rezerwacji przez Booksy, nie chce cennika na stronie.
+```
+
+**Budowa**
+```
+Zbuduj stronę dla klienta studio-urody-anna według briefu. Styl 04 z design/STYLES.md.
+Hero na pełny ekran ze zdjęciem photos/salon-wnetrze.jpg.
+```
+
+**Poprawki (jedna rzecz na wiadomość)**
+```
+U klienta studio-urody-anna: w nagłówku na telefonie przycisk „Umów wizytę" łamie się na dwie linie. Napraw tylko to.
+```
+```
+W galerii zdjęcie photos/paznokcie-3.jpg ma uciętą dłoń. Popraw kadr, reszty nie ruszaj.
+```
+```
+Pokaż 3 wersje kroju nagłówków jako zrzuty ekranu.
+```
+```
+Zmień godziny otwarcia w sobotę na 9:00-14:00, na stronie i w danych dla Google.
+```
+
+**Publikacja i po niej**
+```
+/ship studio-urody-anna
+```
+```
+Zrób lokalne SEO dla klienta studio-urody-anna. Listę dla klientki napisz tak, żebym mógł ją przesłać SMS-em.
+```
+```
+Podepnij licznik opinii Google dla klienta studio-urody-anna.
+```
+
+**Sprzedaż**
+```
+/leads kosmetyczka Tomaszów Mazowiecki 20
+```
+```
+Napisz ofertę na opinie dla klienta studio-urody-anna. Jestem z nią na Pani.
+```
+```
+Przygotuj odpowiedzi na opinie dla klienta studio-urody-anna:
+[wklej opinie z Google]
+```
+
+**Kontrola i porządki**
+```
+Sprawdź, czy wszystkie strony klientów działają.
+```
+```
+Zacommituj zmiany klienta studio-urody-anna.
+```
+
+**Większe zadania**
+```
+/orchestrate Dodaj w webappie eksport listy klientów do CSV z filtrem po niszy.
+```
+Uwaga: `/orchestrate` opłaca się dopiero przy zadaniu z co najmniej trzema niezależnymi częściami.
+Przy małej zmianie kilku agentów zużywa więcej niż jedna sesja.
+
+**Czego nie pisać**
+- „Popraw stronę", „zrób ładniej". Claude zgadnie co innego, niż masz na myśli.
+- Dziesięciu uwag naraz. Trzy z nich wyjdą źle.
+- „Dodaj coś fajnego". Skończy się karuzelą, której klient nie chciał.
+
 ## Dlaczego nie używamy narzędzi z rolek
 
-Krótko: żadne z nich nie robi lepszej strony dla fryzjera. Robią inne rzeczy, a każde kosztuje
-utrzymanie albo ryzyko.
-
-| Narzędzie | Dlaczego nie |
-|---|---|
-| OmniRoute | Obchodzi limity dostawców i podszywa się pod ich aplikacje. Grozi blokadą konta, a kod i dane klientów szłyby przez przypadkowe darmowe serwery. |
-| Agent Reach | Scrapuje LinkedIna, Instagrama i X na Twoim zalogowanym koncie. To łamie ich regulaminy, a nasze leady i tak są w Google Maps. |
-| Ponytail | Każe modelowi pisać mniej kodu. My już to mamy w zasadach, a na stronach liczy się dopracowanie, nie długość kodu. Niezależny pomiar oszczędności: ok. 8%. |
-| Agent Skills, Superpowers | Dziesiątki skilli pod duże projekty programistyczne. Każdy skill to tekst doliczany do każdej sesji. Nasze skille są pisane pod nasz proces. |
-| Graphify | Mapa dużego kodu. Strona klienta to kilka plików, nie ma czego mapować. |
-| Cal.diy | Autorzy sami piszą, że nie nadaje się do użytku produkcyjnego. Klienci mają Booksy. |
-| Chatwoot, Open SEO, Umami, Uptime Kuma | Dobre, ale każde wymaga własnego serwera i opieki. Wrócimy, gdy będzie konkretna potrzeba. |
-| AppFlowy, OpenProject | Zamienniki Notion i Asany. Notion nam działa. |
-| Open Generative AI, VoiceStudio | Generowanie wideo i głosu. Nie sprzedajemy tego. |
-| terminal-mac | Wydane kilka dni przed sprawdzeniem, bez podpisu Apple. Do oglądania stron wystarcza Chrome. |
-| n8n | Licencja nie pozwala trzymać danych klientów na naszej instancji bez płatnej wersji. Automatyzacje stawiamy na Cloudflare. |
-
-Z pomysłów z rolek wzięliśmy dwie rzeczy, bo nic nie kosztują: **routing modeli** (drogi model
-planuje, tani wykonuje) i **orkiestrację** (`/orchestrate`, tylko do dużych zadań).
-
-Pełna lista z licencjami: `PRZYDATNE-REPO.md`.
+Żadne z nich nie robi lepszej strony dla fryzjera, a każde kosztuje utrzymanie albo ryzyko.
+Część łamie regulaminy (OmniRoute, Agent Reach na zalogowanych kontach), część jest pod duże
+projekty programistyczne (Agent Skills, Superpowers, Graphify), część wymaga opieki nad serwerem
+(Chatwoot, Umami). Z rolek wzięliśmy dwa pomysły, które nic nie kosztują: routing modeli
+i orkiestrację. Pełna lista z powodami: `PRZYDATNE-REPO.md`.

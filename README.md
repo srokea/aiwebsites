@@ -45,29 +45,8 @@ klientów. Zasady dla Claude'a są w `CLAUDE.md`, kontekst biznesowy w `docs/AI_
 
 ## Codzienna praca
 
-| Chcę… | Wpisuję |
-|---|---|
-| założyć nowego klienta | `/new-client fryzjerzy Nazwa Firmy` |
-| zbudować albo poprawić stronę | zwykłą prośbę, np. „zrób stronę dla klienta X" (skill `web-design`) |
-| opublikować stronę | `/ship nazwa-klienta` |
-| zebrać leady | `/leads barber Bełchatów 20` |
-| sprawdzić, czy strony klientów żyją | `node scripts/check-sites.mjs` (samo leci codziennie w GitHub Actions) |
-| zaproponować klientowi opinie Google | „napisz ofertę na opinie dla klienta X" |
-| wdrożyć opinie u klienta | „wdróż opinie u klienta X" |
-| odpowiedzieć na opinie | wklejam opinie i piszę „przygotuj odpowiedzi dla klienta X" |
-| zrobić coś dużego (webapp, sklep) | `/orchestrate opis zadania` |
-
-## Jak oszczędzamy tokeny
-
-Modele są przypisane do agentów (tabela w `CLAUDE.md`): Fable planuje, Sonnet pisze kod, Haiku
-szuka i zbiera leady, Opus robi review. Dwie praktyczne zasady:
-
-- Zwykłe poprawki i kod rób w sesji na Sonnecie (`/model sonnet`). Do planowania i trudnych rzeczy
-  sesja sama sięgnie po agenta `planner` na Fable.
-- Strony klientów projektuj na najlepszym modelu, jaki masz. To jest to, co sprzedajemy.
-
-`/orchestrate` nie jest tańsze przy małych zadaniach. Kilku agentów naraz zużywa więcej tokenów
-niż jedna sesja. Zysk pojawia się dopiero przy zadaniu z co najmniej trzema niezależnymi częściami.
+Cały proces z gotowymi poleceniami do wklejenia: **`docs/KROK-PO-KROKU.md`**. Tam też jest, który
+model wybrać do czego.
 
 ## Uprawnienia
 
@@ -94,28 +73,7 @@ Katalog i zasady: `templates/automations/README.md`. Gotowy do pilotażu jest je
 **Opinie Google** (strona `/opinia/`, kod QR, odpowiedzi na opinie raz w tygodniu). Cenę wpisujemy
 w tabeli w tym pliku. Dopóki jej tam nie ma, Claude nie poda klientowi żadnej kwoty.
 
-## Narzędzia z zewnątrz: co sprawdziliśmy (listopad 2026)
+## Narzędzia z zewnątrz
 
-Żeby nie wracać do tych samych rolek. Stan z GitHuba na 12.11.2026.
-
-| Narzędzie | Decyzja | Powód |
-|---|---|---|
-| Impeccable (pbakaus/impeccable) | używamy | podstawa skilla `web-design` |
-| cloudflare/skills (oficjalne, Apache-2.0) | do rozważenia | warto dodać sam skill `wrangler`; cały plugin dokłada wiele skilli i 5 serwerów MCP, za dużo |
-| Uptime Kuma (MIT) | później | monitoring stron klientów, gdy `check-sites` przestanie wystarczać; wymaga serwera |
-| Upptime (MIT) | do rozważenia | darmowy monitoring stron klientów na GitHub Actions, bez własnego serwera; lżejszy niż Uptime Kuma |
-| lychee, Unlighthouse | do rozważenia | sprawdzanie martwych linków i audyt Lighthouse wszystkich podstron naraz |
-| Umami (MIT) | później | statystyki bez cookies dla klientów, gdy zaczną o nie pytać; wymaga serwera |
-| Chatwoot (MIT) | później | wspólna skrzynka pod automatyzacje z wiadomościami |
-| Open SEO (MIT) | później | wymaga płatnego klucza DataForSEO |
-| claude-seo, marketingskills (MIT) | nie instalujemy | mamy własny, krótki `local-seo`; tamte to dziesiątki skilli pod duże serwisy |
-| Graphify (Apache-2.0) | później | sens tylko dla `webapp/` |
-| Ponytail (MIT) | test na jednym projekcie | autor podaje 22% mniej tokenów, niezależny pomiar ok. 8%; może kłócić się z `web-design` |
-| Agent Skills, Superpowers (MIT) | nie instalujemy w całości | za dużo skilli naraz; pojedyncze pomysły można przenieść ręcznie |
-| OmniRoute | nie | obchodzenie limitów, podszywanie się pod klientów dostawców, kod klientów u przypadkowych firm |
-| Agent Reach | nie | scraping zalogowanych kont (LinkedIn, IG, X) łamie ich regulaminy |
-| n8n | nie jako baza | według FAQ licencji hostowanie danych klientów na naszej instancji wymaga wersji Enterprise |
-| Cal.diy | nie | autorzy sami piszą: nie do użytku produkcyjnego |
-| terminal-mac | nie teraz | wydanie sprzed kilku dni, bez notaryzacji Apple |
-| Open Generative AI, VoiceStudio, AppFlowy, OpenProject | nie | nie rozwiązują żadnego naszego problemu |
-| OpenWhispr, Cap | prywatnie, jeśli ktoś chce | dyktowanie i nagrywanie ekranu, poza repo |
+Co sprawdziliśmy, czego używamy i czego nie: `docs/PRZYDATNE-REPO.md`. Pomysły odłożone na później:
+`docs/POMYSLY.md`.

@@ -5,7 +5,7 @@ Wszystkie sprawdzone na GitHubie 12.11.2026: istnieją, są rozwijane, licencja 
 Gwiazdki zaokrąglone. Przed instalacją sprawdź właściciela repo, bo popularne projekty mają
 dużo podróbek o podobnych nazwach.
 
-„U nas" mówi, czy tego używamy. Powody decyzji „nie" są w `KROK-PO-KROKU.md`.
+„U nas" mówi, czy tego używamy. To jedyne miejsce, w którym zapisujemy decyzje o narzędziach.
 
 ## Claude Code: skille i wtyczki
 
@@ -65,6 +65,8 @@ dużo podróbek o podobnych nazwach.
 |---|---|
 | cheaper-inference/OmniRoute | obchodzenie limitów dostawców, podszywanie się pod ich aplikacje, ryzyko blokady konta |
 | Panniantong/Agent-Reach | scraping zalogowanych kont w serwisach, które tego zabraniają |
+| n8n-io/n8n | nie jako baza automatyzacji: według FAQ licencji trzymanie danych klientów na naszej instancji wymaga płatnej wersji; stawiamy na Cloudflare |
+| calcom/cal.diy | autorzy sami odradzają użycie produkcyjne |
 | govijr/terminal-mac | bardzo wczesna wersja, bez notaryzacji Apple; wrócić za kilka miesięcy |
 
 ## Jak oceniać nowe narzędzie z rolki
