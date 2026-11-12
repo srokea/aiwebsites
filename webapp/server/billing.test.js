@@ -201,10 +201,12 @@ test("rachunek wykonanie + abonament: jedna kartka, dwie naleznosci w Kasie", ()
   assert.equal(billing.billingTodo("2026-10-11").filter((t) => t.contract_id === 3 && t.type === "issue").length, 0);
 
   billing.markBillPaid(id, "2026-10-15", "test");
-  const dues = db.prepare("SELECT kind, period, amount_grosze, status FROM client_dues WHERE lead_id = 3 ORDER BY kind").all();
+  // tylko okres rachunku: Kasa dolicza abonament za kazdy kolejny miesiac az do DZISIAJ (syncClientDues
+  // bierze prawdziwa date), wiec bez filtra po okresie test padal od listopada 2026
+  const dues = db.prepare("SELECT kind, period, amount_grosze, status FROM client_dues WHERE lead_id = 3 AND period = '2026-10' ORDER BY kind").all();
   assert.deepEqual(dues.map((d) => [d.kind, d.amount_grosze, d.status]), [["monthly", 10000, "confirmed"], ["onetime", 30000, "confirmed"]]);
   billing.unmarkBillPaid(id);
-  assert.equal(db.prepare("SELECT COUNT(*) FROM client_dues WHERE lead_id = 3 AND status = 'pending'").pluck().get(), 2);
+  assert.equal(db.prepare("SELECT COUNT(*) FROM client_dues WHERE lead_id = 3 AND period = '2026-10' AND status = 'pending'").pluck().get(), 2);
 
   // z Kasy: po potwierdzeniu tylko wdrozenia rachunek jeszcze nieoplacony, po abonamencie - oplacony
   const onetime = db.prepare("SELECT id FROM client_dues WHERE lead_id = 3 AND kind = 'onetime'").pluck().get();

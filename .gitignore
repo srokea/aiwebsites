@@ -46,3 +46,10 @@ clients/kosmetyczki/active/atelier-piekna/brand/Identyfikacja wizualna Atelier P
 
 # binarka silnika Impeccable (platformowa, ~20 MB) - launcher scripts/impeccable pobiera ja sam
 .claude/skills/impeccable/scripts/bin/
+
+# Prywatne ustawienia Claude Code (ścieżki i uprawnienia per komputer) - każdy ma swoje.
+# Wzór: .claude/settings.local.example.json
+.claude/settings.local.json
+
+# Robocze katalogi wranglera
+.wrangler/

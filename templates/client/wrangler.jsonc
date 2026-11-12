@@ -1,0 +1,15 @@
+// Hosting: Cloudflare Workers (statyczne pliki). Wdrożenie z tego folderu: npx wrangler deploy
+// Pliki, które nie mają być publiczne, są wykluczone w .assetsignore.
+// Przed pierwszym wdrożeniem podmień trzy znaczniki pisane wielkimi literami: nazwę, domenę i datę.
+// Dopóki klient nie ma domeny, usuń cały blok "routes" - strona wyjdzie pod adresem *.workers.dev.
+{
+  "name": "SLUG_KLIENTA",
+  "compatibility_date": "RRRR-MM-DD",
+  "routes": [
+    { "pattern": "DOMENA_KLIENTA", "custom_domain": true },
+    { "pattern": "www.DOMENA_KLIENTA", "custom_domain": true }
+  ],
+  "assets": {
+    "directory": "."
+  }
+}

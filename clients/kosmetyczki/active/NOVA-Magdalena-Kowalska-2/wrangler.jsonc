@@ -5,7 +5,8 @@
   "name": "dry-union-e994",
   "compatibility_date": "2026-09-17",
   "routes": [
-    { "pattern": "novamagdalenakowalska.pl", "custom_domain": true }
+    { "pattern": "novamagdalenakowalska.pl", "custom_domain": true },
+    { "pattern": "www.novamagdalenakowalska.pl", "custom_domain": true }
   ],
   "assets": {
     "directory": "."

@@ -58,7 +58,8 @@ const VIEWPORTS = [
 const WIDE_VIEWPORT = { name: 'wide', width: 2560, height: 1440, deviceScaleFactor: 1 };
 
 const args = process.argv.slice(2);
-const positional = args.filter((a) => !a.startsWith('--'));
+// wartość po --out to katalog wyjściowy, nie kolejna strona do zrzutu
+const positional = args.filter((a, i) => !a.startsWith('--') && args[i - 1] !== '--out');
 const dir = positional[0];
 if (!dir) {
   console.error('Podaj katalog klienta, np.: node scripts/screenshot.mjs clients/studio-fryzur-lidia');
