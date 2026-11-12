@@ -14,6 +14,8 @@
 // Trasy (jak w poprzedniej wersji - kopia w review-card.old.js):
 //   GET /r/:slug        -> strona karty (logo/emoji, nazwa, tagline, przycisk do opinii)
 //   GET /r/:slug/click  -> przekierowanie na link do opinii Google (albo 404 "Brak linku.")
+// Kazde wejscie i klikniecie jest liczone w KV pod kluczem "stat:<slug>" (patrz bumpStat nizej);
+// panel /reviews.html pobiera te liczby przez server/routes/reviews.js -> refreshStats.
 // Wszystko inne -> 404 "Not found".
 
 const DEFAULT_BG = "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
@@ -139,11 +141,45 @@ function renderCard(slug, d) {
 </html>`;
 }
 
+// --- Licznik skanow i klikniec -------------------------------------------------------------
+// Osobny klucz KV "stat:<slug>" (slug nie moze zawierac dwukropka, wiec nie koliduje z kartami):
+//   { v: wejscia razem, c: klikniecia razem, d: { "RRRR-MM-DD": [wejscia, klikniecia] } }
+// Dni trzymamy z ostatnich 35 dob - z nich panel liczy "ostatnie 7 dni" do raportu tygodniowego.
+// KV nie ma atomowego licznika: dwa wejscia w tej samej sekundzie moga policzyc sie jako jedno.
+// Przy ruchu z karty NFC to bez znaczenia, a oszczedza osobnej bazy.
+const STAT_DAYS = 35;
+const BOT_UA = /bot|crawl|spider|preview|facebookexternalhit|whatsapp|slack|telegram|discord|curl|wget|monitor|site-check/i;
+
+async function bumpStat(kv, slug, field, userAgent) {
+  if (!userAgent || BOT_UA.test(userAgent)) return; // podglady linkow w komunikatorach to nie skany
+  try {
+    const key = `stat:${slug}`;
+    let s = {};
+    try {
+      s = JSON.parse((await kv.get(key)) || "{}") || {};
+    } catch {
+      s = {};
+    }
+    const day = new Date().toISOString().slice(0, 10);
+    const d = s.d && typeof s.d === "object" ? s.d : {};
+    const today = Array.isArray(d[day]) ? d[day] : [0, 0];
+    if (field === "c") today[1] = (Number(today[1]) || 0) + 1;
+    else today[0] = (Number(today[0]) || 0) + 1;
+    d[day] = today;
+    const keep = Object.keys(d).sort().slice(-STAT_DAYS);
+    const next = { v: Number(s.v) || 0, c: Number(s.c) || 0, d: Object.fromEntries(keep.map((k) => [k, d[k]])) };
+    next[field] += 1;
+    await kv.put(key, JSON.stringify(next));
+  } catch {
+    // licznik nigdy nie moze zepsuc karty ani przekierowania
+  }
+}
+
 const text = (body, status) =>
   new Response(body, { status, headers: { "content-type": "text/plain;charset=UTF-8", "cache-control": "no-store" } });
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const parts = url.pathname.split("/").filter(Boolean);
     if (parts[0] !== "r" || !parts[1]) return text("Not found", 404);
@@ -163,12 +199,20 @@ export default {
       return text("Nie znaleziono strony.", 404);
     }
 
+    // liczymy w tle (waitUntil), zeby karta i przekierowanie nie czekaly na zapis do KV
+    const count = (field) => {
+      const p = bumpStat(kv, slug, field, request.headers.get("user-agent"));
+      if (ctx && typeof ctx.waitUntil === "function") ctx.waitUntil(p);
+    };
+
     if (isClick) {
       const target = String(data.google_url || "").trim();
       if (!/^https?:\/\//i.test(target)) return text("Brak linku.", 404);
+      count("c");
       return Response.redirect(target, 302);
     }
 
+    count("v");
     return new Response(renderCard(slug, data), {
       headers: { "content-type": "text/html;charset=UTF-8", "cache-control": "no-store" },
     });

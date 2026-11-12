@@ -35,7 +35,7 @@ klientów. Zasady dla Claude'a są w `CLAUDE.md`, kontekst biznesowy w `AI_WEB_A
 | zbudować albo poprawić stronę | zwykłą prośbę, np. „zrób stronę dla klienta X" (skill `web-design`) |
 | opublikować stronę | `/ship nazwa-klienta` |
 | zebrać leady | `/leads barber Bełchatów 20` |
-| sprawdzić, czy strony klientów żyją | `node scripts/check-sites.mjs` |
+| sprawdzić, czy strony klientów żyją | `node scripts/check-sites.mjs` (samo leci codziennie w GitHub Actions) |
 | zaproponować klientowi opinie Google | „napisz ofertę na opinie dla klienta X" |
 | wdrożyć opinie u klienta | „wdróż opinie u klienta X" |
 | odpowiedzieć na opinie | wklejam opinie i piszę „przygotuj odpowiedzi dla klienta X" |

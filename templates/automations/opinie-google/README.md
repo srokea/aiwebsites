@@ -25,7 +25,8 @@ opinię w Google, a my pilnujemy, żeby na każdą opinię była odpowiedź."**
   na pilotażu, czy klienci za to płacą, potem składamy wniosek i automatyzujemy.
 - **SMS-ów po wizycie.** Wymagają numeru klienta i godziny wizyty, czyli danych z systemu
   rezerwacji. Booksy ich nie udostępnia. Do tego dochodzą zgody i umowa powierzenia.
-- **Licznika skanów.** Liczy się liczba nowych opinii, a tę widać w wizytówce.
+- **Licznika skanów dla strony `/opinia/`.** Karta `mmates.pl/r/<slug>` liczy wejścia i kliknięcia
+  (panel `/reviews.html`, po najechaniu widać ostatnie 7 dni). Własna strona `/opinia/` nie liczy.
 
 ## Wdrożenie krok po kroku
 

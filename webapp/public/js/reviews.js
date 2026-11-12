@@ -212,8 +212,8 @@ function reviewCardHtml(r) {
     }
     <div class="review-stats">
       <span class="review-bg-thumb" title="Tło karty">${bgLayerHtml(r, 0.25)}</span>
-      <span>👆 ${r.scan_count} skanów</span>
-      <span>🖱️ ${r.click_count} kliknięć</span>
+      <span title="Ostatnie 7 dni: ${Number(r.scan_7d) || 0}">👆 ${r.scan_count} skanów</span>
+      <span title="Ostatnie 7 dni: ${Number(r.click_7d) || 0}">🖱️ ${r.click_count} kliknięć</span>
     </div>
     <div class="review-actions">
       <button type="button" class="btn" data-edit="${escapeHtml(r.slug)}">Edytuj</button>

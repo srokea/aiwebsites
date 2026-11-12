@@ -45,6 +45,7 @@ Raz, przy płaceniu, każdemu. Bez dopytywania i bez stania nad klientem.
 
 > Dzień dobry, opinie z ostatniego tygodnia:
 > Nowych: N. Średnia: X,X (było Y,Y). Bez odpowiedzi: N.
+> Kod zeskanowało N osób, N przeszło do Google. (tylko dla karty mmates.pl, liczby z panelu)
 >
 > Proponowane odpowiedzi:
 > 1. IMIĘ (5/5): „TREŚĆ ODPOWIEDZI"

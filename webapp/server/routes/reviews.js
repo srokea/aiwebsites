@@ -123,15 +123,68 @@ async function deleteFromKV(slug) {
     headers: { Authorization: `Bearer ${CF_API_TOKEN}` },
   });
   if (!res.ok && res.status !== 404) throw new Error(`Cloudflare KV DELETE ${res.status}`);
+  // licznik usunietej karty (best-effort)
+  fetch(kvUrl(`stat:${slug}`), { method: "DELETE", headers: { Authorization: `Bearer ${CF_API_TOKEN}` } }).catch(() => {});
 }
+
+// Liczniki skanow/klikniec zapisuje Worker w KV pod "stat:<slug>" (cloudflare-worker/review-card.js).
+// Tu je sciagamy do kolumn scan_count / click_count i liczymy ostatnie 7 dni do raportu.
+// Odswiezamy najwyzej raz na minute; gdy Cloudflare nie odpowiada, panel pokazuje ostatnie znane liczby.
+const STATS_TTL_MS = 60 * 1000;
+let statsFetchedAt = 0;
+const last7 = new Map(); // slug -> { scans, clicks }
+
+function sumLastDays(days, n, now = new Date()) {
+  let scans = 0;
+  let clicks = 0;
+  for (let i = 0; i < n; i++) {
+    const key = new Date(now.getTime() - i * 86400000).toISOString().slice(0, 10);
+    const d = days && days[key];
+    if (Array.isArray(d)) {
+      scans += Number(d[0]) || 0;
+      clicks += Number(d[1]) || 0;
+    }
+  }
+  return { scans, clicks };
+}
+
+async function refreshStats() {
+  if (!CF_ACCOUNT_ID || !CF_KV_NAMESPACE_ID || !CF_API_TOKEN) return;
+  if (Date.now() - statsFetchedAt < STATS_TTL_MS) return;
+  statsFetchedAt = Date.now();
+  const slugs = db.prepare("SELECT slug FROM review_links").pluck().all();
+  const save = db.prepare("UPDATE review_links SET scan_count = ?, click_count = ? WHERE slug = ?");
+  await Promise.all(
+    slugs.map(async (slug) => {
+      try {
+        const res = await fetch(kvUrl(`stat:${slug}`), {
+          headers: { Authorization: `Bearer ${CF_API_TOKEN}` },
+          signal: AbortSignal.timeout(4000),
+        });
+        if (!res.ok) return; // 404 = karta jeszcze bez wejsc
+        const s = await res.json();
+        save.run(Math.max(0, Number(s.v) || 0), Math.max(0, Number(s.c) || 0), slug);
+        last7.set(slug, sumLastDays(s.d, 7));
+      } catch {
+        // zostaja ostatnie znane liczby
+      }
+    })
+  );
+}
+
+const withLast7 = (row) => {
+  const w = last7.get(row.slug) || { scans: 0, clicks: 0 };
+  return { ...row, scan_7d: w.scans, click_7d: w.clicks };
+};
 
 function getBySlug(slug) {
   return db.prepare("SELECT * FROM review_links WHERE slug = ?").get(slug);
 }
 
 // GET /api/reviews - kolejnosc reczna (patrz PATCH /reorder), nie chronologiczna
-router.get("/", (req, res) => {
-  res.json(db.prepare("SELECT * FROM review_links ORDER BY sort_order ASC, created_at DESC").all());
+router.get("/", async (req, res) => {
+  await refreshStats();
+  res.json(db.prepare("SELECT * FROM review_links ORDER BY sort_order ASC, created_at DESC").all().map(withLast7));
 });
 
 // PATCH /api/reviews/reorder - przeciagnij i upusc w panelu. Body: { slugs: [...] } w nowej
@@ -372,3 +425,4 @@ router.delete("/:slug", async (req, res) => {
 });
 
 module.exports = router;
+module.exports.sumLastDays = sumLastDays; // dla testow

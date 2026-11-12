@@ -47,6 +47,14 @@ Definicja siedzi w jednym miejscu (`server/leadStatus.js`) i obowiązuje tak sam
 
 Zawieszone = `Oczekiwanie` i `Poczta` — czekają na kolejny telefon, więc zostają w „do zrobienia". Pozostałe statusy (`Dopięte`, `Google Meet`, `SMS`, `Nie`) zamykają temat.
 
+## Karty opinii: licznik skanów i kliknięć
+
+Worker (`cloudflare-worker/review-card.js`) zapisuje każde wejście i kliknięcie w KV pod kluczem
+`stat:<slug>`. Panel `/reviews.html` pobiera liczby najwyżej raz na minutę i pokazuje sumę oraz
+ostatnie 7 dni (po najechaniu). **Żeby licznik ruszył, trzeba wkleić aktualny kod Workera w panelu
+Cloudflare** (Workers & Pages → worker od `mmates.pl/r/*` → Edit code → Deploy). Podglądy linków
+w komunikatorach i boty nie są liczone.
+
 ## Kalendarz iCloud (Meety → iPhone)
 
 Każdy podpina **swój** kalendarz: avatar w prawym górnym rogu → Profil → „Kalendarz iCloud” (albo przycisk „Połącz z iCloud” na `/kalendarz.html`, albo podpowiedź w kalendarzyku wyboru terminu).
