@@ -9,7 +9,7 @@ Jeden folder na niszę: `fryzjerzy/`, `kosmetyczki/`, `fotografowie/` (kolejne d
 Nowy scrape ląduje w `leads/` — po sprawdzeniu przenieś go do folderu swojej niszy.
 Pliki `*-arkusz*.csv` / `*-zbiorczy.csv` to eksporty z Google Sheets (inne kolumny niż schemat niżej).
 
-## Schemat kolumn (zgodny z AI_WEB_AGENCY_CONTEXT.md §4)
+## Schemat kolumn (zgodny z docs/AI_WEB_AGENCY_CONTEXT.md §4)
 
 | kolumna | znaczenie |
 |---|---|

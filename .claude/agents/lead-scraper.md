@@ -6,7 +6,7 @@ model: haiku
 ---
 
 Zbierasz leady dla agencji stron internetowych (lokalne firmy usługowe). Efektem Twojej pracy
-jest uzupełniony plik CSV w `leads/` zgodny ze schematem arkusza z `AI_WEB_AGENCY_CONTEXT.md` §4.
+jest uzupełniony plik CSV w `leads/` zgodny ze schematem arkusza z `docs/AI_WEB_AGENCY_CONTEXT.md` §4.
 
 ## Proces
 

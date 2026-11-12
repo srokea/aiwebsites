@@ -83,6 +83,7 @@ Włączają się same, gdy pasują do zadania:
 templates/client/                szkielet folderu nowego klienta
 templates/automations/           katalog produktów-automatyzacji i ich szablony
 templates/polityka-prywatnosci.md wzór treści privacy.html
+docs/                            instrukcja krok po kroku, kontekst biznesowy, pomysły, lista repo
 design/                          DESIGN.md, PRODUCT.md, STYLES.md, SNIPPETS.md
 scripts/                         screenshot, scrape-gmaps, check-sites, qr, ovh
 clients/<nisza>/active/<klient>/ strony klientów (brief.md + pliki strony)
@@ -101,7 +102,7 @@ Poniższe skille są dostępne w `.claude/skills/`, ale **nie używaj ich domyś
 
 - `emil-design-eng` — inżynieria designu w stylu Emila
 - `apple-design` — zasady projektowania w stylu Apple
-- `FRONTEND-DESIGN.md` (w katalogu głównym) — konkretne czasy i krzywe animacji, reguły scroll-reveal, hover, tła
-- `APPLE-STYLE.md` (w katalogu głównym) — storytelling scenami, rytm scrolla, typografia jako główny element
+- `docs/FRONTEND-DESIGN.md` — konkretne czasy i krzywe animacji, reguły scroll-reveal, hover, tła
+- `docs/APPLE-STYLE.md` — storytelling scenami, rytm scrolla, typografia jako główny element
 
 Dwa ostatnie to pliki, nie skille — przeczytaj je tylko wtedy, gdy poproszę. Nie stosuj ich do zwykłych stron klientów: opisują "kinowy" rejestr, sprzeczny z `PRODUCT.md` ("nie ekscytacja czy wow"). Są do stron agencji i projektów specjalnych.

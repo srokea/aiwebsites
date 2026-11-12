@@ -1,7 +1,23 @@
 # AI Web Agency: repo bazowe
 
 Wszystko, czego używamy do pracy w Claude Code: zasady, agenci, skille, komendy, szablony i strony
-klientów. Zasady dla Claude'a są w `CLAUDE.md`, kontekst biznesowy w `AI_WEB_AGENCY_CONTEXT.md`.
+klientów. Zasady dla Claude'a są w `CLAUDE.md`, kontekst biznesowy w `docs/AI_WEB_AGENCY_CONTEXT.md`.
+
+## Gdzie co jest
+
+| Plik lub folder | Co zawiera |
+|---|---|
+| `docs/KROK-PO-KROKU.md` | **zacznij tutaj:** jak robimy stronę klienta od leada do dosprzedaży |
+| `CLAUDE.md` | zasady dla Claude'a: routing modeli, komendy, narzędzia |
+| `docs/AI_WEB_AGENCY_CONTEXT.md` | kontekst biznesowy: oferta, cold calling, obiekcje |
+| `docs/PRZYDATNE-REPO.md` | sprawdzone narzędzia open source |
+| `docs/POMYSLY.md` | pomysły na później |
+| `docs/APPLE-STYLE.md`, `docs/FRONTEND-DESIGN.md` | styl „kinowy", tylko na żądanie |
+| `clients/` | strony klientów |
+| `templates/` | szkielet nowego klienta i katalog automatyzacji |
+| `workers/` | wspólne workery Cloudflare (licznik opinii) |
+| `webapp/`, `rsaas/` | aplikacja do cold callingu i system rezerwacji (osobne projekty) |
+| `redeploy.sh`, `rollback.sh` | aktualizacja webappa na serwerze; muszą zostać w katalogu głównym |
 
 ## Pierwsze uruchomienie (około 5 minut)
 

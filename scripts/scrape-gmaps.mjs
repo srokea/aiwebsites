@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Scraper leadów z Google Maps → CSV/JSON zgodny ze schematem arkusza
- * (AI_WEB_AGENCY_CONTEXT.md §4): nazwa, telefon, miasto, www, facebook,
+ * (docs/AI_WEB_AGENCY_CONTEXT.md §4): nazwa, telefon, miasto, www, facebook,
  * instagram, booksy, liczba opinii, ocena, jakość(1-5), status, notatki.
  *
  * Użycie:

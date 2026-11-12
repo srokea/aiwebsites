@@ -10,7 +10,7 @@ o trzech klientach naraz jest droższa i Claude zaczyna mylić dane.
 
 ## 0. Zanim zaczniesz (raz na komputer)
 
-Node 22, Chrome, `npm install`, `npx wrangler login`. Szczegóły w `README.md`.
+Node 22, Chrome, `npm install`, `npx wrangler login`. Szczegóły w `../README.md`.
 Sprawdzenie: `node scripts/check-sites.mjs` wypisuje listę stron klientów.
 
 ## 1. Lead
@@ -91,7 +91,7 @@ Jeśli strona pokazuje ocenę i liczbę opinii z Google, niech aktualizuje się 
 Podepnij licznik opinii dla klienta nazwa-firmy.
 ```
 
-Instrukcja jest w `workers/opinie-licznik/README.md`. Liczby z Booksy i Facebooka zmieniamy ręcznie.
+Instrukcja jest w `../workers/opinie-licznik/README.md`. Liczby z Booksy i Facebooka zmieniamy ręcznie.
 
 ## 7. Publikacja
 
@@ -170,4 +170,4 @@ utrzymanie albo ryzyko.
 Z pomysłów z rolek wzięliśmy dwie rzeczy, bo nic nie kosztują: **routing modeli** (drogi model
 planuje, tani wykonuje) i **orkiestrację** (`/orchestrate`, tylko do dużych zadań).
 
-Pełna tabela z licencjami: `README.md`.
+Pełna lista z licencjami: `PRZYDATNE-REPO.md`.
