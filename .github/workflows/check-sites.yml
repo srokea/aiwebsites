@@ -1,0 +1,31 @@
+# Codzienna kontrola stron klientów: czy odpowiadają i czy nie wystawiają plików roboczych.
+# Gdy coś jest nie tak, zadanie kończy się błędem, a GitHub wysyła e-mail (Settings ->
+# Notifications -> Actions). Harmonogram działa tylko na gałęzi main.
+name: Kontrola stron klientow
+
+on:
+  schedule:
+    - cron: "17 6 * * *" # codziennie ok. 7:17-8:17 czasu polskiego
+  workflow_dispatch: # ręczne uruchomienie z zakładki Actions
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/check-sites.mjs
+      # Kontrola kosztów Google: worker sam staje na 900 zapytaniach miesięcznie (darmowa pula to 1000).
+      # Ten krok ostrzega wcześniej, gdyby licznik rósł szybciej niż powinien.
+      - name: Zuzycie Google Places
+        run: |
+          U=$(curl -s -m 20 https://opinie-licznik.project6osss.workers.dev/uzycie.json)
+          echo "$U"
+          N=$(echo "$U" | python3 -c "import sys,json;print(json.load(sys.stdin)['zapytania'])")
+          if [ "$N" -gt 800 ]; then echo "Zuzycie Google Places przekroczylo 800 zapytan w tym miesiacu"; exit 1; fi
