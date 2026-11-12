@@ -1,0 +1,11 @@
+// Worker kart opinii: mmates.pl/r/<slug>. Wdrożenie z tego folderu: npx wrangler deploy
+// Ustawienia przepisane 1:1 z panelu Cloudflare (12.11.2026). Nazwy nie zmieniaj.
+{
+  "name": "mmates-reviews",
+  "main": "review-card.js",
+  "compatibility_date": "2026-09-01",
+  "workers_dev": true,
+  "routes": [{ "pattern": "mmates.pl", "custom_domain": true }],
+  "kv_namespaces": [{ "binding": "CLIENTS_KV", "id": "9b0c08a1780047e0a3d4eee46d4cdbba" }],
+  "observability": { "enabled": false, "logs": { "enabled": true, "invocation_logs": true } }
+}
