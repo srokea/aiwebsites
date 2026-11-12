@@ -1,14 +1,13 @@
 // Hosting: Cloudflare Workers (statyczne pliki). Wdrożenie z tego folderu: npx wrangler deploy
 // Pliki, które nie mają być publiczne, są wykluczone w .assetsignore.
-// UWAGA: ta strona była dotąd wdrażana poza tym plikiem i wystawiała publicznie brief.md.
-// Przed wdrożeniem wpisz w "name" DOKŁADNĄ nazwę istniejącego Workera z panelu Cloudflare
-// (Workers & Pages -> worker podpięty pod grandabarbershop.pl). Inna nazwa utworzyłaby drugiego Workera.
+// Nazwa Workera z panelu Cloudflare - nie zmieniaj, bo powstanie nowy Worker.
 {
-  "name": "WPISZ_NAZWE_WORKERA_Z_PANELU",
+  "name": "granda",
   "compatibility_date": "2026-11-12",
   "routes": [
-    { "pattern": "grandabarbershop.pl", "custom_domain": true },
-    { "pattern": "www.grandabarbershop.pl", "custom_domain": true }
+    // www.grandabarbershop.pl ma w Cloudflare własny, ręcznie dodany rekord DNS - Worker nie może go przejąć,
+    // dopóki ktoś nie usunie tego rekordu w panelu (DNS -> Records).
+    { "pattern": "grandabarbershop.pl", "custom_domain": true }
   ],
   "assets": {
     "directory": "."

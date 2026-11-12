@@ -6,7 +6,7 @@
   "compatibility_date": "2026-11-12",
   "kv_namespaces": [
     // id z polecenia: npx wrangler kv namespace create OPINIE_KV
-    { "binding": "OPINIE_KV", "id": "WPISZ_ID_PRZESTRZENI_KV" }
+    { "binding": "OPINIE_KV", "id": "df9b30f90edb4fd39c22109a32c60700" }
   ],
   "triggers": {
     // raz dziennie, ok. 5:40 czasu polskiego. Limit darmowy Google: 1000 zapytań miesięcznie,
