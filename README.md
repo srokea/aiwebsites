@@ -8,6 +8,7 @@ klientów. Zasady dla Claude'a są w `CLAUDE.md`, kontekst biznesowy w `docs/AI_
 | Plik lub folder | Co zawiera |
 |---|---|
 | `docs/KROK-PO-KROKU.md` | **zacznij tutaj:** jak robimy stronę klienta od leada do dosprzedaży |
+| `TODO.md` | co zostało do zrobienia i kto ma to zrobić |
 | `CLAUDE.md` | zasady dla Claude'a: routing modeli, komendy, narzędzia |
 | `docs/AI_WEB_AGENCY_CONTEXT.md` | kontekst biznesowy: oferta, cold calling, obiekcje |
 | `docs/PRZYDATNE-REPO.md` | sprawdzone narzędzia open source |
