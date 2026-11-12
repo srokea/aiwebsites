@@ -10,6 +10,7 @@
       "Bash(node scripts/check-sites.mjs *)",
       "Bash(node scripts/check-sites.mjs)",
       "Bash(node scripts/qr.mjs *)",
+      "Bash(node scripts/place-id.mjs *)",
       "Bash(npm run shot *)",
       "Bash(npm run scrape *)",
       "Bash(git status *)",

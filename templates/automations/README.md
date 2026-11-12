@@ -6,6 +6,7 @@ dopłata do abonamentu za jeden produkt**, bez pakietów i poziomów.
 | Produkt | Folder | Stan | Dla kogo | Cena |
 |---|---|---|---|---|
 | Opinie Google (karta NFC/QR z webappa albo strona `/opinia/` + odpowiedzi na opinie) | `opinie-google/` | **gotowy do pilotażu** (wersja 1) | każdy klient z wizytówką Google | DO USTALENIA |
+| Licznik opinii na stronie (liczba i ocena z Google odświeżane codziennie, bez wdrażania strony) | `workers/opinie-licznik/` | **zbudowany, czeka na klucz Google i wdrożenie** | klienci, którzy pokazują na stronie opinie z Google | w abonamencie |
 | Ścieżka wizyty (potwierdzenia, przypomnienia, wiadomość po wizycie) | brak | w planach | klienci BEZ Booksy, z rezerwacją u nas | nie oferować |
 | Recepcja głosowa (odbieranie telefonów) | brak | w planach, na końcu | po sprawdzeniu jakości po polsku | nie oferować |
 

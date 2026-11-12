@@ -1,0 +1,16 @@
+// Wspólny worker agencji: licznik opinii Google dla wszystkich stron klientów.
+// Jednorazowa konfiguracja i dodawanie klientów: README.md w tym folderze.
+{
+  "name": "opinie-licznik",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-12",
+  "kv_namespaces": [
+    // id z polecenia: npx wrangler kv namespace create OPINIE_KV
+    { "binding": "OPINIE_KV", "id": "WPISZ_ID_PRZESTRZENI_KV" }
+  ],
+  "triggers": {
+    // raz dziennie, ok. 5:40 czasu polskiego. Limit darmowy Google: 1000 zapytań miesięcznie,
+    // czyli przy codziennym odświeżaniu do 33 klientów; powyżej zmień na co drugi dzień ("40 3 */2 * *").
+    "crons": ["40 3 * * *"]
+  }
+}

@@ -43,6 +43,7 @@ Najdroższy model myśli, tańsze wykonują. Model jest przypisany w pliku agent
 - **Zrzuty ekranu stron klientów:** `node scripts/screenshot.mjs clients/<klient>` — zawsze mobile + desktop, z obsługą lazy-loadingu. Nie pisz ad-hocowych skryptów Puppeteer.
 - **Leady z Google Maps:** sub-agent `lead-scraper` (albo bezpośrednio `node scripts/scrape-gmaps.mjs "<nisza> <miasto>"`). Wyniki i schemat: `leads/README.md`.
 - **Kontrola stron na żywo:** `node scripts/check-sites.mjs [domena]` — czy strony odpowiadają i czy nie wyciekają pliki robocze. Bez argumentu sprawdza wszystkie domeny z `clients/`.
+- **Licznik opinii Google na stronach:** wspólny worker w `workers/opinie-licznik/` (instrukcja w jego README). Liczbę opinii z Google oznaczaj na stronie atrybutem `data-opinie`, nie wpisuj jej tylko na sztywno. `node scripts/place-id.mjs "<firma miasto>"` szuka identyfikatora miejsca.
 - **Kod QR do druku:** `node scripts/qr.mjs <adres> <plik.svg>`.
 - **Domeny (OVH → Cloudflare):** `node scripts/ovh.mjs` — zmienia DNS na żywo, tylko po zgodzie.
 - **Przeglądarka na żywo:** MCP `chrome-devtools` (skonfigurowany w `.mcp.json`) — do interaktywnego oglądania stron, debugowania i audytów `/impeccable`.
@@ -80,6 +81,7 @@ design/                          DESIGN.md, PRODUCT.md, STYLES.md, SNIPPETS.md
 scripts/                         screenshot, scrape-gmaps, check-sites, qr, ovh
 clients/<nisza>/active/<klient>/ strony klientów (brief.md + pliki strony)
 leads/<nisza>/                   leady z Google Maps
+workers/opinie-licznik/          wspólny worker: licznik opinii Google dla stron klientów
 webapp/                          aplikacja do cold callingu (osobny projekt, własny README)
 ```
 
