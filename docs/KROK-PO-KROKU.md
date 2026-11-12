@@ -150,31 +150,20 @@ Jeśli się zgodzi: „wdróż opinie u klienta nazwa-firmy". Co tydzień wkleja
 
 ## Co podać Claude'owi, żeby dokończyć konfigurację
 
-Stan na 12.11.2026. Odhacz, gdy zrobione. Przy każdym punkcie jest, co dokładnie napisać w rozmowie.
+Stan na 12.11.2026 wieczorem. Licznik opinii, liczniki skanów kart i codzienna kontrola stron już działają.
 
 ### Wymaga Twojego kliknięcia (to Twoje konta)
 
-**1. Klucz Google do licznika opinii**
-1. Wejdź na `console.cloud.google.com` i zaloguj się.
-2. U góry wybór projektu → „Nowy projekt" → nazwa np. `agencja-opinie`.
-3. Menu → „Rozliczenia" → podepnij kartę. Przy naszej skali mieści się w darmowym limicie
-   (1000 zapytań miesięcznie, czyli do 33 klientów przy codziennym odświeżaniu).
-4. Menu → „Interfejsy API i usługi" → „Biblioteka" → wyszukaj **Places API (New)** → „Włącz".
-5. „Dane logowania" → „Utwórz dane logowania" → „Klucz interfejsu API".
-6. Przy kluczu „Edytuj" → „Ograniczenia interfejsów API" → zaznacz tylko Places API (New).
-7. W terminalu, w folderze repo:
-   ```
-   cd workers/opinie-licznik
-   npx wrangler secret put GOOGLE_PLACES_KEY
-   ```
-   Gdy zapyta, wklej klucz. **Nie wklejaj klucza w rozmowie z Claude'em.**
-8. Napisz: `klucz jest`
+**1. Klucz Google: ograniczenie i alert**
+Klucz już działa w workerze. Zostało zabezpieczenie, bo był wklejony w rozmowie:
+1. `https://console.cloud.google.com/apis/credentials` → kliknij klucz → „Ogranicz klucz" →
+   zaznacz tylko **Places API (New)** → „Zapisz".
+2. `https://console.cloud.google.com/billing` → „Budżety i alerty" → budżet 5 zł z powiadomieniem
+   e-mail.
 
-**2. Token GitHuba (codzienna kontrola stron)**
-1. Wejdź na `github.com/settings/tokens`.
-2. Kliknij swój token (zaczyna się od `ghp_`).
-3. Zaznacz pole **workflow** → „Update token" na dole. Token zostaje ten sam.
-4. Napisz: `token zrobiony`
+**2. Token GitHuba**
+Zrobione 12.11.2026. Token wygasa 12.12.2026: po tej dacie `git push` przestanie działać i trzeba
+wygenerować nowy na `github.com/settings/tokens` (zaznacz `repo` i `workflow`).
 
 **3. Hasło SSH do serwera**
 Było wklejone w rozmowie, więc zmień je. Claude loguje się kluczem i hasła nie potrzebuje.
@@ -187,12 +176,6 @@ domeny klientów i powiadomienia. Do tego momentu konto może założyć każdy 
 **5. Nikodem**
 Po `git pull` zniknie mu plik `.claude/settings.local.json`. Odtwarza go poleceniem
 `cp .claude/settings.local.example.json .claude/settings.local.json` i wpisuje swoją ścieżkę.
-
-### Wymaga tylko odpowiedzi
-
-| Sprawa | Co napisać |
-|---|---|
-| Nowy kod Workera kart opinii (licznik skanów) | `worker kart sprawdź najpierw` albo `worker kart wdróż` |
 
 ### Co Claude może zrobić od razu, bez czekania na cokolwiek
 

@@ -51,8 +51,8 @@ Zawieszone = `Oczekiwanie` i `Poczta` — czekają na kolejny telefon, więc zos
 
 Worker (`cloudflare-worker/review-card.js`) zapisuje każde wejście i kliknięcie w KV pod kluczem
 `stat:<slug>`. Panel `/reviews.html` pobiera liczby najwyżej raz na minutę i pokazuje sumę oraz
-ostatnie 7 dni (po najechaniu). **Żeby licznik ruszył, trzeba wkleić aktualny kod Workera w panelu
-Cloudflare** (Workers & Pages → worker od `mmates.pl/r/*` → Edit code → Deploy). Podglądy linków
+ostatnie 7 dni (po najechaniu). Worker wdrażamy z repo: `cd webapp/cloudflare-worker && npx wrangler deploy` (konfiguracja
+w `wrangler.jsonc`), nie przez wklejanie kodu w panelu. Podglądy linków
 w komunikatorach i boty nie są liczone.
 
 ## Kalendarz iCloud (Meety → iPhone)
@@ -72,3 +72,9 @@ Styl „Liquid Glass” (ciemny): tokeny i hierarchia warstw szkła na początku
 ## Wystawienie na zewnątrz
 
 Bez otwierania portów na routerze: [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) — `cloudflared tunnel --url http://localhost:3000`.
+
+## Aktualizacja na serwerze
+
+`cd /DATA/AppData/aiwebsites-repo && sudo bash redeploy.sh`. Pliki repo na serwerze należą do
+roota, więc bez `sudo` `git pull` zatrzymuje się w połowie (aplikacja działa dalej, ale kod
+zostaje niespójny; naprawa: `sudo git reset --hard origin/main`, baza i `.env` są poza gitem).
