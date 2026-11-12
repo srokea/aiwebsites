@@ -192,10 +192,6 @@ Po `git pull` zniknie mu plik `.claude/settings.local.json`. Odtwarza go polecen
 
 | Sprawa | Co napisać |
 |---|---|
-| Cena „Opinii Google" (propozycja: 50 zł miesięcznie, bez opłaty startowej) | `cena opinii 50 zł` albo inna kwota |
-| Agent Reach, tylko publiczne źródła bez logowania na Twoje konta | `agent reach tak` albo `agent reach nie` |
-| Umami, statystyki odwiedzin na serwerze | `umami tak` albo `umami nie` |
-| Dane strukturalne dla Glasomusa | `glasomus bez apteki i bez ceny` albo podaj cenę produktu |
 | Nowy kod Workera kart opinii (licznik skanów) | `worker kart sprawdź najpierw` albo `worker kart wdróż` |
 
 ### Co Claude może zrobić od razu, bez czekania na cokolwiek
