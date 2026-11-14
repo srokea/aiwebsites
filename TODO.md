@@ -4,7 +4,6 @@ Stan na 14.11.2026. Szczegóły i dokładne kroki: `docs/KROK-PO-KROKU.md`.
 
 ## Do zrobienia przez Sylwestra (wymaga jego kont)
 
-- [ ] **Sprawdzić licznik opinii po 16.11.2026.** Klucz Google został 14.11 ograniczony do „Places API (New)". Pierwsze odświeżenie po zmianie jest 16.11 rano: jeśli `/o/<klient>.json` pokaże datę 16.11, ograniczenie jest dobre. Napisać Claude'owi `sprawdź licznik`.
 - [ ] **Założyć konto w Uptime Kumie** (`http://ADRES_SERWERA:3001`), dodać domeny klientów i powiadomienia.
 - [ ] **Odnowić token GitHuba przed 12.12.2026** (`github.com/settings/tokens`, zakresy `repo` i `workflow`).
 - [ ] **Uzupełnić link do opinii Google na karcie `001`** w panelu `/reviews.html` (przycisk zwraca „Brak linku").
@@ -39,6 +38,7 @@ Stan na 14.11.2026. Szczegóły i dokładne kroki: `docs/KROK-PO-KROKU.md`.
 - Dane strukturalne na żywo: Granda (strona główna i trzy podstrony salonów) oraz Pudelek. U Pudelka także sobota 10:00-14:00.
 - Klucz Google ograniczony do „Places API (New)", budżet z alertem ustawiony (Sylwester).
 - Licznik opinii odświeża się co trzy dni zamiast codziennie.
+- Test klucza po ograniczeniu: ręcznie wywołane odświeżenie przeszło dla 6 z 6 klientów.
 - Lokalne fonty zamiast Google: Filiżanka i szablon fotografa (strona i panel).
 
 ## Zrobione 12.11.2026
