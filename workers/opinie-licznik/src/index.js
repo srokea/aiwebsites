@@ -1,6 +1,6 @@
 // Licznik opinii Google dla stron klientów.
 //
-//   cron (raz dziennie)      -> dla każdego klienta z klienci.json pobiera ocenę i liczbę opinii
+//   cron (co trzeci dzień)   -> dla każdego klienta z klienci.json pobiera ocenę i liczbę opinii
 //                               z Google Places API i zapisuje w KV pod kluczem "o:<slug>"
 //   GET /o/<slug>.json       -> { rating, count, updated } (to czyta strona klienta)
 //   GET /o.js                -> skrypt, który podmienia liczby na stronie (patrz README.md)

@@ -76,9 +76,9 @@ agencji na Cloudflare (adres IP odwiedzającego trafia do Cloudflare, tak jak pr
 - **Gwiazdki rysowane w HTML** (★★★★★) nie zmieniają się same. Jeśli ocena spadnie poniżej 4,5,
   trzeba je poprawić ręcznie.
 - **Zasady Google:** przy liczbach z tego API ma być podpis „Google Maps" (nie samo „Google"),
-  a dane wolno trzymać tylko tymczasowo. Odświeżamy je codziennie i nie archiwizujemy.
-- Odświeżanie jest raz na dobę, a przeglądarka trzyma odpowiedź godzinę. Nowa opinia pojawi się
-  na stronie najpóźniej następnego dnia.
+  a dane wolno trzymać tylko tymczasowo. Odświeżamy je co trzy dni i nie archiwizujemy.
+- Odświeżanie jest co trzeci dzień miesiąca (1., 4., 7. ...), a przeglądarka trzyma odpowiedź godzinę.
+  Nowa opinia pojawi się na stronie najpóźniej po trzech dniach.
 
 ## Testy
 

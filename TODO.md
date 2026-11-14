@@ -4,8 +4,7 @@ Stan na 14.11.2026. Szczegóły i dokładne kroki: `docs/KROK-PO-KROKU.md`.
 
 ## Do zrobienia przez Sylwestra (wymaga jego kont)
 
-- [ ] **Ograniczyć klucz Google** do „Places API (New)": `console.cloud.google.com/apis/credentials` → klucz → „Ogranicz klucz".
-- [ ] **Ustawić budżet 5 zł z alertem** w Google Cloud: „Rozliczenia" → „Budżety i alerty".
+- [ ] **Sprawdzić licznik opinii po 16.11.2026.** Klucz Google został 14.11 ograniczony do „Places API (New)". Pierwsze odświeżenie po zmianie jest 16.11 rano: jeśli `/o/<klient>.json` pokaże datę 16.11, ograniczenie jest dobre. Napisać Claude'owi `sprawdź licznik`.
 - [ ] **Założyć konto w Uptime Kumie** (`http://ADRES_SERWERA:3001`), dodać domeny klientów i powiadomienia.
 - [ ] **Odnowić token GitHuba przed 12.12.2026** (`github.com/settings/tokens`, zakresy `repo` i `workflow`).
 - [ ] **Uzupełnić link do opinii Google na karcie `001`** w panelu `/reviews.html` (przycisk zwraca „Brak linku").
@@ -21,7 +20,6 @@ Stan na 14.11.2026. Szczegóły i dokładne kroki: `docs/KROK-PO-KROKU.md`.
 ## Do zrobienia z Claude'em (wystarczy napisać)
 
 - [ ] Skill do zdjęć (zmniejszanie, kadrowanie, WebP): `zrób skill do zdjęć`
-- [ ] Wdrożyć Grandę i Pudelka (dane strukturalne i sobota 10:00-14:00 u Pudelka są w kodzie od 14.11, na żywo jeszcze ich nie ma): `/ship granda-barber-shop`, `/ship salon-psiej-urody-pudelek`
 - [ ] Test całego procesu na prawdziwym kliencie: `/new-client <nisza> <nazwa>`, potem budowa i `/ship`
 - [ ] Wdrożenie strony Kotas (licznik opinii jest już w kodzie)
 - [ ] Ustalić stan stron spoza codziennej kontroli. Kontrola widzi tylko 7 domen z plików `wrangler.jsonc`. Poza nią są: Kotas, Suszka, Szkatulski (mają `wrangler.toml` bez własnej domeny), Colibra, Alticcio i Filiżanka (bez konfiguracji wdrożenia).
@@ -38,7 +36,9 @@ Stan na 14.11.2026. Szczegóły i dokładne kroki: `docs/KROK-PO-KROKU.md`.
 
 ## Zrobione 14.11.2026
 
-- Dane strukturalne w kodzie: Granda (strona główna i trzy podstrony salonów) oraz Pudelek. Czekają na wdrożenie.
+- Dane strukturalne na żywo: Granda (strona główna i trzy podstrony salonów) oraz Pudelek. U Pudelka także sobota 10:00-14:00.
+- Klucz Google ograniczony do „Places API (New)", budżet z alertem ustawiony (Sylwester).
+- Licznik opinii odświeża się co trzy dni zamiast codziennie.
 - Lokalne fonty zamiast Google: Filiżanka i szablon fotografa (strona i panel).
 
 ## Zrobione 12.11.2026
