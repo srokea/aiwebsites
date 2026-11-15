@@ -136,8 +136,24 @@ Smaczki i ryzyka:
 ## 8. Czas: dlaczego to pilne
 
 - Premiera **czwartek 19.11.2026**. Okno największego popytu na klipy to **pierwsze dni i tydzień premiery**: pierwsze reakcje, pierwsza jazda, pierwsze pościgi, glitche premierowe.
-- Najlepiej, żeby **co najmniej tryb VOD + OpenShorts + ręczny upload** działał przed czwartkiem, a tryb na żywo dochodził w trakcie. Działający prosty system w czwartek jest wart więcej niż idealny za tydzień.
+- Przed czwartkiem musi działać **tryb VOD + OpenShorts + ręczny upload** (na testach), a na premierę **tryb na żywo** (patrz 8a). Działający prosty system w czwartek jest wart więcej niż idealny za tydzień.
 - Co klipować (z poradnika): first reactions, pościgi z policją, crashe, faile, **glitche i bugi premierowe** (jedne z najczęściej udostępnianych), dziwne sytuacje z NPC.
+
+### 8a. Decyzja: docelowo klipujemy NA ŻYWO, VOD to fallback
+
+**Rekomendacja (decyzja Sylwestra):** głównym trybem jest **live**, czyli klipy robią się w trakcie streama, a nie po nim.
+
+Dlaczego to nasza przewaga konkurencyjna:
+- Większość clipperów czeka, aż streamer skończy i wrzuci VOD (albo kampania udostępni plik), **dopiero wtedy pobiera i klipuje**. W tygodniu premiery streamy trwają po 8–12 h, więc moment z południa pojawia się u nich wieczorem albo następnego dnia.
+- My klipujemy **w trakcie**: detektor czatu słucha na żywo (IRC Twitcha), wideo leży w buforze kroczącym, a przy spike'u fragment od razu idzie do OpenShorts i do mnie na ntfy. Klip jest gotowy **kilka minut po akcji**, zanim ktokolwiek inny w ogóle pobierze VOD.
+- Budżety kampanii są często „kto pierwszy, ten lepszy”, a pierwsza wersja viralowego momentu zbiera najwięcej wyświetleń. Szybkość to cały sens automatyzacji.
+
+**Tryb VOD zostaje jako fallback**, w sytuacjach gdy live nie wchodzi w grę:
+- kampania udostępnia tylko pliki z nagraniami albo wymaga klipowania z jej materiałów,
+- **testy przed premierą**: do 19.11 nie ma streamów GTA VI, więc na starych VOD-ach (z czatem) stroimy progi i sprawdzamy cały pipeline,
+- awaria trybu live, za słabe łącze przy wielu kanałach albo stream, którego nie zdążyliśmy podpiąć.
+
+Ważne dla architektury: **detektor spike'ów i reszta pipeline'u mają być wspólne dla obu trybów**, a różnić się ma tylko źródło czatu (IRC live vs pobrany czat z VOD) i wideo (bufor kroczący vs plik). Kolejność wdrożenia: najpierw działający tryb VOD (testy), potem przełączenie na live najpóźniej na premierę.
 
 ---
 
@@ -154,7 +170,7 @@ Smaczki i ryzyka:
 ## 10. Otwarte pytania do rozstrzygnięcia przy planowaniu
 
 1. Których streamerów/kampanii celujemy na start (2–3 kanały do testu, potem skala)? Angielskie czy też polskie?
-2. Tryb VOD vs na żywo: od czego zaczynamy przed czwartkiem?
+2. ~~Tryb VOD vs na żywo~~: **rozstrzygnięte**, patrz sekcja 8a (docelowo na żywo, VOD jako fallback i do testów).
 3. Jedna karta (mój PC) czy podział z PC Sylwka?
 4. Platformy: tylko YT Shorts + TikTok, czy też Reels? Ile kont?
 5. Czy `ranking-yt-short` (format TOP 5) zostaje jako osobny produkt na własnym kanale obok klipów do kampanii?
