@@ -1,0 +1,83 @@
+# Szablon profilu kampanii. Skopiuj jako <nazwa>.yaml (bez podkreslnika na poczatku)
+# i uzupelnij na podstawie regulaminu kampanii. Puste pole = brak ograniczenia
+# albo zasada nieznana; nie wpisuj zasad "na oko".
+
+# Nazwa profilu (taka sama jak nazwa pliku); uzywana w streamers.yaml jako `campaign:`
+name: _template
+
+# Link do strony kampanii (tu zglaszasz linki do postow)
+url: "https://contentrewards.com/c/discover"
+
+# Platformy, na ktorych kampania placi: tiktok, youtube, instagram. Pusta lista = dowolna
+platforms: []
+
+# Stawka w USD za 1000 wyswietlen: jedna liczba albo slownik per platforma,
+# np. {tiktok: 1.5, youtube: 1.0}
+rate_per_1k: 0.0
+
+# Minimalna kwota do wyplaty za klip w USD (ponizej nic nie dostajesz); puste = brak
+min_payout:
+
+# Maksymalna wyplata za jeden klip w USD; puste = brak limitu
+max_payout:
+
+# Dozwolona dlugosc klipu w sekundach; puste = brak ograniczenia
+min_seconds:
+max_seconds:
+
+# Hashtagi, ktore musza byc w poscie (bez '#'), np. [lysium, gtarp]
+required_hashtags: []
+
+# Konta, ktore trzeba oznaczyc w opisie (bez '@')
+required_mentions: []
+
+# Tekst, ktory musi sie znalezc w opisie (np. link albo haslo kampanii)
+required_text: ""
+
+# Oznaczenie wspolpracy wypalane na poczatku wideo
+disclosure: "#ad"
+
+# Loginy kanalow, z ktorych wolno ciac klipy (male litery). Pusta lista = dowolny kanal
+allowed_sources: []
+
+# Zakazane frazy/tematy: klip z taka fraza w tytule, opisie lub hashtagach nie przejdzie walidacji
+banned: []
+
+# Wymagania co do widowni (np. "min. 50% widzow z USA"); tylko informacyjnie, nic tego nie sprawdza
+audience_requirement: ""
+
+# Ile minut od publikacji jest na zgloszenie linku do kampanii
+submit_deadline_minutes: 30
+
+# Dowolne uwagi: skad sa dane, co trzeba jeszcze sprawdzic
+notes: ""
+
+# Data ostatniego sprawdzenia zasad (RRRR-MM-DD)
+checked_on: ""
+
+# Typ kampanii: cpm = stawka za 1000 wyswietlen, pool = pula dzielona miedzy klipperow
+type: cpm
+
+# Pula: minimalna suma wyswietlen klipera, zeby wejsc do podzialu (informacyjnie); puste = brak
+min_total_views:
+
+# false = kampania zabrania tresci generowanych przez AI (informacyjnie, pilnujesz sam)
+ai_allowed: true
+
+# Maly napis wypalany na dole kadru przez caly klip (np. "twitch.tv/kanal"); puste = brak
+overlay_text:
+
+# Slowa, ktore musza sie pojawic w tytule lub opisie (wielkosc liter bez znaczenia), np. [Lacy].
+# apply() dopisuje brakujace do opisu, validate() zglasza, jesli nadal ich nie ma
+caption_must_mention: []
+
+# true = klip trzeba najpierw wyslac jako draft w Content Rewards i poczekac na akceptacje,
+# dopiero potem publikowac (caption.txt i powiadomienie dostaja o tym pierwsza linie)
+drafts_preapproval: false
+
+# Link, ktory ma byc w bio konta (przypomnienie w caption.txt i powiadomieniu)
+bio_link:
+
+# open = mozna publikowac, paused = wstrzymana, ended = zakonczona,
+# skip = kampania nie pasuje do nas (validate blokuje wszystko, powod wpisz w notes)
+status: paused

@@ -53,3 +53,6 @@ clients/kosmetyczki/active/atelier-piekna/brand/Identyfikacja wizualna Atelier P
 
 # Robocze katalogi wranglera
 .wrangler/
+
+# GTA clipper: wzor ustawien bez sekretow musi byc w repo
+!gta-clipper/.env.example

@@ -1,0 +1,41 @@
+# Lacy $30,000 Pool Campaign (Reach Clipping, dziala na Content Rewards). To pula, nie CPM.
+# Zasady sprawdzone przez uzytkownika 2026-11-16. Opis pol: _template.yaml
+name: lacy-pool
+url: "https://contentrewards.com/c/discover"   # TODO: wklej link do kampanii
+type: pool
+platforms: [tiktok, instagram, youtube, x]     # TikTok, Instagram Reels, YouTube Shorts, X
+rate_per_1k: 0.0             # brak stawki: pula dzielona wg udzialu zatwierdzonych wyswietlen
+min_payout:
+max_payout:
+min_total_views: 1000000     # suma zatwierdzonych wyswietlen klipera, zeby wejsc do podzialu
+min_seconds:
+max_seconds:
+required_hashtags: [Lacy]
+required_mentions: []
+required_text: ""
+caption_must_mention: [Lacy] # imie Lacy w opisie lub napisie na ekranie
+disclosure: "#ad"             # regulamin Content Rewards wymaga oznaczenia reklamy na poczatku klipu, takze w kampaniach Reach
+overlay_text:
+bio_link:
+drafts_preapproval: false
+ai_allowed: false            # w koncowych zasadach tresci AI wyrzucaja ze wszystkich kampanii Reach
+allowed_sources: [lacy]
+banned: []
+audience_requirement: "min. 50% widzow z krajow anglojezycznych (USA, CA, AU, UK, NZ); zwykla widownia konta nie moze byc z zupelnie innej niszy"
+submit_deadline_minutes: 30
+notes: >
+  Reach Clipping na Content Rewards, pula 30 000 USD. Wyplata: pula dzielona wg udzialu
+  zatwierdzonych wyswietlen po zamknieciu puli, 3 dni wstrzymania. Zeby wziac udzial w
+  podziale trzeba miec min. 1 000 000 zatwierdzonych wyswietlen lacznie.
+  Zrodlo: dowolne wideo/stream/klip z Lacy z Twitcha, YouTube, Snapchata, TikToka,
+  Instagrama lub X. Lacy musi byc glownym tematem (nie tylko w intro). Imie Lacy w
+  opisie albo napisie na ekranie, hashtag #Lacy w opisie.
+  Czego kod nie sprawdza: zadnych logo; zadnego negatywnego przedstawiania, hate farmingu
+  ani falszywych narracji; zadnego botowania, repostow ani postow wspolnych (collab);
+  miniatury nie moga sie powtarzac ani nie pasowac do tresci; zadnych opisow ani napisow
+  po japonsku; link zglosic w 30 minut od publikacji. "One strike and you're out":
+  jedno naruszenie wyrzuca ze wszystkich kampanii Reach, wiec nie ryzykuj.
+  Zalecane: osobne, swieze konta w stylu LacyClips / LacyDaily / LacyMoments.
+  Widownia konta musi byc glownie anglojezyczna.
+checked_on: "2026-11-16"
+status: open

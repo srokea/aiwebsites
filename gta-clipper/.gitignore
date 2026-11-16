@@ -1,0 +1,9 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+data/
+secrets/
+.pytest_cache/
+run_clipper.cmd

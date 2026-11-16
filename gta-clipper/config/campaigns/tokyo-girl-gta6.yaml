@@ -1,0 +1,28 @@
+# Tokyo Girl x GTA 6: ujecia z GTA 6 + promowana piosenka.
+# Dane z publicznej oferty kampanii, stan na 2026-11-15. Opis pol: _template.yaml
+name: tokyo-girl-gta6
+url: "https://contentrewards.com/c/discover"   # TODO: wklej link do kampanii po dolaczeniu
+platforms: []                # TODO: nieznane, sprawdz w regulaminie
+rate_per_1k: 0.70
+min_payout: 2
+max_payout: 35
+min_seconds:                 # TODO: nieznane
+max_seconds:                 # TODO: nieznane
+required_hashtags: []        # TODO: nieznane, sprawdz w regulaminie
+required_mentions: []        # TODO: nieznane
+required_text: ""            # TODO: nieznane
+disclosure: "#ad"
+allowed_sources: []
+banned: []                   # TODO: nieznane
+audience_requirement: ""     # TODO: nieznane
+submit_deadline_minutes: 30
+notes: >
+  Dane z publicznie widocznej oferty (2026-11-15): 0,70 USD za 1000 wyswietlen,
+  min. 2 USD, maks. 35 USD za klip; material to ujecia z GTA 6 z promowana piosenka
+  w tle. UWAGA: kliper nie podklada sam muzyki, wiec piosenke trzeba dodac recznie
+  (np. jako dzwiek na TikToku) zgodnie z regulaminem. PO DOLACZENIU SPRAWDZ
+  REGULAMIN PONOWNIE i uzupelnij pola oznaczone TODO (platformy, hashtagi, dlugosc
+  klipu, ktory dokladnie utwor/dzwiek, zakazane tresci) oraz wklej link do kampanii
+  w `url`. Nie wpisano zadnych zasad, ktorych nie bylo w ofercie.
+checked_on: "2026-11-15"
+status: open

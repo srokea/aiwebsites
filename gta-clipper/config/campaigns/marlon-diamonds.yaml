@@ -1,0 +1,37 @@
+# Marlon $5,000 Campaign (Reach, sponsoring naturalnych diamentow). NIE PASUJE do GTA: pomijamy.
+# Zasady sprawdzone przez uzytkownika 2026-11-16. Opis pol: _template.yaml
+name: marlon-diamonds
+url: "https://contentrewards.com/c/discover"   # TODO: wklej link, jesli kiedys wrocimy
+type: cpm
+platforms: [tiktok, instagram]                 # tylko TikTok i Instagram Reels
+rate_per_1k: 2.50
+min_payout: 25
+max_payout: 300
+min_total_views: 10000       # minimum wyswietlen (wg kampanii)
+min_seconds:
+max_seconds:
+required_hashtags: [Marlon]
+required_mentions: []
+required_text: ""
+caption_must_mention: [Marlon]
+disclosure: ""
+overlay_text:
+bio_link:
+drafts_preapproval: false
+ai_allowed: false
+allowed_sources: []
+banned: []
+audience_requirement: "zwykla widownia konta: podroze / lifestyle / kultura / bizuteria"
+submit_deadline_minutes: 30
+notes: >
+  POMIJAMY (status skip): kampania nie pasuje do konta z klipami GTA, wiec validate()
+  blokuje kazdy klip i nikt nie wrzuci do niej klipu z GTA przez pomylke.
+  Powody: tresci tylko z dostarczonego materialu z wyjazdu Marlona do Botswany
+  (sponsoring naturalnych diamentow), kazdy klip musi nawiazywac do naturalnych
+  diamentow, Marlon musi byc glownym tematem; opis z imieniem Marlona i #Marlon plus
+  4-6 hashtagow, w tym min. jeden kampanijny (#RealDiamonds #DiamondStory #DiamondOrigin
+  #NaturalDiamonds #Botswana ...); zadnych odniesien do diamentow laboratoryjnych, AI
+  ani logo; tablice rejestracyjne trzeba zaslonic. Konto z GTA zostaloby odrzucone.
+  Stawka 2,50 USD za 1000 wyswietlen, min. wyplata 25 USD, maks. 300 USD za klip.
+checked_on: "2026-11-16"
+status: skip

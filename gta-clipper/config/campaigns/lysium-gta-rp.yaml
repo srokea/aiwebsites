@@ -1,0 +1,35 @@
+# Lysium / Benji Ramos Clips: klipy ze streamow GTA RP (NoPixel V).
+# Zasady z kampanii na Content Rewards, sprawdzone przez uzytkownika 2026-11-16. Opis pol: _template.yaml
+name: lysium-gta-rp
+url: "https://contentrewards.com/c/campaigns/6d896f33-152f-42a9-92f4-662199228349"
+type: cpm
+platforms: [tiktok, instagram, youtube, x]
+rate_per_1k: 1.50            # USD za 1000 wyswietlen, na wszystkich czterech platformach
+min_payout: 1.50
+max_payout: 150
+min_seconds:                 # kampania nie podaje
+max_seconds:                 # kampania nie podaje
+required_hashtags: []
+required_mentions: []
+required_text: ""
+caption_must_mention: []
+disclosure: "#ad"
+overlay_text: "twitch.tv/lysium"   # brief: w klipie ma byc widoczny uchwyt streamu Lysium
+bio_link: "twitch.tv/Lysium"       # wymog: link w bio konta
+drafts_preapproval: true           # wymog: draft musi byc zaakceptowany przed publikacja
+ai_allowed: true
+allowed_sources: [lysium]
+banned: []
+audience_requirement: ""
+submit_deadline_minutes: 30
+notes: >
+  Kampania otwarta, CPM. Budzet: 474 USD z 1000 USD wykorzystane (2026-11-16), 51 klipperow.
+  Aplikacja ma pytania sprawdzajace ("Have you watched GTA RP?", "Have you watched the
+  character Benji Ramos before?") i wymaga polaczonych kont. Wymog tresci: link
+  twitch.tv/Lysium w bio, drafty wymagaja wstepnej akceptacji przed publikacja.
+  Zasady, ktorych kod nie sprawdza: dawaj klipom kontekst, jesli sie da; szukaj momentow
+  z duza energia, ale samo glosno nie znaczy smiesznie; zadnego podjudzania dram
+  (drama baiting); do klipow GTA RP uzywaj streamow z serwera NoPixel V. Streamer jest
+  roleplayowy. Napis "twitch.tv/lysium" jest wypalany przez caly klip.
+checked_on: "2026-11-16"
+status: open

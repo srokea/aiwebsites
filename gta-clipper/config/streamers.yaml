@@ -1,0 +1,149 @@
+# Profile streamerow. Klucz = login na Twitchu.
+# layout: wspolrzedne w pikselach zrodla [x, y, szerokosc, wysokosc].
+#   facecam  - prostokat z kamerka (pomin, jesli streamer nie ma kamerki)
+#   gameplay - prostokat z gra (pomin = caly kadr, crop do srodka)
+# preroll  - ile sekund przed spike'iem czatu zaczac klip (czat reaguje po fakcie)
+# campaign - nazwa pliku z config/campaigns/ (bez .yaml)
+# rp       - true dla streamerow GTA roleplay (dodaje hashtag gtarp); domyslnie false
+# tags     - opcjonalna lista stalych hashtagow streamera, bez # (np. [nazwakanalu]);
+#            dochodza do podstawowych gta6/gtavi/gta/shorts, razem max 6
+# signals  - zrodla kandydatow w trybie live; domyslnie [chat, viewer_clips]. Tylko
+#            [viewer_clips] ma sens, gdy czat jest bezuzyteczny (maly kanal, RP: skoki czatu
+#            nie zgadzaja sie z klipami widzow). Klipy widzow wymagaja kluczy Twitch w .env;
+#            bez nich live jedzie tylko na czacie (jedno ostrzezenie na 10 min)
+#
+# Kamerki zmierzone 2026-11-16 na klatkach z VOD-ow (720p = 1280x720, tak nagrywamy),
+# klatki i wyciete kamerki: data/layouts/<login>_<n>.png, <login>_cam.png.
+# Na premierze GTA VI (19.11) uklad moze byc inny: sprawdzic na zywo, zanim puscimy publikacje.
+# facecam: null = renderer daje powiekszony srodek kadru na rozmytym tle (bezpieczne, gdy
+# kamerka skacze miedzy scenami albo stream jest IRL).
+
+streamers:
+  przyklad:
+    platform: twitch
+    preroll: 20
+    postroll: 45
+    lang: en
+    layout:
+      facecam: [0, 780, 400, 300]
+      facecam_ratio: 0.35
+    campaign: null
+    rp: false
+    tags: []
+
+  # Marlon. Klatki: v2920836194 (07.11, "REACTS & GAMING"), v2910570465 (FC27), v2919595459; 1280x720.
+  # Ostatnie streamy to glownie IRL / just chatting; przy grze (FC27, 3 VOD-y) kamerka zawsze
+  # w lewym dolnym rogu. W scenach IRL i reakcjach kamerka jest gdzie indziej albo jej nie ma.
+  # Kampania: profil marlon-diamonds ma status skip (sponsoring diamentow, nie GTA), wiec null.
+  # Zostaje tylko pula CORE ($20K, min. 2 czlonkow CORE w klipie) - czlowiek musi dolaczyc i zrobic profil.
+  marlon:
+    platform: twitch
+    preroll: 20
+    postroll: 45
+    quality: "720p60,720p,best"
+    lang: en
+    layout:
+      facecam: [0, 526, 346, 194]
+      facecam_ratio: 0.35
+    campaign: null
+    rp: false
+    tags: []
+
+  # Lacy. Klatki: v2930061578 (Fortnite + NFL watch party), v2920413519 (Fortnite); 1280x720.
+  # Duzo IRL (Korea, Japonia, TwitchCon). Kamerka skacze: raz lewy gorny rog [0,0,358,202],
+  # raz lewa strona srodek [0,255,350,198], czasem cala kamerka na ekranie -> null.
+  lacy:
+    platform: twitch
+    preroll: 20
+    postroll: 45
+    quality: "720p60,720p,best"
+    lang: en
+    layout:
+      facecam: null
+    campaign: lacy-pool         # pula Reach; w profilu brakuje jeszcze linku do kampanii (TODO)
+    rp: false
+    tags: []
+
+  # JasonTheWeen. Klatki: v2927846652 (TwitchCon), v2926143637; 1280x720.
+  # Ostatnie streamy w 100% IRL (ulica, dom, eventy), zadnego gameplayu -> brak ukladu kamerki, null.
+  # Kampania: null. Do dolaczenia i sprawdzenia przez czlowieka: "$9,000 Jason Pool Campaign"
+  # (Reach, pula, MVR 700 tys., #JasonTheWeen) + pula CORE.
+  jasontheween:
+    platform: twitch
+    preroll: 20
+    postroll: 45
+    quality: "720p60,720p,best"
+    lang: en
+    layout:
+      facecam: null
+    campaign: null
+    rp: false
+    tags: []
+
+  # Clix. Klatki: v2929881837 (Fortnite, 16.11), v2928837106 (Fortnite); 1280x720.
+  # Prawie wylacznie gameplay (Fortnite). Kamerka stala w 4/4 klatkach, lewa strona pod napisem
+  # JBL QUANTUM; przy duo bywa druga kamerka goscia po prawej (nie wchodzi w kadr).
+  # Kampania: null. Do dolaczenia i sprawdzenia: "$5,000 Clix Pool Campaign" (Reach, pula,
+  # MVR 500 tys., tylko material z 2026+, #Clix, bez X) + pula CORE.
+  clix:
+    platform: twitch
+    preroll: 20
+    postroll: 45
+    quality: "720p60,720p,best"
+    lang: en
+    layout:
+      facecam: [6, 196, 316, 172]
+      facecam_ratio: 0.35
+    campaign: null
+    rp: false
+    tags: []
+
+  # Stable Ronaldo. Klatki: v2929115707 (gra na TwitchConie), v2922292514 (Fortnite); 1280x720.
+  # Glownie IRL / reakcje. Kamerka skacze nawet w jednym VOD-zie (lewy gorny rog albo lewa
+  # strona srodek; na TwitchConie dwie kamerki) -> null.
+  # Kampania: null. Brak wlasnego programu; placi tylko pula CORE (min. 2 czlonkow w klipie),
+  # do ktorej czlowiek musi dolaczyc i zrobic profil.
+  stableronaldo:
+    platform: twitch
+    preroll: 20
+    postroll: 45
+    quality: "720p60,720p,best"
+    lang: en
+    layout:
+      facecam: null
+    campaign: null
+    rp: false
+    tags: []
+
+  # Lysium (Benji Ramos, NoPixel V). Klatki: v2927859053, v2926905049, v2926126881; 1280x720.
+  # Caly czas GTA RP. Kamerka widoczna tylko w 2 z 13 klatek (wtedy lewy gorny rog [0,0,362,203]),
+  # zwykle sam gameplay -> null. Maly czat, wiec krotszy preroll.
+  lysium:
+    platform: twitch
+    preroll: 15
+    postroll: 45
+    quality: "720p60,720p,best"
+    lang: en
+    layout:
+      facecam: null
+    campaign: lysium-gta-rp
+    rp: true
+    tags: []
+    signals: [viewer_clips, chat]
+
+  # Kai Cenat. Klatki: v2924282282 (GTA IV/V), v2922436506 (GTA SA), v2920505943 (GTA III/VC); 1280x720.
+  # Maraton GTA, ale kamerka zmienia sie z gra (GTA IV/V: [0,178,264,146], SA: nizej,
+  # III/VC: wieksza w lewym gornym rogu) i co trzecia klatka to scena IRL na cala kamerke -> null.
+  # Kampania: null. Pula Reach z pazdziernika zakonczona (404); czlowiek ma sprawdzic, czy na
+  # premiere ruszy nowa kampania Kai Cenata (Reach / Content Rewards).
+  kaicenat:
+    platform: twitch
+    preroll: 20
+    postroll: 45
+    quality: "720p60,720p,best"
+    lang: en
+    layout:
+      facecam: null
+    campaign: null
+    rp: false
+    tags: []
