@@ -1,0 +1,2 @@
+https://drive.google.com/drive/folders/11C6zF0VE3otqH4F9Pc3o-ZINSYmk6RDk?usp=sharing
+tu jest link do google drivea, powiedz czy jest ok jak nie to mozesz moze przez konto google sobie wejsc (project6osss@gmail.com)
