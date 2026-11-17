@@ -45,6 +45,14 @@ def meta_from_row(row: dict) -> ClipMeta:
     )
 
 
+def source_link(source_url: str, t: float) -> str:
+    """Link do oryginalu; dla VOD z Twitcha od razu na moment klipu (?t=1h2m3s)."""
+    if "/videos/" not in source_url:
+        return source_url        # na zywo: link do kanalu
+    t = max(0, int(t))
+    return f"{source_url.split('?')[0]}?t={t // 3600}h{t % 3600 // 60}m{t % 60}s"
+
+
 def process(cand: Candidate, segment_path: Path, source_url: str, *,
             send: bool = True, force: bool = False) -> int | None:
     """Przetwarza jednego kandydata. Zwraca id klipu albo None, gdy pominiety."""
@@ -106,7 +114,8 @@ def process(cand: Candidate, segment_path: Path, source_url: str, *,
         return clip_id
 
     extra = (f"{cand.channel} | spike {cand.score:.1f} | LLM {meta.score}/10"
-             + (f" | kampania: {campaign.name}" if campaign else ""))
+             + (f" | kampania: {campaign.name}" if campaign else "")
+             + f" | oryginal: {source_link(source_url, cand.t_start)}")
     try:
         approve.send_for_approval(clip_id, clip.path, meta, extra)
         tracker.set_clip_status(clip_id, "pending_approval")

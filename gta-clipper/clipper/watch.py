@@ -83,8 +83,16 @@ class Watcher:
                        f"Folder: {folder}\n"
                        f"Opis do wklejenia:\n{caption}\n\n"
                        f"Po publikacji zapisz: clipper posted {clip_id} tiktok <url>")
+            attach = None
+            clips = sorted(folder.glob("*.mp4"))
+            if clips:
+                try:
+                    attach = approve.upload_full_clip(clips[0])
+                    message += f"\n\nPelny klip (72 h): {attach}"
+                except (requests.RequestException, OSError) as e:
+                    log.warning("Upload pelnego klipu #%s nie wyszedl, wysylam bez linku: %s", clip_id, e)
             try:
-                approve.notify(f"Klip #{clip_id} gotowy do postu", message, priority=4)
+                approve.notify(f"Klip #{clip_id} gotowy do postu", message, priority=4, attach_url=attach)
             except requests.RequestException as e:
                 log.warning("Powiadomienie o klipie #%s nie poszlo, ponowie: %s", clip_id, e)
                 return

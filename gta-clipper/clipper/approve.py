@@ -172,12 +172,32 @@ def poll_decisions(since: str = "all") -> list[tuple[int, str, str, str]]:
     return out
 
 
-def notify(title: str, message: str, priority: int = 3) -> str:
+def upload_full_clip(path: Path) -> str:
+    """Pelny klip na litterbox.catbox.moe (link wazny 72 h), zeby sciagnac go na telefon.
+    Klip i tak idzie publicznie na TikToka, wiec tymczasowy publiczny link jest OK."""
+    with open(path, "rb") as f:
+        resp = requests.post(
+            "https://litterbox.catbox.moe/resources/internals/api.php",
+            data={"reqtype": "fileupload", "time": "72h"},
+            files={"fileToUpload": (path.name, f, "video/mp4")}, timeout=300,
+            headers={"User-Agent": "curl/8.7.1"},   # catbox odrzuca domyslny UA requests (412)
+        )
+    resp.raise_for_status()
+    url = resp.text.strip()
+    if not url.startswith("https://"):
+        raise requests.RequestException(f"litterbox: {url[:200]}")
+    return url
+
+
+def notify(title: str, message: str, priority: int = 3, attach_url: str | None = None) -> str:
     """Zwykle powiadomienie (np. przypomnienie o zgloszeniu linku do kampanii)."""
+    headers = {"Title": _header(title), "Priority": str(int(priority))}
+    if attach_url:                  # ntfy pokazuje plik do pobrania, klik otwiera link
+        headers.update({"Attach": attach_url, "Click": attach_url})
     resp = requests.post(
         f"{_base()}/{_topic()}",
         data=message.encode("utf-8"),
-        headers={"Title": _header(title), "Priority": str(int(priority))},
+        headers=headers,
         timeout=30,
     )
     resp.raise_for_status()

@@ -32,7 +32,7 @@ You get what the streamer said (transcript) and how the live chat reacted during
 Decide whether the moment is worth posting and write its metadata.
 
 Return ONLY a JSON object with exactly these keys:
-- "title": at most 40 characters, short and concrete: describe the specific situation that happens, in the style "X vs Y", "When ...", "... Gets ...". No clickbait lies, no ALL CAPS words, at most 2 emoji (usually none). Do not use the streamer's name unless it is essential to the joke.
+- "title": at most 40 characters, a scroll-stopping hook shown on screen for the whole clip. Make the viewer NEED to see what happens: tension, surprise or a funny contrast ("He Did NOT Expect That Cop", "Worst Getaway Driver Ever", "Lacy Got Betrayed Instantly"). Concrete, punchy, everyday words; up to 1 word in CAPS for emphasis; at most 1 emoji (usually none). It must stay TRUE to what happens: no fake events. Use the streamer's name when it makes the hook stronger.
 - "description": 1-2 sentences.
 - "hashtags": 0 to 2 specific hashtags about this very moment (a vehicle, a place, an activity), lowercase, without the '#' sign, no spaces. No generic ones (gta, gaming, twitch, funny, viral) and never gtav or gta5: the game is GTA VI.
 - "score": integer 0-10. Is this a genuinely funny, impressive or shareable moment (7-10), an average one (4-6), or junk such as silence, menus, waiting, small talk (0-3)?
