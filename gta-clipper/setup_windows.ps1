@@ -49,8 +49,11 @@ Write-Host "== 1. Programy systemowe =="
 # Python 3.11: sprawdzamy przez launcher 'py', zeby nie pomylic z innym Pythonem
 $py311 = $false
 if (Have "py") {
+    # PowerShell 5 z "Stop" przerywa skrypt na stderr programu, stad lokalne Continue
+    $ErrorActionPreference = "Continue"
     & py -3.11 --version 2>$null | Out-Null
     if ($LASTEXITCODE -eq 0) { $py311 = $true }
+    $ErrorActionPreference = "Stop"
 }
 if ($py311) {
     Write-Host "[ok] Python 3.11 jest zainstalowany"
