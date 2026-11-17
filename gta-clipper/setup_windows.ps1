@@ -90,6 +90,8 @@ if (Have "nvidia-smi") {
     $lines = @(
         "@echo off",
         "rem Dodaje DLL-ki cuBLAS i cuDNN (pakiety pip nvidia-*) do PATH i uruchamia clippera",
+        "set PYTHONUTF8=1",
+        "set PYTHONIOENCODING=utf-8",
         "set PATH=$site\nvidia\cublas\bin;$site\nvidia\cudnn\bin;%PATH%",
         "`"$venvPy`" -m clipper.cli %*"
     )
