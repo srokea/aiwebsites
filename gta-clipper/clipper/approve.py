@@ -88,7 +88,7 @@ def make_preview(clip_path: Path, clip_id: int) -> Path:
     v_kbps = max(80, int(total_kbps - 40))
     cmd = [
         "ffmpeg", "-y", "-loglevel", "error", "-i", str(clip_path),
-        "-vf", "scale=360:640,fps=24", "-c:v", "libx264", "-preset", "veryfast",
+        "-vf", "scale=540:960,fps=30", "-c:v", "libx264", "-preset", "slow",
         "-b:v", f"{v_kbps}k", "-maxrate", f"{v_kbps}k", "-bufsize", f"{v_kbps * 2}k",
         "-c:a", "aac", "-ac", "1", "-b:a", "32k", "-movflags", "+faststart", str(out),
     ]

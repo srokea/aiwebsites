@@ -90,10 +90,15 @@ def current_backend() -> tuple[str, str, str] | None:
 def _run(key: tuple[str, str, str], path: Path, lang: str | None) -> list[Word]:
     model = _load(key)
     segments, _info = model.transcribe(
-        str(path), language=lang, word_timestamps=True, vad_filter=True,
+        str(path), language=lang, word_timestamps=True,
+        # bez VAD: przy glosnej grze wycinal ~90% mowy streamera (test 17.11, Lacy);
+        # zmyslenia w ciszy odsiewa no_speech_prob nizej
+        vad_filter=False, condition_on_previous_text=False,
     )
     words: list[Word] = []
     for seg in segments:            # generator: wlasciwa praca dzieje sie tutaj
+        if seg.no_speech_prob > 0.6 and seg.avg_logprob < -0.8:
+            continue                # typowe zmyslenia Whispera w ciszy ("You", "Thank you")
         for w in seg.words or []:
             text = (w.word or "").strip()
             if text:

@@ -59,7 +59,7 @@ streamers:
     quality: "720p60,720p,best"
     lang: en
     layout:
-      facecam: null
+      facecam: [0, 0, 348, 195]   # 17.11: lewy gorny rog przy 1280x720 (klatka z VOD 16.11)
     campaign: lacy-pool         # pula Reach; w profilu brakuje jeszcze linku do kampanii (TODO)
     rp: false
     tags: []
