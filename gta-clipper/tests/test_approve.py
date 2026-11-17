@@ -97,7 +97,7 @@ def test_big_clip_sends_ffmpeg_preview(ntfy, tmp_path, monkeypatch):
 
     (cmd, check), = ffmpeg_calls
     assert check is True and cmd[0] == "ffmpeg" and str(clip) in cmd
-    assert "scale=360:640,fps=24" in cmd and cmd[cmd.index("-b:v") + 1] == "240k"
+    assert "scale=540:960,fps=30" in cmd and cmd[cmd.index("-b:v") + 1] == "240k"
     assert cmd[cmd.index("-b:a") + 1] == "32k"
     preview = tmp_path / "data" / "previews" / "12_preview.mp4"
     assert cmd[-1] == str(preview) and preview.is_file()

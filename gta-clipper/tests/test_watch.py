@@ -12,7 +12,8 @@ def env(monkeypatch, tmp_path):
     monkeypatch.setattr(config, "subdir", lambda name: tmp_path / name)
     monkeypatch.setattr(watch.pipeline, "apply_decisions", lambda: state["decisions"])
     monkeypatch.setattr(watch.approve, "notify",
-                        lambda title, message, priority=3: notes.append((title, message, priority)) or "id")
+                        lambda title, message, priority=3, attach_url=None: notes.append((title, message, priority)) or "id")
+    monkeypatch.setattr(watch.approve, "upload_full_clip", lambda path: "https://example.test/klip.mp4")
     monkeypatch.setattr(tracker, "pending_submissions", lambda *a, **k: state["pending"])
     monkeypatch.setattr(watch.time, "monotonic", lambda: state["now"])
     return notes, state, tmp_path
@@ -75,7 +76,7 @@ def test_notify_network_error_retried(env, monkeypatch):
     state["decisions"] = [(3, "approved")]
     calls = {"n": 0}
 
-    def flaky(title, message, priority=3):
+    def flaky(title, message, priority=3, attach_url=None):
         calls["n"] += 1
         if calls["n"] == 1:
             raise requests.Timeout("x")

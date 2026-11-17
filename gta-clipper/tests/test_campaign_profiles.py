@@ -101,8 +101,9 @@ def test_package_drafts_preapproval_first_line(data, tmp_path):
 def test_watcher_notification_has_draft_warning(monkeypatch, tmp_path, data):
     notes = []
     monkeypatch.setattr(watch.pipeline, "apply_decisions", lambda: [(5, "approved")])
+    monkeypatch.setattr(watch.approve, "upload_full_clip", lambda p: "https://example.test/k.mp4")
     monkeypatch.setattr(watch.approve, "notify",
-                        lambda title, message, priority=3: notes.append(message) or "id")
+                        lambda title, message, priority=3, attach_url=None: notes.append(message) or "id")
     monkeypatch.setattr(tracker, "pending_submissions", lambda *a, **k: [])
     clip = tmp_path / "c.mp4"
     clip.write_bytes(b"MP4")
